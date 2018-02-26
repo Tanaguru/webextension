@@ -586,8 +586,7 @@ width: 100%;
 			display: block;
 			font-size: 1.0em;
 			
-			/*word-break: break-all;*/
-			overflow-wrap: break-word;
+			word-break: break-all;
 			
 		}
 		
