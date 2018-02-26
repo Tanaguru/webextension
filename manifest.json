@@ -1,0 +1,39 @@
+{
+	"manifest_version": 2,
+	"name": "Tanaguru",
+	"version": "0.01",
+	"author": "Romain Gervois",
+	"description": "Tests d'accessibilité dans le navigateur.",
+	"homepage_url": "http://www.tanaguru.com/",
+	"icons": {
+		"32": "common/icons/tanaguru-32.png",
+		"48": "common/icons/tanaguru-48.png",
+		"96": "common/icons/tanaguru-96.png"
+	},
+	"permissions": [
+	    "<all_urls>", "tabs"
+	],
+	"browser_action": {
+		"browser_style": false,
+		"default_icon": {
+			"32": "common/icons/tanaguru-32-dark.png"
+		},
+		"default_title": "Tanaguru",
+		"default_popup": "popup/tanaguru-popup.html",
+		"theme_icons": [{
+		  "light": "common/icons/tanaguru-32-light.png",
+		  "dark": "common/icons/tanaguru-32-dark.png",
+		  "size": 32
+		}]
+	},
+	"background": {
+		"scripts": ["background_scripts/background.js"]
+	},
+	"content_scripts": [
+	  {
+	    "matches": ["<all_urls>"],
+	    "js": ["common/scripts/extend-dom.js"]
+	  }
+	],
+	"devtools_page": "devtools/tanaguru-devtools.html"
+}
