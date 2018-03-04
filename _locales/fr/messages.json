@@ -1,0 +1,80 @@
+{
+  
+    "extensionName": {
+		"message": "Tanaguru Extension",
+		"description": "Nome de l'extension"
+  },
+  
+    "extensionDescription": {
+		"message": "Outil d'évaluation de l'accessibilité Web",
+		"description": "Description de l'extension."
+  },
+  
+    "extensionInstructionF": {
+		"message": "Pour démarrer les tests d'accessibilité, rendez-vous dans les outils de développement, activez l'onglet "
+  },
+  
+    "extensionInstructionS": {
+		"message": " puis lancez l'analyse de cette page."
+  },
+  
+	"extensionMore": {
+		"message": "pour en savoir plus, visitez "
+  },
+  
+    "extensionNewWindow": {
+		"message": " (Nouvelle fenêtre)"
+  },
+  
+  "msgButtons": {
+    "message": "Boutons"
+  },
+  
+   "msgButton": {
+	"message": "Bouton"
+  },
+  
+  "msgLink": {
+    "message": "Lien"
+  },
+  
+  "msgLinks": {
+    "message": "Liens"
+  },
+  
+  "msgInputFied": {
+    "message": "Champ de saisie"
+  },
+
+  "msgHeading": {
+    "message": "Heading"
+  },
+  
+  "msgHeadings": {
+    "message": "Headings"
+  },
+  
+  "msgInputFieds": {
+    "message": "Champs de saisie"
+  },
+  
+   "msgIAriaUse": {
+    "message": "Usage d'ARIA"
+  },
+  
+  "notificationTitle": {
+    "message": "Click notification",
+    "description": "Title of the click notification."
+  },
+
+  "notificationContent": {
+    "message": "You clicked $URL$.",
+    "description": "Tells the user which link they clicked.",
+    "placeholders": {
+      "url" : {
+        "content" : "$1",
+        "example" : "https://developer.mozilla.org"
+      }
+    }
+  }
+}

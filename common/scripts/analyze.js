@@ -52,6 +52,21 @@ function manageOutput(element) {
 /* JSON (Résultats) */
 var json = {};
 
+/* headings */
+var headingsset = [];
+var headings = document.querySelectorAll('h1:not([role]) ,[role="heading"]');
+for (var i = 0; i < headings.length; i++) {
+	headingsset.push(manageOutput(headings[i]));
+}
+
+//if (headingsset.length > 0) {
+	addResultSet(browser.i18n.getMessage("msgHeadings"), {
+		name:  browser.i18n.getMessage("msgHeading") + (headingsset.length > 1 ? 's' : ''),
+		type: 'humanneeded',
+		data: headingsset
+	});
+//} 
+
 /* Boutons */
 var buttonsset = [];
 var buttons = document.querySelectorAll('button:not([role]), input[type="reset"]:not([role]), input[type="submit"]:not([role])');
@@ -59,8 +74,8 @@ for (var i = 0; i < buttons.length; i++) {
 	buttonsset.push(manageOutput(buttons[i]));
 }
 //if (buttonsset.length > 0) {
-	addResultSet('Boutons', {
-		name: 'Bouton' + (buttonsset.length > 1 ? 's' : ''),
+	addResultSet(browser.i18n.getMessage("msgButtons"), {
+		name:  browser.i18n.getMessage("msgButton") + (buttonsset.length > 1 ? 's' : ''),
 		type: 'humanneeded',
 		data: buttonsset
 	});
@@ -97,8 +112,8 @@ for (var i = 0; i < links.length; i++) {
 	linksset.push(manageOutput(links[i]));
 }
 //if (linksset.length > 0) {
-	addResultSet('Liens', {
-		name: 'Lien' + (linksset.length > 1 ? 's' : ''),
+	addResultSet(browser.i18n.getMessage("msgLinks"), {
+		name: browser.i18n.getMessage("msgLink") + (linksset.length > 1 ? 's' : ''),
 		type: 'humanneeded',
 		data: linksset
 	});
