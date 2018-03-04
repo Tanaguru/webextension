@@ -119,6 +119,34 @@ for (var i = 0; i < links.length; i++) {
 	});
 //}
 
+/* Liens title*/
+var linksset = [];
+var linksseterror = [];
+var links = document.querySelectorAll('a[href][title]:not([role])');
+for (var i = 0; i < links.length; i++) {
+	var link = links[i];
+	if (link.getAttribute('title') == '') {
+		linksseterror.push(manageOutput(links[i]));
+	} else {
+		linksset.push(manageOutput(links[i]));
+	}
+}
+//if (linksset.length > 0) {
+	addResultSet(browser.i18n.getMessage("msgLinks"), {
+		name: browser.i18n.getMessage("msgLink") + (linksset.length > 1 ? 's' : '') + ' avec un titre',
+		type: 'humanneeded',
+		data: linksset,
+		mark: '(title=&quot;(?:(?!&quot;).)*&quot;)'
+	});
+	
+	addResultSet(browser.i18n.getMessage("msgLinks"), {
+		name: browser.i18n.getMessage("msgLink") + (linksset.length > 1 ? 's' : '') + ' avec un titre vide',
+		type: 'failure',
+		data: linksseterror,
+		mark: '(title=&quot;(?:(?!&quot;).)*&quot;)'
+	});
+//}
+
 /* ARIA */
 var ariabuttons = [];
 var ariaimgs = [];
