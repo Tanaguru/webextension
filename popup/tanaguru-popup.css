@@ -78,11 +78,13 @@ main {
 	text-align: center;
 }
 
+/*
 strong {
 	font-weight: normal;
 }
+*/
 
-strong span {
+strong /*span*/ {
 	font-weight: bolder;
 }
 
