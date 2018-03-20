@@ -1,30 +1,41 @@
 {
+	"extensionLang": {
+		"message": "en",
+		"description": "Language of the extension."
+	},
+	"extensionName": {
+		"message": "Tanaguru WE",
+		"description": "Name of the extension."
+	},	
+	"extensionDescription": {
+		"message": "Web Accessibility Evaluation Tool.",
+		"description": "Description of the extension."
+	},
+	"extensionHowTo": {
+		"message": "To start testing accessibility, go to Web Developer Tools, activate the tab <strong>{manifest.name}</strong> and launch the assessment of the page.",
+		"description": "..."
+	},
+	"extensionWebsite": {
+		"message": "To learn more, visit {manifest.homepage_url}.",
+		"description": "..."
+	},
+	"extensionNewWindow": {
+		"message": "(new window)",
+		"description": "..."
+	},
+
+
+
+
+
+
   
-  "extensionName": {
-    "message": "Tanaguru Extension",
-    "description": "Name of the extension."
-  },
   
-    "extensionDescription": {
-    "message": "Web Accessibility Evaluation Tool",
-    "description": "Description of the extension."
-  },
   
-    "extensionInstructionF": {
-    "message": "To start testing accessibility, go to developper tools, activate the Tab "
-  },
   
-    "extensionInstructionS": {
-    "message": " and launch the assessment of the page."
-  },
   
-    "extensionMore": {
-    "message": "To learn more, visit "
-  },
   
-    "extensionNewWindow": {
-    "message": " (New window)"
-  },
+  
   
   "msgButton": {
     "message": "Button"
