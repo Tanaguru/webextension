@@ -13,8 +13,9 @@ function handleHidden() {
 }
 
 /* Tanaguru in DevTools */
+var manifest = browser.runtime.getManifest();
 browser.devtools.panels.create(
-	'Tanaguru',
+	manifest.name,
 	'/common/icons/tanaguru-32-dark.png',
 	'/devtools/panel/tanaguru-devtools-panel.html'
 ).then((newPanel) => {
