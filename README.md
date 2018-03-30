@@ -41,7 +41,7 @@ Chaque résultat est accompagné de trois boutons :
 ![](README/use4.png)
 
 * **« Mettre en évidence sur la page »** permet d’appliquer une présentation particulière afin de faire ressortir visuellement l’élément sur la page ;
-* **« Révéler dans l'inspecteur »** permet d'identifier et sélectionner le nœud correspondant dans l’inspecteur de la page ;
+* **« Révéler dans l'inspecteur »** permet d'identifier et de sélectionner le nœud HTML correspondant dans l’inspecteur de la page ;
 * **« À propos de cet élément »** permet de consulter et récupérer les différentes informations propres à l'élément (comme par exemple les représentations XPath et CSS).
 
 ## Écrire un test
