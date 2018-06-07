@@ -27,6 +27,8 @@
 		"message": "(nouvelle fenêtre)",
 		"description": "Mention pour les éléments s'ouvrant dans une nouvelle fenêtre."
 	},
+	"msgNavHeading": { "message": "Résultats de l'analyse" },
+	"msgDashboard": { "message": "Tableau de bord" },
 	"earlFailed": { "message": "Invalidé" },
 	"earlPassed": { "message": "Validé" },
 	"earlCantTell": { "message": "Indéterminé" },
