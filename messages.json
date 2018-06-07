@@ -1,0 +1,51 @@
+{
+	"extensionLang": {
+		"message": "fr",
+		"description": "Langue de l'extension."
+	},
+	"extensionName": {
+		"message": "Tanaguru",
+		"description": "Nom de l'extension."
+	},	
+	"extensionDescription": {
+		"message": "Outil d'évaluation de pages Web.",
+		"description": "Description de l'extension."
+	},
+	"extensionHomepageUrl": {
+		"message": "http://www.tanaguru.com/fr/",
+		"description": "URL de la version française du site web consacré à l'extension."
+	},
+	"extensionHowTo": {
+		"message": "Pour démarrer les tests, rendez-vous dans les outils de développement, activez l'onglet <strong><span>manifest.name</span></strong> puis lancez l'analyse de cette page.",
+		"description": "Instructions pour utiliser l'extension."
+	},
+	"extensionWebsite": {
+		"message": "Pour en savoir plus, visitez le site <span data-role=\"link\" data-text=\"Tanaguru.com\" data-newwindow=\"true\">manifest.homepage_url</span>.",
+		"description": "Plus d'informations sur le site web consacré à l'extension."
+	},
+	"extensionNewWindow": {
+		"message": "(nouvelle fenêtre)",
+		"description": "Mention pour les éléments s'ouvrant dans une nouvelle fenêtre."
+	},
+	"msgNavHeading": { "message": "Résultats de l'analyse" },
+	"msgDashboard": { "message": "Tableau de bord" },
+	"earlFailed": { "message": "Invalidé" },
+	"earlPassed": { "message": "Validé" },
+	"earlCantTell": { "message": "Indéterminé" },
+	"earlInapplicable": { "message": "Non applicable" },
+	"earlUntested": { "message": "Non testé" },
+	"uiTagButton": { "message": "Tous les tests avec l'étiquette \"{tagName}\"." },
+	"allTags": { "message": "Tous les tests" },
+	"tagA11y": { "message": "Accessibilité" },
+	"tagButtons": { "message": "Boutons" },
+	"tagEcoconception": { "message": "Éco-conception" },
+	"tagHeadings": { "message": "Titres de contenus" },
+	"tagI18n": { "message": "Internationalisation" },
+	"tagImages": { "message": "Images" },
+	"tagLinks": { "message": "Liens" },
+	"tagMobile": { "message": "Mobile" },
+	"tagOthers": { "message": "Divers" },
+	"tagPerformance": { "message": "Performance" },
+	"tagQualite": { "message": "Qualité" },
+	"tagSEO": { "message": "SEO" }
+}
