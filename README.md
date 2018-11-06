@@ -46,53 +46,76 @@ Chaque résultat est accompagné de trois boutons :
 
 ## Écrire un test
 
-*Note au 30/03/2018 : les explications données dans cette partie sont susceptibles de ne plus être applicables dans la prochaine version de la webextension. Une mise à jour sera publiée lors de la publication de cette nouvelle version.*
+*Mise à jour de la syntaxe d'écriture d'un test (06/11/2018).*
 
-L’écriture d’un test s’effectue depuis le fichier Javascript **« /common/scripts/analyze.js »**.
+L’écriture d’un test s’effectue depuis le fichier Javascript **« /ressources/scripts/tests.js »**.
 
-Intégrer entre la ligne de création de la variable json (`var json = {};`) et la ligne de renvoi de valeur (`json;`) le test que vous souhaitez réaliser et ajouter aux résultats de la webextension.
+### Fonction `createTanaguruTest`
 
-### Exemple : liens s'ouvrant dans des nouvelles fenêtres
+La fonction `createTanaguruTest` vous permet de créer un nouveau test.
 
-Par exemple, si vous souhaitez lister tous les liens possédant un attribut `target=“_blank“`, utilisez d’abord la méthode DOM permettant de rechercher ces éléments :
-
-```
-var linksWithTargetBlank = document.querySelectorAll(‘a[href][target=“_blank“]’);
-```
-
-Créez ensuite un tableau vide puis remplissez-le en parcourant chacun des éléments trouvés :
+Cette fonction prend en paramètre un objet JSON permettant de définir les différentes caractéristiques du test.
 
 ```
-var linksWithTargetBlankSet = [];
-for (var i = 0; i < linksWithTargetBlank.length; i++) {
-	linksWithTargetBlankSet.push(manageOutput(linksWithTargetBlank[i]));
-}
+createTanaguruTest({});
 ```
+####Caractéristiques du test
 
-Note : la fonction `manageOutput` génère un objet JSON avec les différentes informations nécessaires pour exploitation par l’interface de la webextension.
+| Propriété | Description | Valeur attendue |
+| :-- | :-- | :-- |
+| lang | Langue de rédaction du test. | String. |
+| name | Intitulé du test. | String. |
+| query | Sélecteurs CSS permettant de définir l'échantillon. | String. |
+| filter | Fonction de filtrage des éléments de l'échantillon. | Function. |
+| expectedNbElements | Nombre d'éléments attendus (ou compris entre deux bornes) permettant de valider ou d'invalider le test. | Integer ou Object (avec propriétés min (Integer), max (Integer) ou les deux). |
+| explanations | Explications associées aux statuts du test. | Object (avec propriétés passed (String) et failed (String)). |
+| mark | Expression régulière permettant de mettre en surbrillance des passages de code dans l'interface des résultats. | String. |
+| tags | Étiquettes associées aux champs. Note : il ne s'agit pas des intitulés d'étiquettes mais d'identifiants d'étiquettes (i18n). | Array de String. |
+| ressources | Ressources associées aux tests. | Object (chaque propriété identifiant une ressource et valorisée par un Array de String). |
 
-Enfin, appelez la fonction `addResultSet` avec :
+Remarque importante : l'appel à la fonction `createTanaguruTest` devra être fait avant l'appel de la fonction de chargement des tests (`loadTanaguruTests();`) afin que le test soit executé et chargé dans l'interface de la webextension.
 
-* En premier paramètre, le nom du panneau où les résultats seront affichés ;
-* En second paramètre, un objet JSON avec :
-	* La propriété `name` correspondant au nom du test réalisé ;
-	* La propriété `type` correspondant à la nature des résultats (valeur « failure » s’il s’agit d’éléments en erreur ou valeur « humanneeded » s’il s’agit d’éléments à expertiser) ;
-	* La propriété `data` correspondant à l’objet contenant les résultats ;
-	* Optionnellement, la propriété `description` correspondant à un texte accompagnant les résultats (consignes, explications, etc.) ;
-	* Optionnellement, la propriété `mark` correspondant à une expression régulière qui sera utilisée pour mettre en valeur certains passages de code dans l’aperçu depuis l’interface de la webextension.
+### Exemples de test
 
-pour que les résultats soient chargés et exploités par l’interface de la webextension :
+#### Liens s'ouvrant dans des nouvelles fenêtres
 
-```
-addResultSet(‘Liens’, { 
-	name: 'Liens avec attribut target=”_blank”', 
-	type: 'humanneeded', 
-	data: linksWithTargetBlankSet, 
-	mark: '(target=&quot;(?:(?!&quot;).)*&quot;)' 
+Par exemple, si vous souhaitez lister tous les liens possédant un attribut `target=“_blank“` :
+
+````
+createTanaguruTest({
+	lang: 'fr',
+	name: "Liens s'ouvrant dans des nouvelles fenêtres.",
+	query: 'a[href][target="_blank"]:not([role])',
+	mark: '(target=&quot;_blank&quot;)',
+	tags: ['a11y', 'links'],
+	ressources: { 'rgaa': ['13.2.1'] }
 });
-```
+````
 
-Note : si le premier paramètre (« Liens ») a déjà été utilisé, l’objet JSON spécifié viendra compléter le (ou les) objet(s) JSON précédemment spécifié(s) et l’ensemble de ces objets seront chargés et affichés dans le même panneau.
+Note : l'absence des propriétés ``expectedNbElements`` et ``explanations`` fait que le test sera indiqué comme à expertiser.
+
+#### Liens avec attributs ``title`` vides
+
+Par exemple, si vous souhaitez vérifier que les attributs ``title`` sur les liens sont bien renseignés :
+
+````
+createTanaguruTest({
+	lang: 'fr',
+	name: 'Liens avec attributs title vides.',
+	query: 'a[href][title]:not([role])',
+	filter: function (item) {
+		return item.getAttribute('title').trim().length == 0;
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'passed': "Cette page ne contient pas d'éléments a avec attributs title vides.",
+		'failed': "Des éléments a avec attributs title vides sont présents dans la page."
+	},
+	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'links'],
+	ressources: { 'rgaa': ['6.2.1', '6.2.2', '6.2.3'] }
+});
+`````
 
 ---
 
