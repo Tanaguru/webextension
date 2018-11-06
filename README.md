@@ -59,7 +59,7 @@ Cette fonction prend en paramètre un objet JSON permettant de définir les diff
 ```
 createTanaguruTest({});
 ```
-####Caractéristiques du test
+#### Caractéristiques du test
 
 | Propriété | Description | Valeur attendue |
 | :-- | :-- | :-- |
