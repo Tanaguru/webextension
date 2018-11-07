@@ -1,14 +1,14 @@
 {
 	"manifest_version": 2,
-	"name": "Tanaguru",
+	"name": "__MSG_extensionName__",
 	"version": "0.01",
 	"author": "Romain Gervois",
 	"description": "__MSG_extensionDescription__",
-	"homepage_url": "http://www.tanaguru.com/",
+	"homepage_url": "__MSG_extensionHomepageUrl__",
 	"icons": {
-		"32": "common/icons/tanaguru-32.png",
-		"48": "common/icons/tanaguru-48.png",
-		"96": "common/icons/tanaguru-96.png"
+		"32": "ressources/images/icons/tanaguru-32-dark.png",
+		"48": "ressources/images/icons/tanaguru-48.png",
+		"96": "ressources/images/icons/tanaguru-96.png"
 	},
 	"permissions": [
 	    "<all_urls>", "tabs"
@@ -16,25 +16,25 @@
 	"browser_action": {
 		"browser_style": false,
 		"default_icon": {
-			"32": "common/icons/tanaguru-32-dark.png"
+			"32": "ressources/images/icons/tanaguru-32-dark.png"
 		},
-		"default_title": "Tanaguru",
+		"default_title": "__MSG_extensionName__",
 		"default_popup": "popup/tanaguru-popup.html",
 		"theme_icons": [{
-		  "light": "common/icons/tanaguru-32-light.png",
-		  "dark": "common/icons/tanaguru-32-dark.png",
+		  "light": "ressources/images/icons/tanaguru-32-light.png",
+		  "dark": "ressources/images/icons/tanaguru-32-dark.png",
 		  "size": 32
 		}]
 	},
 	"background": {
-		"scripts": ["background_scripts/background.js"]
+		"scripts": ["ressources/scripts/background_scripts/background.js"]
 	},
 	"content_scripts": [
 	  {
 	    "matches": ["<all_urls>"],
-	    "js": ["common/scripts/extend-dom.js"]
+	    "js": ["ressources/scripts/content_scripts/content.js"]
 	  }
 	],
 	"devtools_page": "devtools/tanaguru-devtools.html",
-	"default_locale": "en"
+	"default_locale": "fr"
 }

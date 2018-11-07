@@ -1,80 +1,51 @@
 {
-  
-    "extensionName": {
-		"message": "Tanaguru Extension",
-		"description": "Nome de l'extension"
-  },
-  
-    "extensionDescription": {
-		"message": "Outil d'évaluation de l'accessibilité Web",
+	"extensionLang": {
+		"message": "fr",
+		"description": "Langue de l'extension."
+	},
+	"extensionName": {
+		"message": "Tanaguru",
+		"description": "Nom de l'extension."
+	},	
+	"extensionDescription": {
+		"message": "Outil d'évaluation de pages Web.",
 		"description": "Description de l'extension."
-  },
-  
-    "extensionInstructionF": {
-		"message": "Pour démarrer les tests d'accessibilité, rendez-vous dans les outils de développement, activez l'onglet "
-  },
-  
-    "extensionInstructionS": {
-		"message": " puis lancez l'analyse de cette page."
-  },
-  
-	"extensionMore": {
-		"message": "pour en savoir plus, visitez "
-  },
-  
-    "extensionNewWindow": {
-		"message": " (Nouvelle fenêtre)"
-  },
-  
-  "msgButtons": {
-    "message": "Boutons"
-  },
-  
-   "msgButton": {
-	"message": "Bouton"
-  },
-  
-  "msgLink": {
-    "message": "Lien"
-  },
-  
-  "msgLinks": {
-    "message": "Liens"
-  },
-  
-  "msgInputFied": {
-    "message": "Champ de saisie"
-  },
-
-  "msgHeading": {
-    "message": "Heading"
-  },
-  
-  "msgHeadings": {
-    "message": "Headings"
-  },
-  
-  "msgInputFieds": {
-    "message": "Champs de saisie"
-  },
-  
-   "msgIAriaUse": {
-    "message": "Usage d'ARIA"
-  },
-  
-  "notificationTitle": {
-    "message": "Click notification",
-    "description": "Title of the click notification."
-  },
-
-  "notificationContent": {
-    "message": "You clicked $URL$.",
-    "description": "Tells the user which link they clicked.",
-    "placeholders": {
-      "url" : {
-        "content" : "$1",
-        "example" : "https://developer.mozilla.org"
-      }
-    }
-  }
+	},
+	"extensionHomepageUrl": {
+		"message": "http://www.tanaguru.com/fr/",
+		"description": "URL de la version française du site web consacré à l'extension."
+	},
+	"extensionHowTo": {
+		"message": "Pour démarrer les tests, rendez-vous dans les outils de développement, activez l'onglet <strong><span>manifest.name</span></strong> puis lancez l'analyse de cette page.",
+		"description": "Instructions pour utiliser l'extension."
+	},
+	"extensionWebsite": {
+		"message": "Pour en savoir plus, visitez le site <span data-role=\"link\" data-text=\"Tanaguru.com\" data-newwindow=\"true\">manifest.homepage_url</span>.",
+		"description": "Plus d'informations sur le site web consacré à l'extension."
+	},
+	"extensionNewWindow": {
+		"message": "(nouvelle fenêtre)",
+		"description": "Mention pour les éléments s'ouvrant dans une nouvelle fenêtre."
+	},
+	"msgNavHeading": { "message": "Résultats de l'analyse" },
+	"msgDashboard": { "message": "Tableau de bord" },
+	"earlFailed": { "message": "Invalidé" },
+	"earlPassed": { "message": "Validé" },
+	"earlCantTell": { "message": "Indéterminé" },
+	"earlInapplicable": { "message": "Non applicable" },
+	"earlUntested": { "message": "Non testé" },
+	"uiTagButton": { "message": "Tous les tests avec l'étiquette \"{tagName}\"." },
+	"allTags": { "message": "Tous les tests" },
+	"tagA11y": { "message": "Accessibilité" },
+	"tagButtons": { "message": "Boutons" },
+	"tagEcoconception": { "message": "Éco-conception" },
+	"tagHeadings": { "message": "Titres de contenus" },
+	"tagI18n": { "message": "Internationalisation" },
+	"tagImages": { "message": "Images" },
+	"tagLinks": { "message": "Liens" },
+	"tagMobile": { "message": "Mobile" },
+	"tagOthers": { "message": "Divers" },
+	"tagPerformance": { "message": "Performance" },
+	"tagQualite": { "message": "Qualité" },
+	"tagSEO": { "message": "SEO" }
 }
