@@ -1,3 +1,4 @@
+/* Extension du DOM. */
 var ariaroles = {
 	'alert': { type: ['live region', 'standalone ui widget'] },
 	'alertdialog': { type: 'standalone ui widget' },
@@ -674,3 +675,229 @@ Object.defineProperty(HTMLElement.prototype, 'canBeReachedUsingKeyboardWith', { 
 	}
 	return result;
 } });
+
+/* Gestion des tests. */
+function getXPath(element) {
+	var position = 0;
+	if (element.parentNode && element.parentNode.nodeType == 1) {
+		var children = element.parentNode.children;
+		for (var i = 0; i < children.length; i++) {
+			if (children[i].tagName.toLowerCase() == element.tagName.toLowerCase()) {
+				position++;
+			}
+			if (children[i] == element) {
+				break;
+			}
+		}
+	}
+	return (element.parentNode.nodeType == 1 ? getXPath(element.parentNode) : '') + '/' + element.tagName.toLowerCase() + '[' + (position ? position : '1') + ']' + (element.hasAttribute('id') ? '[@id="' + element.getAttribute('id') + '"]' : '') + (element.hasAttribute('class') ? '[@class="' + element.getAttribute('class') + '"]' : '');
+}
+
+function addBooleanResult(name, data) {
+	/*
+		addBooleanResult(browser.i18n.getMessage("msgHeadings"), {
+			name: { 'passed': 'Intitulé si C', 'failed': 'Intitulé si NC' },
+			data: document.querySelectorAll('h1').length > 1
+		});
+	*/
+}
+
+
+function initTanaguru() {
+	if (!window.tanaguru) {
+		window.tanaguru = {};
+		window.tanaguru.tags = new Array();
+		window.tanaguru.tests = new Array();
+	}
+}
+
+function addResultSet(name, data) {
+	initTanaguru();
+	/*
+	*** OLD VERSION ***
+	if (data.type == 'failed') {
+		var datacount = data.data.length;
+	}
+	else {
+		var datacount = 0; // 'passed', 'cantTell', 'inapplicable', 'untested'
+	}
+	if (window.tanaguru.tests[name]) {
+		window.tanaguru.tests[name].datacount += datacount;
+	}
+	else {
+		window.tanaguru.tests[name] = {
+			data: [],
+			datacount: datacount
+		}	
+	}
+	//if (data.data.length > 0) {
+		window.tanaguru.tests[name].data.push(data);	
+	//}
+	*/
+	/* Nouvelle version */
+	window.tanaguru.tests.push(data);
+}
+
+function loadTanaguruTests() {
+	initTanaguru();
+	var tags = [];
+	for (var tag in window.tanaguru.tags) {
+		tags.push(window.tanaguru.tags[tag]);
+	}
+	tags = tags.sort(function(a, b) {
+		return a.name.localeCompare(b.name);
+	});
+	var result = { tags: tags, tests: window.tanaguru.tests };
+	window.tanaguru = undefined;
+	return result;
+}
+
+function manageOutput(element) {
+	var implicitARIASemantic = element.implicitARIASemantic;
+	var explicitARIASemantic = element.explicitARIASemantic;
+	var canBeReachedUsingKeyboardWith = element.canBeReachedUsingKeyboardWith;
+	var isNotVisibleDueTo = element.isNotVisibleDueTo;
+	var isNotExposedDueTo = element.isNotExposedDueTo;
+	var fakeelement = element.cloneNode(true);
+	var e = document.createElement(fakeelement.tagName.toLowerCase());
+	if (e.outerHTML.indexOf("/") != -1) {
+		if (fakeelement.innerHTML.length > 512) {
+			fakeelement.innerHTML = '[...]';
+		}	
+	}
+	return { outer: fakeelement.outerHTML, xpath: getXPath(element), role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isNotVisibleDueTo: isNotVisibleDueTo, isNotExposedDueTo: isNotExposedDueTo };
+}
+
+
+
+
+
+
+
+
+function createTanaguruTest(test) {
+	if (test.hasOwnProperty('query') && test.query.constructor == String) {
+	 	// Sélection des éléments.
+	 	var elements = document.querySelectorAll(test.query);
+	 	if (elements) {
+	 		// Statut du test par défaut.
+	 		var status = 'cantTell';
+	 		// Initialisation des tags.
+	 		initTanaguru();
+	 		if (test.hasOwnProperty('tags') && test.tags.constructor == Array) {
+		 		for (var i = 0; i < test.tags.length; i++) {
+		 			if (!window.tanaguru.tags[test.tags[i]]) {
+		 				window.tanaguru.tags[test.tags[i]] = { id: test.tags[i], name: browser.i18n.getMessage('tag' + test.tags[i].charAt(0).toUpperCase() + test.tags[i].slice(1)), status: status, nbfailures: 0 };
+			 		}
+		 		}
+		 	}
+	 		else {
+		 		if (!window.tanaguru.tags['others']) {
+		 			window.tanaguru.tags['others'] = { name: browser.i18n.getMessage('tabOthers'), status: status, nbfailures: 0 };
+		 		}
+		 	}
+	 		
+	 		
+	 		
+	 		// Filtre additionnel sur la sélection d'éléments.
+	 		if (test.hasOwnProperty('filter')) {
+	 			if (test.filter.constructor == Function) {
+					elements = Array.from(elements);
+					elements = elements.filter(test.filter);
+	 			}
+	 			else {
+	 				// Erreur : valeur de la propriété filter.
+	 			}
+ 			}
+	 		// Calcul du statut du test.
+			if (test.hasOwnProperty('expectedNbElements')) {
+	 			if (Number.isInteger(test.expectedNbElements)) {
+	 				status = elements.length == test.expectedNbElements ? 'passed' : 'failed';
+	 			}
+	 			else if (test.expectedNbElements.constructor == Object && (test.expectedNbElements.hasOwnProperty('min') || test.expectedNbElements.hasOwnProperty('max'))) {
+					var min = test.expectedNbElements.hasOwnProperty('min') && Number.isInteger(test.expectedNbElements.min) ? test.expectedNbElements.min : 0;
+ 					var max = test.expectedNbElements.hasOwnProperty('max') && Number.isInteger(test.expectedNbElements.max) ? test.expectedNbElements.max : null;
+					status = elements.length >= min && (max == null || elements.length <= max) ? 'passed' : 'failed';
+	 			}
+	 			else {
+	 				// Erreur : valeur de la propriété expectedNbElements.
+	 			}
+	 		}
+	 		else {
+	 			if (elements.length == 0) {
+	 				status = 'inapplicable'; // Voir si le statut "Non applicable" n'est possible que dans le cas d'un nombre d'éléments à vérifier.
+	 			}
+	 		}
+	 		
+	 		
+	 		
+	 		// Mises à jour des tags (statut du tag et nombre de résultats en erreur).
+	 		var statuspriority = {
+	 			failed: 4,
+	 			passed: 3,
+	 			cantTell: 2,
+	 			inapplicable: 1,
+	 			untested: 0
+	 		}
+	 		if (test.hasOwnProperty('tags') && test.tags.constructor == Array) {
+	 			for (var i = 0; i < test.tags.length; i++) {
+	 				if (statuspriority[window.tanaguru.tags[test.tags[i]].status] < statuspriority[status]) {
+ 						window.tanaguru.tags[test.tags[i]].status = status;
+ 					}
+ 					if (status == 'failed') {
+ 						window.tanaguru.tags[test.tags[i]].nbfailures += elements.length;
+ 					}
+	 			}
+	 		}
+	 		else {
+	 			if (statuspriority[window.tanaguru.tags['others'].status] < statuspriority[status]) {
+	 				window.tanaguru.tags['others'].status = status;
+	 			}
+	 			if (status == 'failed') {
+	 				window.tanaguru.tags['others'].nbfailures += elements.length;
+	 			}
+	 		}
+	 		
+	 		
+	 		
+	 		// Chargement du résultat.
+	 		var outputelements = [];
+	 		for (var i = 0; i < elements.length; i++) {
+		 		outputelements.push(manageOutput(elements[i]));
+		 	}
+	 		var result = {
+ 				name: test.name,
+ 				type: status,
+ 				data: outputelements,
+	 			tags: []
+ 			};
+	 		if (test.hasOwnProperty('lang')) {
+	 			result.lang = test.lang;
+	 		}
+	 		if (test.hasOwnProperty('description')) {
+	 			result.description = test.description;
+	 		}
+	 		if (test.hasOwnProperty('explanations') && test.explanations.hasOwnProperty(status)) {
+	 			result.explanation = test.explanations[status];
+	 		}
+	 		if (test.hasOwnProperty('mark')) {
+	 			result.mark = test.mark;
+	 		}
+	 		result.tags = test.hasOwnProperty('tags') ? test.tags : ['others'];
+	 		addResultSet("Nouvelle syntaxe d'écriture des tests", result);
+	 		
+	 		
+	 		
+	 		// Intégrer chaque résultat dans window.tanaguru.tests.
+	 		
+
+
+	 	}
+	 	else {
+	 		// Erreur : valeur de la propriété query.
+	 	}
+	}
+}
+
+// Type à prévoir ? Conseil, obligation...
+// Ajouter description.
