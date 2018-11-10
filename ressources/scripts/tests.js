@@ -87,6 +87,32 @@ createTanaguruTest({
 	ressources: { 'rgaa': ['1.2.1'] }
 });
 
+createTanaguruTest({
+	lang: 'fr',
+	name: "Images avec un attribut title, aria-label ou aria-labelledby différent de l'attribut alt.",
+	query: 'img[alt]:not([alt=""]):not([role]), img[alt]:not([alt=""])[role="img"]',
+	filter: function (item) {
+		var alt = item.getAttribute('alt');
+		if (item.hasAttribute('title')) {
+			return  alt != item.getAttribute('title');
+		}
+		if (item.hasAttribute('aria-label')) {
+			return alt != item.getAttribute('aria-label');
+		}
+		if (item.hasAttribute('aria-labelledby')) {
+			return  alt != item.getAttribute('aria-labelledby');
+		}
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'passed': "Cette page ne contient pas d'images dont l'attribut aria-label ou aria-labelledby sont différents de l'attibut alt..",
+		'failed': "Des éléments img ont un attribut title, aria-label ou aria-labelledby différents de l'attibut alt."
+	},
+	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'images'],
+	ressources: { 'rgaa': ['1.3.1'] }
+});
+
 
 // Liens.
 createTanaguruTest({
@@ -208,8 +234,8 @@ createTanaguruTest({
 	},
 	expectedNbElements: 0,
 	explanations: {
-		'passed': "Cette page ne contient pas de boutons images dont l attribut title est différent de l'attribut alt.",
-		'failed': "Des éléments boutons images ont un attribut title, aria-label ou aria-labelledby sont différent de l'attibut alt."
+		'passed': "Cette page ne contient pas de boutons images dont l'attribut title, aria-label ou aria-labelledby est différent de l'attibut alt.",
+		'failed': "Des éléments boutons images ont un attribut title, aria-label ou aria-labelledby sont différents de l'attibut alt."
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'images', 'buttons'],
