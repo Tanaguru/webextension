@@ -26,7 +26,7 @@ createTanaguruTest({
 // Images.
 createTanaguruTest({
 	lang: 'fr',
-	name: 'Images sans attribut alt.',
+	name: 'Images (balise img) sans attribut alt.',
 	query: 'img:not([role]):not([alt]), img[role="img"]:not([alt])',
 	expectedNbElements: 0,
 	explanations: {
@@ -39,7 +39,20 @@ createTanaguruTest({
 
 createTanaguruTest({
 	lang: 'fr',
-	name: 'Images avec attribut alt.',
+	name: 'Images svg sans attribut alt.',
+	query: 'img:not([role]):not([alt]), img[role="img"]:not([alt])',
+	expectedNbElements: 0,
+	explanations: {
+		'passed': "Cette page ne contient pas d'éléments img sans attribut alt.",
+		'failed': "Des éléments img sans attribut alt sont présents dans la page."
+	},
+	tags: ['a11y', 'images'],
+	ressources: { 'rgaa': ['1.1.1'] }
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: 'Images (balise img) avec attribut alt.',
 	query: 'img[alt]:not([role]), img[alt][role="img"]',
 	filter: function (item) {
 		return !item.matches('a[href]:not([role]) img, [role="link"] img, button:not([role]) img, [role="button"] img');
@@ -48,6 +61,32 @@ createTanaguruTest({
 	tags: ['a11y', 'images'],
 	ressources: { 'rgaa': ['1.2.1', '1.3.1'] }
 });
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Images avec une alternative vide et un attribut tite, aria-label, aria-describedby ou aria-labelledby.",
+	query: 'img[alt=""][title]:not([role]), img[alt=""][title][role="img"] ,img[alt=""][aria-label]:not([role]), img[alt=""][aria-label][role="img"], img[alt=""][aria-labelledby]:not([role]), img[alt=""][aria-labelledby][role="img"], img[alt=""][aria-describedby]:not([role]), img[alt=""][aria-describedby][role="img"]',
+	expectedNbElements: 0,
+	explanations: {
+		'failed': "Des éléments img avec un attribut alt vide et un attribut tite, aria-label, aria-describedby ou aria-labelledby sont présents dans la page"
+	},
+	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'images'],
+	ressources: { 'rgaa': ['1.2.1'] }
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Images avec une alternative vide.",
+	query: 'img[alt=""]:not([title]):not([role]), img[alt=""]:not([title])[role="img"] ,img[alt=""]:not([aria-label]):not([role]), img[alt=""]:not([aria-label])[role="img"], img[alt=""]:not([aria-labelledby]):not([role]), img[alt=""]:not([aria-labelledby])[role="img"], img[alt=""]:not([aria-describedby]):not([role]), img[alt=""]:not([aria-describedby])[role="img"]',
+	explanations: {
+		'cantTell': "Vérifier que ces images sont bien des images de décoration",
+	},
+	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'images'],
+	ressources: { 'rgaa': ['1.2.1'] }
+});
+
 
 // Liens.
 createTanaguruTest({
@@ -108,6 +147,75 @@ createTanaguruTest({
 	query: 'button:not([role]), input[type="reset"]:not([role]), input[type="submit"]:not([role])',
 	tags: ['buttons']
 });
+
+// Boutons images.
+createTanaguruTest({
+	lang: 'fr',
+	name: 'Boutons images avec attribut alt.',
+	query: 'input[alt][type=image]:not([role])',
+	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'images', 'buttons'],
+	ressources: { 'rgaa': ['1.3.3'] }
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: 'Boutons Images sans attribut alt.',
+	query: 'input[type=image]:not([role]):not([alt])',
+	expectedNbElements: 0,
+	explanations: {
+		'passed': "Cette page ne contient pas d'éléments input type='image' sans attribut alt.",
+		'failed': "Des éléments input type='image' sans attribut alt sont présents dans la page."
+	},
+	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'images', 'buttons'],
+	ressources: { 'rgaa': ['1.1.3'] }
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: 'Boutons Images avec un attribut alt vide.',
+	query: 'input[alt][type=image]:not([role]):not([title]):not([aria-label]):not([aria-labelledby])',
+	filter: function (item) {
+		return item.getAttribute('alt').trim().length == 0;
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'passed': "Cette page ne contient pas d'éléments input type='image' sans attribut alt.",
+		'failed': "Des éléments input type='image' sans attribut alt sont présents dans la page."
+	},
+	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'images', 'buttons'],
+	ressources: { 'rgaa': ['1.3.3'] }
+});
+
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Boutons Images avec un attribut title, aria-label ou aria-labelledby différent de l'attribut alt.",
+	query: 'input[alt][type=image]:not([alt=""]):not([role])',
+	filter: function (item) {
+		var alt = item.getAttribute('alt');
+		if (item.hasAttribute('title')) {
+			return  alt != item.getAttribute('title');
+		}
+		if (item.hasAttribute('aria-label')) {
+			return alt != item.getAttribute('aria-label');
+		}
+		if (item.hasAttribute('aria-labelledby')) {
+			return  alt != item.getAttribute('aria-labelledby');
+		}
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'passed': "Cette page ne contient pas de boutons images dont l attribut title est différent de l'attribut alt.",
+		'failed': "Des éléments boutons images ont un attribut title, aria-label ou aria-labelledby sont différent de l'attibut alt."
+	},
+	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'images', 'buttons'],
+	ressources: { 'rgaa': ['1.3.3'] }
+});
+
 
 // Chargement des résultats.
 loadTanaguruTests();
