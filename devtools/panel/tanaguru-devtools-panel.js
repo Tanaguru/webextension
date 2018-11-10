@@ -407,10 +407,12 @@ button.addEventListener('click', function () {
 			tabpanelsectionbutton.setAttribute('data-action', 'showhide-action');
 			tabpanelsectionbutton.setAttribute('aria-expanded', 'false');
 			tabpanelsectionbutton.appendChild(document.createTextNode('[' + browser.i18n.getMessage('earl' + response[0].tests[test].type.charAt(0).toUpperCase() + response[0].tests[test].type.slice(1)) + '] '));
-			var strong = document.createElement('strong');
-			strong.appendChild(document.createTextNode(response[0].tests[test].data.length));
-			tabpanelsectionbutton.appendChild(strong);
-			tabpanelsectionbutton.appendChild(document.createTextNode(' '));
+			if (!(response[0].tests[test].type == 'failed' && response[0].tests[test].data.length == 0)) {
+				var strong = document.createElement('strong');
+				strong.appendChild(document.createTextNode(response[0].tests[test].data.length));
+				tabpanelsectionbutton.appendChild(strong);
+				tabpanelsectionbutton.appendChild(document.createTextNode(' '));
+			}
 			var span = document.createElement('span');
 			span.innerHTML = response[0].tests[test].name.charAt(0).toUpperCase() + response[0].tests[test].name.slice(1);
 			tabpanelsectionbutton.appendChild(span);
