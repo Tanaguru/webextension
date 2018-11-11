@@ -47,5 +47,6 @@
 	"tagOthers": { "message": "Divers" },
 	"tagPerformance": { "message": "Performance" },
 	"tagQualite": { "message": "Qualité" },
-	"tagSEO": { "message": "SEO" }
+	"tagSEO": { "message": "SEO" },
+	"tagFrames": { "message": "Frames" }
 }

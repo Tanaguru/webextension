@@ -1,3 +1,64 @@
+// cadres
+createTanaguruTest({
+	lang: 'fr',
+	name: "Présence d'un titre pour chaque cadre",
+	query: 'iframe:not([role]):not([title])',
+	expectedNbElements: 0,
+	explanations: { 
+		'passed': "tous les cadres de cette page ont un titre.", 
+		'failed': "Des éléments iframe sans attribut title sont présents dans cette page."
+	},
+	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'frames'],
+	ressources: { 'rgaa': ['2.1.1'] }
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Pertinence du titre pour chaque cadre",
+	query: 'iframe:not([role])[title]',
+	filter: function (item) {
+		var title = item.getAttribute('title');
+		var src = item.getAttribute('src');
+		if (title=="") {
+			return  false;
+		}
+		if (title==src) {
+			return false;
+		}
+		return true;
+	},
+	explanations: { 
+		'cantTell': "Vérifiez que les titres des cadres en présence sont pertinents."
+	},
+	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'frames'],
+	ressources: { 'rgaa': ['2.1.1'] }
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Non pertinence du titre pour chaque cadre",
+	query: 'iframe:not([role])[title]',
+	filter: function (item) {
+		var title = item.getAttribute('title');
+		var src = item.getAttribute('src');
+		if (title=="") {
+			return  true;
+		}
+		if (title==src) {
+			return true;
+		}
+	},
+	expectedNbElements: 0,
+	explanations: {  
+		'failed': "Des éléments iframe avec attribut title non pertinent sont présents dans cette page."
+	},
+	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'frames'],
+	ressources: { 'rgaa': ['2.2.1'] }
+});
+
 // Titres de contenus.
 createTanaguruTest({
 	lang: 'fr',
