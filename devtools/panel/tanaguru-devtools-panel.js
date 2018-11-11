@@ -397,6 +397,13 @@ button.addEventListener('click', function () {
 		alltagspanelheading.appendChild(document.createTextNode(tab.textContent));
 		alltagspanel.appendChild(alltagspanelheading);
 		var t = 1;
+		response[0].tests.sort(function compare(a,b) {
+			if (a.type == 'failed' && b.type != 'failed') return -1;
+			if (a.type != 'failed' && b.type == 'failed') return 1;
+			if (a.type == 'cantTell' && b.type == 'passed') return -1;
+			if (a.type == 'passed' && b.type == 'cantTell') return 1;
+			return 0;
+		});
 		for (var test in response[0].tests) {
 			var testelement = document.createElement('div');
 			testelement.setAttribute('class', response[0].tests[test].tags.join(' '));
@@ -406,7 +413,10 @@ button.addEventListener('click', function () {
 			tabpanelsectionbutton.setAttribute('type', 'button');
 			tabpanelsectionbutton.setAttribute('data-action', 'showhide-action');
 			tabpanelsectionbutton.setAttribute('aria-expanded', 'false');
-			tabpanelsectionbutton.appendChild(document.createTextNode('[' + browser.i18n.getMessage('earl' + response[0].tests[test].type.charAt(0).toUpperCase() + response[0].tests[test].type.slice(1)) + '] '));
+			var status = document.createElement('span');
+			status.setAttribute('class', 'status');
+			status.appendChild(document.createTextNode(browser.i18n.getMessage('earl' + response[0].tests[test].type.charAt(0).toUpperCase() + response[0].tests[test].type.slice(1))));
+			tabpanelsectionbutton.appendChild(status);
 			if (!(response[0].tests[test].type == 'failed' && response[0].tests[test].data.length == 0)) {
 				var strong = document.createElement('strong');
 				strong.appendChild(document.createTextNode(response[0].tests[test].data.length));

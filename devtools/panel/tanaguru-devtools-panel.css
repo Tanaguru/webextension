@@ -397,7 +397,7 @@ main:not(.launch-analysis) > div:first-child + div h2 {
     color: #4c4c4c;
 	display: block;
 	font-size: 1em;
-	padding: 0.75em 0.75em 0.75em 2.75em;
+	padding: 0 0.75em 0 2.75em;
 	position: relative;
 	text-align: left;
 	width: 100%;
@@ -441,8 +441,39 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 	-webkit-transition: color .3s ease-in-out;
 	transition: color .3s ease-in-out
 }
+
+[role="tabpanel"] h3 button * {
+	padding-bottom: 0.75em;
+	padding-top: 0.75em;
+}
+
+[role="tabpanel"] h3 button strong {
+	display: inline-block;
+	min-width: 60px;
+	text-align: right;
+}
+
+[role="tabpanel"] h3 button span + span {
+	display: inline-block;
+	padding-left: 1.6em;
+	text-indent: 60px;
+}
+
+[role="tabpanel"] h3 .status {
+	display: inline-block;
+	margin-right: 1em;
+	min-width: 180px;
+	padding-left: 1em;
+	padding-right: 1em;
+	text-align: center;
+}
 		
 [role="tabpanel"] h3.failed button::after {
+	color: #d90b0b;
+}
+
+[role="tabpanel"] h3.failed .status {
+	background-color: rgba(217, 11, 11, 0.1);
 	color: #d90b0b;
 }
 
@@ -463,6 +494,11 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 	color: #358700;
 }
 
+[role="tabpanel"] h3.passed .status {
+	background-color: rgba(53, 135, 0, 0.1);
+	color: #358700;
+}
+
 [role="tabpanel"] h3.passed button[aria-expanded="true"]::before {
 	background-color: #358700;
 }
@@ -472,6 +508,11 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 }
 
 [role="tabpanel"] h3.cantTell button::after {
+	color: #2a609e;
+}
+
+[role="tabpanel"] h3.cantTell .status {
+	background-color: rgba(42, 96, 158, 0.1);
 	color: #2a609e;
 }
 
