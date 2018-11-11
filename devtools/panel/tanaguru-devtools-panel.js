@@ -513,7 +513,7 @@ button.addEventListener('click', function () {
 				for (var h = 0; h < response[0].tests[test].data.length; h++) {
 					var tr = document.createElement('tr');
 					var td = document.createElement('td');
-					td.appendChild(document.createTextNode(h + 1));
+					td.appendChild(document.createTextNode('1A' + (h + 1)));
 					tr.appendChild(td);
 					var td = document.createElement('td');
 					var code = document.createElement('code');
