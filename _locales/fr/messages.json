@@ -48,5 +48,7 @@
 	"tagPerformance": { "message": "Performance" },
 	"tagQualite": { "message": "Qualité" },
 	"tagSEO": { "message": "SEO" },
-	"tagFrames": { "message": "Frames" }
+	"tagFrames": { "message": "Frames" },
+	"tagForms": { "message": "Forms" },
+	"tagLabels": { "message": "Labels" }
 }

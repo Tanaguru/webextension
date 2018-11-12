@@ -303,6 +303,78 @@ createTanaguruTest({
 	ressources: { 'rgaa': ['1.3.3'] }
 });
 
+// Formulaires
+createTanaguruTest({
+lang: 'fr',
+name: "Absence d'étiquette pour les éléments de formulaire",
+query: 'input:not([type=image]):not([type=button]):not([role]), select:not([role]), textarea:not([role])',
+filter: function (item) {
+	if ((item.hasAttribute('title')) || (item.hasAttribute('aria-labelledby')) || (item.hasAttribute('id')) || (item.hasAttribute('aria-label')))  {
+		var AttrId = item.getAttribute('id');
+		var selection = document.querySelector('label[for="'+AttrId+'"]') == null;
+		if (selection){
+				return true;
+			}
+		return false;
+	}
+},
+expectedNbElements: 0,
+explanations: {
+	'passed': "Cette page ne contient pas de boutons images dont l'attribut title, aria-label ou aria-labelledby est différent de l'attibut alt.",
+	'failed': "Des éléments champs de formulaire n'ont pas d'étiquette."
+},
+mark: '(id=&quot;(?:(?!&quot;).)*&quot;)',
+tags: ['a11y', 'forms', 'labels'],
+ressources: { 'rgaa': ['11.1.1'] }
+});
+
+/* createTanaguruTest({
+	lang: 'fr',
+	name: "Absence d'étiquette pour les éléments de formulaire",
+	query: 'input:not([type=image]):not([role]), select:not([role]), textarea:not([role])',
+	filter: function (item) {
+		if (item.hasAttribute('id')) {
+			var AttrId = item.getAttribute('id');
+			var selection = document.querySelector('label[for="'+AttrId+'"]') == null;
+			if (selection){
+					return true;
+				}
+		}
+		else if (item.hasAttribute('title')) {
+			var AttrTi = item.getAttribute('title');
+			if (item.hasAttribute('placeholder')) {
+				var AttrPl = item.getAttribute('placeholder');
+				if (AttrTi !== AttrPl) {
+					return true
+				}
+				else return false;
+			}
+		}
+		else if (item.hasAttribute('aria-labelledby')) {
+			var AttrLa = item.getAttribute('aria-labelledby');
+			var selection = document.querySelector('*[id="'+AttrLa+'"]') == null;
+			if (selection){
+					return true;
+				}
+		}
+		else if (item.hasAttribute('aria-label')) {
+			return false;
+		}
+		else return true;
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'passed': "Cette page ne contient pas de boutons images dont l'attribut title, aria-label ou aria-labelledby est différent de l'attibut alt.",
+		'failed': "Des éléments champs de formulaire n'ont pas d'étiquette."
+	},
+	mark: '(id=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'forms', 'labels'],
+	ressources: { 'rgaa': ['11.1.1'] }
+	}); */
+	
+
+//,*[role="checkbox"],*[role="radio"],*[role="textbox"],*[role="combobox"],*[role="contenteditable"]
+
 
 // Chargement des résultats.
 loadTanaguruTests();
