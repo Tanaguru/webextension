@@ -323,8 +323,8 @@ filter: function (item) {
 },
 expectedNbElements: 0,
 explanations: {
-	'passed': "Cette page ne contient pas de boutons images dont l'attribut title, aria-label ou aria-labelledby est différent de l'attibut alt.",
-	'failed': "Des éléments champs de formulaire n'ont pas d'étiquette."
+	'passed': "Cette page ne contient pas d'éléments de formulaire natifs sans étiquette",
+	'failed': "Des éléments de formulaire natifs n'ont pas d'étiquette."
 },
 mark: '(\sid=&quot;(?:(?!&quot;).)*&quot;)',
 tags: ['a11y', 'forms', 'labels'],
@@ -360,8 +360,8 @@ createTanaguruTest({
 	},
 	expectedNbElements: 0,
 	explanations: {
-		'passed': "Cette page ne contient pas de boutons images dont l'attribut title, aria-label ou aria-labelledby est différent de l'attibut alt.",
-		'failed': "Des éléments champs de formulaire n'ont pas d'étiquette."
+		'passed': "Cette page ne contient pas d'éléments de formulaire implémentés via Aria sans etiquette",
+		'failed': "Des éléments champs de formulaire implémentés via aria n'ont pas d'étiquette."
 	},
 	mark: '(\sid=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'forms', 'labels'],
@@ -383,10 +383,10 @@ createTanaguruTest({
 	},
 	expectedNbElements: 0,
 	explanations: {
-		'passed': "Cette page ne contient pas de boutons images dont l'attribut title, aria-label ou aria-labelledby est différent de l'attibut alt.",
-		'failed': "Des éléments champs de formulaire n'ont pas d'étiquette."
+		'passed': "Cette page ne contient pas d'éléments impléments via Aria non accessibles au clavier",
+		'failed': "Des composants d’interface implémentés via un rôle ARIA sont accessibles au clavier (via l'attribut tabindex)."
 	},
-	mark: '(\sid=&quot;(?:(?!&quot;).)*&quot;)',
+	mark: '(tabindex=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'forms', 'labels'],
 	ressources: { 'rgaa': ['7.3.1'] }
 	});
