@@ -99,6 +99,19 @@ createTanaguruTest({
 		'failed': "Des éléments area sans attribut alt sont présents dans la page."
 	},
 	tags: ['a11y', 'images'],
+	ressources: { 'rgaa': ['1.2.3'] }
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: 'Images (balise area) sans attribut alt.',
+	query: 'area[href]:not([role]):not([alt])',
+	expectedNbElements: 0,
+	explanations: {
+		'passed': "Cette page ne contient pas d'éléments area sans attribut alt.",
+		'failed': "Des éléments area sans attribut alt sont présents dans la page."
+	},
+	tags: ['a11y', 'images'],
 	ressources: { 'rgaa': ['1.1.2'] }
 });
 
@@ -169,7 +182,6 @@ createTanaguruTest({
 	tags: ['a11y', 'images'],
 	ressources: { 'rgaa': ['1.3.2'] }
 });
-
 
 createTanaguruTest({
 	lang: 'fr',
@@ -473,6 +485,48 @@ createTanaguruTest({
 	mark: '(tabindex=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'forms', 'labels','aria'],
 	ressources: { 'rgaa': ['7.3.1'] }
+	});
+
+//éléments obsolètes
+createTanaguruTest({
+	lang: 'fr',
+	name: "Les balises obsolètes",
+	query: 'applet, acronym, bgsound, dir, frame, frameset, noframes, isindex, listing, xmp, nextid, noembed, plaintext, rb, basefont, big, blink, center, font, marquee, multicol, nobr, s, spacer, strike, tt, u, wbr',
+	expectedNbElements: 0,
+	explanations: {
+		'passed': "Cette page ne contient pas d'éléments obsolètes",
+		'failed': "Des balises obsolètes sont présentes dans la page."
+	},
+	tags: ['a11y', 'Deprecated'],
+	ressources: { 'rgaa': ['8.2.2'] }
+	});
+
+	createTanaguruTest({
+	lang: 'fr',
+	name: "Les attributs obsolètes",
+	query: 'a[charset], link[charset], a[coords], a[shape], a[methods], a[name], embed[name], img[name], option[name], a[urn], link[urn], form[accept], area[hreflang], head[profile], html[version], input[ismap], input[usemap], iframe[longdesc], img[longdesc], link[target], meta[scheme], object[archive], object[classid], object[code], object[codebase], object[codetype], object[declare], object[standby], param[type], param[valuetype], script[language], script[event], script[for], table[datapagesize], table[summary], td[abbr], td[axis], th[axis], td[scope], a[datasrc], applet[datasrc],button[datasrc],div[datasrc], frame[datasrc], iframe[datasrc], img[datasrc], input[datasrc], label[datasrc], legend[datasrc], marquee[datasrc], object[datasrc], option[datasrc], select[datasrc], table[datasrc], textarea[datasrc], a[datafld], applet[datafld], button[datafld], div[datafld], fieldset[datafld], frame[datafld], iframe[datafld], img[datafld], input[datafld], label[datafld], legend[datafld], marquee[datafld], object[datafld], param[datafld], select[datafld], text[datafld], button[dataformatas], div[dataformatas], input[dataformatas], label[dataformatas], legend[dataformatas], marquee[dataformatas], object[dataformatas], option[dataformatas], select[dataformatas], a[dataformatas], table[dataformatas], body[alink], body[bgcolor], body[bottommargin], body[leftmargin], body[link], body[marginheight], body[marginwidth], body[rightmargin], body[text], body[topmargin], body[vlink], br[clear], caption[align], col[align], col[widht], div[align], dl[compact], embed[align], embed[hspace], embed[vspace], frame[bodercolor], hr[align], hr[color], hr[noshade], hr[size], hr[width], h1[align], h2[align], h3[align], h4[align], h5[align], h6[align], iframe[align], iframe[allowtransparency], iframe[frameborder], iframe[framespacing], iframe[hspace], iframe[marginheight], iframe[marginwidth], iframe[scrolling], iframe[vspace], input[align], input[border], input[hspace], input[vspace], img[align], img[border], img[hspace], img[vspace], legend[align], li[type], menu[compact], marquee[bgcolor], marquee[height], marquee[hspace], marquee[vspace], marquee[width], object[align], object[border], object[hspace], object[vspace], ol[compact], p[align], pre[width], table[align], table[bgcolor], table[border], table[bordercolor], table[cellpadding], table[callspacing], table[frame], table[height], table[rules], table[width], tbody[align], thead[align], tfoot[align], tbody[char], thead[char], tfoot[char], tbody[charoff], thead[charoff], tfoot[charoff], tbody[valign], thead[valign], tfoot[valign], td[align], th[align], td[bgcolor], th[bgcolor], td[char], th[char], td[charoff], th[charoff], td[height], th[height], td[nowrap], th[nowrap], td[valign], th[valign], td[with], th[width], tr[align], tr[bgcolor], tr[char], tr[charoff], tr[height], tr[valign], ul[compact], ul[type], body[background], table[background], thead[background],tbody[background], tfoot[background],tr[background], td[background], th[background]',
+	expectedNbElements: 0,
+	explanations: {
+		'passed': "Cette page ne contient pas d'attributs obsolètes",
+		'failed': "Des attributs obsolètes sont présents dans la page."
+	},
+	tags: ['a11y', 'Deprecated'],
+	ressources: { 'rgaa': ['8.1.2'] }
+	});
+
+//titre de la page
+createTanaguruTest({
+	lang: 'fr',
+	name: "titre de la page",
+	query: 'head>title',
+	expectedNbElements: 1,
+	explanations: {
+		'passed': "La page à un titre de page",
+		'failed': "Aucun titre (balise title dans la balise head) dans la page."
+	},
+	mark: '(tabindex=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'Mandatory'],
+	ressources: { 'rgaa': ['8.5.1'] }
 	});
 
 // Chargement des résultats.

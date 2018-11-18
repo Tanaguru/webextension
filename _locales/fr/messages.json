@@ -51,5 +51,7 @@
 	"tagFrames": { "message": "Cadres" },
 	"tagForms": { "message": "Formulaires" },
 	"tagLabels": { "message": "Étiquettes" },
-	"tagAria": {"message" : "Aria"}
+	"tagAria": {"message" : "Aria"},
+	"tagDeprecated": {"message" : "Obsolètes"},
+	"tagMandatory": {"message" : "Éléments obligatoires"}
 }
