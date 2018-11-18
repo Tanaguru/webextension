@@ -517,17 +517,64 @@ createTanaguruTest({
 //titre de la page
 createTanaguruTest({
 	lang: 'fr',
-	name: "titre de la page",
+	name: "Présence du titre de la page",
 	query: 'head>title',
 	expectedNbElements: 1,
 	explanations: {
 		'passed': "La page à un titre de page",
 		'failed': "Aucun titre (balise title dans la balise head) dans la page."
 	},
-	mark: '(tabindex=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'Mandatory'],
 	ressources: { 'rgaa': ['8.5.1'] }
 	});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Pertinence du titre de la page",
+	query: 'head>title',
+	filter: function (item) {
+		var tagTitle =  item != null;
+		if (tagTitle) {
+			return item.textContent == "";
+		}
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'failed': "le titre de la page est vide"
+	},
+	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'Mandatory'],
+	ressources: { 'rgaa': ['8.6.1'] }
+	});
+
+// Gestion des langues
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Présence de la langue par défaut",
+	query: 'html[lang]',
+	expectedNbElements: 1,
+	explanations: {
+		'passed': "La langue par défaut est présente dans la page",
+		'failed': "Aucun langue par défaut n'est définie dans la page."
+	},
+	mark: '(lang=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'Mandatory'],
+	ressources: { 'rgaa': ['8.5.1'] }
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Pertinence de la langue par défaut",
+	query: 'html[lang=""]',
+	expectedNbElements: 0,
+	explanations: {
+		'failed': "la langue par défaut est vide."
+	},
+	mark: '(lang=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'Mandatory'],
+	ressources: { 'rgaa': ['8.4.1'] }
+});
 
 // Chargement des résultats.
 loadTanaguruTests();
