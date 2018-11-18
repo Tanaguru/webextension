@@ -84,6 +84,7 @@ createTanaguruTest({
 	ressources: { 'rgaa': ['9.1.4'] }
 });
 
+
 // Images.
 createTanaguruTest({
 	lang: 'fr',
@@ -334,37 +335,35 @@ ressources: { 'rgaa': ['11.1.1'] }
 createTanaguruTest({
 	lang: 'fr',
 	name: "Absence d'étiquette pour les éléments de formulaire aria",
-	query: '*[role="checkbox"], *[role="radio"], *[role="textbox"], *[role="combobox"], *[role="contenteditable"]',
-	filter: function (item) {
-		var text= item.textContent;
-		if ((item.hasAttribute('title')) || (item.hasAttribute('aria-labelledby')) || (item.hasAttribute('aria-label')))  {
-			return false;
-		}
-		else if (text == 0){
-			var LabelForms = item.querySelectorAll('img');
-			if (LabelForms < 1) {
-				return true;
+	query: '*[role="checkbox"], *[role="radio"], *[role="textbox"], *[role="combobox"]',
+	filter: function(item) {
+			// (à sortir title puisque alt > title + title pouvant servir côté UI/UX)
+			if (!item.matches('[aria-labelledby], [aria-label], [title]')) {
+				if (item.matches('img')) {
+					// Image (possibilité de gérer le sans alt).
+					return item.getAttribute('alt') == '';
+				}
+				else {
+					var cloneditem = item.cloneNode(true);
+					var clonedimg = cloneditem.querySelectorAll('img');
+					for (var i = 0; i < clonedimg.length; i++) {
+						var text = document.createTextNode(clonedimg[i].hasAttribute('alt') ? clonedimg[i].getAttribute('alt') : '');
+						clonedimg[i].parentNode.replaceChild(text, clonedimg[i]);
+					}
+					return cloneditem.textContent.trim().length == 0;
+				}
 			}
 			else {
-				for (i=0; i<LabelForms.length;i++) {
-					if (LabelForms[i].hasAttribute('alt')){
-						if (LabelForms[i].getAttribute('alt') == 0) {
-							return true;
-						}
-						else return false;
-					};
-				};
+				return false;
 			};
-			
-		} else return false;
-	},
+		},
 	expectedNbElements: 0,
 	explanations: {
 		'passed': "Cette page ne contient pas d'éléments de formulaire implémentés via Aria sans etiquette",
 		'failed': "Des éléments champs de formulaire implémentés via aria n'ont pas d'étiquette."
 	},
 	mark: '(\sid=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'forms', 'labels'],
+	tags: ['a11y', 'forms', 'labels', 'aria'],
 	ressources: { 'rgaa': ['7.1.1'] }
 	});
 
@@ -387,7 +386,7 @@ createTanaguruTest({
 		'failed': "Des composants d’interface implémentés via un rôle ARIA sont accessibles au clavier (via l'attribut tabindex)."
 	},
 	mark: '(tabindex=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'forms', 'labels'],
+	tags: ['a11y', 'forms', 'labels','aria'],
 	ressources: { 'rgaa': ['7.3.1'] }
 	});
 
