@@ -1,3 +1,6 @@
+/*Sommaire
+
+*/
 // cadres
 createTanaguruTest({
 	lang: 'fr',
@@ -88,6 +91,88 @@ createTanaguruTest({
 // Images.
 createTanaguruTest({
 	lang: 'fr',
+	name: 'Images (balise area) sans attribut alt.',
+	query: 'area[href]:not([role]):not([alt])',
+	expectedNbElements: 0,
+	explanations: {
+		'passed': "Cette page ne contient pas d'éléments area sans attribut alt.",
+		'failed': "Des éléments area sans attribut alt sont présents dans la page."
+	},
+	tags: ['a11y', 'images'],
+	ressources: { 'rgaa': ['1.1.2'] }
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: 'Images (balise area) avec une alternative vide et un attribut title, aria-label, aria-describedby ou aria-labelledby.',
+	query: 'area[alt=""][title]:not([role]) ,area[alt=""][aria-label]:not([role]), area[alt=""][aria-labelledby]:not([role]), area[alt=""][aria-describedby]:not([role])',
+	expectedNbElements: 0,
+	explanations: {
+		'failed': "Des éléments area avec un attribut alt vide et un attribut title, aria-label, aria-describedby ou aria-labelledby sont présents dans la page"
+	},
+	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'images'],
+	ressources: { 'rgaa': ['1.2.2'] }
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: 'Images (balise area) sans attribut href avec un attribut alt rempli.',
+	query: 'area[alt]:not([role]):not([href])',
+	filter: function (item) {
+		return item.getAttribute('alt') != ""
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'passed': "Cette page ne contient pas d'éléments area de décoration (sans attribut href) avec attribut alt renseigné.",
+		'failed': "Des éléments area de décoration (sans attribut href) avec attribut alt renseigné sont présents dans la page."
+	},
+	tags: ['a11y', 'images'],
+	ressources: { 'rgaa': ['1.2.2'] }
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: 'Images informative (balise area) avec attribut alt vide.',
+	query: 'area[href][alt=""]:not([role])',
+	expectedNbElements: 0,
+	explanations: {
+		'passed': "Cette page ne contient pas d'éléments cliquable area avec un attribut alt vide.",
+		'failed': "Des éléments cliquable area avec un alt vide sont présents dans la page."
+	},
+	tags: ['a11y', 'images'],
+	ressources: { 'rgaa': ['1.3.2'] }
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Images cliquable (balise area) avec un attribut title, aria-label ou aria-labelledby différent de l'attribut alt.",
+	query: 'area[alt][href]:not([alt=""]):not([role])',
+	filter: function (item) {
+		var alt = item.getAttribute('alt');
+		if (item.hasAttribute('title')) {
+			return  alt != item.getAttribute('title');
+		}
+		if (item.hasAttribute('aria-label')) {
+			return alt != item.getAttribute('aria-label');
+		}
+		if (item.hasAttribute('aria-labelledby')) {
+			return  alt != item.getAttribute('aria-labelledby');
+		}
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'passed': "Cette page ne contient pas d'images cliquable (area) dont l'attribut aria-label ou aria-labelledby sont différents de l'attibut alt..",
+		'failed': "Des éléments cliquable (area) ont un attribut title, aria-label ou aria-labelledby différents de l'attibut alt."
+	},
+	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'images'],
+	ressources: { 'rgaa': ['1.3.2'] }
+});
+
+
+createTanaguruTest({
+	lang: 'fr',
 	name: 'Images (balise img) sans attribut alt.',
 	query: 'img:not([role]):not([alt]), img[role="img"]:not([alt])',
 	expectedNbElements: 0,
@@ -126,11 +211,11 @@ createTanaguruTest({
 
 createTanaguruTest({
 	lang: 'fr',
-	name: "Images avec une alternative vide et un attribut tite, aria-label, aria-describedby ou aria-labelledby.",
+	name: "Images (balise img) avec une alternative vide et un attribut title, aria-label, aria-describedby ou aria-labelledby.",
 	query: 'img[alt=""][title]:not([role]), img[alt=""][title][role="img"] ,img[alt=""][aria-label]:not([role]), img[alt=""][aria-label][role="img"], img[alt=""][aria-labelledby]:not([role]), img[alt=""][aria-labelledby][role="img"], img[alt=""][aria-describedby]:not([role]), img[alt=""][aria-describedby][role="img"]',
 	expectedNbElements: 0,
 	explanations: {
-		'failed': "Des éléments img avec un attribut alt vide et un attribut tite, aria-label, aria-describedby ou aria-labelledby sont présents dans la page"
+		'failed': "Des éléments img avec un attribut alt vide et un attribut title, aria-label, aria-describedby ou aria-labelledby sont présents dans la page"
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'images'],
@@ -139,7 +224,7 @@ createTanaguruTest({
 
 createTanaguruTest({
 	lang: 'fr',
-	name: "Images avec une alternative vide.",
+	name: "Images (balise img) avec une alternative vide.",
 	query: 'img[alt=""]:not([title]):not([role]), img[alt=""]:not([title])[role="img"] ,img[alt=""]:not([aria-label]):not([role]), img[alt=""]:not([aria-label])[role="img"], img[alt=""]:not([aria-labelledby]):not([role]), img[alt=""]:not([aria-labelledby])[role="img"], img[alt=""]:not([aria-describedby]):not([role]), img[alt=""]:not([aria-describedby])[role="img"]',
 	explanations: {
 		'cantTell': "Vérifier que ces images sont bien des images de décoration",
@@ -151,7 +236,7 @@ createTanaguruTest({
 
 createTanaguruTest({
 	lang: 'fr',
-	name: "Images avec un attribut title, aria-label ou aria-labelledby différent de l'attribut alt.",
+	name: "Images (balise img) avec un attribut title, aria-label ou aria-labelledby différent de l'attribut alt.",
 	query: 'img[alt]:not([alt=""]):not([role]), img[alt]:not([alt=""])[role="img"]',
 	filter: function (item) {
 		var alt = item.getAttribute('alt');
