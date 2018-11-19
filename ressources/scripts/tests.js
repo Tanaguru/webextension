@@ -406,7 +406,7 @@ createTanaguruTest({
 createTanaguruTest({
 lang: 'fr',
 name: "Absence d'étiquette pour les éléments de formulaire natifs",
-query: 'input:not([type="image"]):not([type="button"]):not([role]), select:not([role]), textarea:not([role])',
+query: 'input:not([type="image"]):not([type="button"]):not([type="hidden"]):not([type="submit"]):not([type="reset"]):not([role]), select:not([role]), textarea:not([role])',
 filter: function (item) {
 	if ((item.hasAttribute('title')) || (item.hasAttribute('aria-labelledby')) || (item.hasAttribute('id')) || (item.hasAttribute('aria-label')))  {
 		if(item.hasAttribute('id')){
