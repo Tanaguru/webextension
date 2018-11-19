@@ -559,7 +559,7 @@ createTanaguruTest({
 	expectedNbElements: 1,
 	explanations: {
 		'passed': "La langue par défaut est présente dans la page",
-		'failed': "Aucun langue par défaut n'est définie dans la page."
+		'failed': "Aucune langue par défaut n'est définie dans la page."
 	},
 	mark: '(lang=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'Mandatory'],
@@ -577,6 +577,26 @@ createTanaguruTest({
 	mark: '(lang=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'Mandatory'],
 	ressources: { 'rgaa': ['8.4.1'] }
+});
+
+createTanaguruTest({
+lang: 'fr',
+name: "Ne pas associer de label à un champ de formulaire de type hidden",
+query: 'input[type="hidden"][id]',
+filter: function(item) {
+	var AttrId = item.getAttribute('id');
+	if (document.querySelector('label[for="'+AttrId+'"]') == null){
+		return false;
+	};
+	return true;
+},
+	expectedNbElements: 0,
+	explanations: {
+		'failed': "Des éléments champs de formulaire de type hidden sont associées à une balise label."
+	},
+	mark: '(for=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'Mandatory', ],
+	ressources: { 'rgaa': ['8.2.1'] }
 });
 
 // Chargement des résultats.
