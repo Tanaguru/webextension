@@ -170,8 +170,11 @@ createTanaguruTest({
 			return alt != item.getAttribute('aria-label');
 		}
 		if (item.hasAttribute('aria-labelledby')) {
-			return  alt != item.getAttribute('aria-labelledby');
-		}
+			var AttrLabelledby = item.getAttribute('aria-labelledby');
+			if (document.querySelector('*[id="'+AttrLabelledby+'"]') != null){
+				return document.querySelector('*[id="'+AttrLabelledby+'"]').textContent != alt;
+			};
+		};
 	},
 	expectedNbElements: 0,
 	explanations: {
@@ -186,19 +189,6 @@ createTanaguruTest({
 createTanaguruTest({
 	lang: 'fr',
 	name: 'Images (balise img) sans attribut alt.',
-	query: 'img:not([role]):not([alt]), img[role="img"]:not([alt])',
-	expectedNbElements: 0,
-	explanations: {
-		'passed': "Cette page ne contient pas d'éléments img sans attribut alt.",
-		'failed': "Des éléments img sans attribut alt sont présents dans la page."
-	},
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa': ['1.1.1'] }
-});
-
-createTanaguruTest({
-	lang: 'fr',
-	name: 'Images svg sans attribut alt.',
 	query: 'img:not([role]):not([alt]), img[role="img"]:not([alt])',
 	expectedNbElements: 0,
 	explanations: {
@@ -391,8 +381,11 @@ createTanaguruTest({
 			return alt != item.getAttribute('aria-label');
 		}
 		if (item.hasAttribute('aria-labelledby')) {
-			return  alt != item.getAttribute('aria-labelledby');
-		}
+			var AttrLabelledby = item.getAttribute('aria-labelledby');
+			if (document.querySelector('*[id="'+AttrLabelledby+'"]') != null){
+				return document.querySelector('*[id="'+AttrLabelledby+'"]').textContent != alt;
+			};
+		};
 	},
 	expectedNbElements: 0,
 	explanations: {
@@ -593,6 +586,23 @@ filter: function(item) {
 	expectedNbElements: 0,
 	explanations: {
 		'failed': "Des éléments champs de formulaire de type hidden sont associées à une balise label."
+	},
+	mark: '(for=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'Mandatory', ],
+	ressources: { 'rgaa': ['8.2.1'] }
+});
+
+createTanaguruTest({
+lang: 'fr',
+name: "Information via l'attribut aria-labelledby",
+query: '*[aria-labelledby]',
+filter: function(item) {
+	var AttrLabelledby = item.getAttribute('aria-labelledby');
+	return document.querySelector('*[id="'+AttrLabelledby+'"]') == null;
+},
+	expectedNbElements: 0,
+	explanations: {
+		'failed': "Des attributs aria-labelledby ne correspondent à aucun élément de la page."
 	},
 	mark: '(for=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'Mandatory', ],
