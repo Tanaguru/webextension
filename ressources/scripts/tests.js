@@ -211,18 +211,6 @@ createTanaguruTest({
 
 createTanaguruTest({
 	lang: 'fr',
-	name: 'Images (balise img) avec attribut alt.',
-	query: 'img[alt]:not([role]), img[alt][role="img"]',
-	filter: function (item) {
-		return !item.matches('a[href]:not([role]) img, [role="link"] img, button:not([role]) img, [role="button"] img');
-	},
-	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa': ['1.2.1', '1.3.1'] }
-});
-
-createTanaguruTest({
-	lang: 'fr',
 	name: "Images (balise img) avec une alternative vide et un attribut title, aria-label, aria-describedby ou aria-labelledby.",
 	query: 'img[alt=""][title]:not([role]), img[alt=""][title][role="img"] ,img[alt=""][aria-label]:not([role]), img[alt=""][aria-label][role="img"], img[alt=""][aria-labelledby]:not([role]), img[alt=""][aria-labelledby][role="img"], img[alt=""][aria-describedby]:not([role]), img[alt=""][aria-describedby][role="img"]',
 	expectedNbElements: 0,
@@ -244,6 +232,21 @@ createTanaguruTest({
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'images'],
 	ressources: { 'rgaa': ['1.2.1'] }
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: 'Images (balise img) avec attribut alt renseigné.',
+	query: 'img[alt]:not([role]):not([alt=""]), img[alt][role="img"]:not([alt=""])',
+	filter: function (item) {
+		return !item.matches('a[href]:not([role]) img, [role="link"] img, button:not([role]) img, [role="button"] img');
+	},
+	explanations: {
+		'cantTell': "Vérifier que ces images sont bien des images informatives",
+	},
+	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['a11y', 'images'],
+	ressources: { 'rgaa': ['1.2.1', '1.3.1'] }
 });
 
 createTanaguruTest({
