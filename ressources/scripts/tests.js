@@ -8,7 +8,7 @@ createTanaguruTest({
 	query: 'iframe:not([role]):not([title])',
 	expectedNbElements: 0,
 	explanations: { 
-		'passed': "tous les cadres de cette page ont un titre.", 
+		'passed': "Tous les cadres de cette page ont un titre.", 
 		'failed': "Des éléments iframe sans attribut title sont présents dans cette page."
 	},
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
@@ -150,8 +150,8 @@ createTanaguruTest({
 	query: 'area[href][alt=""]:not([role])',
 	expectedNbElements: 0,
 	explanations: {
-		'passed': "Cette page ne contient pas d'éléments cliquable area avec un attribut alt vide.",
-		'failed': "Des éléments cliquable area avec un alt vide sont présents dans la page."
+		'passed': "Cette page ne contient pas d'éléments cliquables area avec un attribut alt vide.",
+		'failed': "Des éléments cliquables area avec un alt vide sont présents dans la page."
 	},
 	tags: ['a11y', 'images'],
 	ressources: { 'rgaa': ['1.3.2'] }
@@ -159,7 +159,7 @@ createTanaguruTest({
 
 createTanaguruTest({
 	lang: 'fr',
-	name: "Images cliquable (balise area) avec un attribut title, aria-label ou aria-labelledby différent de l'attribut alt.",
+	name: "Images cliquables (balise area) avec un attribut title, aria-label ou aria-labelledby différent de l'attribut alt.",
 	query: 'area[alt][href]:not([alt=""]):not([role])',
 	filter: function (item) {
 		var alt = item.getAttribute('alt');
@@ -178,8 +178,8 @@ createTanaguruTest({
 	},
 	expectedNbElements: 0,
 	explanations: {
-		'passed': "Cette page ne contient pas d'images cliquable (area) dont l'attribut aria-label ou aria-labelledby sont différents de l'attibut alt..",
-		'failed': "Des éléments cliquable (area) ont un attribut title, aria-label ou aria-labelledby différents de l'attibut alt."
+		'passed': "Cette page ne contient pas d'images cliquables (area) dont l'attribut aria-label ou aria-labelledby sont différents de l'attibut alt.",
+		'failed': "Des éléments cliquables (area) ont un attribut title, aria-label ou aria-labelledby différents de l'attibut alt."
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'images'],
@@ -205,7 +205,7 @@ createTanaguruTest({
 	query: 'img[alt=""][title]:not([role]), img[alt=""][title][role="img"] ,img[alt=""][aria-label]:not([role]), img[alt=""][aria-label][role="img"], img[alt=""][aria-labelledby]:not([role]), img[alt=""][aria-labelledby][role="img"], img[alt=""][aria-describedby]:not([role]), img[alt=""][aria-describedby][role="img"]',
 	expectedNbElements: 0,
 	explanations: {
-		'failed': "Des éléments img avec un attribut alt vide et un attribut title, aria-label, aria-describedby ou aria-labelledby sont présents dans la page"
+		'failed': "Des éléments img avec un attribut alt vide et un attribut title, aria-label, aria-describedby ou aria-labelledby sont présents dans la page."
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'images'],
@@ -217,7 +217,7 @@ createTanaguruTest({
 	name: "Images (balise img) avec une alternative vide.",
 	query: 'img[alt=""]:not([title]):not([role]), img[alt=""]:not([title])[role="img"] ,img[alt=""]:not([aria-label]):not([role]), img[alt=""]:not([aria-label])[role="img"], img[alt=""]:not([aria-labelledby]):not([role]), img[alt=""]:not([aria-labelledby])[role="img"], img[alt=""]:not([aria-describedby]):not([role]), img[alt=""]:not([aria-describedby])[role="img"]',
 	explanations: {
-		'cantTell': "Vérifier que ces images sont bien des images de décoration",
+		'cantTell': "Vérifier que ces images sont bien des images de décoration.",
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'images'],
@@ -232,7 +232,7 @@ createTanaguruTest({
 		return !item.matches('a[href]:not([role]) img, [role="link"] img, button:not([role]) img, [role="button"] img');
 	},
 	explanations: {
-		'cantTell': "Vérifier que ces images sont bien des images informatives",
+		'cantTell': "Vérifier que ces images sont bien des images informatives.",
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'images'],
@@ -257,8 +257,8 @@ createTanaguruTest({
 	},
 	expectedNbElements: 0,
 	explanations: {
-		'passed': "Cette page ne contient pas d'images dont l'attribut aria-label ou aria-labelledby sont différents de l'attibut alt..",
-		'failed': "Des éléments img ont un attribut title, aria-label ou aria-labelledby différents de l'attibut alt."
+		'passed': "Cette page ne contient pas d'images dont l'attribut aria-label ou aria-labelledby est différent de l'attibut alt.",
+		'failed': "Des éléments img ont un attribut title, aria-label ou aria-labelledby différent de l'attibut alt."
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'images'],
@@ -390,7 +390,7 @@ createTanaguruTest({
 	expectedNbElements: 0,
 	explanations: {
 		'passed': "Cette page ne contient pas de boutons images dont l'attribut title, aria-label ou aria-labelledby est différent de l'attibut alt.",
-		'failed': "Des éléments boutons images ont un attribut title, aria-label ou aria-labelledby sont différents de l'attibut alt."
+		'failed': "Des éléments boutons images ont un attribut title, aria-label ou aria-labelledby différent de l'attibut alt."
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'images', 'buttons'],
@@ -401,7 +401,7 @@ createTanaguruTest({
 
 createTanaguruTest({
 lang: 'fr',
-name: "Absence d'étiquette pour les éléments de formulaire natifs",
+name: "Absence d'étiquette pour les éléments de formulaire natifs.",
 query: 'input:not([type="image"]):not([type="button"]):not([type="hidden"]):not([type="submit"]):not([type="reset"]):not([role]), select:not([role]), textarea:not([role])',
 filter: function (item) {
 	if ((item.hasAttribute('title')) || (item.hasAttribute('aria-labelledby')) || (item.hasAttribute('id')) || (item.hasAttribute('aria-label')))  {
@@ -417,7 +417,7 @@ filter: function (item) {
 },
 expectedNbElements: 0,
 explanations: {
-	'passed': "Cette page ne contient pas d'éléments de formulaire natifs sans étiquette",
+	'passed': "Cette page ne contient pas d'éléments de formulaire natifs sans étiquette.",
 	'failed': "Des éléments de formulaire natifs n'ont pas d'étiquette."
 },
 mark: '(\sid=&quot;(?:(?!&quot;).)*&quot;)',
@@ -427,7 +427,7 @@ ressources: { 'rgaa': ['11.1.1'] }
 
 createTanaguruTest({
 	lang: 'fr',
-	name: "Absence d'étiquette pour les éléments de formulaire aria",
+	name: "Absence d'étiquette pour les éléments de formulaire aria.",
 	query: '*[role="checkbox"], *[role="radio"], *[role="textbox"], *[role="combobox"]',
 	filter: function(item) {
 			// (à sortir title puisque alt > title + title pouvant servir côté UI/UX)
@@ -452,7 +452,7 @@ createTanaguruTest({
 		},
 	expectedNbElements: 0,
 	explanations: {
-		'passed': "Cette page ne contient pas d'éléments de formulaire implémentés via Aria sans etiquette",
+		'passed': "Cette page ne contient pas d'éléments de formulaire implémentés via Aria sans etiquette.",
 		'failed': "Des éléments champs de formulaire implémentés via aria n'ont pas d'étiquette."
 	},
 	mark: '(\sid=&quot;(?:(?!&quot;).)*&quot;)',
@@ -465,7 +465,7 @@ createTanaguruTest({
 
 createTanaguruTest({
 	lang: 'fr',
-	name: "Les composants d’interface implémentés via un rôle ARIA sont accessibles au clavier",
+	name: "Les composants d’interface implémentés via un rôle ARIA sont accessibles au clavier.",
 	query: '*[role="checkbox"], *[role="radio"], *[role="textbox"], *[role="combobox"], *[role="contenteditable"]',
 	filter: function (item) {
 		if (item.hasAttribute('tabindex')){
@@ -475,7 +475,7 @@ createTanaguruTest({
 	},
 	expectedNbElements: 0,
 	explanations: {
-		'passed': "Cette page ne contient pas d'éléments impléments via Aria non accessibles au clavier",
+		'passed': "Cette page ne contient pas d'éléments impléments via Aria non accessibles au clavier.",
 		'failed': "Des composants d’interface implémentés via un rôle ARIA sont accessibles au clavier (via l'attribut tabindex)."
 	},
 	mark: '(tabindex=&quot;(?:(?!&quot;).)*&quot;)',
@@ -486,11 +486,11 @@ createTanaguruTest({
 //éléments obsolètes
 createTanaguruTest({
 	lang: 'fr',
-	name: "Les balises obsolètes",
+	name: "Les balises obsolètes.",
 	query: 'applet, acronym, bgsound, dir, frame, frameset, noframes, isindex, listing, xmp, nextid, noembed, plaintext, rb, basefont, big, blink, center, font, marquee, multicol, nobr, s, spacer, strike, tt, u, wbr',
 	expectedNbElements: 0,
 	explanations: {
-		'passed': "Cette page ne contient pas d'éléments obsolètes",
+		'passed': "Cette page ne contient pas d'éléments obsolètes.",
 		'failed': "Des balises obsolètes sont présentes dans la page."
 	},
 	tags: ['a11y', 'Deprecated'],
@@ -499,11 +499,11 @@ createTanaguruTest({
 
 	createTanaguruTest({
 	lang: 'fr',
-	name: "Les attributs obsolètes",
+	name: "Les attributs obsolètes.",
 	query: 'a[charset], link[charset], a[coords], a[shape], a[methods], a[name], embed[name], img[name], option[name], a[urn], link[urn], form[accept], area[hreflang], head[profile], html[version], input[ismap], input[usemap], iframe[longdesc], img[longdesc], link[target], meta[scheme], object[archive], object[classid], object[code], object[codebase], object[codetype], object[declare], object[standby], param[type], param[valuetype], script[language], script[event], script[for], table[datapagesize], table[summary], td[abbr], td[axis], th[axis], td[scope], a[datasrc], applet[datasrc],button[datasrc],div[datasrc], frame[datasrc], iframe[datasrc], img[datasrc], input[datasrc], label[datasrc], legend[datasrc], marquee[datasrc], object[datasrc], option[datasrc], select[datasrc], table[datasrc], textarea[datasrc], a[datafld], applet[datafld], button[datafld], div[datafld], fieldset[datafld], frame[datafld], iframe[datafld], img[datafld], input[datafld], label[datafld], legend[datafld], marquee[datafld], object[datafld], param[datafld], select[datafld], text[datafld], button[dataformatas], div[dataformatas], input[dataformatas], label[dataformatas], legend[dataformatas], marquee[dataformatas], object[dataformatas], option[dataformatas], select[dataformatas], a[dataformatas], table[dataformatas], body[alink], body[bgcolor], body[bottommargin], body[leftmargin], body[link], body[marginheight], body[marginwidth], body[rightmargin], body[text], body[topmargin], body[vlink], br[clear], caption[align], col[align], col[widht], div[align], dl[compact], embed[align], embed[hspace], embed[vspace], frame[bodercolor], hr[align], hr[color], hr[noshade], hr[size], hr[width], h1[align], h2[align], h3[align], h4[align], h5[align], h6[align], iframe[align], iframe[allowtransparency], iframe[frameborder], iframe[framespacing], iframe[hspace], iframe[marginheight], iframe[marginwidth], iframe[scrolling], iframe[vspace], input[align], input[border], input[hspace], input[vspace], img[align], img[border], img[hspace], img[vspace], legend[align], li[type], menu[compact], marquee[bgcolor], marquee[height], marquee[hspace], marquee[vspace], marquee[width], object[align], object[border], object[hspace], object[vspace], ol[compact], p[align], pre[width], table[align], table[bgcolor], table[border], table[bordercolor], table[cellpadding], table[callspacing], table[frame], table[height], table[rules], table[width], tbody[align], thead[align], tfoot[align], tbody[char], thead[char], tfoot[char], tbody[charoff], thead[charoff], tfoot[charoff], tbody[valign], thead[valign], tfoot[valign], td[align], th[align], td[bgcolor], th[bgcolor], td[char], th[char], td[charoff], th[charoff], td[height], th[height], td[nowrap], th[nowrap], td[valign], th[valign], td[with], th[width], tr[align], tr[bgcolor], tr[char], tr[charoff], tr[height], tr[valign], ul[compact], ul[type], body[background], table[background], thead[background],tbody[background], tfoot[background],tr[background], td[background], th[background]',
 	expectedNbElements: 0,
 	explanations: {
-		'passed': "Cette page ne contient pas d'attributs obsolètes",
+		'passed': "Cette page ne contient pas d'attributs obsolètes.",
 		'failed': "Des attributs obsolètes sont présents dans la page."
 	},
 	tags: ['a11y', 'Deprecated'],
@@ -513,11 +513,11 @@ createTanaguruTest({
 //titre de la page
 createTanaguruTest({
 	lang: 'fr',
-	name: "Présence du titre de la page",
+	name: "Présence du titre de la page.",
 	query: 'head>title',
 	expectedNbElements: 1,
 	explanations: {
-		'passed': "La page à un titre de page",
+		'passed': "La page a un titre de page.",
 		'failed': "Aucun titre (balise title dans la balise head) dans la page."
 	},
 	tags: ['a11y', 'Mandatory'],
@@ -526,7 +526,7 @@ createTanaguruTest({
 
 createTanaguruTest({
 	lang: 'fr',
-	name: "Pertinence du titre de la page",
+	name: "Pertinence du titre de la page.",
 	query: 'head>title',
 	filter: function (item) {
 		var tagTitle =  item != null;
@@ -536,7 +536,7 @@ createTanaguruTest({
 	},
 	expectedNbElements: 0,
 	explanations: {
-		'failed': "le titre de la page est vide"
+		'failed': "Le titre de la page est vide."
 	},
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'Mandatory'],
@@ -547,11 +547,11 @@ createTanaguruTest({
 
 createTanaguruTest({
 	lang: 'fr',
-	name: "Présence de la langue par défaut",
+	name: "Présence de la langue par défaut.",
 	query: 'html[lang]',
 	expectedNbElements: 1,
 	explanations: {
-		'passed': "La langue par défaut est présente dans la page",
+		'passed': "La langue par défaut est présente dans la page.",
 		'failed': "Aucune langue par défaut n'est définie dans la page."
 	},
 	mark: '(lang=&quot;(?:(?!&quot;).)*&quot;)',
@@ -561,7 +561,7 @@ createTanaguruTest({
 
 createTanaguruTest({
 	lang: 'fr',
-	name: "Pertinence de la langue par défaut",
+	name: "Pertinence de la langue par défaut.",
 	query: 'html[lang=""]',
 	expectedNbElements: 0,
 	explanations: {
@@ -574,7 +574,7 @@ createTanaguruTest({
 
 createTanaguruTest({
 lang: 'fr',
-name: "Ne pas associer de label à un champ de formulaire de type hidden",
+name: "Ne pas associer de label à un champ de formulaire de type hidden.",
 query: 'input[type="hidden"][id]',
 filter: function(item) {
 	var AttrId = item.getAttribute('id');
@@ -594,7 +594,7 @@ filter: function(item) {
 
 createTanaguruTest({
 lang: 'fr',
-name: "Information via l'attribut aria-labelledby",
+name: "Information via l'attribut aria-labelledby.",
 query: '*[aria-labelledby]',
 filter: function(item) {
 	var AttrLabelledby = item.getAttribute('aria-labelledby');
@@ -612,10 +612,10 @@ filter: function(item) {
 // Sens de lecture
 createTanaguruTest({
 	lang: 'fr',
-	name: "Pertinence des indications sur le sens de lecture",
+	name: "Pertinence des indications sur le sens de lecture.",
 	query: '[dir="ltr"], [dir="rtl"]',
 	explanations: {
-		'cantTell': "Vérifiez la pertinence des attributs indiquant le sens de lecture"
+		'cantTell': "Vérifier la pertinence des attributs indiquant le sens de lecture."
 	},
 	tags: ['a11y', 'Mandatory'],
 	ressources: { 'rgaa': ['8.10.2'] }
@@ -623,7 +623,7 @@ createTanaguruTest({
 
 createTanaguruTest({
 	lang: 'fr',
-	name: "Conformité des indications sur le sens de lecture",
+	name: "Conformité des indications sur le sens de lecture.",
 	query: '*[dir]',
 	filter: function(item){
 		var dirAttr = item.getAttribute('dir').toLowerCase();
@@ -636,8 +636,8 @@ createTanaguruTest({
 	},
 	expectedNbElements: 0,
 	explanations: {
-		'passed' : "Les valeurs des attributs 'dir' sont conformes ('rtl' ou 'ltr')",
-		'failed': "Les valeurs des attributs 'dir' ne sont pas conformes"
+		'passed' : "Les valeurs des attributs 'dir' sont conformes ('rtl' ou 'ltr').",
+		'failed': "Les valeurs des attributs 'dir' ne sont pas conformes."
 	},
 	tags: ['a11y', 'Mandatory'],
 	ressources: { 'rgaa': ['8.10.2'] }
