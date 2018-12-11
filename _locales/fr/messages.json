@@ -47,5 +47,11 @@
 	"tagOthers": { "message": "Divers" },
 	"tagPerformance": { "message": "Performance" },
 	"tagQualite": { "message": "Qualité" },
-	"tagSEO": { "message": "SEO" }
+	"tagSEO": { "message": "SEO" },
+	"tagFrames": { "message": "Cadres" },
+	"tagForms": { "message": "Formulaires" },
+	"tagLabels": { "message": "Étiquettes" },
+	"tagAria": {"message" : "Aria"},
+	"tagDeprecated": {"message" : "Obsolètes"},
+	"tagMandatory": {"message" : "Éléments obligatoires"}
 }

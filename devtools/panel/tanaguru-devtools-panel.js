@@ -397,6 +397,13 @@ button.addEventListener('click', function () {
 		alltagspanelheading.appendChild(document.createTextNode(tab.textContent));
 		alltagspanel.appendChild(alltagspanelheading);
 		var t = 1;
+		response[0].tests.sort(function compare(a,b) {
+			if (a.type == 'failed' && b.type != 'failed') return -1;
+			if (a.type != 'failed' && b.type == 'failed') return 1;
+			if (a.type == 'cantTell' && b.type == 'passed') return -1;
+			if (a.type == 'passed' && b.type == 'cantTell') return 1;
+			return 0;
+		});
 		for (var test in response[0].tests) {
 			var testelement = document.createElement('div');
 			testelement.setAttribute('class', response[0].tests[test].tags.join(' '));
@@ -406,11 +413,16 @@ button.addEventListener('click', function () {
 			tabpanelsectionbutton.setAttribute('type', 'button');
 			tabpanelsectionbutton.setAttribute('data-action', 'showhide-action');
 			tabpanelsectionbutton.setAttribute('aria-expanded', 'false');
-			tabpanelsectionbutton.appendChild(document.createTextNode('[' + browser.i18n.getMessage('earl' + response[0].tests[test].type.charAt(0).toUpperCase() + response[0].tests[test].type.slice(1)) + '] '));
-			var strong = document.createElement('strong');
-			strong.appendChild(document.createTextNode(response[0].tests[test].data.length));
-			tabpanelsectionbutton.appendChild(strong);
-			tabpanelsectionbutton.appendChild(document.createTextNode(' '));
+			var status = document.createElement('span');
+			status.setAttribute('class', 'status');
+			status.appendChild(document.createTextNode(browser.i18n.getMessage('earl' + response[0].tests[test].type.charAt(0).toUpperCase() + response[0].tests[test].type.slice(1))));
+			tabpanelsectionbutton.appendChild(status);
+			if (!(response[0].tests[test].type == 'failed' && response[0].tests[test].data.length == 0)) {
+				var strong = document.createElement('strong');
+				strong.appendChild(document.createTextNode(response[0].tests[test].data.length));
+				tabpanelsectionbutton.appendChild(strong);
+				tabpanelsectionbutton.appendChild(document.createTextNode(' '));
+			}
 			var span = document.createElement('span');
 			span.innerHTML = response[0].tests[test].name.charAt(0).toUpperCase() + response[0].tests[test].name.slice(1);
 			tabpanelsectionbutton.appendChild(span);
@@ -511,7 +523,7 @@ button.addEventListener('click', function () {
 				for (var h = 0; h < response[0].tests[test].data.length; h++) {
 					var tr = document.createElement('tr');
 					var td = document.createElement('td');
-					td.appendChild(document.createTextNode(h + 1));
+					td.appendChild(document.createTextNode('1A' + (h + 1)));
 					tr.appendChild(td);
 					var td = document.createElement('td');
 					var code = document.createElement('code');

@@ -66,8 +66,8 @@ createTanaguruTest({});
 | lang | Langue de rédaction du test. | String. |
 | name | Intitulé du test. | String. |
 | query | Sélecteurs CSS permettant de définir l'échantillon. | String. |
-| filter | Fonction de filtrage des éléments de l'échantillon. | Function. |
-| expectedNbElements | Nombre d'éléments attendus (ou compris entre deux bornes) permettant de valider ou d'invalider le test. | Integer ou Object (avec propriétés min (Integer), max (Integer) ou les deux). |
+| filter | Fonction de filtrage permettant de restreindre l'échantillon. | Function. |
+| expectedNbElements | Nombre d'éléments attendus dans l'échantillon (précis ou compris entre deux bornes) permettant de valider ou d'invalider le test. | Integer ou Object (avec propriétés min (Integer), max (Integer) ou les deux). |
 | explanations | Explications associées aux statuts du test. | Object (avec propriétés passed (String) et failed (String)). |
 | mark | Expression régulière permettant de mettre en surbrillance des passages de code dans l'interface des résultats. | String. |
 | tags | Étiquettes associées aux champs. Note : il ne s'agit pas des intitulés d'étiquettes mais d'identifiants d'étiquettes (i18n). | Array de String. |
