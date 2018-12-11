@@ -609,5 +609,39 @@ filter: function(item) {
 	ressources: { 'rgaa': ['8.2.1'] }
 });
 
+// Sens de lecture
+createTanaguruTest({
+	lang: 'fr',
+	name: "Pertinence des indications sur le sens de lecture",
+	query: '[dir="ltr"], [dir="rtl"]',
+	explanations: {
+		'cantTell': "Vérifiez la pertinence des attributs indiquant le sens de lecture"
+	},
+	tags: ['a11y', 'Mandatory'],
+	ressources: { 'rgaa': ['8.10.2'] }
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Conformité des indications sur le sens de lecture",
+	query: '*[dir]',
+	filter: function(item){
+		var dirAttr = item.getAttribute('dir').toLowerCase();
+
+		if (dirAttr !== 'ltr' && dirAttr !== 'rtl') {
+			return true;
+		}
+
+		return false;
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'passed' : "Les valeurs des attributs 'dir' sont conformes ('rtl' ou 'ltr')",
+		'failed': "Les valeurs des attributs 'dir' ne sont pas conformes"
+	},
+	tags: ['a11y', 'Mandatory'],
+	ressources: { 'rgaa': ['8.10.2'] }
+})
+
 // Chargement des résultats.
 loadTanaguruTests();
