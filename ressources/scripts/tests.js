@@ -15,6 +15,8 @@
  * -------- Titre de la page
  * -------- Gestion des langues
  * -------- Sens de lecture
+ * 11 - Structure de l'information
+ * 12 - Présentation de l'information
  * 
  * 00 - Chargement des résultats
 */
@@ -705,6 +707,56 @@ createTanaguruTest({
 	},
 	tags: ['a11y', 'Structure'],
 	ressources: { 'rgaa': ['9.6.1', '9.6.2'] }
+})
+
+// ------------------------------------------------
+// --- PRESENTATION DE L'INFORMATION  -------------
+// ------------------------------------------------
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Les balises de présentation de l'information.",
+	query: 'basefont, blink, center, font, marquee, s, strike, tt, u, bing, small',
+	expectedNbElements: 0,
+	explanations: {
+		'passed' : "Cette page ne contient aucune balise de présentation de l'information dans son code source.",
+		'failed' : "Des balises de présentation de l'information sont présentes sur cette page."
+	},
+	tags: ['a11y', 'Presentation'],
+	ressources: { 'rgaa': ['10.1.1'] }
+})
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Les attributs de présentation de l'information.",
+	query: '[align], [alink], [background], [bgcolor], [border], [cellpading], [cellspacing], [char], [charoff], [clear], [compact], [color], [frameborder],[hspace], [link], [marginheight], [marginwidth], [text], [valign], [vlink], [vspace], [size], [width], [height]',
+	filter: function(item){
+		var nodeName = item.nodeName;
+		var widthAttr = item.attributes.width;
+		var heightAttr = item.attributes.height;
+
+		/** Si l'élément possède les attributs width et/ou height, et s'il s'agit 
+		 * d'un élément img, svg, canvas, embed ou object : exclure l'élément de l'échantillon.
+		 * Sinon, on le laisse. Ainsi un élément img[width] ne sera pas ajouté.
+		 */
+
+		if (widthAttr !== undefined || heightAttr !== undefined) {
+			if (nodeName == 'IMG' || nodeName == 'SVG' || nodeName == 'CANVAS' || nodeName == 'EMBED' || nodeName == 'OBJECT') {
+				return false;
+			}
+
+			return true;
+		}
+
+		return true;
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'passed' : "Cette page ne contient aucun attribut de présentation de l'information dans son code source.",
+		'failed' : "Des attributs de présentation de l'information sont présents sur cette page."
+	},
+	tags: ['a11y', 'Presentation'],
+	ressources: { 'rgaa': ['10.1.2'] }
 })
 
 // ------------------------------------------------

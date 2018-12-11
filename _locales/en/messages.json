@@ -54,5 +54,6 @@
 	"tagAria": {"message" : "Aria"},
 	"tagDeprecated": {"message" : "Deprecated"},
 	"tagMandatory": {"message" : "Mandatory Elements"},
-	"tagStructure": {"message" : "Information Structure"}
+	"tagStructure": {"message" : "Information Structure"},
+	"tagPresentation": {"message" : "Information Presentation"}
 }
