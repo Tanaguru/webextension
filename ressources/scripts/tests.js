@@ -693,6 +693,21 @@ createTanaguruTest({
 })
 
 // ------------------------------------------------
+// --- STRUCTURATION DE L'INFORMATION  ------------
+// ------------------------------------------------
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Pertinence de l'usage des balises de citation.",
+	query: 'q, blockquote',
+	explanations: {
+		'cantTell' : "Vérifier que les balises 'q' sont utilisées pour des citations courtes et que les balises 'blockquote' sont utilisées pour des blocs de citation."
+	},
+	tags: ['a11y', 'Structure'],
+	ressources: { 'rgaa': ['9.6.1', '9.6.2'] }
+})
+
+// ------------------------------------------------
 // --- CHARGEMENT DES RESULTATS -------------------
 // ------------------------------------------------
 loadTanaguruTests();

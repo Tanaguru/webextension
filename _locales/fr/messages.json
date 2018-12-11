@@ -53,5 +53,6 @@
 	"tagLabels": { "message": "Étiquettes" },
 	"tagAria": {"message" : "Aria"},
 	"tagDeprecated": {"message" : "Obsolètes"},
-	"tagMandatory": {"message" : "Éléments obligatoires"}
+	"tagMandatory": {"message" : "Éléments obligatoires"},
+	"tagStructure": {"message" : "Structuration de l'information"}
 }
