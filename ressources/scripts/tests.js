@@ -1,7 +1,28 @@
-/*Sommaire
-
+/**
+ * SOMMAIRE
+ *
+ * 01 - Cadres
+ * 02 - Titres de contenus 
+ * 03 - Images
+ * 04 - Liens
+ * 05 - Liens images
+ * 06 - Boutons
+ * 07 - Boutons images
+ * 08 - Formulaires
+ * 09 - Scripts
+ * 10 - Eléments obligatoires
+ * -------- Eléments obsolètes
+ * -------- Titre de la page
+ * -------- Gestion des langues
+ * -------- Sens de lecture
+ * 
+ * 00 - Chargement des résultats
 */
-// cadres
+
+// ------------------------------------------------
+// --- CADRES -------------------------------------
+// ------------------------------------------------
+
 createTanaguruTest({
 	lang: 'fr',
 	name: "Présence d'un titre pour chaque cadre",
@@ -62,7 +83,10 @@ createTanaguruTest({
 	ressources: { 'rgaa': ['2.2.1'] }
 });
 
-// Titres de contenus.
+// ------------------------------------------------
+// --- TITRES DE CONTENUS -------------------------
+// ------------------------------------------------
+
 createTanaguruTest({
 	lang: 'fr',
 	name: "Présence d'au moins un titre de niveau 1.",
@@ -88,7 +112,10 @@ createTanaguruTest({
 });
 
 
-// Images.
+// ------------------------------------------------
+// --- IMAGES -------------------------------------
+// ------------------------------------------------
+
 createTanaguruTest({
 	lang: 'fr',
 	name: 'Images (balise area) sans attribut alt.',
@@ -266,7 +293,10 @@ createTanaguruTest({
 });
 
 
-// Liens.
+// ------------------------------------------------
+// --- LIENS --------------------------------------
+// ------------------------------------------------
+
 createTanaguruTest({
 	lang: 'fr',
 	name: 'Liens sans attribut title.',
@@ -303,7 +333,10 @@ createTanaguruTest({
 	ressources: { 'rgaa': ['6.2.1', '6.2.2', '6.2.3'] }
 });
 
-// Liens images.
+// ------------------------------------------------
+// --- LIENS IMAGES  ------------------------------
+// ------------------------------------------------
+
 createTanaguruTest({
 	lang: 'fr',
 	name: 'Liens images sans intitulé.',
@@ -318,7 +351,10 @@ createTanaguruTest({
 	ressources: { 'rgaa': ['6.5.1'] }
 });
 
-// Boutons.
+// ------------------------------------------------
+// --- BOUTONS ------------------------------------
+// ------------------------------------------------
+
 createTanaguruTest({
 	lang: 'fr',
 	name: 'Boutons.',
@@ -326,7 +362,10 @@ createTanaguruTest({
 	tags: ['buttons']
 });
 
-// Boutons images.
+// ------------------------------------------------
+// --- BOUTONS IMAGES  ----------------------------
+// ------------------------------------------------
+
 createTanaguruTest({
 	lang: 'fr',
 	name: 'Boutons images avec attribut alt.',
@@ -397,7 +436,9 @@ createTanaguruTest({
 	ressources: { 'rgaa': ['1.3.3'] }
 });
 
-// Formulaires
+// ------------------------------------------------
+// --- FORMULAIRES --------------------------------
+// ------------------------------------------------
 
 createTanaguruTest({
 lang: 'fr',
@@ -460,8 +501,9 @@ createTanaguruTest({
 	ressources: { 'rgaa': ['7.1.1'] }
 	});
 
-// scripts
-
+// ------------------------------------------------
+// --- SCRIPTS ------------------------------------
+// ------------------------------------------------
 
 createTanaguruTest({
 	lang: 'fr',
@@ -483,7 +525,12 @@ createTanaguruTest({
 	ressources: { 'rgaa': ['7.3.1'] }
 	});
 
-//éléments obsolètes
+// ------------------------------------------------
+// --- ELEMENTS OBLIGATOIRES  ---------------------
+// ------------------------------------------------
+
+// Eléments obsolètes
+
 createTanaguruTest({
 	lang: 'fr',
 	name: "Les balises obsolètes.",
@@ -510,7 +557,8 @@ createTanaguruTest({
 	ressources: { 'rgaa': ['8.1.2'] }
 	});
 
-//titre de la page
+// Titre de la page
+
 createTanaguruTest({
 	lang: 'fr',
 	name: "Présence du titre de la page.",
@@ -610,6 +658,7 @@ filter: function(item) {
 });
 
 // Sens de lecture
+
 createTanaguruTest({
 	lang: 'fr',
 	name: "Pertinence des indications sur le sens de lecture.",
@@ -643,5 +692,7 @@ createTanaguruTest({
 	ressources: { 'rgaa': ['8.10.2'] }
 })
 
-// Chargement des résultats.
+// ------------------------------------------------
+// --- CHARGEMENT DES RESULTATS -------------------
+// ------------------------------------------------
 loadTanaguruTests();
