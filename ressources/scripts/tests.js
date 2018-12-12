@@ -783,7 +783,38 @@ createTanaguruTest({
 	ressources: { 'rgaa': ['10.1.2'] }
 })
 
-// ------------------------------------------------
-// --- CHARGEMENT DES RESULTATS -------------------
-// ------------------------------------------------
+/*************************************************
+ ***** SEO ***************************************
+ *************************************************/
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Présence d'une metadonnée de description.",
+	query: 'head > meta[name="description"]',
+	expectedNbElements: 1,
+	explanations: {
+		'passed' : "Cette page contient une balise de métadonnée de description.",
+		'failed' : "Aucune balise de métadonnée de description n'est renseignée, ou plus d'une balise de métadonnée de description est présente sur la page."
+	},
+	tags: ['a11y', 'SEO']
+})
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "La métadonnée de description contient moins de 250 caractères.",
+	query: 'head > meta[name="description"]',
+	expectedNbElements: 0,
+	filter: function(item){
+		if (item.length > 250){
+			return true;
+		}
+
+		return false;
+	},
+	explanations: {
+		'passed' : "La valeur de la métadonnée de description contient moins de 250 caractères.",
+		'failed' : "La valeur de la métadonnée de description contient plus de 250 caractères."
+	},
+	tags: ['a11y', 'SEO']
+})
 loadTanaguruTests();
