@@ -817,4 +817,27 @@ createTanaguruTest({
 	},
 	tags: ['a11y', 'SEO']
 })
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Les styles CSS sont externalisés.",
+	query: 'head > style, [style]',
+	expectedNbElements: 0,
+	filter: function(item){
+		var styleAttr = item.getAttribute('style');
+
+		if (item.nodeName == 'STYLE' && item.textContent) {
+			return true;
+		} else if (styleAttr && styleAttr !== "") {
+			return true;
+		}
+
+		return false;
+	},
+	explanations: {
+		'passed' : "Tous les éléments de styles CSS sont externalisés.",
+		'failed' : "Au moins une balise de style ou un attribut de style non vide est présent dans la page."
+	},
+	tags: ['a11y', 'SEO']
+})
 loadTanaguruTests();
