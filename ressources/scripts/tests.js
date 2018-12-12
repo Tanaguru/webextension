@@ -98,7 +98,7 @@ createTanaguruTest({
 		'passed': "Un titre de niveau 1 (élément h1) est présent dans la page.", 
 		'failed': "Cette page ne contient pas de titre de niveau 1 (élément h1)."
 	},
-	tags: ['a11y', 'headings'],
+	tags: ['a11y', 'headings', 'SEO'],
 	ressources: { 'rgaa': ['9.1.1'] }
 });
 
@@ -109,7 +109,7 @@ createTanaguruTest({
 	explanations: {
 		'cantTell': "Vérifiez que les titres de contenus en présence sont pertinents."
 	},
-	tags: ['a11y', 'headings'],
+	tags: ['a11y', 'headings', 'SEO'],
 	ressources: { 'rgaa': ['9.1.4'] }
 });
 
@@ -224,7 +224,7 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments img sans attribut alt.",
 		'failed': "Des éléments img sans attribut alt sont présents dans la page."
 	},
-	tags: ['a11y', 'images'],
+	tags: ['a11y', 'images', 'SEO'],
 	ressources: { 'rgaa': ['1.1.1'] }
 });
 
@@ -570,7 +570,7 @@ createTanaguruTest({
 		'passed': "La page a un titre de page.",
 		'failed': "Aucun titre (balise title dans la balise head) dans la page."
 	},
-	tags: ['a11y', 'Mandatory'],
+	tags: ['a11y', 'Mandatory', 'SEO'],
 	ressources: { 'rgaa': ['8.5.1'] }
 	});
 
@@ -605,7 +605,7 @@ createTanaguruTest({
 		'failed': "Aucune langue par défaut n'est définie dans la page."
 	},
 	mark: '(lang=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'Mandatory'],
+	tags: ['a11y', 'Mandatory', 'SEO'],
 	ressources: { 'rgaa': ['8.5.1'] }
 });
 
@@ -618,7 +618,7 @@ createTanaguruTest({
 		'failed': "la langue par défaut est vide."
 	},
 	mark: '(lang=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'Mandatory'],
+	tags: ['a11y', 'Mandatory', 'SEO'],
 	ressources: { 'rgaa': ['8.4.1'] }
 });
 
