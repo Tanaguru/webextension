@@ -15,7 +15,7 @@
  * -------- Titre de la page
  * -------- Gestion des langues
  * -------- Sens de lecture
- * 11 - Structure de l'information
+ * 11 - Structuration de l'information
  * 12 - Présentation de l'information
  * 
  * 00 - Chargement des résultats
@@ -697,6 +697,30 @@ createTanaguruTest({
 // ------------------------------------------------
 // --- STRUCTURATION DE L'INFORMATION  ------------
 // ------------------------------------------------
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Structure du document : Pertinence de balises structurantes.",
+	query: 'header, nav, footer, main',
+	explanations: {
+		'cantTell' : "Vérifier la pertinence de ces balises. La balise <header> correspond-elle à la zone d'en-tête de la page ? La et les balise(s) <nav> correspondent-elles aux zones de navigation ? La balise <footer> correspond-elle à la zone de pied de page de la page ? La balise <main> correspond-elle à la zone de contenu principal de la page ?"
+	},
+	tags: ['a11y', 'Structure'],
+	ressources: { 'rgaa': ['9.2.1'] }
+})
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Structure du document : Unicité de la zone de contenu principal.",
+	query: 'main, [role="main"]:not(main)',
+	expectedNbElements : { max: 1 },
+	explanations: {
+		'passed' : "La zone de contenu principal est unique.",
+		'failed' : "Il existe plusieurs zones identifiées comme zones de contenu principal sur cette page."
+	},
+	tags: ['a11y', 'Structure'],
+	ressources: { 'rgaa': ['9.2.1', '12.10.1'] }
+})
 
 createTanaguruTest({
 	lang: 'fr',
