@@ -845,6 +845,7 @@ createTanaguruTest({
 		'passed' : "Tous les éléments de styles CSS sont externalisés.",
 		'failed' : "Au moins une balise de style ou un attribut de style non vide est présent dans la page."
 	},
+	mark: '(style=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'SEO']
 })
 
