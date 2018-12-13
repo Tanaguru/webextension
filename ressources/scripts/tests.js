@@ -1,6 +1,7 @@
 /**
  * SOMMAIRE
  *
+ * ACCESSIBILITE
  * 01 - Cadres
  * 02 - Titres de contenus 
  * 03 - Images
@@ -18,8 +19,14 @@
  * 11 - Structuration de l'information
  * 12 - Présentation de l'information
  * 
+ * SEO
+ * 
  * 00 - Chargement des résultats
 */
+
+/*************************************************
+ ***** Accessibilité *****************************
+ *************************************************/
 
 // ------------------------------------------------
 // --- CADRES -------------------------------------
@@ -861,4 +868,8 @@ createTanaguruTest({
 	},
 	tags: ['a11y', 'SEO']
 })
+
+/*************************************************
+ ***** Chargement des résultats ******************
+ *************************************************/
 loadTanaguruTests();
