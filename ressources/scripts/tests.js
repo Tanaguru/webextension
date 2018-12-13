@@ -840,4 +840,25 @@ createTanaguruTest({
 	},
 	tags: ['a11y', 'SEO']
 })
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Le titre contient moins de 80 caractères.",
+	query: 'head > title',
+	expectedNbElements: 0,
+	filter: function(item){
+		// 80 caractères est un compromis compte tenu du nombre de caractères
+		// affichés par les résultats Google sur desktop et sur mobile.
+		if (item.length > 80){
+			return true;
+		}
+
+		return false;
+	},
+	explanations: {
+		'passed' : "Le titre de la page contient moins de 80 caractères.",
+		'failed' : "Le titre de la page contient plus de 80 caractères."
+	},
+	tags: ['a11y', 'SEO']
+})
 loadTanaguruTests();
