@@ -106,7 +106,7 @@ createTanaguruTest({
 		'failed': "Cette page ne contient pas de titre de niveau 1 (élément h1)."
 	},
 	tags: ['a11y', 'headings', 'SEO'],
-	ressources: { 'rgaa': ['9.1.1'] }
+	ressources: { 'rgaa': ['9.1.1'], 'pidila' : ['Pi-362'], 'opquast' : ['13'] }
 });
 
 createTanaguruTest({
@@ -117,7 +117,7 @@ createTanaguruTest({
 		'cantTell': "Vérifiez que les titres de contenus en présence sont pertinents."
 	},
 	tags: ['a11y', 'headings', 'SEO'],
-	ressources: { 'rgaa': ['9.1.4'] }
+	ressources: { 'rgaa': ['9.1.4'], 'pidila' : ['Pi-362'], 'opquast' : ['13'] }
 });
 
 
@@ -578,7 +578,7 @@ createTanaguruTest({
 		'failed': "Aucun titre (balise title dans la balise head) dans la page."
 	},
 	tags: ['a11y', 'Mandatory', 'SEO'],
-	ressources: { 'rgaa': ['8.5.1'] }
+	ressources: { 'rgaa': ['8.5.1'], 'pidila':['Pi-412'], 'opquast':['32','33'] }
 	});
 
 createTanaguruTest({
@@ -597,7 +597,7 @@ createTanaguruTest({
 	},
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'Mandatory'],
-	ressources: { 'rgaa': ['8.6.1'] }
+	ressources: { 'rgaa': ['8.6.1'], 'pidila':['Pi-412'] , 'opquast':['32','33']}
 	});
 
 // Gestion des langues
@@ -613,7 +613,7 @@ createTanaguruTest({
 	},
 	mark: '(lang=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'Mandatory', 'SEO'],
-	ressources: { 'rgaa': ['8.5.1'] }
+	ressources: { 'rgaa': ['8.3.1'], 'pidila':['Pi-361'], 'opquast':['132'] }
 });
 
 createTanaguruTest({
@@ -626,7 +626,7 @@ createTanaguruTest({
 	},
 	mark: '(lang=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['a11y', 'Mandatory', 'SEO'],
-	ressources: { 'rgaa': ['8.4.1'] }
+	ressources: { 'rgaa': ['8.4.1'], 'pidila':['Pi-361'], 'opquast':['132'] }
 });
 
 createTanaguruTest({
@@ -846,7 +846,8 @@ createTanaguruTest({
 		'failed' : "Au moins une balise de style ou un attribut de style non vide est présent dans la page."
 	},
 	mark: '(style=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'SEO']
+	tags: ['a11y', 'SEO'],
+	ressources: { 'pidila':['Pi-412'], 'opquast':['146'] }
 })
 
 createTanaguruTest({
@@ -867,8 +868,28 @@ createTanaguruTest({
 		'passed' : "Le titre de la page contient moins de 80 caractères.",
 		'failed' : "Le titre de la page contient plus de 80 caractères."
 	},
-	tags: ['a11y', 'SEO']
+	tags: ['q5y', 'SEO', 'pidila'],
+	ressources: { 'pidila':['Pi-412'], 'opquast':['146'] }
 })
+
+/*************************************************
+ ***** Opquast ***********************************
+ *************************************************/
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Le site n'emploie pas la technique des jeux de cadres.",
+	query: 'frameset, frame, noframes',
+	expectedNbElements: 0,
+	explanations: { 
+		'passed': "Les balises frameset, frame et noframes ne sont pas utilisées dans cette page", 
+		'failed': "Des éléments framest, frame ou noframes sont présents dans cette page."
+	},
+	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['q5y','pidila'],
+	ressources: { 'pidila':['Pi-368'], 'opquast':['146'] }
+})
+
 
 /*************************************************
  ***** Chargement des résultats ******************
