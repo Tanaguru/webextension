@@ -645,7 +645,7 @@ filter: function(item) {
 		'failed': "Des éléments champs de formulaire de type hidden sont associées à une balise label."
 	},
 	mark: '(for=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'Mandatory', ],
+	tags: ['a11y', 'Mandatory'],
 	ressources: { 'rgaa': ['8.2.1'] }
 });
 
@@ -662,7 +662,7 @@ filter: function(item) {
 		'failed': "Des attributs aria-labelledby ne correspondent à aucun élément de la page."
 	},
 	mark: '(for=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'Mandatory', ],
+	tags: ['a11y', 'Mandatory'],
 	ressources: { 'rgaa': ['8.2.1'] }
 });
 
