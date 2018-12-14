@@ -812,7 +812,7 @@ createTanaguruTest({
 	query: 'head > meta[name="description"]',
 	expectedNbElements: 0,
 	filter: function(item){
-		if (item.length > 250){
+		if (item.getAttribute('content').length > 250){
 			return true;
 		}
 
@@ -858,7 +858,7 @@ createTanaguruTest({
 	filter: function(item){
 		// 80 caractères est un compromis compte tenu du nombre de caractères
 		// affichés par les résultats Google sur desktop et sur mobile.
-		if (item.length > 80){
+		if (item.textContent.length > 80){
 			return true;
 		}
 
