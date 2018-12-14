@@ -21,6 +21,8 @@
  * 
  * SEO
  * 
+ * OPQUAST
+ * 
  * 00 - Chargement des résultats
 */
 
@@ -42,8 +44,8 @@ createTanaguruTest({
 		'failed': "Des éléments iframe sans attribut title sont présents dans cette page."
 	},
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'frames'],
-	ressources: { 'rgaa': ['2.1.1'] }
+	tags: ['a11y', 'frames', 'pidila', 'q5y'],
+	ressources: { 'rgaa': ['2.1.1'], 'pidila': ['Pi-357'], 'opquast' : ['145'] }
 });
 
 createTanaguruTest({
@@ -65,8 +67,8 @@ createTanaguruTest({
 		'cantTell': "Vérifiez que les titres des cadres en présence sont pertinents."
 	},
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'frames'],
-	ressources: { 'rgaa': ['2.1.1'] }
+	tags: ['a11y', 'frames', 'pidila', 'q5y'],
+	ressources: { 'rgaa': ['2.2.1'], 'pidila': ['Pi-357'], 'opquast' : ['145'] }
 });
 
 createTanaguruTest({
@@ -88,8 +90,8 @@ createTanaguruTest({
 		'failed': "Des éléments iframe avec attribut title non pertinent sont présents dans cette page."
 	},
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'frames'],
-	ressources: { 'rgaa': ['2.2.1'] }
+	tags: ['a11y', 'frames', 'pidila', 'q5y'],
+	ressources: { 'rgaa': ['2.2.1'], 'pidila': ['Pi-357'], 'opquast' : ['145'] }
 });
 
 // ------------------------------------------------
@@ -134,8 +136,8 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments area sans attribut alt.",
 		'failed': "Des éléments area sans attribut alt sont présents dans la page."
 	},
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa': ['1.2.3'] }
+	tags: ['a11y', 'images', 'pidila', 'q5y'],
+	ressources: { 'rgaa': ['1.1.2'], 'pidila': ['Pi-309'], 'opquast': ['1'] }
 });
 
 // TODO - test RGAA 1.2.3
@@ -162,8 +164,8 @@ createTanaguruTest({
 		'failed': "Des éléments area avec un attribut alt vide et un attribut title, aria-label, aria-describedby ou aria-labelledby sont présents dans la page"
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa': ['1.2.2'] }
+	tags: ['a11y', 'images', 'q5y', 'pidila'],
+	ressources: { 'rgaa': ['1.2.2'], 'pidila': ['Pi-309'], 'opquast': ['1'] }
 });
 
 createTanaguruTest({
@@ -178,8 +180,8 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments area de décoration (sans attribut href) avec attribut alt renseigné.",
 		'failed': "Des éléments area de décoration (sans attribut href) avec attribut alt renseigné sont présents dans la page."
 	},
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa': ['1.2.2'] }
+	tags: ['a11y', 'images', 'q5y', 'pidila'],
+	ressources: { 'rgaa': ['1.2.2'], 'pidila': ['Pi-309'], 'opquast': ['1'] }
 });
 
 createTanaguruTest({
@@ -191,8 +193,8 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments cliquables area avec un attribut alt vide.",
 		'failed': "Des éléments cliquables area avec un alt vide sont présents dans la page."
 	},
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa': ['1.3.2'] }
+	tags: ['a11y', 'images', 'pidila', 'q5y'],
+	ressources: { 'rgaa': ['1.3.2'], 'pidila': ['Pi-304', 'Pi-305'], 'opquast': ['2, 3'] }
 });
 
 createTanaguruTest({
@@ -220,8 +222,8 @@ createTanaguruTest({
 		'failed': "Des éléments cliquables (area) ont un attribut title, aria-label ou aria-labelledby différents de l'attibut alt."
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa': ['1.3.2'] }
+	tags: ['a11y', 'images', 'pidila, q5y'],
+	ressources: { 'rgaa': ['1.3.2'], 'pidila': ['Pi-304', 'Pi-305'], 'opquast': ['2, 3'] }
 });
 
 createTanaguruTest({
@@ -233,8 +235,8 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments img sans attribut alt.",
 		'failed': "Des éléments img sans attribut alt sont présents dans la page."
 	},
-	tags: ['a11y', 'images', 'SEO'],
-	ressources: { 'rgaa': ['1.1.1'] }
+	tags: ['a11y', 'images', 'SEO', 'pidila', 'q5y'],
+	ressources: { 'rgaa': ['1.1.1'], 'pidila': ['Pi-302'], 'opquast' : ['1, 2, 3'] }
 });
 
 createTanaguruTest({
@@ -246,8 +248,8 @@ createTanaguruTest({
 		'failed': "Des éléments img avec un attribut alt vide et un attribut title, aria-label, aria-describedby ou aria-labelledby sont présents dans la page."
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa': ['1.2.1'] }
+	tags: ['a11y', 'images', 'pidila', 'q5y'],
+	ressources: { 'rgaa': ['1.2.1'], 'pidila': ['Pi-309', 'Pi-356'], 'opquast' : ['2, 3'] }
 });
 
 createTanaguruTest({
