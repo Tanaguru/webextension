@@ -138,18 +138,20 @@ createTanaguruTest({
 	ressources: { 'rgaa': ['1.2.3'] }
 });
 
-createTanaguruTest({
-	lang: 'fr',
-	name: 'Images (balise area) sans attribut alt.',
-	query: 'area[href]:not([role]):not([alt])',
-	expectedNbElements: 0,
-	explanations: {
-		'passed': "Cette page ne contient pas d'éléments area sans attribut alt.",
-		'failed': "Des éléments area sans attribut alt sont présents dans la page."
-	},
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa': ['1.1.2'] }
-});
+// TODO - test RGAA 1.2.3
+// 
+// createTanaguruTest({
+// 	lang: 'fr',
+// 	name: 'Images (balise area) sans attribut alt.',
+// 	query: 'area[href]:not([role]):not([alt])',
+// 	expectedNbElements: 0,
+// 	explanations: {
+// 		'passed': "Cette page ne contient pas d'éléments area sans attribut alt.",
+// 		'failed': "Des éléments area sans attribut alt sont présents dans la page."
+// 	},
+// 	tags: ['a11y', 'images'],
+// 	ressources: { 'rgaa': ['1.2.3'] }
+// });
 
 createTanaguruTest({
 	lang: 'fr',
