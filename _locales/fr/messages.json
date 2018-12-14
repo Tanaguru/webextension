@@ -55,5 +55,7 @@
 	"tagDeprecated": {"message" : "Obsolètes"},
 	"tagMandatory": {"message" : "Éléments obligatoires"},
 	"tagStructure": {"message" : "Structuration de l'information"},
-	"tagPresentation": {"message" : "Présentation de l'information"}
+	"tagPresentation": {"message" : "Présentation de l'information"},
+	"tagQ5Y": {"message" : "Qualité web"},
+	"tagPidila": {"message" : "Pidila"}
 }

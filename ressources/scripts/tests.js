@@ -21,6 +21,8 @@
  * 
  * SEO
  * 
+ * OPQUAST
+ * 
  * 00 - Chargement des résultats
 */
 
@@ -42,8 +44,8 @@ createTanaguruTest({
 		'failed': "Des éléments iframe sans attribut title sont présents dans cette page."
 	},
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'frames'],
-	ressources: { 'rgaa': ['2.1.1'] }
+	tags: ['a11y', 'frames', 'pidila', 'q5y'],
+	ressources: { 'rgaa': ['2.1.1'], 'pidila': ['Pi-357'], 'opquast' : ['145'] }
 });
 
 createTanaguruTest({
@@ -65,8 +67,8 @@ createTanaguruTest({
 		'cantTell': "Vérifiez que les titres des cadres en présence sont pertinents."
 	},
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'frames'],
-	ressources: { 'rgaa': ['2.1.1'] }
+	tags: ['a11y', 'frames', 'pidila', 'q5y'],
+	ressources: { 'rgaa': ['2.2.1'], 'pidila': ['Pi-357'], 'opquast' : ['145'] }
 });
 
 createTanaguruTest({
@@ -88,8 +90,8 @@ createTanaguruTest({
 		'failed': "Des éléments iframe avec attribut title non pertinent sont présents dans cette page."
 	},
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'frames'],
-	ressources: { 'rgaa': ['2.2.1'] }
+	tags: ['a11y', 'frames', 'pidila', 'q5y'],
+	ressources: { 'rgaa': ['2.2.1'], 'pidila': ['Pi-357'], 'opquast' : ['145'] }
 });
 
 // ------------------------------------------------
@@ -105,7 +107,7 @@ createTanaguruTest({
 		'passed': "Un titre de niveau 1 (élément h1) est présent dans la page.", 
 		'failed': "Cette page ne contient pas de titre de niveau 1 (élément h1)."
 	},
-	tags: ['a11y', 'headings', 'SEO'],
+	tags: ['a11y', 'headings', 'SEO', 'pidila'],
 	ressources: { 'rgaa': ['9.1.1'], 'pidila' : ['Pi-362'], 'opquast' : ['13'] }
 });
 
@@ -116,7 +118,7 @@ createTanaguruTest({
 	explanations: {
 		'cantTell': "Vérifiez que les titres de contenus en présence sont pertinents."
 	},
-	tags: ['a11y', 'headings', 'SEO'],
+	tags: ['a11y', 'headings', 'SEO', 'pidila'],
 	ressources: { 'rgaa': ['9.1.4'], 'pidila' : ['Pi-362'], 'opquast' : ['13'] }
 });
 
@@ -134,22 +136,24 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments area sans attribut alt.",
 		'failed': "Des éléments area sans attribut alt sont présents dans la page."
 	},
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa': ['1.2.3'] }
+	tags: ['a11y', 'images', 'pidila', 'q5y'],
+	ressources: { 'rgaa': ['1.1.2'], 'pidila': ['Pi-309'], 'opquast': ['1'] }
 });
 
-createTanaguruTest({
-	lang: 'fr',
-	name: 'Images (balise area) sans attribut alt.',
-	query: 'area[href]:not([role]):not([alt])',
-	expectedNbElements: 0,
-	explanations: {
-		'passed': "Cette page ne contient pas d'éléments area sans attribut alt.",
-		'failed': "Des éléments area sans attribut alt sont présents dans la page."
-	},
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa': ['1.1.2'] }
-});
+// TODO - test RGAA 1.2.3
+// 
+// createTanaguruTest({
+// 	lang: 'fr',
+// 	name: 'Images (balise area) sans attribut alt.',
+// 	query: 'area[href]:not([role]):not([alt])',
+// 	expectedNbElements: 0,
+// 	explanations: {
+// 		'passed': "Cette page ne contient pas d'éléments area sans attribut alt.",
+// 		'failed': "Des éléments area sans attribut alt sont présents dans la page."
+// 	},
+// 	tags: ['a11y', 'images'],
+// 	ressources: { 'rgaa': ['1.2.3'] }
+// });
 
 createTanaguruTest({
 	lang: 'fr',
@@ -160,8 +164,8 @@ createTanaguruTest({
 		'failed': "Des éléments area avec un attribut alt vide et un attribut title, aria-label, aria-describedby ou aria-labelledby sont présents dans la page"
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa': ['1.2.2'] }
+	tags: ['a11y', 'images', 'q5y', 'pidila'],
+	ressources: { 'rgaa': ['1.2.2'], 'pidila': ['Pi-309'], 'opquast': ['1'] }
 });
 
 createTanaguruTest({
@@ -176,8 +180,8 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments area de décoration (sans attribut href) avec attribut alt renseigné.",
 		'failed': "Des éléments area de décoration (sans attribut href) avec attribut alt renseigné sont présents dans la page."
 	},
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa': ['1.2.2'] }
+	tags: ['a11y', 'images', 'q5y', 'pidila'],
+	ressources: { 'rgaa': ['1.2.2'], 'pidila': ['Pi-309'], 'opquast': ['1'] }
 });
 
 createTanaguruTest({
@@ -189,8 +193,8 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments cliquables area avec un attribut alt vide.",
 		'failed': "Des éléments cliquables area avec un alt vide sont présents dans la page."
 	},
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa': ['1.3.2'] }
+	tags: ['a11y', 'images', 'pidila', 'q5y'],
+	ressources: { 'rgaa': ['1.3.2'], 'pidila': ['Pi-304', 'Pi-305'], 'opquast': ['2, 3'] }
 });
 
 createTanaguruTest({
@@ -218,8 +222,8 @@ createTanaguruTest({
 		'failed': "Des éléments cliquables (area) ont un attribut title, aria-label ou aria-labelledby différents de l'attibut alt."
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa': ['1.3.2'] }
+	tags: ['a11y', 'images', 'pidila, q5y'],
+	ressources: { 'rgaa': ['1.3.2'], 'pidila': ['Pi-304', 'Pi-305'], 'opquast': ['2, 3'] }
 });
 
 createTanaguruTest({
@@ -231,8 +235,8 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments img sans attribut alt.",
 		'failed': "Des éléments img sans attribut alt sont présents dans la page."
 	},
-	tags: ['a11y', 'images', 'SEO'],
-	ressources: { 'rgaa': ['1.1.1'] }
+	tags: ['a11y', 'images', 'SEO', 'pidila', 'q5y'],
+	ressources: { 'rgaa': ['1.1.1'], 'pidila': ['Pi-302'], 'opquast' : ['1, 2, 3'] }
 });
 
 createTanaguruTest({
@@ -244,8 +248,8 @@ createTanaguruTest({
 		'failed': "Des éléments img avec un attribut alt vide et un attribut title, aria-label, aria-describedby ou aria-labelledby sont présents dans la page."
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa': ['1.2.1'] }
+	tags: ['a11y', 'images', 'pidila', 'q5y'],
+	ressources: { 'rgaa': ['1.2.1'], 'pidila': ['Pi-309', 'Pi-356'], 'opquast' : ['2, 3'] }
 });
 
 createTanaguruTest({
@@ -577,7 +581,7 @@ createTanaguruTest({
 		'passed': "La page a un titre de page.",
 		'failed': "Aucun titre (balise title dans la balise head) dans la page."
 	},
-	tags: ['a11y', 'Mandatory', 'SEO'],
+	tags: ['a11y', 'Mandatory', 'SEO', 'pidila'],
 	ressources: { 'rgaa': ['8.5.1'], 'pidila':['Pi-412'], 'opquast':['32','33'] }
 	});
 
@@ -596,7 +600,7 @@ createTanaguruTest({
 		'failed': "Le titre de la page est vide."
 	},
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'Mandatory'],
+	tags: ['a11y', 'Mandatory', 'pidila'],
 	ressources: { 'rgaa': ['8.6.1'], 'pidila':['Pi-412'] , 'opquast':['32','33']}
 	});
 
@@ -612,7 +616,7 @@ createTanaguruTest({
 		'failed': "Aucune langue par défaut n'est définie dans la page."
 	},
 	mark: '(lang=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'Mandatory', 'SEO'],
+	tags: ['a11y', 'Mandatory', 'SEO', 'pidila'],
 	ressources: { 'rgaa': ['8.3.1'], 'pidila':['Pi-361'], 'opquast':['132'] }
 });
 
@@ -625,7 +629,7 @@ createTanaguruTest({
 		'failed': "la langue par défaut est vide."
 	},
 	mark: '(lang=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'Mandatory', 'SEO'],
+	tags: ['a11y', 'Mandatory', 'SEO', 'pidila'],
 	ressources: { 'rgaa': ['8.4.1'], 'pidila':['Pi-361'], 'opquast':['132'] }
 });
 
@@ -645,7 +649,7 @@ filter: function(item) {
 		'failed': "Des éléments champs de formulaire de type hidden sont associées à une balise label."
 	},
 	mark: '(for=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'Mandatory', ],
+	tags: ['a11y', 'Mandatory'],
 	ressources: { 'rgaa': ['8.2.1'] }
 });
 
@@ -662,7 +666,7 @@ filter: function(item) {
 		'failed': "Des attributs aria-labelledby ne correspondent à aucun élément de la page."
 	},
 	mark: '(for=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'Mandatory', ],
+	tags: ['a11y', 'Mandatory'],
 	ressources: { 'rgaa': ['8.2.1'] }
 });
 
@@ -812,7 +816,7 @@ createTanaguruTest({
 	query: 'head > meta[name="description"]',
 	expectedNbElements: 0,
 	filter: function(item){
-		if (item.length > 250){
+		if (item.getAttribute('content').length > 250){
 			return true;
 		}
 
@@ -846,7 +850,7 @@ createTanaguruTest({
 		'failed' : "Au moins une balise de style ou un attribut de style non vide est présent dans la page."
 	},
 	mark: '(style=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'SEO'],
+	tags: ['a11y', 'SEO', 'pidila'],
 	ressources: { 'pidila':['Pi-412'], 'opquast':['146'] }
 })
 
@@ -858,7 +862,7 @@ createTanaguruTest({
 	filter: function(item){
 		// 80 caractères est un compromis compte tenu du nombre de caractères
 		// affichés par les résultats Google sur desktop et sur mobile.
-		if (item.length > 80){
+		if (item.textContent.length > 80){
 			return true;
 		}
 
