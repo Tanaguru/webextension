@@ -105,7 +105,7 @@ createTanaguruTest({
 		'passed': "Un titre de niveau 1 (élément h1) est présent dans la page.", 
 		'failed': "Cette page ne contient pas de titre de niveau 1 (élément h1)."
 	},
-	tags: ['a11y', 'headings', 'SEO'],
+	tags: ['a11y', 'headings', 'SEO', 'pidila'],
 	ressources: { 'rgaa': ['9.1.1'], 'pidila' : ['Pi-362'], 'opquast' : ['13'] }
 });
 
@@ -116,7 +116,7 @@ createTanaguruTest({
 	explanations: {
 		'cantTell': "Vérifiez que les titres de contenus en présence sont pertinents."
 	},
-	tags: ['a11y', 'headings', 'SEO'],
+	tags: ['a11y', 'headings', 'SEO', 'pidila'],
 	ressources: { 'rgaa': ['9.1.4'], 'pidila' : ['Pi-362'], 'opquast' : ['13'] }
 });
 
@@ -579,7 +579,7 @@ createTanaguruTest({
 		'passed': "La page a un titre de page.",
 		'failed': "Aucun titre (balise title dans la balise head) dans la page."
 	},
-	tags: ['a11y', 'Mandatory', 'SEO'],
+	tags: ['a11y', 'Mandatory', 'SEO', 'pidila'],
 	ressources: { 'rgaa': ['8.5.1'], 'pidila':['Pi-412'], 'opquast':['32','33'] }
 	});
 
@@ -598,7 +598,7 @@ createTanaguruTest({
 		'failed': "Le titre de la page est vide."
 	},
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'Mandatory'],
+	tags: ['a11y', 'Mandatory', 'pidila'],
 	ressources: { 'rgaa': ['8.6.1'], 'pidila':['Pi-412'] , 'opquast':['32','33']}
 	});
 
@@ -614,7 +614,7 @@ createTanaguruTest({
 		'failed': "Aucune langue par défaut n'est définie dans la page."
 	},
 	mark: '(lang=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'Mandatory', 'SEO'],
+	tags: ['a11y', 'Mandatory', 'SEO', 'pidila'],
 	ressources: { 'rgaa': ['8.3.1'], 'pidila':['Pi-361'], 'opquast':['132'] }
 });
 
@@ -627,7 +627,7 @@ createTanaguruTest({
 		'failed': "la langue par défaut est vide."
 	},
 	mark: '(lang=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'Mandatory', 'SEO'],
+	tags: ['a11y', 'Mandatory', 'SEO', 'pidila'],
 	ressources: { 'rgaa': ['8.4.1'], 'pidila':['Pi-361'], 'opquast':['132'] }
 });
 
@@ -848,7 +848,7 @@ createTanaguruTest({
 		'failed' : "Au moins une balise de style ou un attribut de style non vide est présent dans la page."
 	},
 	mark: '(style=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'SEO'],
+	tags: ['a11y', 'SEO', 'pidila'],
 	ressources: { 'pidila':['Pi-412'], 'opquast':['146'] }
 })
 
