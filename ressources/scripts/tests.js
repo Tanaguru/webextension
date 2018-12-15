@@ -894,6 +894,126 @@ createTanaguruTest({
 	ressources: { 'pidila':['Pi-368'], 'opquast':['146'] }
 })
 
+/*************************************************
+ ***** Pidila ************************************
+ *************************************************/
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Présence d'une page mentions légales dans le pied de page",
+	query: 'footer a',
+	filter: function (item) {
+		return item.textContent.toLowerCase().includes('mentions légales');
+	},
+	expectedNbElements: 1,
+	explanations: { 
+		'passed': "Il existe un lien vers la page mentions légales dans cette page", 
+		'failed': "Le lien vers la page mentions légales est absent dans cette page."
+	},
+	tags: ['q5y','pidila'],
+	ressources: { 'pidila':['Pi-008', 'Pi-032'],'opquast':['26'] }
+})
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Présence d'une page accessibilité dans le pied de page",
+	query: 'footer a',
+	filter: function (item) {
+		return item.textContent.toLowerCase().includes('accessibilité');
+	},
+	expectedNbElements: 1,
+	explanations: { 
+		'passed': "Il existe un lien vers la page accessibilité dans cette page", 
+		'failed': "Le lien accessibilité est absent dans cette page."
+	},
+	tags: ['q5y','pidila'],
+	ressources: { 'pidila':['Pi-010', 'Pi-032'],'opquast':['26'] } 
+})
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Présence d'une page contact dans le pied de page",
+	query: 'footer a',
+	filter: function (item) {
+		return item.textContent.toLowerCase().includes('contact');
+	},
+	expectedNbElements: 1,
+	explanations: { 
+		'passed': "Il existe un lien vers la page contact dans cette page", 
+		'failed': "Le lien contact est absent dans cette page."
+	},
+	tags: ['q5y','pidila'],
+	ressources: { 'pidila':['Pi-032'],'opquast':['26'] } 
+})
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Présence d'une page plan du site dans le pied de page",
+	query: 'footer a',
+	filter: function (item) {
+		return item.textContent.toLowerCase().includes('plan du site');
+	},
+	expectedNbElements: 1,
+	explanations: { 
+		'passed': "Il existe un lien vers la page plan du site dans cette page", 
+		'failed': "Le lien plan du site est absent dans cette page."
+	},
+	tags: ['q5y','pidila'],
+	ressources: { 'pidila':['Pi-032'],'opquast':['26'] } 
+})
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Présence d'un lien vers legifrance.gouv.fr dans le pied de page",
+	query: 'footer a[href="https://www.legifrance.gouv.fr/"], footer a[href="http://www.legifrance.gouv.fr/"], footer a[href="www.legifrance.gouv.fr/"], footer a[href="legifrance.gouv.fr/"]',
+	expectedNbElements: 1,
+	explanations: { 
+		'passed': "Il existe un lien vers la page legifrance.gouv.fr dans cette page", 
+		'failed': "Le lien legifrance.gouv.fr est absent dans cette page."
+	},
+	tags: ['pidila'],
+	ressources: { 'pidila':['Pi-147'] } 
+})
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Présence d'un lien vers service-public.fr dans le pied de page",
+	query: 'footer a[href="https://www.service-public.fr/"], footer a[href="http://www.service-public.fr/"], footer a[href="www.service-public.fr/"], footer a[href="service-public.fr/"]',
+	expectedNbElements: 1,
+	explanations: { 
+		'passed': "Il existe un lien vers la page service-public.fr dans cette page", 
+		'failed': "Le lien service-public.fr est absent dans cette page."
+	},
+	tags: ['pidila'],
+	ressources: { 'pidila':['Pi-147'] } 
+})
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Présence d'un lien vers gouvernement.fr dans le pied de page",
+	query: 'footer a[href="https://www.gouvernement.fr/"], footer a[href="http://www.gouvernement.fr/"], footer a[href="www.gouvernement.fr/"], footer a[href="gouvernement.fr/"]',
+	expectedNbElements: 1,
+	explanations: { 
+		'passed': "Il existe un lien vers la page gouvernement.fr dans cette page", 
+		'failed': "Le lien gouvernement.fr est absent dans cette page."
+	},
+	tags: ['pidila'],
+	ressources: { 'pidila':['Pi-147'] } 
+})
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Présence d'un lien vers france.fr dans le pied de page",
+	query: 'footer a[href="https://www.france.fr/fr"], footer a[href="http://www.france.fr/fr"], footer a[href="www.france.fr/fr"], footer a[href="france.fr/fr"]',
+	expectedNbElements: 1,
+	explanations: { 
+		'passed': "Il existe un lien vers la page france.fr dans cette page", 
+		'failed': "Le lien france.fr est absent dans cette page."
+	},
+	tags: ['pidila'],
+	ressources: { 'pidila':['Pi-147'] } 
+})
+
 
 /*************************************************
  ***** Chargement des résultats ******************
