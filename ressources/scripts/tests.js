@@ -542,6 +542,7 @@ createTanaguruTest({
 // --- ELEMENTS OBLIGATOIRES  ---------------------
 // ------------------------------------------------
 
+
 // Eléments obsolètes
 
 createTanaguruTest({
@@ -794,6 +795,56 @@ createTanaguruTest({
 	ressources: { 'rgaa': ['10.1.2'] }
 })
 
+createTanaguruTest({
+	lang: 'fr',
+	name: "la propriété outline des liens n'est pas supprimé",
+	query: 'a[href]',
+	filter: function(item){
+		return item.style.outline == "none";
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'passed' : "la propriété outline n'est pas supprimée pour les liens",
+		'failed' : "Cette page contient des liens dont la propriété outline a été supprimée "
+	},
+	tags: ['a11y', 'Presentation'],
+	ressources: { 'pidila':['Pi-328'],'opquast':['155'],'rgaa':['10.7.1'] } 
+})
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "la propriété outline-style des liens n'est pas supprimé",
+	query: 'a[href]',
+	filter: function(item){
+		return item.style.outlineStyle == "none";
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'passed' : "la propriété outline-style n'est pas supprimée pour les liens",
+		'failed' : "Cette page contient des liens dont la propriété outline-style a été supprimée "
+	},
+	tags: ['a11y', 'Presentation','pidila','q5y'],
+	ressources: { 'pidila':['Pi-328'],'opquast':['155'],'rgaa':['10.7.1'] } 
+})
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "la propriété outline-width des liens n'est pas supprimé",
+	query: 'a[href]',
+	filter: function(item){
+		return item.style.outlineWidth == "0";
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'passed' : "la propriété outline-width n'est pas supprimée pour les liens",
+		'failed' : "Cette page contient des liens dont la propriété outline-width a été supprimée "
+	},
+	tags: ['a11y', 'Presentation'],
+	ressources: { 'pidila':['Pi-328'],'opquast':['155'],'rgaa':['10.7.1'] } 
+})
+
+
+
 /*************************************************
  ***** SEO ***************************************
  *************************************************/
@@ -850,7 +901,7 @@ createTanaguruTest({
 		'failed' : "Au moins une balise de style ou un attribut de style non vide est présent dans la page."
 	},
 	mark: '(style=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'SEO', 'pidila'],
+	tags: ['SEO', 'pidila'],
 	ressources: { 'pidila':['Pi-412'], 'opquast':['146'] }
 })
 
@@ -892,6 +943,57 @@ createTanaguruTest({
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
 	tags: ['q5y','pidila'],
 	ressources: { 'pidila':['Pi-368'], 'opquast':['146'] }
+})
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "la balise meta viewport ne contient pas la propriété minimum-scale.",
+	query: 'meta[name="viewport"][content]',
+	filter: function (item) {
+		return item.content.toLowerCase().includes('minimum-scale') 
+	},
+	expectedNbElements: 0,
+	explanations: { 
+		'passed': "la balise meta viewport ne contient pas la propriété minimum-scale.", 
+		'failed': "la balise meta viewport contient la propriété minimum-scale."
+	},
+	mark: '(content=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['q5y','pidila'],
+	ressources: { 'pidila':['Pi-344'], 'opquast':['139'] }
+})
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "la balise meta viewport ne contient pas la propriété maximum-scale.",
+	query: 'meta[name="viewport"][content]',
+	filter: function (item) {
+		return item.content.toLowerCase().includes('maximum-scale') 
+	},
+	expectedNbElements: 0,
+	explanations: { 
+		'passed': "la balise meta viewport ne contient pas la propriété maximum-scale.", 
+		'failed': "la balise meta viewport contient la propriété maximum-scale."
+	},
+	mark: '(content=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['q5y','pidila'],
+	ressources: { 'pidila':['Pi-344'], 'opquast':['139'] }
+})
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "la balise meta viewport ne contient pas la propriété user-scalable.",
+	query: 'meta[name="viewport"][content]',
+	filter: function (item) {
+		return item.content.toLowerCase().includes('user-scalable') 
+	},
+	expectedNbElements: 0,
+	explanations: { 
+		'passed': "la balise meta viewport ne contient pas la propriété user-scalable.", 
+		'failed': "la balise meta viewport contient la propriété user-scalable."
+	},
+	mark: '(content=&quot;(?:(?!&quot;).)*&quot;)',
+	tags: ['q5y','pidila'],
+	ressources: { 'pidila':['Pi-344'], 'opquast':['139'] }
 })
 
 /*************************************************
