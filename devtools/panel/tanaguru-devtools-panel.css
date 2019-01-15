@@ -47,8 +47,22 @@ a:focus, a:hover {
 	text-decoration: underline;
 }
 
+.beforetable {
+	overflow: hidden;
+}
+
+.beforetable div {
+	float: left;
+	margin: 0;
+}
+
+.beforetable div + div {
+	float: right;
+	margin: 0;
+}
+
 .filter {
-	/*text-align: right;*/ float: right; margin: 0;
+	/*text-align: right;*/ margin: 0;
 }
 
 .filter .ucfirst {
@@ -141,6 +155,27 @@ main.tanaguru-popin-show > div {
 	font-size: 0.75em;
 	line-height: 1.5em;
 	padding: 0.75em;
+}
+
+#tanaguru-popin h2 + p.input {
+	background-color: transparent;
+	border-left: none;
+	box-shadow: none;
+	font-size: 0.75em;
+	line-height: 1.5em;
+	padding: 0;
+}
+
+#tanaguru-popin h2 + p.input input {
+	background-color: #F3F9FB;
+	border: none;
+	border-left: solid 4px #2b7b92;
+	box-shadow: 0 0 4px #AFDDEB inset;
+	box-sizing: border-box;
+	display: block;
+	font-size: 1em;
+	padding: 0.75em;
+	width: 100%;
 }
 
 #tanaguru-popin h2 ~ div {
@@ -530,7 +565,11 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 }	
 		
 .tags {
-	margin: 0 !important; padding: 0.25em !important; float: left;
+	margin: 0 !important; padding: 0.25em !important;
+}
+
+.tags p, .tags button {
+	font-size: 0.6em;
 }
 
 .tags ul {
@@ -550,6 +589,22 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 
 [role="tabpanel"] p {
 	font-size: 0.8em;
+}
+
+.tableactions {
+	padding: 0.25em;
+}
+
+.tableactions > * {
+	display: inline-block;
+	margin: 0;
+	padding-left: 0.25em;
+}
+
+.tableactions p + p {
+	margin-left: 0.75em;
+	padding-left: 0.25em;
+	border-left: dotted 1px #111;
 }
 		
 table {
@@ -650,4 +705,29 @@ td code {
 	display: block;
 	font-size: 1.0em;
 	word-break: break-all;
+}
+
+#export-items div, #export-items ul {
+	display: inline-block;
+	vertical-align: middle;
+}
+#export-items div {
+	width: 280px;
+}
+#export-items div *:not(small):not(span) {
+	display: block;
+	width: 100%;
+	box-sizing: border-box;
+}
+#export-items button[disabled], #launchexport[disabled] {
+	opacity: 0.20;
+}
+#export-items ul {
+	list-style-type: none;
+	margin: 1em 1em 0 1em;
+	padding: 0;
+}
+
+#export-items li {
+	margin: 0.5em 0;
 }

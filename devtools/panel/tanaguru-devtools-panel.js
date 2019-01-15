@@ -442,6 +442,10 @@ button.addEventListener('click', function () {
 				tabpanelsectionp.innerHTML = response[0].tests[test].explanation;
 				tabpanelsectiondiv.appendChild(tabpanelsectionp);
 			}
+			
+			
+			
+			var beforetable = document.createElement('div'); beforetable.setAttribute('class', 'beforetable');
 			var tagssection = document.createElement('div');
 			tagssection.setAttribute('class', 'tags');
 			tagssection.addEventListener('click', function(event) {
@@ -480,7 +484,12 @@ button.addEventListener('click', function () {
 				}
 				tagssection.appendChild(tagsul);
 			}
-			tabpanelsectiondiv.appendChild(tagssection);
+			beforetable.appendChild(tagssection);
+			tabpanelsectiondiv.appendChild(beforetable);
+			
+			
+			
+			
 			if (response[0].tests[test].data.length > 0) {
 				var countvisible = 0;
 				var countinvisible = 0;
@@ -495,18 +504,24 @@ button.addEventListener('click', function () {
 				caption.appendChild(document.createTextNode(tabpanelsection.textContent));
 				table.appendChild(caption);
 				var tableheadings = [
-					{ name: 'N°' }, 
-					{ name: 'Item' }, 
+					{ name: 'N°', abbr: 'Numéro' }, 
+					{ name: 'Item', export: 'required' }, 
 					{ name: 'Atteignable au clavier ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAASCAYAAABB7B6eAAAABGdBTUEAALGPC/xhBQAAAjBJREFUOBGt1M1LVUEYgPF7ND/KLG4qRVibIgJvoIsgcOGuEFdRRC10I5LQP6ArbRUu3dqudkG4cCEGlktNSElF6YPioqGVRmEp+XF6njoH5F69XawXfsw0vTPzzsy5JhL/IcIwrEAvgszlCjIH9vnvc8xLBkEQ7nP+3tOoOokBXN4t68Bug38bYzErdsFq1KGf6p/QZkXWnWVlZAyweDNDLRjCezxn8TTtvweLpzCEZL6r/b4iJlQw4Wgek26TM2JuHpt85WTLAYn1TOjGBxhuuhG127QqisaO0K7j544xv0RtRmO2xkl0u8EEnXtwURPncBHT8GRVGMclvIHvdgajMO8TlpGCeecRF9WZYIM0WrEJ49GfJhymXYj6D6N2klZGPGaOuUY817VcM+11+OP4iDsoxAtMYgwn4FGfYRaeyrBaP8uX8GoXMYynGMEWlhB6JUYxatCANnhN7TiEVXTADRsj9h3z/8pg7gxa4RoXcBChJ/C+fLxbqMQP+FDXYQElaIIL3IDhia+hFD74VTh2E4fxBd7Cto+cpmPVa7Diz1iH3/oKrPA4XuMUjHmcxRK+4xjMtWqLdC37fZ7A+zqNTpjsL9QNH6AWHtdTmht/gnHfE07BaltwH1dgUX6ZWyb6jXuXb+HO83iFBZTDa8gVzjPXOc59B6t3zSKvqIeOCw3CsEofPf5d+GXlCm/AE1qo72HRRiO+uYGPeBc+molGiPgPof1csTMv7nt1j9H1C4W7DIhH/jVRAAAAAElFTkSuQmCC' },
 					{ name: 'Restitué ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAABGdBTUEAALGPC/xhBQAAAlBJREFUOBGV00tIVUEcx/F7xAfaQ0vCUtQitCgQqoWohI9N0MNFYVKgEiRo9JAgIqhFunAjggs3UYvoIqK0cGFqFPlEoVwYoeIjDHqYgWiu6/r9HWbiei5XOgOfO/+Z+c+cO3PmOAEfJRQKHSW9BJWYRh+GHMfZoPZXWGw/gviJD+hGP75gAdW+VmTCIcyiF3nhk2nvwA2soil8LGpMooPXCNok4rN4hHqkq5+6ABu4bPMiagb3ItZMKCROQiZGoC2/go7hG86ZvNvEc0iMWNAkPGew0Q4Sx2MMnUg1OdrFLeicM6Cj+IoyO09bSIGS4lAKJdvtlRP/QNq/CSagTw+7Yx40QHw/hp8EaKt/cRc1XJF31Iu4CJUcJGOQ3AvqCCvzxFmmvUadHMNPHV6w0G/qFlyDyhsUu1Eg0EFdhDa0sHCS+qk1/xQ+qk05gO8aOIxlHEQePiMWVRh1U80P7WLo3PTiEtGOaeyG7rKO7ISe9MfMcahDnlh9erDOuYGwC63Q2Q4hH5fMLh8Qz2BKExrwkobiOoyb+DGx3nY2JjCD88jCEvQvE0zudeJ1nFRbC2kbelm7sAidsfpHUY8jeAi9KPUP46mJte0nWIH3BbrJexi4Bz3gNJSYqcm20K6EznQn9uE9BnHM5kStSQqi2ZtA3xXUQldRn28P3CPw5ka0SUyDviJ9KbpKWwp9WnwJKVsG/qfBpAp88ubS9xZ62/4LE/VPdfeu2tnEZ7CKXNvnu9aC+IU+6AwV39xuIfdyb5egMRY5TlWLeDzjsk9SRy2bAMhld532BdwAAAAASUVORK5CYII=' }, 
-					{ name: 'Actions' }
+					{ name: 'Actions', export: 'no' }
 				];
 				var tr = document.createElement('tr');
 				tr.setAttribute('class', 'theadings');
 				for (var k = 0; k < tableheadings.length; k++) {
 					var th = document.createElement('th');
 					th.setAttribute('scope', 'col');
-					if (tableheadings[k].img) {
+					if (tableheadings[k].hasOwnProperty('abbr')) {
+						th.setAttribute('abbr', tableheadings[k].abbr);
+					}
+					if (tableheadings[k].hasOwnProperty('export')) {
+						th.classList.add(tableheadings[k].export + '-export');
+					}
+					if (tableheadings[k].hasOwnProperty('img')) {
 						var img = document.createElement('img');
 						img.setAttribute('src', tableheadings[k].img);
 						img.setAttribute('alt', tableheadings[k].name);
@@ -650,6 +665,14 @@ button.addEventListener('click', function () {
 					table.appendChild(tr);
 				}
 				tabpanelsectiondiv.appendChild(table);
+				
+				
+				
+				var tableactions = document.createElement('div');
+				tableactions.setAttribute('class', 'tableactions');
+				
+				
+				
 				if ((countvisible > 0 && countinvisible > 0) || (countkeyboardyes > 0 && countkeyboardno > 0) || (countreaderyes > 0 && countreaderno > 0)) {
 					var selectparent = document.createElement('p');
 					selectparent.setAttribute('class', 'filter');
@@ -782,8 +805,319 @@ button.addEventListener('click', function () {
 						}
 					}
 					selectparent.appendChild(select);
-					table.parentNode.insertBefore(selectparent, table);
+					tableactions.appendChild(selectparent);
 				}
+				
+				
+				var exportparent = document.createElement('p');
+				exportparent.setAttribute('class', 'export');
+				var exportbutton = document.createElement('button');
+				
+				
+				exportbutton.style.color = '#d90b0b'; /* background-color: #d90b0b; background: linear-gradient(top, #ef362c, #d90b0b); */
+				
+				
+				exportbutton.setAttribute('type', 'button');
+				exportbutton.setAttribute('title', 'Exporter les données du test - ' + response[0].tests[test].name.charAt(0).toUpperCase() + response[0].tests[test].name.slice(1));
+				exportbutton.setAttribute('aria-label', exportbutton.getAttribute('title'));
+				exportbutton.appendChild(document.createTextNode('\u2b07')); // Exporter les données de ce test
+				exportbutton.addEventListener('click', function(event) {
+					
+					this.setAttribute('data-popinopener', 'true');
+					var id = 'tanaguru-popin';
+					var tanagurupopin = document.getElementById(id);
+					if (!tanagurupopin) {
+						var tanagurupopin = document.createElement('div');
+						tanagurupopin.setAttribute('id', id)
+						tanagurupopin.setAttribute('hidden', 'hidden');
+						tanagurupopin.addEventListener('click', function(event) {
+							var element = event.target;
+						}, false);
+						document.body.appendChild(tanagurupopin);
+					}
+					var header = document.createElement('div');
+					header.setAttribute('class', 'popin-header');
+					var h1 = document.createElement('h1');
+					h1.appendChild(document.createTextNode(this.getAttribute('aria-label')));
+					var closebutton = document.createElement('button');
+					closebutton.setAttribute('type', 'button');
+					closebutton.appendChild(document.createTextNode('Retour au résultat du test'));
+					closebutton.addEventListener('click', function(event) {
+						var tanagurupopin = this.parentNode.parentNode.parentNode;
+						tanagurupopin.setAttribute('hidden', 'hidden');
+						tanagurupopin.innerHTML = '';
+						document.querySelector('main').classList.remove('tanaguru-popin-show');
+						var popinopener = document.querySelector('[data-popinopener="true"]');
+						popinopener.removeAttribute('data-popinopener');
+						popinopener.focus();
+					}, false);
+					var closebuttonparent = document.createElement('p');
+					closebuttonparent.appendChild(closebutton);
+					header.appendChild(closebuttonparent);
+					tanagurupopin.appendChild(header);
+					header.appendChild(h1);
+					var file = document.createElement('div');
+					var fileh2 = document.createElement('h2');
+					var filelabel = document.createElement('label');
+					filelabel.setAttribute('for', 'export-filename');
+					filelabel.appendChild(document.createTextNode("Nom du fichier d'export"));
+					fileh2.appendChild(filelabel);
+					file.appendChild(fileh2);
+					var filep = document.createElement('p');
+					filep.setAttribute('class', 'input');
+					var fileinput = document.createElement('input');
+					fileinput.setAttribute('type', 'text');
+					fileinput.setAttribute('id', filelabel.getAttribute('for'));
+					fileinput.setAttribute('value', 'tanaguru-extension_export.csv');
+					filep.appendChild(fileinput);
+					file.appendChild(filep);
+					tanagurupopin.appendChild(file);
+					
+					
+					
+					
+					
+					var exportitems = document.createElement('div');
+					exportitems.setAttribute('id', 'export-items');
+					var toignorediv = document.createElement('div');
+					var toignoreh2 = document.createElement('h2');
+					var toignorelabel = document.createElement('label');
+					toignorelabel.setAttribute('for', 'toignore');
+					toignorelabel.appendChild(document.createTextNode('Données à ne pas exporter'));
+					toignoreh2.appendChild(toignorelabel);
+					toignorediv.appendChild(toignoreh2);
+					var toignorep = document.createElement('p');
+					var toignoreselect = document.createElement('select');
+					toignoreselect.setAttribute('size', '8');
+					toignoreselect.setAttribute('id', toignorelabel.getAttribute('for'));
+					toignoreselect.setAttribute('multiple', 'multiple');
+					toignoreselect.setAttribute('aria-describedby', 'toignore-desc');
+					toignoreselect.addEventListener('change', function (event) {
+						var gotoexportcount = 0;
+						for (var i = 0; i < this.options.length; i++) {
+							if (this.options[i].selected) {
+								gotoexportcount += 1;
+							}
+						}
+						var toexport = document.getElementById('toexport');
+						for (var i = 0; i < toexport.options.length; i++) {
+							toexport.options[i].selected = false;
+						}
+						document.getElementById('gotoexport').disabled = gotoexportcount > 0 ? false : true;
+						document.getElementById('moveup').disabled = true;
+						document.getElementById('movedown').disabled = true;
+						document.getElementById('gotoignore').disabled = true;
+					}, false);
+					toignorep.appendChild(toignoreselect);
+					var toignoredesc = document.createElement('small');
+					toignoredesc.setAttribute('hidden', 'hidden');
+					toignoredesc.setAttribute('id', toignoreselect.getAttribute('aria-describedby'));
+					toignoredesc.appendChild(document.createTextNode('Pour exporter, sélectionnez une ou plusieurs données puis ci-après cette liste, activez le bouton "Inclure ces données dans l\'export".'));
+					toignorep.appendChild(toignoredesc);
+					toignorediv.appendChild(toignorep);
+					exportitems.appendChild(toignorediv);
+					var exportswitch = document.createElement('ul');
+					var exportswitchbuttons = [
+						{
+							id: 'gotoexport', accessiblename: "Inclure ces données dans l'export", name: '\u27A1', exec: function(event) {
+								var elements = [];
+								var toignore = document.getElementById('toignore');
+								for (var i = 0; i < toignore.options.length; i++) {
+									if (toignore.options[i].selected) {
+										elements.push(toignore.options[i]);
+									}
+								}
+								var toexport = document.getElementById('toexport');
+								for (var i = 0; i < elements.length; i++) {
+									toexport.appendChild(elements[i].parentNode.removeChild(elements[i]));
+								}
+								document.getElementById('launchexport').disabled = false;
+								document.getElementById('gotoignore').disabled = false;
+								document.getElementById('moveup').disabled = elements.length == 1 && toexport.options.length > 1 ? false : true;
+								document.getElementById('movedown').disabled = true;
+								this.disabled = true;
+								toexport.focus();
+							}
+						},
+						{
+							id: 'gotoignore', accessiblename: "Exclure ces données de l'export", name: '\u2B05', exec: function(event) {
+								var elements = [];
+								var toexport = document.getElementById('toexport');
+								for (var i = 0; i < toexport.options.length; i++) {
+									if (toexport.options[i].selected) {
+										elements.push(toexport.options[i]);
+									}
+								}
+								var toignore = document.getElementById('toignore');
+								for (var i = 0; i < elements.length; i++) {
+									toignore.appendChild(elements[i].parentNode.removeChild(elements[i]));
+								}
+								if (toexport.options.length == 0) {
+									document.getElementById('launchexport').disabled = true;
+								}
+								document.getElementById('gotoexport').disabled = false;
+								document.getElementById('moveup').disabled = true;
+								document.getElementById('movedown').disabled = true;
+								this.disabled = true;
+								toignore.focus();
+							}
+						}
+					];
+					for (var i = 0; i < exportswitchbuttons.length; i++) {
+						var exportswitchli = document.createElement('li');
+						var exportswitchbutton = document.createElement('button');
+						exportswitchbutton.setAttribute('id', exportswitchbuttons[i].id);
+						exportswitchbutton.setAttribute('aria-label', exportswitchbuttons[i].accessiblename);
+						exportswitchbutton.setAttribute('disabled', 'disabled');
+						exportswitchbutton.addEventListener('click', exportswitchbuttons[i].exec, false);
+						exportswitchbutton.appendChild(document.createTextNode(exportswitchbuttons[i].name));
+						exportswitchli.appendChild(exportswitchbutton);
+						exportswitch.appendChild(exportswitchli);
+					}
+					exportitems.appendChild(exportswitch);
+					var toexportdiv = document.createElement('div');
+					var toexporth2 = document.createElement('h2');
+					var toexportlabel = document.createElement('label');
+					toexportlabel.setAttribute('for', 'toexport');
+					toexportlabel.appendChild(document.createTextNode('Données à exporter'));
+					toexporth2.appendChild(toexportlabel);
+					toexportdiv.appendChild(toexporth2);
+					var toexportp = document.createElement('p');
+					var toexportselect = document.createElement('select');
+					toexportselect.setAttribute('size', '8');
+					toexportselect.setAttribute('id', toexportlabel.getAttribute('for'));
+					toexportselect.setAttribute('multiple', 'multiple');
+					toexportselect.setAttribute('aria-describedby', 'toexport-desc');
+					toexportselect.addEventListener('change', function (event) {
+						var gotoignorecount = 0;
+						for (var i = 0; i < this.options.length; i++) {
+							if (this.options[i].selected) {
+								gotoignorecount += 1;
+							}
+						}
+						var toignore = document.getElementById('toignore');
+						for (var i = 0; i < toignore.options.length; i++) {
+							toignore.options[i].selected = false;
+						}
+						document.getElementById('gotoignore').disabled = gotoignorecount > 0 ? false : true;
+						document.getElementById('moveup').disabled = gotoignorecount == 1 && this.selectedIndex > 0 ? false : true; // désactiver si pas de previous...
+						document.getElementById('movedown').disabled = gotoignorecount == 1 && this.selectedIndex < (this.options.length - 1) ? false : true; // désactiver si pas de next...
+						document.getElementById('gotoexport').disabled = true;
+					}, false);
+					var datatoexport = this.parentNode.parentNode.parentNode.parentNode.querySelectorAll('table tr th'); // tr + tr pour les données...
+					for (var d = 0; d < datatoexport.length; d++) {
+						if (!datatoexport[d].classList.contains('no-export')) {
+							var toexportoption = document.createElement('option');
+							toexportoption.setAttribute('value', 'td:nth-child(' + (d + 1) + ')');
+							toexportoption.appendChild(document.createTextNode(datatoexport[d].hasAttribute('abbr') ? datatoexport[d].getAttribute('abbr') : (datatoexport[d].querySelector('img') ? datatoexport[d].querySelector('img').getAttribute('alt') : datatoexport[d].textContent)));
+							toexportselect.appendChild(toexportoption);
+						}
+					}
+					var cssexport = document.createElement('option');
+					cssexport.appendChild(document.createTextNode('Sélecteur CSS | [data-xpath]'));
+					//toexportselect.appendChild(cssexport);
+					var xpathexport = document.createElement('option');
+					xpathexport.appendChild(document.createTextNode('Chemin XPath | [data-xpath]'));
+					//toexportselect.appendChild(xpathexport);
+					toexportp.appendChild(toexportselect);
+					var toexportdesc = document.createElement('small');
+					toexportdesc.setAttribute('hidden', 'hidden');
+					toexportdesc.setAttribute('id', toexportselect.getAttribute('aria-describedby'));
+					toexportdesc.appendChild(document.createTextNode('Pour ne pas exporter, sélectionnez une ou plusieurs données puis ci-avant cette liste, activez le bouton "Exclure ces données de l\'export". Pour réorganiser, l\'ordre des données à exporter, sélectionnez une donnée et ci-après cette liste, activez l\'un des boutons "Déplacer la donnée à exporter sélectionnée vers le haut" ou "Déplacer la donnée à exporter sélectionnée vers le bas".'));
+					toexportp.appendChild(toexportdesc);
+					toexportdiv.appendChild(toexportp);
+					exportitems.appendChild(toexportdiv);
+					var exportorder = document.createElement('ul');
+					var exportorderbuttons = [
+						{
+							id: 'moveup', accessiblename: "Déplacer la donnée à exporter sélectionnée vers le haut", name: '\u2B06', exec: function(event) {
+								var toexport = document.getElementById('toexport');
+								var insertbefore = toexport.selectedIndex - 1;
+								toexport.insertBefore(toexport.options[toexport.selectedIndex], toexport.options[insertbefore]);
+								if (insertbefore == 0) {
+									this.disabled = true;
+								}
+								document.getElementById('movedown').disabled = false;
+							}
+						},
+						{
+							id: 'movedown', accessiblename: "Déplacer la donnée à exporter sélectionnée vers le bas", name: '\u2B07', exec: function(event) {
+								var toexport = document.getElementById('toexport');
+								var insertafter = toexport.selectedIndex + 1;
+								toexport.insertBefore(toexport.options[insertafter], toexport.options[toexport.selectedIndex]);
+								if (insertafter == (toexport.options.length - 1)) {
+									this.disabled = true;
+								}
+								document.getElementById('moveup').disabled = false;
+							}
+						}
+					];
+					for (var i = 0; i < exportorderbuttons.length; i++) {
+						var exportorderli = document.createElement('li');
+						var exportorderbutton = document.createElement('button');
+						exportorderbutton.setAttribute('id', exportorderbuttons[i].id);
+						exportorderbutton.setAttribute('aria-label', exportorderbuttons[i].accessiblename);
+						exportorderbutton.setAttribute('disabled', 'disabled');
+						exportorderbutton.addEventListener('click', exportorderbuttons[i].exec, false);
+						exportorderbutton.appendChild(document.createTextNode(exportorderbuttons[i].name));
+						exportorderli.appendChild(exportorderbutton);
+						exportorder.appendChild(exportorderli);
+					}
+					exportitems.appendChild(exportorder);
+					tanagurupopin.appendChild(exportitems);
+					
+					
+					
+					
+					
+					var exportbuttonparent = document.createElement('div');
+					var ebpp = document.createElement('p');
+					var exportbutton = document.createElement('button'); exportbutton.style.fontSize = '0.8em';
+					exportbutton.setAttribute('id', 'launchexport');
+					exportbutton.addEventListener('click', function(event) {
+						var data = document.querySelector('[data-popinopener="true"]').parentNode.parentNode.parentNode.parentNode.querySelectorAll('table tr + tr');
+						var datatext = [];
+						var toexport = document.getElementById('toexport');
+						var datatextitem = [];
+						for (var i = 0; i < toexport.options.length; i++) {
+							if (toexport.options[i].hasAttribute('value')) {
+								datatextitem.push('"' + toexport.options[i].textContent + '"');
+							}
+						}
+						datatext.push(datatextitem.join(';'));
+						for (var i = 0; i < data.length; i++) {
+							var datatextitem = [];
+							for (var j = 0; j < toexport.options.length; j++) {
+								if (toexport.options[j].hasAttribute('value')) {
+									var texttoexport = data[i].querySelector(toexport.options[j].value);
+									var texttoexportimg = texttoexport.querySelector('img');
+									texttoexport = texttoexportimg ? texttoexportimg.getAttribute('alt') : texttoexport.textContent;
+									datatextitem.push('"' + texttoexport.replace(/"/g, '""') + '"');
+								}
+							}
+							datatext.push(datatextitem.join(';'));
+						}
+						var csvFile = new Blob([datatext.join('\n')], { type: 'text/csv' });
+						browser.runtime.sendMessage({
+							tabId: browser.devtools.inspectedWindow.tabId,
+							command: 'downloadTestCsvFile',
+							data: { url: window.URL.createObjectURL(csvFile), filename: document.getElementById('export-filename').value }
+						});
+					}, false);
+					exportbutton.appendChild(document.createTextNode("Exporter les données au format CSV"));
+					ebpp.appendChild(exportbutton);
+					exportbuttonparent.appendChild(ebpp);
+					tanagurupopin.appendChild(exportbuttonparent);
+					document.querySelector('main').classList.add('tanaguru-popin-show');
+					tanagurupopin.removeAttribute('hidden');
+					closebutton.focus();
+					
+				}, false);
+				exportparent.appendChild(exportbutton);
+				tableactions.appendChild(exportparent);
+				beforetable.appendChild(tableactions);
+				
+				
 			}
 			testelement.appendChild(tabpanelsectiondiv);
 			alltagspanel.appendChild(testelement);
