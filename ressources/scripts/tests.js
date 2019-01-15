@@ -222,7 +222,7 @@ createTanaguruTest({
 		'failed': "Des éléments cliquables (area) ont un attribut title, aria-label ou aria-labelledby différents de l'attibut alt."
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'images', 'pidila, q5y'],
+	tags: ['a11y', 'images', 'pidila', 'q5y'],
 	ressources: { 'rgaa': ['1.3.2'], 'pidila': ['Pi-304', 'Pi-305'], 'opquast': ['2, 3'] }
 });
 
