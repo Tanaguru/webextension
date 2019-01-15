@@ -56,6 +56,6 @@
 	"tagMandatory": {"message" : "Mandatory Elements"},
 	"tagStructure": {"message" : "Information Structure"},
 	"tagPresentation": {"message" : "Information Presentation"},
-	"tagQ5Y": {"message" : "Web Quality"},
+	"tagQ5y": {"message" : "Web Quality"},
 	"tagPidila": {"message" : "Pidila"}
 }
