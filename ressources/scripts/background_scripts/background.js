@@ -8,6 +8,13 @@ function handleMessage(request, sender, sendResponse) {
 	else if (request.command === 'executeTests') {
 		return browser.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests.js' });
 	}
+	else if (request.command == 'downloadTestCsvFile') {
+		browser.downloads.download({
+			url: request.data.url,
+			filename: request.data.filename,
+			saveAs: true
+		});
+	}
 	else if (request.command === 'notify') {
 		browser.browserAction.enable();
 		var manifest = browser.runtime.getManifest();
