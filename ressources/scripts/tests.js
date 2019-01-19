@@ -18,6 +18,7 @@
  * -------- Sens de lecture
  * 11 - Structuration de l'information
  * 12 - Présentation de l'information
+ * 13 - Consultation
  * 
  * SEO
  * 
@@ -31,7 +32,7 @@
  *************************************************/
 
 // ------------------------------------------------
-// --- CADRES -------------------------------------
+// --- 01 - CADRES -------------------------------------
 // ------------------------------------------------
 
 createTanaguruTest({
@@ -95,7 +96,7 @@ createTanaguruTest({
 });
 
 // ------------------------------------------------
-// --- TITRES DE CONTENUS -------------------------
+// --- 02 - TITRES DE CONTENUS -------------------------
 // ------------------------------------------------
 
 createTanaguruTest({
@@ -124,7 +125,7 @@ createTanaguruTest({
 
 
 // ------------------------------------------------
-// --- IMAGES -------------------------------------
+// --- 03 - IMAGES -------------------------------------
 // ------------------------------------------------
 
 createTanaguruTest({
@@ -222,7 +223,7 @@ createTanaguruTest({
 		'failed': "Des éléments cliquables (area) ont un attribut title, aria-label ou aria-labelledby différents de l'attibut alt."
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'images', 'pidila', 'q5y'],
+	tags: ['a11y', 'images', 'pidila, q5y'],
 	ressources: { 'rgaa': ['1.3.2'], 'pidila': ['Pi-304', 'Pi-305'], 'opquast': ['2, 3'] }
 });
 
@@ -307,7 +308,7 @@ createTanaguruTest({
 
 
 // ------------------------------------------------
-// --- LIENS --------------------------------------
+// --- 04 - LIENS --------------------------------------
 // ------------------------------------------------
 
 createTanaguruTest({
@@ -347,7 +348,7 @@ createTanaguruTest({
 });
 
 // ------------------------------------------------
-// --- LIENS IMAGES  ------------------------------
+// --- 05 - LIENS IMAGES  ------------------------------
 // ------------------------------------------------
 
 createTanaguruTest({
@@ -365,7 +366,7 @@ createTanaguruTest({
 });
 
 // ------------------------------------------------
-// --- BOUTONS ------------------------------------
+// --- 06 - BOUTONS ------------------------------------
 // ------------------------------------------------
 
 createTanaguruTest({
@@ -376,7 +377,7 @@ createTanaguruTest({
 });
 
 // ------------------------------------------------
-// --- BOUTONS IMAGES  ----------------------------
+// --- 07 - BOUTONS IMAGES  ----------------------------
 // ------------------------------------------------
 
 createTanaguruTest({
@@ -450,7 +451,7 @@ createTanaguruTest({
 });
 
 // ------------------------------------------------
-// --- FORMULAIRES --------------------------------
+// --- 08 - FORMULAIRES --------------------------------
 // ------------------------------------------------
 
 createTanaguruTest({
@@ -515,7 +516,7 @@ createTanaguruTest({
 	});
 
 // ------------------------------------------------
-// --- SCRIPTS ------------------------------------
+// --- 09 - SCRIPTS ------------------------------------
 // ------------------------------------------------
 
 createTanaguruTest({
@@ -539,7 +540,7 @@ createTanaguruTest({
 	});
 
 // ------------------------------------------------
-// --- ELEMENTS OBLIGATOIRES  ---------------------
+// --- 10 - ELEMENTS OBLIGATOIRES  ---------------------
 // ------------------------------------------------
 
 
@@ -707,7 +708,7 @@ createTanaguruTest({
 })
 
 // ------------------------------------------------
-// --- STRUCTURATION DE L'INFORMATION  ------------
+// --- 11 - STRUCTURATION DE L'INFORMATION  ------------
 // ------------------------------------------------
 
 createTanaguruTest({
@@ -746,7 +747,7 @@ createTanaguruTest({
 })
 
 // ------------------------------------------------
-// --- PRESENTATION DE L'INFORMATION  -------------
+// --- 12 - PRESENTATION DE L'INFORMATION  -------------
 // ------------------------------------------------
 
 createTanaguruTest({
@@ -843,6 +844,25 @@ createTanaguruTest({
 	ressources: { 'pidila':['Pi-328'],'opquast':['155'],'rgaa':['10.7.1'] } 
 })
 
+// ------------------------------------------------
+// ---- 13 - Consultation  -----------------
+// ------------------------------------------------
+
+createTanaguruTest({
+	lang: 'fr',
+	name: "Présence d'un procédé de rafraichissement via une balise méta",
+	query: 'head > meta[http-equiv]',
+	filter: function(item){
+		return item.style.outlineWidth == "0";
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'passed' : "la propriété outline-width n'est pas supprimée pour les liens",
+		'failed' : "Cette page contient des liens dont la propriété outline-width a été supprimée "
+	},
+	tags: ['a11y', 'Presentation'],
+	ressources: { 'pidila':['Pi-328'],'opquast':['155'],'rgaa':['10.7.1'] } 
+})
 
 
 /*************************************************
@@ -858,7 +878,7 @@ createTanaguruTest({
 		'passed' : "Cette page contient une balise de métadonnée de description.",
 		'failed' : "Aucune balise de métadonnée de description n'est renseignée, ou plus d'une balise de métadonnée de description est présente sur la page."
 	},
-	tags: ['a11y', 'SEO']
+	tags: ['SEO']
 })
 
 createTanaguruTest({
@@ -877,7 +897,7 @@ createTanaguruTest({
 		'passed' : "La valeur de la métadonnée de description contient moins de 250 caractères.",
 		'failed' : "La valeur de la métadonnée de description contient plus de 250 caractères."
 	},
-	tags: ['a11y', 'SEO']
+	tags: ['SEO']
 })
 
 createTanaguruTest({
