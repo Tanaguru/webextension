@@ -404,6 +404,31 @@ button.addEventListener('click', function () {
 			if (a.type == 'passed' && b.type == 'cantTell') return 1;
 			return 0;
 		});
+		
+		
+		
+// IN PROGRESS
+var statuses = ['failed', 'cantTell', 'passed', 'inapplicable', 'untested'];
+var statuseslist = document.createElement('ul'); statuseslist.style.margin = '1em'; statuseslist.style.padding = '0'; statuseslist.style.listStyleType = 'none'; statuseslist.style.fontSize = '0.8em';
+statuseslist.hidden = true;
+var statusescontents = document.createDocumentFragment();
+for (var s = 0; s < statuses.length; s++) {
+	var status = document.createElement('li'); status.style.display = 'inline-block'; status.style.border = 'solid 1px black'; status.style.marginRight = '0.5em'; status.style.padding = '0.5em 1em';
+	status.appendChild(document.createTextNode(browser.i18n.getMessage('earl' + statuses[s].charAt(0).toUpperCase() + statuses[s].slice(1))));
+	statuseslist.appendChild(status);
+	var statuscontent = document.createElement('div');
+	statuscontent.setAttribute('id', 'earl' + statuses[s].charAt(0).toUpperCase() + statuses[s].slice(1));
+	statusescontents.appendChild(statuscontent);
+}
+alltagspanel.appendChild(statuseslist);
+alltagspanel.appendChild(statusescontents);
+
+
+// IN PROGRESS
+var reftests = {};
+		
+		
+		
 		for (var test in response[0].tests) {
 			var testelement = document.createElement('div');
 			testelement.setAttribute('class', response[0].tests[test].tags.join(' '));
@@ -413,6 +438,21 @@ button.addEventListener('click', function () {
 			tabpanelsectionbutton.setAttribute('type', 'button');
 			tabpanelsectionbutton.setAttribute('data-action', 'showhide-action');
 			tabpanelsectionbutton.setAttribute('aria-expanded', 'false');
+			
+			
+			
+// IN PROGRESS
+var testref = document.createElement('em');
+testref.style.paddingRight = '1em'; testref.style.display = 'inline-block'; testref.style.width = '80px'; testref.style.textAlign = 'right';
+if (!reftests.hasOwnProperty(response[0].tests[test].tags[0].toUpperCase())) {
+	reftests[response[0].tests[test].tags[0].toUpperCase()] = 0;
+}
+reftests[response[0].tests[test].tags[0].toUpperCase()] += 1;
+testref.appendChild(document.createTextNode(response[0].tests[test].tags[0].toUpperCase() + '-' + reftests[response[0].tests[test].tags[0].toUpperCase()]));
+tabpanelsectionbutton.appendChild(testref);
+			
+			
+			
 			var status = document.createElement('span');
 			status.setAttribute('class', 'status');
 			status.appendChild(document.createTextNode(browser.i18n.getMessage('earl' + response[0].tests[test].type.charAt(0).toUpperCase() + response[0].tests[test].type.slice(1))));
@@ -1120,7 +1160,15 @@ button.addEventListener('click', function () {
 				
 			}
 			testelement.appendChild(tabpanelsectiondiv);
-			alltagspanel.appendChild(testelement);
+			
+			
+			
+// IN PROGRESS
+alltagspanel.querySelector('#earl' + response[0].tests[test].type.charAt(0).toUpperCase() + response[0].tests[test].type.slice(1)).appendChild(testelement);
+			//alltagspanel.appendChild(testelement);
+			
+			
+			
 			t++;
 		}
 		main.children[1].appendChild(alltagspanel);
