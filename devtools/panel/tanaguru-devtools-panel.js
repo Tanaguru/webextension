@@ -181,7 +181,14 @@ button.addEventListener('click', function () {
 					var newcurrenttabpanel = document.getElementById(element.getAttribute('aria-controls'));
 					if (newcurrenttabpanel.getAttribute('id') == 'tests') {
 						newcurrenttabpanel.setAttribute('aria-labelledby', element.getAttribute('id'));
-						newcurrenttabpanel.querySelector('h2').innerHTML = element.textContent;
+						
+
+// IN PROGRESS
+	var newcurrenttabpanelheadingtext = element.firstChild.firstChild.nodeValue;
+	var currenttabpanelheading = newcurrenttabpanel.querySelector('h2');
+	currenttabpanelheading.replaceChild(document.createTextNode(newcurrenttabpanelheadingtext), currenttabpanelheading.firstChild);
+
+
 						newcurrenttabpanel.parentNode.scrollTop = 0;
 						var tests = newcurrenttabpanel.querySelectorAll('h3');
 						for (var i = 0; i < tests.length; i++) {
@@ -1188,7 +1195,21 @@ alltagspanel.querySelector('#earl' + response[0].tests[test].type.charAt(0).toUp
 				strong.appendChild(document.createTextNode(response[0].tags[tag].nbfailures));
 				tab.appendChild(strong);
 			}
-			ul.appendChild(tab);
+
+
+// IN PROGRESS
+	if (ul.querySelector('strong') && response[0].tags[tag].nbfailures > 0) {
+		var lastwithfailures = ul.querySelectorAll('strong');
+		lastwithfailures = lastwithfailures[lastwithfailures.length - 1];
+		lastwithfailures = lastwithfailures.parentNode;
+		lastwithfailures.insertAdjacentElement('afterend', tab);
+	}
+	else {
+		ul.appendChild(tab);
+	}
+
+
+
 		}
 		nav.appendChild(ul);
 		main.children[0].appendChild(nav);

@@ -277,8 +277,10 @@ main:not(.launch-analysis) > div:first-child {
 	padding-right: 1px;
 	position: relative;
 	min-width: 279px;
+	border-right: solid 1px #e5e5e5; 
 }
 
+/*
 main:not(.launch-analysis) > div:first-child::after {
 	background-color: #e5e5e5;
 	content: '';
@@ -286,8 +288,9 @@ main:not(.launch-analysis) > div:first-child::after {
 	top: 0;
 	bottom: 0;
 	right: 0;
-	width: 1px;
+	width: 1px; background-color: red;
 }
+*/
 
 main > div:first-child h1 {
 	color: #2b7b92;
