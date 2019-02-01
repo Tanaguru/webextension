@@ -461,14 +461,17 @@ query: 'input:not([type="image"]):not([type="button"]):not([type="hidden"]):not(
 filter: function (item) {
 	if ((item.hasAttribute('title')) || (item.hasAttribute('aria-labelledby')) || (item.hasAttribute('id')) || (item.hasAttribute('aria-label')))  {
 		if(item.hasAttribute('id')){
-		var AttrId = item.getAttribute('id');
-		if (document.querySelector('label[for="'+AttrId+'"]') == null){
-				return true;
+			var AttrId = item.getAttribute('id');
+			if (document.querySelector('label[for="'+AttrId+'"]') == null){
+				if ((item.hasAttribute('title')) || (item.hasAttribute('aria-labelledby')) || (item.hasAttribute('aria-label'))) {
+					return false
+				}
+				else return true;
 			};
-		};
+		} 
 		return false;
-	};
-	return true;
+	}
+	else return true;
 },
 expectedNbElements: 0,
 explanations: {

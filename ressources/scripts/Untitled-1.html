@@ -1,0 +1,13 @@
+<div class="filter">
+    <h2>Filter by period :</h2>
+    <button class="filter--close" aria-expanded="false" aria-controls="calendar" …>
+        <div class="filter--close__label">Filter</div>
+        <div class="filter--close-icon filter--close-icon-white" ng-class="{'filter--close-icon-white' : !filterBookingCtrl.isFilterActive,
+                        'filter--close-icon-black' :  filterBookingCtrl.isFilterActive}" style=""></div>
+    </button>
+    <div id="calendar" class="filter--open" ng-if="filterBookingCtrl.isOpen" style="">
+        <div class="filter__date">
+	…
+        </div>
+	</div>
+</div>
