@@ -545,6 +545,59 @@ Element.prototype.isARIAStatePropertyAllowedOnMe = function (stateproperty) { re
 HTMLElement.prototype.isARIARoleAllowedOnMe = function (role) { return this.availableARIASemantics.indexOf('[role="' + role + '"]') > -1; };
 HTMLElement.prototype.isARIAStatePropertyAllowedOnMe = function (stateproperty) { return ''; };
 
+
+Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function () {
+	var result = '';
+	if (this.hasAttribute('aria-labelledby')) {
+		result = 'aria-labelledby:{to-compute}' + this.getAttribute('aria-labelledby');
+	}
+	if (result == '') {
+		if (this.hasAttribute('aria-label')) {
+			result = 'aria-label:' + this.getAttribute('aria-label');
+		}
+		else if (this.tagName.toLowerCase() == 'img' && this.hasAttribute('alt')) {
+			result = 'alt:' + this.getAttribute('alt');
+		}
+		else if (this.tagName.toLowerCase() == 'input') {
+			var label = this.hasAttribute('id') ? document.querySelector('label[for="' + this.getAttribute('id') + '"]') : null;
+			if (label) {
+				result = 'label[for]:' + label.textContent;
+			}
+			else if (this.matches('label input')) {
+				var parent = this.parentNode;
+				while (parent.nodeType != 1 && parent.tagName.toLowerCase() != 'label') {
+					parent = parent.parentNode;
+				}
+				result = 'label:' + parent.textContent;
+			}
+			else if (this.hasAttribute('title')) {
+				result = 'title:' + this.getAttribute('title');
+			}
+		}
+		else if (this.tagName.toLowerCase() == 'select') {
+			var label = this.hasAttribute('id') ? document.querySelector('label[for="' + this.getAttribute('id') + '"]') : null;
+			if (label) {
+				result = 'label[for]:' + label.textContent;
+			}
+			else if (this.matches('label select')) {
+				var parent = this.parentNode;
+				while (parent.nodeType != 1 && parent.tagName.toLowerCase() != 'label') {
+					parent = parent.parentNode;
+				}
+				result = 'label:' + parent.textContent;
+			}
+			else if (this.hasAttribute('title')) {
+				result = 'title:' + this.getAttribute('title');
+			}
+		}
+		else if (this.hasAttribute('title')) {
+			result = 'title:' + this.getAttribute('title');
+		}
+	}
+	return result;
+} });
+
+
 Object.defineProperty(SVGElement.prototype, 'isNotVisibleDueTo', { get: function () {
 	var result = [];
 	if (!(!!(this.offsetWidth || this.offsetHeight || this.getClientRects().length))) {
