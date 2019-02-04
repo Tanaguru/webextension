@@ -141,6 +141,9 @@ createTanaguruTest({
 	ressources: { 'rgaa': ['1.1.2'], 'pidila': ['Pi-309'], 'opquast': ['1'] }
 });
 
+
+
+
 // TODO - test RGAA 1.2.3
 // 
 // createTanaguruTest({
@@ -155,6 +158,22 @@ createTanaguruTest({
 // 	tags: ['a11y', 'images'],
 // 	ressources: { 'rgaa': ['1.2.3'] }
 // });
+
+createTanaguruTest({
+	lang: 'fr',
+	name: 'Images (balise img) sans nom accessible.',
+	query: 'img:not([role]):not([href])',
+	filter: function (item) {
+		return item.accessibleName == "" || item.accessibleName.split(/:(.+)/)[1] == ""
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'passed': "Cette page ne contient pas d'éléments img sans nom accessible.",
+		'failed': "Des éléments img sans nom accessible sont présents dans la page."
+	},
+	tags: ['a11y', 'images', 'aria'],
+	ressources: {'wcag': ['4.1.2']}
+});
 
 createTanaguruTest({
 	lang: 'fr',
@@ -518,6 +537,38 @@ createTanaguruTest({
 	ressources: { 'rgaa': ['7.1.1'] }
 	});
 
+	createTanaguruTest({
+		lang: 'fr',
+		name: 'élément de formulaire (balise input) sans nom accessible.',
+		query: 'input:not([role])',
+		filter: function (item) {
+			return item.accessibleName == "" || item.accessibleName.split(/:(.+)/)[1] == ""
+		},
+		expectedNbElements: 0,
+		explanations: {
+			'passed': "Cette page ne contient pas d'éléments input sans nom accessible.",
+			'failed': "Des éléments input sans nom accessible sont présents dans la page."
+		},
+		tags: ['a11y', 'forms', 'aria'],
+		ressources: {'wcag': ['4.1.2']}
+	});
+	
+	createTanaguruTest({
+		lang: 'fr',
+		name: 'élément de formulaire (balise select) sans nom accessible.',
+		query: 'select:not([role])',
+		filter: function (item) {
+			return item.accessibleName == "" || item.accessibleName.split(/:(.+)/)[1] == ""
+		},
+		expectedNbElements: 0,
+		explanations: {
+			'passed': "Cette page ne contient pas d'éléments select sans nom accessible.",
+			'failed': "Des éléments select sans nom accessible sont présents dans la page."
+		},
+		tags: ['a11y', 'forms', 'aria'],
+		ressources: {'wcag': ['4.1.2']}
+	});
+
 // ------------------------------------------------
 // --- 09 - SCRIPTS ------------------------------------
 // ------------------------------------------------
@@ -552,7 +603,7 @@ createTanaguruTest({
 createTanaguruTest({
 	lang: 'fr',
 	name: "Les balises obsolètes.",
-	query: 'applet, acronym, bgsound, dir, frame, frameset, noframes, isindex, listing, xmp, nextid, noembed, plaintext, rb, basefont, big, blink, center, font, marquee, multicol, nobr, s, spacer, strike, tt, u, wbr',
+	query: 'acronym, bgsound, dir, frame, frameset, noframes, hgroup, isindex, listing, nextid, noembed, plaintext, strike, xmp, basefont, big, blink, center, font, marquee, menu, menuitem, multicol, nobr, spacer, tt',
 	expectedNbElements: 0,
 	explanations: {
 		'passed': "Cette page ne contient pas d'éléments obsolètes.",
