@@ -559,19 +559,25 @@ Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function (
 			result = 'alt:' + this.getAttribute('alt');
 		}
 		else if (this.tagName.toLowerCase() == 'input') {
-			var label = this.hasAttribute('id') ? document.querySelector('label[for="' + this.getAttribute('id') + '"]') : null;
-			if (label) {
-				result = 'label[for]:' + label.textContent;
+			if (this.hasAttribute('type') && ['button', 'image', 'reset', 'submit'].indexOf(this.getAttribute('type').toLowerCase()) > -1) {
+				var anattr = this.getAttribute('type') == 'image' ? 'alt' : 'value';
+				result = this.hasAttribute(anattr) ? anattr + ':' + this.getAttribute(anattr) : '';
 			}
-			else if (this.matches('label input')) {
-				var parent = this.parentNode;
-				while (parent.nodeType != 1 && parent.tagName.toLowerCase() != 'label') {
-					parent = parent.parentNode;
+			else {
+				var label = this.hasAttribute('id') ? document.querySelector('label[for="' + this.getAttribute('id') + '"]') : null;
+				if (label) {
+					result = 'label[for]:' + label.textContent;
 				}
-				result = 'label:' + parent.textContent;
-			}
-			else if (this.hasAttribute('title')) {
-				result = 'title:' + this.getAttribute('title');
+				else if (this.matches('label input')) {
+					var parent = this.parentNode;
+					while (parent.nodeType != 1 && parent.tagName.toLowerCase() != 'label') {
+						parent = parent.parentNode;
+					}
+					result = 'label:' + parent.textContent;
+				}
+				else if (this.hasAttribute('title')) {
+					result = 'title:' + this.getAttribute('title');
+				}	
 			}
 		}
 		else if (this.tagName.toLowerCase() == 'select') {
