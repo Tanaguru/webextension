@@ -164,9 +164,7 @@ createTanaguruTest({
 	name: 'Images (balise img) sans nom accessible.',
 	query: 'img:not([role]):not([href]) ,[role="img"]',
 	filter: function (item) {
-		if (item.isNotExposedDueTo.length == 0) {
-			return item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""
-		}
+		item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == "");
 	},
 	expectedNbElements: 0,
 	explanations: {
@@ -182,9 +180,7 @@ createTanaguruTest({
 	name: 'Images non restituées (balise img) sans nom accessible.',
 	query: 'img:not([role]):not([href]) ,[role="img"]',
 	filter: function (item) {
-		if (item.isNotExposedDueTo.length != 0) {
-			return item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""
-		}
+		item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == "");
 	},
 	explanations: {
 		'cantTell': "Cette page contient des éléments img masqués sans nom accessible, vérifiez qu'ils ne doivent pas être restitué à l'utilisateur.",
