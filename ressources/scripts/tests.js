@@ -129,6 +129,7 @@ createTanaguruTest({
 	lang: 'fr',
 	name: 'Cadre (balise frame) sans nom accessible.',
 	query: 'frame:not([role])',
+	filter: function (item) {
 		return (item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""));
 	},
 	expectedNbElements: 0,
