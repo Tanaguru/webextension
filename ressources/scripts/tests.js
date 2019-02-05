@@ -162,14 +162,32 @@ createTanaguruTest({
 createTanaguruTest({
 	lang: 'fr',
 	name: 'Images (balise img) sans nom accessible.',
-	query: 'img:not([role]):not([href])',
+	query: 'img:not([role]):not([href]) ,[role="img"]',
 	filter: function (item) {
-		return item.accessibleName == "" || item.accessibleName.split(/:(.+)/)[1] == ""
+		if (item.isNotExposedDueTo.length == 0) {
+			return item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""
+		}
 	},
 	expectedNbElements: 0,
 	explanations: {
 		'passed': "Cette page ne contient pas d'éléments img sans nom accessible.",
 		'failed': "Des éléments img sans nom accessible sont présents dans la page."
+	},
+	tags: ['a11y', 'images', 'aria'],
+	ressources: {'wcag': ['4.1.2']}
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: 'Images non restituées (balise img) sans nom accessible.',
+	query: 'img:not([role]):not([href]) ,[role="img"]',
+	filter: function (item) {
+		if (item.isNotExposedDueTo.length != 0) {
+			return item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""
+		}
+	},
+	explanations: {
+		'cantTell': "Cette page contient des éléments img masqués sans nom accessible, vérifiez qu'ils ne doivent pas être restitué à l'utilisateur.",
 	},
 	tags: ['a11y', 'images', 'aria'],
 	ressources: {'wcag': ['4.1.2']}
