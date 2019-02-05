@@ -558,6 +558,15 @@ Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function (
 		else if (this.tagName.toLowerCase() == 'img' && this.hasAttribute('alt')) {
 			result = 'alt:' + this.getAttribute('alt');
 		}
+		else if (this.tagName.toLowerCase() == 'area' && this.hasAttribute('alt')) {
+			result = 'alt:' + this.getAttribute('alt');
+		}
+		else if (this.tagName.toLowerCase() == 'iframe' && this.hasAttribute('title')) {
+			result = 'alt:' + this.getAttribute('title');
+		}
+		else if (this.tagName.toLowerCase() == 'frame' && this.hasAttribute('title')) {
+			result = 'alt:' + this.getAttribute('title');
+		}
 		else if (this.tagName.toLowerCase() == 'input') {
 			if (this.hasAttribute('type') && ['button', 'image', 'reset', 'submit'].indexOf(this.getAttribute('type').toLowerCase()) > -1) {
 				var anattr = this.getAttribute('type') == 'image' ? 'alt' : 'value';
