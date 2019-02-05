@@ -603,6 +603,8 @@ Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function (
 	return result;
 } });
 
+Object.defineProperty(SVGElement.prototype, 'accessibleName', { get: function () { return ''; } });
+
 
 Object.defineProperty(SVGElement.prototype, 'isNotVisibleDueTo', { get: function () {
 	var result = [];
