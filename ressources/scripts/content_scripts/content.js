@@ -545,27 +545,28 @@ Element.prototype.isARIAStatePropertyAllowedOnMe = function (stateproperty) { re
 HTMLElement.prototype.isARIARoleAllowedOnMe = function (role) { return this.availableARIASemantics.indexOf('[role="' + role + '"]') > -1; };
 HTMLElement.prototype.isARIAStatePropertyAllowedOnMe = function (stateproperty) { return ''; };
 
-
 Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function () {
 	var result = '';
 	if (this.hasAttribute('aria-labelledby')) {
-		result = 'aria-labelledby:{to-compute}' + this.getAttribute('aria-labelledby');
+		result = 'aria-labelledby:' + this.getAttribute('aria-labelledby'); //{to-compute}
 	}
 	if (result == '') {
 		if (this.hasAttribute('aria-label')) {
 			result = 'aria-label:' + this.getAttribute('aria-label');
 		}
-		else if (this.tagName.toLowerCase() == 'img' && this.hasAttribute('alt')) {
+		else if (this.tagName.toLowerCase() == 'a' && !this.hasAttribute('role')) {
+			var contentLink = this.querySelectorAll('img');
+			contentLink.forEach(function(node) {
+			
+				node.accessibleName
+			});
+			result = 'content:' + this.textContent;
+		}
+		else if ((this.tagName.toLowerCase() == 'img' && this.hasAttribute('alt')) && !this.hasAttribute('role')) {
 			result = 'alt:' + this.getAttribute('alt');
 		}
 		else if (this.tagName.toLowerCase() == 'area' && this.hasAttribute('alt')) {
 			result = 'alt:' + this.getAttribute('alt');
-		}
-		else if (this.tagName.toLowerCase() == 'iframe' && this.hasAttribute('title')) {
-			result = 'alt:' + this.getAttribute('title');
-		}
-		else if (this.tagName.toLowerCase() == 'frame' && this.hasAttribute('title')) {
-			result = 'alt:' + this.getAttribute('title');
 		}
 		else if (this.tagName.toLowerCase() == 'input') {
 			if (this.hasAttribute('type') && ['button', 'image', 'reset', 'submit'].indexOf(this.getAttribute('type').toLowerCase()) > -1) {
@@ -612,8 +613,7 @@ Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function (
 	return result;
 } });
 
-Object.defineProperty(SVGElement.prototype, 'accessibleName', { get: function () { return ''; } });
-
+//Object.defineProperty(SVGElement.prototype, 'accessibleName', { get: function () { return ''; } });
 
 Object.defineProperty(SVGElement.prototype, 'isNotVisibleDueTo', { get: function () {
 	var result = [];

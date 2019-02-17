@@ -98,62 +98,33 @@ createTanaguruTest({
 createTanaguruTest({
 	lang: 'fr',
 	name: 'Cadre (balise iframe) sans nom accessible.',
-	query: 'iframe:not([role])',
+	query: 'iframe:not([role]), frame:not([role])',
 	filter: function (item) {
-		return (item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""));
+		return (item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/).length == 1));
 	},
 	expectedNbElements: 0,
 	explanations: {
-		'passed': "Cette page ne contient pas d'éléments img sans nom accessible.",
-		'failed': "Des éléments img sans nom accessible sont présents dans la page."
+		'passed': "Cette page ne contient pas d'éléments frame ou iframe sans nom accessible.",
+		'failed': "Des éléments frame ou iframe sans nom accessible sont présents dans la page."
 	},
-	tags: ['a11y', 'images', 'aria'],
+	tags: ['a11y', 'frames', 'aria', 'wcag'],
 	ressources: {'wcag': ['4.1.2']}
 });
 
 createTanaguruTest({
 	lang: 'fr',
 	name: 'Cadre non restituées (balise iframe) sans nom accessible.',
-	query: 'iframe:not([role])',
+	query: 'iframe:not([role]), frame:not([role])',
 	filter: function (item) {
-		return (item.isNotExposedDueTo.length != 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""));
+		return (item.isNotExposedDueTo.length != 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/).length == 1));
 	},
 	explanations: {
-		'cantTell': "Cette page contient des éléments img non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur.",
+		'cantTell': "Cette page contient des éléments frame ou iframe non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur.",
 	},
-	tags: ['a11y', 'images', 'aria'],
+	tags: ['a11y', 'frames', 'aria', 'wcag'],
 	ressources: {'wcag': ['4.1.2']}
 });
 
-createTanaguruTest({
-	lang: 'fr',
-	name: 'Cadre (balise frame) sans nom accessible.',
-	query: 'frame:not([role])',
-	filter: function (item) {
-		return (item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""));
-	},
-	expectedNbElements: 0,
-	explanations: {
-		'passed': "Cette page ne contient pas d'éléments img sans nom accessible.",
-		'failed': "Des éléments img sans nom accessible sont présents dans la page."
-	},
-	tags: ['a11y', 'images', 'aria'],
-	ressources: {'wcag': ['4.1.2']}
-});
-
-createTanaguruTest({
-	lang: 'fr',
-	name: 'Cadre non restituées (balise frame) sans nom accessible.',
-	query: 'frame:not([role])',
-	filter: function (item) {
-		return (item.isNotExposedDueTo.length != 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""));
-	},
-	explanations: {
-		'cantTell': "Cette page contient des éléments img non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur.",
-	},
-	tags: ['a11y', 'images', 'aria'],
-	ressources: {'wcag': ['4.1.2']}
-});
 
 // ------------------------------------------------
 // --- 02 - TITRES DE CONTENUS -------------------------
@@ -181,7 +152,7 @@ createTanaguruTest({
 		'passed': "La page contient au moin un titre de niveau", 
 		'failed': "Cette page ne contient pas de titre de niveau)."
 	},
-	tags: ['a11y'],
+	tags: ['a11y', 'wcag'],
 	ressources: { 'wcag': ['1.3.1']}
 });
 
@@ -192,7 +163,7 @@ createTanaguruTest({
 	explanations: {
 		'cantTell': "Vérifiez que les titres de contenus en présence sont pertinents."
 	},
-	tags: ['a11y', 'headings', 'SEO', 'pidila'],
+	tags: ['a11y', 'headings', 'SEO', 'pidila', 'wcag'],
 	ressources: { 'rgaa': ['9.1.4'], 'pidila' : ['Pi-362'], 'opquast' : ['13'], 'wcag': ['1.3.1'] }
 });
 
@@ -235,30 +206,62 @@ createTanaguruTest({
 createTanaguruTest({
 	lang: 'fr',
 	name: 'Images (balise img) sans nom accessible.',
-	query: 'img:not([role]):not([href]) ,[role="img"]',
+	query: 'img:not([role]):not([href])',
 	filter: function (item) {
-		return (item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""));
+		return (item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[0] == "title"));
 	},
 	expectedNbElements: 0,
 	explanations: {
 		'passed': "Cette page ne contient pas d'éléments img sans nom accessible.",
 		'failed': "Des éléments img sans nom accessible sont présents dans la page."
 	},
-	tags: ['a11y', 'images', 'aria'],
+	tags: ['a11y', 'images', 'aria', 'wcag'],
 	ressources: {'wcag': ['4.1.2']}
 });
 
 createTanaguruTest({
 	lang: 'fr',
-	name: 'Images non restituées (balise img) sans nom accessible.',
+	name: 'Images (role img) sans nom accessible.',
+	query: '[role="img"]',
+	filter: function (item) {
+		return (item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" )); //to complete
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'passed': "Cette page ne contient pas d'éléments avec un role img sans nom accessible.",
+		'failed': "Des éléments img sans nom accessible sont présents dans la page."
+	},
+	tags: ['a11y', 'images', 'aria', 'wcag'],
+	ressources: {'wcag': ['4.1.2']}
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: 'Images (role img) sans nom accessible.',
+	query: '[role="img"]',
+	filter: function (item) {
+		return (item.isNotExposedDueTo.length != 0 && (item.accessibleName == "" )); //to complete
+	},
+	expectedNbElements: 0,
+	explanations: {
+		'cantTell': "Cette page contient des éléments avec un role img non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur."
+	},
+	tags: ['a11y', 'images', 'aria', 'wcag'],
+	ressources: {'wcag': ['4.1.2']}
+});
+
+createTanaguruTest({
+	lang: 'fr',
+	name: 'Images (balise img) cachées sans nom accessible.',
 	query: 'img:not([role]):not([href]) ,[role="img"]',
 	filter: function (item) {
-		return (item.isNotExposedDueTo.length != 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""));
+		return (item.isNotExposedDueTo.length != 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[0] == "title"));
 	},
+	expectedNbElements: 0,
 	explanations: {
-		'cantTell': "Cette page contient des éléments img non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur.",
+		'cantTell': "Cette page contient des éléments img non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur."
 	},
-	tags: ['a11y', 'images', 'aria'],
+	tags: ['a11y', 'images', 'aria', 'wcag'],
 	ressources: {'wcag': ['4.1.2']}
 });
 
@@ -267,14 +270,14 @@ createTanaguruTest({
 	name: "Zone d'une image réactive (balise area) sans nom accessible.",
 	query: 'area:not([role])',
 	filter: function (item) {
-		return (item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""));
+		return (item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[0] == "title"));
 	},
 	expectedNbElements: 0,
 	explanations: {
 		'passed': "Cette page ne contient pas d'éléments area sans nom accessible.",
 		'failed': "Des éléments area sans nom accessible sont présents dans la page."
 	},
-	tags: ['a11y', 'images', 'aria'],
+	tags: ['a11y', 'images', 'aria', 'wcag'],
 	ressources: {'wcag': ['4.1.2']}
 });
 
@@ -283,13 +286,13 @@ createTanaguruTest({
 	name: "Zone d'une image réactive (balise area) non restituée sans nom accessible.",
 	query: 'area:not([role])',
 	filter: function (item) {
-		return (item.isNotExposedDueTo.length != 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""));
+		return (item.isNotExposedDueTo.length != 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[0] == "title"));
 	},
 	expectedNbElements: 0,
 	explanations: {
 		'cantTell': "Cette page contient des éléments area non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur."
 	},
-	tags: ['a11y', 'images', 'aria'],
+	tags: ['a11y', 'images', 'aria', 'wcag'],
 	ressources: {'wcag': ['4.1.2']}
 });
 
@@ -485,7 +488,7 @@ createTanaguruTest({
 });
 
 // ------------------------------------------------
-// --- 05 - LIENS IMAGES  ------------------------------
+// --- 05 - LIENS IMAGES  -------------------------
 // ------------------------------------------------
 
 createTanaguruTest({
@@ -667,7 +670,7 @@ createTanaguruTest({
 			'passed': "Cette page ne contient pas d'élément input sans nom accessible.",
 			'failed': "Des éléments input sans nom accessible sont présents dans la page."
 		},
-		tags: ['a11y', 'forms', 'aria'],
+		tags: ['a11y', 'forms', 'aria', 'wcag'],
 		ressources: {'wcag': ['4.1.2']}
 	});
 
@@ -682,7 +685,7 @@ createTanaguruTest({
 		explanations: {
 			'cantTell': "Cette page contient des éléments input non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur."
 		},
-		tags: ['a11y', 'forms', 'aria'],
+		tags: ['a11y', 'forms', 'aria', 'wcag'],
 		ressources: {'wcag': ['4.1.2']}
 	});
 	
@@ -698,7 +701,7 @@ createTanaguruTest({
 			'passed': "Cette page ne contient pas d'éléments select sans nom accessible.",
 			'failed': "Des éléments select sans nom accessible sont présents dans la page."
 		},
-		tags: ['a11y', 'forms', 'aria'],
+		tags: ['a11y', 'forms', 'aria', 'wcag'],
 		ressources: {'wcag': ['4.1.2']}
 	});
 
@@ -713,7 +716,7 @@ createTanaguruTest({
 		explanations: {
 			'cantTell': "Cette page contient des éléments input non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur."
 		},
-		tags: ['a11y', 'forms', 'aria'],
+		tags: ['a11y', 'forms', 'aria', 'wcag'],
 		ressources: {'wcag': ['4.1.2']}
 	});
 

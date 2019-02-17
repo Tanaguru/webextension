@@ -57,5 +57,6 @@
 	"tagStructure": {"message" : "Structuration de l'information"},
 	"tagPresentation": {"message" : "Présentation de l'information"},
 	"tagQ5y": {"message" : "Qualité web"},
-	"tagPidila": {"message" : "Pidila"}
+	"tagPidila": {"message" : "Pidila"},
+	"tagWcag": {"message" : "WCAG"}
 }
