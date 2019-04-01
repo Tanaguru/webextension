@@ -613,8 +613,6 @@ Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function (
 	return result;
 } });
 
-//Object.defineProperty(SVGElement.prototype, 'accessibleName', { get: function () { return ''; } });
-
 Object.defineProperty(SVGElement.prototype, 'isNotVisibleDueTo', { get: function () {
 	var result = [];
 	if (!(!!(this.offsetWidth || this.offsetHeight || this.getClientRects().length))) {
@@ -954,6 +952,9 @@ function createTanaguruTest(test) {
 	 			result.mark = test.mark;
 	 		}
 	 		result.tags = test.hasOwnProperty('tags') ? test.tags : ['others'];
+	 		if (test.hasOwnProperty('ressources')) {
+	 			result.ressources = test.ressources;
+	 		}
 	 		addResultSet("Nouvelle syntaxe d'écriture des tests", result);
 	 		
 	 		
