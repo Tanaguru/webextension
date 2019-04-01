@@ -433,12 +433,22 @@ alltagspanel.appendChild(statusescontents);
 
 // IN PROGRESS
 var reftests = {};
+
+
+// IN PROGRESS
+var ressourcestests = [];
 		
 		
 		
 		for (var test in response[0].tests) {
 			var testelement = document.createElement('div');
 			testelement.setAttribute('class', response[0].tests[test].tags.join(' '));
+			if (response[0].tests[test].hasOwnProperty('ressources')) {
+				var testressources = response[0].tests[test].ressources;
+				for (var r in testressources) {
+					testelement.className += ' ' + r;
+				}
+			}
 			var tabpanelsection = document.createElement('h3');
 			tabpanelsection.setAttribute('class', response[0].tests[test].type);
 			var tabpanelsectionbutton = document.createElement('button');
@@ -457,6 +467,18 @@ if (!reftests.hasOwnProperty(response[0].tests[test].tags[0].toUpperCase())) {
 reftests[response[0].tests[test].tags[0].toUpperCase()] += 1;
 testref.appendChild(document.createTextNode(response[0].tests[test].tags[0].toUpperCase() + '-' + reftests[response[0].tests[test].tags[0].toUpperCase()]));
 tabpanelsectionbutton.appendChild(testref);
+
+
+
+// IN PROGRESS
+if (response[0].tests[test].hasOwnProperty('ressources')) {
+	var testressources = response[0].tests[test].ressources;
+	for (var r in testressources) {
+		if (ressourcestests.indexOf(r) == -1) {
+			ressourcestests.push(r);
+		}
+	}
+}
 			
 			
 			
@@ -589,8 +611,12 @@ tabpanelsectionbutton.appendChild(testref);
 					tr.appendChild(td);
 					var td = document.createElement('td');
 					var code = document.createElement('code');
-					if (codehighlight) {
-						code.innerHTML = (response[0].tests[test].data[h].outer.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;")).replace(new RegExp(codehighlight), '<mark>$1</mark>'); // / key="([^"]*)"/
+					if (codehighlight && codehighlight.hasOwnProperty('attrs')) {
+						var codecontent = response[0].tests[test].data[h].outer.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+						for (var a = 0; a < codehighlight.attrs.length; a++) {
+							codecontent = codecontent.replace(new RegExp('(' + codehighlight.attrs[a] + '=&quot;(?:(?!&quot;).)*&quot;)'), '<mark>$1</mark>'); // / key="([^"]*)"/	
+						}
+						code.innerHTML = codecontent;
 					}
 					else {
 						code.appendChild(document.createTextNode(response[0].tests[test].data[h].outer));
@@ -1198,11 +1224,16 @@ alltagspanel.querySelector('#earl' + response[0].tests[test].type.charAt(0).toUp
 
 
 // IN PROGRESS
-	if (ul.querySelector('strong') && response[0].tags[tag].nbfailures > 0) {
-		var lastwithfailures = ul.querySelectorAll('strong');
-		lastwithfailures = lastwithfailures[lastwithfailures.length - 1];
-		lastwithfailures = lastwithfailures.parentNode;
-		lastwithfailures.insertAdjacentElement('afterend', tab);
+	if (response[0].tags[tag].nbfailures > 0) {
+		if (ul.querySelector('strong')) {
+			var lastwithfailures = ul.querySelectorAll('strong');
+			lastwithfailures = lastwithfailures[lastwithfailures.length - 1];
+			lastwithfailures = lastwithfailures.parentNode;
+			lastwithfailures.insertAdjacentElement('afterend', tab);
+		}
+		else if (ul.children.length > 2) {
+			ul.querySelector('li:nth-child(2)').insertAdjacentElement('afterend', tab);
+		}
 	}
 	else {
 		ul.appendChild(tab);
@@ -1211,6 +1242,26 @@ alltagspanel.querySelector('#earl' + response[0].tests[test].type.charAt(0).toUp
 
 
 		}
+
+
+
+ressourcestests.sort();
+for (var r = 0; r < ressourcestests.length; r++) {
+	var tab = document.createElement('li');
+	tab.setAttribute('class', 'ressource');
+	tab.setAttribute('role', 'tab');
+	tab.setAttribute('id', ressourcestests[r]);
+	tab.setAttribute('aria-selected', 'false');
+	tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
+	tab.setAttribute('tabindex', '0');
+	var span = document.createElement('span');
+	span.appendChild(document.createTextNode(ressourcestests[r].toUpperCase())); // A prévoir listing des ressources...
+	tab.appendChild(span);
+	ul.appendChild(tab);
+}
+
+
+
 		nav.appendChild(ul);
 		main.children[0].appendChild(nav);
 		main.children[1].querySelector('p').remove(); // Supprime le loading...

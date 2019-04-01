@@ -315,6 +315,10 @@ div.navigation li:first-child + li {
 	border-bottom: solid 1px #e5e5e5;
 	border-top: solid 1px #e5e5e5;
 }
+
+div.navigation li:not(.ressource) + li.ressource {
+	border-top: solid 1px #e5e5e5;
+}
 	
 div.navigation li {
 	box-sizing: border-box;
