@@ -853,7 +853,7 @@ function createTanaguruTest(test) {
 	 		// Initialisation des tags.
 	 		initTanaguru();
 	 		if (test.hasOwnProperty('tags') && test.tags.constructor == Array) {
-		 		for (var i = 0; i < test.tags.length; i++) {
+	 			for (var i = 0; i < test.tags.length; i++) {
 		 			if (!window.tanaguru.tags[test.tags[i]]) {
 		 				window.tanaguru.tags[test.tags[i]] = { id: test.tags[i], name: browser.i18n.getMessage('tag' + test.tags[i].charAt(0).toUpperCase() + test.tags[i].slice(1)), status: status, nbfailures: 0 };
 			 		}
@@ -861,7 +861,7 @@ function createTanaguruTest(test) {
 		 	}
 	 		else {
 		 		if (!window.tanaguru.tags['others']) {
-		 			window.tanaguru.tags['others'] = { name: browser.i18n.getMessage('tabOthers'), status: status, nbfailures: 0 };
+		 			window.tanaguru.tags['others'] = { name: browser.i18n.getMessage('tagOthers'), status: status, nbfailures: 0 };
 		 		}
 		 	}
 	 		
