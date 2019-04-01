@@ -45,8 +45,8 @@ createTanaguruTest({
 		'failed': "Des éléments iframe sans attribut title sont présents dans cette page."
 	},
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'frames', 'pidila', 'q5y'],
-	ressources: { 'rgaa': ['2.1.1'], 'pidila': ['Pi-357'], 'opquast' : ['145'] }
+	tags: ['a11y', 'frames', 'q5y'],
+	ressources: { 'rgaa': ['2.1.1'], 'pidila': ['Pi-357'], 'opquast': ['145'] }
 });
 
 createTanaguruTest({
@@ -68,8 +68,8 @@ createTanaguruTest({
 		'cantTell': "Vérifiez que les titres des cadres en présence sont pertinents."
 	},
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'frames', 'pidila', 'q5y'],
-	ressources: { 'rgaa': ['2.2.1'], 'pidila': ['Pi-357'], 'opquast' : ['145'] }
+	tags: ['a11y', 'frames', 'q5y'],
+	ressources: { 'rgaa': ['2.2.1'], 'pidila': ['Pi-357'], 'opquast': ['145'] }
 });
 
 createTanaguruTest({
@@ -91,8 +91,8 @@ createTanaguruTest({
 		'failed': "Des éléments iframe avec attribut title non pertinent sont présents dans cette page."
 	},
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'frames', 'pidila', 'q5y'],
-	ressources: { 'rgaa': ['2.2.1'], 'pidila': ['Pi-357'], 'opquast' : ['145'] }
+	tags: ['a11y', 'frames', 'q5y'],
+	ressources: { 'rgaa': ['2.2.1'], 'pidila': ['Pi-357'], 'opquast': ['145'] }
 });
 
 createTanaguruTest({
@@ -107,8 +107,8 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments frame ou iframe sans nom accessible.",
 		'failed': "Des éléments frame ou iframe sans nom accessible sont présents dans la page."
 	},
-	tags: ['a11y', 'frames', 'aria', 'wcag'],
-	ressources: {'wcag': ['4.1.2']}
+	tags: ['a11y', 'frames', 'aria'],
+	ressources: { 'wcag': ['4.1.2'] }
 });
 
 createTanaguruTest({
@@ -121,8 +121,8 @@ createTanaguruTest({
 	explanations: {
 		'cantTell': "Cette page contient des éléments frame ou iframe non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur.",
 	},
-	tags: ['a11y', 'frames', 'aria', 'wcag'],
-	ressources: {'wcag': ['4.1.2']}
+	tags: ['a11y', 'frames', 'aria'],
+	ressources: { 'wcag': ['4.1.2'] }
 });
 
 
@@ -139,8 +139,8 @@ createTanaguruTest({
 		'passed': "Un titre de niveau 1 (élément h1) est présent dans la page.", 
 		'failed': "Cette page ne contient pas de titre de niveau 1 (élément h1)."
 	},
-	tags: ['a11y', 'headings', 'SEO', 'pidila'],
-	ressources: { 'rgaa': ['9.1.1'], 'pidila' : ['Pi-362'], 'opquast' : ['13'] }
+	tags: ['a11y', 'headings', 'SEO'],
+	ressources: { 'rgaa': ['9.1.1'], 'pidila': ['Pi-362'], 'opquast': ['13'] }
 });
 
 createTanaguruTest({
@@ -152,8 +152,8 @@ createTanaguruTest({
 		'passed': "La page contient au moin un titre de niveau", 
 		'failed': "Cette page ne contient pas de titre de niveau)."
 	},
-	tags: ['a11y', 'wcag'],
-	ressources: { 'wcag': ['1.3.1']}
+	tags: ['a11y'],
+	ressources: { 'wcag': ['1.3.1'] }
 });
 
 createTanaguruTest({
@@ -163,8 +163,8 @@ createTanaguruTest({
 	explanations: {
 		'cantTell': "Vérifiez que les titres de contenus en présence sont pertinents."
 	},
-	tags: ['a11y', 'headings', 'SEO', 'pidila', 'wcag'],
-	ressources: { 'rgaa': ['9.1.4'], 'pidila' : ['Pi-362'], 'opquast' : ['13'], 'wcag': ['1.3.1'] }
+	tags: ['a11y', 'headings', 'SEO'],
+	ressources: { 'rgaa': ['9.1.4'], 'pidila': ['Pi-362'], 'opquast': ['13'], 'wcag': ['1.3.1'] }
 });
 
 
@@ -181,7 +181,7 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments area sans attribut alt.",
 		'failed': "Des éléments area sans attribut alt sont présents dans la page."
 	},
-	tags: ['a11y', 'images', 'pidila', 'q5y'],
+	tags: ['a11y', 'images', 'q5y'],
 	ressources: { 'rgaa': ['1.1.2'], 'pidila': ['Pi-309'], 'opquast': ['1'] }
 });
 
@@ -215,8 +215,8 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments img sans nom accessible.",
 		'failed': "Des éléments img sans nom accessible sont présents dans la page."
 	},
-	tags: ['a11y', 'images', 'aria', 'wcag'],
-	ressources: {'wcag': ['4.1.2']}
+	tags: ['a11y', 'images', 'aria'],
+	ressources: { 'wcag': ['4.1.2'] }
 });
 
 createTanaguruTest({
@@ -231,8 +231,8 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments avec un role img sans nom accessible.",
 		'failed': "Des éléments img sans nom accessible sont présents dans la page."
 	},
-	tags: ['a11y', 'images', 'aria', 'wcag'],
-	ressources: {'wcag': ['4.1.2']}
+	tags: ['a11y', 'images', 'aria'],
+	ressources: { 'wcag': ['4.1.2'] }
 });
 
 createTanaguruTest({
@@ -246,8 +246,8 @@ createTanaguruTest({
 	explanations: {
 		'cantTell': "Cette page contient des éléments avec un role img non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur."
 	},
-	tags: ['a11y', 'images', 'aria', 'wcag'],
-	ressources: {'wcag': ['4.1.2']}
+	tags: ['a11y', 'images', 'aria'],
+	ressources: { 'wcag': ['4.1.2'] }
 });
 
 createTanaguruTest({
@@ -261,8 +261,8 @@ createTanaguruTest({
 	explanations: {
 		'cantTell': "Cette page contient des éléments img non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur."
 	},
-	tags: ['a11y', 'images', 'aria', 'wcag'],
-	ressources: {'wcag': ['4.1.2']}
+	tags: ['a11y', 'images', 'aria'],
+	ressources: { 'wcag': ['4.1.2'] }
 });
 
 createTanaguruTest({
@@ -277,8 +277,8 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments area sans nom accessible.",
 		'failed': "Des éléments area sans nom accessible sont présents dans la page."
 	},
-	tags: ['a11y', 'images', 'aria', 'wcag'],
-	ressources: {'wcag': ['4.1.2']}
+	tags: ['a11y', 'images', 'aria'],
+	ressources: { 'wcag': ['4.1.2'] }
 });
 
 createTanaguruTest({
@@ -292,8 +292,8 @@ createTanaguruTest({
 	explanations: {
 		'cantTell': "Cette page contient des éléments area non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur."
 	},
-	tags: ['a11y', 'images', 'aria', 'wcag'],
-	ressources: {'wcag': ['4.1.2']}
+	tags: ['a11y', 'images', 'aria'],
+	ressources: { 'wcag': ['4.1.2'] }
 });
 
 createTanaguruTest({
@@ -305,7 +305,7 @@ createTanaguruTest({
 		'failed': "Des éléments area avec un attribut alt vide et un attribut title, aria-label, aria-describedby ou aria-labelledby sont présents dans la page"
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'images', 'q5y', 'pidila'],
+	tags: ['a11y', 'images', 'q5y'],
 	ressources: { 'rgaa': ['1.2.2'], 'pidila': ['Pi-309'], 'opquast': ['1'] }
 });
 
@@ -321,7 +321,7 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments area de décoration (sans attribut href) avec attribut alt renseigné.",
 		'failed': "Des éléments area de décoration (sans attribut href) avec attribut alt renseigné sont présents dans la page."
 	},
-	tags: ['a11y', 'images', 'q5y', 'pidila'],
+	tags: ['a11y', 'images', 'q5y'],
 	ressources: { 'rgaa': ['1.2.2'], 'pidila': ['Pi-309'], 'opquast': ['1'] }
 });
 
@@ -334,8 +334,8 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments cliquables area avec un attribut alt vide.",
 		'failed': "Des éléments cliquables area avec un alt vide sont présents dans la page."
 	},
-	tags: ['a11y', 'images', 'pidila', 'q5y'],
-	ressources: { 'rgaa': ['1.3.2'], 'pidila': ['Pi-304', 'Pi-305'], 'opquast': ['2, 3'] }
+	tags: ['a11y', 'images', 'q5y'],
+	ressources: { 'rgaa': ['1.3.2'], 'pidila': ['Pi-304', 'Pi-305'], 'opquast': ['2', '3'] }
 });
 
 createTanaguruTest({
@@ -363,8 +363,8 @@ createTanaguruTest({
 		'failed': "Des éléments cliquables (area) ont un attribut title, aria-label ou aria-labelledby différents de l'attibut alt."
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'images', 'pidila', 'q5y'],
-	ressources: { 'rgaa': ['1.3.2'], 'pidila': ['Pi-304', 'Pi-305'], 'opquast': ['2, 3'] }
+	tags: ['a11y', 'images', 'q5y'],
+	ressources: { 'rgaa': ['1.3.2'], 'pidila': ['Pi-304', 'Pi-305'], 'opquast': ['2', '3'] }
 });
 
 createTanaguruTest({
@@ -376,8 +376,8 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments img sans attribut alt.",
 		'failed': "Des éléments img sans attribut alt sont présents dans la page."
 	},
-	tags: ['a11y', 'images', 'SEO', 'pidila', 'q5y'],
-	ressources: { 'rgaa': ['1.1.1'], 'pidila': ['Pi-302'], 'opquast' : ['1, 2, 3'] }
+	tags: ['a11y', 'images', 'SEO', 'q5y'],
+	ressources: { 'rgaa': ['1.1.1'], 'pidila': ['Pi-302'], 'opquast': ['1', '2', '3'] }
 });
 
 createTanaguruTest({
@@ -389,8 +389,8 @@ createTanaguruTest({
 		'failed': "Des éléments img avec un attribut alt vide et un attribut title, aria-label, aria-describedby ou aria-labelledby sont présents dans la page."
 	},
 	mark: '(alt=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'images', 'pidila', 'q5y'],
-	ressources: { 'rgaa': ['1.2.1'], 'pidila': ['Pi-309', 'Pi-356'], 'opquast' : ['2, 3'] }
+	tags: ['a11y', 'images', 'q5y'],
+	ressources: { 'rgaa': ['1.2.1'], 'pidila': ['Pi-309', 'Pi-356'], 'opquast': ['2', '3'] }
 });
 
 createTanaguruTest({
@@ -670,8 +670,8 @@ createTanaguruTest({
 			'passed': "Cette page ne contient pas d'élément input sans nom accessible.",
 			'failed': "Des éléments input sans nom accessible sont présents dans la page."
 		},
-		tags: ['a11y', 'forms', 'aria', 'wcag'],
-		ressources: {'wcag': ['4.1.2']}
+		tags: ['a11y', 'forms', 'aria'],
+		ressources: { 'wcag': ['4.1.2'] }
 	});
 
 	createTanaguruTest({
@@ -685,8 +685,8 @@ createTanaguruTest({
 		explanations: {
 			'cantTell': "Cette page contient des éléments input non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur."
 		},
-		tags: ['a11y', 'forms', 'aria', 'wcag'],
-		ressources: {'wcag': ['4.1.2']}
+		tags: ['a11y', 'forms', 'aria'],
+		ressources: { 'wcag': ['4.1.2'] }
 	});
 	
 	createTanaguruTest({
@@ -701,8 +701,8 @@ createTanaguruTest({
 			'passed': "Cette page ne contient pas d'éléments select sans nom accessible.",
 			'failed': "Des éléments select sans nom accessible sont présents dans la page."
 		},
-		tags: ['a11y', 'forms', 'aria', 'wcag'],
-		ressources: {'wcag': ['4.1.2']}
+		tags: ['a11y', 'forms', 'aria'],
+		ressources: { 'wcag': ['4.1.2'] }
 	});
 
 	createTanaguruTest({
@@ -716,8 +716,8 @@ createTanaguruTest({
 		explanations: {
 			'cantTell': "Cette page contient des éléments input non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur."
 		},
-		tags: ['a11y', 'forms', 'aria', 'wcag'],
-		ressources: {'wcag': ['4.1.2']}
+		tags: ['a11y', 'forms', 'aria'],
+		ressources: { 'wcag': ['4.1.2'] }
 	});
 
 // ------------------------------------------------
@@ -788,8 +788,8 @@ createTanaguruTest({
 		'passed': "La page a un titre de page.",
 		'failed': "Aucun titre (balise title dans la balise head) dans la page."
 	},
-	tags: ['a11y', 'Mandatory', 'SEO', 'pidila'],
-	ressources: { 'rgaa': ['8.5.1'], 'pidila':['Pi-412'], 'opquast':['32','33'] }
+	tags: ['a11y', 'Mandatory', 'SEO'],
+	ressources: { 'rgaa': ['8.5.1'], 'pidila': ['Pi-412'], 'opquast': ['32', '33'] }
 	});
 
 createTanaguruTest({
@@ -807,8 +807,8 @@ createTanaguruTest({
 		'failed': "Le titre de la page est vide."
 	},
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'Mandatory', 'pidila'],
-	ressources: { 'rgaa': ['8.6.1'], 'pidila':['Pi-412'] , 'opquast':['32','33']}
+	tags: ['a11y', 'Mandatory'],
+	ressources: { 'rgaa': ['8.6.1'], 'pidila': ['Pi-412'] , 'opquast': ['32', '33'] }
 	});
 
 // Gestion des langues
@@ -823,8 +823,8 @@ createTanaguruTest({
 		'failed': "Aucune langue par défaut n'est définie dans la page."
 	},
 	mark: '(lang=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'Mandatory', 'SEO', 'pidila'],
-	ressources: { 'rgaa': ['8.3.1'], 'pidila':['Pi-361'], 'opquast':['132'] }
+	tags: ['a11y', 'Mandatory', 'SEO'],
+	ressources: { 'rgaa': ['8.3.1'], 'pidila': ['Pi-361'], 'opquast': ['132'] }
 });
 
 createTanaguruTest({
@@ -836,8 +836,8 @@ createTanaguruTest({
 		'failed': "la langue par défaut est vide."
 	},
 	mark: '(lang=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['a11y', 'Mandatory', 'SEO', 'pidila'],
-	ressources: { 'rgaa': ['8.4.1'], 'pidila':['Pi-361'], 'opquast':['132'] }
+	tags: ['a11y', 'Mandatory', 'SEO'],
+	ressources: { 'rgaa': ['8.4.1'], 'pidila': ['Pi-361'], 'opquast': ['132'] }
 });
 
 createTanaguruTest({
@@ -1014,7 +1014,7 @@ createTanaguruTest({
 		'failed' : "Cette page contient des liens dont la propriété outline a été supprimée "
 	},
 	tags: ['a11y', 'Presentation'],
-	ressources: { 'pidila':['Pi-328'],'opquast':['155'],'rgaa':['10.7.1'] } 
+	ressources: { 'pidila': ['Pi-328'], 'opquast': ['155'], 'rgaa': ['10.7.1'] } 
 })
 
 createTanaguruTest({
@@ -1029,8 +1029,8 @@ createTanaguruTest({
 		'passed' : "la propriété outline-style n'est pas supprimée pour les liens",
 		'failed' : "Cette page contient des liens dont la propriété outline-style a été supprimée "
 	},
-	tags: ['a11y', 'Presentation','pidila','q5y'],
-	ressources: { 'pidila':['Pi-328'],'opquast':['155'],'rgaa':['10.7.1'] } 
+	tags: ['a11y', 'Presentation', 'q5y'],
+	ressources: { 'pidila': ['Pi-328'], 'opquast': ['155'], 'rgaa': ['10.7.1'] } 
 })
 
 createTanaguruTest({
@@ -1046,7 +1046,7 @@ createTanaguruTest({
 		'failed' : "Cette page contient des liens dont la propriété outline-width a été supprimée "
 	},
 	tags: ['a11y', 'Presentation'],
-	ressources: { 'pidila':['Pi-328'],'opquast':['155'],'rgaa':['10.7.1'] } 
+	ressources: { 'pidila': ['Pi-328'], 'opquast': ['155'], 'rgaa': ['10.7.1'] } 
 })
 
 // ------------------------------------------------
@@ -1066,7 +1066,7 @@ createTanaguruTest({
 		'failed' : "Cette page contient des liens dont la propriété outline-width a été supprimée "
 	},
 	tags: ['a11y', 'Presentation'],
-	ressources: { 'pidila':['Pi-328'],'opquast':['155'],'rgaa':['10.7.1'] } 
+	ressources: { 'pidila': ['Pi-328'], 'opquast': ['155'], 'rgaa': ['10.7.1'] } 
 })
 
 
@@ -1126,8 +1126,8 @@ createTanaguruTest({
 		'failed' : "Au moins une balise de style ou un attribut de style non vide est présent dans la page."
 	},
 	mark: '(style=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['SEO', 'pidila'],
-	ressources: { 'pidila':['Pi-412'], 'opquast':['146'] }
+	tags: ['SEO'],
+	ressources: { 'pidila': ['Pi-412'], 'opquast': ['146'] }
 })
 
 createTanaguruTest({
@@ -1148,8 +1148,8 @@ createTanaguruTest({
 		'passed' : "Le titre de la page contient moins de 80 caractères.",
 		'failed' : "Le titre de la page contient plus de 80 caractères."
 	},
-	tags: ['q5y', 'SEO', 'pidila'],
-	ressources: { 'pidila':['Pi-412'], 'opquast':['146'] }
+	tags: ['q5y', 'SEO'],
+	ressources: { 'pidila': ['Pi-412'], 'opquast': ['146'] }
 })
 
 /*************************************************
@@ -1166,8 +1166,8 @@ createTanaguruTest({
 		'failed': "Des éléments framest, frame ou noframes sont présents dans cette page."
 	},
 	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['q5y','pidila'],
-	ressources: { 'pidila':['Pi-368'], 'opquast':['146'] }
+	tags: ['q5y'],
+	ressources: { 'pidila': ['Pi-368'], 'opquast': ['146'] }
 })
 
 createTanaguruTest({
@@ -1183,8 +1183,8 @@ createTanaguruTest({
 		'failed': "la balise meta viewport contient la propriété minimum-scale."
 	},
 	mark: '(content=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['q5y','pidila'],
-	ressources: { 'pidila':['Pi-344'], 'opquast':['139'] }
+	tags: ['q5y'],
+	ressources: { 'pidila': ['Pi-344'], 'opquast': ['139'] }
 })
 
 createTanaguruTest({
@@ -1200,8 +1200,8 @@ createTanaguruTest({
 		'failed': "la balise meta viewport contient la propriété maximum-scale."
 	},
 	mark: '(content=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['q5y','pidila'],
-	ressources: { 'pidila':['Pi-344'], 'opquast':['139'] }
+	tags: ['q5y'],
+	ressources: { 'pidila': ['Pi-344'], 'opquast': ['139'] }
 })
 
 createTanaguruTest({
@@ -1217,8 +1217,8 @@ createTanaguruTest({
 		'failed': "la balise meta viewport contient la propriété user-scalable."
 	},
 	mark: '(content=&quot;(?:(?!&quot;).)*&quot;)',
-	tags: ['q5y','pidila'],
-	ressources: { 'pidila':['Pi-344'], 'opquast':['139'] }
+	tags: ['q5y'],
+	ressources: { 'pidila': ['Pi-344'], 'opquast': ['139'] }
 })
 
 /*************************************************
@@ -1237,8 +1237,8 @@ createTanaguruTest({
 		'passed': "Il existe un lien vers la page mentions légales dans cette page", 
 		'failed': "Le lien vers la page mentions légales est absent dans cette page."
 	},
-	tags: ['q5y','pidila'],
-	ressources: { 'pidila':['Pi-008', 'Pi-032'],'opquast':['26'] }
+	tags: ['q5y'],
+	ressources: { 'pidila': ['Pi-008', 'Pi-032'], 'opquast': ['26'] }
 })
 
 createTanaguruTest({
@@ -1253,8 +1253,8 @@ createTanaguruTest({
 		'passed': "Il existe un lien vers la page accessibilité dans cette page", 
 		'failed': "Le lien accessibilité est absent dans cette page."
 	},
-	tags: ['q5y','pidila'],
-	ressources: { 'pidila':['Pi-010', 'Pi-032'],'opquast':['26'] } 
+	tags: ['q5y'],
+	ressources: { 'pidila': ['Pi-010', 'Pi-032'], 'opquast': ['26'] } 
 })
 
 createTanaguruTest({
@@ -1269,8 +1269,8 @@ createTanaguruTest({
 		'passed': "Il existe un lien vers la page contact dans cette page", 
 		'failed': "Le lien contact est absent dans cette page."
 	},
-	tags: ['q5y','pidila'],
-	ressources: { 'pidila':['Pi-032'],'opquast':['26'] } 
+	tags: ['q5y'],
+	ressources: { 'pidila': ['Pi-032'], 'opquast': ['26'] } 
 })
 
 createTanaguruTest({
@@ -1285,8 +1285,8 @@ createTanaguruTest({
 		'passed': "Il existe un lien vers la page plan du site dans cette page", 
 		'failed': "Le lien plan du site est absent dans cette page."
 	},
-	tags: ['q5y','pidila'],
-	ressources: { 'pidila':['Pi-032'],'opquast':['26'] } 
+	tags: ['q5y'],
+	ressources: { 'pidila': ['Pi-032'], 'opquast': ['26'] } 
 })
 
 createTanaguruTest({
@@ -1298,8 +1298,7 @@ createTanaguruTest({
 		'passed': "Il existe un lien vers la page legifrance.gouv.fr dans cette page", 
 		'failed': "Le lien legifrance.gouv.fr est absent dans cette page."
 	},
-	tags: ['pidila'],
-	ressources: { 'pidila':['Pi-147'] } 
+	ressources: { 'pidila': ['Pi-147'] } 
 })
 
 createTanaguruTest({
@@ -1311,8 +1310,7 @@ createTanaguruTest({
 		'passed': "Il existe un lien vers la page service-public.fr dans cette page", 
 		'failed': "Le lien service-public.fr est absent dans cette page."
 	},
-	tags: ['pidila'],
-	ressources: { 'pidila':['Pi-147'] } 
+	ressources: { 'pidila': ['Pi-147'] } 
 })
 
 createTanaguruTest({
@@ -1324,8 +1322,7 @@ createTanaguruTest({
 		'passed': "Il existe un lien vers la page gouvernement.fr dans cette page", 
 		'failed': "Le lien gouvernement.fr est absent dans cette page."
 	},
-	tags: ['pidila'],
-	ressources: { 'pidila':['Pi-147'] } 
+	ressources: { 'pidila': ['Pi-147'] } 
 })
 
 createTanaguruTest({
@@ -1337,8 +1334,7 @@ createTanaguruTest({
 		'passed': "Il existe un lien vers la page france.fr dans cette page", 
 		'failed': "Le lien france.fr est absent dans cette page."
 	},
-	tags: ['pidila'],
-	ressources: { 'pidila':['Pi-147'] } 
+	ressources: { 'pidila': ['Pi-147'] } 
 })
 
 
