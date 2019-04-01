@@ -1223,21 +1223,17 @@ alltagspanel.querySelector('#earl' + response[0].tests[test].type.charAt(0).toUp
 			}
 
 
-// IN PROGRESS
-	if (response[0].tags[tag].nbfailures > 0) {
-		if (ul.querySelector('strong')) {
-			var lastwithfailures = ul.querySelectorAll('strong');
-			lastwithfailures = lastwithfailures[lastwithfailures.length - 1];
-			lastwithfailures = lastwithfailures.parentNode;
-			lastwithfailures.insertAdjacentElement('afterend', tab);
-		}
-		else if (ul.children.length > 2) {
-			ul.querySelector('li:nth-child(2)').insertAdjacentElement('afterend', tab);
-		}
-	}
-	else {
-		ul.appendChild(tab);
-	}
+	// IN PROGRESS
+			//if (response[0].tags[tag].nbfailures > 0) {
+			if (ul.querySelector('strong')) {
+				var lastwithfailures = ul.querySelectorAll('strong');
+				lastwithfailures = lastwithfailures[lastwithfailures.length - 1];
+				lastwithfailures = lastwithfailures.parentNode;
+				lastwithfailures.insertAdjacentElement('afterend', tab);
+			}
+			else {
+				ul.appendChild(tab);
+			}
 
 
 
