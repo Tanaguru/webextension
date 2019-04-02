@@ -699,6 +699,10 @@ table li button, table li span.noaction {
 	padding: 3px; display: inline-block; vertical-align: middle;
 }
 
+table li button img {
+	pointer-events: none;
+}
+
 table li img {
 	vertical-align: bottom;
 }
