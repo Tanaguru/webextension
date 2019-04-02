@@ -861,7 +861,7 @@ function createTanaguruTest(test) {
 		 	}
 	 		else {
 		 		if (!window.tanaguru.tags['others']) {
-		 			window.tanaguru.tags['others'] = { name: browser.i18n.getMessage('tagOthers'), status: status, nbfailures: 0 };
+		 			window.tanaguru.tags['others'] = { id: 'others', name: browser.i18n.getMessage('tagOthers'), status: status, nbfailures: 0 };
 		 		}
 		 	}
 	 		
