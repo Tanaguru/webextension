@@ -616,7 +616,12 @@ createTanaguruTest({
 			if (!item.matches('[aria-labelledby], [aria-label], [title]')) {
 				if (item.matches('img')) {
 					// Image (possibilité de gérer le sans alt).
-					return item.getAttribute('alt') == '';
+					if (item.hasAttribute('alt')) {
+						return item.getAttribute('alt') == '';
+					}
+					else {
+						return true;
+					}
 				}
 				else {
 					var cloneditem = item.cloneNode(true);
@@ -1075,10 +1080,9 @@ createTanaguruTest({
 	query: 'head > meta[name="description"]',
 	expectedNbElements: 0,
 	filter: function(item){
-		if (item.getAttribute('content').length > 250){
+		if (item.hasAttribute('content') && item.getAttribute('content').length > 250){
 			return true;
 		}
-
 		return false;
 	},
 	explanations: {
