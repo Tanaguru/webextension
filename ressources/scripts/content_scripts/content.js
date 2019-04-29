@@ -546,7 +546,7 @@ HTMLElement.prototype.isARIARoleAllowedOnMe = function (role) { return this.avai
 HTMLElement.prototype.isARIAStatePropertyAllowedOnMe = function (stateproperty) { return ''; };
 
 Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function () {
-	var result = ''; // NULL
+	var result = null; // NULL
 	if (this.isNotExposedDueTo.length == 0) {
 		if (this.hasAttribute('aria-labelledby')) {
 			var labelledby = this.getAttribute('aria-labelledby');
@@ -588,10 +588,10 @@ Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function (
 				}
 				else if (this.matches('input[type="button"], input[type="image"], input[type="reset"], input[type="submit"]')) {
 					var anattribute = this.getAttribute('type') == 'image' ? 'alt' : 'value';
-					result = this.hasAttribute(anattribute) ? anattribute + ':' + this.getAttribute(anattribute) : ''; // NULL
+					result = this.hasAttribute(anattribute) ? anattribute + ':' + this.getAttribute(anattribute) : null; // NULL
 				}
 				else if (this.matches('input, select')) {
-					var label = this.hasAttribute('id') ? document.querySelector('label[for="' + this.getAttribute('id') + '"]') : ''; // NULL
+					var label = this.hasAttribute('id') ? document.querySelector('label[for="' + this.getAttribute('id') + '"]') : null; // NULL
 					if (label) {
 						var images = label.querySelectorAll('img');
 						var clonedLabel = label.cloneNode(true);
