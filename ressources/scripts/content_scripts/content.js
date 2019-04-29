@@ -546,69 +546,87 @@ HTMLElement.prototype.isARIARoleAllowedOnMe = function (role) { return this.avai
 HTMLElement.prototype.isARIAStatePropertyAllowedOnMe = function (stateproperty) { return ''; };
 
 Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function () {
-	var result = '';
-	if (this.hasAttribute('aria-labelledby')) {
-		result = 'aria-labelledby:' + this.getAttribute('aria-labelledby'); //{to-compute}
-	}
-	if (result == '') {
-		if (this.hasAttribute('aria-label')) {
-			result = 'aria-label:' + this.getAttribute('aria-label');
+	var result = ''; // NULL
+	if (this.isNotExposedDueTo.length == 0) {
+		if (this.hasAttribute('aria-labelledby')) {
+			var labelledby = this.getAttribute('aria-labelledby');
+			if (labelledby.trim().length > 0) {
+				labelledby = labelledby.split(' ');
+				labelledby.forEach(function (item) {
+					item = '#' + item;
+				});
+				var nodes = document.querySelectorAll(labelledby.join(','));
+				if (nodes.length) {
+					result = 'aria-labelledby';
+					for (var i = 0; i < nodes.length; i++) {
+						result += (i > 0 ? ' ' : '') + nodes[i].accessibleName;
+					}
+				}
+			}
 		}
-		else if (this.tagName.toLowerCase() == 'a' && !this.hasAttribute('role')) {
-			var contentLink = this.querySelectorAll('img');
-			contentLink.forEach(function(node) {
-			
-				node.accessibleName
-			});
-			result = 'content:' + this.textContent;
-		}
-		else if ((this.tagName.toLowerCase() == 'img' && this.hasAttribute('alt')) && !this.hasAttribute('role')) {
-			result = 'alt:' + this.getAttribute('alt');
-		}
-		else if (this.tagName.toLowerCase() == 'area' && this.hasAttribute('alt')) {
-			result = 'alt:' + this.getAttribute('alt');
-		}
-		else if (this.tagName.toLowerCase() == 'input') {
-			if (this.hasAttribute('type') && ['button', 'image', 'reset', 'submit'].indexOf(this.getAttribute('type').toLowerCase()) > -1) {
-				var anattr = this.getAttribute('type') == 'image' ? 'alt' : 'value';
-				result = this.hasAttribute(anattr) ? anattr + ':' + this.getAttribute(anattr) : '';
+		if (result == null) {
+			if (this.hasAttribute('aria-label') && this.getAttribute('aria-label').trim() != '') {
+				result = 'aria-label:' + this.getAttribute('aria-label');
+			}
+			else if (!this.matches('[role="none"], [role="presentation"]')) {
+				if (this.matches('a, button')) {
+					var images = this.querySelectorAll('img');
+					var clonedThis = this.cloneNode(true);
+					var clonedImages = clonedThis.querySelectorAll('img');
+					for (var i = 0; i < clonedImages.length; i++) {
+						var an = clonedImages.accessibleName;
+						an = an == null ? '' : an;
+						clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
+					}
+					result = 'content:' + clonedThis.textContent; // A décomposer dans l'UI.
+				}
+				else if (this.matches('area, img') && this.hasAttribute('alt')) {
+					result = 'alt:' + this.getAttribute('alt');
+				}
+				else if (this.matches('iframe') && this.hasAttribute('title')) {
+					result = 'title:' + this.getAttribute('title');
+				}
+				else if (this.matches('input[type="button"], input[type="image"], input[type="reset"], input[type="submit"]')) {
+					var anattribute = this.getAttribute('type') == 'image' ? 'alt' : 'value';
+					result = this.hasAttribute(anattribute) ? anattribute + ':' + this.getAttribute(anattribute) : ''; // NULL
+				}
+				else if (this.matches('input, select')) {
+					var label = this.hasAttribute('id') ? document.querySelector('label[for="' + this.getAttribute('id') + '"]') : ''; // NULL
+					if (label) {
+						var images = label.querySelectorAll('img');
+						var clonedLabel = label.cloneNode(true);
+						var clonedImages = clonedLabel.querySelectorAll('img');
+						for (var i = 0; i < clonedImages.length; i++) {
+							var an = clonedImages.accessibleName;
+							an = an == null ? '' : an;
+							clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
+						}
+						result = 'label[for]:' + clonedLabel.textContent;
+					}
+					else if (this.matches('label input, label select')) {
+						label = this.closest('label');
+						var images = label.querySelectorAll('img');
+						var clonedLabel = label.cloneNode(true);
+						var clonedImages = clonedLabel.querySelectorAll('img');
+						for (var i = 0; i < clonedImages.length; i++) {
+							var an = clonedImages.accessibleName;
+							an = an == null ? '' : an;
+							clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
+						}
+						result = 'label[for]:' + clonedLabel.textContent;
+					}
+					else if (this.hasAttribute('title')) {
+						result = 'title:' + this.getAttribute('title');
+					}
+				}
 			}
 			else {
-				var label = this.hasAttribute('id') ? document.querySelector('label[for="' + this.getAttribute('id') + '"]') : null;
-				if (label) {
-					result = 'label[for]:' + label.textContent;
-				}
-				else if (this.matches('label input')) {
-					var parent = this.parentNode;
-					while (parent.nodeType != 1 && parent.tagName.toLowerCase() != 'label') {
-						parent = parent.parentNode;
-					}
-					result = 'label:' + parent.textContent;
-				}
-				else if (this.hasAttribute('title')) {
-					result = 'title:' + this.getAttribute('title');
-				}	
+				result = '';
 			}
 		}
-		else if (this.tagName.toLowerCase() == 'select') {
-			var label = this.hasAttribute('id') ? document.querySelector('label[for="' + this.getAttribute('id') + '"]') : null;
-			if (label) {
-				result = 'label[for]:' + label.textContent;
-			}
-			else if (this.matches('label select')) {
-				var parent = this.parentNode;
-				while (parent.nodeType != 1 && parent.tagName.toLowerCase() != 'label') {
-					parent = parent.parentNode;
-				}
-				result = 'label:' + parent.textContent;
-			}
-			else if (this.hasAttribute('title')) {
-				result = 'title:' + this.getAttribute('title');
-			}
-		}
-		else if (this.hasAttribute('title')) {
-			result = 'title:' + this.getAttribute('title');
-		}
+	}
+	else {
+		result = '';
 	}
 	return result;
 } });
@@ -821,6 +839,7 @@ function loadTanaguruTests() {
 }
 
 function manageOutput(element) {
+	var accessibleName = element.accessibleName;
 	var implicitARIASemantic = element.implicitARIASemantic;
 	var explicitARIASemantic = element.explicitARIASemantic;
 	var canBeReachedUsingKeyboardWith = element.canBeReachedUsingKeyboardWith;
@@ -833,7 +852,7 @@ function manageOutput(element) {
 			fakeelement.innerHTML = '[...]';
 		}	
 	}
-	return { outer: fakeelement.outerHTML, xpath: getXPath(element), role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isNotVisibleDueTo: isNotVisibleDueTo, isNotExposedDueTo: isNotExposedDueTo };
+	return { outer: fakeelement.outerHTML, xpath: getXPath(element), role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isNotVisibleDueTo: isNotVisibleDueTo, isNotExposedDueTo: isNotExposedDueTo };
 }
 
 
