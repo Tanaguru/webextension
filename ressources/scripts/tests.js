@@ -100,7 +100,7 @@ createTanaguruTest({
 	name: 'Cadre (balise iframe) sans nom accessible.',
 	query: 'iframe:not([role]), frame:not([role])',
 	filter: function (item) {
-		return (item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/).length == 1));
+		return item.accessibleName == null;
 	},
 	expectedNbElements: 0,
 	explanations: {
@@ -116,7 +116,7 @@ createTanaguruTest({
 	name: 'Cadre non restituées (balise iframe) sans nom accessible.',
 	query: 'iframe:not([role]), frame:not([role])',
 	filter: function (item) {
-		return (item.isNotExposedDueTo.length != 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/).length == 1));
+		return item.accessibleName == null;
 	},
 	explanations: {
 		'cantTell': "Cette page contient des éléments frame ou iframe non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur.",
@@ -208,7 +208,7 @@ createTanaguruTest({
 	name: 'Images (balise img) sans nom accessible.',
 	query: 'img:not([role]):not([href])',
 	filter: function (item) {
-		return (item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[0] == "title"));
+		return item.accessibleName == null;
 	},
 	expectedNbElements: 0,
 	explanations: {
@@ -224,7 +224,7 @@ createTanaguruTest({
 	name: 'Images (role img) sans nom accessible.',
 	query: '[role="img"]',
 	filter: function (item) {
-		return (item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" )); //to complete
+		return item.accessibleName == null; //to complete
 	},
 	expectedNbElements: 0,
 	explanations: {
@@ -240,7 +240,7 @@ createTanaguruTest({
 	name: 'Images (balise img ou rôle img) non restituées sans nom accessible.',
 	query: 'img:not([role]):not([href]) ,[role="img"]',
 	filter: function (item) {
-		return (item.isNotExposedDueTo.length != 0 && (item.accessibleName == ""));
+		return item.accessibleName == null;
 	},
 	explanations: {
 		'cantTell': "Cette page contient des éléments img non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur."
@@ -254,7 +254,7 @@ createTanaguruTest({
 	name: "Zone d'une image réactive (balise area) sans nom accessible.",
 	query: 'area:not([role])',
 	filter: function (item) {
-		return (item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[0] == "title"));
+		return item.accessibleName == null;
 	},
 	expectedNbElements: 0,
 	explanations: {
@@ -270,7 +270,7 @@ createTanaguruTest({
 	name: "Zone d'une image réactive (balise area) non restituée sans nom accessible.",
 	query: 'area:not([role])',
 	filter: function (item) {
-		return (item.isNotExposedDueTo.length != 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[0] == "title"));
+		return item.accessibleName == null;
 	},
 	expectedNbElements: 0,
 	explanations: {
@@ -652,7 +652,7 @@ createTanaguruTest({
 		name: 'élément de formulaire (balise input) sans nom accessible.',
 		query: 'input:not([role])',
 		filter: function (item) {
-			return (item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""));
+			return item.accessibleName == null;
 		},
 		expectedNbElements: 0,
 		explanations: {
@@ -668,7 +668,7 @@ createTanaguruTest({
 		name: 'élément de formulaire non restitué (balise input) sans nom accessible.',
 		query: 'input:not([role])',
 		filter: function (item) {
-			return (item.isNotExposedDueTo.length != 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""));
+			return item.accessibleName == null;
 		},
 		explanations: {
 			'cantTell': "Cette page contient des éléments input non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur."
@@ -682,7 +682,7 @@ createTanaguruTest({
 		name: 'élément de formulaire (balise select) sans nom accessible.',
 		query: 'select:not([role])',
 		filter: function (item) {
-			return (item.isNotExposedDueTo.length == 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""));	
+			return item.accessibleName == null;	
 		},
 		expectedNbElements: 0,
 		explanations: {
@@ -698,7 +698,7 @@ createTanaguruTest({
 		name: 'élément de formulaire non restitué (balise select) sans nom accessible.',
 		query: 'select:not([role])',
 		filter: function (item) {
-			return (item.isNotExposedDueTo.length != 0 && (item.accessibleName == "" || item.accessibleName.split(/\:(.+)/)[1] == ""));
+			return item.accessibleName == null;
 		},
 		expectedNbElements: 0,
 		explanations: {
