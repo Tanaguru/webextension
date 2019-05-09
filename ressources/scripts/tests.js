@@ -964,12 +964,20 @@ createTanaguruTest({
 		var nodeName = item.nodeName;
 		var widthAttr = item.attributes.width;
 		var heightAttr = item.attributes.height;
+		var colorAttr = item.attributes.color;
 
 		/** Si l'élément possède les attributs width et/ou height, et s'il s'agit 
 		 * d'un élément img, svg, canvas, embed ou object : exclure l'élément de l'échantillon.
 		 * Sinon, on le laisse. Ainsi un élément img[width] ne sera pas ajouté.
 		 */
 
+		if (colorAttr !== undefined) {
+			if (nodeName == "LINK") {
+				return false;
+			}
+			return true;
+		}
+		
 		if (widthAttr !== undefined || heightAttr !== undefined) {
 			if (nodeName == 'IMG' || nodeName == 'SVG' || nodeName == 'CANVAS' || nodeName == 'EMBED' || nodeName == 'OBJECT') {
 				return false;
