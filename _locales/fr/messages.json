@@ -36,6 +36,7 @@
 	"earlUntested": { "message": "Non testé" },
 	"uiTagButton": { "message": "Tous les tests avec l'étiquette \"{tagName}\"." },
 	"allTags": { "message": "Tous les tests" },
+	"tagCIE" : {"message":"Charte internet de l'État"},
 	"tagA11y": { "message": "Accessibilité" },
 	"tagButtons": { "message": "Boutons" },
 	"tagEcoconception": { "message": "Éco-conception" },
