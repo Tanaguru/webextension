@@ -36,6 +36,7 @@
 	"earlUntested": { "message": "Not tested" },
 	"uiTagButton": { "message": "All tests with the \"{tagName}\" tag." },
 	"allTags": { "message": "All tests" },
+	"tagCIE" : {"message":"Internet Charter of French Gov"},
 	"tagA11y": { "message": "Accessibility" },
 	"tagButtons": { "message": "Buttons" },
 	"tagEcoconception": { "message": "Eco-design" },

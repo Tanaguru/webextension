@@ -1293,7 +1293,7 @@ createTanaguruTest({
 		'passed': "Il existe un lien vers la page legifrance.gouv.fr dans cette page", 
 		'failed': "Le lien legifrance.gouv.fr est absent dans cette page."
 	},
-	tag: ['CIE'],
+	tags: ['CIE'],
 	ressources: { 'pidila': ['Pi-147'] } 
 })
 
@@ -1306,7 +1306,7 @@ createTanaguruTest({
 		'passed': "Il existe un lien vers la page service-public.fr dans cette page", 
 		'failed': "Le lien service-public.fr est absent dans cette page."
 	},
-	tag: ['CIE'],
+	tags: ['CIE'],
 	ressources: { 'pidila': ['Pi-147'] } 
 })
 
@@ -1319,7 +1319,7 @@ createTanaguruTest({
 		'passed': "Il existe un lien vers la page gouvernement.fr dans cette page", 
 		'failed': "Le lien gouvernement.fr est absent dans cette page."
 	},
-	tag: ['CIE'],
+	tags: ['CIE'],
 	ressources: { 'pidila': ['Pi-147'] } 
 })
 
@@ -1332,7 +1332,7 @@ createTanaguruTest({
 		'passed': "Il existe un lien vers la page france.fr dans cette page", 
 		'failed': "Le lien france.fr est absent dans cette page."
 	},
-	tag: ['CIE'],
+	tags: ['CIE'],
 	ressources: { 'pidila': ['Pi-147'] } 
 })
 
