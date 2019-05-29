@@ -570,7 +570,6 @@ Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function (
 			}
 			else if (!this.matches('[role="none"], [role="presentation"]')) {
 				if (this.matches('a, button')) {
-					var images = this.querySelectorAll('img');
 					var clonedThis = this.cloneNode(true);
 					var clonedImages = clonedThis.querySelectorAll('img');
 					for (var i = 0; i < clonedImages.length; i++) {
@@ -593,7 +592,6 @@ Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function (
 				else if (this.matches('input, select')) {
 					var label = this.hasAttribute('id') ? document.querySelector('label[for="' + this.getAttribute('id') + '"]') : null; // NULL
 					if (label) {
-						var images = label.querySelectorAll('img');
 						var clonedLabel = label.cloneNode(true);
 						var clonedImages = clonedLabel.querySelectorAll('img');
 						for (var i = 0; i < clonedImages.length; i++) {
@@ -605,7 +603,6 @@ Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function (
 					}
 					else if (this.matches('label input, label select')) {
 						label = this.closest('label');
-						var images = label.querySelectorAll('img');
 						var clonedLabel = label.cloneNode(true);
 						var clonedImages = clonedLabel.querySelectorAll('img');
 						for (var i = 0; i < clonedImages.length; i++) {
@@ -617,6 +614,19 @@ Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function (
 					}
 					else if (this.hasAttribute('title')) {
 						result = 'title:' + this.getAttribute('title');
+					}
+				}
+				else if (this.matches('fieldset')) {
+					var legend = this.firstElementChild;
+					if (legend && legend.matches('legend')) {
+						var clonedLegend = legend.cloneNode(true);
+						var clonedImages = clonedLegend.querySelectorAll('img');
+						for (var i = 0; i < clonedImages.length; i++) {
+							var an = clonedImages.accessibleName;
+							an = an == null ? '' : an;
+							clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
+						}
+						result = 'legend:' + clonedLegend.textContent;
 					}
 				}
 			}
