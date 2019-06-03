@@ -11,7 +11,7 @@
 		"96": "ressources/images/icons/tanaguru-96.png"
 	},
 	"permissions": [
-	    "<all_urls>", "tabs", "downloads"
+	    "<all_urls>", "downloads", "storage", "tabs"
 	],
 	"browser_action": {
 		"browser_style": false,
@@ -36,5 +36,6 @@
 	  }
 	],
 	"devtools_page": "devtools/tanaguru-devtools.html",
-	"default_locale": "fr"
+	"default_locale": "fr",
+	"applications": { "gecko": { "id": "webextension@tanaguru.com" } }
 }
