@@ -614,7 +614,7 @@ if (response[0].tests[test].hasOwnProperty('ressources')) {
 					if (codehighlight && codehighlight.hasOwnProperty('attrs')) {
 						var codecontent = response[0].tests[test].data[h].outer.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 						for (var a = 0; a < codehighlight.attrs.length; a++) {
-							codecontent = codecontent.replace(new RegExp('(' + codehighlight.attrs[a] + '=&quot;(?:(?!&quot;).)*&quot;)'), '<mark>$1</mark>'); // / key="([^"]*)"/	
+							codecontent = codecontent.replace(new RegExp(' (' + codehighlight.attrs[a] + '=&quot;(?:(?!&quot;).)*&quot;)'), ' <mark>$1</mark>'); // / key="([^"]*)"/	
 						}
 						code.innerHTML = codecontent;
 					}
