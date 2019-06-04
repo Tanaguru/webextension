@@ -69,7 +69,7 @@ createTanaguruTest({});
 | filter | Fonction de filtrage permettant de restreindre l'échantillon. | Function. |
 | expectedNbElements | Nombre d'éléments attendus dans l'échantillon (précis ou compris entre deux bornes) permettant de valider ou d'invalider le test. | Integer ou Object (avec propriétés min (Integer), max (Integer) ou les deux). |
 | explanations | Explications associées aux statuts du test. | Object (avec propriétés passed (String) et failed (String)). |
-| mark | Expression régulière permettant de mettre en surbrillance des passages de code dans l'interface des résultats. | String. |
+| mark | Application de mises en surbrillance d'attributs dans les passages de code dans l'interface des résultats. | Object (avec propriété attrs (Array)). |
 | tags | Étiquettes associées aux champs. Note : il ne s'agit pas des intitulés d'étiquettes mais d'identifiants d'étiquettes (i18n). | Array de String. |
 | ressources | Ressources associées aux tests. | Object (chaque propriété identifiant une ressource et valorisée par un Array de String). |
 
@@ -86,7 +86,7 @@ createTanaguruTest({
 	lang: 'fr',
 	name: "Liens s'ouvrant dans des nouvelles fenêtres.",
 	query: 'a[href][target="_blank"]:not([role])',
-	mark: '(target=&quot;_blank&quot;)',
+	mark: { attrs: ['target'] },
 	tags: ['a11y', 'links'],
 	ressources: { 'rgaa': ['13.2.1'] }
 });
@@ -111,7 +111,7 @@ createTanaguruTest({
 		'passed': "Cette page ne contient pas d'éléments a avec attributs title vides.",
 		'failed': "Des éléments a avec attributs title vides sont présents dans la page."
 	},
-	mark: '(title=&quot;(?:(?!&quot;).)*&quot;)',
+	mark: { attrs: ['title'] },
 	tags: ['a11y', 'links'],
 	ressources: { 'rgaa': ['6.2.1', '6.2.2', '6.2.3'] }
 });
