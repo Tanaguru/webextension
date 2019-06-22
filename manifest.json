@@ -14,7 +14,7 @@
 		"96": "ressources/images/icons/tanaguru-96.png"
 	},
 	"permissions": [
-	    "<all_urls>", "downloads", "notifications", "storage", "tabs"
+	    "<all_urls>", "downloads", "notifications", "storage", "tabHide", "tabs"
 	],
 	"browser_action": {
 		"browser_style": false,
