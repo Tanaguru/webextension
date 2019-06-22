@@ -2,7 +2,10 @@
 	"manifest_version": 2,
 	"name": "__MSG_extensionName__",
 	"version": "0.01",
-	"author": "Romain Gervois",
+	"author": "Tanaguru",
+	"developer": {
+		"name": "Romain Gervois"
+	},
 	"description": "__MSG_extensionDescription__",
 	"homepage_url": "__MSG_extensionHomepageUrl__",
 	"icons": {
