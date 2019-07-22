@@ -270,9 +270,13 @@ button.addEventListener('click', function () {
 											input.value = element.parentNode.parentNode.previousSibling.textContent;
 											input.select();
 											if (document.execCommand("Copy")) {
-												alert('Copie dans le presse-papier : OK');
 												input.value = '';
 												element.focus();
+												browser.runtime.sendMessage({
+													tabId: browser.devtools.inspectedWindow.tabId,
+													command: 'copy',
+													what: element.parentNode.parentNode.previousSibling.previousSibling.textContent
+												});
 											}
 											break;
 									}
