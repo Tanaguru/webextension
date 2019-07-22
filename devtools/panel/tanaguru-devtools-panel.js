@@ -274,7 +274,7 @@ button.addEventListener('click', function () {
 												element.focus();
 												browser.runtime.sendMessage({
 													tabId: browser.devtools.inspectedWindow.tabId,
-													command: 'copy',
+													command: 'copyClipboard',
 													what: element.parentNode.parentNode.previousSibling.previousSibling.textContent
 												});
 											}
