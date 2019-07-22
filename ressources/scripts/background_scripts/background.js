@@ -5,6 +5,17 @@ function handleMessage(request, sender, sendResponse) {
 	else if (request.command === 'resetPopup') {
 		
 	}
+	else if (request.command === 'copyClipboard') {
+		browser.notifications.create(
+			'', 
+			{
+				iconUrl: '/ressources/images/tanaguru.png',
+				type: 'basic',
+				title: request.what,
+				message: 'La copie dans le presse-papier a bien été réalisée.'
+			}
+		);
+	}
 	else if (request.command === 'executeTests') {
 		return browser.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests.js' });
 	}
