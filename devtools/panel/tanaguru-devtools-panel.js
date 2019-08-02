@@ -119,6 +119,8 @@ function manageHoveredImageButton(event) {
 	}
 }
 
+var teststimer = null;
+
 var html = document.querySelector('html');
 html.setAttribute('lang', browser.i18n.getMessage('extensionLang'));
 var main = document.createElement('main');
@@ -130,6 +132,9 @@ var rightcolumn = document.createElement('div');
 var button = document.createElement('button');
 button.setAttribute('type', 'button');
 button.addEventListener('click', function () {
+	
+	teststimer = new Date();
+	
 	var loadingtemplate = document.getElementById('loading');
 	loadingtemplate = loadingtemplate.content;
 	var rightcolumn = this.parentNode.parentNode;
@@ -146,6 +151,17 @@ button.addEventListener('click', function () {
 	  	var navheading = document.createElement('h1');
 	  	navheading.appendChild(document.createTextNode(browser.i18n.getMessage('msgNavHeading')));
 	  	nav.appendChild(navheading);
+		
+		var ptimer = document.createElement('p');
+	  	ptimer.setAttribute('style', 'font-size: 0.8em; margin: 0 0 0.5em 0; padding: 0 0.5em;');
+	  	var tte = new Date();
+	  	teststimer = (tte - teststimer) / 1000;
+	  	var ptimersmall = document.createElement('small');
+	  	ptimersmall.appendChild(document.createTextNode('Analyse réalisée en ' + teststimer + ' seconde' + (teststimer > 1 ? 's' : '') + '.'));
+	  	ptimer.appendChild(ptimersmall);
+	  	nav.appendChild(ptimer);
+	  	teststimer = null;
+		
 	  	var ul = document.createElement('ul');
 	  	ul.setAttribute('role', 'tablist');
 	  	ul.setAttribute('aria-orientation', 'vertical');
