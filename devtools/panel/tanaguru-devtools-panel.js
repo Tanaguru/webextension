@@ -462,7 +462,7 @@ var ressourcestests = [];
 		
 		for (var test in response[0].tests) {
 			var testelement = document.createElement('div');
-			testelement.setAttribute('class', response[0].tests[test].tags.join(' '));
+			testelement.setAttribute('class', 'testparent ' + response[0].tests[test].tags.join(' '));
 			if (response[0].tests[test].hasOwnProperty('ressources')) {
 				var testressources = response[0].tests[test].ressources;
 				for (var r in testressources) {
@@ -961,7 +961,7 @@ if (response[0].tests[test].hasOwnProperty('ressources')) {
 					var fileinput = document.createElement('input');
 					fileinput.setAttribute('type', 'text');
 					fileinput.setAttribute('id', filelabel.getAttribute('for'));
-					fileinput.setAttribute('value', 'tanaguru-extension_export.csv');
+					fileinput.setAttribute('value', 'tanaextension_export_' + this.closest('.testparent').querySelector('h3 em').firstChild.nodeValue + '.csv');
 					filep.appendChild(fileinput);
 					file.appendChild(filep);
 					tanagurupopin.appendChild(file);
