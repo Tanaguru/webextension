@@ -790,7 +790,7 @@ if (response[0].tests[test].hasOwnProperty('ressources')) {
 					var select = document.createElement('select');
 					select.setAttribute('id', selectlabel.getAttribute('for'));
 					select.addEventListener('change', function(event) {
-						var table = this.parentNode.nextSibling;
+						var table = this.closest('.beforetable').nextSibling;
 						var tr = table.querySelectorAll('tr');
 						for (var i = 1; i < tr.length; i++) {
 							switch (this.value) {
