@@ -1334,9 +1334,3 @@ createTanaguruTest({
 	tags: ['CIE'],
 	ressources: { 'pidila': ['Pi-147'] } 
 })
-
-
-/*************************************************
- ***** Chargement des résultats ******************
- *************************************************/
-loadTanaguruTests();
