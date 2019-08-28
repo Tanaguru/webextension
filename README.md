@@ -73,8 +73,6 @@ createTanaguruTest({});
 | tags | Étiquettes associées aux champs. Note : il ne s'agit pas des intitulés d'étiquettes mais d'identifiants d'étiquettes (i18n). | Array de String. |
 | ressources | Ressources associées aux tests. | Object (chaque propriété identifiant une ressource et valorisée par un Array de String). |
 
-Remarque importante : l'appel à la fonction `createTanaguruTest` devra être fait avant l'appel de la fonction de chargement des tests (`loadTanaguruTests();`) afin que le test soit executé et chargé dans l'interface de la webextension.
-
 ### Exemples de test
 
 #### Liens s'ouvrant dans des nouvelles fenêtres
