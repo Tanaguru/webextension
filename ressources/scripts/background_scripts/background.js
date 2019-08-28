@@ -17,7 +17,11 @@ function handleMessage(request, sender, sendResponse) {
 		);
 	}
 	else if (request.command === 'executeTests') {
-		return browser.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests.js' });
+		var response = browser.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests.js' });
+		response = response.then(function (result) {
+			return browser.tabs.executeScript(request.tabId, { code: 'loadTanaguruTests();' });
+		});
+		return response;
 	}
 	else if (request.command == 'downloadTestCsvFile') {
 		browser.downloads.download({
