@@ -1,6 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "__MSG_extensionName__",
+	"short_name": "Tanaguru",
 	"version": "0.1",
 	"author": "Tanaguru",
 	"developer": {
