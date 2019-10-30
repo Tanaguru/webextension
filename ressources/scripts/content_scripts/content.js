@@ -928,18 +928,34 @@ function createTanaguruTest(test) {
 	 			if (elements.length == 0) {
 	 				status = 'inapplicable'; // Voir si le statut "Non applicable" n'est possible que dans le cas d'un nombre d'éléments à vérifier.
 	 			}
-	 		}
+			 }
+
+
+
+
+			var statuspriority = {
+				failed: 4,
+				passed: 3,
+				cantTell: 2,
+				inapplicable: 1,
+				untested: 0
+			};
+			// Traitement par collection.
+			if (test.hasOwnProperty('analyzeElements')) {
+				if (test.analyzeElements.constructor == Function) {
+					test.analyzeElements(elements);
+					// On modifie le statut du test selon les statuts d'items.
+					for (var e = 0; e < elements.length; e++) {
+						if (statuspriority[status] < statuspriority[elements[e].status]) {
+							status = elements[e].status;
+						}
+					}
+				}
+			}
 	 		
 	 		
 	 		
 	 		// Mises à jour des tags (statut du tag et nombre de résultats en erreur).
-	 		var statuspriority = {
-	 			failed: 4,
-	 			passed: 3,
-	 			cantTell: 2,
-	 			inapplicable: 1,
-	 			untested: 0
-	 		}
 	 		if (test.hasOwnProperty('tags') && test.tags.constructor == Array) {
 	 			for (var i = 0; i < test.tags.length; i++) {
 	 				if (statuspriority[window.tanaguru.tags[test.tags[i]].status] < statuspriority[status]) {
