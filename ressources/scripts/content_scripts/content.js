@@ -849,6 +849,7 @@ function loadTanaguruTests() {
 }
 
 function manageOutput(element) {
+	var status = element.status ? element.status : 'cantTell';
 	var accessibleName = element.accessibleName;
 	var implicitARIASemantic = element.implicitARIASemantic;
 	var explicitARIASemantic = element.explicitARIASemantic;
@@ -862,7 +863,7 @@ function manageOutput(element) {
 			fakeelement.innerHTML = '[...]';
 		}	
 	}
-	return { outer: fakeelement.outerHTML, xpath: getXPath(element), role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isNotVisibleDueTo: isNotVisibleDueTo, isNotExposedDueTo: isNotExposedDueTo };
+	return { status: status, outer: fakeelement.outerHTML, xpath: getXPath(element), role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isNotVisibleDueTo: isNotVisibleDueTo, isNotExposedDueTo: isNotExposedDueTo };
 }
 
 
@@ -909,7 +910,10 @@ function createTanaguruTest(test) {
 	 		// Calcul du statut du test.
 			if (test.hasOwnProperty('expectedNbElements')) {
 	 			if (Number.isInteger(test.expectedNbElements)) {
-	 				status = elements.length == test.expectedNbElements ? 'passed' : 'failed';
+					status = elements.length == test.expectedNbElements ? 'passed' : 'failed';
+					for (var i = 0; i < elements.length; i++) {
+						elements[i].status = status;
+					}
 	 			}
 	 			else if (test.expectedNbElements.constructor == Object && (test.expectedNbElements.hasOwnProperty('min') || test.expectedNbElements.hasOwnProperty('max'))) {
 					var min = test.expectedNbElements.hasOwnProperty('min') && Number.isInteger(test.expectedNbElements.min) ? test.expectedNbElements.min : 0;
