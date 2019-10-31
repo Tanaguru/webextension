@@ -850,6 +850,7 @@ function loadTanaguruTests() {
 
 function manageOutput(element) {
 	var status = element.status ? element.status : 'cantTell';
+	element.status = undefined;
 	var accessibleName = element.accessibleName;
 	var implicitARIASemantic = element.implicitARIASemantic;
 	var explicitARIASemantic = element.explicitARIASemantic;
