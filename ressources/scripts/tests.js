@@ -206,8 +206,33 @@ createTanaguruTest({
 	query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"]',
 	expectedNbElements: { min: 1 },
 	explanations: { 
-		'passed': "La page contient au moin un titre de niveau", 
+		'passed': "La page contient au moins un titre de niveau", 
 		'failed': "Cette page ne contient pas de titre de niveau)."
+	},
+	tags: ['a11y'],
+	ressources: { 'rgaa4': ['9.1.1'], 'wcag': ['1.3.1'] }
+});
+
+/* Test utilisant le traitement par collection */
+createTanaguruTest({
+	lang: 'fr',
+	name: "Absence de sauts dans la hiérarchie des titres",
+	query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"]',
+	explanations: { 
+		'passed': "La hiérarchie des titres est pertinente.", 
+		'failed': "Des sauts dans la hiérarchie des titres sont présents."
+	},
+	analyzeElements: function (elements) {
+		for (var e = 0; e < elements.length; e++) {
+			if (e + 1 < elements.length) {
+				var currentlevel = parseInt(elements[e].hasAttribute('aria-level') ? elements[e].getAttribute('aria-level') : elements[e].tagName.substring(1));
+				var nextelement = elements[e + 1];
+				var nextlevel = parseInt(nextelement.hasAttribute('aria-level') ? nextelement.getAttribute('aria-level') : nextelement.tagName.substring(1));
+				if (nextlevel - currentlevel > 1) {
+					elements[e + 1].status = 'failed';
+				}
+			}
+		}
 	},
 	tags: ['a11y'],
 	ressources: { 'rgaa4': ['9.1.1'], 'wcag': ['1.3.1'] }
