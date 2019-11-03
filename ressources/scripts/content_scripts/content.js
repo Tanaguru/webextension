@@ -945,6 +945,7 @@ function createTanaguruTest(test) {
 				untested: 0
 			};
 			// Traitement par collection.
+			var failedincollection = null;
 			if (test.hasOwnProperty('analyzeElements')) {
 				if (test.analyzeElements.constructor == Function) {
 					test.analyzeElements(elements);
