@@ -920,6 +920,9 @@ function createTanaguruTest(test) {
 					var min = test.expectedNbElements.hasOwnProperty('min') && Number.isInteger(test.expectedNbElements.min) ? test.expectedNbElements.min : 0;
  					var max = test.expectedNbElements.hasOwnProperty('max') && Number.isInteger(test.expectedNbElements.max) ? test.expectedNbElements.max : null;
 					status = elements.length >= min && (max == null || elements.length <= max) ? 'passed' : 'failed';
+					for (var i = 0; i < elements.length; i++) {
+						elements[i].status = status;
+					}
 	 			}
 	 			else {
 	 				// Erreur : valeur de la propriété expectedNbElements.
@@ -947,6 +950,10 @@ function createTanaguruTest(test) {
 					test.analyzeElements(elements);
 					// On modifie le statut du test selon les statuts d'items.
 					for (var e = 0; e < elements.length; e++) {
+						if (elements[e].status == 'failed') {
+							failedincollection = failedincollection == null ? 0 : failedincollection;
+							failedincollection += 1;
+						}
 						if (statuspriority[status] < statuspriority[elements[e].status]) {
 							status = elements[e].status;
 						}
@@ -1005,6 +1012,9 @@ function createTanaguruTest(test) {
 	 		if (test.hasOwnProperty('ressources')) {
 	 			result.ressources = test.ressources;
 	 		}
+			if (failedincollection) {
+				result.failedincollection = failedincollection;
+			}
 	 		addResultSet("Nouvelle syntaxe d'écriture des tests", result);
 	 		
 	 		
