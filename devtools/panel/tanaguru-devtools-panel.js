@@ -508,7 +508,8 @@ if (response[0].tests[test].hasOwnProperty('ressources')) {
 			tabpanelsectionbutton.appendChild(status);
 			if (!(response[0].tests[test].type == 'failed' && response[0].tests[test].data.length == 0)) {
 				var strong = document.createElement('strong');
-				strong.appendChild(document.createTextNode(response[0].tests[test].data.length));
+				var strongcount = response[0].tests[test].hasOwnProperty('failedincollection') ? response[0].tests[test].failedincollection : response[0].tests[test].data.length;
+				strong.appendChild(document.createTextNode(strongcount));
 				tabpanelsectionbutton.appendChild(strong);
 				tabpanelsectionbutton.appendChild(document.createTextNode(' '));
 			}
