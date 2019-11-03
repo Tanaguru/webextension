@@ -997,6 +997,9 @@ function createTanaguruTest(test) {
  				data: outputelements,
 	 			tags: []
  			};
+			if (test.hasOwnProperty('id')) {
+				result.id = test.id;
+			}
 	 		if (test.hasOwnProperty('lang')) {
 	 			result.lang = test.lang;
 	 		}
