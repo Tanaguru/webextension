@@ -485,7 +485,12 @@ if (!reftests.hasOwnProperty(response[0].tests[test].tags[0].toUpperCase())) {
 	reftests[response[0].tests[test].tags[0].toUpperCase()] = 0;
 }
 reftests[response[0].tests[test].tags[0].toUpperCase()] += 1;
-testref.appendChild(document.createTextNode(response[0].tests[test].tags[0].toUpperCase() + '-' + reftests[response[0].tests[test].tags[0].toUpperCase()]));
+var testid = response[0].tests[test].tags[0].toUpperCase() + '-' + reftests[response[0].tests[test].tags[0].toUpperCase()];
+if (response[0].tests[test].hasOwnProperty('id')) {
+	testref.setAttribute('data-autoid', testid);
+	testid = response[0].tests[test].id;
+}
+testref.appendChild(document.createTextNode(testid));
 tabpanelsectionbutton.appendChild(testref);
 
 
