@@ -134,7 +134,7 @@ var ariastatesproperties = {
 	'aria-valuetext': { type: 'widget' } // string
 };
 
-if (!HTMLElement.hasOwnProperty('availableARIASemantics')) {
+if (!HTMLElement.prototype.hasOwnProperty('availableARIASemantics')) {
 	Object.defineProperty(HTMLElement.prototype, 'availableARIASemantics', { get: function () {
 		var selectors = [];
 		switch (this.tagName.toLowerCase()) {
@@ -297,7 +297,7 @@ if (!HTMLElement.hasOwnProperty('availableARIASemantics')) {
 	} });
 }
 
-if (!HTMLElement.hasOwnProperty('implicitARIASemantic')) {
+if (!HTMLElement.prototype.hasOwnProperty('implicitARIASemantic')) {
 	Object.defineProperty(HTMLElement.prototype, 'implicitARIASemantic', { get: function () {
 		var selector = undefined;
 		switch (this.tagName.toLowerCase()) {
@@ -501,7 +501,7 @@ if (!HTMLElement.hasOwnProperty('implicitARIASemantic')) {
 	} });
 }
 
-if (!HTMLUnknownElement.hasOwnProperty('implicitARIASemantic')) {
+if (!HTMLUnknownElement.prototype.hasOwnProperty('implicitARIASemantic')) {
 	Object.defineProperty(HTMLUnknownElement.prototype, 'implicitARIASemantic', { get: function () {
 		var selector = undefined;
 		switch (this.tagName.toLowerCase()) {
@@ -531,7 +531,7 @@ if (!HTMLUnknownElement.hasOwnProperty('implicitARIASemantic')) {
 	} });
 }
 
-if (!Element.hasOwnProperty('implicitARIASemantic')) {
+if (!Element.prototype.hasOwnProperty('implicitARIASemantic')) {
 	Object.defineProperty(Element.prototype, 'implicitARIASemantic', { get: function () {
 		var selector = undefined;
 		switch (this.tagName.toLowerCase()) {
@@ -543,7 +543,7 @@ if (!Element.hasOwnProperty('implicitARIASemantic')) {
 	} });
 }
 
-if (!HTMLElement.hasOwnProperty('explicitARIASemantic')) {
+if (!HTMLElement.prototype.hasOwnProperty('explicitARIASemantic')) {
 	Object.defineProperty(HTMLElement.prototype, 'explicitARIASemantic', { get: function () { return ''; } });
 }
 
@@ -554,7 +554,7 @@ Element.prototype.isARIAStatePropertyAllowedOnMe = function (stateproperty) { re
 HTMLElement.prototype.isARIARoleAllowedOnMe = function (role) { return this.availableARIASemantics.indexOf('[role="' + role + '"]') > -1; };
 HTMLElement.prototype.isARIAStatePropertyAllowedOnMe = function (stateproperty) { return ''; };
 
-if (!HTMLElement.hasOwnProperty('accessibleName')) {
+if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 	Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function () {
 		var result = null; // NULL
 		if (this.isNotExposedDueTo.length == 0) {
@@ -652,7 +652,7 @@ if (!HTMLElement.hasOwnProperty('accessibleName')) {
 	} });
 }
 
-if (!SVGElement.hasOwnProperty('isNotVisibleDueTo')) {
+if (!SVGElement.prototype.hasOwnProperty('isNotVisibleDueTo')) {
 	Object.defineProperty(SVGElement.prototype, 'isNotVisibleDueTo', { get: function () {
 		var result = [];
 		if (!(!!(this.offsetWidth || this.offsetHeight || this.getClientRects().length))) {
@@ -671,7 +671,7 @@ if (!SVGElement.hasOwnProperty('isNotVisibleDueTo')) {
 	} });
 }
 
-if (!HTMLElement.hasOwnProperty('isNotVisibleDueTo')) {
+if (!HTMLElement.prototype.hasOwnProperty('isNotVisibleDueTo')) {
 	Object.defineProperty(HTMLElement.prototype, 'isNotVisibleDueTo', { get: function () {
 		var result = [];
 		if (!(!!(this.offsetWidth || this.offsetHeight || this.getClientRects().length))) {
@@ -690,7 +690,7 @@ if (!HTMLElement.hasOwnProperty('isNotVisibleDueTo')) {
 	} });
 }
 
-if (!SVGElement.hasOwnProperty('isNotExposedDueTo')) {
+if (!SVGElement.prototype.hasOwnProperty('isNotExposedDueTo')) {
 	Object.defineProperty(SVGElement.prototype, 'isNotExposedDueTo', { get: function () {
 		var result = [];
 		if (this.getAttribute('aria-hidden') == 'true') {
@@ -720,7 +720,7 @@ if (!SVGElement.hasOwnProperty('isNotExposedDueTo')) {
 	} });
 }
 
-if (!HTMLElement.hasOwnProperty('isNotExposedDueTo')) {
+if (!HTMLElement.prototype.hasOwnProperty('isNotExposedDueTo')) {
 	Object.defineProperty(HTMLElement.prototype, 'isNotExposedDueTo', { get: function () {
 		var result = [];
 		if (this.getAttribute('aria-hidden') == 'true') {
@@ -750,7 +750,7 @@ if (!HTMLElement.hasOwnProperty('isNotExposedDueTo')) {
 	} });
 }
 
-if (!SVGElement.hasOwnProperty('canBeReachedUsingKeyboardWith')) {
+if (!SVGElement.prototype.hasOwnProperty('canBeReachedUsingKeyboardWith')) {
 	Object.defineProperty(SVGElement.prototype, 'canBeReachedUsingKeyboardWith', { get: function () {
 		var result = [];
 		if (this.hasAttribute('tabindex') && ['0','-1'].indexOf(this.getAttribute('tabindex')) > -1) {
@@ -760,7 +760,7 @@ if (!SVGElement.hasOwnProperty('canBeReachedUsingKeyboardWith')) {
 	} });
 }
 
-if (!HTMLElement.hasOwnProperty('canBeReachedUsingKeyboardWith')) {
+if (!HTMLElement.prototype.hasOwnProperty('canBeReachedUsingKeyboardWith')) {
 	Object.defineProperty(HTMLElement.prototype, 'canBeReachedUsingKeyboardWith', { get: function () { 
 		var result = [];
 		switch (this.tagName.toLowerCase()) {
