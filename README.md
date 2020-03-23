@@ -14,7 +14,11 @@ Outil d'évaluation de l'accessibilité Web (et plus).
 
 Pour installer la webextension, **dans la barre d’adresse** de Firefox 57 ou supérieur, saisissez **« about:debugging »**. La page « Modules » s’affiche :
 
-![](README/install1.png)
+![](README/install1-1.png)
+
+Sur cette page, activez le lien **« Ce Firefox »**.
+
+![](README/install1-2.png)
 
 Sur cette page, activez le bouton **« Charger un module temporaire »**. Une boîte de dialogue de fichier s’affiche alors. Depuis cette boîte, sélectionnez sur votre disque local, le fichier **« manifest.json »**. Cette sélection termine l’installation de la webextension.
 
