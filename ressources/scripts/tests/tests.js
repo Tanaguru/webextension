@@ -1053,3 +1053,24 @@ tanaguruTestsList.push({
 	tags: ['CIE'],
 	ressources: { 'pidila': ['Pi-147'] } 
 });
+
+/* ACT */
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: '[97a4e1] Button has accessible name.',
+	query: 'button, [role="button"], input[type="reset"], input[type="submit"]',
+	expectedNbElements: 0,
+	filter: function (item) {
+		if (item.isNotExposedDueTo.length == 0 && !item.matches('input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title]), input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title])')) {
+			var an = item.accessibleName;
+			if (an.length > 0) {
+				an = an.split(':');
+				return an[1] == '';
+			}
+			return an == '';
+		}
+	},
+	tags: ['buttons'],
+	ressources: { 'act': ['97a4e1'] }
+});
