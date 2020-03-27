@@ -558,7 +558,7 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 	Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function () {
 		var result = null; // NULL
 		if (this.isNotExposedDueTo.length == 0) {
-			if (this.hasAttribute('aria-labelledby')) {
+			if (this.hasAttribute('aria-labelledby') && !this.hasAttribute('data-arialabelledbytraversal')) {
 				var labelledby = this.getAttribute('aria-labelledby');
 				if (labelledby.trim().length > 0) {
 					labelledby = labelledby.split(' ');
@@ -569,17 +569,19 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 					if (nodes.length) {
 						result = 'aria-labelledby';
 						for (var i = 0; i < nodes.length; i++) {
+							nodes[i].setAttribute('data-arialabelledbytraversal', 'true');
 							result += (i > 0 ? ' ' : '') + nodes[i].accessibleName;
 						}
 					}
 				}
 			}
+			this.removeAttribute('data-arialabelledbytraversal');
 			if (result == null) {
 				if (this.hasAttribute('aria-label') && this.getAttribute('aria-label').trim() != '') {
 					result = 'aria-label:' + this.getAttribute('aria-label');
 				}
 				else if (!this.matches('[role="none"], [role="presentation"]')) {
-					if (this.matches('a, button')) {
+					if (this.matches('a, [role="link"], button, [role="button"]')) {
 						var clonedThis = this.cloneNode(true);
 						var clonedImages = clonedThis.querySelectorAll('img');
 						for (var i = 0; i < clonedImages.length; i++) {
