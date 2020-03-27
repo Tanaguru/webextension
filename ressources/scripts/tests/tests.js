@@ -1058,8 +1058,8 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: '[97a4e1] Button has accessible name.',
-	query: 'button, [role="button"], input[type="reset"], input[type="submit"]',
+	name: 'Button has accessible name.',
+	query: 'button:not([role]), [role="button"], input[type="reset"], input[type="submit"]',
 	expectedNbElements: 0,
 	filter: function (item) {
 		if (item.isNotExposedDueTo.length == 0 && !item.matches('input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title]), input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title])')) {
