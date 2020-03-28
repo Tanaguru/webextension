@@ -601,7 +601,7 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 						var anattribute = this.getAttribute('type') == 'image' ? 'alt' : 'value';
 						result = this.hasAttribute(anattribute) ? anattribute + ':' + this.getAttribute(anattribute) : null; // NULL
 					}
-					else if (this.matches('input, select')) {
+					else if (this.matches('input, select, textarea')) {
 						var label = this.hasAttribute('id') ? document.querySelector('label[for="' + this.getAttribute('id') + '"]') : null; // NULL
 						if (label) {
 							var clonedLabel = label.cloneNode(true);
@@ -613,7 +613,7 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 							}
 							result = 'label[for]:' + clonedLabel.textContent;
 						}
-						else if (this.matches('label input, label select')) {
+						else if (this.matches('label input, label select, label textarea')) {
 							label = this.closest('label');
 							var clonedLabel = label.cloneNode(true);
 							var clonedImages = clonedLabel.querySelectorAll('img');
@@ -622,7 +622,7 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 								an = an == null ? '' : an;
 								clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
 							}
-							result = 'label[for]:' + clonedLabel.textContent;
+							result = 'label:' + clonedLabel.textContent;
 						}
 						else if (this.hasAttribute('title')) {
 							result = 'title:' + this.getAttribute('title');

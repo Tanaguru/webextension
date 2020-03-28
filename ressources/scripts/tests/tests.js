@@ -510,22 +510,9 @@ tanaguruTestsList.push({
 	id: 'FormsTest1',
 	query: 'input:not([type="image"]):not([type="button"]):not([type="hidden"]):not([type="submit"]):not([type="reset"]):not([role]), select:not([role]), textarea:not([role])',
 	filter: function (item) {
-		if ((item.hasAttribute('title')) || (item.hasAttribute('aria-labelledby')) || (item.hasAttribute('id')) || (item.hasAttribute('aria-label')))  {
-			if(item.hasAttribute('id')){
-				var AttrId = item.getAttribute('id');
-				if (document.querySelector('label[for="'+AttrId+'"]') == null){
-					if ((item.hasAttribute('title')) || (item.hasAttribute('aria-labelledby')) || (item.hasAttribute('aria-label'))) {
-						return false
-					}
-					else return true;
-				};
-			} 
-			return false;
-		}
-		else return true;
+		return item.accessibleName == null;
 	},
 	expectedNbElements: 0,
-	mark: { attrs: ['id'] },
 	tags: ['a11y', 'forms', 'labels'],
 	ressources: { 'rgaa3': ['11.1.1'] }
 });
@@ -533,31 +520,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	id: 'FormsTest2',
 	query: '*[role="checkbox"], *[role="radio"], *[role="textbox"], *[role="combobox"]',
-	filter: function(item) {
-		// (à sortir title puisque alt > title + title pouvant servir côté UI/UX)
-		if (!item.matches('[aria-labelledby], [aria-label], [title]')) {
-			if (item.matches('img')) {
-				// Image (possibilité de gérer le sans alt).
-				if (item.hasAttribute('alt')) {
-					return item.getAttribute('alt') == '';
-				}
-				else {
-					return true;
-				}
-			}
-			else {
-				var cloneditem = item.cloneNode(true);
-				var clonedimg = cloneditem.querySelectorAll('img');
-				for (var i = 0; i < clonedimg.length; i++) {
-					var text = document.createTextNode(clonedimg[i].hasAttribute('alt') ? clonedimg[i].getAttribute('alt') : '');
-					clonedimg[i].parentNode.replaceChild(text, clonedimg[i]);
-				}
-				return cloneditem.textContent.trim().length == 0;
-			}
-		}
-		else {
-			return false;
-		};
+	filter: function (item) {
+		return item.accessibleName == null;
 	},
 	expectedNbElements: 0,
 	mark: { attrs: ['id'] },
@@ -616,13 +580,13 @@ tanaguruTestsList.push({
 	id: 'ScriptsTest1',
 	query: '*[role="checkbox"], *[role="radio"], *[role="textbox"], *[role="combobox"], *[role="contenteditable"]',
 	filter: function (item) {
-		if (item.hasAttribute('tabindex')){
+		if (item.hasAttribute('tabindex') || !(item.canBeReachedUsingKeyboardWith == '')){
 			return false;
 			}
 		else return true;
 	},
 	expectedNbElements: 0,
-	mark: { attrs: ['tabindex'] },
+	mark: { attrs: ['role'] },
 	tags: ['a11y', 'forms', 'labels','aria'],
 	ressources: { 'rgaa3': ['7.3.1'] }
 });
