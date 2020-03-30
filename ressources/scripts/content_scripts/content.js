@@ -562,8 +562,8 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 				var labelledby = this.getAttribute('aria-labelledby');
 				if (labelledby.trim().length > 0) {
 					labelledby = labelledby.split(' ');
-					labelledby.forEach(function (item) {
-						item = '#' + item;
+					labelledby.forEach(function (item, index, items) {
+						items[index] = '#' + item;
 					});
 					var nodes = document.querySelectorAll(labelledby.join(','));
 					if (nodes.length) {
