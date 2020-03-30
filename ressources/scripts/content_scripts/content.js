@@ -562,10 +562,13 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 				var labelledby = this.getAttribute('aria-labelledby');
 				if (labelledby.trim().length > 0) {
 					labelledby = labelledby.split(' ');
-					labelledby.forEach(function (item, index, items) {
-						items[index] = '#' + item;
-					});
-					var nodes = document.querySelectorAll(labelledby.join(','));
+					var nodes = [];
+					for (var l = 0; l < labelledby.length; l++) {
+						var labelledbyitem = document.getElementById(labelledby[l]);
+						if (labelledbyitem) {
+							nodes.push(labelledbyitem);
+						}
+					}
 					if (nodes.length) {
 						result = 'aria-labelledby';
 						for (var i = 0; i < nodes.length; i++) {
