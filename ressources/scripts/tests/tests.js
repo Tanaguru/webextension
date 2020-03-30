@@ -1038,3 +1038,42 @@ tanaguruTestsList.push({
 	tags: ['buttons'],
 	ressources: { 'act': ['97a4e1'] }
 });
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Link has accessible name.',
+	query: 'a:not([role])',
+	expectedNbElements: 0,
+	filter: function (item) {
+		if (item.isNotExposedDueTo.length == 0 ) {
+			var an = item.accessibleName;
+			if (an.length > 0) {
+				an = an.split(':');
+				return an[1] == '';
+			}
+			return an == '';
+		}
+	},
+	tags: ['Links'],
+	ressources: { 'act': ['c487ae'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Image has accessible name.',
+	query: 'img:not([role]), [role="img"]',
+	expectedNbElements: 0,
+	filter: function (item) {
+		if (item.isNotExposedDueTo.length == 0 ) {
+			var an = item.accessibleName;
+			console.log(an);
+			if (an.length > 0) {
+				an = an.split(':');
+				return an[1] == '';
+			}
+			return an == '';
+		}
+	},
+	tags: ['Image'],
+	ressources: { 'act': ['23a2a8'] }
+});
