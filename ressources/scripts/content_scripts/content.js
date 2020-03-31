@@ -564,13 +564,13 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 					labelledby = labelledby.split(' ');
 					var nodes = [];
 					for (var l = 0; l < labelledby.length; l++) {
-						var labelledbyitem = document.getElementById(labelledby[l]);
-						if (labelledbyitem) {
-							nodes.push(labelledbyitem);
-						}
+							var labelledbyitem = document.getElementById(labelledby[l]);
+							if (labelledbyitem) {
+								nodes.push(labelledbyitem);
+							}
 					}
 					if (nodes.length) {
-						result = 'aria-labelledby';
+						result = 'aria-labelledby:';
 						for (var i = 0; i < nodes.length; i++) {
 							nodes[i].setAttribute('data-arialabelledbytraversal', 'true');
 							result += (i > 0 ? ' ' : '') + nodes[i].accessibleName;
@@ -578,10 +578,9 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 					}
 				}
 			}
-			this.removeAttribute('data-arialabelledbytraversal');
 			if (result == null) {
 				if (this.hasAttribute('aria-label') && this.getAttribute('aria-label').trim() != '') {
-					result = 'aria-label:' + this.getAttribute('aria-label');
+					result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'aria-label:' : '') + this.getAttribute('aria-label');
 				}
 				else if (!this.matches('[role="none"], [role="presentation"]')) {
 					if (this.matches('a, [role="link"], button, [role="button"]')) {
@@ -592,17 +591,17 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 							an = an == null ? '' : an;
 							clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
 						}
-						result = 'content:' + clonedThis.textContent; // A décomposer dans l'UI.
+						result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'content:' : '') + clonedThis.textContent; // A décomposer dans l'UI.
 					}
 					else if (this.matches('area, img') && this.hasAttribute('alt')) {
-						result = 'alt:' + this.getAttribute('alt');
+						result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'alt:' : '') + this.getAttribute('alt');
 					}
 					else if (this.matches('iframe') && this.hasAttribute('title')) {
-						result = 'title:' + this.getAttribute('title');
+						result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'title:' : '') + this.getAttribute('title');
 					}
 					else if (this.matches('input[type="button"], input[type="image"], input[type="reset"], input[type="submit"]')) {
 						var anattribute = this.getAttribute('type') == 'image' ? 'alt' : 'value';
-						result = this.hasAttribute(anattribute) ? anattribute + ':' + this.getAttribute(anattribute) : null; // NULL
+						result = this.hasAttribute(anattribute) ? (!this.hasAttribute('data-arialabelledbytraversal') ? anattribute + ':' : '') + this.getAttribute(anattribute) : (!this.hasAttribute('data-arialabelledbytraversal') ? null : ''); // NULL
 					}
 					else if (this.matches('input, select, textarea')) {
 						var label = this.hasAttribute('id') ? document.querySelector('label[for="' + this.getAttribute('id') + '"]') : null; // NULL
@@ -614,7 +613,7 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 								an = an == null ? '' : an;
 								clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
 							}
-							result = 'label[for]:' + clonedLabel.textContent;
+							result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'label[for]:' : '') + clonedLabel.textContent;
 						}
 						else if (this.matches('label input, label select, label textarea')) {
 							label = this.closest('label');
@@ -625,10 +624,10 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 								an = an == null ? '' : an;
 								clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
 							}
-							result = 'label:' + clonedLabel.textContent;
+							result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'label:' : '') + clonedLabel.textContent;
 						}
 						else if (this.hasAttribute('title')) {
-							result = 'title:' + this.getAttribute('title');
+							result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'title:' : '') + this.getAttribute('title');
 						}
 					}
 					else if (this.matches('fieldset')) {
@@ -641,7 +640,7 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 								an = an == null ? '' : an;
 								clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
 							}
-							result = 'legend:' + clonedLegend.textContent;
+							result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'legend:' : '') + clonedLegend.textContent;
 						}
 					}
 				}
@@ -653,6 +652,7 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 		else {
 			result = '';
 		}
+		this.removeAttribute('data-arialabelledbytraversal');
 		return result;
 	} });
 }
