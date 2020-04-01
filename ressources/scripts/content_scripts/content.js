@@ -564,16 +564,17 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 					labelledby = labelledby.split(' ');
 					var nodes = [];
 					for (var l = 0; l < labelledby.length; l++) {
-							var labelledbyitem = document.getElementById(labelledby[l]);
-							if (labelledbyitem) {
-								nodes.push(labelledbyitem);
-							}
+						var labelledbyitem = document.getElementById(labelledby[l]);
+						if (labelledbyitem) {
+							nodes.push(labelledbyitem);
+						}
 					}
 					if (nodes.length) {
 						result = 'aria-labelledby:';
 						for (var i = 0; i < nodes.length; i++) {
 							nodes[i].setAttribute('data-arialabelledbytraversal', 'true');
-							result += (i > 0 ? ' ' : '') + nodes[i].accessibleName;
+							var an = nodes[i].accessibleName;
+							result += (i > 0 && an != '' ? ' ' : '') + an;
 						}
 					}
 				}
