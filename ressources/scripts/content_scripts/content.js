@@ -557,7 +557,7 @@ HTMLElement.prototype.isARIAStatePropertyAllowedOnMe = function (stateproperty) 
 if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 	Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: function () {
 		var result = null; // NULL
-		if (this.isNotExposedDueTo.length == 0) {
+		if (this.isNotExposedDueTo.length == 0 || this.hasAttribute('data-arialabelledbytraversal') {
 			if (this.hasAttribute('aria-labelledby') && !this.hasAttribute('data-arialabelledbytraversal')) {
 				var labelledby = this.getAttribute('aria-labelledby');
 				if (labelledby.trim().length > 0) {
