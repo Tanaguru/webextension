@@ -1054,7 +1054,7 @@ tanaguruTestsList.push({
 			return an == '';
 		}
 	},
-	tags: ['Links'],
+	tags: ['links'],
 	ressources: { 'act': ['c487ae'] }
 });
 
@@ -1073,6 +1073,6 @@ tanaguruTestsList.push({
 			return an == '';
 		}
 	},
-	tags: ['Image'],
+	tags: ['images'],
 	ressources: { 'act': ['23a2a8'] }
 });
