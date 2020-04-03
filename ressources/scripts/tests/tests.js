@@ -1020,6 +1020,8 @@ tanaguruTestsList.push({
 
 /* ACT */
 
+// Accessible Names.
+
 tanaguruTestsList.push({
 	lang: 'en',
 	name: 'Button has accessible name.',
@@ -1075,4 +1077,36 @@ tanaguruTestsList.push({
 	},
 	tags: ['images'],
 	ressources: { 'act': ['23a2a8'] }
+});
+
+
+
+// Id Attributes.
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'id attribute value is unique.',
+	description: 'This rule checks that all id attribute values on a single page are unique.',
+	query: '[id]:not([id=""])',
+	analyzeElements: function (elements) {
+		var ids = {};
+		for (var e = 0; e < elements.length; e++) {
+			var id = elements[e].getAttribute('id');
+			if (id.trim().length > 0) {
+				if (!ids[id]) {
+					ids[id] = [];
+				}
+				elements[e].status = 'passed';
+				ids[id].push(elements[e]);
+			}
+		}
+		for (var i in ids) {
+			if (ids[i].length > 1) {
+				for (var j = 0; j < ids[i].length; j++) {
+					ids[i][j].status = 'failed';
+				}
+			}
+		}
+	},
+	ressources: { 'act' : ['3ea0c8'] }
 });
