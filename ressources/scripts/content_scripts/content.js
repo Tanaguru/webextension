@@ -588,7 +588,7 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 						var clonedThis = this.cloneNode(true);
 						var clonedImages = clonedThis.querySelectorAll('img');
 						for (var i = 0; i < clonedImages.length; i++) {
-							var an = clonedImages.accessibleName;
+							var an = clonedImages[i].accessibleName;
 							an = an == null ? '' : an;
 							clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
 						}
@@ -610,7 +610,7 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 							var clonedLabel = label.cloneNode(true);
 							var clonedImages = clonedLabel.querySelectorAll('img');
 							for (var i = 0; i < clonedImages.length; i++) {
-								var an = clonedImages.accessibleName;
+								var an = clonedImages[i].accessibleName;
 								an = an == null ? '' : an;
 								clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
 							}
@@ -621,7 +621,7 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 							var clonedLabel = label.cloneNode(true);
 							var clonedImages = clonedLabel.querySelectorAll('img');
 							for (var i = 0; i < clonedImages.length; i++) {
-								var an = clonedImages.accessibleName;
+								var an = clonedImages[i].accessibleName;
 								an = an == null ? '' : an;
 								clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
 							}
@@ -637,7 +637,7 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 							var clonedGroupname = groupname.cloneNode(true);
 							var clonedImages = clonedGroupname.querySelectorAll('img');
 							for (var i = 0; i < clonedImages.length; i++) {
-								var an = clonedImages.accessibleName;
+								var an = clonedImages[i].accessibleName;
 								an = an == null ? '' : an;
 								clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
 							}
@@ -649,7 +649,7 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 						var clonedElement = this.cloneNode(true);
 						var clonedImages = clonedElement.querySelectorAll('img');
 						for (var i = 0; i < clonedImages.length; i++) {
-							var an = clonedImages.accessibleName;
+							var an = clonedImages[i].accessibleName;
 							an = an == null ? '' : an;
 							clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
 						}
@@ -716,7 +716,7 @@ if (!SVGElement.prototype.hasOwnProperty('isNotExposedDueTo')) {
 		else {
 			var ariahiddenfound = false;
 			var pt = this.parentNode;
-			while (pt.nodeType == 1) {
+			while (pt && pt.nodeType == 1) {
 				if (pt.getAttribute('aria-hidden') == 'true') {
 					ariahiddenfound = true;
 					break;
@@ -746,7 +746,7 @@ if (!HTMLElement.prototype.hasOwnProperty('isNotExposedDueTo')) {
 		else {
 			var ariahiddenfound = false;
 			var pt = this.parentNode;
-			while (pt.nodeType == 1) {
+			while (pt && pt.nodeType == 1) {
 				if (pt.getAttribute('aria-hidden') == 'true') {
 					ariahiddenfound = true;
 					break;
