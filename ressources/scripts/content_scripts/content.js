@@ -603,6 +603,9 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 					else if (this.matches('input[type="button"], input[type="image"], input[type="reset"], input[type="submit"]')) {
 						var anattribute = this.getAttribute('type') == 'image' ? 'alt' : 'value';
 						result = this.hasAttribute(anattribute) ? (!this.hasAttribute('data-arialabelledbytraversal') ? anattribute + ':' : '') + this.getAttribute(anattribute) : (!this.hasAttribute('data-arialabelledbytraversal') ? null : ''); // NULL
+						if ((result == null || result == '') && this.hasAttribute('title')) {
+							result = 'title:' + this.getAttribute('title');
+						}
 					}
 					else if (this.matches('input, select, textarea')) {
 						var label = this.hasAttribute('id') ? document.querySelector('label[for="' + this.getAttribute('id') + '"]') : null; // NULL
