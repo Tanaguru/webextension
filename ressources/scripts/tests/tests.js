@@ -1070,16 +1070,40 @@ tanaguruTestsList.push({
 			var an = item.accessibleName;
 			if (an && an.length > 0) {
 				an = an.split(':');
-				return an[1] == '';
+				if ((!an[0]=='alt') && (item.nodeName.toLowerCase() == 'img')){
+					return an[1] == '';
+				}
+				else return an[1] == ' ';
+				
 			}
-			return an == '';
+			return an == '';	
 		}
 	},
 	tags: ['images'],
 	ressources: { 'act': ['23a2a8'] }
 });
 
-
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Heading has accessible name',
+	query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"][aria-level="1"], [role="heading"][aria-level="2"], [role="heading"][aria-level="3"], [role="heading"][aria-level="4"], [role="heading"][aria-level="5"], [role="heading"][aria-level="6"]',
+	expectedNbElements: 0,
+	filter: function (item) {
+		if (item.isNotExposedDueTo.length == 0 ) {
+			console.log(item);
+			var an = item.accessibleName;
+			if (an){
+			if (an.length > 0) {
+				an = an.split(':');
+				console.log(an);
+				return an[1] == '';
+			}}
+			return true;
+		}
+	},
+	tags: ['heading','a11y'],
+	ressources: {'act': ['23a2a8'] }
+});
 
 // Id Attributes.
 
