@@ -1031,7 +1031,7 @@ tanaguruTestsList.push({
 		if (item.isNotExposedDueTo.length == 0 && !item.matches('input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title]), input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title])')) {
 			var an = item.accessibleName;
 			if (an && an.length > 0) {
-				an = an.split(':');
+				an = an.split(/:(.+)/);
 				return an[1] == '';
 			}
 			return an == '';
@@ -1044,16 +1044,19 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'en',
 	name: 'Link has accessible name.',
-	query: 'a:not([role])',
+	query: 'a:not([role]), [role="link"]',
 	expectedNbElements: 0,
 	filter: function (item) {
+		console.log('toto1');
 		if (item.isNotExposedDueTo.length == 0 ) {
 			var an = item.accessibleName;
+			console.log('toto2');
+			console.log("test : "+an);
 			if (an && an.length > 0) {
-				an = an.split(':');
+				an = an.split(/:(.+)/);
 				return an[1] == '';
 			}
-			return an == '';
+			return !an == '';
 		}
 	},
 	tags: ['links'],
@@ -1069,12 +1072,11 @@ tanaguruTestsList.push({
 		if (item.isNotExposedDueTo.length == 0 ) {
 			var an = item.accessibleName;
 			if (an && an.length > 0) {
-				an = an.split(':');
+				an = an.split(/:(.+)/);
 				if ((!an[0]=='alt') && (item.nodeName.toLowerCase() == 'img')){
 					return an[1] == '';
 				}
 				else return an[1] == ' ';
-				
 			}
 			return an == '';	
 		}
@@ -1094,7 +1096,7 @@ tanaguruTestsList.push({
 			var an = item.accessibleName;
 			if (an){
 			if (an.length > 0) {
-				an = an.split(':');
+				an = an.split(/:(.+)/);
 				console.log(an);
 				return an[1] == '';
 			}}

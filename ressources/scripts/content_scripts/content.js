@@ -602,6 +602,12 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 								clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
 							}
 							result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'content:' : '') + clonedThis.textContent; // A décomposer dans l'UI.
+							console.log(this);
+							console.log("result: "+result);
+							var splitResult = result.split(':');
+							if ((result == null || splitResult[1] == '') && this.hasAttribute('title')) {
+								result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'title:' : '') + this.getAttribute('title');
+							}
 						}
 						else if (this.matches('area, img')) {
 							if (this.hasAttribute('alt')) {
@@ -989,10 +995,6 @@ function createTanaguruTest(test) {
 					status = 'inapplicable'; // Voir si le statut "Non applicable" n'est possible que dans le cas d'un nombre d'éléments à vérifier.
 				}
 			}
-
-
-
-
 			var statuspriority = {
 				failed: 4,
 				passed: 3,
