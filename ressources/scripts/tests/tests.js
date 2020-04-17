@@ -1037,7 +1037,7 @@ tanaguruTestsList.push({
 			return an == '';
 		}
 	},
-	tags: ['buttons'],
+	tags: ['a11y', 'buttons'],
 	ressources: { 'act': ['97a4e1'] }
 });
 
@@ -1059,7 +1059,7 @@ tanaguruTestsList.push({
 			return !an == '';
 		}
 	},
-	tags: ['links'],
+	tags: ['a11y', 'links'],
 	ressources: { 'act': ['c487ae'] }
 });
 
@@ -1081,7 +1081,7 @@ tanaguruTestsList.push({
 			return an == '';	
 		}
 	},
-	tags: ['images'],
+	tags: ['a11y', 'images'],
 	ressources: { 'act': ['23a2a8'] }
 });
 
@@ -1103,7 +1103,7 @@ tanaguruTestsList.push({
 			return true;
 		}
 	},
-	tags: ['heading','a11y'],
+	tags: ['a11y', 'headings'],
 	ressources: {'act': ['23a2a8'] }
 });
 
