@@ -480,7 +480,7 @@ var ressourcestests = [];
 			
 // IN PROGRESS
 var testref = document.createElement('em');
-testref.style.paddingRight = '1em'; testref.style.display = 'inline-block'; testref.style.width = '80px'; testref.style.textAlign = 'right';
+testref.style.paddingRight = '1em'; testref.style.verticalAlign = 'bottom'; testref.style.display = 'inline-block'; testref.style.overflow = 'hidden'; testref.style.textOverflow = 'ellipsis'; testref.style.width = '80px'; testref.style.textAlign = 'right';
 if (!reftests.hasOwnProperty(response[0].tests[test].tags[0].toUpperCase())) {
 	reftests[response[0].tests[test].tags[0].toUpperCase()] = 0;
 }
@@ -490,6 +490,7 @@ if (response[0].tests[test].hasOwnProperty('id')) {
 	testref.setAttribute('data-autoid', testid);
 	testid = response[0].tests[test].id;
 }
+testref.setAttribute('title', testid);
 testref.appendChild(document.createTextNode(testid));
 tabpanelsectionbutton.appendChild(testref);
 
