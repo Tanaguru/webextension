@@ -16,8 +16,6 @@
     * Data (Separated Files).
 */
 
-if (!HTMLElement.prototype.hasOwnProperty('accessibleNameImplementedWith')) {}
-
 if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 	Object.defineProperty(HTMLElement.prototype, 'accessibleName', {
 		get: function () {
@@ -307,4 +305,12 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
 			return result.trim();
 		}
 	});
+}
+
+if (!('hasAccessibleName' in HTMLElement.prototype)) {
+    HTMLElement.prototype.hasAccessibleName = function () { return this.accessibleName != ''; };
+}
+
+if (!('getAccessibleNameImplementation' in HTMLElement.prototype)) {
+    HTMLElement.prototype.getAccessibleNameImplementation = function () {};
 }
