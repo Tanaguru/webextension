@@ -6,10 +6,10 @@
 
 /*
     Current Missing Implementations :
-    * Replaced Elements (+ CSS Content).
     * CSS Visibility Property.
     * Multiple-Selection Listboxes.
     Current Imperfect Implementations :
+    * Replaced Elements (+ CSS Content).
     * Control Embedded in Label.
     * Labels for Native Controls (Multiple Labels + Labels for Some Controls like Buttons).
     * Aria-owns Property (Partially Supported - Only for Custom Listboxes).
@@ -34,6 +34,7 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
                 nativeranges: 'input[type="number"], input[type="range"], meter, progress',
                 customranges: '[role="progressbar"], [role="scrollbar"], [role="slider"], [role="spinbutton"]'
             };
+            var replacedElements = ['audio', 'canvas', 'embed', 'iframe', 'img', 'input', 'object', 'video'];        
             // Step 1 : Initialize - Set the total accumulated text to the empty string ("").
             var result = '';
             // Step 2 : Compute the text alternative for the current node.
@@ -203,10 +204,14 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
                                 }
                             }
                             else {
-                                var parentcssbeforecontent = window.getComputedStyle(this, '::before').getPropertyValue('content');
-                                parentcssbeforecontent = parentcssbeforecontent == 'none' ? '' : parentcssbeforecontent.substring(1, parentcssbeforecontent.length - 1);
-                                var parentcssaftercontent = window.getComputedStyle(this, '::after').getPropertyValue('content');
-                                parentcssaftercontent = parentcssaftercontent == 'none' ? '' : parentcssaftercontent.substring(1, parentcssaftercontent.length - 1);
+                                var parentcssbeforecontent = '';
+                                var parentcssaftercontent = '';
+                                if (replacedElements.indexOf(this.tagName.toLowerCase()) == -1) {
+                                    parentcssbeforecontent = window.getComputedStyle(this, '::before').getPropertyValue('content');
+                                    parentcssbeforecontent = parentcssbeforecontent == 'none' ? '' : parentcssbeforecontent.substring(1, parentcssbeforecontent.length - 1);
+                                    parentcssaftercontent = window.getComputedStyle(this, '::after').getPropertyValue('content');
+                                    parentcssaftercontent = parentcssaftercontent == 'none' ? '' : parentcssaftercontent.substring(1, parentcssaftercontent.length - 1);
+                                }
                                 result = parentcssbeforecontent;
                                 if (this.matches('button')) {
                                     var nodes = this.childNodes;
@@ -217,10 +222,14 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
                                         }
                                         else if (nodes[i].nodeType == Node.ELEMENT_NODE && nodes[i].isNotExposedDueTo.length == 0) {
                                             // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
-                                            var cssbeforecontent = window.getComputedStyle(nodes[i], '::before').getPropertyValue('content');
-                                            cssbeforecontent = cssbeforecontent == 'none' ? '' : cssbeforecontent.substring(1, cssbeforecontent.length - 1);
-                                            var cssaftercontent = window.getComputedStyle(nodes[i], '::after').getPropertyValue('content');
-                                            cssaftercontent = cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1);
+                                            var cssbeforecontent = '';
+                                            var cssaftercontent = '';
+                                            if (replacedElements.indexOf(nodes[i].tagName.toLowerCase()) == -1) {
+                                                cssbeforecontent = window.getComputedStyle(nodes[i], '::before').getPropertyValue('content');
+                                                cssbeforecontent = cssbeforecontent == 'none' ? '' : cssbeforecontent.substring(1, cssbeforecontent.length - 1);
+                                                cssaftercontent = window.getComputedStyle(nodes[i], '::after').getPropertyValue('content');
+                                                cssaftercontent = cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1);
+                                            }
                                             nodes[i].setAttribute('data-labelbytraversal', 'true');
                                             result += cssbeforecontent + nodes[i].accessibleName + cssaftercontent;
                                         }
@@ -266,10 +275,14 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
                             }
                             controlsselectors = controlsselectors.join(',');
                             var nodes = this.childNodes;
-                            var parentcssbeforecontent = window.getComputedStyle(this, '::before').getPropertyValue('content');
-                            parentcssbeforecontent = parentcssbeforecontent == 'none' ? '' : parentcssbeforecontent.substring(1, parentcssbeforecontent.length - 1);
-                            var parentcssaftercontent = window.getComputedStyle(this, '::after').getPropertyValue('content');
-                            parentcssaftercontent = parentcssaftercontent == 'none' ? '' : parentcssaftercontent.substring(1, parentcssaftercontent.length - 1);
+                            var parentcssbeforecontent = '';
+                            var parentcssaftercontent = '';
+                            if (replacedElements.indexOf(this.tagName.toLowerCase()) == -1) {
+                                parentcssbeforecontent = window.getComputedStyle(this, '::before').getPropertyValue('content');
+                                parentcssbeforecontent = parentcssbeforecontent == 'none' ? '' : parentcssbeforecontent.substring(1, parentcssbeforecontent.length - 1);
+                                parentcssaftercontent = window.getComputedStyle(this, '::after').getPropertyValue('content');
+                                parentcssaftercontent = parentcssaftercontent == 'none' ? '' : parentcssaftercontent.substring(1, parentcssaftercontent.length - 1);
+                            }
                             result = parentcssbeforecontent;
                             for (var i = 0; i < nodes.length; i++) {
                                 if (nodes[i].nodeType == Node.TEXT_NODE) {
@@ -278,10 +291,14 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
                                 }
                                 else if (nodes[i].nodeType == Node.ELEMENT_NODE && nodes[i].isNotExposedDueTo.length == 0) {
                                     // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
-                                    var cssbeforecontent = window.getComputedStyle(nodes[i], '::before').getPropertyValue('content');
-                                    cssbeforecontent = cssbeforecontent == 'none' ? '' : cssbeforecontent.substring(1, cssbeforecontent.length - 1);
-                                    var cssaftercontent = window.getComputedStyle(nodes[i], '::after').getPropertyValue('content');
-                                    cssaftercontent = cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1);
+                                    var cssbeforecontent = '';
+                                    var cssaftercontent = '';
+                                    if (replacedElements.indexOf(nodes[i].tagName.toLowerCase()) == -1) {
+                                        cssbeforecontent = window.getComputedStyle(nodes[i], '::before').getPropertyValue('content');
+                                        cssbeforecontent = cssbeforecontent == 'none' ? '' : cssbeforecontent.substring(1, cssbeforecontent.length - 1);
+                                        cssaftercontent = window.getComputedStyle(nodes[i], '::after').getPropertyValue('content');
+                                        cssaftercontent = cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1);
+                                    }
                                     if (nodes[i].matches(controlsselectors)) {
                                         nodes[i].setAttribute('data-controlembeddedinlabel', 'true');
                                     }
