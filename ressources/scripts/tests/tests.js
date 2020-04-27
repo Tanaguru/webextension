@@ -132,7 +132,7 @@ tanaguruTestsList.push({
 	id: "FramesTest7",
 	query: 'iframe:not([role]), frame:not([role])',
 	filter: function (item) {
-		return item.accessibleName == null;
+		return !item.hasAccessibleName();
 	},
 	expectedNbElements: 0,
 	tags: ['a11y', 'frames', 'aria'],
@@ -143,7 +143,7 @@ tanaguruTestsList.push({
 	id: "FramesTest8",
 	query: 'iframe:not([role]), frame:not([role])',
 	filter: function (item) {
-		return item.accessibleName == null;
+		return !item.hasAccessibleName();
 	},
 	tags: ['a11y', 'frames', 'aria'],
 	ressources: { 'wcag': ['4.1.2'] }
@@ -230,7 +230,7 @@ tanaguruTestsList.push({
 	id: 'ImagesTest2',
 	query: 'img:not([role]):not([href])',
 	filter: function (item) {
-		return item.accessibleName == null;
+		return !item.hasAccessibleName();
 	},
 	expectedNbElements: 0,
 	tags: ['a11y', 'images', 'aria'],
@@ -241,7 +241,7 @@ tanaguruTestsList.push({
 	id: 'ImagesTest3',
 	query: '[role="img"]',
 	filter: function (item) {
-		return item.accessibleName == null; //to complete
+		return !item.hasAccessibleName(); //to complete
 	},
 	expectedNbElements: 0,
 	tags: ['a11y', 'images', 'aria'],
@@ -252,7 +252,7 @@ tanaguruTestsList.push({
 	id: 'ImagesTest4',
 	query: 'img:not([role]):not([href]) ,[role="img"]',
 	filter: function (item) {
-		return item.accessibleName == null;
+		return !item.hasAccessibleName();
 	},
 	tags: ['a11y', 'images', 'aria'],
 	ressources: { 'wcag': ['4.1.2'] }
@@ -262,7 +262,7 @@ tanaguruTestsList.push({
 	id: 'ImagesTest5',
 	query: 'area:not([role])',
 	filter: function (item) {
-		return item.accessibleName == null;
+		return !item.hasAccessibleName();
 	},
 	expectedNbElements: 0,
 	tags: ['a11y', 'images', 'aria'],
@@ -273,7 +273,7 @@ tanaguruTestsList.push({
 	id: 'ImagesTest6',
 	query: 'area:not([role])',
 	filter: function (item) {
-		return item.accessibleName == null;
+		return !item.hasAccessibleName();
 	},
 	expectedNbElements: 0,
 	tags: ['a11y', 'images', 'aria'],
@@ -510,7 +510,7 @@ tanaguruTestsList.push({
 	id: 'FormsTest1',
 	query: 'input:not([type="image"]):not([type="button"]):not([type="hidden"]):not([type="submit"]):not([type="reset"]):not([role]), select:not([role]), textarea:not([role])',
 	filter: function (item) {
-		return item.accessibleName == null;
+		return !item.hasAccessibleName();
 	},
 	expectedNbElements: 0,
 	tags: ['a11y', 'forms', 'labels'],
@@ -521,7 +521,7 @@ tanaguruTestsList.push({
 	id: 'FormsTest2',
 	query: '*[role="checkbox"], *[role="radio"], *[role="textbox"], *[role="combobox"]',
 	filter: function (item) {
-		return item.accessibleName == null;
+		return !item.hasAccessibleName();
 	},
 	expectedNbElements: 0,
 	mark: { attrs: ['id'] },
@@ -533,7 +533,7 @@ tanaguruTestsList.push({
 	id: 'FormsTest3',
 	query: 'input:not([role])',
 	filter: function (item) {
-		return item.accessibleName == null;
+		return !item.hasAccessibleName();
 	},
 	expectedNbElements: 0,
 	tags: ['a11y', 'forms', 'aria'],
@@ -544,7 +544,7 @@ tanaguruTestsList.push({
 	id: 'FormsTest4',
 	query: 'input:not([role])',
 	filter: function (item) {
-		return item.accessibleName == null;
+		return !item.hasAccessibleName();
 	},
 	tags: ['a11y', 'forms', 'aria'],
 	ressources: { 'wcag': ['4.1.2'] }
@@ -554,7 +554,7 @@ tanaguruTestsList.push({
 	id: "FormsTest5",
 	query: 'select:not([role])',
 	filter: function (item) {
-		return item.accessibleName == null;	
+		return !item.hasAccessibleName();	
 	},
 	expectedNbElements: 0,
 	tags: ['a11y', 'forms', 'aria'],
@@ -565,7 +565,7 @@ tanaguruTestsList.push({
 	id: "FormsTest6",
 	query: 'select:not([role])',
 	filter: function (item) {
-		return item.accessibleName == null;
+		return !item.hasAccessibleName();
 	},
 	expectedNbElements: 0,
 	tags: ['a11y', 'forms', 'aria'],
@@ -1029,13 +1029,9 @@ tanaguruTestsList.push({
 	expectedNbElements: 0,
 	filter: function (item) {
 		if (item.isNotExposedDueTo.length == 0 && !item.matches('input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title]), input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title])')) {
-			var an = item.accessibleName;
-			if (an && an.length > 0) {
-				an = an.split(/:(.+)/);
-				return an[1] == '';
-			}
-			return an == '';
+			return !item.hasAccessibleName();
 		}
+		return false;
 	},
 	tags: ['a11y', 'buttons'],
 	ressources: { 'act': ['97a4e1'] }
@@ -1047,17 +1043,7 @@ tanaguruTestsList.push({
 	query: 'a:not([role]), [role="link"]',
 	expectedNbElements: 0,
 	filter: function (item) {
-		console.log('toto1');
-		if (item.isNotExposedDueTo.length == 0 ) {
-			var an = item.accessibleName;
-			console.log('toto2');
-			console.log("test : "+an);
-			if (an && an.length > 0) {
-				an = an.split(/:(.+)/);
-				return an[1] == '';
-			}
-			return !an == '';
-		}
+		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
 	},
 	tags: ['a11y', 'links'],
 	ressources: { 'act': ['c487ae'] }
@@ -1069,17 +1055,10 @@ tanaguruTestsList.push({
 	query: 'img:not([role]), [role="img"]',
 	expectedNbElements: 0,
 	filter: function (item) {
-		if (item.isNotExposedDueTo.length == 0 ) {
-			var an = item.accessibleName;
-			if (an && an.length > 0) {
-				an = an.split(/:(.+)/);
-				if ((!an[0]=='alt') && (item.nodeName.toLowerCase() == 'img')){
-					return an[1] == '';
-				}
-				else return an[1] == ' ';
-			}
-			return an == '';	
+		if (item.isNotExposedDueTo.length == 0 && !item.matches('img[alt=""], [role="none"], [role="presentation"]')) {
+			return !item.hasAccessibleName();
 		}
+		return false;
 	},
 	tags: ['a11y', 'images'],
 	ressources: { 'act': ['23a2a8'] }
@@ -1091,17 +1070,7 @@ tanaguruTestsList.push({
 	query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"][aria-level="1"], [role="heading"][aria-level="2"], [role="heading"][aria-level="3"], [role="heading"][aria-level="4"], [role="heading"][aria-level="5"], [role="heading"][aria-level="6"]',
 	expectedNbElements: 0,
 	filter: function (item) {
-		if (item.isNotExposedDueTo.length == 0 ) {
-			console.log(item);
-			var an = item.accessibleName;
-			if (an){
-			if (an.length > 0) {
-				an = an.split(/:(.+)/);
-				console.log(an);
-				return an[1] == '';
-			}}
-			return true;
-		}
+		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
 	},
 	tags: ['a11y', 'headings'],
 	ressources: {'act': ['23a2a8'] }
