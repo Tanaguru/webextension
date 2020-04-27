@@ -53,6 +53,8 @@
 	"tagForms": { "message": "Forms" },
 	"tagLabels": { "message": "Labels" },
 	"tagAria": {"message" : "Aria"},
+	"tagAccessibleName": {"message" : "Accessible Name"},
+	"tagSvg": {"message" : "Svg"},
 	"tagDeprecated": {"message" : "Deprecated"},
 	"tagMandatory": {"message" : "Mandatory Elements"},
 	"tagStructure": {"message" : "Information Structure"},

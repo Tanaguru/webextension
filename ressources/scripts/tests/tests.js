@@ -1033,7 +1033,7 @@ tanaguruTestsList.push({
 		}
 		return false;
 	},
-	tags: ['a11y', 'buttons'],
+	tags: ['a11y', 'buttons', 'accessiblename'],
 	ressources: { 'act': ['97a4e1'] }
 });
 
@@ -1045,7 +1045,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
 	},
-	tags: ['a11y', 'links'],
+	tags: ['a11y', 'links', 'accessiblename'],
 	ressources: { 'act': ['c487ae'] }
 });
 
@@ -1060,7 +1060,7 @@ tanaguruTestsList.push({
 		}
 		return false;
 	},
-	tags: ['a11y', 'images'],
+	tags: ['a11y', 'images', 'accessiblename'],
 	ressources: { 'act': ['23a2a8'] }
 });
 
@@ -1072,8 +1072,57 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
 	},
-	tags: ['a11y', 'headings'],
+	tags: ['a11y', 'headings', 'accessiblename'],
 	ressources: {'act': ['23a2a8'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Form control has accessible name',
+	query: 'select:not([role]), input:not([role]), textarea:not([role])',
+	expectedNbElements: 0,
+	filter: function (item) {
+		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+	},
+	tags: ['a11y', 'forms', 'accessiblename'],
+	ressources: {'act': ['e086e5'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Iframe has accessible name',
+	query: 'iframe:not([role])',
+	expectedNbElements: 0,
+	filter: function (item) {
+		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+	},
+	tags: ['a11y', 'frames', 'accessiblename'],
+	ressources: {'act': ['cae760'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Image button has accessible name',
+	query: 'input[type="image"]:not([role])',
+	expectedNbElements: 0,
+	filter: function (item) {
+		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+	},
+	tags: ['a11y', 'buttons','images', 'accessiblename'],
+	ressources: {'act': ['59796f'] }
+});
+
+//partial implementaiton: circle tag
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'svg element with explicit role has accessible name',
+	query: 'svg[role="img"], svg[role="graphic-document"]',
+	expectedNbElements: 0,
+	filter: function (item) {
+		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+	},
+	tags: ['a11y', 'Images','Svg'],
+	ressources: {'act': ['7d6734'] }
 });
 
 // Id Attributes.

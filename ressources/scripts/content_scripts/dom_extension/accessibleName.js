@@ -49,7 +49,7 @@ if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
                     */
                     var labelledby = this.getAttribute('aria-labelledby');
 					if (labelledby.trim().length > 0) {
-						labelledby = labelledby.split(' ');
+                        labelledby = labelledby.split(' ');
                         var nodes = [];
 						for (var l = 0; l < labelledby.length; l++) {
 							var labelledbyitem = document.getElementById(labelledby[l]);
