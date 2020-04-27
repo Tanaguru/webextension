@@ -562,247 +562,6 @@ Element.prototype.isARIAStatePropertyAllowedOnMe = function (stateproperty) { re
 HTMLElement.prototype.isARIARoleAllowedOnMe = function (role) { return this.availableARIASemantics.indexOf('[role="' + role + '"]') > -1; };
 HTMLElement.prototype.isARIAStatePropertyAllowedOnMe = function (stateproperty) { return ''; };
 
-if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) {
-	Object.defineProperty(HTMLElement.prototype, 'accessibleName', {
-		get: function () {
-			var result = null; // NULL
-			if (this.isNotExposedDueTo.length == 0 || this.hasAttribute('data-arialabelledbytraversal')) {
-				if (this.hasAttribute('aria-labelledby') && !this.hasAttribute('data-arialabelledbytraversal')) {
-					var labelledby = this.getAttribute('aria-labelledby');
-					if (labelledby.trim().length > 0) {
-						labelledby = labelledby.split(' ');
-						var nodes = [];
-						for (var l = 0; l < labelledby.length; l++) {
-							var labelledbyitem = document.getElementById(labelledby[l]);
-							if (labelledbyitem) {
-								nodes.push(labelledbyitem);
-							}
-						}
-						if (nodes.length) {
-							result = 'aria-labelledby:';
-							for (var i = 0; i < nodes.length; i++) {
-								nodes[i].setAttribute('data-arialabelledbytraversal', 'true');
-								var an = nodes[i].accessibleName;
-								result += (i > 0 && an != '' ? ' ' : '') + an;
-							}
-						}
-					}
-				}
-				if (result == null) {
-					if (this.hasAttribute('aria-label') && this.getAttribute('aria-label').trim() != '') {
-						result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'aria-label:' : '') + this.getAttribute('aria-label');
-					}
-					else if (!this.matches('[role="none"], [role="presentation"]')) {
-						if (this.matches('a, [role="link"], button, [role="button"]')) {
-							var clonedThis = this.cloneNode(true);
-							var clonedImages = clonedThis.querySelectorAll('img');
-							for (var i = 0; i < clonedImages.length; i++) {
-								var an = clonedImages[i].accessibleName;
-								an = an == null ? '' : an;
-								clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
-							}
-							result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'content:' : '') + clonedThis.textContent; // A décomposer dans l'UI.
-							console.log(this);
-							console.log("result: "+result);
-							var splitResult = result.split(':');
-							if ((result == null || splitResult[1] == '') && this.hasAttribute('title')) {
-								result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'title:' : '') + this.getAttribute('title');
-							}
-						}
-						else if (this.matches('area, img')) {
-							if (this.hasAttribute('alt')) {
-								result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'alt:' : '') + this.getAttribute('alt');
-							}
-							else if ((result == null || result == '') && this.hasAttribute('title')) {
-								result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'title:' : '') + this.getAttribute('title');
-							}
-							else result = '';
-						}
-						else if (this.matches('[role="img"]')){
-							if ((result == null || result == '') && this.hasAttribute('title')) {
-								result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'title:' : '') + this.getAttribute('title');
-							}
-							else result = '';
-						}
-						else if (this.matches('h1, h2, h3, h4, h5, h6, [role="heading"]')) {
-							var clonedThis = this.cloneNode(true);
-							var clonedImages = clonedThis.querySelectorAll('img');
-							for (var i = 0; i < clonedImages.length; i++) {
-								var an = clonedImages[i].accessibleName;
-								an = an == null ? '' : an;
-								clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
-							}
-							result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'content:' : '') + clonedThis.textContent; // A décomposer dans l'UI.
-						}
-						else if (this.matches('div')) {
-							result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'content:' : '') + this.textContent;
-						}
-						else if (this.matches('iframe') && this.hasAttribute('title')) {
-							result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'title:' : '') + this.getAttribute('title');
-						}
-						else if (this.matches('input[type="button"], input[type="image"], input[type="reset"], input[type="submit"]')) {
-							var anattribute = this.getAttribute('type') == 'image' ? 'alt' : 'value';
-							result = this.hasAttribute(anattribute) ? (!this.hasAttribute('data-arialabelledbytraversal') ? anattribute + ':' : '') + this.getAttribute(anattribute) : (!this.hasAttribute('data-arialabelledbytraversal') ? null : ''); // NULL
-							if ((result == null || result == '') && this.hasAttribute('title')) {
-								result = 'title:' + this.getAttribute('title');
-							}
-						}
-						else if (this.matches('input, select, textarea')) {
-							var label = this.hasAttribute('id') ? document.querySelector('label[for="' + this.getAttribute('id') + '"]') : null; // NULL
-							if (label) {
-								var clonedLabel = label.cloneNode(true);
-								var clonedImages = clonedLabel.querySelectorAll('img');
-								for (var i = 0; i < clonedImages.length; i++) {
-									var an = clonedImages[i].accessibleName;
-									an = an == null ? '' : an;
-									clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
-								}
-								result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'label[for]:' : '') + clonedLabel.textContent;
-							}
-							else if (this.matches('label input, label select, label textarea')) {
-								label = this.closest('label');
-								var clonedLabel = label.cloneNode(true);
-								var clonedImages = clonedLabel.querySelectorAll('img');
-								for (var i = 0; i < clonedImages.length; i++) {
-									var an = clonedImages[i].accessibleName;
-									an = an == null ? '' : an;
-									clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
-								}
-								result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'label:' : '') + clonedLabel.textContent;
-							}
-							else if (this.hasAttribute('title')) {
-								result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'title:' : '') + this.getAttribute('title');
-							}
-						}
-						else if (this.matches('fieldset, table')) {
-							var groupname = this.firstElementChild;
-							if (groupname && groupname.matches('fieldset > legend, table > caption')) {
-								var clonedGroupname = groupname.cloneNode(true);
-								var clonedImages = clonedGroupname.querySelectorAll('img');
-								for (var i = 0; i < clonedImages.length; i++) {
-									var an = clonedImages[i].accessibleName;
-									an = an == null ? '' : an;
-									clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
-								}
-								result = (!this.hasAttribute('data-arialabelledbytraversal') ? groupname.tagName.toLowerCase() + ':' : '') + clonedGroupname.textContent;
-							}
-						}
-						else {
-							// headings, paragraphs & so on...
-							var clonedElement = this.cloneNode(true);
-							var clonedImages = clonedElement.querySelectorAll('img');
-							for (var i = 0; i < clonedImages.length; i++) {
-								var an = clonedImages[i].accessibleName;
-								an = an == null ? '' : an;
-								clonedImages[i].parentNode.replaceChild(document.createTextNode(an), clonedImages[i]);
-							}
-							result = (!this.hasAttribute('data-arialabelledbytraversal') ? 'content:' : '') + clonedElement.textContent;
-						}
-					}
-					else {
-						result = '';
-					}
-				}
-			}
-			else {
-				result = '';
-			}
-			this.removeAttribute('data-arialabelledbytraversal');
-			return result;
-		}
-	});
-}
-
-if (!SVGElement.prototype.hasOwnProperty('isNotVisibleDueTo')) {
-	Object.defineProperty(SVGElement.prototype, 'isNotVisibleDueTo', {
-		get: function () {
-			var result = [];
-			if (!(!!(this.offsetWidth || this.offsetHeight || this.getClientRects().length))) {
-				result.push('css:other');
-			}
-			if (window.getComputedStyle(this, null).getPropertyValue('display') == 'none') {
-				result.push('css:display');
-			}
-			if (window.getComputedStyle(this, null).getPropertyValue('opacity') == '0') {
-				result.push('css:opacity');
-			}
-			if (window.getComputedStyle(this, null).getPropertyValue('visibility') == 'hidden') {
-				result.push('css:visibility');
-			}
-			return result;
-		}
-	});
-}
-
-if (!HTMLElement.prototype.hasOwnProperty('isNotVisibleDueTo')) {
-	Object.defineProperty(HTMLElement.prototype, 'isNotVisibleDueTo', {
-		get: function () {
-			var result = [];
-			if (!(!!(this.offsetWidth || this.offsetHeight || this.getClientRects().length))) {
-				result.push('css:other');
-			}
-			if (window.getComputedStyle(this, null).getPropertyValue('display') == 'none') {
-				result.push('css:display');
-			}
-			if (window.getComputedStyle(this, null).getPropertyValue('opacity') == '0') {
-				result.push('css:opacity');
-			}
-			if (window.getComputedStyle(this, null).getPropertyValue('visibility') == 'hidden') {
-				result.push('css:visibility');
-			}
-			return result;
-		}
-	});
-}
-
-if (!SVGElement.prototype.hasOwnProperty('canBeReachedUsingKeyboardWith')) {
-	Object.defineProperty(SVGElement.prototype, 'canBeReachedUsingKeyboardWith', {
-		get: function () {
-			var result = [];
-			if (this.hasAttribute('tabindex') && ['0', '-1'].indexOf(this.getAttribute('tabindex')) > -1) {
-				result.push('aria:tabindex');
-			}
-			return result;
-		}
-	});
-}
-
-if (!HTMLElement.prototype.hasOwnProperty('canBeReachedUsingKeyboardWith')) {
-	Object.defineProperty(HTMLElement.prototype, 'canBeReachedUsingKeyboardWith', {
-		get: function () {
-			var result = [];
-			switch (this.tagName.toLowerCase()) {
-				case 'a':
-				case 'area':
-					if (this.hasAttribute('href')) {
-						result.push('html:' + this.tagName.toLowerCase());
-					}
-					break;
-				case 'input':
-				case 'select':
-				case 'textarea':
-				case 'button':
-					if (!this.hasAttribute('disabled')) {
-						result.push('html:' + this.tagName.toLowerCase());
-					}
-					break;
-				case 'iframe':
-					result.push('html:' + this.tagName.toLowerCase());
-					break;
-			}
-
-			if (this.hasAttribute('contenteditable') && this.getAttribute('contenteditable') == 'true') {
-				result.push('html:contenteditable');
-			}
-
-			if (this.hasAttribute('tabindex') && ['0', '-1'].indexOf(this.getAttribute('tabindex')) > -1) {
-				result.push('aria:tabindex');
-			}
-			return result;
-		}
-	});
-}
-
 /* Gestion des tests. */
 function getXPath(element) {
 	var position = 0;
@@ -828,7 +587,6 @@ function addBooleanResult(name, data) {
 		});
 	*/
 }
-
 
 function initTanaguru() {
 	if (!window.tanaguru) {
@@ -898,13 +656,6 @@ function manageOutput(element) {
 	return { status: status, outer: fakeelement.outerHTML, xpath: getXPath(element), role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isNotVisibleDueTo: isNotVisibleDueTo, isNotExposedDueTo: isNotExposedDueTo };
 }
 
-
-
-
-
-
-
-
 function createTanaguruTest(test) {
 	if (test.hasOwnProperty('query') && test.query.constructor == String) {
 		// Sélection des éléments.
@@ -926,9 +677,6 @@ function createTanaguruTest(test) {
 					window.tanaguru.tags['others'] = { id: 'others', name: browser.i18n.getMessage('tagOthers'), status: status, nbfailures: 0 };
 				}
 			}
-
-
-
 			// Filtre additionnel sur la sélection d'éléments.
 			if (test.hasOwnProperty('filter')) {
 				if (test.filter.constructor == Function) {
@@ -988,9 +736,6 @@ function createTanaguruTest(test) {
 					}
 				}
 			}
-
-
-
 			// Mises à jour des tags (statut du tag et nombre de résultats en erreur).
 			if (test.hasOwnProperty('tags') && test.tags.constructor == Array) {
 				for (var i = 0; i < test.tags.length; i++) {
@@ -1010,9 +755,6 @@ function createTanaguruTest(test) {
 					window.tanaguru.tags['others'].nbfailures += elements.length > 0 ? elements.length : 1;
 				}
 			}
-
-
-
 			// Chargement du résultat.
 			var outputelements = [];
 			for (var i = 0; i < elements.length; i++) {
@@ -1047,13 +789,7 @@ function createTanaguruTest(test) {
 				result.failedincollection = failedincollection;
 			}
 			addResultSet("Nouvelle syntaxe d'écriture des tests", result);
-
-
-
 			// Intégrer chaque résultat dans window.tanaguru.tests.
-
-
-
 		}
 		else {
 			// Erreur : valeur de la propriété query.
