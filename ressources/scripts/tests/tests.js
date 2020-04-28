@@ -1033,7 +1033,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
 	}, 
-	tags: ['a11y', 'forms'], 
+	tags: ['a11y', 'forms', 'accessiblename'], 
 	ressources: { 'act': ['e086e5'] }
 });
 
@@ -1050,7 +1050,7 @@ tanaguruTestsList.push({
 			collection[i].status = 'passed';
 		}
 	},
-	tags: ['a11y', 'forms'], 
+	tags: ['a11y', 'forms', 'accessiblename'], 
 	ressources: { 'act': ['e086e5'] }
 });
 
@@ -1062,10 +1062,23 @@ tanaguruTestsList.push({
 	query: 'button:not([role]), [role="button"], input[type="reset"], input[type="submit"]',
 	expectedNbElements: 0,
 	filter: function (item) {
-		if (item.isNotExposedDueTo.length == 0 && !item.matches('input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title]), input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title])')) {
-			return !item.hasAccessibleName();
+		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+	}, 
+	tags: ['a11y', 'buttons', 'accessiblename'],
+	ressources: { 'act': ['97a4e1'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Button has accessible name.',
+	query: 'button:not([role]), [role="button"], input[type="reset"], input[type="submit"]',
+	filter: function (item) {
+		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+	},
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
 		}
-		return false;
 	},
 	tags: ['a11y', 'buttons', 'accessiblename'],
 	ressources: { 'act': ['97a4e1'] }
@@ -1073,8 +1086,20 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'en',
+	name: 'Image has accessible name.',
+	query: 'img:not([role]), [role="img"]',
+	expectedNbElements: 0,
+	filter: function (item) {
+		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+	}, 
+	tags: ['a11y', 'images', 'accessiblename'],
+	ressources: { 'act': ['23a2a8'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
 	name: 'Link has accessible name.',
-	query: 'a:not([role]), [role="link"]',
+	query: 'a:not([role]), [role="link"], area:not([role])',
 	expectedNbElements: 0,
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
@@ -1085,17 +1110,18 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Image has accessible name.',
-	query: 'img:not([role]), [role="img"]',
-	expectedNbElements: 0,
+	name: 'Link has accessible name.',
+	query: 'a:not([role]), [role="link"], area:not([role])',
 	filter: function (item) {
-		if (item.isNotExposedDueTo.length == 0 && !item.matches('img[alt=""], [role="none"], [role="presentation"]')) {
-			return !item.hasAccessibleName();
-		}
-		return false;
+		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
 	},
-	tags: ['a11y', 'images', 'accessiblename'],
-	ressources: { 'act': ['23a2a8'] }
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+	tags: ['a11y', 'links', 'accessiblename'],
+	ressources: { 'act': ['c487ae'] }
 });
 
 tanaguruTestsList.push({
@@ -1105,6 +1131,22 @@ tanaguruTestsList.push({
 	expectedNbElements: 0,
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+	}, 
+	tags: ['a11y', 'headings', 'accessiblename'],
+	ressources: {'act': ['23a2a8'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Heading has accessible name',
+	query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"][aria-level="1"], [role="heading"][aria-level="2"], [role="heading"][aria-level="3"], [role="heading"][aria-level="4"], [role="heading"][aria-level="5"], [role="heading"][aria-level="6"]',
+	filter: function (item) {
+		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+	},
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
 	},
 	tags: ['a11y', 'headings', 'accessiblename'],
 	ressources: {'act': ['23a2a8'] }
@@ -1146,6 +1188,22 @@ tanaguruTestsList.push({
 	ressources: {'act': ['59796f'] }
 });
 
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Image button has accessible name',
+	query: 'input[type="image"]:not([role])',
+	filter: function (item) {
+		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+	},
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+	tags: ['a11y', 'buttons','images', 'accessiblename'],
+	ressources: {'act': ['59796f'] }
+});
+
 //partial implementaiton: circle tag
 tanaguruTestsList.push({
 	lang: 'en',
@@ -1153,6 +1211,7 @@ tanaguruTestsList.push({
 	query: 'svg[role="img"], svg[role="graphic-document"]',
 	expectedNbElements: 0,
 	filter: function (item) {
+		console.log(item);
 		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
 	},
 	tags: ['a11y', 'Images','Svg'],
