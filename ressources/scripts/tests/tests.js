@@ -1022,6 +1022,40 @@ tanaguruTestsList.push({
 
 // Accessible Names.
 
+// e086e5
+
+tanaguruTestsList.push({
+	lang: 'en', 
+	name: 'Form control has no accessible name.', 
+	description: 'This rule checks that each form field element has an accessible name.', 
+	query: 'input[type="checkbox"]:not([role]), [role="checkbox"], [role="switch"], input[type="radio"]:not([role]), [role="radio"], select:not([role]), [role="combobox"], input[type="search"]:not([role]), [role="searchbox"], input[type="range"]:not([role]), [role="slider"], input[type="number"]:not([role]), [role="spinbutton"], input:not([type]):not([role]), input[type="email"]:not([role]), input[type="tel"]:not([role]), input[type="text"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), [contenteditable="true"]:not([role]), [role="textbox"], [role="listbox"], [role="menuitemcheckbox"], [role="menuitemradio"]', 
+	expectedNbElements: 0, 
+	filter: function (item) {
+		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+	}, 
+	tags: ['a11y', 'forms'], 
+	ressources: { 'act': ['e086e5'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'en', 
+	name: 'Form control has accessible name.', 
+	description: 'This rule checks that each form field element has an accessible name.', 
+	query: 'input[type="checkbox"]:not([role]), [role="checkbox"], [role="switch"], input[type="radio"]:not([role]), [role="radio"], select:not([role]), [role="combobox"], input[type="search"]:not([role]), [role="searchbox"], input[type="range"]:not([role]), [role="slider"], input[type="number"]:not([role]), [role="spinbutton"], input:not([type]):not([role]), input[type="email"]:not([role]), input[type="tel"]:not([role]), input[type="text"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), [contenteditable="true"]:not([role]), [role="textbox"], [role="listbox"], [role="menuitemcheckbox"], [role="menuitemradio"]', 
+	filter: function (item) {
+		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+	},
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+	tags: ['a11y', 'forms'], 
+	ressources: { 'act': ['e086e5'] }
+});
+
+// Other tests (to range)
+
 tanaguruTestsList.push({
 	lang: 'en',
 	name: 'Button has accessible name.',
