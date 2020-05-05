@@ -229,7 +229,9 @@ var getAccessibleName = function () {
                                         cssaftercontent = window.getComputedStyle(nodes[i], '::after').getPropertyValue('content');
                                         cssaftercontent = cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1);
                                     }
-                                    nodes[i].setAttribute('data-labelbytraversal', 'true');
+                                    if (this.matches('[data-labelbytraversal="true"]')) {
+                                        nodes[i].setAttribute('data-labelbytraversal', 'true');
+                                    }
                                     result += cssbeforecontent + nodes[i].accessibleName + cssaftercontent;
                                 }
                             }
@@ -301,7 +303,9 @@ var getAccessibleName = function () {
                             if (nodes[i].matches(controlsselectors)) {
                                 nodes[i].setAttribute('data-controlembeddedinlabel', 'true');
                             }
-                            nodes[i].setAttribute('data-labelbytraversal', 'true');
+                            if (this.matches('[data-labelbytraversal="true"]')) {
+                                nodes[i].setAttribute('data-labelbytraversal', 'true');
+                            }
                             result += cssbeforecontent + nodes[i].accessibleName + cssaftercontent;
                         }
                     }
