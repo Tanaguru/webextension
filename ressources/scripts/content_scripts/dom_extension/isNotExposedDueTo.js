@@ -17,11 +17,36 @@ var isNotExposedDueTo = function () {
 			result.push('parent-aria:hidden');
 		}
 	}
-	if (window.getComputedStyle(this, null).getPropertyValue('display') == 'none') {
-		result.push('css:display');
+	if (!this.matches('area')) {
+		if (window.getComputedStyle(this, null).getPropertyValue('display') == 'none') {
+			result.push('css:display');
+		}
+		if (window.getComputedStyle(this, null).getPropertyValue('visibility') == 'hidden') {
+			result.push('css:visibility');
+		}
 	}
-	if (window.getComputedStyle(this, null).getPropertyValue('visibility') == 'hidden') {
-		result.push('css:visibility');
+	else {
+		var pt = this.parentNode;
+		if (pt && pt.matches('map')) {
+			var ptexposition = pt.isNotExposedDueTo;
+			if (pt.hasAttribute('name')) {
+				var img = document.querySelector('img[usemap="#' + pt.getAttribute('name') + '"]');
+				if (img) {
+					if (img.isNotExposedDueTo.length > 0) {
+						result.push('html:imagenotexposed');
+					}
+				}
+				else {
+					result.push('parent-html:noimage');
+				}
+			}
+			else {
+				result.push('parent-html:noname');
+			}
+		}
+		else {
+			result.push('parent-html:unknown');
+		}
 	}
 	return result;
 };
