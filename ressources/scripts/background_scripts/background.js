@@ -17,7 +17,7 @@ function handleMessage(request, sender, sendResponse) {
 		);
 	}
 	else if (request.command === 'executeTests') {
-		var response = browser.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/tests.js' });
+		var response = browser.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/act.js' });
 		response = response.then(function (result) {
 			return browser.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/init-tests.js' }).then(function (result) {
 				return browser.tabs.executeScript(request.tabId, { code: 'loadTanaguruTests();' });
