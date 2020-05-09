@@ -277,7 +277,7 @@ tanaguruTestsList.push({
 			}
 		}
   },
-  tags: ['a11y', 'id'],
+  tags: ['a11y'],
 	ressources: { 'act' : ['3ea0c8'], 'WCAG': ['4.1.1']}
 });
 
@@ -306,12 +306,9 @@ tanaguruTestsList.push({
 	query: 'html[lang]',
 	filter: function (item) {
 		var langAttr = item.getAttribute('lang');
-		console.log(langAttr);
 		if ((!langAttr=='')||(!langAttr==' ')){
-			console.log('toto');
 			return true;
 		}
-		else return true;
 	},
 	analyzeElements: function (collection) {
 		for (var i = 0; i < collection.length; i++) {
@@ -319,6 +316,48 @@ tanaguruTestsList.push({
 		}
 	},
 	mark: { attrs: ['lang'] },
-	tags: ['a11y', 'Mandatory', 'lang'],
+	tags: ['a11y', 'Mandatory'],
 	ressources: { 'act': ['c487ae'], 'WCAG': ['4.1.2']}
+});
+
+// 5b7ae0
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'lang and xml:lang attributes havent the same primary language subtag',
+	query: 'html[lang][xml\\:lang]',
+	filter: function(item) {
+		var langAttr = item.getAttribute('lang');
+		var xmlLangAttr = item.getAttribute('xml:lang');
+		if ((langAttr.substring(0, 2)) != (xmlLangAttr.substring(0, 2))){
+			return true;
+		}
+	},
+	expectedNbElements: 0,
+	mark: { attrs: ['lang', 'xml:lang']},
+	tags: ['a11y', 'Mandatory'],
+	ressources: { 'act': ['5b7ae0'], 'WCAG': ['3.1.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'lang and xml:lang attributes have the same primary language subtag',
+	query: 'html[lang][xml\\:lang]',
+	filter: function(item) {
+		console.log(item);
+		var langAttr = item.getAttribute('lang');
+		var xmlLangAttr = item.getAttribute('xml:lang');
+		if ((langAttr.substring(0, 2)) == (xmlLangAttr.substring(0, 2))){
+			return true;
+		}
+	},
+	analyzeElements: function (collection) {
+		console.log(collection);
+		for (var i = 0; i < collection.length; i++) {
+		collection[i].status = 'passed';
+		}
+	},
+	mark: { attrs: ['lang', 'xml:lang']},
+	tags: ['a11y', 'Mandatory'],
+	ressources: { 'act': ['5b7ae0'], 'WCAG': ['3.1.1']}
 });
