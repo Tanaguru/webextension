@@ -280,3 +280,45 @@ tanaguruTestsList.push({
   tags: ['a11y', 'id'],
 	ressources: { 'act' : ['3ea0c8'], 'WCAG': ['4.1.1']}
 });
+
+// c487ae
+
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'HTML page has no lang attribute.',
+	query: 'html',
+	filter: function(item) {
+		var langAttr = item.getAttribute('lang');
+		if ((langAttr==null)||(langAttr=='')||(langAttr==' ')){
+			return true;
+		}
+	},
+	expectedNbElements: 0,
+	mark: { attrs: ['lang'] },
+	tags: ['a11y', 'Mandatory'],
+	ressources: { 'act': ['c487ae'], 'WCAG': ['4.1.2']}
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'HTML page has lang attribute.',
+	query: 'html[lang]',
+	filter: function (item) {
+		var langAttr = item.getAttribute('lang');
+		console.log(langAttr);
+		if ((!langAttr=='')||(!langAttr==' ')){
+			console.log('toto');
+			return true;
+		}
+		else return true;
+	},
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+	mark: { attrs: ['lang'] },
+	tags: ['a11y', 'Mandatory', 'lang'],
+	ressources: { 'act': ['c487ae'], 'WCAG': ['4.1.2']}
+});
