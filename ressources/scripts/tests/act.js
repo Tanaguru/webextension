@@ -250,7 +250,7 @@ tanaguruTestsList.push({
 	ressources: { 'act': ['c487ae'], 'WCAG': ['4.1.2']}
 });
 
-// Id Attributes.
+// 3ea0c8 id attribute value is unique.
 
 tanaguruTestsList.push({
 	lang: 'en',
@@ -281,7 +281,7 @@ tanaguruTestsList.push({
 	ressources: { 'act' : ['3ea0c8'], 'WCAG': ['4.1.1']}
 });
 
-// c487ae
+// c487ae - HTML page has lang attribute.
 
 
 tanaguruTestsList.push({
@@ -320,7 +320,7 @@ tanaguruTestsList.push({
 	ressources: { 'act': ['c487ae'], 'WCAG': ['4.1.2']}
 });
 
-// 5b7ae0
+// 5b7ae0 - lang and xml:lang attributes have the same primary language subtag
 
 tanaguruTestsList.push({
 	lang: 'en',
@@ -361,3 +361,46 @@ tanaguruTestsList.push({
 	tags: ['a11y', 'Mandatory'],
 	ressources: { 'act': ['5b7ae0'], 'WCAG': ['3.1.1']}
 });
+
+
+// bf051a - HTML page language is valid - incomplete
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'HTML page language is invalid',
+	query: 'html[lang]',
+	filter: function(item) {
+		var langAttr = item.getAttribute('lang');
+		var langAttr = langAttr.split('-')
+		var isoRegex = /[^en$|^fr$]/g;
+		if (langAttr[0].match(isoRegex)){
+			return true;
+		}
+	},
+	mark: { attrs: ['lang']},
+	tags: ['a11y', 'Mandatory'],
+	ressources: { 'act': ['bf051a'], 'WCAG': ['3.1.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'HTML page language is valid',
+	query: 'html[lang]',
+	filter: function(item) {
+		var langAttr = item.getAttribute('lang');
+		var langAttr = langAttr.split('-')
+		var isoRegex = /[^en$|^fr$]/g;
+		if (!langAttr[0].match(isoRegex)){
+			return true;
+		}
+	},
+	analyzeElements: function (collection) {
+		console.log(collection);
+		for (var i = 0; i < collection.length; i++) {
+		collection[i].status = 'passed';
+		}
+	},
+	mark: { attrs: ['lang']},
+	tags: ['a11y', 'Mandatory'],
+	ressources: { 'act': ['bf051a'], 'WCAG': ['3.1.1']}
+});
+
