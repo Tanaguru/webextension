@@ -11,6 +11,7 @@
     Current Imperfect Implementations :
     * Replaced Elements (+ CSS Content).
     * Control Embedded in Label.
+    * Native Password Controls (i.e. (Incorrectly) Used as Custom Checkbox Controls).
     * Labels for Native Controls (Multiple Labels + Labels for Some Controls like Buttons).
     * Aria-owns Property (Partially Supported - Only for Custom Listboxes).
     * Data (Separated Files).
@@ -23,7 +24,7 @@ var getAccessibleName = function () {
         nameFromContentSupported: '[role="button"], [role="cell"], [role="checkbox"], [role="columnheader"], [role="gridcell"], [role="heading"], [role="link"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"], [role="radio"], [role="row"], [role="rowgroup"], [role="rowheader"], [role="switch"], [role="tab"], [role="tooltip"], [role="treeitem"]'
     };
     var controls = {
-        nativetextboxes: 'input:not([type]), input[type="email"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], textarea',
+        nativetextboxes: 'input:not([type]), input[type="email"], input[type="password"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], textarea',
         customtextboxes: '[contenteditable="true"], [role="textbox"]',
         nativebuttons: 'button, input[type="button"], input[type="image"], input[type="reset"], input[type="submit"]',
         custombuttons: '[role="button"]',
@@ -100,7 +101,17 @@ var getAccessibleName = function () {
                 this.removeAttribute('data-controlembeddedinlabel');
                 if (this.matches(controls.nativetextboxes)) {
                     // If the embedded control has role textbox, return its value.
-                    result = this.value;
+                    if (this.matches('input[type="password"]')) {
+                        var value = this.value;
+                        var resulttmp = [];
+                        for (var i = 0; i < value.length; i++) {
+                            resulttmp.push('\u2022');
+                        }
+                        result = resulttmp.join('\u00AD');
+                    }
+                    else {
+                        result = this.value;
+                    }
                 }
                 else if (this.matches(controls.customtextboxes)) {
                     // If the embedded control has role textbox, return its value.
@@ -112,7 +123,22 @@ var getAccessibleName = function () {
                 }
                 else if (this.matches(controls.customcomboboxes)) {
                     // If the embedded control has role combobox or listbox, return the text alternative of the chosen option.
-                    result = this.matches(controls.nativetextboxes) ? this.value : this.textContent;
+                    if (this.matches(controls.nativetextboxes)) {
+                        if (this.matches('input[type="password"]')) {
+                            var value = this.value;
+                            var resulttmp = [];
+                            for (var i = 0; i < value.length; i++) {
+                                resulttmp.push('\u2022');
+                            }
+                            result = resulttmp.join('\u00AD');
+                        }
+                        else {
+                            result = this.value;
+                        }
+                    }
+                    else {
+                        result = this.textContent;
+                    }
                 }
                 else if (this.matches(controls.nativelistboxes)) {
                     // If the embedded control has role combobox or listbox, return the text alternative of the chosen option.
