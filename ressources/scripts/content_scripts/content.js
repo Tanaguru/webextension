@@ -677,6 +677,11 @@ function createTanaguruTest(test) {
 					window.tanaguru.tags['others'] = { id: 'others', name: browser.i18n.getMessage('tagOthers'), status: status, nbfailures: 0 };
 				}
 			}
+			// Gestion du compteur d'éléments testés (avant filtre).
+			var counter = null;
+			if (test.hasOwnProperty('counter') && test.counter == 'beforefilter') {
+				counter = elements.length;
+			}
 			// Filtre additionnel sur la sélection d'éléments.
 			if (test.hasOwnProperty('filter')) {
 				if (test.filter.constructor == Function) {
@@ -686,6 +691,10 @@ function createTanaguruTest(test) {
 				else {
 					// Erreur : valeur de la propriété filter.
 				}
+			}
+			// Gestion du compteur d'éléments testés (après filtre).
+			if (test.hasOwnProperty('counter') && test.counter == 'afterfilter') {
+				counter = elements.length;
 			}
 			// Calcul du statut du test.
 			if (test.hasOwnProperty('expectedNbElements')) {
@@ -784,6 +793,9 @@ function createTanaguruTest(test) {
 			result.tags = test.hasOwnProperty('tags') ? test.tags : ['others'];
 			if (test.hasOwnProperty('ressources')) {
 				result.ressources = test.ressources;
+			}
+			if (counter) {
+				result.counter = counter;
 			}
 			if (failedincollection) {
 				result.failedincollection = failedincollection;
