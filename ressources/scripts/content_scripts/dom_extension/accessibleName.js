@@ -11,6 +11,7 @@
     Current Imperfect Implementations :
     * Replaced Elements (+ CSS Content).
     * Control Embedded in Label.
+    * SVG (multiple titles & use elements).
     * Native Password Controls (i.e. (Incorrectly) Used as Custom Checkbox Controls).
     * Labels for Native Controls (Multiple Labels + Labels for Some Controls like Buttons).
     * Aria-owns Property (Partially Supported - Only for Custom Listboxes).
@@ -216,6 +217,12 @@ var getAccessibleName = function () {
                     else if (this.hasAttribute('title')) {
                         /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
                         result = this.getAttribute('title');
+                    }
+                }
+                else if (this.matches('svg') && !this.matches('[role="none"], [role="presentation"]')) {
+                    var title = this.querySelector('title');
+                    if (title && title.parentNode == this) {
+                        result = title.textContent;
                     }
                 }
                 else if (this.matches(controls.nativebuttons) && !this.matches('[role="none"], [role="presentation"]')) { // COMMENT : Not allowed on button, input[type="button"], input[type="image"], input[type="reset"], input[type="submit"].
