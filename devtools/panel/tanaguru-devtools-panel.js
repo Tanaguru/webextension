@@ -515,7 +515,7 @@ if (response[0].tests[test].hasOwnProperty('ressources')) {
 			if (!(response[0].tests[test].type == 'failed' && response[0].tests[test].data.length == 0)) {
 				var strong = document.createElement('strong');
 				var strongcount = response[0].tests[test].hasOwnProperty('failedincollection') ? response[0].tests[test].failedincollection : response[0].tests[test].data.length;
-				strong.appendChild(document.createTextNode(strongcount));
+				strong.appendChild(document.createTextNode(strongcount + (response[0].tests[test].hasOwnProperty('counter') ? ' / ' +  response[0].tests[test].counter : '')));
 				tabpanelsectionbutton.appendChild(strong);
 				tabpanelsectionbutton.appendChild(document.createTextNode(' '));
 			}
