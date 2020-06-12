@@ -14,7 +14,7 @@ for (var i = 0; i < tanaguruTestsList.length; i++) {
 	if (!test.hasOwnProperty('name')) {
 		test.name = browser.i18n.getMessage('test' + test.id + 'Name');
 	}
-	if (!test.hasOwnProperty('explanations')) {
+	if (!test.hasOwnProperty('explanations') && test.hasOwnProperty('id')) {
 		var explanations = [];
 		for (var j = 0; j < statuses.length; j++) {
 			var statusname = statuses[j];
