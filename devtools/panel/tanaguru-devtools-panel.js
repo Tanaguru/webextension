@@ -429,6 +429,10 @@ button.addEventListener('click', function () {
 			if (a.type != 'failed' && b.type == 'failed') return 1;
 			if (a.type == 'cantTell' && b.type == 'passed') return -1;
 			if (a.type == 'passed' && b.type == 'cantTell') return 1;
+			if (a.type == 'cantTell' && b.type == 'untested') return -1;
+			if (a.type == 'untested' && b.type == 'cantTell') return 1;
+			if (a.type == 'passed' && b.type == 'untested') return -1;
+			if (a.type == 'untested' && b.type == 'passed') return 1;
 			return 0;
 		});
 		
@@ -512,7 +516,7 @@ if (response[0].tests[test].hasOwnProperty('ressources')) {
 			status.setAttribute('class', 'status');
 			status.appendChild(document.createTextNode(browser.i18n.getMessage('earl' + response[0].tests[test].type.charAt(0).toUpperCase() + response[0].tests[test].type.slice(1))));
 			tabpanelsectionbutton.appendChild(status);
-			if (!(response[0].tests[test].type == 'failed' && response[0].tests[test].data.length == 0)) {
+			if (!((response[0].tests[test].type == 'failed' && response[0].tests[test].data.length == 0) || response[0].tests[test].type == 'untested')) {
 				var strong = document.createElement('strong');
 				var strongcount = response[0].tests[test].hasOwnProperty('failedincollection') ? response[0].tests[test].failedincollection : response[0].tests[test].data.length;
 				strong.appendChild(document.createTextNode(strongcount + (response[0].tests[test].hasOwnProperty('counter') ? ' / ' +  response[0].tests[test].counter : '')));
