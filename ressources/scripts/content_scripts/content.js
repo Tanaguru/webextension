@@ -656,8 +656,51 @@ function manageOutput(element) {
 	return { status: status, outer: fakeelement.outerHTML, xpath: getXPath(element), role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isNotVisibleDueTo: isNotVisibleDueTo, isNotExposedDueTo: isNotExposedDueTo };
 }
 
+function createTanaguruTag(tag, status) {
+	if (!window.tanaguru.tags[tag]) {
+		window.tanaguru.tags[tag] = { id: tag, name: browser.i18n.getMessage('tag' + tag.charAt(0).toUpperCase() + tag.slice(1)), status: status, nbfailures: 0 };
+	}
+}
+
 function createTanaguruTest(test) {
-	if (test.hasOwnProperty('query') && test.query.constructor == String) {
+	if (test.hasOwnProperty('status') && test.status == 'untested') { // Non testés mais référencés.
+		// Initialisation des tags.
+		initTanaguru();
+		if (test.hasOwnProperty('tags') && test.tags.constructor == Array) {
+			for (var i = 0; i < test.tags.length; i++) {
+				createTanaguruTag(test.tags[i], test.status);
+			}
+		}
+		else {
+			createTanaguruTag('others', test.status);
+		}
+		// Chargement du résultat.
+		var result = {
+			name: test.name,
+			type: test.status,
+			data: [],
+			tags: []
+		};
+		if (test.hasOwnProperty('id')) {
+			result.id = test.id;
+		}
+		if (test.hasOwnProperty('lang')) {
+			result.lang = test.lang;
+		}
+		if (test.hasOwnProperty('description')) {
+			result.description = test.description;
+		}
+		if (test.hasOwnProperty('explanations') && test.explanations.hasOwnProperty(test.status)) {
+			result.explanation = test.explanations[test.status];
+		}
+		result.tags = test.hasOwnProperty('tags') ? test.tags : ['others'];
+		if (test.hasOwnProperty('ressources')) {
+			result.ressources = test.ressources;
+		}
+		addResultSet("Nouvelle syntaxe d'écriture des tests", result);
+		// Intégrer chaque résultat dans window.tanaguru.tests.
+	}
+	else if (test.hasOwnProperty('query') && test.query.constructor == String) {
 		// Sélection des éléments.
 		var elements = document.querySelectorAll(test.query);
 		if (elements) {
@@ -667,15 +710,11 @@ function createTanaguruTest(test) {
 			initTanaguru();
 			if (test.hasOwnProperty('tags') && test.tags.constructor == Array) {
 				for (var i = 0; i < test.tags.length; i++) {
-					if (!window.tanaguru.tags[test.tags[i]]) {
-						window.tanaguru.tags[test.tags[i]] = { id: test.tags[i], name: browser.i18n.getMessage('tag' + test.tags[i].charAt(0).toUpperCase() + test.tags[i].slice(1)), status: status, nbfailures: 0 };
-					}
+					createTanaguruTag(test.tags[i], status);
 				}
 			}
 			else {
-				if (!window.tanaguru.tags['others']) {
-					window.tanaguru.tags['others'] = { id: 'others', name: browser.i18n.getMessage('tagOthers'), status: status, nbfailures: 0 };
-				}
+				createTanaguruTag('others', status);
 			}
 			// Gestion du compteur d'éléments testés (avant filtre).
 			var counter = null;
