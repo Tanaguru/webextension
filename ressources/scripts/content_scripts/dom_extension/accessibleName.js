@@ -12,6 +12,7 @@
     * Replaced Elements (+ CSS Content).
     * Control Embedded in Label.
     * SVG (multiple titles & use elements).
+    * Output (in native "textboxes").
     * Native Password Controls (i.e. (Incorrectly) Used as Custom Checkbox Controls).
     * Labels for Native Controls (Multiple Labels + Labels for Some Controls like Buttons).
     * Aria-owns Property (Partially Supported - Only for Custom Listboxes).
@@ -25,7 +26,7 @@ var getAccessibleName = function () {
         nameFromContentSupported: '[role="button"], [role="cell"], [role="checkbox"], [role="columnheader"], [role="gridcell"], [role="heading"], [role="link"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"], [role="radio"], [role="row"], [role="rowgroup"], [role="rowheader"], [role="switch"], [role="tab"], [role="tooltip"], [role="treeitem"]'
     };
     var controls = {
-        nativetextboxes: 'input:not([type]), input[type="email"], input[type="password"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], textarea',
+        nativetextboxes: 'input:not([type]), input[type="email"], input[type="password"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], output, textarea',
         customtextboxes: '[contenteditable="true"], [role="textbox"]',
         nativebuttons: 'button, input[type="button"], input[type="image"], input[type="reset"], input[type="submit"]',
         custombuttons: '[role="button"]',
