@@ -791,7 +791,7 @@ function createTanaguruTest(test) {
 						window.tanaguru.tags[test.tags[i]].status = status;
 					}
 					if (status == 'failed') {
-						window.tanaguru.tags[test.tags[i]].nbfailures += elements.length > 0 ? elements.length : 1;
+						window.tanaguru.tags[test.tags[i]].nbfailures += failedincollection ? failedincollection : (elements.length > 0 ? elements.length : 1);
 					}
 				}
 			}
@@ -800,7 +800,7 @@ function createTanaguruTest(test) {
 					window.tanaguru.tags['others'].status = status;
 				}
 				if (status == 'failed') {
-					window.tanaguru.tags['others'].nbfailures += elements.length > 0 ? elements.length : 1;
+					window.tanaguru.tags['others'].nbfailures += failedincollection ? failedincollection : (elements.length > 0 ? elements.length : 1);
 				}
 			}
 			// Chargement du résultat.
