@@ -36,7 +36,7 @@
 	"content_scripts": [
 	  {
 	    "matches": ["<all_urls>"],
-	    "js": ["ressources/scripts/content_scripts/content.js", "ressources/scripts/content_scripts/dom_extension/main-languages.js", "ressources/scripts/content_scripts/dom_extension/accessibleName.js", "ressources/scripts/content_scripts/dom_extension/aria.js", "ressources/scripts/content_scripts/dom_extension/canBeReachedUsingKeyboardWith.js", "ressources/scripts/content_scripts/dom_extension/isNotExposedDueTo.js", "ressources/scripts/content_scripts/dom_extension/isNotVisibleDueTo.js"]
+	    "js": ["ressources/scripts/content_scripts/content.js", "ressources/scripts/content_scripts/dom_extension/main-languages.js", "ressources/scripts/content_scripts/dom_extension/accessibleName.js", "ressources/scripts/content_scripts/dom_extension/html.js", "ressources/scripts/content_scripts/dom_extension/aria.js", "ressources/scripts/content_scripts/dom_extension/canBeReachedUsingKeyboardWith.js", "ressources/scripts/content_scripts/dom_extension/isNotExposedDueTo.js", "ressources/scripts/content_scripts/dom_extension/isNotVisibleDueTo.js"]
 	  }
 	],
 	"devtools_page": "devtools/tanaguru-devtools.html",
