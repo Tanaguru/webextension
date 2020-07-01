@@ -164,11 +164,11 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Image has accessible name.',
+	name: 'Image has no accessible name.',
 	query: 'img:not([role]), [role="img"]',
 	expectedNbElements: 0,
 	filter: function (item) {
-		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+		return item.isNotExposedDueTo.length == 0 && (!item.matches('img[alt]') && !item.hasAccessibleName());
 	}, 
 	tags: ['a11y', 'images', 'accessiblename'],
 	ressources: { 'act': ['23a2a8'], 'WCAG': ['1.1.1'] }
@@ -179,7 +179,7 @@ tanaguruTestsList.push({
 	name: 'Image has accessible name.',
 	query: 'img:not([role]), [role="img"]',
 	filter: function (item) {
-		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+		return item.isNotExposedDueTo.length == 0 && (item.matches('img[alt]') || item.hasAccessibleName());
 	},
 	analyzeElements: function (collection) {
 		for (var i = 0; i < collection.length; i++) {
