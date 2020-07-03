@@ -4,9 +4,10 @@
 	https://www.w3.org/TR/wai-aria-1.2/
 */
 
-var aria = {
+var ariaData = {
 	version: 1.2, 
 	status: 'Working Draft (WD)', 
+	date: 20191218, 
 	url: {
 		rolesCategorization: 'https://www.w3.org/TR/wai-aria-1.2/#{{category}}',
 		attributesCategorization: 'https://www.w3.org/TR/wai-aria-1.2/#{{category}}',
@@ -288,7 +289,7 @@ var aria = {
 			description: 'A heading for a section of the page.',
 			superclassRoles: 'sectionhead', 
 			relatedHTMLConcepts: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], 
-			requiredStatesProperties: 'aria-level', 
+			requiredStatesProperties: ['aria-level'], 
 			nameFrom: ['contents', 'author'], 
 			accessibleNameRequired: true, 
 			implicitValueForRole: [{ 'aria-level': '2' }]
@@ -436,7 +437,7 @@ var aria = {
 			subclassRoles: 'menuitemradio', 
 			relatedConcepts: 'menuitem', 
 			requiredContextRole: ['group', 'menu', 'menubar'], 
-			requiredStatesProperties: 'aria-checked', 
+			requiredStatesProperties: ['aria-checked'], 
 			nameFrom: ['contents', 'author'], 
 			accessibleNameRequired: true, 
 			childrenPresentational: true
@@ -447,7 +448,7 @@ var aria = {
 			superclassRoles: ['menuitemcheckbox', 'radio'], 
 			relatedConcepts: 'menuitem', 
 			requiredContextRole: ['group', 'menu', 'menubar'], 
-			requiredStatesProperties: 'aria-checked', 
+			requiredStatesProperties: ['aria-checked'], 
 			nameFrom: ['contents', 'author'], 
 			accessibleNameRequired: true, 
 			childrenPresentational: true
@@ -491,7 +492,7 @@ var aria = {
 			baseHTMLConcept: '<option>', 
 			relatedConcepts: 'listitem', 
 			requiredContextRole: ['group', 'listbox'], 
-			requiredStatesProperties: 'aria-selected', 
+			requiredStatesProperties: ['aria-selected'], 
 			supportedStatesProperties: ['aria-checked', 'aria-posinset', 'aria-setsize'], 
 			nameFrom: ['contents', 'author'], 
 			accessibleNameRequired: true, 
@@ -529,7 +530,7 @@ var aria = {
 			superclassRoles: 'input', 
 			subclassRoles: 'menuitemradio', 
 			relatedHTMLConcepts: '<input type="radio">', 
-			requiredStatesProperties: 'aria-checked', 
+			requiredStatesProperties: ['aria-checked'], 
 			supportedStatesProperties: ['aria-posinset', 'aria-setsize'], 
 			nameFrom: ['contents', 'author'], 
 			accessibleNameRequired: true, 
@@ -663,7 +664,7 @@ var aria = {
 				}, {
 					category: 'widget roles', 
 					superclassRoles: 'widget', 
-					requiredStatesProperties: 'aria-valuenow', 
+					requiredStatesProperties: ['aria-valuenow'], 
 					supportedStatesProperties: ['aria-disabled', 'aria-orientation', 'aria-valuemax', 'aria-valuemin', 'aria-valuetext'], 
 					nameFrom: 'author', 
 					childrenPresentational: true, 
@@ -675,7 +676,7 @@ var aria = {
 			category: 'widget roles', 
 			description: 'An input where the user selects a value from within a given range.',
 			superclassRoles: ['input', 'range'], 
-			requiredStatesProperties: 'aria-valuenow', 
+			requiredStatesProperties: ['aria-valuenow'], 
 			supportedStatesProperties: ['aria-errormessage', 'aria-haspopup', 'aria-invalid', 'aria-orientation', 'aria-readonly', 'aria-valuemax', 'aria-valuemin'], 
 			nameFrom: 'author', 
 			accessibleNameRequired: true, 
@@ -735,7 +736,7 @@ var aria = {
 			description: 'A type of checkbox that represents on/off values, as opposed to checked/unchecked values. See related checkbox.',
 			superclassRoles: 'checkbox', 
 			relatedConcepts: 'button', 
-			requiredStatesProperties: 'aria-checked', 
+			requiredStatesProperties: ['aria-checked'], 
 			nameFrom: ['contents', 'author'], 
 			accessibleNameRequired: true, 
 			childrenPresentational: true
@@ -850,7 +851,7 @@ var aria = {
 			description: 'An option item of a tree. This is an element within a tree that may be expanded or collapsed if it contains a sub-level group of tree item elements.',
 			superclassRoles: ['listitem', 'option'], 
 			requiredContextRole: ['group', 'tree'], 
-			requiredStatesProperties: 'aria-selected', 
+			requiredStatesProperties: ['aria-selected'], 
 			supportedStatesProperties: ['aria-expanded', 'aria-haspopup'], 
 			nameFrom: ['contents', 'author'], 
 			accessibleNameRequired: true
@@ -899,7 +900,7 @@ var aria = {
 		'aria-colcount': {
 			category: 'relationship attributes', 
 			description: 'Defines the total number of columns in a table, grid, or treegrid. See related aria-colindex.', 
-			usedInRoles: 'table', 
+			usedInRoles: ['table'], 
 			inheritsIntoRoles: ['grid', 'treegrid'], 
 			value: { type: 'integer' }
 		}, 
@@ -913,7 +914,7 @@ var aria = {
 		'aria-colspan': {
 			category: 'relationship attributes', 
 			description: 'Defines the number of columns spanned by a cell or gridcell within a table, grid, or treegrid. See related aria-colindex and aria-rowspan.', 
-			usedInRoles: 'cell', 
+			usedInRoles: ['cell'], 
 			inheritsIntoRoles: ['columnheader', 'gridcell', 'rowheader'], 
 			value: { type: 'integer' }
 		}, 
@@ -1013,7 +1014,7 @@ var aria = {
 		'aria-modal': {
 			category: 'widget attributes', 
 			description: 'Indicates whether an element is modal when displayed.', 
-			usedInRoles: 'window', 
+			usedInRoles: ['window'], 
 			inheritsIntoRoles: ['alertdialog', 'dialog'], 
 			defaultValue: 'false', 
 			value: ['true', 'false']
@@ -1021,7 +1022,7 @@ var aria = {
 		'aria-multiline': {
 			category: 'widget attributes', 
 			description: 'Indicates whether a text box accepts multiple lines of input or only a single line.', 
-			usedInRoles: 'textbox', 
+			usedInRoles: ['textbox'], 
 			inheritsIntoRoles: 'searchbox', 
 			defaultValue: 'false', 
 			value: ['true', 'false']
@@ -1053,7 +1054,7 @@ var aria = {
 			category: 'widget attributes', 
 			description: 'Defines a short hint (a word or short phrase) intended to aid the user with data entry when the control has no value. A hint could be a sample value or a brief description of the expected format.', 
 			relatedHTMLConcepts: '@placeholder', 
-			usedInRoles: 'textbox', 
+			usedInRoles: ['textbox'], 
 			inheritsIntoRoles: 'searchbox', 
 			value: { type: 'string' }
 		}, 
@@ -1101,7 +1102,7 @@ var aria = {
 		'aria-rowcount': {
 			category: 'relationship attributes', 
 			description: 'Defines the total number of rows in a table, grid, or treegrid. See related aria-rowindex.', 
-			usedInRoles: 'table', 
+			usedInRoles: ['table'], 
 			inheritsIntoRoles: ['grid', 'treegrid'], 
 			value: { type: 'integer', unknown: -1 }
 		}, 
@@ -1115,7 +1116,7 @@ var aria = {
 		'aria-rowspan': {
 			category: 'relationship attributes', 
 			description: 'Defines the number of rows spanned by a cell or gridcell within a table, grid, or treegrid. See related aria-rowindex and aria-colspan.', 
-			usedInRoles: 'cell', 
+			usedInRoles: ['cell'], 
 			inheritsIntoRoles: ['columnheader', 'gridcell', 'rowheader'], 
 			value: { type: 'integer', min: 0 }
 		}, 
@@ -1155,7 +1156,7 @@ var aria = {
 			relatedHTMLConcepts: '<input type="range" value="number">', 
 			usedInRoles: ['meter', 'range', 'scrollbar', 'separator', 'slider', 'spinbutton'], 
 			inheritsIntoRoles: 'progressbar', 
-			value: { type: 'number' }
+			value: { type: 'number', min: 'aria-valuemin', max: 'aria-valuemax' }
 		}, 
 		'aria-valuetext': {
 			translatable: true, 
@@ -1234,7 +1235,7 @@ var aria = {
 		'aria-pressed': {
 			category: 'widget attributes', 
 			description: 'Indicates the current "pressed" state of toggle buttons. See related aria-checked and aria-selected.', 
-			usedInRoles: 'button', 
+			usedInRoles: ['button'], 
 			defaultValue: 'undefined', 
 			value: ['true', 'mixed', 'false', 'undefined']
 		}, 
@@ -1248,3 +1249,519 @@ var aria = {
 		}
 	}
 };
+
+var ARIA = {
+	Errors: {
+		EmptyValueNotAllowed: "La valeur de l'attribut {{attribute}} ne peut être vide.", 
+		InvalidStateProperty: "L'attribut {{attribute}} n'est pas défini dans WAI-ARIA.", 
+		IsNaN: "La valeur de l'attribut {{attribute}} n'est pas un nombre.", 
+		IsNotAnInteger: "La valeur de l'attribut {{attribute}} n'est pas un entier.", 
+		SingleValueSyntax: "La valeur de l'attribut {{attribute}} doit correspondre à une des valeurs définies ({{values}}).", 
+		SingleIdValueElement: "L'identifiant indiqué dans l'attribut {{attribute}} doit correspondre à un élément présent dans la page.", 
+		SingleIdValueSyntax: "La valeur de l'attribut {{attribute}} doit correspondre à un identifiant (sans aucun espace).", 
+		TokensValueSyntax: "La valeur de l'attribut {{attribute}} doit correspondre à une ou plusieurs des valeurs définies ({{values}}) séparées par des espaces.", 
+		TokensIdValueElements: "Au moins un identifiant indiqué dans l'attribut {{attribute}} ne correspond pas à un élément présent dans la page.", 
+		TokensIdValueSyntax: "La valeur de l'attribut {{attribute}} doit correspondre à une liste d'identifiants séparés par des espaces.",
+		UnknownSingleValue: "La valeur de l'attribut {{attribute}} doit correspondre à une des valeurs définies ({{values}}).", 
+		UnknownTokensValue: "Au moins une composante de la valeur de l'attribut {{attribute}} ne correspond pas à une des valeurs définies ({{values}}).", 
+		ValueGreaterThanMax: "La valeur de l'attribut {{attribute}} ne peut être supérieure à {{max}}.", 
+		ValueLowerThanMin: "La valeur de l'attribut {{attribute}} ne peut être inférieure à {{min}}."
+	}, 
+	Role: function (role) {
+		this.role = role;
+		this.isAbstract = null;
+		this.isValidResult = null;
+		this.focusable = null;
+		this.requiredContextRoles = null;
+		this.statesProperties = null;
+		this.prohibitedStatesProperties = null;
+		this.isValid = function () {
+			if (this.isValidResult == null) {
+				this.isValidResult = ariaData.roles.hasOwnProperty(this.role);
+				if (this.isValidResult) {
+					this.isAbstract = ariaData.roles[this.role].hasOwnProperty('isAbstract');
+				}
+			}
+			var manageAbstract = null;
+			if (arguments.length == 2 && arguments[1].constructor == Object) {
+				manageAbstract = arguments[1].hasOwnProperty('ignoreAbstract');
+				if (manageAbstract) {
+					manageAbstract = arguments[1].ignoreAbstract;
+				}
+			}
+			if (manageAbstract == null) {
+				manageAbstract = this.isAbstract ? false : true;
+			}
+			return this.isValidResult && manageAbstract;
+		};
+		this.setRequiredContextRoles = function () {
+			if (this.requiredContextRoles == null) {
+				this.requiredContextRoles = [];
+				var roleData = ariaData.roles[this.role];
+				if (roleData.hasOwnProperty('focusable') && roleData.focusable.constructor == Array) {
+					roleData = roleData.focusable[this.focusable == true ? 1 : 0];
+				}
+				if (roleData.hasOwnProperty('requiredContextRole')) {
+					for (var i = 0; i < roleData.requiredContextRole.length; i++) {
+						this.requiredContextRoles.push(new ARIA.Role(roleData.requiredContextRole[i], { getData: true }));
+					}
+				}
+			}
+		};
+		this.getRequiredContextRoles = function () {
+			if (this.isValid({ ignoreAbstract: true })) {
+				this.setRequiredContextRoles();
+				return this.requiredContextRoles;
+			}
+			else {
+				return undefined;
+			}
+		};
+		this.setRequiredStatesProperties = function () {
+			if (this.statesProperties == null) {
+				this.statesProperties = [];
+				var roleData = ariaData.roles[this.role];
+				if (roleData.hasOwnProperty('focusable') && roleData.focusable.constructor == Array) {
+					roleData = roleData.focusable[this.focusable == true ? 1 : 0];
+				}
+				if (roleData.hasOwnProperty('requiredStatesProperties')) {
+					for (var i = 0; i < roleData.requiredStatesProperties.length; i++) {
+						this.statesProperties.push(new ARIA.StateProperty(roleData.requiredStatesProperties[i], { getData: true }));
+					}
+				}
+			}
+		};
+		this.getRequiredStatesProperties = function () {
+			if (this.isValid({ ignoreAbstract: true })) {
+				this.setRequiredStatesProperties();
+				return this.statesProperties;
+			}
+			else {
+				return undefined;
+			}
+		};
+		this.setProhibitedStatesProperties = function () {
+			if (this.prohibitedStatesProperties == null) {
+				this.prohibitedStatesProperties = [];
+				var roleData = ariaData.roles[this.role];
+				if (roleData.hasOwnProperty('focusable') && roleData.focusable.constructor == Array) {
+					roleData = roleData.focusable[this.focusable == true ? 1 : 0];
+				}
+				if (roleData.hasOwnProperty('prohibitedStatesProperties')) {
+					for (var i = 0; i < roleData.prohibitedStatesProperties.length; i++) {
+						this.prohibitedStatesProperties.push(new ARIA.StateProperty(roleData.prohibitedStatesProperties[i], { getData: true }));
+					}
+				}
+			}
+		};
+		this.getProhibitedStatesProperties = function () {
+			if (this.isValid({ ignoreAbstract: true })) {
+				this.setProhibitedStatesProperties();
+				return this.prohibitedStatesProperties;
+			}
+			else {
+				return undefined;
+			}
+		};
+		if (arguments.length == 2 && arguments[1].constructor == Object) {
+			if (arguments[1].hasOwnProperty('focusable') && arguments[1].focusable) {
+				this.focusable = arguments[1].focusable;
+			}
+			if (arguments[1].hasOwnProperty('getData') && this.isValid({ ignoreAbstract: true })) {
+				this.setRequiredContextRoles();
+				this.setRequiredStatesProperties();
+				this.setProhibitedStatesProperties();
+			}
+		}
+	}, 
+	StateProperty: function (stateProperty) {
+		this.stateProperty = stateProperty;
+		this.usedInRoles = null;
+		this.values = null;
+		this.multipleValues = null;
+		this.isValidResult = null;
+		this.isValid = function () {
+			if (this.isValidResult == null) {
+				this.isValidResult = ariaData.properties.hasOwnProperty(this.stateProperty) || ariaData.states.hasOwnProperty(this.stateProperty);
+			}
+			return this.isValidResult;
+		};
+		this.isAllowedInRole = function (role) {
+			if (this.isValid()) {
+				var role = new ARIA.Role(role, { getData: true });
+				var prohibitedStatesProperties = role.getProhibitedStatesProperties();
+				return this.canBeUsedInRole(role.role) || prohibitedStatesProperties.indexOf(this.stateProperty) > -1;
+			}
+			else {
+				return undefined;
+			}
+		}, 
+		this.setUsedInRoles = function () {
+			if (this.usedInRoles == null) {
+				var statePropertyData = ariaData.properties[this.stateProperty] || ariaData.states[this.stateProperty];
+				this.usedInRoles = statePropertyData.usedInRoles;
+			}
+		};
+		this.canBeUsedInRole = function (role) {
+			if (this.isValid()) {
+				this.setUsedInRoles();
+				return this.usedInRoles == '*' || this.usedInRoles.includes(role);
+			}
+			else {
+				return undefined;
+			}
+		};
+		this.setValues = function () {
+			if (this.values == null) {
+				var statePropertyData = ariaData.properties[this.stateProperty] || ariaData.states[this.stateProperty];
+				this.values = statePropertyData.value;
+				this.multipleValues = statePropertyData.multipleValues;
+			}
+		};
+		this.getValues = function () {
+			if (this.values == null) {
+				this.setValues();
+			}
+			return this.values;
+		};
+		this.isValidValue = function (value) {
+			if (this.isValid()) {
+				this.setValues();
+				var result = false;
+				var errors = [];
+				if (value.trim().length > 0) {
+					if (this.values.constructor == Array) {
+						if (this.multipleValues) {
+							result = /^[a-z]+(\s[a-z]+)*$/.test(value);
+							if (result) {
+								value = value.split(' ');
+								value = value.filter(function (currentvalue) {
+									return !this.values.includes(currentvalue);
+								}.bind(this));
+								result = value.length == 0;
+								if (!result) {
+									var error = ARIA.Errors.UnknownTokensValue;
+									error = error.replace('{{attribute}}', this.stateProperty);
+									error = error.replace('{{values}}', this.values.join(' / '));
+									errors.push(error);
+								}
+							}
+							else {
+								var error = ARIA.Errors.TokensValueSyntax;
+								error = error.replace('{{attribute}}', this.stateProperty);
+								error = error.replace('{{values}}', this.values.join(' / '));
+								errors.push(error);
+							}
+						}
+						else {
+							result = /^[a-z]+$/.test(value);
+							if (result) {
+								result = this.values.includes(value);
+								if (!result) {
+									var error = ARIA.Errors.UnknownSingleValue;
+									error = error.replace('{{attribute}}', this.stateProperty);
+									error = error.replace('{{values}}', this.values.join(' / '));
+									errors.push(error);
+								}
+							}
+							else {
+								var error = ARIA.Errors.SingleValueSyntax;
+								error = error.replace('{{attribute}}', this.stateProperty);
+								error = error.replace('{{values}}', this.values.join(' / '));
+								errors.push(error);
+							}
+						}
+					}
+					else if (this.values.hasOwnProperty('attribute') && this.values.attribute == 'id') {
+						if (this.values.multiple) {
+							result = /^\S+(\s\S+)*$/.test(value);
+							if (!result) {
+								var error = ARIA.Errors.TokensIdValueSyntax;
+								error = error.replace('{{attribute}}', this.stateProperty);
+								errors.push(error);
+							}
+						}
+						else {
+							result = /^\S+$/.test(value);
+							if (!result) {
+								var error = ARIA.Errors.SingleIdValueSyntax;
+								error = error.replace('{{attribute}}', this.stateProperty);
+								errors.push(error);
+							}
+						}
+					}
+					else {
+						switch (this.values.type) {
+							case 'integer':
+								if (/^(-|\+)?(0|[1-9]\d*)$/.test(value)) {
+									result = true;
+									var integerValue = Number.parseInt(value);
+									if (this.values.hasOwnProperty('min') && /^(-|\+)?(0|[1-9]\d*)$/.test(this.values.min)) {
+										result = this.values.min <= integerValue;
+										if (!result) {
+											var error = ARIA.Errors.ValueLowerThanMin;
+											error = error.replace('{{attribute}}', this.stateProperty);
+											error = error.replace('{{min}}', this.values.min);
+											errors.push(error);
+										}
+									}
+									if (this.values.hasOwnProperty('max') && /^(-|\+)?(0|[1-9]\d*)$/.test(this.values.max)) {
+										if (result) {
+											result = this.values.max >= integerValue;
+											if (!result) {
+												var error = ARIA.Errors.ValueGreaterThanMax;
+												error = error.replace('{{attribute}}', this.stateProperty);
+												error = error.replace('{{max}}', this.values.max);
+												errors.push(error);
+											}
+										}
+									}
+								}
+								else {
+									var error = ARIA.Errors.IsNotAnInteger;
+									error = error.replace('{{attribute}}', this.stateProperty);
+									errors.push(error);
+								}
+								break;
+							case 'number':
+								if (/^(-|\+)?\d+(\.(\d+))*$/.test(value)) {
+									result = true;
+									var numberValue = Number.parseFloat(value);
+									if (this.values.hasOwnProperty('min') && /^(-|\+)?\d+(\.(\d+))*$/.test(this.values.min)) {
+										result = this.values.min <= numberValue;
+										if (!result) {
+											var error = ARIA.Errors.ValueLowerThanMin;
+											error = error.replace('{{attribute}}', this.stateProperty);
+											error = error.replace('{{min}}', this.values.min);
+											errors.push(error);
+										}
+									}
+									if (this.values.hasOwnProperty('max') && /^(-|\+)?\d+(\.(\d+))*$/.test(this.values.max)) {
+										if (result) {
+											result = this.values.max >= numberValue;
+											if (!result) {
+												var error = ARIA.Errors.ValueGreaterThanMax;
+												error = error.replace('{{attribute}}', this.stateProperty);
+												error = error.replace('{{max}}', this.values.max);
+												errors.push(error);
+											}
+										}
+									}
+								}
+								else {
+									var error = ARIA.Errors.IsNaN;
+									error = error.replace('{{attribute}}', this.stateProperty);
+									errors.push(error);
+								}
+								break;
+							case 'string':
+								result = true;
+								break;
+						}
+					}
+				}
+				else {
+					errors.push(ARIA.Errors.EmptyValueNotAllowed.replace('{{attribute}}', this.stateProperty));
+				}
+				if (errors.length > 0) {
+					// console.log('Méthode ARIA : ' + errors);
+				}
+				return result;
+			}
+			else {
+				return undefined;
+			}
+		};
+		if (arguments.length == 2 && arguments[1].constructor == Object) {
+			if (arguments[1].hasOwnProperty('getData')) {
+				if (this.isValid()) {
+					this.setUsedInRoles();
+					this.setValues();
+				}
+			}
+		}
+	}
+};
+
+var getComputedAriaRole = function () {
+	if (this.hasAttribute('role')) {
+		var role = this.getAttribute('role');
+		if (role.trim().length > 0) {
+			var roles = role.split(' ');
+			var computedRole = null; 
+			if (roles.length > 1) {
+				for (var i = 0; i < roles.length; i++) {
+					role = new ARIA.Role(roles[i]);
+					if (role.isValid()) {
+						computedRole = role.role;
+						break;
+					}
+				}
+				return computedRole != null ? computedRole : this.getImplicitAriaRole();
+			}
+			else {
+				role = new ARIA.Role(role);
+				return role.isValid() ? role.role : this.getImplicitAriaRole();
+			}
+		}
+		else {
+			return this.getImplicitAriaRole();
+		}
+	}
+	else {
+		return this.getImplicitAriaRole();
+	}
+};
+if (!('getComputedAriaRole' in HTMLElement.prototype)) HTMLElement.prototype.getComputedAriaRole = getComputedAriaRole;
+if (!('getComputedAriaRole' in SVGElement.prototype)) SVGElement.prototype.getComputedAriaRole = getComputedAriaRole;
+
+var hasValidRole = function () {
+	var role = this.getAttribute('role');
+	if (role.trim().length > 0) {
+		role = role.split(' ');
+		if (role.length > 1) {
+			var result = false;
+			for (var i = 0; i < role.length; i++) {
+				var token = new ARIA.Role(role[i]);
+				if (token.isValid()) {
+					result = true;
+					break;
+				} 
+			}
+			return result;
+		}
+		else {
+			role = new ARIA.Role(role);
+			return role.isValid();
+		}
+	}
+	else {
+		return false;
+	}
+};
+if (!('hasValidRole' in HTMLElement.prototype)) HTMLElement.prototype.hasValidRole = hasValidRole;
+if (!('hasValidRole' in SVGElement.prototype)) SVGElement.prototype.hasValidRole = hasValidRole;
+
+var hasInvalidAriaAttributes = function () {
+	var result = false;
+	for (var i = 0; i < this.attributes.length; i++) {
+		var name = this.attributes[i].name;
+		if (name.match(/^aria-/)) {
+			var sp = new ARIA.StateProperty(name);
+			if (!sp.isValid()) {
+				result = true;
+				break;
+			}
+		}
+	}
+	return result;
+};
+if (!('hasInvalidAriaAttributes' in HTMLElement.prototype)) HTMLElement.prototype.hasInvalidAriaAttributes = hasInvalidAriaAttributes;
+if (!('hasInvalidAriaAttributes' in SVGElement.prototype)) SVGElement.prototype.hasInvalidAriaAttributes = hasInvalidAriaAttributes;
+
+var hasAriaAttributesWithInvalidValues = function () {
+	var errors = [];
+	var result = false;
+	for (var i = 0; i < this.attributes.length; i++) {
+		var attribute = this.attributes[i];
+		var name = attribute.name;
+		if (name.match(/^aria-/)) {
+			var sp = new ARIA.StateProperty(name);
+			var isValidValue = sp.isValidValue(attribute.value);
+			if (isValidValue) {
+				var values = sp.getValues();
+				if (values.constructor == Object) {
+					if (values.hasOwnProperty('type')) {
+						if (values.type == 'integer' || values.type == 'number') {
+							var isOk = values.type == 'integer' ? /^(-|\+)?(0|[1-9]\d*)$/ : /^(-|\+)?\d+(\.(\d+))*$/;
+							if (values.hasOwnProperty('min') && values.min.constructor == String) {
+								if (this.hasAttribute(values.min)) {
+									var min = this.getAttribute(values.min);
+									if (isOk.test(min)) {
+										min = values.type == 'integer' ? parseInt(min) : parseFloat(min);
+										var value = values.type == 'integer' ? parseInt(attribute.value) : parseFloat(attribute.value);
+										var minResult = !(min <= value);
+										if (minResult) {
+											var error = ARIA.Errors.ValueLowerThanMin;
+											error = error.replace('{{attribute}}', attribute.name);
+											error = error.replace('{{min}}', values.min);
+											errors.push(error);
+										}
+									}
+								}
+							}
+							if (values.hasOwnProperty('max') && values.max.constructor == String) {
+								if (this.hasAttribute(values.max)) {
+									var max = this.getAttribute(values.max);
+									if (isOk.test(max)) {
+										max = values.type == 'integer' ? parseInt(max) : parseFloat(max);
+										var value = values.type == 'integer' ? parseInt(attribute.value) : parseFloat(attribute.value);
+										var maxResult = !(max >= value);
+										if (maxResult) {
+											var error = ARIA.Errors.ValueGreaterThanMax;
+											error = error.replace('{{attribute}}', attribute.name);
+											error = error.replace('{{max}}', values.max);
+											errors.push(error);
+										}
+									}
+								}
+							}
+						}
+					}
+					else if (values.hasOwnProperty('attribute')) {
+						if (values.attribute == 'id') {
+							if (values.multiple) {
+								var notFoundElements = [];
+								var ids = attribute.value.split(' ');
+								for (var j = 0; j < ids.length; j++) {
+									if (!document.getElementById(ids[j])) {
+										notFoundElements.push(ids[j]);
+									}
+								}
+								if (notFoundElements.length > 0) {
+									errors.push(ARIA.Errors.TokensIdValueElements.replace('{{attribute}}', attribute.name));
+								}
+							}
+							else {
+								if (!document.getElementById(attribute.value)) {
+									errors.push(ARIA.Errors.SingleIdValueElement.replace('{{attribute}}', attribute.name));
+								}
+							}
+						}
+					}
+				}
+			}
+			else if (isValidValue == undefined) {
+				errors.push(ARIA.Errors.InvalidStateProperty.replace('{{attribute}}', attribute.name));
+			}
+			else {
+				result = true;
+			}
+		}
+	}
+	if (!result && errors.length > 0) {
+		result = true;
+	}
+	return result;
+};
+if (!('hasAriaAttributesWithInvalidValues' in HTMLElement.prototype)) HTMLElement.prototype.hasAriaAttributesWithInvalidValues = hasAriaAttributesWithInvalidValues;
+if (!('hasAriaAttributesWithInvalidValues' in SVGElement.prototype)) SVGElement.prototype.hasAriaAttributesWithInvalidValues = hasAriaAttributesWithInvalidValues;
+
+var hasProhibitedAriaAttributes = function () {
+	var result = false;
+	for (var i = 0; i < this.attributes.length; i++) {
+		var attribute = this.attributes[i];
+		var name = attribute.name;
+		if (name.match(/^aria-/)) {
+			var sp = new ARIA.StateProperty(name);
+			result = sp.isAllowedInRole(this.getComputedAriaRole());
+			result = result == undefined ? false : !result;
+			if (result) {
+				break;
+			}
+		}
+	}
+	return result;
+};
+if (!('hasProhibitedAriaAttributes' in HTMLElement.prototype)) HTMLElement.prototype.hasProhibitedAriaAttributes = hasProhibitedAriaAttributes;
+if (!('hasProhibitedAriaAttributes' in SVGElement.prototype)) SVGElement.prototype.hasProhibitedAriaAttributes = hasProhibitedAriaAttributes;
