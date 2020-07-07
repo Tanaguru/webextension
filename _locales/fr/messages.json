@@ -63,6 +63,7 @@
 	"tagSEO": { "message": "SEO" },
 	"tagStructure": { "message": "Structuration de l'information" },
 	"tagSvg": { "message": "SVG" },
+	"tagTables": { "message": "Tableaux" },
 	"tagVideos": { "message": "Vidéos" },
 	"tagWcag": { "message": "WCAG" },
 	"testFramesTest1Name": { "message": "Présence d'un titre pour chaque cadre en ligne." },
