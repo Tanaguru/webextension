@@ -52,6 +52,7 @@
 	"tagLabels": { "message": "Étiquettes" },
 	"tagLinks": { "message": "Liens" },
 	"tagMandatory": { "message": "Éléments obligatoires" },
+	"tagMeta": { "message": "Métadonnées" },
 	"tagMobile": { "message": "Mobile" },
 	"tagDeprecated": {"message" : "Obsolètes" },
 	"tagOthers": { "message": "Divers" },
