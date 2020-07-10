@@ -35,6 +35,7 @@
     * spinbutton is not associated with input[type="text|search"] (removed here).
     * textarea is associated with textbox & no mention of aria-multiline (aria-multiline ignored here too).
     * button is associated with summary (added here).
+    * area is associated with link (added here).
 */
 
 var htmlData = {
@@ -91,7 +92,7 @@ var htmlData = {
         'figcaption': { id: 'the-figcaption-element', category: 'grouping content', implicitAriaRole: 'caption', DOMInterface: 'HTMLElement' }, 
         'main': { id: 'the-main-element', category: 'grouping content', implicitAriaRole: 'main', DOMInterface: 'HTMLElement' }, 
         'div': { id: 'the-div-element', category: 'grouping content', implicitAriaRole: 'generic', DOMInterface: 'HTMLDivElement' }, 
-        'a': { id: 'the-a-element', category: 'text-level semantics', implicitAriaRole: { '[href]': 'link' }, DOMInterface: 'HTMLAnchorElement' }, 
+        'a': { id: 'the-a-element', category: 'text-level semantics', focusable: '[href]', implicitAriaRole: { '[href]': 'link' }, DOMInterface: 'HTMLAnchorElement' }, 
         'em': { id: 'the-em-element', category: 'text-level semantics', implicitAriaRole: 'emphasis', DOMInterface: 'HTMLElement' }, 
         'strong': { id: 'the-strong-element', category: 'text-level semantics', implicitAriaRole: 'strong', DOMInterface: 'HTMLElement' }, 
         'small': { id: 'the-small-element', category: 'text-level semantics', DOMInterface: 'HTMLElement' }, 
@@ -127,15 +128,15 @@ var htmlData = {
         'picture': { id: 'the-picture-element', category: 'embedded content', DOMInterface: 'HTMLPictureElement' }, 
         'source': { id: 'the-source-element', category: 'embedded content', DOMInterface: 'HTMLSourceElement' }, 
         'img': { id: 'the-img-element', category: 'embedded content', implicitAriaRole: { '[alt=""]': ['none', 'presentation'], '[alt]:not([alt=""])': 'img' }, DOMInterface: 'HTMLImageElement' }, 
-        'iframe': { id: 'the-iframe-element', category: 'embedded content', DOMInterface: 'HTMLIFrameElement' }, 
-        'embed': { id: 'the-embed-element', category: 'embedded content', DOMInterface: 'HTMLEmbedElement' }, 
-        'object': { id: 'the-object-element', category: 'embedded content', DOMInterface: 'HTMLObjectElement' }, 
+        'iframe': { id: 'the-iframe-element', category: 'embedded content', focusable: true, DOMInterface: 'HTMLIFrameElement' }, 
+        'embed': { id: 'the-embed-element', category: 'embedded content', focusable: true, DOMInterface: 'HTMLEmbedElement' }, 
+        'object': { id: 'the-object-element', category: 'embedded content', focusable: true, DOMInterface: 'HTMLObjectElement' }, 
         'param': { id: 'the-param-element', category: 'embedded content', DOMInterface: 'HTMLParamElement' }, 
-        'video': { id: 'the-video-element', category: 'embedded content', DOMInterface: 'HTMLVideoElement' }, 
-        'audio': { id: 'the-audio-element', category: 'embedded content', DOMInterface: 'HTMLAudioElement' }, 
+        'video': { id: 'the-video-element', category: 'embedded content', focusable: true, DOMInterface: 'HTMLVideoElement' }, 
+        'audio': { id: 'the-audio-element', category: 'embedded content', focusable: true, DOMInterface: 'HTMLAudioElement' }, 
         'track': { id: 'the-track-element', category: 'embedded content', DOMInterface: 'HTMLTrackElement' }, 
         'map': { id: 'the-map-element', category: 'embedded content', DOMInterface: 'HTMLMapElement' }, 
-        'area': { id: 'the-area-element', category: 'embedded content', DOMInterface: 'HTMLAreaElement' }, 
+        'area': { id: 'the-area-element', category: 'embedded content', focusable: '[href]', implicitAriaRole: { 'href': 'link' }, DOMInterface: 'HTMLAreaElement' }, 
         'table': { id: 'the-table-element', category: 'tabular data', implicitAriaRole: 'table', DOMInterface: 'HTMLTableElement' }, 
         'caption': { id: 'the-caption-element', category: 'tabular data', implicitAriaRole: 'caption', DOMInterface: 'HTMLTableCaptionElement' }, 
         'colgroup': { id: 'the-colgroup-element', category: 'tabular data', DOMInterface: 'HTMLTableColElement' }, 
@@ -148,7 +149,7 @@ var htmlData = {
         'th': { id: 'the-th-element', category: 'tabular data', implicitAriaRole: { '[scope="col"]': 'columnheader', '[scope="row"]': 'rowheader', 'th:not([scope])': ['columnheader', 'rowheader'] }, DOMInterface: 'HTMLTableHeaderCellElement' }, 
         'form': { id: 'the-form-element', category: 'forms', implicitAriaRole: 'form', DOMInterface: 'HTMLFormElement' }, 
         'label': { id: 'the-label-element', category: 'forms', DOMInterface: 'HTMLLabelElement' }, 
-        'input': { id: 'the-input-element', category: 'forms', implicitAriaRole: { 
+        'input': { id: 'the-input-element', category: 'forms', focusable: 'input:not([disabled])', implicitAriaRole: { 
             'input:not([type]):not([list])': 'textbox', 
             '[type="text"]:not([list])': 'textbox', 
             'input[list]:not([type])': 'combobox', 
@@ -170,8 +171,8 @@ var htmlData = {
             '[type="reset"]': 'button', 
             '[type="button"]': 'button' 
         }, DOMInterface: 'HTMLInputElement' }, 
-        'button': { id: 'the-button-element', category: 'forms', implicitAriaRole: 'button', DOMInterface: 'HTMLButtonElement' }, 
-        'select': { id: 'the-select-element', category: 'forms', implicitAriaRole: {
+        'button': { id: 'the-button-element', category: 'forms', focusable: 'button:not([disabled])', implicitAriaRole: 'button', DOMInterface: 'HTMLButtonElement' }, 
+        'select': { id: 'the-select-element', category: 'forms', focusable: 'select:not([disabled])', implicitAriaRole: {
             'select:not([multiple]):not([size])': 'combobox', 
             'select[multiple]': 'listbox', 
             'select[size]:not([multiple])': { type: 'integer', attribute: 'size', greaterthan: 1, role: ['combobox', 'listbox'] }
@@ -179,7 +180,7 @@ var htmlData = {
         'datalist': { id: 'the-datalist-element', category: 'forms', implicitAriaRole: 'listbox', DOMInterface: 'HTMLDataListElement' }, 
         'optgroup': { id: 'the-optgroup-element', category: 'forms', implicitAriaRole: 'group', DOMInterface: 'HTMLOptGroupElement' }, 
         'option': { id: 'the-option-element', category: 'forms', implicitAriaRole: 'option', DOMInterface: 'HTMLOptionElement' }, 
-        'textarea': { id: 'the-textarea-element', category: 'forms', implicitAriaRole: 'textbox', DOMInterface: 'HTMLTextAreaElement' }, 
+        'textarea': { id: 'the-textarea-element', category: 'forms', focusable: 'textarea:not([disabled])', implicitAriaRole: 'textbox', DOMInterface: 'HTMLTextAreaElement' }, 
         'output': { id: 'the-output-element', category: 'forms', implicitAriaRole: 'status', DOMInterface: 'HTMLOutputElement' }, 
         'progress': { id: 'the-progress-element', category: 'forms', implicitAriaRole: 'progressbar', DOMInterface: 'HTMLProgressElement' }, 
         'meter': { id: 'the-meter-element', category: 'forms', DOMInterface: 'HTMLMeterElement' }, 
