@@ -430,7 +430,7 @@ tanaguruTestsList.push({
 	lang: 'en',
 	name: "HTML page lang and xml:lang attributes don't have matching values.",
 	description: 'This rule checks that both lang and xml:lang attributes on the root element of a non-embedded HTML page, have the same primary language subtag.',
-	query: 'html[lang][xml:lang]', 
+	query: 'html[lang][xml\\:lang]', 
 	expectedNbElements: 0, 
 	filter: function (item) {
 		return !item.hasValidLanguageCode || (item.getAttribute('xml:lang').trim().length > 0 && item.getAttribute('lang') != item.getAttribute('xml:lang'));
@@ -443,7 +443,7 @@ tanaguruTestsList.push({
 	lang: 'en',
 	name: 'HTML page lang and xml:lang attributes have matching values.',
 	description: 'This rule checks that both lang and xml:lang attributes on the root element of a non-embedded HTML page, have the same primary language subtag.',
-	query: 'html[lang][xml:lang]', 
+	query: 'html[lang][xml\\:lang]', 
 	filter: function (item) {
 		return item.hasValidLanguageCode && item.getAttribute('lang') == this.getAttribute('xml:lang');
 	}, 
