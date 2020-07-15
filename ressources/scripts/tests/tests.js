@@ -1,1028 +1,46 @@
-/**
- * SOMMAIRE
- *
- * ACCESSIBILITE
- * 01 - Cadres
- * 02 - Titres de contenus 
- * 03 - Images
- * 04 - Liens
- * 05 - Liens images
- * 06 - Boutons
- * 07 - Boutons images
- * 08 - Formulaires
- * 09 - Scripts
- * 10 - Eléments obligatoires
- * -------- Eléments obsolètes
- * -------- Titre de la page
- * -------- Gestion des langues
- * -------- Sens de lecture
- * 11 - Structuration de l'information
- * 12 - Présentation de l'information
- * 13 - Consultation
- * 14 - Aria
- * 
- * SEO
- * 
- * OPQUAST
-*/
-
 var tanaguruTestsList = [];
-
-/*************************************************
- ***** Accessibilité *****************************
- *************************************************/
-
-// ------------------------------------------------
-// --- 01 - CADRES -------------------------------------
-// ------------------------------------------------
-
-tanaguruTestsList.push({
-	id: 'FramesTest1',
-	query: 'iframe:not([role]):not([title])',
-	expectedNbElements: 0,
-	tags: ['a11y', 'frames', 'q5y'],
-	ressources: { 'rgaa3': ['2.1.1'], 'rgaa4': ['2.1.1'], 'pidila': ['Pi-357'], 'opquast': ['145'] }
-});
-
-tanaguruTestsList.push({
-	id: 'FramesTest2',
-	query: 'frame:not([role]):not([title])',
-	expectedNbElements: 0,
-	tags: ['a11y', 'frames', 'q5y'],
-	ressources: { 'rgaa4': ['2.1.1'] }
-});
-
-tanaguruTestsList.push({
-	id: 'FramesTest3',
-	query: 'frame:not([role])[title]',
-	filter: function (item) {
-		var title = item.getAttribute('title');
-		var src = item.getAttribute('src');
-		if (title == "") {
-			return false;
-		}
-		if (title == src) {
-			return false;
-		}
-		return true;
-	},
-	mark: { attrs: ['title'] },
-	tags: ['a11y', 'frames', 'q5y'],
-	ressources: { 'rgaa4': ['2.2.1'] }
-});
-
-tanaguruTestsList.push({
-	id: 'FramesTest4',
-	query: 'iframe:not([role])[title]',
-	filter: function (item) {
-		var title = item.getAttribute('title');
-		var src = item.getAttribute('src');
-		if (title == "") {
-			return false;
-		}
-		if (title == src) {
-			return false;
-		}
-		return true;
-	},
-	mark: { attrs: ['title'] },
-	tags: ['a11y', 'frames', 'q5y'],
-	ressources: { 'rgaa3': ['2.2.1'],'rgaa4': ['2.2.1'], 'pidila': ['Pi-357'], 'opquast': ['145'] }
-});
-
-tanaguruTestsList.push({
-	id: "FramesTest5",
-	query: 'iframe:not([role])[title]',
-	filter: function (item) {
-		var title = item.getAttribute('title');
-		var src = item.getAttribute('src');
-		if (title == "") {
-			return true;
-		}
-		if (title == src) {
-			return true;
-		}
-	},
-	expectedNbElements: 0,
-	mark: { attrs: ['title'] },
-	tags: ['a11y', 'frames', 'q5y'],
-	ressources: { 'rgaa3': ['2.2.1'], 'rgaa4': ['2.2.1'], 'pidila': ['Pi-357'], 'opquast': ['145']}
-});
-
-tanaguruTestsList.push({
-	id: "FramesTest6",
-	query: 'iframe:not([role])[title]',
-	filter: function (item) {
-		var title = item.getAttribute('title');
-		var src = item.getAttribute('src');
-		if (title == "") {
-			return true;
-		}
-		if (title == src) {
-			return true;
-		}
-	},
-	expectedNbElements: 0,
-	mark: { attrs: ['title'] },
-	tags: ['a11y', 'frames', 'q5y'],
-	ressources: { 'rgaa4': ['2.2.1'] }
-});
-
-tanaguruTestsList.push({
-	id: "FramesTest7",
-	query: 'iframe:not([role]), frame:not([role])',
-	filter: function (item) {
-		return !item.hasAccessibleName();
-	},
-	expectedNbElements: 0,
-	tags: ['a11y', 'frames', 'aria'],
-	ressources: { 'rgaa4': ['2.2.1'] }
-});
-
-tanaguruTestsList.push({
-	id: "FramesTest8",
-	query: 'iframe:not([role]), frame:not([role])',
-	filter: function (item) {
-		return !item.hasAccessibleName();
-	},
-	tags: ['a11y', 'frames', 'aria'],
-	ressources: { 'wcag': ['4.1.2'] }
-});
-
-// ------------------------------------------------
-// --- 02 - TITRES DE CONTENUS -------------------------
-// ------------------------------------------------
-
-tanaguruTestsList.push({
-	id: "HeadingsTest1",
-	query: 'h1:not([role]):not([aria-level]), h1[role="heading"]:not([aria-level]), [role="heading"][aria-level="1"]',
-	expectedNbElements: { min: 1 },
-	tags: ['a11y', 'headings', 'SEO'],
-	ressources: { 'rgaa3': ['9.1.1'], 'pidila': ['Pi-362'], 'opquast': ['13'] }
-});
-
-tanaguruTestsList.push({
-	id: "HeadingsTest2",
-	query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"]',
-	expectedNbElements: { min: 1 },
-	tags: ['a11y', 'headings'],
-	ressources: { 'rgaa4': ['9.1.1'], 'wcag': ['1.3.1'] }
-});
-
-/* Test utilisant le traitement par collection */
-tanaguruTestsList.push({
-	id: 'HeadingsTest3',
-	query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"]',
-	analyzeElements: function (elements) {
-		for (var e = 0; e < elements.length; e++) {
-			if (e + 1 < elements.length) {
-				var currentlevel = parseInt(elements[e].hasAttribute('aria-level') ? elements[e].getAttribute('aria-level') : elements[e].tagName.substring(1));
-				var nextelement = elements[e + 1];
-				var nextlevel = parseInt(nextelement.hasAttribute('aria-level') ? nextelement.getAttribute('aria-level') : nextelement.tagName.substring(1));
-				if (nextlevel - currentlevel > 1) {
-					elements[e + 1].status = 'failed';
-				}
-			}
-			if (elements[e].status == 'cantTell') {
-				elements[e].status = 'passed';
-			}
-		}
-	},
-	tags: ['a11y', 'headings'],
-	ressources: { 'rgaa4': ['9.1.1'], 'wcag': ['1.3.1'] }
-});
-
-tanaguruTestsList.push({
-	id: 'HeadingsTest4',
-	query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"]',
-	tags: ['a11y', 'headings', 'SEO'],
-	ressources: { 'rgaa3': ['9.1.4'], 'rgaa3': ['9.1.2'], 'pidila': ['Pi-362'], 'opquast': ['13'], 'wcag': ['1.3.1'] }
-});
-
-// ------------------------------------------------
-// --- 03 - IMAGES -------------------------------------
-// ------------------------------------------------
-
-tanaguruTestsList.push({
-	id: 'ImagesTest1',
-	query: 'area[href]:not([role]):not([alt])',
-	expectedNbElements: 0,
-	tags: ['a11y', 'images', 'q5y'],
-	ressources: { 'rgaa3': ['1.1.2'], 'pidila': ['Pi-309'], 'opquast': ['1'] }
-});
-
-// TODO - test RGAA 1.2.3
-// 
-// tanaguruTestsList.push({
-// 	lang: 'fr',
-// 	name: 'Images (balise area) sans attribut alt.',
-// 	query: 'area[href]:not([role]):not([alt])',
-// 	expectedNbElements: 0,
-// 	explanations: {
-// 		'passed': "Cette page ne contient pas d'éléments area sans attribut alt.",
-// 		'failed': "Des éléments area sans attribut alt sont présents dans la page."
-// 	},
-// 	tags: ['a11y', 'images'],
-// 	ressources: { 'rgaa3': ['1.2.3'] }
-// });
-
-tanaguruTestsList.push({
-	id: 'ImagesTest2',
-	query: 'img:not([role]):not([href])',
-	filter: function (item) {
-		return !item.hasAccessibleName();
-	},
-	expectedNbElements: 0,
-	tags: ['a11y', 'images', 'aria'],
-	ressources: { 'wcag': ['4.1.2'] }
-});
-
-tanaguruTestsList.push({
-	id: 'ImagesTest3',
-	query: '[role="img"]',
-	filter: function (item) {
-		return !item.hasAccessibleName(); //to complete
-	},
-	expectedNbElements: 0,
-	tags: ['a11y', 'images', 'aria'],
-	ressources: { 'wcag': ['4.1.2'] }
-});
-
-tanaguruTestsList.push({
-	id: 'ImagesTest4',
-	query: 'img:not([role]):not([href]) ,[role="img"]',
-	filter: function (item) {
-		return !item.hasAccessibleName();
-	},
-	tags: ['a11y', 'images', 'aria'],
-	ressources: { 'wcag': ['4.1.2'] }
-});
-
-tanaguruTestsList.push({
-	id: 'ImagesTest5',
-	query: 'area:not([role])',
-	filter: function (item) {
-		return !item.hasAccessibleName();
-	},
-	expectedNbElements: 0,
-	tags: ['a11y', 'images', 'aria'],
-	ressources: { 'wcag': ['4.1.2'] }
-});
-
-tanaguruTestsList.push({
-	id: 'ImagesTest6',
-	query: 'area:not([role])',
-	filter: function (item) {
-		return !item.hasAccessibleName();
-	},
-	expectedNbElements: 0,
-	tags: ['a11y', 'images', 'aria'],
-	ressources: { 'wcag': ['4.1.2'] }
-});
-
-tanaguruTestsList.push({
-	id: 'ImagesTest7',
-	query: 'area[alt=""][title]:not([role]) ,area[alt=""][aria-label]:not([role]), area[alt=""][aria-labelledby]:not([role]), area[alt=""][aria-describedby]:not([role])',
-	expectedNbElements: 0,
-	mark: { attrs: ['alt'] },
-	tags: ['a11y', 'images', 'q5y'],
-	ressources: { 'rgaa3': ['1.2.2'], 'pidila': ['Pi-309'], 'opquast': ['1'] }
-});
-
-tanaguruTestsList.push({
-	id: 'ImagesTest8',
-	query: 'area[alt]:not([role]):not([href])',
-	filter: function (item) {
-		return item.getAttribute('alt') != ""
-	},
-	expectedNbElements: 0,
-	tags: ['a11y', 'images', 'q5y'],
-	ressources: { 'rgaa3': ['1.2.2'], 'pidila': ['Pi-309'], 'opquast': ['1'] }
-});
-
-tanaguruTestsList.push({
-	id: 'ImagesTest9',
-	query: 'area[href][alt=""]:not([role])',
-	expectedNbElements: 0,
-	tags: ['a11y', 'images', 'q5y'],
-	ressources: { 'rgaa3': ['1.3.2'], 'pidila': ['Pi-304', 'Pi-305'], 'opquast': ['2', '3'] }
-});
-
-tanaguruTestsList.push({
-	id: 'ImagesTest10',
-	query: 'area[alt][href]:not([alt=""]):not([role])',
-	filter: function (item) {
-		var alt = item.getAttribute('alt');
-		if (item.hasAttribute('title')) {
-			return  alt != item.getAttribute('title');
-		}
-		if (item.hasAttribute('aria-label')) {
-			return alt != item.getAttribute('aria-label');
-		}
-		if (item.hasAttribute('aria-labelledby')) {
-			var AttrLabelledby = item.getAttribute('aria-labelledby');
-			if (document.querySelector('*[id="'+AttrLabelledby+'"]') != null){
-				return document.querySelector('*[id="'+AttrLabelledby+'"]').textContent != alt;
-			};
-		};
-	},
-	expectedNbElements: 0,
-	mark: { attrs: ['alt'] },
-	tags: ['a11y', 'images', 'q5y'],
-	ressources: { 'rgaa3': ['1.3.2'], 'pidila': ['Pi-304', 'Pi-305'], 'opquast': ['2', '3'] }
-});
-
-tanaguruTestsList.push({
-	id: 'ImagesTest11',
-	query: 'img:not([role]):not([alt]), img[role="img"]:not([alt])',
-	expectedNbElements: 0,
-	tags: ['a11y', 'images', 'SEO', 'q5y'],
-	ressources: { 'rgaa3': ['1.1.1'], 'pidila': ['Pi-302'], 'opquast': ['1', '2', '3'] }
-});
-
-tanaguruTestsList.push({
-	id: 'ImagesTest12',
-	query: 'img[alt=""][title]:not([role]), img[alt=""][title][role="img"] ,img[alt=""][aria-label]:not([role]), img[alt=""][aria-label][role="img"], img[alt=""][aria-labelledby]:not([role]), img[alt=""][aria-labelledby][role="img"], img[alt=""][aria-describedby]:not([role]), img[alt=""][aria-describedby][role="img"]',
-	expectedNbElements: 0,
-	mark: { attrs: ['alt'] },
-	tags: ['a11y', 'images', 'q5y'],
-	ressources: { 'rgaa3': ['1.2.1'], 'pidila': ['Pi-309', 'Pi-356'], 'opquast': ['2', '3'] }
-});
-
-tanaguruTestsList.push({
-	id: 'ImagesTest13',
-	query: 'img[alt=""]:not([title]):not([role]), img[alt=""]:not([title])[role="img"] ,img[alt=""]:not([aria-label]):not([role]), img[alt=""]:not([aria-label])[role="img"], img[alt=""]:not([aria-labelledby]):not([role]), img[alt=""]:not([aria-labelledby])[role="img"], img[alt=""]:not([aria-describedby]):not([role]), img[alt=""]:not([aria-describedby])[role="img"]',
-	mark: { attrs: ['alt'] },
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa3': ['1.2.1'] }
-});
-
-tanaguruTestsList.push({
-	id: 'ImagesTest14',
-	query: 'img[alt]:not([role]):not([alt=""]), img[alt][role="img"]:not([alt=""])',
-	filter: function (item) {
-		return !item.matches('a[href]:not([role]) img, [role="link"] img, button:not([role]) img, [role="button"] img');
-	},
-	mark: { attrs: ['alt'] },
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa3': ['1.2.1', '1.3.1'] }
-});
-
-tanaguruTestsList.push({
-	id: 'ImagesTest15',
-	query: 'img[alt]:not([alt=""]):not([role]), img[alt]:not([alt=""])[role="img"]',
-	filter: function (item) {
-		var alt = item.getAttribute('alt');
-		if (item.hasAttribute('title')) {
-			return  alt != item.getAttribute('title');
-		}
-		if (item.hasAttribute('aria-label')) {
-			return alt != item.getAttribute('aria-label');
-		}
-		if (item.hasAttribute('aria-labelledby')) {
-			return  alt != item.getAttribute('aria-labelledby');
-		}
-	},
-	expectedNbElements: 0,
-	mark: { attrs: ['alt'] },
-	tags: ['a11y', 'images'],
-	ressources: { 'rgaa3': ['1.3.1'] }
-});
-
-// ------------------------------------------------
-// --- 04 - LIENS --------------------------------------
-// ------------------------------------------------
-
-tanaguruTestsList.push({
-	id: 'LinksTest1',
-	query: 'a[href]:not([role]):not([title])',
-	tags: ['links']
-});
-
-tanaguruTestsList.push({
-	id: 'LinksTest2',
-	query: 'a[href][title]:not([role])',
-	filter: function (item) {
-		return item.getAttribute('title').trim().length > 0;
-	},
-	mark: { attrs: ['title'] },
-	tags: ['a11y', 'links'],
-	ressources: { 'rgaa3': ['6.2.1', '6.2.2', '6.2.3'] }
-});
-
-tanaguruTestsList.push({
-	id: 'LinksTest3',
-	query: 'a[href][title]:not([role])',
-	filter: function (item) {
-		return item.getAttribute('title').trim().length == 0;
-	},
-	expectedNbElements: 0,
-	mark: { attrs: ['title'] },
-	tags: ['a11y', 'links'],
-	ressources: { 'rgaa3': ['6.2.1', '6.2.2', '6.2.3'] }
-});
-
-// ------------------------------------------------
-// --- 05 - LIENS IMAGES  -------------------------
-// ------------------------------------------------
-
-tanaguruTestsList.push({
-	id: 'LinksTest4',
-	query: 'a[href]:not([role]) > img[alt=""]:not([role]):only-child, a[href]:not([role]) > img[role="img"][alt=""]:only-child, a[href]:not([role]) > img[role="presentation"][alt]:only-child, [role="link"] > img[alt=""]:not([role]):only-child, [role="link"] > img[role="img"][alt=""]:only-child, [role="link"] > img[role="presentation"][alt]:only-child',
-	expectedNbElements: 0,
-	mark: { attrs: ['alt'] },
-	tags: ['a11y', 'images', 'links'],
-	ressources: { 'rgaa3': ['6.5.1'] }
-});
-
-// ------------------------------------------------
-// --- 06 - BOUTONS ------------------------------------
-// ------------------------------------------------
-
-tanaguruTestsList.push({
-	id: 'ButtonsTest1',
-	query: 'button:not([role]), input[type="reset"]:not([role]), input[type="submit"]:not([role])',
-	tags: ['buttons']
-});
-
-// ------------------------------------------------
-// --- 07 - BOUTONS IMAGES  ----------------------------
-// ------------------------------------------------
-
-tanaguruTestsList.push({
-	id: 'ButtonsTest2',
-	query: 'input[alt][type=image]:not([role])',
-	mark: { attrs: ['alt'] },
-	tags: ['a11y', 'images', 'buttons'],
-	ressources: { 'rgaa3': ['1.3.3'] }
-});
-
-tanaguruTestsList.push({
-	id: 'ButtonsTest3',
-	query: 'input[type=image]:not([role]):not([alt])',
-	expectedNbElements: 0,
-	mark: { attrs: ['alt'] },
-	tags: ['a11y', 'images', 'buttons'],
-	ressources: { 'rgaa3': ['1.1.3'] }
-});
-
-tanaguruTestsList.push({
-	id: 'ButtonsTest4',
-	query: 'input[alt][type=image]:not([role]):not([title]):not([aria-label]):not([aria-labelledby])',
-	filter: function (item) {
-		return item.getAttribute('alt').trim().length == 0;
-	},
-	expectedNbElements: 0,
-	mark: { attrs: ['alt'] },
-	tags: ['a11y', 'images', 'buttons'],
-	ressources: { 'rgaa3': ['1.3.3'] }
-});
-
-tanaguruTestsList.push({
-	id: 'ButtonsTest5',
-	query: 'input[alt][type=image]:not([alt=""]):not([role])',
-	filter: function (item) {
-		var alt = item.getAttribute('alt');
-		if (item.hasAttribute('title')) {
-			return  alt != item.getAttribute('title');
-		}
-		if (item.hasAttribute('aria-label')) {
-			return alt != item.getAttribute('aria-label');
-		}
-		if (item.hasAttribute('aria-labelledby')) {
-			var AttrLabelledby = item.getAttribute('aria-labelledby');
-			if (document.querySelector('*[id="'+AttrLabelledby+'"]') != null){
-				return document.querySelector('*[id="'+AttrLabelledby+'"]').textContent != alt;
-			};
-		};
-	},
-	expectedNbElements: 0,
-	mark: { attrs: ['alt'] },
-	tags: ['a11y', 'images', 'buttons'],
-	ressources: { 'rgaa3': ['1.3.3'] }
-});
-
-// ------------------------------------------------
-// --- 08 - FORMULAIRES --------------------------------
-// ------------------------------------------------
-
-tanaguruTestsList.push({
-	id: 'FormsTest1',
-	query: 'input:not([type="image"]):not([type="button"]):not([type="hidden"]):not([type="submit"]):not([type="reset"]):not([role]), select:not([role]), textarea:not([role])',
-	filter: function (item) {
-		return !item.hasAccessibleName();
-	},
-	expectedNbElements: 0,
-	tags: ['a11y', 'forms', 'labels'],
-	ressources: { 'rgaa3': ['11.1.1'] }
-});
-
-tanaguruTestsList.push({
-	id: 'FormsTest2',
-	query: '*[role="checkbox"], *[role="radio"], *[role="textbox"], *[role="combobox"]',
-	filter: function (item) {
-		return !item.hasAccessibleName();
-	},
-	expectedNbElements: 0,
-	mark: { attrs: ['id'] },
-	tags: ['a11y', 'forms', 'labels', 'aria'],
-	ressources: { 'rgaa3': ['7.1.1'] }
-});
-
-tanaguruTestsList.push({
-	id: 'FormsTest3',
-	query: 'input:not([role])',
-	filter: function (item) {
-		return !item.hasAccessibleName();
-	},
-	expectedNbElements: 0,
-	tags: ['a11y', 'forms', 'aria'],
-	ressources: { 'wcag': ['4.1.2'] }
-});
-
-tanaguruTestsList.push({
-	id: 'FormsTest4',
-	query: 'input:not([role])',
-	filter: function (item) {
-		return !item.hasAccessibleName();
-	},
-	tags: ['a11y', 'forms', 'aria'],
-	ressources: { 'wcag': ['4.1.2'] }
-});
-
-tanaguruTestsList.push({
-	id: "FormsTest5",
-	query: 'select:not([role])',
-	filter: function (item) {
-		return !item.hasAccessibleName();	
-	},
-	expectedNbElements: 0,
-	tags: ['a11y', 'forms', 'aria'],
-	ressources: { 'wcag': ['4.1.2'] }
-});
-
-tanaguruTestsList.push({
-	id: "FormsTest6",
-	query: 'select:not([role])',
-	filter: function (item) {
-		return !item.hasAccessibleName();
-	},
-	expectedNbElements: 0,
-	tags: ['a11y', 'forms', 'aria'],
-	ressources: { 'wcag': ['4.1.2'] }
-});
-
-// ------------------------------------------------
-// --- 09 - SCRIPTS ------------------------------------
-// ------------------------------------------------
-
-tanaguruTestsList.push({
-	id: 'ScriptsTest1',
-	query: '*[role="checkbox"], *[role="radio"], *[role="textbox"], *[role="combobox"], *[role="contenteditable"]',
-	filter: function (item) {
-		if (item.hasAttribute('tabindex') || !(item.canBeReachedUsingKeyboardWith == '')){
-			return false;
-			}
-		else return true;
-	},
-	expectedNbElements: 0,
-	mark: { attrs: ['role'] },
-	tags: ['a11y', 'forms', 'labels','aria'],
-	ressources: { 'rgaa3': ['7.3.1'] }
-});
-
-// ------------------------------------------------
-// --- 10 - ELEMENTS OBLIGATOIRES  ---------------------
-// ------------------------------------------------
-
-
-// Eléments obsolètes
-
-tanaguruTestsList.push({
-	id: 'MandatoryElementsTest1',
-	query: 'acronym, bgsound, dir, frame, frameset, noframes, hgroup, isindex, listing, nextid, noembed, plaintext, strike, xmp, basefont, big, blink, center, font, marquee, menu, menuitem, multicol, nobr, spacer, tt',
-	expectedNbElements: 0,
-	tags: ['a11y', 'Deprecated'],
-	ressources: { 'rgaa3': ['8.2.2'] }
-});
-
-tanaguruTestsList.push({
-	id: 'MandatoryElementsTest2',
-	query: 'a[charset], link[charset], a[coords], a[shape], a[methods], a[name], embed[name], img[name], option[name], a[urn], link[urn], form[accept], area[hreflang], head[profile], html[version], input[ismap], input[usemap], iframe[longdesc], img[longdesc], link[target], meta[scheme], object[archive], object[classid], object[code], object[codebase], object[codetype], object[declare], object[standby], param[type], param[valuetype], script[language], script[event], script[for], table[datapagesize], table[summary], td[abbr], td[axis], th[axis], td[scope], a[datasrc], applet[datasrc],button[datasrc],div[datasrc], frame[datasrc], iframe[datasrc], img[datasrc], input[datasrc], label[datasrc], legend[datasrc], marquee[datasrc], object[datasrc], option[datasrc], select[datasrc], table[datasrc], textarea[datasrc], a[datafld], applet[datafld], button[datafld], div[datafld], fieldset[datafld], frame[datafld], iframe[datafld], img[datafld], input[datafld], label[datafld], legend[datafld], marquee[datafld], object[datafld], param[datafld], select[datafld], text[datafld], button[dataformatas], div[dataformatas], input[dataformatas], label[dataformatas], legend[dataformatas], marquee[dataformatas], object[dataformatas], option[dataformatas], select[dataformatas], a[dataformatas], table[dataformatas], body[alink], body[bgcolor], body[bottommargin], body[leftmargin], body[link], body[marginheight], body[marginwidth], body[rightmargin], body[text], body[topmargin], body[vlink], br[clear], caption[align], col[align], col[widht], div[align], dl[compact], embed[align], embed[hspace], embed[vspace], frame[bodercolor], hr[align], hr[color], hr[noshade], hr[size], hr[width], h1[align], h2[align], h3[align], h4[align], h5[align], h6[align], iframe[align], iframe[allowtransparency], iframe[frameborder], iframe[framespacing], iframe[hspace], iframe[marginheight], iframe[marginwidth], iframe[scrolling], iframe[vspace], input[align], input[border], input[hspace], input[vspace], img[align], img[border], img[hspace], img[vspace], legend[align], li[type], menu[compact], marquee[bgcolor], marquee[height], marquee[hspace], marquee[vspace], marquee[width], object[align], object[border], object[hspace], object[vspace], ol[compact], p[align], pre[width], table[align], table[bgcolor], table[border], table[bordercolor], table[cellpadding], table[callspacing], table[frame], table[height], table[rules], table[width], tbody[align], thead[align], tfoot[align], tbody[char], thead[char], tfoot[char], tbody[charoff], thead[charoff], tfoot[charoff], tbody[valign], thead[valign], tfoot[valign], td[align], th[align], td[bgcolor], th[bgcolor], td[char], th[char], td[charoff], th[charoff], td[height], th[height], td[nowrap], th[nowrap], td[valign], th[valign], td[with], th[width], tr[align], tr[bgcolor], tr[char], tr[charoff], tr[height], tr[valign], ul[compact], ul[type], body[background], table[background], thead[background],tbody[background], tfoot[background],tr[background], td[background], th[background]',
-	expectedNbElements: 0,
-	tags: ['a11y', 'Deprecated'],
-	ressources: { 'rgaa3': ['8.1.2'] }
-});
-
-// Titre de la page
-
-tanaguruTestsList.push({
-	id: 'MandatoryElementsTest3',
-	query: 'head>title',
-	expectedNbElements: 1,
-	tags: ['a11y', 'Mandatory', 'SEO'],
-	ressources: { 'rgaa3': ['8.5.1'], 'pidila': ['Pi-412'], 'opquast': ['32', '33'] }
-});
-
-tanaguruTestsList.push({
-	id: 'MandatoryElementsTest4',
-	query: 'head>title',
-	filter: function (item) {
-		var tagTitle =  item != null;
-		if (tagTitle) {
-			return item.textContent == "";
-		}
-	},
-	expectedNbElements: 0,
-	mark: { attrs: ['title'] },
-	tags: ['a11y', 'Mandatory'],
-	ressources: { 'rgaa3': ['8.6.1'], 'pidila': ['Pi-412'] , 'opquast': ['32', '33'] }
-});
-
-// Gestion des langues
-
-tanaguruTestsList.push({
-	id: 'MandatoryElementsTest5',
-	query: 'html[lang]',
-	expectedNbElements: 1,
-	mark: { attrs: ['lang'] },
-	tags: ['a11y', 'Mandatory', 'SEO'],
-	ressources: { 'rgaa3': ['8.3.1'], 'pidila': ['Pi-361'], 'opquast': ['132'] }
-});
-
-tanaguruTestsList.push({
-	id: 'MandatoryElementsTest6',
-	query: 'html[lang=""]',
-	expectedNbElements: 0,
-	mark: { attrs: ['lang'] },
-	tags: ['a11y', 'Mandatory', 'SEO'],
-	ressources: { 'rgaa3': ['8.4.1'], 'pidila': ['Pi-361'], 'opquast': ['132'] }
-});
-
-tanaguruTestsList.push({
-	id: 'MandatoryElementsTest7',
-	query: 'input[type="hidden"][id]',
-	filter: function(item) {
-		var AttrId = item.getAttribute('id');
-		if (document.querySelector('label[for="'+AttrId+'"]') == null){
-			return false;
-		};
-		return true;
-	},
-	expectedNbElements: 0,
-	mark: { attrs: ['for'] },
-	tags: ['a11y', 'Mandatory'],
-	ressources: { 'rgaa3': ['8.2.1'] }
-});
-
-tanaguruTestsList.push({
-	id: 'MandatoryElementsTest8',
-	query: '*[aria-labelledby]',
-	filter: function(item) {
-		var AttrLabelledby = item.getAttribute('aria-labelledby');
-		return document.querySelector('*[id="'+AttrLabelledby+'"]') == null;
-	},
-	expectedNbElements: 0,
-	mark: { attrs: ['for'] },
-	tags: ['a11y', 'Mandatory'],
-	ressources: { 'rgaa3': ['8.2.1'] }
-});
-
-// Sens de lecture
-
-tanaguruTestsList.push({
-	id: 'MandatoryElementsTest9',
-	query: '[dir="ltr"], [dir="rtl"]',
-	tags: ['a11y', 'Mandatory'],
-	ressources: { 'rgaa3': ['8.10.2'] }
-});
-
-tanaguruTestsList.push({
-	id: 'MandatoryElementsTest10',
-	query: '*[dir]',
-	filter: function(item){
-		var dirAttr = item.getAttribute('dir').toLowerCase();
-		if (dirAttr !== 'ltr' && dirAttr !== 'rtl') {
-			return true;
-		}
-		return false;
-	},
-	expectedNbElements: 0,
-	tags: ['a11y', 'Mandatory'],
-	ressources: { 'rgaa3': ['8.10.2'] }
-});
-
-// ------------------------------------------------
-// --- 11 - STRUCTURATION DE L'INFORMATION  ------------
-// ------------------------------------------------
-
-tanaguruTestsList.push({
-	id: 'StructureTest1',
-	query: 'header, nav, footer, main',
-	tags: ['a11y', 'Structure'],
-	ressources: { 'rgaa3': ['9.2.1'] }
-});
-
-tanaguruTestsList.push({
-	id: 'StructureTest2',
-	query: 'main, [role="main"]:not(main)',
-	expectedNbElements : { max: 1 },
-	tags: ['a11y', 'Structure'],
-	ressources: { 'rgaa3': ['9.2.1', '12.10.1'] }
-});
-
-tanaguruTestsList.push({
-	id: 'StructureTest3',
-	query: 'q, blockquote',
-	tags: ['a11y', 'Structure'],
-	ressources: { 'rgaa3': ['9.6.1', '9.6.2'] }
-});
-
-// ------------------------------------------------
-// --- 12 - PRESENTATION DE L'INFORMATION  -------------
-// ------------------------------------------------
-
-tanaguruTestsList.push({
-	id: 'PresentationTest1',
-	query: 'basefont, blink, center, font, marquee, s, strike, tt, u, bing, small',
-	expectedNbElements: 0,
-	tags: ['a11y', 'Presentation'],
-	ressources: { 'rgaa3': ['10.1.1'] }
-});
-
-tanaguruTestsList.push({
-	id: 'PresentationTest2',
-	query: '[align], [alink], [background], [bgcolor], [border], [cellpading], [cellspacing], [char], [charoff], [clear], [compact], [color], [frameborder],[hspace], [link], [marginheight], [marginwidth], [text], [valign], [vlink], [vspace], [size], [width], [height]',
-	filter: function(item){
-		var nodeName = item.nodeName;
-		var widthAttr = item.attributes.width;
-		var heightAttr = item.attributes.height;
-		var colorAttr = item.attributes.color;
-		/** Si l'élément possède les attributs width et/ou height, et s'il s'agit 
-		 * d'un élément img, svg, canvas, embed ou object : exclure l'élément de l'échantillon.
-		 * Sinon, on le laisse. Ainsi un élément img[width] ne sera pas ajouté.
-		 */
-		if (colorAttr !== undefined) {
-			if (nodeName == "LINK") {
-				return false;
-			}
-			return true;
-		}
-		if (widthAttr !== undefined || heightAttr !== undefined) {
-			if (nodeName == 'IMG' || nodeName == 'SVG' || nodeName == 'CANVAS' || nodeName == 'EMBED' || nodeName == 'OBJECT') {
-				return false;
-			}
-			return true;
-		}
-		return true;
-	},
-	expectedNbElements: 0,
-	tags: ['a11y', 'Presentation'],
-	ressources: { 'rgaa3': ['10.1.2'] }
-});
-
-tanaguruTestsList.push({
-	id: 'PresentationTest3',
-	query: 'a[href]',
-	filter: function(item){
-		return item.style.outline == "none";
-	},
-	expectedNbElements: 0,
-	tags: ['a11y', 'Presentation'],
-	ressources: { 'pidila': ['Pi-328'], 'opquast': ['155'], 'rgaa3': ['10.7.1'] } 
-});
-
-tanaguruTestsList.push({
-	id: 'PresentationTest4',
-	query: 'a[href]',
-	filter: function(item){
-		return item.style.outlineStyle == "none";
-	},
-	expectedNbElements: 0,
-	tags: ['a11y', 'Presentation', 'q5y'],
-	ressources: { 'pidila': ['Pi-328'], 'opquast': ['155'], 'rgaa3': ['10.7.1'] } 
-});
-
-tanaguruTestsList.push({
-	id: 'PresentationTest5',
-	query: 'a[href]',
-	filter: function(item){
-		return item.style.outlineWidth == "0";
-	},
-	expectedNbElements: 0,
-	tags: ['a11y', 'Presentation'],
-	ressources: { 'pidila': ['Pi-328'], 'opquast': ['155'], 'rgaa3': ['10.7.1'] } 
-});
-
-// ------------------------------------------------
-// ---- 13 - Consultation  -----------------
-// ------------------------------------------------
-
-tanaguruTestsList.push({
-	id: 'ConsultationTest1',
-	query: 'head > meta[http-equiv]',
-	filter: function(item){
-		return item.style.outlineWidth == "0";
-	},
-	expectedNbElements: 0,
-	tags: ['a11y', 'Presentation'],
-	ressources: { 'pidila': ['Pi-328'], 'opquast': ['155'], 'rgaa3': ['10.7.1'] } 
-});
-
-/*************************************************
- ***** SEO ***************************************
- *************************************************/
-
-tanaguruTestsList.push({
-	id: 'SEOTest1',
-	query: 'head > meta[name="description"]',
-	expectedNbElements: 1,
-	tags: ['SEO']
-});
-
-tanaguruTestsList.push({
-	id: 'SEOTest2',
-	query: 'head > meta[name="description"]',
-	expectedNbElements: 0,
-	filter: function(item){
-		if (item.hasAttribute('content') && item.getAttribute('content').length > 250){
-			return true;
-		}
-		return false;
-	},
-	tags: ['SEO']
-});
-
-tanaguruTestsList.push({
-	id: 'SEOTest3',
-	query: 'head > style, [style]',
-	expectedNbElements: 0,
-	filter: function(item){
-		var styleAttr = item.getAttribute('style');
-
-		if (item.nodeName == 'STYLE' && item.textContent) {
-			return true;
-		} else if (styleAttr && styleAttr !== "") {
-			return true;
-		}
-
-		return false;
-	},
-	mark: { attrs: ['style'] },
-	tags: ['SEO'],
-	ressources: { 'pidila': ['Pi-412'], 'opquast': ['146'] }
-});
-
-tanaguruTestsList.push({
-	id: 'SEOTest4',
-	query: 'head > title',
-	expectedNbElements: 0,
-	filter: function(item){
-		// 80 caractères est un compromis compte tenu du nombre de caractères
-		// affichés par les résultats Google sur desktop et sur mobile.
-		if (item.textContent.length > 80){
-			return true;
-		}
-		return false;
-	},
-	tags: ['q5y', 'SEO'],
-	ressources: { 'pidila': ['Pi-412'], 'opquast': ['146'] }
-});
-
-/*************************************************
- ***** Opquast ***********************************
- *************************************************/
-
-tanaguruTestsList.push({
-	id: 'OpquastTest1',
-	query: 'frameset, frame, noframes',
-	expectedNbElements: 0,
-	mark: { attrs: ['title'] },
-	tags: ['q5y'],
-	ressources: { 'pidila': ['Pi-368'], 'opquast': ['146'] }
-});
-
-tanaguruTestsList.push({
-	id: 'OpquastTest2',
-	query: 'meta[name="viewport"][content]',
-	filter: function (item) {
-		return item.content.toLowerCase().includes('minimum-scale') 
-	},
-	expectedNbElements: 0,
-	mark: { attrs: ['content'] },
-	tags: ['q5y'],
-	ressources: { 'pidila': ['Pi-344'], 'opquast': ['139'] }
-});
-
-tanaguruTestsList.push({
-	id: 'OpquastTest3',
-	query: 'meta[name="viewport"][content]',
-	filter: function (item) {
-		return item.content.toLowerCase().includes('maximum-scale') 
-	},
-	expectedNbElements: 0,
-	mark: { attrs: ['content'] },
-	tags: ['q5y'],
-	ressources: { 'pidila': ['Pi-344'], 'opquast': ['139'] }
-});
-
-tanaguruTestsList.push({
-	id: 'OpquastTest4',
-	query: 'meta[name="viewport"][content]',
-	filter: function (item) {
-		return item.content.toLowerCase().includes('user-scalable') 
-	},
-	expectedNbElements: 0,
-	mark: { attrs: ['content'] },
-	tags: ['q5y'],
-	ressources: { 'pidila': ['Pi-344'], 'opquast': ['139'] }
-});
-
-/*************************************************
- ***** Pidila ************************************
- *************************************************/
-
-tanaguruTestsList.push({
-	id: 'PidilaTest1',
-	query: 'footer a',
-	filter: function (item) {
-		return item.textContent.toLowerCase().includes('mentions légales');
-	},
-	expectedNbElements: 1,
-	tags: ['q5y'],
-	ressources: { 'pidila': ['Pi-008', 'Pi-032'], 'opquast': ['26'] }
-});
-
-tanaguruTestsList.push({
-	id: 'PidilaTest2',
-	query: 'footer a',
-	filter: function (item) {
-		return item.textContent.toLowerCase().includes('accessibilité');
-	},
-	expectedNbElements: 1,
-	tags: ['q5y'],
-	ressources: { 'pidila': ['Pi-010', 'Pi-032'], 'opquast': ['26'] } 
-});
-
-tanaguruTestsList.push({
-	id: 'PidilaTest3',
-	query: 'footer a',
-	filter: function (item) {
-		return item.textContent.toLowerCase().includes('contact');
-	},
-	expectedNbElements: 1,
-	tags: ['q5y'],
-	ressources: { 'pidila': ['Pi-032'], 'opquast': ['26'] } 
-});
-
-tanaguruTestsList.push({
-	id: 'PidilaTest4',
-	query: 'footer a',
-	filter: function (item) {
-		return item.textContent.toLowerCase().includes('plan du site');
-	},
-	expectedNbElements: 1,
-	tags: ['q5y'],
-	ressources: { 'pidila': ['Pi-032'], 'opquast': ['26'] } 
-});
-
-tanaguruTestsList.push({
-	id: 'PidilaTest5',
-	query: 'footer a[href="https://www.legifrance.gouv.fr/"], footer a[href="http://www.legifrance.gouv.fr/"], footer a[href="www.legifrance.gouv.fr/"], footer a[href="legifrance.gouv.fr/"]',
-	expectedNbElements: 1,
-	tags: ['CIE'],
-	ressources: { 'pidila': ['Pi-147'] } 
-});
-
-tanaguruTestsList.push({
-	id: 'PidilaTest6',
-	query: 'footer a[href="https://www.service-public.fr/"], footer a[href="http://www.service-public.fr/"], footer a[href="www.service-public.fr/"], footer a[href="service-public.fr/"]',
-	expectedNbElements: 1,
-	tags: ['CIE'],
-	ressources: { 'pidila': ['Pi-147'] } 
-});
-
-tanaguruTestsList.push({
-	id: 'PidilaTest7',
-	query: 'footer a[href="https://www.gouvernement.fr/"], footer a[href="http://www.gouvernement.fr/"], footer a[href="www.gouvernement.fr/"], footer a[href="gouvernement.fr/"]',
-	expectedNbElements: 1,
-	tags: ['CIE'],
-	ressources: { 'pidila': ['Pi-147'] } 
-});
-
-tanaguruTestsList.push({
-	id: 'PidilaTest8',
-	query: 'footer a[href="https://www.france.fr/fr"], footer a[href="http://www.france.fr/fr"], footer a[href="www.france.fr/fr"], footer a[href="france.fr/fr"]',
-	expectedNbElements: 1,
-	tags: ['CIE'],
-	ressources: { 'pidila': ['Pi-147'] } 
-});
 
 /* ACT */
 
 // Accessible Names.
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Button has no accessible name.',
+	description: 'This rule checks that each button element has an accessible name.', 
+	query: 'button:not([role]), [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
+	expectedNbElements: 0,
+	filter: function (item) {
+		if (item.isNotExposedDueTo.length == 0 && !item.matches('input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title]), input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title])')) {
+			return !item.hasAccessibleName();
+		}
+		return false;
+	},
+	tags: ['a11y', 'buttons'],
+	ressources: { 'act': ['97a4e1'] }
+});
 
-// e086e5
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Button has accessible name.',
+	description: 'This rule checks that each button element has an accessible name.', 
+	query: 'button:not([role]), [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
+	filter: function (item) {
+		if (item.isNotExposedDueTo.length == 0) {
+			if (item.matches('input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title]), input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title])')) {
+				return true;
+			}
+			return item.hasAccessibleName();
+		}
+		return false;
+	},
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+	tags: ['a11y', 'buttons'],
+	ressources: { 'act': ['97a4e1'] }
+});
 
 tanaguruTestsList.push({
 	lang: 'en', 
@@ -1033,7 +51,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
 	}, 
-	tags: ['a11y', 'forms', 'accessiblename'], 
+	tags: ['a11y', 'forms'], 
 	ressources: { 'act': ['e086e5'] }
 });
 
@@ -1050,28 +68,31 @@ tanaguruTestsList.push({
 			collection[i].status = 'passed';
 		}
 	},
-	tags: ['a11y', 'forms', 'accessiblename'], 
+	tags: ['a11y', 'forms'], 
 	ressources: { 'act': ['e086e5'] }
 });
 
-// Other tests (to range)
-
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Button has accessible name.',
-	query: 'button:not([role]), [role="button"], input[type="reset"], input[type="submit"]',
+	name: 'Heading has no accessible name.', 
+	description: 'This rule checks that each heading has an accessible name.', 
+	query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"]',
 	expectedNbElements: 0,
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
-	}, 
-	tags: ['a11y', 'buttons', 'accessiblename'],
-	ressources: { 'act': ['97a4e1'] }
+	},
+	tags: ['a11y', 'headings'],
+	ressources: { 'act': ['ffd0e9'] }, 
+	comments: [
+		'Failed example 1: passed, not failed - https://act-rules.github.io/rules/ffd0e9#failed-example-1'
+	]
 });
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Button has accessible name.',
-	query: 'button:not([role]), [role="button"], input[type="reset"], input[type="submit"]',
+	name: 'Heading has accessible name.', 
+	description: 'This rule checks that each heading has an accessible name.', 
+	query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"]',
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
 	},
@@ -1080,146 +101,227 @@ tanaguruTestsList.push({
 			collection[i].status = 'passed';
 		}
 	},
-	tags: ['a11y', 'buttons', 'accessiblename'],
-	ressources: { 'act': ['97a4e1'] }
+	tags: ['a11y', 'headings'],
+	ressources: { 'act': ['ffd0e9'] }, 
+	comments: [
+		'Failed example 1: passed, not failed - https://act-rules.github.io/rules/ffd0e9#failed-example-1'
+	]
 });
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Image has accessible name.',
-	query: 'img:not([role]), [role="img"]',
+	name: 'iframe element has no accessible name.', 
+	description: 'This rule checks that each iframe element has an accessible name.', 
+	query: 'iframe',
+	expectedNbElements: 0,
+	filter: function (item) {
+		if (item.isNotExposedDueTo.length == 0) {
+			if (!item.matches('[role]')) {
+				return !item.hasAccessibleName();
+			}
+			else if (item.matches('[role="none"][tabindex="0"], [role="presentation"][tabindex="0"]')) {
+				var role = item.getAttribute('role');
+				item.removeAttribute('role');
+				var result = !item.hasAccessibleName();
+				item.setAttribute('role', role);
+				return result;
+			}
+		}
+		return false;
+	},
+	tags: ['a11y', 'frames'],
+	ressources: { 'act': ['cae760'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'iframe element has accessible name.', 
+	description: 'This rule checks that each iframe element has an accessible name.', 
+	query: 'iframe',
+	filter: function (item) {
+		if (item.isNotExposedDueTo.length == 0) {
+			if (!item.matches('[role]')) {
+				return item.hasAccessibleName();
+			}
+			else if (item.matches('[role="none"][tabindex="0"], [role="presentation"][tabindex="0"]')) {
+				var role = item.getAttribute('role');
+				item.removeAttribute('role');
+				var result = item.hasAccessibleName();
+				item.setAttribute('role', role);
+				return result;
+			}
+		}
+		return false;
+	},
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+	tags: ['a11y', 'frames'],
+	ressources: { 'act': ['cae760'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Image button has no accessible name.', 
+	description: 'This rule checks that each image button element has an accessible name.', 
+	query: 'input[type="image"]:not([role]), input[type="image"][role="button"]',
 	expectedNbElements: 0,
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
-	}, 
-	tags: ['a11y', 'images', 'accessiblename'],
+	},
+	tags: ['a11y', 'buttons', 'images'],
+	ressources: { 'act': ['59796f'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Image button has accessible name.', 
+	description: 'This rule checks that each image button element has an accessible name.', 
+	query: 'input[type="image"]:not([role]), input[type="image"][role="button"]',
+	filter: function (item) {
+		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+	},
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+	tags: ['a11y', 'buttons', 'images'],
+	ressources: { 'act': ['59796f'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Image has no accessible name.', 
+	description: 'This rule checks that each image either has an accessible name or is marked up as decorative.', 
+	query: 'img:not([role]), img[role="none"][tabindex], img[role="presentation"][tabindex], [role="img"]',
+	expectedNbElements: 0,
+	filter: function (item) {
+		if (item.isNotExposedDueTo.length == 0) {
+			if (item.matches('img[role="none"][tabindex], img[role="presentation"][tabindex]')) {
+				var tabindex = item.getAttribute('tabindex');
+				if (tabindex != '-1' && tabindex.match(/^(0|[1-9]?[0-9]*)$/)) {
+					var role = item.getAttribute('role');
+					item.removeAttribute('role');
+					var result = !item.hasAccessibleName();
+					item.setAttribute('role', role);
+					return result;
+				}
+			}
+			else if (item.matches('img:not([alt])') || (item.matches('img[alt]') && item.getAttribute('alt').length > 0) || !item.matches('img')) {
+				return !item.hasAccessibleName();
+			}
+		}
+		return false;
+	},
+	tags: ['a11y', 'images'],
 	ressources: { 'act': ['23a2a8'] }
 });
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Link has accessible name.',
-	query: 'a:not([role]), [role="link"], area:not([role])',
-	expectedNbElements: 0,
+	name: 'Image has accessible name.', 
+	description: 'This rule checks that each image either has an accessible name or is marked up as decorative.', 
+	query: 'img:not([role]), img[role="none"]:not([tabindex]), img[role="presentation"]:not([tabindex]), [role="img"]',
 	filter: function (item) {
-		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
-	},
-	tags: ['a11y', 'links', 'accessiblename'],
-	ressources: { 'act': ['c487ae'] }
-});
-
-tanaguruTestsList.push({
-	lang: 'en',
-	name: 'Link has accessible name.',
-	query: 'a:not([role]), [role="link"], area:not([role])',
-	filter: function (item) {
-		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+		if (item.isNotExposedDueTo.length == 0) {
+			if (item.matches('[role="none"], [role="presentation"]') || item.matches('img[alt=""]')) {
+				return true;
+			}
+			else {
+				return item.hasAccessibleName();
+			}
+		}
+		return false;
 	},
 	analyzeElements: function (collection) {
 		for (var i = 0; i < collection.length; i++) {
 			collection[i].status = 'passed';
 		}
 	},
-	tags: ['a11y', 'links', 'accessiblename'],
-	ressources: { 'act': ['c487ae'] }
+	tags: ['a11y', 'images'],
+	ressources: { 'act': ['23a2a8'] }
 });
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Heading has accessible name',
-	query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"][aria-level="1"], [role="heading"][aria-level="2"], [role="heading"][aria-level="3"], [role="heading"][aria-level="4"], [role="heading"][aria-level="5"], [role="heading"][aria-level="6"]',
+	name: "svg element with explicit role doesn't have accessible name.", 
+	description: 'This rule checks that each SVG image element that is explicitly included in the accessibility tree has a non-empty accessible name.', 
+	query: 'svg[role="img"]',
+	filter: function (item) {
+		if (item.isNotExposedDueTo.length == 0) {
+			return item.hasAccessibleName();
+		}
+		return false;
+	},
+	tags: ['a11y', 'svg'],
+	ressources: { 'act': ['7d6734'] }, 
+	comments: 'Partially Implemented. See https://www.w3.org/TR/svg-aam-1.0/.'
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Link has no accessible name.', 
+	description: 'This rule checks that each link has an accessible name.', 
+	query: 'a[href]:not([role]), a[href][role="none"]:not([tabindex="-1"]), a[href][role="presentation"]:not([tabindex="-1"]), [role="link"], map[name]:not([role]) > area[href]:not([role])',
 	expectedNbElements: 0,
 	filter: function (item) {
-		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+		if (item.isNotExposedDueTo.length == 0) {
+			if (item.matches(':not([role]), [role="link"]')) {
+				return !item.hasAccessibleName();
+			}
+			else if (item.matches('[role="none"], [role="presentation"]')) {
+				if (!item.hasAttribute('tabindex') || item.getAttribute('tabindex').match(/^(0|[1-9]?[0-9]*)$/)) {
+					var role = item.getAttribute('role');
+					item.removeAttribute('role');
+					var result = !item.hasAccessibleName();
+					item.setAttribute('role', role);
+					return result;
+				}
+			}
+		}
+		return false;
 	}, 
-	tags: ['a11y', 'headings', 'accessiblename'],
-	ressources: {'act': ['23a2a8'] }
+	tags: ['a11y', 'links'], 
+	ressources: { 'act': ['c487ae'] }
 });
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Heading has accessible name',
-	query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"][aria-level="1"], [role="heading"][aria-level="2"], [role="heading"][aria-level="3"], [role="heading"][aria-level="4"], [role="heading"][aria-level="5"], [role="heading"][aria-level="6"]',
+	name: 'Link has accessible name.', 
+	description: 'This rule checks that each link has an accessible name.', 
+	query: 'a[href]:not([role]), a[href][role="none"]:not([tabindex="-1"]), a[href][role="presentation"]:not([tabindex="-1"]), [role="link"], map[name]:not([role]) > area[href]:not([role])',
 	filter: function (item) {
-		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+		if (item.isNotExposedDueTo.length == 0) {
+			if (item.matches(':not([role]), [role="link"]')) {
+				return item.hasAccessibleName();
+			}
+			else if (item.matches('[role="none"], [role="presentation"]')) {
+				if (!item.hasAttribute('tabindex') || item.getAttribute('tabindex').match(/^(0|[1-9]?[0-9]*)$/)) {
+					var role = item.getAttribute('role');
+					item.removeAttribute('role');
+					var result = item.hasAccessibleName();
+					item.setAttribute('role', role);
+					return result;
+				}
+			}
+		}
+		return false;
 	},
 	analyzeElements: function (collection) {
 		for (var i = 0; i < collection.length; i++) {
 			collection[i].status = 'passed';
 		}
 	},
-	tags: ['a11y', 'headings', 'accessiblename'],
-	ressources: {'act': ['23a2a8'] }
+	tags: ['a11y', 'links'], 
+	ressources: { 'act': ['c487ae'] }
 });
 
-tanaguruTestsList.push({
-	lang: 'en',
-	name: 'Form control has accessible name',
-	query: 'select:not([role]), input:not([role]), textarea:not([role])',
-	expectedNbElements: 0,
-	filter: function (item) {
-		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
-	},
-	tags: ['a11y', 'forms', 'accessiblename'],
-	ressources: {'act': ['e086e5'] }
-});
+// TO ADD : 4b1c6c - iframe elements with identical accessible names have equivalent purpose.
 
-tanaguruTestsList.push({
-	lang: 'en',
-	name: 'Iframe has accessible name',
-	query: 'iframe:not([role])',
-	expectedNbElements: 0,
-	filter: function (item) {
-		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
-	},
-	tags: ['a11y', 'frames', 'accessiblename'],
-	ressources: {'act': ['cae760'] }
-});
-
-tanaguruTestsList.push({
-	lang: 'en',
-	name: 'Image button has accessible name',
-	query: 'input[type="image"]:not([role])',
-	expectedNbElements: 0,
-	filter: function (item) {
-		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
-	},
-	tags: ['a11y', 'buttons','images', 'accessiblename'],
-	ressources: {'act': ['59796f'] }
-});
-
-tanaguruTestsList.push({
-	lang: 'en',
-	name: 'Image button has accessible name',
-	query: 'input[type="image"]:not([role])',
-	filter: function (item) {
-		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
-	},
-	analyzeElements: function (collection) {
-		for (var i = 0; i < collection.length; i++) {
-			collection[i].status = 'passed';
-		}
-	},
-	tags: ['a11y', 'buttons','images', 'accessiblename'],
-	ressources: {'act': ['59796f'] }
-});
-
-//partial implementaiton: circle tag
-tanaguruTestsList.push({
-	lang: 'en',
-	name: 'svg element with explicit role has accessible name',
-	query: 'svg[role="img"], svg[role="graphic-document"]',
-	expectedNbElements: 0,
-	filter: function (item) {
-		console.log(item);
-		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
-	},
-	tags: ['a11y', 'Images','Svg'],
-	ressources: {'act': ['7d6734'] }
-});
-
-// Id Attributes.
-
+// Code.
 tanaguruTestsList.push({
 	lang: 'en',
 	name: 'id attribute value is unique.',
@@ -1245,5 +347,647 @@ tanaguruTestsList.push({
 			}
 		}
 	},
-	ressources: { 'act' : ['3ea0c8'] }
+	ressources: { 'act' : ['3ea0c8'] }, 
+	tags: ['code']
+});
+
+// TO ADD : ARIA.
+
+// Languages.
+tanaguruTestsList.push({
+	lang: 'en', 
+	name: 'Element within body has an invalid lang attribute.', 
+	description: 'This rule checks that a non-empty lang attribute of an element in the page body has a language tag with a known primary language subtag.', 
+	query: 'body [lang]',  
+	expectedNbElements: 0, 
+	filter: function (item) {
+		var lang = item.getAttribute('lang');
+		if (lang != '') {
+			return lang.trim().length == 0 ? true : !this.hasValidLanguageCode();
+		}
+		else {
+			return false;
+		}
+	}, 
+	ressources: { 'act': ['de46e4'] }, 
+	tags: ['languages']
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Element within body has a valid lang attribute.',
+	description: 'This rule checks that a non-empty lang attribute of an element in the page body has a language tag with a known primary language subtag.',
+	query: 'body [lang]', 
+	filter: function (item) {
+		var lang = item.getAttribute('lang');
+		if (lang != '') {
+			return lang.trim().length > 0 ? this.hasValidLanguageCode() : false;
+		}
+		else {
+			return false;
+		}
+	}, 
+	ressources: { 'act': ['de46e4'] }, 
+	tags: ['languages']
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: "HTML page doesn't have a lang attribute.",
+	description: 'This rule checks that an HTML page has a non-empty lang attribute.',
+	expectedNbElements: 0, 
+	query: 'html:not([lang])', 
+	ressources: { 'act': ['b5c3f8'] }, 
+	tags: ['languages']
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'HTML page has an empty lang attribute.',
+	description: 'This rule checks that an HTML page has a non-empty lang attribute.',
+	query: 'html[lang]', 
+	expectedNbElements: 0, 
+	filter: function (item) {
+		return item.getAttribute('lang').trim().length == 0;
+	},
+	ressources: { 'act': ['b5c3f8'] }, 
+	tags: ['languages']
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'HTML page has a lang attribute.',
+	description: 'This rule checks that an HTML page has a non-empty lang attribute.',
+	query: 'html[lang]', 
+	filter: function (item) {
+		return item.getAttribute('lang').trim().length > 0;
+	},
+	ressources: { 'act': ['b5c3f8'] }, 
+	tags: ['languages']
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: "HTML page lang and xml:lang attributes don't have matching values.",
+	description: 'This rule checks that both lang and xml:lang attributes on the root element of a non-embedded HTML page, have the same primary language subtag.',
+	query: 'html[lang][xml:lang]', 
+	expectedNbElements: 0, 
+	filter: function (item) {
+		return !item.hasValidLanguageCode || (item.getAttribute('xml:lang').trim().length > 0 && item.getAttribute('lang') != item.getAttribute('xml:lang'));
+	}, 
+	ressources: { 'act': ['5b7ae0'] }, 
+	tags: ['languages']
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'HTML page lang and xml:lang attributes have matching values.',
+	description: 'This rule checks that both lang and xml:lang attributes on the root element of a non-embedded HTML page, have the same primary language subtag.',
+	query: 'html[lang][xml:lang]', 
+	filter: function (item) {
+		return item.hasValidLanguageCode && item.getAttribute('lang') == this.getAttribute('xml:lang');
+	}, 
+	analyzeElements: function (collection) {
+		if (collection.length == 1) {
+			collection[0].status = 'passed';
+		}
+	}, 
+	ressources: { 'act': ['5b7ae0'] }, 
+	tags: ['languages']
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'HTML page language is invalid.',
+	description: 'This rule checks that the lang attribute of the root element of a non-embedded HTML page has a language tag with a known primary language subtag.',
+	query: 'html[lang]', 
+	expectedNbElements: 0, 
+	filter: function (item) {
+		return item.getAttribute('lang').trim().length > 0 && !item.hasValidLanguageCode();
+	}, 
+	ressources: { 'act': ['bf051a'] }, 
+	tags: ['languages']
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'HTML page language is valid.',
+	description: 'This rule checks that the lang attribute of the root element of a non-embedded HTML page has a language tag with a known primary language subtag.',
+	query: 'html[lang]', 
+	filter: function (item) {
+		return item.getAttribute('lang').trim().length > 0 && item.hasValidLanguageCode();
+	}, 
+	ressources: { 'act': ['bf051a'] }, 
+	tags: ['languages']
+});
+
+// Document Title.
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'HTML page has an empty title.',
+	description: 'This rule checks that a non-embedded HTML page has a title.',
+	query: '*:not(svg) title', 
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'untested';
+		}
+		if (document.title == '') {
+			collection[0].status = 'failed';
+		}
+	}, 
+	ressources: { 'act': ['2779a5'] }, 
+	tags: ['pageTitle']
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'HTML page has a title.',
+	description: 'This rule checks that a non-embedded HTML page has a title.',
+	query: '*:not(svg) title', 
+	expectedNbElements: { min: 1 },
+	ressources: { 'act': ['2779a5'] }, 
+	tags: ['pageTitle']
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'HTML page title is not descriptive.',
+	description: 'This rule checks that the first title in an HTML page describes the topic or purpose of that page.',
+	status: 'untested', 
+	ressources: { 'act': ['c4a8a4'] }, 
+	tags: ['pageTitle']
+});
+
+// Meta.
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'meta element has no refresh delay.',
+	description: 'This rule checks that the meta element is not used for delayed redirecting or refreshing.',
+	query: 'meta[http-equiv="refresh"][content]',
+	filter: function (item) {
+		var content = item.getAttribute('content').trim();
+		if (content.length > 0) {
+			return /^(\s*\d+\s*){1}(;|;(url=)?(.)+)?$/i.test(content);
+		}
+		else {
+			return false;
+		}
+	},
+	analyzeElements: function (collection) {
+		var alreadyTested = false;
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'untested';
+			if (!alreadyTested) {
+				var content = collection[i].getAttribute('content').trim();
+				if (content.indexOf(';') > -1) {
+					content = content.split(/;(.+)/);
+					content = content[0];
+				}
+				content = parseInt(content.trim());
+				collection[i].status = content == 0 || content >= 72000 ? 'passed' : 'failed';
+				alreadyTested = true;
+			}
+		}
+	},
+	ressources: { 'act': ['bc659a'] }, 
+	tags: ['meta']
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'meta viewport does not prevent zoom.',
+	description: 'This rule checks that the meta element retains the user agent ability to zoom.',
+	query: 'meta[name="viewport"][content]', 
+	filter: function (item) {
+		var content = item.getAttribute('content').trim();
+		if (content.length > 0) {
+			return /^\s*[^,=]+\s*=\s*[^,=]+\s*(,\s*[^,=]+\s*=\s*[^,=]+\s*)*$/i.test(content);
+		}
+		else {
+			return false;
+		}
+	}, 
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+			var content = collection[i].getAttribute('content').trim();
+			content = content.indexOf(',') > -1 ? content.split(',') : content = [content];
+			for (var j = 0; j < content.length; j++) {
+				var property = content[j].split('=');
+				var propertyName = property[0].trim().toLowerCase();
+				var propertyValue = property[1].trim().toLowerCase();
+				if (propertyName == 'user-scalable') {
+					collection[i].status = propertyValue == 'no' ? 'failed' : 'passed';
+				}
+				else if (propertyName == 'maximum-scale' && /^\d+(\.\d+)?$/.test(propertyValue)) { // TODO : cas 1. / +1. / .1 / +.1
+					propertyValue = parseFloat(propertyValue);
+					collection[i].status = propertyValue < 2 ? 'failed' : 'passed';
+				}
+			}
+		}
+	}, 
+	ressources: { 'act': ['b4f0c3'] }, 
+	tags: ['meta']
+});
+
+// Orientation.
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Orientation of the page is not restricted using CSS transform property.',
+	description: 'This rule checks that page content is not restricted to either landscape or portrait orientation using CSS transform property.',
+	status: 'untested', 
+	ressources: { 'act': ['b33eff'] }, 
+	comments: "Computed styles are not useful/relevant for this test + need to 'identify' some 'root' elements. Require a special UI & a new method of execution ?"
+});
+
+// Focus.
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Element with aria-hidden has no focusable content.',
+	description: 'This rule checks that elements with an aria-hidden attribute do not contain focusable elements.', 
+	query: '[aria-hidden="true"]', 
+	expectedNbElements: 0, 
+	filter: function (item) {
+		var visibleState = item.isNotVisibleDueTo;
+		if (visibleState.length == 0 || (visibleState.indexOf('css:display') == -1 && visibleState.indexOf('css:visibility') == -1)) {
+			/* TODO : (probably) manage positive tabindex. */
+			var focusables = item.querySelectorAll(HTML.getFocusableElementsSelector());
+			return focusables.length > 0;
+		}
+		else {
+			return false;
+		}
+	}, 
+	ressources: { 'act': ['6cfa84'] }, 
+	tags: ['keyboard']
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Focusable element has no keyboard trap.',
+	description: 'This rule checks for keyboard traps. This includes use of both standard and non-standard keyboard navigation to navigate through all content without becoming trapped.',
+	status: 'untested', 
+	ressources: { 'act': ['80af7b'] }, 
+	tags: ['keyboard'], 
+	comments: "Can detect onblur attribute (maybe event too) but is not really a proof that is a keyboard trap..."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Focusable element has no keyboard trap via non-standard navigation.',
+	description: 'This rule checks if it is possible to use non-standard keyboard navigation to navigate through content where focus is trapped when using standard ways of keyboard navigation.',
+	status: 'untested', 
+	ressources: { 'act': ['ebe86a'] }, 
+	tags: ['keyboard'], 
+	comments: "Can detect onblur/onkeydown attribute (maybe event too) but is not really a proof that is a keyboard trap..."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Focusable element has no keyboard trap via standard navigation.',
+	description: 'This rule checks if it is possible to use standard keyboard navigation to navigate through all content on a web page without becoming trapped in any element.',
+	status: 'untested', 
+	ressources: { 'act': ['a1b64e'] }, 
+	tags: ['keyboard'], 
+	comments: "Can detect onblur attribute (maybe event too) but is not really a proof that is a keyboard trap..."
+});
+
+// Contrasts.
+tanaguruTestsList.push({
+	ui: 'contrast', 
+	lang: 'en',
+	name: 'Text has minimum contrast.',
+	description: 'This rule checks that the highest possible contrast of every text character with its background meets the minimal contrast requirement.',
+	status: 'untested', 
+	ressources: { 'act': ['afw4f7'] }, 
+	tags: ['contrast'], 
+	comments: "Require a special UI & a new method of execution."
+});
+
+// Links.
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Link in context is descriptive.',
+	description: 'This rule checks that the accessible name of a link together with its context describe its purpose.',
+	query: 'a[href], [role="link"]', 
+	filter: function (item) {
+		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+	}, 
+	ressources: { 'act': ['5effbb'] }, 
+	tags: ['links'], 
+	comments: "Partially Implemented."
+});
+
+// Tables.
+tanaguruTestsList.push({
+	lang: 'en',
+	name: "Headers attribute specified on a cell doesn't refer to cells in the same table element.",
+	description: 'This rule checks that the headers attribute on a cell refer to other cells in the same table element.',
+	query: 'table td[headers]', 
+	expectedNbElements: 0, 
+	filter: function (item) {
+		var headers = item.getAttribute('headers');
+		if (/^.+(\s.+)*$/.test(headers)) {
+			headers = headers.split(' ');
+			if (headers.length > 1) {
+				var result = false;
+				for (var i = 0; i < headers.length; i++) {
+					var th = document.querySelector('th[id="' + headers[i] + '"]');
+					result = th ? !(th.closest('table') == item.closest('table')) : true;
+					if (result) {
+						break;
+					}
+				}
+				return result;
+			}
+			else {
+				var th = document.querySelector('th[id="' + headers + '"]');
+				return th ? !(th.closest('table') == item.closest('table')) : true;
+			}
+		}
+		else {
+			return true;
+		}
+	}, 
+	ressources: { 'act': ['a25f45'] }, 
+	tags: ['tables']
+});
+
+// Tables.
+tanaguruTestsList.push({
+	lang: 'en',
+	name: "Headers attribute specified on a cell refers to cells in the same table element.",
+	description: 'This rule checks that the headers attribute on a cell refer to other cells in the same table element.',
+	query: 'table td[headers]', 
+	filter: function (item) {
+		var headers = item.getAttribute('headers');
+		if (/^.+(\s.+)*$/.test(headers)) {
+			headers = headers.split(' ');
+			if (headers.length > 1) {
+				var result = true;
+				for (var i = 0; i < headers.length; i++) {
+					var th = document.querySelector('th[id="' + headers[i] + '"]');
+					result = th ? th.closest('table') == item.closest('table') : false;
+					if (!result) {
+						break;
+					}
+				}
+				return result;
+			}
+			else {
+				var th = document.querySelector('th[id="' + headers + '"]');
+				return th ? th.closest('table') == item.closest('table') : false;
+			}
+		}
+		else {
+			return false;
+		}
+	}, 
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	}, 
+	ressources: { 'act': ['a25f45'] }, 
+	tags: ['tables']
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'All table header cells have assigned data cells.',
+	description: 'This rule checks that each table header has assigned data cells in a table element.',
+	query: 'th, [role="columnheader"]', 
+	filter: function (item) {
+		// TODO : All table header cells have assigned data cells (https://act-rules.github.io/rules/d0f69e)
+		// count columns (row by row) or cell with headers (probably headers > cell)
+	},
+	ressources: { 'act': [] }, 
+	tags: ['tables']
+});
+
+// Headings.
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Heading is descriptive.',
+	description: 'This rule checks that headings describe the topic or purpose of the content.',
+	query: 'h1, h2, h3, h4, h5, h6, [role="heading"]', 
+	filter: function (item) {
+		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+	},
+	ressources: { 'act': ['b49b2e'] }, 
+	tags: ['headings'], 
+	comments: "Partially Implemented."
+});
+
+// Audio & Videos.
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'audio element content has text alternative.',
+	description: 'This rule checks if audio only elements have a text alternative available.',
+	query: 'audio', 
+	ressources: { 'act': ['e7aa44'] }, 
+	tags: ['audio'], 
+	comments: "Can't be detected."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'audio element content has transcript.',
+	description: 'Non-streaming audio elements must have a text alternative for all included auditory information.',
+	status: 'untested', 
+	ressources: { 'act': ['2eb176'] }, 
+	tags: ['audio'], 
+	comments: "Can't be detected."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'audio element content is media alternative for text.',
+	description: 'This rule checks audio is a media alternative for text on the page.',
+	status: 'untested', 
+	ressources: { 'act': ['afb423'] }, 
+	tags: ['audio'], 
+	comments: "Can't be detected."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'video element auditory content has accessible alternative.',
+	description: 'This rule checks that video elements have an alternative for information conveyed through audio.',
+	query: 'video', 
+	ressources: { 'act': ['eac66b'] }, 
+	tags: ['videos'], 
+	comments: "Can't be detected."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'video element content is media alternative for text.',
+	description: 'This rule checks non-streaming video is a media alternative for text on the page.',
+	status: 'untested', 
+	ressources: { 'act': ['ab4d13'] }, 
+	tags: ['videos'], 
+	comments: "Can't be detected."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'video element visual content has accessible alternative.',
+	description: 'This rule checks that video elements with audio have an alternative for the video content as audio or as text.',
+	query: 'video', 
+	ressources: { 'act': ['c5a4ea'] }, 
+	tags: ['videos'], 
+	comments: "Can't be detected."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'video element visual content has audio description.',
+	description: 'This rule checks that non-streaming video elements have all visual information also contained in the audio.',
+	status: 'untested', 
+	ressources: { 'act': ['1ea59c'] }, 
+	tags: ['videos'], 
+	comments: "Can't be detected."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'video element visual content has strict accessible alternative.',
+	description: 'This rule checks that video elements with audio have audio description.',
+	status: 'untested', 
+	ressources: { 'act': ['1ec09b'] }, 
+	tags: ['videos'], 
+	comments: "Can't be detected."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'video element visual content has transcript.',
+	description: 'This rule checks that non-streaming video elements have all audio and visual information available in a transcript.',
+	status: 'untested', 
+	ressources: { 'act': ['1a02b0'] }, 
+	tags: ['videos'], 
+	comments: "Can't be detected."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'video element visual-only content has accessible alternative.',
+	description: 'This rule checks that video elements without audio have an alternative available.',
+	query: 'video', 
+	ressources: { 'act': ['c3232f'] }, 
+	tags: ['videos'], 
+	comments: "Can't be detected."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'video element visual-only content has audio track alternative.',
+	description: 'Non-streaming video elements without audio must have an audio alternative.',
+	status: 'untested', 
+	ressources: { 'act': ['d7ba54'] }, 
+	tags: ['videos'], 
+	comments: "Can't be detected."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'video element visual-only content has transcript.',
+	description: 'Non-streaming video elements without audio must have all visual information available in a transcript.',
+	status: 'untested', 
+	ressources: { 'act': ['ee13b5'] }, 
+	tags: ['videos'], 
+	comments: "Can't be detected."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'video element visual-only content is media alternative for text.',
+	description: 'This rule checks non-streaming silent video is a media alternative for text on the page.',
+	status: 'untested', 
+	ressources: { 'act': ['fd26cf'] }, 
+	tags: ['videos'], 
+	comments: "Can't be detected."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'audio or video without controls has audio that plays automatically.',
+	description: 'This rule checks that audio or video that plays automatically does not have audio that lasts for more than 3 seconds or has an audio control mechanism to stop or mute it.',
+	query: 'audio[autoplay]:not([controls]), video[autoplay]:not([controls])', 
+	ressources: { 'act': ['80f0bf'] }, 
+	tags: ['audio, videos'], 
+	comments: "Partially Implemented."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'audio or video with controls has audio that plays automatically.',
+	description: 'This rule checks that audio or video that plays automatically does not have audio that lasts for more than 3 seconds or has an audio control mechanism to stop or mute it.',
+	query: 'audio[autoplay][controls], video[autoplay][controls]', 
+	ressources: { 'act': ['80f0bf', '4c31df'] }, 
+	tags: ['audio', 'videos'], 
+	comments: "Partially Implemented for both tests."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'audio or video that plays automatically does not exceed 3 seconds.',
+	description: 'audio or video that plays automatically does not output audio for more than 3 seconds.',
+	status: 'untested', 
+	ressources: { 'act': ['aaa1bf'] }, 
+	tags: ['audio', 'videos'], 
+	comments: "Can't be detected (to investigate - i.e. passed example 2 + duration time)."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: "video element auditory content doesn't have captions.",
+	description: 'This rule checks that captions are available for audio information in non-streaming video elements.',
+	query: 'video', 
+	filter: function (item) {
+		return item.querySelectorAll('track[kind="captions"]').length == 0;
+	}, 
+	ressources: { 'act': ['f51b46'] }, 
+	tags: ['videos'], 
+	comments: "Partially Implemented (dynamical tracktext not supported here)."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'video element auditory content has captions.',
+	description: 'This rule checks that captions are available for audio information in non-streaming video elements.',
+	query: 'video', 
+	filter: function (item) {
+		return item.querySelectorAll('track[kind="captions"]').length > 0;
+	}, 
+	ressources: { 'act': ['f51b46'] }, 
+	tags: ['videos'], 
+	comments: "Partially Implemented (dynamical tracktext not supported here). This test is somewhat silly (need to check that the video element has controls)."
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: "video element visual(-only) content doesn't have description track.",
+	description: 'This rule checks that description tracks that come with non-streaming video elements (without audio or not) are descriptive.',
+	query: 'video', 
+	filter: function (item) {
+		return item.querySelectorAll('track[kind="descriptions"]').length == 0;
+	}, 
+	ressources: { 'act': ['f196ce', 'ac7dc6'] }, 
+	tags: ['videos'], 
+	comments: "Partially Implemented. Hum, Accessibility Supported?"
+});
+
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'video element visual(-only) content has description track.',
+	description: 'This rule checks that description tracks that come with non-streaming video elements (without audio or not) are descriptive.',
+	query: 'video', 
+	filter: function (item) {
+		return item.querySelectorAll('track[kind="descriptions"]').length > 0;
+	}, 
+	ressources: { 'act': ['f196ce', 'ac7dc6'] }, 
+	tags: ['videos'], 
+	comments: "Partially Implemented. Hum, Accessibility Supported?"
 });
