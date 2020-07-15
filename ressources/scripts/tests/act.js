@@ -416,7 +416,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'HTML page has a lang attribute.',
+	name: 'HTML page has a non-empty lang attribute.',
 	description: 'This rule checks that an HTML page has a non-empty lang attribute.',
 	query: 'html[lang]', 
 	filter: function (item) {
