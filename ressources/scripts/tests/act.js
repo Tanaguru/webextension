@@ -197,7 +197,6 @@ tanaguruTestsList.push({
 	query: 'svg[role="img"], svg[role="graphic-document"]',
 	expectedNbElements: 0,
 	filter: function (item) {
-		console.log(item);
 		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
 	},
 	tags: ['a11y', 'images','svg'],
@@ -344,7 +343,6 @@ tanaguruTestsList.push({
 	name: 'lang and xml:lang attributes have the same primary language subtag',
 	query: 'html[lang][xml\\:lang]',
 	filter: function(item) {
-		console.log(item);
 		var langAttr = item.getAttribute('lang');
 		var xmlLangAttr = item.getAttribute('xml:lang');
 		if ((langAttr.substring(0, 2)) == (xmlLangAttr.substring(0, 2))){
@@ -352,7 +350,6 @@ tanaguruTestsList.push({
 		}
 	},
 	analyzeElements: function (collection) {
-		console.log(collection);
 		for (var i = 0; i < collection.length; i++) {
 		collection[i].status = 'passed';
 		}
@@ -394,7 +391,6 @@ tanaguruTestsList.push({
 		}
 	},
 	analyzeElements: function (collection) {
-		console.log(collection);
 		for (var i = 0; i < collection.length; i++) {
 		collection[i].status = 'passed';
 		}
@@ -404,3 +400,100 @@ tanaguruTestsList.push({
 	ressources: { 'act': ['bf051a'], 'WCAG': ['3.1.1']}
 });
 
+// ff89c9 - ARIA required context role
+
+// d0f69e - All table header cells have assigned data cells
+
+// bc4a75 - ARIA required owned elements
+
+// 6a7281 - ARIA state or property has valid value
+
+// 5c01ea - ARIA state or property is permitted
+
+// 5f99a7 - aria-* attribute is defined in WAI-ARIA
+
+// e6952f - Attribute is not duplicated
+
+// e7aa44 - audio element content has text alternative
+
+// 2eb176 - audio element content has transcript
+
+// afb423 - audio element content is media alternative for text
+
+// 80f0bf - audio or video avoids automatically playing audio
+
+// 4c31df - audio or video that plays automatically has a control mechanism
+
+// aaa1bf - Audio or video that plays automatically has no audio that lasts more than 3 seconds
+
+// 73f2c2 - autocomplete attribute has valid value
+
+// 6cfa84 - Element with aria-hidden has no focusable content
+
+// 4e8ab6 - Element with role attribute has required states and properties
+
+// 36b590 - Error message describes invalid form field value
+
+// 80af7b - Focusable element has no keyboard trap
+
+// ebe86a - Focusable element has no keyboard trap via non-standard navigation
+
+// a1b64e - Focusable element has no keyboard trap via standard navigation
+
+// cc0f0a - Form control label is descriptive
+
+// a25f45 - Headers attribute specified on a cell refers to cells in the same table element
+
+// b49b2e - Heading is descriptive
+
+// c4a8a4 - HTML page title is descriptive
+
+// e88epe - Image not in the accessibility tree is decorative
+
+// 5effbb - Link in context is descriptive
+
+// fd3a94 - Links with identical accessible names and context serve equivalent purpose
+
+// b20e66 - Links with identical accessible names have equivalent purpose
+
+// bc659a - meta element has no refresh delay
+
+// b4f0c3 - meta viewport does not prevent zoom
+
+// b33eff - Orientation of the page is not restricted using CSS transform property
+
+// 674b10 - role attribute has valid value
+
+// 0ssw9k - Scrollable element is keyboard accessible
+
+// efbfc7 - Text content that changes automatically can be paused, stopped or hidden
+
+// afw4f7 - Text has minimum contrast
+
+// eac66b - video element auditory content has accessible alternative
+
+// f51b46 - video element auditory content has captions
+
+// ab4d13 - video element content is media alternative for text
+
+// c5a4ea - video element visual content has accessible alternative
+
+// 1ea59c - video element visual content has audio description
+
+// f196ce - video element visual content has description track
+
+// 1ec09b - video element visual content has strict accessible alternative
+
+// 1a02b0 - video element visual content has transcript
+
+// c3232f - video element visual-only content has accessible alternative
+
+// d7ba54 - video element visual-only content has audio track alternative
+
+// ee13b5 - video element visual-only content has transcript
+
+// fd26cf - video element visual-only content is media alternative for text
+
+// 2ee8b8 - Visible label is part of accessible name
+
+// 59br37 - Zoomed text node is not clipped with CSS overflow
