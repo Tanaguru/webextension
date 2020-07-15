@@ -44,6 +44,7 @@
 	"tagButtons": { "message": "Boutons" },
 	"tagCIE" : { "message": "Charte internet de l'État" }, 
 	"tagCode": { "message": "Code (règles d'écriture)" }, 
+	"tagContrast": { "message": "Contrastes" }, 
 	"tagDeprecated": { "message" : "Obsolètes" },
 	"tagEcoconception": { "message": "Éco-conception" },
 	"tagForms": { "message": "Formulaires" },
