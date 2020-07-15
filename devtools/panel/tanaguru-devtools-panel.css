@@ -481,7 +481,11 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 	content: "\f105";
 	position: absolute;
 	-webkit-transition: color .3s ease-in-out;
-	transition: color .3s ease-in-out
+	transition: color .3s ease-in-out;
+}
+
+[role="tabpanel"] h3 button[aria-expanded="true"]::before {
+	background-color: #4B4C4B;
 }
 
 [role="tabpanel"] h3 button * {
@@ -509,7 +513,7 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 	padding-right: 1em;
 	text-align: center;
 }
-		
+
 [role="tabpanel"] h3.failed button::after {
 	color: #d90b0b;
 }
