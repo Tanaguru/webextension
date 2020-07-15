@@ -916,7 +916,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that audio or video that plays automatically does not have audio that lasts for more than 3 seconds or has an audio control mechanism to stop or mute it.',
 	query: 'audio[autoplay]:not([controls]), video[autoplay]:not([controls])', 
 	ressources: { 'act': ['80f0bf'] }, 
-	tags: ['audio, videos'], 
+	tags: ['audio', 'videos'], 
 	comments: "Partially Implemented."
 });
 
