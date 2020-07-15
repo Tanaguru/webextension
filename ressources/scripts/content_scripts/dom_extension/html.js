@@ -92,7 +92,7 @@ var htmlData = {
         'figcaption': { id: 'the-figcaption-element', category: 'grouping content', implicitAriaRole: 'caption', DOMInterface: 'HTMLElement' }, 
         'main': { id: 'the-main-element', category: 'grouping content', implicitAriaRole: 'main', DOMInterface: 'HTMLElement' }, 
         'div': { id: 'the-div-element', category: 'grouping content', implicitAriaRole: 'generic', DOMInterface: 'HTMLDivElement' }, 
-        'a': { id: 'the-a-element', category: 'text-level semantics', focusable: '[href]', implicitAriaRole: { '[href]': 'link' }, DOMInterface: 'HTMLAnchorElement' }, 
+        'a': { id: 'the-a-element', category: 'text-level semantics', focusable: 'a[href]', implicitAriaRole: { '[href]': 'link' }, DOMInterface: 'HTMLAnchorElement' }, 
         'em': { id: 'the-em-element', category: 'text-level semantics', implicitAriaRole: 'emphasis', DOMInterface: 'HTMLElement' }, 
         'strong': { id: 'the-strong-element', category: 'text-level semantics', implicitAriaRole: 'strong', DOMInterface: 'HTMLElement' }, 
         'small': { id: 'the-small-element', category: 'text-level semantics', DOMInterface: 'HTMLElement' }, 
@@ -136,7 +136,7 @@ var htmlData = {
         'audio': { id: 'the-audio-element', category: 'embedded content', focusable: true, DOMInterface: 'HTMLAudioElement' }, 
         'track': { id: 'the-track-element', category: 'embedded content', DOMInterface: 'HTMLTrackElement' }, 
         'map': { id: 'the-map-element', category: 'embedded content', DOMInterface: 'HTMLMapElement' }, 
-        'area': { id: 'the-area-element', category: 'embedded content', focusable: '[href]', implicitAriaRole: { 'href': 'link' }, DOMInterface: 'HTMLAreaElement' }, 
+        'area': { id: 'the-area-element', category: 'embedded content', focusable: 'area[href]', implicitAriaRole: { 'href': 'link' }, DOMInterface: 'HTMLAreaElement' }, 
         'table': { id: 'the-table-element', category: 'tabular data', implicitAriaRole: 'table', DOMInterface: 'HTMLTableElement' }, 
         'caption': { id: 'the-caption-element', category: 'tabular data', implicitAriaRole: 'caption', DOMInterface: 'HTMLTableCaptionElement' }, 
         'colgroup': { id: 'the-colgroup-element', category: 'tabular data', DOMInterface: 'HTMLTableColElement' }, 
@@ -193,6 +193,20 @@ var htmlData = {
         'noscript': { id: 'the-noscript-element', category: 'scripting', DOMInterface: 'HTMLElement' }, 
         'template': { id: 'the-template-element', category: 'scripting', DOMInterface: 'HTMLTemplateElement' }, 
         'canvas': { id: 'the-canvas-element', category: 'scripting', DOMInterface: 'HTMLCanvasElement' }
+    }
+};
+
+var HTML = {
+    getFocusableElementsSelector: function () {
+        var elements = [];
+        for (var element in htmlData.elements) {
+            if (htmlData.elements[element].hasOwnProperty('focusable')) {
+                var focusable = htmlData.elements[element].focusable;
+                elements.push((focusable.constructor == String ? focusable : element) + ':not([tabindex="-1"])');
+            }
+        }
+        elements.push('[contenteditable="true"]', '[tabindex="0"]');
+        return elements.join(', ');
     }
 };
 
