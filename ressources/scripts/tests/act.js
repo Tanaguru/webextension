@@ -488,11 +488,13 @@ tanaguruTestsList.push({
 	description: 'This rule checks that a non-embedded HTML page has a title.',
 	query: '*:not(svg) title', 
 	analyzeElements: function (collection) {
-		for (var i = 0; i < collection.length; i++) {
-			collection[i].status = 'untested';
-		}
-		if (document.title == '') {
-			collection[0].status = 'failed';
+		if (collection.length > 0) {
+			for (var i = 0; i < collection.length; i++) {
+				collection[i].status = 'untested';
+			}
+			if (document.title == '') {
+				collection[0].status = 'failed';
+			}
 		}
 	}, 
 	ressources: { 'act': ['2779a5'] }, 
