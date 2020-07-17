@@ -372,7 +372,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		var lang = item.getAttribute('lang');
 		if (lang != '') {
-			return lang.trim().length == 0 ? true : !this.hasValidLanguageCode();
+			return lang.trim().length == 0 ? true : !item.hasValidLanguageCode();
 		}
 		else {
 			return false;
@@ -390,7 +390,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		var lang = item.getAttribute('lang');
 		if (lang != '') {
-			return lang.trim().length > 0 ? this.hasValidLanguageCode() : false;
+			return lang.trim().length > 0 ? item.hasValidLanguageCode() : false;
 		}
 		else {
 			return false;
@@ -454,7 +454,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that both lang and xml:lang attributes on the root element of a non-embedded HTML page, have the same primary language subtag.',
 	query: 'html[lang][xml\\:lang]', 
 	filter: function (item) {
-		return item.hasValidLanguageCode && item.getAttribute('lang') == this.getAttribute('xml:lang');
+		return item.hasValidLanguageCode && item.getAttribute('lang') == item.getAttribute('xml:lang');
 	}, 
 	analyzeElements: function (collection) {
 		if (collection.length == 1) {
