@@ -967,7 +967,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.querySelectorAll('track[kind="captions"]').length == 0;
 	}, 
-	ressources: { 'act': ['f51b46'] }, 
+	ressources: { 'act': ['f51b46'], 'wcag20': ['1.2.2'] }, 
 	tags: ['a11y', 'videos'], 
 	comments: "Partially Implemented (dynamical tracktext not supported here)."
 });
@@ -980,7 +980,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.querySelectorAll('track[kind="captions"]').length > 0;
 	}, 
-	ressources: { 'act': ['f51b46'] }, 
+	ressources: { 'act': ['f51b46'], 'wcag20': ['1.2.2'] }, 
 	tags: ['a11y', 'videos'], 
 	comments: "Partially Implemented (dynamical tracktext not supported here). This test is somewhat silly (need to check that the video element has controls)."
 });
@@ -993,7 +993,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.querySelectorAll('track[kind="descriptions"]').length == 0;
 	}, 
-	ressources: { 'act': ['f196ce', 'ac7dc6'] }, 
+	ressources: { 'act': ['f196ce', 'ac7dc6'], 'wcag20': ['1.2.1', '1.2.3', '1.2.5', '1.2.7'] }, 
 	tags: ['a11y', 'videos'], 
 	comments: "Partially Implemented. Hum, Accessibility Supported?"
 });
@@ -1006,7 +1006,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.querySelectorAll('track[kind="descriptions"]').length > 0;
 	}, 
-	ressources: { 'act': ['f196ce', 'ac7dc6'] }, 
+	ressources: { 'act': ['f196ce', 'ac7dc6'], 'wcag20': ['1.2.1', '1.2.3', '1.2.5', '1.2.7'] }, 
 	tags: ['a11y', 'videos'], 
 	comments: "Partially Implemented. Hum, Accessibility Supported?"
 });
