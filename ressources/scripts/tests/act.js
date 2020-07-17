@@ -3,10 +3,12 @@ var tanaguruTestsList = [];
 /* ACT */
 
 // Accessible Names.
+
+// Accessible Names: Buttons.
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Button has no accessible name.',
-	description: 'This rule checks that each button element has an accessible name.', 
+	name: 'Button has an empty accessible name.',
+	description: 'This rule checks that each button element has a non-empty accessible name.', 
 	query: 'button:not([role]), [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
 	expectedNbElements: 0,
 	filter: function (item) {
@@ -16,13 +18,13 @@ tanaguruTestsList.push({
 		return false;
 	},
 	tags: ['a11y', 'buttons'],
-	ressources: { 'act': ['97a4e1'] }
+	ressources: { 'act': ['97a4e1'], 'wcag20': ['4.1.2'] }
 });
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Button has accessible name.',
-	description: 'This rule checks that each button element has an accessible name.', 
+	name: 'Button has a non-empty accessible name.',
+	description: 'This rule checks that each button element has a non-empty accessible name.', 
 	query: 'button:not([role]), [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
 	filter: function (item) {
 		if (item.isNotExposedDueTo.length == 0) {
@@ -39,26 +41,27 @@ tanaguruTestsList.push({
 		}
 	},
 	tags: ['a11y', 'buttons'],
-	ressources: { 'act': ['97a4e1'] }
+	ressources: { 'act': ['97a4e1'], 'wcag20': ['4.1.2'] }
 });
 
+// Accessible Names: Form Controls.
 tanaguruTestsList.push({
 	lang: 'en', 
-	name: 'Form control has no accessible name.', 
-	description: 'This rule checks that each form field element has an accessible name.', 
+	name: 'Form control has an empty accessible name.', 
+	description: 'This rule checks that each form field element has a non-empty accessible name.', 
 	query: 'input[type="checkbox"]:not([role]), [role="checkbox"], [role="switch"], input[type="radio"]:not([role]), [role="radio"], select:not([role]), [role="combobox"], input[type="search"]:not([role]), [role="searchbox"], input[type="range"]:not([role]), [role="slider"], input[type="number"]:not([role]), [role="spinbutton"], input:not([type]):not([role]), input[type="email"]:not([role]), input[type="tel"]:not([role]), input[type="text"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), [contenteditable="true"]:not([role]), [role="textbox"], [role="listbox"], [role="menuitemcheckbox"], [role="menuitemradio"]', 
 	expectedNbElements: 0, 
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
 	}, 
 	tags: ['a11y', 'forms'], 
-	ressources: { 'act': ['e086e5'] }
+	ressources: { 'act': ['e086e5'], 'wcag20': ['4.1.2'] }
 });
 
 tanaguruTestsList.push({
 	lang: 'en', 
-	name: 'Form control has accessible name.', 
-	description: 'This rule checks that each form field element has an accessible name.', 
+	name: 'Form control has a non-empty accessible name.', 
+	description: 'This rule checks that each form field element has a non-empty accessible name.', 
 	query: 'input[type="checkbox"]:not([role]), [role="checkbox"], [role="switch"], input[type="radio"]:not([role]), [role="radio"], select:not([role]), [role="combobox"], input[type="search"]:not([role]), [role="searchbox"], input[type="range"]:not([role]), [role="slider"], input[type="number"]:not([role]), [role="spinbutton"], input:not([type]):not([role]), input[type="email"]:not([role]), input[type="tel"]:not([role]), input[type="text"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), [contenteditable="true"]:not([role]), [role="textbox"], [role="listbox"], [role="menuitemcheckbox"], [role="menuitemradio"]', 
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
@@ -69,20 +72,21 @@ tanaguruTestsList.push({
 		}
 	},
 	tags: ['a11y', 'forms'], 
-	ressources: { 'act': ['e086e5'] }
+	ressources: { 'act': ['e086e5'], 'wcag20': ['4.1.2'] }
 });
 
+// Accessible Names: Headings.
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Heading has no accessible name.', 
-	description: 'This rule checks that each heading has an accessible name.', 
+	name: 'Heading has an empty accessible name.', 
+	description: 'This rule checks that each heading has a non-empty accessible name.', 
 	query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"]',
 	expectedNbElements: 0,
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
 	},
 	tags: ['a11y', 'headings'],
-	ressources: { 'act': ['ffd0e9'] }, 
+	ressources: { 'act': ['ffd0e9'], 'wcag20': ['1.3.1', '2.4.6'] }, 
 	comments: [
 		'Failed example 1: passed, not failed - https://act-rules.github.io/rules/ffd0e9#failed-example-1'
 	]
@@ -90,8 +94,8 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Heading has accessible name.', 
-	description: 'This rule checks that each heading has an accessible name.', 
+	name: 'Heading has a non-empty accessible name.', 
+	description: 'This rule checks that each heading has a non-empty accessible name.', 
 	query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"]',
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
@@ -102,16 +106,17 @@ tanaguruTestsList.push({
 		}
 	},
 	tags: ['a11y', 'headings'],
-	ressources: { 'act': ['ffd0e9'] }, 
+	ressources: { 'act': ['ffd0e9'], 'wcag20': ['1.3.1', '2.4.6'] }, 
 	comments: [
 		'Failed example 1: passed, not failed - https://act-rules.github.io/rules/ffd0e9#failed-example-1'
 	]
 });
 
+// Accessible Names: Iframes.
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'iframe element has no accessible name.', 
-	description: 'This rule checks that each iframe element has an accessible name.', 
+	name: 'iframe element has an empty accessible name.', 
+	description: 'This rule checks that each iframe element has a non-empty accessible name.', 
 	query: 'iframe',
 	expectedNbElements: 0,
 	filter: function (item) {
@@ -130,13 +135,13 @@ tanaguruTestsList.push({
 		return false;
 	},
 	tags: ['a11y', 'frames'],
-	ressources: { 'act': ['cae760'] }
+	ressources: { 'act': ['cae760'], 'wcag20': ['4.1.2'] }
 });
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'iframe element has accessible name.', 
-	description: 'This rule checks that each iframe element has an accessible name.', 
+	name: 'iframe element has a non-empty accessible name', 
+	description: 'This rule checks that each iframe element has a non-empty accessible name.', 
 	query: 'iframe',
 	filter: function (item) {
 		if (item.isNotExposedDueTo.length == 0) {
@@ -159,26 +164,29 @@ tanaguruTestsList.push({
 		}
 	},
 	tags: ['a11y', 'frames'],
-	ressources: { 'act': ['cae760'] }
+	ressources: { 'act': ['cae760'], 'wcag20': ['4.1.2'] }
 });
 
+// TO ADD : 4b1c6c - iframe elements with identical accessible names have equivalent purpose.
+
+// Accessible Names: Image Buttons.
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Image button has no accessible name.', 
-	description: 'This rule checks that each image button element has an accessible name.', 
+	name: 'Image button has an empty accessible name.', 
+	description: 'This rule checks that each image button element has a non-empty accessible name.', 
 	query: 'input[type="image"]:not([role]), input[type="image"][role="button"]',
 	expectedNbElements: 0,
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
 	},
 	tags: ['a11y', 'buttons', 'images'],
-	ressources: { 'act': ['59796f'] }
+	ressources: { 'act': ['59796f'], 'wcag20': ['1.1.1', '4.1.2'] }
 });
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Image button has accessible name.', 
-	description: 'This rule checks that each image button element has an accessible name.', 
+	name: 'Image button has a non-empty accessible name.', 
+	description: 'This rule checks that each image button element has a non-empty accessible name.', 
 	query: 'input[type="image"]:not([role]), input[type="image"][role="button"]',
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
@@ -189,13 +197,14 @@ tanaguruTestsList.push({
 		}
 	},
 	tags: ['a11y', 'buttons', 'images'],
-	ressources: { 'act': ['59796f'] }
+	ressources: { 'act': ['59796f'], 'wcag20': ['1.1.1', '4.1.2'] }
 });
 
+// Accessible Names: Images.
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Image has no accessible name.', 
-	description: 'This rule checks that each image either has an accessible name or is marked up as decorative.', 
+	name: 'Image has an empty accessible name.', 
+	description: 'This rule checks that each image either has a non-empty accessible name or is marked up as decorative.', 
 	query: 'img:not([role]), img[role="none"][tabindex], img[role="presentation"][tabindex], [role="img"]',
 	expectedNbElements: 0,
 	filter: function (item) {
@@ -217,13 +226,13 @@ tanaguruTestsList.push({
 		return false;
 	},
 	tags: ['a11y', 'images'],
-	ressources: { 'act': ['23a2a8'] }
+	ressources: { 'act': ['23a2a8'], 'wcag20': ['1.1.1'] }
 });
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Image has accessible name.', 
-	description: 'This rule checks that each image either has an accessible name or is marked up as decorative.', 
+	name: 'Image has a non-empty accessible name.', 
+	description: 'This rule checks that each image either has a non-empty accessible name or is marked up as decorative.', 
 	query: 'img:not([role]), img[role="none"]:not([tabindex]), img[role="presentation"]:not([tabindex]), [role="img"]',
 	filter: function (item) {
 		if (item.isNotExposedDueTo.length == 0) {
@@ -242,12 +251,13 @@ tanaguruTestsList.push({
 		}
 	},
 	tags: ['a11y', 'images'],
-	ressources: { 'act': ['23a2a8'] }
+	ressources: { 'act': ['23a2a8'], 'wcag20': ['1.1.1'] }
 });
 
+// Accessible Names: SVG.
 tanaguruTestsList.push({
 	lang: 'en',
-	name: "svg element with explicit role doesn't have accessible name.", 
+	name: "svg element with explicit role has a non-empty accessible name.", 
 	description: 'This rule checks that each SVG image element that is explicitly included in the accessibility tree has a non-empty accessible name.', 
 	query: 'svg[role="img"]',
 	filter: function (item) {
@@ -257,14 +267,15 @@ tanaguruTestsList.push({
 		return false;
 	},
 	tags: ['a11y', 'svg'],
-	ressources: { 'act': ['7d6734'] }, 
+	ressources: { 'act': ['7d6734'], 'wcag20': ['1.1.1'] }, 
 	comments: 'Partially Implemented. See https://www.w3.org/TR/svg-aam-1.0/.'
 });
 
+// Accessible Names: Links.
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Link has no accessible name.', 
-	description: 'This rule checks that each link has an accessible name.', 
+	name: 'Link has an empty accessible name.', 
+	description: 'This rule checks that each link has a non-empty accessible name.', 
 	query: 'a[href]:not([role]), a[href][role="none"]:not([tabindex="-1"]), a[href][role="presentation"]:not([tabindex="-1"]), [role="link"], map[name]:not([role]) > area[href]:not([role])',
 	expectedNbElements: 0,
 	filter: function (item) {
@@ -285,13 +296,13 @@ tanaguruTestsList.push({
 		return false;
 	}, 
 	tags: ['a11y', 'links'], 
-	ressources: { 'act': ['c487ae'] }
+	ressources: { 'act': ['c487ae'], 'wcag20': ['2.4.4', '2.4.9', '4.1.2'] }
 });
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Link has accessible name.', 
-	description: 'This rule checks that each link has an accessible name.', 
+	name: 'Link has a non-empty accessible name.', 
+	description: 'This rule checks that each link has a non-empty accessible name.', 
 	query: 'a[href]:not([role]), a[href][role="none"]:not([tabindex="-1"]), a[href][role="presentation"]:not([tabindex="-1"]), [role="link"], map[name]:not([role]) > area[href]:not([role])',
 	filter: function (item) {
 		if (item.isNotExposedDueTo.length == 0) {
@@ -316,10 +327,8 @@ tanaguruTestsList.push({
 		}
 	},
 	tags: ['a11y', 'links'], 
-	ressources: { 'act': ['c487ae'] }
+	ressources: { 'act': ['c487ae'], 'wcag20': ['2.4.4', '2.4.9', '4.1.2'] }
 });
-
-// TO ADD : 4b1c6c - iframe elements with identical accessible names have equivalent purpose.
 
 // Code.
 tanaguruTestsList.push({
@@ -347,8 +356,8 @@ tanaguruTestsList.push({
 			}
 		}
 	},
-	ressources: { 'act' : ['3ea0c8'] }, 
-	tags: ['code']
+	ressources: { 'act' : ['3ea0c8'], 'wcag20': ['4.1.1'] }, 
+	tags: ['a11y', 'code']
 });
 
 // TO ADD : ARIA.
@@ -356,7 +365,7 @@ tanaguruTestsList.push({
 // Languages.
 tanaguruTestsList.push({
 	lang: 'en', 
-	name: 'Element within body has an invalid lang attribute.', 
+	name: 'Element with lang attribute has an invalid language tag.',
 	description: 'This rule checks that a non-empty lang attribute of an element in the page body has a language tag with a known primary language subtag.', 
 	query: 'body [lang]',  
 	expectedNbElements: 0, 
@@ -369,13 +378,13 @@ tanaguruTestsList.push({
 			return false;
 		}
 	}, 
-	ressources: { 'act': ['de46e4'] }, 
-	tags: ['languages']
+	ressources: { 'act': ['de46e4'], 'wcag20': ['3.1.2'] }, 
+	tags: ['a11y', 'languages']
 });
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'Element within body has a valid lang attribute.',
+	name: 'Element with lang attribute has a valid language tag.',
 	description: 'This rule checks that a non-empty lang attribute of an element in the page body has a language tag with a known primary language subtag.',
 	query: 'body [lang]', 
 	filter: function (item) {
@@ -387,8 +396,8 @@ tanaguruTestsList.push({
 			return false;
 		}
 	}, 
-	ressources: { 'act': ['de46e4'] }, 
-	tags: ['languages']
+	ressources: { 'act': ['de46e4'], 'wcag20': ['3.1.2'] }, 
+	tags: ['a11y', 'languages']
 });
 
 tanaguruTestsList.push({
@@ -397,8 +406,8 @@ tanaguruTestsList.push({
 	description: 'This rule checks that an HTML page has a non-empty lang attribute.',
 	expectedNbElements: 0, 
 	query: 'html:not([lang])', 
-	ressources: { 'act': ['b5c3f8'] }, 
-	tags: ['languages']
+	ressources: { 'act': ['b5c3f8'], 'wcag20': ['3.1.1'] }, 
+	tags: ['a11y', 'languages']
 });
 
 tanaguruTestsList.push({
@@ -410,8 +419,8 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.getAttribute('lang').trim().length == 0;
 	},
-	ressources: { 'act': ['b5c3f8'] }, 
-	tags: ['languages']
+	ressources: { 'act': ['b5c3f8'], 'wcag20': ['3.1.1'] }, 
+	tags: ['a11y', 'languages']
 });
 
 tanaguruTestsList.push({
@@ -422,8 +431,8 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.getAttribute('lang').trim().length > 0;
 	},
-	ressources: { 'act': ['b5c3f8'] }, 
-	tags: ['languages']
+	ressources: { 'act': ['b5c3f8'], 'wcag20': ['3.1.1'] }, 
+	tags: ['a11y', 'languages']
 });
 
 tanaguruTestsList.push({
@@ -435,8 +444,8 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return !item.hasValidLanguageCode || (item.getAttribute('xml:lang').trim().length > 0 && item.getAttribute('lang') != item.getAttribute('xml:lang'));
 	}, 
-	ressources: { 'act': ['5b7ae0'] }, 
-	tags: ['languages']
+	ressources: { 'act': ['5b7ae0'], 'wcag20': ['3.1.1'] }, 
+	tags: ['a11y', 'languages']
 });
 
 tanaguruTestsList.push({
@@ -452,8 +461,8 @@ tanaguruTestsList.push({
 			collection[0].status = 'passed';
 		}
 	}, 
-	ressources: { 'act': ['5b7ae0'] }, 
-	tags: ['languages']
+	ressources: { 'act': ['5b7ae0'], 'wcag20': ['3.1.1'] }, 
+	tags: ['a11y', 'languages']
 });
 
 tanaguruTestsList.push({
@@ -465,8 +474,8 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.getAttribute('lang').trim().length > 0 && !item.hasValidLanguageCode();
 	}, 
-	ressources: { 'act': ['bf051a'] }, 
-	tags: ['languages']
+	ressources: { 'act': ['bf051a'], 'wcag20': ['3.1.1'] }, 
+	tags: ['a11y', 'languages']
 });
 
 tanaguruTestsList.push({
@@ -477,8 +486,8 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.getAttribute('lang').trim().length > 0 && item.hasValidLanguageCode();
 	}, 
-	ressources: { 'act': ['bf051a'] }, 
-	tags: ['languages']
+	ressources: { 'act': ['bf051a'], 'wcag20': ['3.1.1'] }, 
+	tags: ['a11y', 'languages']
 });
 
 // Document Title.
@@ -497,8 +506,8 @@ tanaguruTestsList.push({
 			}
 		}
 	}, 
-	ressources: { 'act': ['2779a5'] }, 
-	tags: ['pageTitle']
+	ressources: { 'act': ['2779a5'], 'wcag20': ['2.4.2'] }, 
+	tags: ['a11y', 'pageTitle']
 });
 
 tanaguruTestsList.push({
@@ -507,17 +516,17 @@ tanaguruTestsList.push({
 	description: 'This rule checks that a non-embedded HTML page has a title.',
 	query: '*:not(svg) title', 
 	expectedNbElements: { min: 1 },
-	ressources: { 'act': ['2779a5'] }, 
-	tags: ['pageTitle']
+	ressources: { 'act': ['2779a5'], 'wcag20': ['2.4.2'] }, 
+	tags: ['a11y', 'pageTitle']
 });
 
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'HTML page title is not descriptive.',
+	name: 'HTML page title is descriptive.',
 	description: 'This rule checks that the first title in an HTML page describes the topic or purpose of that page.',
-	status: 'untested', 
-	ressources: { 'act': ['c4a8a4'] }, 
-	tags: ['pageTitle']
+	query: '*:not(svg) title', 
+	ressources: { 'act': ['c4a8a4'], 'wcag20': ['2.4.2'] }, 
+	tags: ['a11y', 'pageTitle']
 });
 
 // Meta.
@@ -551,8 +560,8 @@ tanaguruTestsList.push({
 			}
 		}
 	},
-	ressources: { 'act': ['bc659a'] }, 
-	tags: ['meta']
+	ressources: { 'act': ['bc659a'], 'wcag20': ['2.2.1', '2.2.4', '3.2.5'] }, 
+	tags: ['a11y', 'meta']
 });
 
 tanaguruTestsList.push({
@@ -588,8 +597,8 @@ tanaguruTestsList.push({
 			}
 		}
 	}, 
-	ressources: { 'act': ['b4f0c3'] }, 
-	tags: ['meta']
+	ressources: { 'act': ['b4f0c3'], 'wcag20': ['1.4.4', '1.4.10'] },
+	tags: ['a11y', 'meta']
 });
 
 // Orientation.
@@ -598,7 +607,8 @@ tanaguruTestsList.push({
 	name: 'Orientation of the page is not restricted using CSS transform property.',
 	description: 'This rule checks that page content is not restricted to either landscape or portrait orientation using CSS transform property.',
 	status: 'untested', 
-	ressources: { 'act': ['b33eff'] }, 
+	ressources: { 'act': ['b33eff'], 'wcag20': ['1.3.4'] }, 
+	tags: ['a11y'], 
 	comments: "Computed styles are not useful/relevant for this test + need to 'identify' some 'root' elements. Require a special UI & a new method of execution ?"
 });
 
@@ -612,25 +622,34 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		var visibleState = item.isNotVisibleDueTo;
 		if (visibleState.length == 0 || (visibleState.indexOf('css:display') == -1 && visibleState.indexOf('css:visibility') == -1)) {
-			/* TODO : (probably) manage positive tabindex. */
 			var focusables = item.querySelectorAll(HTML.getFocusableElementsSelector());
+			if (focusables.length == 0) {
+				focusables = [];
+				var elementsWithTabindex = item.querySelectorAll('[tabindex]');
+				for (var i = 0; i < elementsWithTabindex.length; i++) {
+					if (/^[1-9]{1}\d*$/.test(elementsWithTabindex[i].getAttribute('tabindex'))) {
+						focusables.push(elementsWithTabindex[i]);
+						break;
+					}
+				}
+			}
 			return focusables.length > 0;
 		}
 		else {
 			return false;
 		}
 	}, 
-	ressources: { 'act': ['6cfa84'] }, 
-	tags: ['keyboard']
+	ressources: { 'act': ['6cfa84'], 'wcag20': ['1.3.1', '4.1.2'] }, 
+	tags: ['a11y', 'keyboard']
 });
 
 tanaguruTestsList.push({
 	lang: 'en',
 	name: 'Focusable element has no keyboard trap.',
 	description: 'This rule checks for keyboard traps. This includes use of both standard and non-standard keyboard navigation to navigate through all content without becoming trapped.',
-	status: 'untested', 
-	ressources: { 'act': ['80af7b'] }, 
-	tags: ['keyboard'], 
+	query: '[onblur]',  
+	ressources: { 'act': ['80af7b'], 'wcag20': ['2.1.2'] }, 
+	tags: ['a11y', 'keyboard'], 
 	comments: "Can detect onblur attribute (maybe event too) but is not really a proof that is a keyboard trap..."
 });
 
@@ -640,7 +659,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks if it is possible to use non-standard keyboard navigation to navigate through content where focus is trapped when using standard ways of keyboard navigation.',
 	status: 'untested', 
 	ressources: { 'act': ['ebe86a'] }, 
-	tags: ['keyboard'], 
+	tags: ['a11y', 'keyboard'], 
 	comments: "Can detect onblur/onkeydown attribute (maybe event too) but is not really a proof that is a keyboard trap..."
 });
 
@@ -650,7 +669,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks if it is possible to use standard keyboard navigation to navigate through all content on a web page without becoming trapped in any element.',
 	status: 'untested', 
 	ressources: { 'act': ['a1b64e'] }, 
-	tags: ['keyboard'], 
+	tags: ['a11y', 'keyboard'], 
 	comments: "Can detect onblur attribute (maybe event too) but is not really a proof that is a keyboard trap..."
 });
 
@@ -661,8 +680,8 @@ tanaguruTestsList.push({
 	name: 'Text has minimum contrast.',
 	description: 'This rule checks that the highest possible contrast of every text character with its background meets the minimal contrast requirement.',
 	status: 'untested', 
-	ressources: { 'act': ['afw4f7'] }, 
-	tags: ['contrast'], 
+	ressources: { 'act': ['afw4f7'], 'wcag20': ['1.4.3', '1.4.6'] }, 
+	tags: ['a11y', 'contrast'], 
 	comments: "Require a special UI & a new method of execution."
 });
 
@@ -675,8 +694,8 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
 	}, 
-	ressources: { 'act': ['5effbb'] }, 
-	tags: ['links'], 
+	ressources: { 'act': ['5effbb'], 'wcag20': ['2.4.4', '2.4.9'] }, 
+	tags: ['a11y', 'links'], 
 	comments: "Partially Implemented."
 });
 
@@ -711,11 +730,10 @@ tanaguruTestsList.push({
 			return true;
 		}
 	}, 
-	ressources: { 'act': ['a25f45'] }, 
-	tags: ['tables']
+	ressources: { 'act': ['a25f45'], 'wcag20': ['1.3.1'] }, 
+	tags: ['a11y', 'tables']
 });
 
-// Tables.
 tanaguruTestsList.push({
 	lang: 'en',
 	name: "Headers attribute specified on a cell refers to cells in the same table element.",
@@ -750,8 +768,8 @@ tanaguruTestsList.push({
 			collection[i].status = 'passed';
 		}
 	}, 
-	ressources: { 'act': ['a25f45'] }, 
-	tags: ['tables']
+	ressources: { 'act': ['a25f45'], 'wcag20': ['1.3.1'] }, 
+	tags: ['a11y', 'tables']
 });
 
 tanaguruTestsList.push({
@@ -760,11 +778,10 @@ tanaguruTestsList.push({
 	description: 'This rule checks that each table header has assigned data cells in a table element.',
 	query: 'th, [role="columnheader"]', 
 	filter: function (item) {
-		// TODO : All table header cells have assigned data cells (https://act-rules.github.io/rules/d0f69e)
-		// count columns (row by row) or cell with headers (probably headers > cell)
+		// TODO : count columns (row by row) or cell with headers (probably headers > cell) ?
 	},
-	ressources: { 'act': [] }, 
-	tags: ['tables']
+	ressources: { 'act': ['d0f69e'], 'wcag20': ['1.3.1'] }, 
+	tags: ['a11y', 'tables']
 });
 
 // Headings.
@@ -776,8 +793,8 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
 	},
-	ressources: { 'act': ['b49b2e'] }, 
-	tags: ['headings'], 
+	ressources: { 'act': ['b49b2e'], 'wcag20': ['2.4.6'] }, 
+	tags: ['a11y', 'headings'], 
 	comments: "Partially Implemented."
 });
 
@@ -787,8 +804,8 @@ tanaguruTestsList.push({
 	name: 'audio element content has text alternative.',
 	description: 'This rule checks if audio only elements have a text alternative available.',
 	query: 'audio', 
-	ressources: { 'act': ['e7aa44'] }, 
-	tags: ['audio'], 
+	ressources: { 'act': ['e7aa44'], 'wcag20': ['1.2.1'] }, 
+	tags: ['a11y', 'audio'], 
 	comments: "Can't be detected."
 });
 
@@ -798,7 +815,7 @@ tanaguruTestsList.push({
 	description: 'Non-streaming audio elements must have a text alternative for all included auditory information.',
 	status: 'untested', 
 	ressources: { 'act': ['2eb176'] }, 
-	tags: ['audio'], 
+	tags: ['a11y', 'audio'], 
 	comments: "Can't be detected."
 });
 
@@ -808,7 +825,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks audio is a media alternative for text on the page.',
 	status: 'untested', 
 	ressources: { 'act': ['afb423'] }, 
-	tags: ['audio'], 
+	tags: ['a11y', 'audio'], 
 	comments: "Can't be detected."
 });
 
@@ -817,8 +834,8 @@ tanaguruTestsList.push({
 	name: 'video element auditory content has accessible alternative.',
 	description: 'This rule checks that video elements have an alternative for information conveyed through audio.',
 	query: 'video', 
-	ressources: { 'act': ['eac66b'] }, 
-	tags: ['videos'], 
+	ressources: { 'act': ['eac66b'], 'wcag20': ['1.2.2'] }, 
+	tags: ['a11y', 'videos'], 
 	comments: "Can't be detected."
 });
 
@@ -828,7 +845,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks non-streaming video is a media alternative for text on the page.',
 	status: 'untested', 
 	ressources: { 'act': ['ab4d13'] }, 
-	tags: ['videos'], 
+	tags: ['a11y', 'videos'], 
 	comments: "Can't be detected."
 });
 
@@ -837,8 +854,8 @@ tanaguruTestsList.push({
 	name: 'video element visual content has accessible alternative.',
 	description: 'This rule checks that video elements with audio have an alternative for the video content as audio or as text.',
 	query: 'video', 
-	ressources: { 'act': ['c5a4ea'] }, 
-	tags: ['videos'], 
+	ressources: { 'act': ['c5a4ea'], 'wcag20': ['1.2.3'] }, 
+	tags: ['a11y', 'videos'], 
 	comments: "Can't be detected."
 });
 
@@ -848,7 +865,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that non-streaming video elements have all visual information also contained in the audio.',
 	status: 'untested', 
 	ressources: { 'act': ['1ea59c'] }, 
-	tags: ['videos'], 
+	tags: ['a11y', 'videos'], 
 	comments: "Can't be detected."
 });
 
@@ -856,9 +873,9 @@ tanaguruTestsList.push({
 	lang: 'en',
 	name: 'video element visual content has strict accessible alternative.',
 	description: 'This rule checks that video elements with audio have audio description.',
-	status: 'untested', 
-	ressources: { 'act': ['1ec09b'] }, 
-	tags: ['videos'], 
+	query: 'video', 
+	ressources: { 'act': ['1ec09b'], 'wcag20': ['1.2.5'] }, 
+	tags: ['a11y', 'videos'], 
 	comments: "Can't be detected."
 });
 
@@ -866,9 +883,9 @@ tanaguruTestsList.push({
 	lang: 'en',
 	name: 'video element visual content has transcript.',
 	description: 'This rule checks that non-streaming video elements have all audio and visual information available in a transcript.',
-	status: 'untested', 
-	ressources: { 'act': ['1a02b0'] }, 
-	tags: ['videos'], 
+	query: 'video', 
+	ressources: { 'act': ['1a02b0'], 'wcag20': ['1.2.8'] }, 
+	tags: ['a11y', 'videos'], 
 	comments: "Can't be detected."
 });
 
@@ -877,8 +894,8 @@ tanaguruTestsList.push({
 	name: 'video element visual-only content has accessible alternative.',
 	description: 'This rule checks that video elements without audio have an alternative available.',
 	query: 'video', 
-	ressources: { 'act': ['c3232f'] }, 
-	tags: ['videos'], 
+	ressources: { 'act': ['c3232f'], 'wcag20': ['1.2.1'] }, 
+	tags: ['a11y', 'videos'], 
 	comments: "Can't be detected."
 });
 
@@ -888,7 +905,7 @@ tanaguruTestsList.push({
 	description: 'Non-streaming video elements without audio must have an audio alternative.',
 	status: 'untested', 
 	ressources: { 'act': ['d7ba54'] }, 
-	tags: ['videos'], 
+	tags: ['a11y', 'videos'], 
 	comments: "Can't be detected."
 });
 
@@ -898,7 +915,7 @@ tanaguruTestsList.push({
 	description: 'Non-streaming video elements without audio must have all visual information available in a transcript.',
 	status: 'untested', 
 	ressources: { 'act': ['ee13b5'] }, 
-	tags: ['videos'], 
+	tags: ['a11y', 'videos'], 
 	comments: "Can't be detected."
 });
 
@@ -908,7 +925,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks non-streaming silent video is a media alternative for text on the page.',
 	status: 'untested', 
 	ressources: { 'act': ['fd26cf'] }, 
-	tags: ['videos'], 
+	tags: ['a11y', 'videos'], 
 	comments: "Can't be detected."
 });
 
@@ -917,8 +934,8 @@ tanaguruTestsList.push({
 	name: 'audio or video without controls has audio that plays automatically.',
 	description: 'This rule checks that audio or video that plays automatically does not have audio that lasts for more than 3 seconds or has an audio control mechanism to stop or mute it.',
 	query: 'audio[autoplay]:not([controls]), video[autoplay]:not([controls])', 
-	ressources: { 'act': ['80f0bf'] }, 
-	tags: ['audio', 'videos'], 
+	ressources: { 'act': ['80f0bf'], 'wcag20': ['1.4.2'] }, 
+	tags: ['a11y', 'audio', 'videos'], 
 	comments: "Partially Implemented."
 });
 
@@ -927,8 +944,8 @@ tanaguruTestsList.push({
 	name: 'audio or video with controls has audio that plays automatically.',
 	description: 'This rule checks that audio or video that plays automatically does not have audio that lasts for more than 3 seconds or has an audio control mechanism to stop or mute it.',
 	query: 'audio[autoplay][controls], video[autoplay][controls]', 
-	ressources: { 'act': ['80f0bf', '4c31df'] }, 
-	tags: ['audio', 'videos'], 
+	ressources: { 'act': ['80f0bf', '4c31df'], 'wcag20': ['1.4.2'] }, 
+	tags: ['a11y', 'audio', 'videos'], 
 	comments: "Partially Implemented for both tests."
 });
 
@@ -938,7 +955,7 @@ tanaguruTestsList.push({
 	description: 'audio or video that plays automatically does not output audio for more than 3 seconds.',
 	status: 'untested', 
 	ressources: { 'act': ['aaa1bf'] }, 
-	tags: ['audio', 'videos'], 
+	tags: ['a11y', 'audio', 'videos'], 
 	comments: "Can't be detected (to investigate - i.e. passed example 2 + duration time)."
 });
 
@@ -951,7 +968,7 @@ tanaguruTestsList.push({
 		return item.querySelectorAll('track[kind="captions"]').length == 0;
 	}, 
 	ressources: { 'act': ['f51b46'] }, 
-	tags: ['videos'], 
+	tags: ['a11y', 'videos'], 
 	comments: "Partially Implemented (dynamical tracktext not supported here)."
 });
 
@@ -964,7 +981,7 @@ tanaguruTestsList.push({
 		return item.querySelectorAll('track[kind="captions"]').length > 0;
 	}, 
 	ressources: { 'act': ['f51b46'] }, 
-	tags: ['videos'], 
+	tags: ['a11y', 'videos'], 
 	comments: "Partially Implemented (dynamical tracktext not supported here). This test is somewhat silly (need to check that the video element has controls)."
 });
 
@@ -977,7 +994,7 @@ tanaguruTestsList.push({
 		return item.querySelectorAll('track[kind="descriptions"]').length == 0;
 	}, 
 	ressources: { 'act': ['f196ce', 'ac7dc6'] }, 
-	tags: ['videos'], 
+	tags: ['a11y', 'videos'], 
 	comments: "Partially Implemented. Hum, Accessibility Supported?"
 });
 
@@ -990,6 +1007,6 @@ tanaguruTestsList.push({
 		return item.querySelectorAll('track[kind="descriptions"]').length > 0;
 	}, 
 	ressources: { 'act': ['f196ce', 'ac7dc6'] }, 
-	tags: ['videos'], 
+	tags: ['a11y', 'videos'], 
 	comments: "Partially Implemented. Hum, Accessibility Supported?"
 });
