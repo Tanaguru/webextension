@@ -658,7 +658,7 @@ tanaguruTestsList.push({
 	name: 'Focusable element has no keyboard trap via non-standard navigation.',
 	description: 'This rule checks if it is possible to use non-standard keyboard navigation to navigate through content where focus is trapped when using standard ways of keyboard navigation.',
 	status: 'untested', 
-	ressources: { 'act': ['ebe86a'] }, 
+	ressources: { 'act': ['ebe86a'], 'wcag20': ['2.1.2'] }, 
 	tags: ['a11y', 'keyboard'], 
 	comments: "Can detect onblur/onkeydown attribute (maybe event too) but is not really a proof that is a keyboard trap..."
 });
@@ -668,7 +668,7 @@ tanaguruTestsList.push({
 	name: 'Focusable element has no keyboard trap via standard navigation.',
 	description: 'This rule checks if it is possible to use standard keyboard navigation to navigate through all content on a web page without becoming trapped in any element.',
 	status: 'untested', 
-	ressources: { 'act': ['a1b64e'] }, 
+	ressources: { 'act': ['a1b64e'],'wcag20': ['2.1.2'] },
 	tags: ['a11y', 'keyboard'], 
 	comments: "Can detect onblur attribute (maybe event too) but is not really a proof that is a keyboard trap..."
 });
@@ -814,7 +814,7 @@ tanaguruTestsList.push({
 	name: 'audio element content has transcript.',
 	description: 'Non-streaming audio elements must have a text alternative for all included auditory information.',
 	status: 'untested', 
-	ressources: { 'act': ['2eb176'] }, 
+	ressources: { 'act': ['2eb176'], 'wcag20': ['1.2.1'] }, 
 	tags: ['a11y', 'audio'], 
 	comments: "Can't be detected."
 });
@@ -824,7 +824,7 @@ tanaguruTestsList.push({
 	name: 'audio element content is media alternative for text.',
 	description: 'This rule checks audio is a media alternative for text on the page.',
 	status: 'untested', 
-	ressources: { 'act': ['afb423'] }, 
+	ressources: { 'act': ['afb423'], 'wcag20': ['1.2.1'] },  
 	tags: ['a11y', 'audio'], 
 	comments: "Can't be detected."
 });
@@ -844,7 +844,7 @@ tanaguruTestsList.push({
 	name: 'video element content is media alternative for text.',
 	description: 'This rule checks non-streaming video is a media alternative for text on the page.',
 	status: 'untested', 
-	ressources: { 'act': ['ab4d13'] }, 
+	ressources: { 'act': ['ab4d13'], 'wcag20': ['1.2.2'] },
 	tags: ['a11y', 'videos'], 
 	comments: "Can't be detected."
 });
@@ -864,7 +864,7 @@ tanaguruTestsList.push({
 	name: 'video element visual content has audio description.',
 	description: 'This rule checks that non-streaming video elements have all visual information also contained in the audio.',
 	status: 'untested', 
-	ressources: { 'act': ['1ea59c'] }, 
+	ressources: { 'act': ['1ea59c'], 'wcag20': ['1.2.3'] }, 
 	tags: ['a11y', 'videos'], 
 	comments: "Can't be detected."
 });
@@ -904,7 +904,7 @@ tanaguruTestsList.push({
 	name: 'video element visual-only content has audio track alternative.',
 	description: 'Non-streaming video elements without audio must have an audio alternative.',
 	status: 'untested', 
-	ressources: { 'act': ['d7ba54'] }, 
+	ressources: { 'act': ['d7ba54'], 'wcag20': ['1.2.1'] },  
 	tags: ['a11y', 'videos'], 
 	comments: "Can't be detected."
 });
@@ -914,7 +914,7 @@ tanaguruTestsList.push({
 	name: 'video element visual-only content has transcript.',
 	description: 'Non-streaming video elements without audio must have all visual information available in a transcript.',
 	status: 'untested', 
-	ressources: { 'act': ['ee13b5'] }, 
+	ressources: { 'act': ['ee13b5'], 'wcag20': ['1.2.1'] },  
 	tags: ['a11y', 'videos'], 
 	comments: "Can't be detected."
 });
@@ -924,7 +924,7 @@ tanaguruTestsList.push({
 	name: 'video element visual-only content is media alternative for text.',
 	description: 'This rule checks non-streaming silent video is a media alternative for text on the page.',
 	status: 'untested', 
-	ressources: { 'act': ['fd26cf'] }, 
+	ressources: { 'act': ['fd26cf'], 'wcag20': ['1.2.1'] }, 
 	tags: ['a11y', 'videos'], 
 	comments: "Can't be detected."
 });
@@ -954,7 +954,7 @@ tanaguruTestsList.push({
 	name: 'audio or video that plays automatically does not exceed 3 seconds.',
 	description: 'audio or video that plays automatically does not output audio for more than 3 seconds.',
 	status: 'untested', 
-	ressources: { 'act': ['aaa1bf'] }, 
+	ressources: { 'act': ['aaa1bf'], 'wcag20': ['1.4.2'] },
 	tags: ['a11y', 'audio', 'videos'], 
 	comments: "Can't be detected (to investigate - i.e. passed example 2 + duration time)."
 });
@@ -967,7 +967,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.querySelectorAll('track[kind="captions"]').length == 0;
 	}, 
-	ressources: { 'act': ['f51b46'] }, 
+	ressources: { 'act': ['f51b46'], 'wcag20': ['1.2.2'] }, 
 	tags: ['a11y', 'videos'], 
 	comments: "Partially Implemented (dynamical tracktext not supported here)."
 });
@@ -980,7 +980,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.querySelectorAll('track[kind="captions"]').length > 0;
 	}, 
-	ressources: { 'act': ['f51b46'] }, 
+	ressources: { 'act': ['f51b46'], 'wcag20': ['1.2.2'] }, 
 	tags: ['a11y', 'videos'], 
 	comments: "Partially Implemented (dynamical tracktext not supported here). This test is somewhat silly (need to check that the video element has controls)."
 });
@@ -993,7 +993,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.querySelectorAll('track[kind="descriptions"]').length == 0;
 	}, 
-	ressources: { 'act': ['f196ce', 'ac7dc6'] }, 
+	ressources: { 'act': ['f196ce', 'ac7dc6'], 'wcag20': ['1.2.2','1.2.5'] },  
 	tags: ['a11y', 'videos'], 
 	comments: "Partially Implemented. Hum, Accessibility Supported?"
 });
@@ -1006,7 +1006,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.querySelectorAll('track[kind="descriptions"]').length > 0;
 	}, 
-	ressources: { 'act': ['f196ce', 'ac7dc6'] }, 
+	ressources: { 'act': ['f196ce', 'ac7dc6'], 'wcag20': ['1.2.2','1.2.5'] }, 
 	tags: ['a11y', 'videos'], 
 	comments: "Partially Implemented. Hum, Accessibility Supported?"
 });
