@@ -10,7 +10,8 @@
     * Multiple-Selection Listboxes.
     Current Imperfect Implementations :
     * Replaced Elements (+ CSS Content).
-    * Control Embedded in Label.
+    * Control Embedded in Label (+ Checkboxes & Radios Embedded in Label).
+    * Checkbox & Radio in Native Textboxes...
     * SVG (multiple titles & use elements).
     * Output (in native "textboxes").
     * Native Password Controls (i.e. (Incorrectly) Used as Custom Checkbox Controls).
@@ -26,7 +27,7 @@ var getAccessibleName = function () {
         nameFromContentSupported: '[role="button"], [role="cell"], [role="checkbox"], [role="columnheader"], [role="gridcell"], [role="heading"], [role="link"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"], [role="radio"], [role="row"], [role="rowgroup"], [role="rowheader"], [role="switch"], [role="tab"], [role="tooltip"], [role="treeitem"]'
     };
     var controls = {
-        nativetextboxes: 'input:not([type]), input[type="email"], input[type="password"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], output, textarea',
+        nativetextboxes: 'input:not([type]), input[type="checkbox"], input[type="email"], input[type="password"], input[type="radio"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], output, textarea',
         customtextboxes: '[contenteditable="true"], [role="textbox"]',
         nativebuttons: 'button, input[type="button"], input[type="image"], input[type="reset"], input[type="submit"]',
         custombuttons: '[role="button"]',
