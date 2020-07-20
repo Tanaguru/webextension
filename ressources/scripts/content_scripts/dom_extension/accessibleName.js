@@ -275,7 +275,7 @@ var getAccessibleName = function () {
                             result += this.value;
                         }
                         result += parentcssaftercontent;
-                        if (result == '' && this.hasAttribute('title')) {
+                        if (result.trim() == '' && this.hasAttribute('title')) {
                             /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
                             result = this.getAttribute('title');
                         }
@@ -296,7 +296,7 @@ var getAccessibleName = function () {
                             result = elementname.accessibleName;
                         }
                     }
-                    if (result == '' && this.hasAttribute('title')) {
+                    if (result.trim() == '' && this.hasAttribute('title')) {
                         /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
                         result = this.getAttribute('title');
                     }
@@ -345,7 +345,7 @@ var getAccessibleName = function () {
                         }
                     }
                     result += parentcssaftercontent;
-                    if (result == '' && this.matches('a[href][title]')) {
+                    if (result.trim() == '' && this.matches('a[href][title]')) {
                         /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
                         result = this.getAttribute('title');
                     }
