@@ -579,6 +579,15 @@ function getXPath(element) {
 	return (element.parentNode.nodeType == 1 ? getXPath(element.parentNode) : '') + '/' + element.tagName.toLowerCase() + '[' + (position ? position : '1') + ']' + (element.hasAttribute('id') ? '[@id="' + element.getAttribute('id') + '"]' : '') + (element.hasAttribute('class') ? '[@class="' + element.getAttribute('class') + '"]' : '');
 }
 
+function getCssSelector (el){
+	let path = [], parent;
+	while (parent = el.parentNode) {
+		path.unshift(`${el.tagName}:nth-child(${[].indexOf.call(parent.children, el)+1})`);
+		el = parent;
+	}
+	return `${path.join(' > ')}`.toLowerCase();
+}
+
 function addBooleanResult(name, data) {
 	/*
 		addBooleanResult(browser.i18n.getMessage("msgHeadings"), {
@@ -653,7 +662,7 @@ function manageOutput(element) {
 			fakeelement.innerHTML = '[...]';
 		}
 	}
-	return { status: status, outer: fakeelement.outerHTML, xpath: getXPath(element), role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isNotVisibleDueTo: isNotVisibleDueTo, isNotExposedDueTo: isNotExposedDueTo };
+	return { status: status, outer: fakeelement.outerHTML, cssSelector: getCssSelector(element), xpath: getXPath(element), role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isNotVisibleDueTo: isNotVisibleDueTo, isNotExposedDueTo: isNotExposedDueTo };
 }
 
 function createTanaguruTag(tag, status) {
@@ -725,7 +734,9 @@ function createTanaguruTest(test) {
 			if (test.hasOwnProperty('filter')) {
 				if (test.filter.constructor == Function) {
 					elements = Array.from(elements);
-					elements = elements.filter(test.filter);
+					elements = elements.filter((e)=> {
+						return test.filter(e, HTML)
+					});
 				}
 				else {
 					// Erreur : valeur de la propriété filter.
@@ -771,7 +782,7 @@ function createTanaguruTest(test) {
 			var failedincollection = null;
 			if (test.hasOwnProperty('analyzeElements')) {
 				if (test.analyzeElements.constructor == Function) {
-					test.analyzeElements(elements);
+					test.analyzeElements(elements, HTML);
 					// On modifie le statut du test selon les statuts d'items.
 					for (var e = 0; e < elements.length; e++) {
 						if (elements[e].status == 'failed') {
