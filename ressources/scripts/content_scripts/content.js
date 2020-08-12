@@ -667,7 +667,7 @@ function manageOutput(element) {
 
 function createTanaguruTag(tag, status) {
 	if (!window.tanaguru.tags[tag]) {
-		window.tanaguru.tags[tag] = { id: tag, name: browser.i18n.getMessage('tag' + tag.charAt(0).toUpperCase() + tag.slice(1)), status: status, nbfailures: 0 };
+		window.tanaguru.tags[tag] = { id: tag, name: 'tag' + tag.charAt(0).toUpperCase() + tag.slice(1), status: status, nbfailures: 0 };
 	}
 }
 

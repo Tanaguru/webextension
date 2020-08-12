@@ -14,6 +14,7 @@ for (var i = 0; i < tanaguruTestsList.length; i++) {
 	if (!test.hasOwnProperty('name')) {
 		test.name = browser.i18n.getMessage('test' + test.id + 'Name');
 	}
+
 	if (!test.hasOwnProperty('explanations') && test.hasOwnProperty('id')) {
 		var explanations = [];
 		for (var j = 0; j < statuses.length; j++) {
@@ -32,4 +33,8 @@ for (var i = 0; i < tanaguruTestsList.length; i++) {
 		}
 	}
 	createTanaguruTest(test);
+}
+
+for(var tag of window.tanaguru.tags[tag]){
+	tag.name = browser.i18n.getMessage(tag.name);
 }
