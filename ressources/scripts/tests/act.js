@@ -11,7 +11,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that each button element has a non-empty accessible name.', 
 	query: 'button:not([role]), [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
 	expectedNbElements: 0,
-	filter: function (item) {
+	filter: function (item, HTML) {
 		if (item.isNotExposedDueTo.length == 0 && !item.matches('input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title]), input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title])')) {
 			return !item.hasAccessibleName();
 		}
@@ -26,7 +26,7 @@ tanaguruTestsList.push({
 	name: 'Button has a non-empty accessible name.',
 	description: 'This rule checks that each button element has a non-empty accessible name.', 
 	query: 'button:not([role]), [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
-	filter: function (item) {
+	filter: function (item, HTML) {
 		if (item.isNotExposedDueTo.length == 0) {
 			if (item.matches('input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title]), input[type="reset"]:not([aria-labelledby]):not([aria-label]):not([value]):not([title])')) {
 				return true;
@@ -35,7 +35,7 @@ tanaguruTestsList.push({
 		}
 		return false;
 	},
-	analyzeElements: function (collection) {
+	analyzeElements: function (collection, HTML) {
 		for (var i = 0; i < collection.length; i++) {
 			collection[i].status = 'passed';
 		}
@@ -51,7 +51,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that each form field element has a non-empty accessible name.', 
 	query: 'input[type="checkbox"]:not([role]), [role="checkbox"], [role="switch"], input[type="radio"]:not([role]), [role="radio"], select:not([role]), [role="combobox"], input[type="search"]:not([role]), [role="searchbox"], input[type="range"]:not([role]), [role="slider"], input[type="number"]:not([role]), [role="spinbutton"], input:not([type]):not([role]), input[type="email"]:not([role]), input[type="tel"]:not([role]), input[type="text"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), [contenteditable="true"]:not([role]), [role="textbox"], [role="listbox"], [role="menuitemcheckbox"], [role="menuitemradio"]', 
 	expectedNbElements: 0, 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
 	}, 
 	tags: ['a11y', 'forms'], 
@@ -63,10 +63,10 @@ tanaguruTestsList.push({
 	name: 'Form control has a non-empty accessible name.', 
 	description: 'This rule checks that each form field element has a non-empty accessible name.', 
 	query: 'input[type="checkbox"]:not([role]), [role="checkbox"], [role="switch"], input[type="radio"]:not([role]), [role="radio"], select:not([role]), [role="combobox"], input[type="search"]:not([role]), [role="searchbox"], input[type="range"]:not([role]), [role="slider"], input[type="number"]:not([role]), [role="spinbutton"], input:not([type]):not([role]), input[type="email"]:not([role]), input[type="tel"]:not([role]), input[type="text"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), [contenteditable="true"]:not([role]), [role="textbox"], [role="listbox"], [role="menuitemcheckbox"], [role="menuitemradio"]', 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
 	},
-	analyzeElements: function (collection) {
+	analyzeElements: function (collection, HTML) {
 		for (var i = 0; i < collection.length; i++) {
 			collection[i].status = 'passed';
 		}
@@ -82,7 +82,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that each heading has a non-empty accessible name.', 
 	query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"]',
 	expectedNbElements: 0,
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
 	},
 	tags: ['a11y', 'headings'],
@@ -97,10 +97,10 @@ tanaguruTestsList.push({
 	name: 'Heading has a non-empty accessible name.', 
 	description: 'This rule checks that each heading has a non-empty accessible name.', 
 	query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"]',
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
 	},
-	analyzeElements: function (collection) {
+	analyzeElements: function (collection, HTML) {
 		for (var i = 0; i < collection.length; i++) {
 			collection[i].status = 'passed';
 		}
@@ -119,7 +119,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that each iframe element has a non-empty accessible name.', 
 	query: 'iframe',
 	expectedNbElements: 0,
-	filter: function (item) {
+	filter: function (item, HTML) {
 		if (item.isNotExposedDueTo.length == 0) {
 			if (!item.matches('[role]')) {
 				return !item.hasAccessibleName();
@@ -143,7 +143,7 @@ tanaguruTestsList.push({
 	name: 'iframe element has a non-empty accessible name', 
 	description: 'This rule checks that each iframe element has a non-empty accessible name.', 
 	query: 'iframe',
-	filter: function (item) {
+	filter: function (item, HTML) {
 		if (item.isNotExposedDueTo.length == 0) {
 			if (!item.matches('[role]')) {
 				return item.hasAccessibleName();
@@ -158,7 +158,7 @@ tanaguruTestsList.push({
 		}
 		return false;
 	},
-	analyzeElements: function (collection) {
+	analyzeElements: function (collection, HTML) {
 		for (var i = 0; i < collection.length; i++) {
 			collection[i].status = 'passed';
 		}
@@ -176,7 +176,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that each image button element has a non-empty accessible name.', 
 	query: 'input[type="image"]:not([role]), input[type="image"][role="button"]',
 	expectedNbElements: 0,
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
 	},
 	tags: ['a11y', 'buttons', 'images'],
@@ -188,10 +188,10 @@ tanaguruTestsList.push({
 	name: 'Image button has a non-empty accessible name.', 
 	description: 'This rule checks that each image button element has a non-empty accessible name.', 
 	query: 'input[type="image"]:not([role]), input[type="image"][role="button"]',
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
 	},
-	analyzeElements: function (collection) {
+	analyzeElements: function (collection, HTML) {
 		for (var i = 0; i < collection.length; i++) {
 			collection[i].status = 'passed';
 		}
@@ -207,7 +207,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that each image either has a non-empty accessible name or is marked up as decorative.', 
 	query: 'img:not([role]), img[role="none"][tabindex], img[role="presentation"][tabindex], [role="img"]',
 	expectedNbElements: 0,
-	filter: function (item) {
+	filter: function (item, HTML) {
 		if (item.isNotExposedDueTo.length == 0) {
 			if (item.matches('img[role="none"][tabindex], img[role="presentation"][tabindex]')) {
 				var tabindex = item.getAttribute('tabindex');
@@ -234,7 +234,7 @@ tanaguruTestsList.push({
 	name: 'Image has a non-empty accessible name.', 
 	description: 'This rule checks that each image either has a non-empty accessible name or is marked up as decorative.', 
 	query: 'img:not([role]), img[role="none"]:not([tabindex]), img[role="presentation"]:not([tabindex]), [role="img"]',
-	filter: function (item) {
+	filter: function (item, HTML) {
 		if (item.isNotExposedDueTo.length == 0) {
 			if (item.matches('[role="none"], [role="presentation"]') || item.matches('img[alt=""]')) {
 				return true;
@@ -245,7 +245,7 @@ tanaguruTestsList.push({
 		}
 		return false;
 	},
-	analyzeElements: function (collection) {
+	analyzeElements: function (collection, HTML) {
 		for (var i = 0; i < collection.length; i++) {
 			collection[i].status = 'passed';
 		}
@@ -260,7 +260,7 @@ tanaguruTestsList.push({
 	name: "svg element with explicit role has a non-empty accessible name.", 
 	description: 'This rule checks that each SVG image element that is explicitly included in the accessibility tree has a non-empty accessible name.', 
 	query: 'svg[role="img"]',
-	filter: function (item) {
+	filter: function (item, HTML) {
 		if (item.isNotExposedDueTo.length == 0) {
 			return item.hasAccessibleName();
 		}
@@ -278,7 +278,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that each link has a non-empty accessible name.', 
 	query: 'a[href]:not([role]), a[href][role="none"]:not([tabindex="-1"]), a[href][role="presentation"]:not([tabindex="-1"]), [role="link"], map[name]:not([role]) > area[href]:not([role])',
 	expectedNbElements: 0,
-	filter: function (item) {
+	filter: function (item, HTML) {
 		if (item.isNotExposedDueTo.length == 0) {
 			if (item.matches(':not([role]), [role="link"]')) {
 				return !item.hasAccessibleName();
@@ -304,7 +304,7 @@ tanaguruTestsList.push({
 	name: 'Link has a non-empty accessible name.', 
 	description: 'This rule checks that each link has a non-empty accessible name.', 
 	query: 'a[href]:not([role]), a[href][role="none"]:not([tabindex="-1"]), a[href][role="presentation"]:not([tabindex="-1"]), [role="link"], map[name]:not([role]) > area[href]:not([role])',
-	filter: function (item) {
+	filter: function (item, HTML) {
 		if (item.isNotExposedDueTo.length == 0) {
 			if (item.matches(':not([role]), [role="link"]')) {
 				return item.hasAccessibleName();
@@ -321,7 +321,7 @@ tanaguruTestsList.push({
 		}
 		return false;
 	},
-	analyzeElements: function (collection) {
+	analyzeElements: function (collection, HTML) {
 		for (var i = 0; i < collection.length; i++) {
 			collection[i].status = 'passed';
 		}
@@ -369,7 +369,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that a non-empty lang attribute of an element in the page body has a language tag with a known primary language subtag.', 
 	query: 'body [lang]',  
 	expectedNbElements: 0, 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		var lang = item.getAttribute('lang');
 		if (lang != '') {
 			return lang.trim().length == 0 ? true : !item.hasValidLanguageCode();
@@ -387,7 +387,7 @@ tanaguruTestsList.push({
 	name: 'Element with lang attribute has a valid language tag.',
 	description: 'This rule checks that a non-empty lang attribute of an element in the page body has a language tag with a known primary language subtag.',
 	query: 'body [lang]', 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		var lang = item.getAttribute('lang');
 		if (lang != '') {
 			return lang.trim().length > 0 ? item.hasValidLanguageCode() : false;
@@ -416,7 +416,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that an HTML page has a non-empty lang attribute.',
 	query: 'html[lang]', 
 	expectedNbElements: 0, 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.getAttribute('lang').trim().length == 0;
 	},
 	ressources: { 'act': ['b5c3f8'], 'wcag20': ['3.1.1'] }, 
@@ -428,7 +428,7 @@ tanaguruTestsList.push({
 	name: 'HTML page has a non-empty lang attribute.',
 	description: 'This rule checks that an HTML page has a non-empty lang attribute.',
 	query: 'html[lang]', 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.getAttribute('lang').trim().length > 0;
 	},
 	ressources: { 'act': ['b5c3f8'], 'wcag20': ['3.1.1'] }, 
@@ -441,7 +441,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that both lang and xml:lang attributes on the root element of a non-embedded HTML page, have the same primary language subtag.',
 	query: 'html[lang][xml\\:lang]', 
 	expectedNbElements: 0, 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return !item.hasValidLanguageCode || (item.getAttribute('xml:lang').trim().length > 0 && item.getAttribute('lang') != item.getAttribute('xml:lang'));
 	}, 
 	ressources: { 'act': ['5b7ae0'], 'wcag20': ['3.1.1'] }, 
@@ -453,10 +453,10 @@ tanaguruTestsList.push({
 	name: 'HTML page lang and xml:lang attributes have matching values.',
 	description: 'This rule checks that both lang and xml:lang attributes on the root element of a non-embedded HTML page, have the same primary language subtag.',
 	query: 'html[lang][xml\\:lang]', 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.hasValidLanguageCode && item.getAttribute('lang') == item.getAttribute('xml:lang');
 	}, 
-	analyzeElements: function (collection) {
+	analyzeElements: function (collection, HTML) {
 		if (collection.length == 1) {
 			collection[0].status = 'passed';
 		}
@@ -471,7 +471,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that the lang attribute of the root element of a non-embedded HTML page has a language tag with a known primary language subtag.',
 	query: 'html[lang]', 
 	expectedNbElements: 0, 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.getAttribute('lang').trim().length > 0 && !item.hasValidLanguageCode();
 	}, 
 	ressources: { 'act': ['bf051a'], 'wcag20': ['3.1.1'] }, 
@@ -483,7 +483,7 @@ tanaguruTestsList.push({
 	name: 'HTML page language is valid.',
 	description: 'This rule checks that the lang attribute of the root element of a non-embedded HTML page has a language tag with a known primary language subtag.',
 	query: 'html[lang]', 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.getAttribute('lang').trim().length > 0 && item.hasValidLanguageCode();
 	}, 
 	ressources: { 'act': ['bf051a'], 'wcag20': ['3.1.1'] }, 
@@ -496,7 +496,7 @@ tanaguruTestsList.push({
 	name: 'HTML page has an empty title.',
 	description: 'This rule checks that a non-embedded HTML page has a title.',
 	query: '*:not(svg) title', 
-	analyzeElements: function (collection) {
+	analyzeElements: function (collection, HTML) {
 		if (collection.length > 0) {
 			for (var i = 0; i < collection.length; i++) {
 				collection[i].status = 'untested';
@@ -535,7 +535,7 @@ tanaguruTestsList.push({
 	name: 'meta element has no refresh delay.',
 	description: 'This rule checks that the meta element is not used for delayed redirecting or refreshing.',
 	query: 'meta[http-equiv="refresh"][content]',
-	filter: function (item) {
+	filter: function (item, HTML) {
 		var content = item.getAttribute('content').trim();
 		if (content.length > 0) {
 			return /^(\s*\d+\s*){1}(;|;(url=)?(.)+)?$/i.test(content);
@@ -544,7 +544,7 @@ tanaguruTestsList.push({
 			return false;
 		}
 	},
-	analyzeElements: function (collection) {
+	analyzeElements: function (collection, HTML) {
 		var alreadyTested = false;
 		for (var i = 0; i < collection.length; i++) {
 			collection[i].status = 'untested';
@@ -569,7 +569,7 @@ tanaguruTestsList.push({
 	name: 'meta viewport does not prevent zoom.',
 	description: 'This rule checks that the meta element retains the user agent ability to zoom.',
 	query: 'meta[name="viewport"][content]', 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		var content = item.getAttribute('content').trim();
 		if (content.length > 0) {
 			return /^\s*[^,=]+\s*=\s*[^,=]+\s*(,\s*[^,=]+\s*=\s*[^,=]+\s*)*$/i.test(content);
@@ -578,7 +578,7 @@ tanaguruTestsList.push({
 			return false;
 		}
 	}, 
-	analyzeElements: function (collection) {
+	analyzeElements: function (collection, HTML) {
 		for (var i = 0; i < collection.length; i++) {
 			collection[i].status = 'passed';
 			var content = collection[i].getAttribute('content').trim();
@@ -619,7 +619,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that elements with an aria-hidden attribute do not contain focusable elements.', 
 	query: '[aria-hidden="true"]', 
 	expectedNbElements: 0, 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		var visibleState = item.isNotVisibleDueTo;
 		if (visibleState.length == 0 || (visibleState.indexOf('css:display') == -1 && visibleState.indexOf('css:visibility') == -1)) {
 			var focusables = item.querySelectorAll(HTML.getFocusableElementsSelector());
@@ -691,7 +691,7 @@ tanaguruTestsList.push({
 	name: 'Link in context is descriptive.',
 	description: 'This rule checks that the accessible name of a link together with its context describe its purpose.',
 	query: 'a[href], [role="link"]', 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
 	}, 
 	ressources: { 'act': ['5effbb'], 'wcag20': ['2.4.4', '2.4.9'] }, 
@@ -706,7 +706,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that the headers attribute on a cell refer to other cells in the same table element.',
 	query: 'table td[headers]', 
 	expectedNbElements: 0, 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		var headers = item.getAttribute('headers');
 		if (/^.+(\s.+)*$/.test(headers)) {
 			headers = headers.split(' ');
@@ -739,7 +739,7 @@ tanaguruTestsList.push({
 	name: "Headers attribute specified on a cell refers to cells in the same table element.",
 	description: 'This rule checks that the headers attribute on a cell refer to other cells in the same table element.',
 	query: 'table td[headers]', 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		var headers = item.getAttribute('headers');
 		if (/^.+(\s.+)*$/.test(headers)) {
 			headers = headers.split(' ');
@@ -763,7 +763,7 @@ tanaguruTestsList.push({
 			return false;
 		}
 	}, 
-	analyzeElements: function (collection) {
+	analyzeElements: function (collection, HTML) {
 		for (var i = 0; i < collection.length; i++) {
 			collection[i].status = 'passed';
 		}
@@ -777,7 +777,7 @@ tanaguruTestsList.push({
 	name: 'All table header cells have assigned data cells.',
 	description: 'This rule checks that each table header has assigned data cells in a table element.',
 	query: 'th, [role="columnheader"]', 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		// TODO : count columns (row by row) or cell with headers (probably headers > cell) ?
 	},
 	ressources: { 'act': ['d0f69e'], 'wcag20': ['1.3.1'] }, 
@@ -790,7 +790,7 @@ tanaguruTestsList.push({
 	name: 'Heading is descriptive.',
 	description: 'This rule checks that headings describe the topic or purpose of the content.',
 	query: 'h1, h2, h3, h4, h5, h6, [role="heading"]', 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
 	},
 	ressources: { 'act': ['b49b2e'], 'wcag20': ['2.4.6'] }, 
@@ -964,7 +964,7 @@ tanaguruTestsList.push({
 	name: "video element auditory content doesn't have captions.",
 	description: 'This rule checks that captions are available for audio information in non-streaming video elements.',
 	query: 'video', 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.querySelectorAll('track[kind="captions"]').length == 0;
 	}, 
 	ressources: { 'act': ['f51b46'], 'wcag20': ['1.2.2'] }, 
@@ -977,7 +977,7 @@ tanaguruTestsList.push({
 	name: 'video element auditory content has captions.',
 	description: 'This rule checks that captions are available for audio information in non-streaming video elements.',
 	query: 'video', 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.querySelectorAll('track[kind="captions"]').length > 0;
 	}, 
 	ressources: { 'act': ['f51b46'], 'wcag20': ['1.2.2'] }, 
@@ -990,7 +990,7 @@ tanaguruTestsList.push({
 	name: "video element visual(-only) content doesn't have description track.",
 	description: 'This rule checks that description tracks that come with non-streaming video elements (without audio or not) are descriptive.',
 	query: 'video', 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.querySelectorAll('track[kind="descriptions"]').length == 0;
 	}, 
 	ressources: { 'act': ['f196ce', 'ac7dc6'], 'wcag20': ['1.2.1', '1.2.3', '1.2.5', '1.2.7'] }, 
@@ -1003,7 +1003,7 @@ tanaguruTestsList.push({
 	name: 'video element visual(-only) content has description track.',
 	description: 'This rule checks that description tracks that come with non-streaming video elements (without audio or not) are descriptive.',
 	query: 'video', 
-	filter: function (item) {
+	filter: function (item, HTML) {
 		return item.querySelectorAll('track[kind="descriptions"]').length > 0;
 	}, 
 	ressources: { 'act': ['f196ce', 'ac7dc6'], 'wcag20': ['1.2.1', '1.2.3', '1.2.5', '1.2.7'] }, 
