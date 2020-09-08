@@ -29,6 +29,8 @@
 	},
 	"msgNavHeading": { "message": "Résultats de l'analyse" },
 	"msgDashboard": { "message": "Tableau de bord" },
+	"msgDashboardResultFailed": { "message": "Des erreurs ont été détectée dans cette page." }, 
+	"msgDashboardResultPassed": { "message": "Aucune erreur n'a été détectée dans cette page." }, 
 	"earlFailed": { "message": "Invalidé" },
 	"earlPassed": { "message": "Validé" },
 	"earlCantTell": { "message": "Indéterminé" },
