@@ -238,8 +238,19 @@ button.addEventListener('click', function () {
 		dashboardpanel.setAttribute('aria-hidden', 'false');
 		dashboard.setAttribute('aria-controls', dashboardpanel.getAttribute('id'));
 		var dashboardpanelheading = document.createElement('h2');
+		dashboardpanelheading.setAttribute('class', 'visually-hidden');
 		dashboardpanelheading.appendChild(document.createTextNode(dashboard.textContent));
 		dashboardpanel.appendChild(dashboardpanelheading);
+		
+		
+		// UI. Dashboard.
+		dashboardpanel.setAttribute('style', 'height: 100%; padding: 0; margin: 0; position: relative;');
+		var dashboardpanelp = document.createElement('p'); 
+		dashboardpanelp.setAttribute('style', 'margin: 0; position: absolute; justify-content: center; left: 0; right: 0; top: 0; bottom: 0; font-weight: bolder; display: inline-flex; align-items: center;');
+		dashboardpanelp.appendChild(document.createTextNode(browser.i18n.getMessage('msgDashboardResultPassed')));
+		dashboardpanel.appendChild(dashboardpanelp);
+		
+		
 	  	main.children[1].appendChild(dashboardpanel);
 	  	ul.appendChild(dashboard);
 	  	main.children[1].addEventListener('click', function(event) {
@@ -464,7 +475,17 @@ var ressourcestests = [];
 		
 		
 		
+		var updatedashboardp = false;
 		for (var test in response[0].tests) {
+			
+			
+			// UI. Dashboard.
+			if (updatedashboardp == false && response[0].tests[test].type == 'failed') {
+				dashboardpanelp.replaceChild(document.createTextNode(browser.i18n.getMessage('msgDashboardResultFailed')), dashboardpanelp.firstChild);
+				updatedashboardp = true;
+			}
+			
+			
 			var testelement = document.createElement('div');
 			testelement.setAttribute('class', 'testparent ' + response[0].tests[test].tags.join(' '));
 			if (response[0].tests[test].hasOwnProperty('ressources')) {
