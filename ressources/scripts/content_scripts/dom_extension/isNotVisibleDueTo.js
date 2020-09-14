@@ -6,6 +6,16 @@ var isNotVisibleDueTo = function () {
     if (window.getComputedStyle(this, null).getPropertyValue('display') == 'none') {
         result.push('css:display');
     }
+    else {
+        var parent = this.parentNode;
+        while (parent && parent.nodeType == 1) {
+            if (window.getComputedStyle(parent, null).getPropertyValue('display') == 'none') {
+                result.push('css:display');
+                break;
+            }
+            parent = parent.parentNode;
+        }
+    }
     if (window.getComputedStyle(this, null).getPropertyValue('opacity') == '0') {
         result.push('css:opacity');
     }
