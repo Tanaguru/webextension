@@ -493,7 +493,7 @@ tanaguruTestsList.push({
 // Document Title.
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'HTML page has an empty title.',
+	name: 'HTML page has an non-empty title.',
 	description: 'This rule checks that a non-embedded HTML page has a title.',
 	query: '*:not(svg) title', 
 	analyzeElements: function (collection) {
@@ -501,9 +501,7 @@ tanaguruTestsList.push({
 			for (var i = 0; i < collection.length; i++) {
 				collection[i].status = 'untested';
 			}
-			if (document.title == '') {
-				collection[0].status = 'failed';
-			}
+			collection[0].status = document.title.trim().length == 0 ? 'failed' : 'passed';
 		}
 	}, 
 	ressources: { 'act': ['2779a5'], 'wcag20': ['2.4.2'] }, 
@@ -525,6 +523,14 @@ tanaguruTestsList.push({
 	name: 'HTML page title is descriptive.',
 	description: 'This rule checks that the first title in an HTML page describes the topic or purpose of that page.',
 	query: '*:not(svg) title', 
+	analyzeElements: function (collection) {
+		if (collection.length > 0) {
+			for (var i = 0; i < collection.length; i++) {
+				collection[i].status = 'untested';
+			}
+			collection[0].status = document.title.trim().length == 0 ? 'failed' : 'untested';
+		}
+	}, 
 	ressources: { 'act': ['c4a8a4'], 'wcag20': ['2.4.2'] }, 
 	tags: ['a11y', 'pageTitle']
 });
