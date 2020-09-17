@@ -40,6 +40,19 @@ var languages = {
 };
 
 // hasValidLanguageCode.
-var hasValidLanguageCode = function () { return languages.data.hasOwnProperty(this.lang); };
+var hasValidLanguageCode = function () {
+    var r = /^[a-z]{2,}(-[a-z]{2,})?$/i;
+    if (r.test(this.lang)) {
+        var computedlang = this.lang;
+        if (this.lang.includes('-')) {
+            computedlang = this.lang.split('-');
+            computedlang = computedlang[0];
+        }
+        return languages.data.hasOwnProperty(computedlang);
+    }
+    else {
+        return false;
+    }
+};
 if (!('hasValidLanguageCode' in SVGElement.prototype)) SVGElement.prototype.hasValidLanguageCode = hasValidLanguageCode;
 if (!('hasValidLanguageCode' in HTMLElement.prototype)) HTMLElement.prototype.hasValidLanguageCode = hasValidLanguageCode;
