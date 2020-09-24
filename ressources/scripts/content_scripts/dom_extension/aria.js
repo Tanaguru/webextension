@@ -1580,6 +1580,23 @@ var ARIA = {
 				}
 			}
 		}
+	}, 
+	getAllStatesProperties: function (format) {
+		var statesData = ariaData.states;
+		var propertiesData = ariaData.properties;
+		var statesProperties = null;
+		switch (format) {
+			case 'js':
+				statesProperties = [];
+				for (var state in statesData) {
+					statesProperties.push(state);
+				}
+				for (var property in propertiesData) {
+					statesProperties.push(property);
+				}
+				break;
+		}
+		return statesProperties;
 	}
 };
 
@@ -1665,7 +1682,7 @@ var hasAriaAttributesWithInvalidValues = function () {
 	for (var i = 0; i < this.attributes.length; i++) {
 		var attribute = this.attributes[i];
 		var name = attribute.name;
-		if (name.match(/^aria-/)) {
+		if (name.match(/^aria-.*$/)) {
 			var sp = new ARIA.StateProperty(name);
 			var isValidValue = sp.isValidValue(attribute.value);
 			if (isValidValue) {
@@ -1711,15 +1728,35 @@ var hasAriaAttributesWithInvalidValues = function () {
 					else if (values.hasOwnProperty('attribute')) {
 						if (values.attribute == 'id') {
 							if (values.multiple) {
-								var notFoundElements = [];
-								var ids = attribute.value.split(' ');
-								for (var j = 0; j < ids.length; j++) {
-									if (!document.getElementById(ids[j])) {
-										notFoundElements.push(ids[j]);
+								var mode = 'strict';
+								if (arguments.length == 1 && arguments[0].constructor == Object) {
+									if (arguments[0].permissive) {
+										mode = 'permissive';
 									}
 								}
-								if (notFoundElements.length > 0) {
-									errors.push(ARIA.Errors.TokensIdValueElements.replace('{{attribute}}', attribute.name));
+								var ids = attribute.value.split(' ');
+								if (mode == 'strict') {
+									var notFoundElements = [];
+									for (var j = 0; j < ids.length; j++) {
+										if (!document.getElementById(ids[j])) {
+											notFoundElements.push(ids[j]);
+										}
+									}
+									if (notFoundElements.length > 0) {
+										errors.push(ARIA.Errors.TokensIdValueElements.replace('{{attribute}}', attribute.name));
+									}
+								}
+								else {
+									var foundElement = false;
+									for (var j = 0; j < ids.length; j++) {
+										if (document.getElementById(ids[j])) {
+											foundElement = true;
+											break;
+										}
+									}
+									if (!foundElement) {
+										errors.push(ARIA.Errors.TokensIdValueElements.replace('{{attribute}}', attribute.name));
+									}
 								}
 							}
 							else {
