@@ -1572,6 +1572,9 @@ var ARIA = {
 				return undefined;
 			}
 		};
+		this.getComputedValue = function (value) {
+			// empty or unspecified : return default value.
+		};
 		if (arguments.length == 2 && arguments[1].constructor == Object) {
 			if (arguments[1].hasOwnProperty('getData')) {
 				if (this.isValid()) {
@@ -1614,11 +1617,31 @@ var getComputedAriaRole = function () {
 						break;
 					}
 				}
-				return computedRole != null ? computedRole : this.getImplicitAriaRole();
+				if (computedRole) {
+					if (computedRole == 'presentation' || computedRole == 'none') {
+						if (this.matches(HTML.getFocusableElementsSelector())) {
+							return this.getImplicitAriaRole();
+						}
+					}
+					return computedRole;
+				}
+				else {
+					return this.getImplicitAriaRole();
+				}
 			}
 			else {
 				role = new ARIA.Role(role);
-				return role.isValid() ? role.role : this.getImplicitAriaRole();
+				if (role.isValid()) {
+					if (role.role == 'presentation' || role.role == 'none') {
+						if (this.matches(HTML.getFocusableElementsSelector())) {
+							return this.getImplicitAriaRole();
+						}
+					}
+					return role.role;
+				}
+				else {
+					return this.getImplicitAriaRole();
+				}
 			}
 		}
 		else {
