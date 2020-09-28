@@ -167,8 +167,6 @@ tanaguruTestsList.push({
 	ressources: { 'act': ['cae760'], 'wcag20': ['4.1.2'] }
 });
 
-// TO ADD : 4b1c6c - iframe elements with identical accessible names have equivalent purpose.
-
 // Accessible Names: Image Buttons.
 tanaguruTestsList.push({
 	lang: 'en',
@@ -360,7 +358,135 @@ tanaguruTestsList.push({
 	tags: ['a11y', 'code']
 });
 
-// TO ADD : ARIA.
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Attribute is not duplicated.',
+	description: 'This rule checks that HTML and SVG starting tags do not contain duplicated attributes.',
+	status: 'untested', 
+	ressources: { 'act': ['e6952f'], 'wcag20': ['4.1.1'] }, 
+    tags: ['a11y', 'code'], 
+    comment: 'Duplicated attributes are removed by the user agent.'
+});
+
+// ARIA.
+tanaguruTestsList.push({
+	lang: 'en', 
+	name: 'role attribute has an invalid value.',
+	description: 'This rule checks that each role attribute has a valid value.', 
+	query: '[role]',  
+	expectedNbElements: 0, 
+	filter: function (item) {
+		if (item instanceof MathMLElement) {
+			return false;
+		}
+		if (item.isNotExposedDueTo.length == 0) {
+			if (item.getAttribute('role').trim() == 0) {
+				return false;
+			}
+			return !item.hasValidRole();
+		}
+		return false;
+	}, 
+	ressources: { 'act': ['674b10'] }, 
+	tags: ['a11y', 'aria']
+});
+
+tanaguruTestsList.push({
+	lang: 'en', 
+	name: 'role attribute has a valid value.',
+	description: 'This rule checks that each role attribute has a valid value.', 
+	query: '[role]',  
+	filter: function (item) {
+		if (item instanceof MathMLElement) {
+			return false;
+		}
+		return item.isNotExposedDueTo.length == 0 ? item.hasValidRole() : false;
+	}, 
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+	ressources: { 'act': ['674b10'] }, 
+	tags: ['a11y', 'aria']
+});
+
+tanaguruTestsList.push({
+	lang: 'en', 
+	name: 'aria-* attribute is defined in WAI-ARIA.',
+	description: 'This rule checks that each aria-* attribute specified is defined in ARIA 1.2.', 
+	query: '*',  
+	filter: function (item) {
+		if (item instanceof MathMLElement) {
+			return false;
+		}
+		if (item.isNotExposedDueTo.length == 0) {
+			return Array.from(item.attributes).filter(function(attributeNode) { 
+				return /^aria-.*$/.test(attributeNode.nodeName); 
+			}).length > 0;
+		}
+		return false;
+	}, 
+	analyzeElements: function (collection) {
+		var definedStatesProperties = ARIA.getAllStatesProperties('js');
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+			var attributes = Array.from(collection[i].attributes);
+			for (var a = 0; a < attributes.length; a++) {
+				if (/^aria-.*$/.test(attributes[a].nodeName)) {
+					if (definedStatesProperties.indexOf(attributes[a].nodeName) == -1) {
+						collection[i].status = 'failed';
+						break;
+					}
+				}
+			}
+		}
+	}, 
+	ressources: { 'act': ['5f99a7'] }, 
+	tags: ['a11y', 'aria']
+});
+
+tanaguruTestsList.push({
+	lang: 'en', 
+	name: 'ARIA state or property has an invalid value.',
+	description: 'This rule checks that each ARIA state or property has a valid value.', 
+    query: '*', 
+    expectedNbElements: 0, 
+	filter: function (item) {
+		if (item instanceof MathMLElement) {
+			return false;
+		}
+		if (item.isNotExposedDueTo.length == 0) {
+			if (Array.from(item.attributes).filter(function(attributeNode) { return /^aria-.*$/.test(attributeNode.nodeName); }).length > 0) {
+				return item.hasAriaAttributesWithInvalidValues({ permissive: true });
+			}
+		}
+        return false;
+	}, 
+	ressources: { 'act': ['6a7281'] }, 
+	tags: ['a11y', 'aria']
+});
+
+tanaguruTestsList.push({
+	lang: 'en', 
+	name: 'ARIA state or property is not permitted.',
+	description: 'This rule checks that WAI-ARIA states or properties are allowed for the element they are specified on.', 
+    query: '*', 
+    expectedNbElements: 0, 
+	filter: function (item) {
+		if (item instanceof MathMLElement) {
+			return false;
+		}
+		if (item.isNotExposedDueTo.length == 0) {
+			if (Array.from(item.attributes).filter(function(attributeNode) { return /^aria-.*$/.test(attributeNode.nodeName); }).length > 0) {
+				return item.hasProhibitedAriaAttributes();
+			}
+		}
+		return false;
+	}, 
+	ressources: { 'act': ['5c01ea'] }, 
+	tags: ['a11y', 'aria']
+});
 
 // Languages.
 tanaguruTestsList.push({
