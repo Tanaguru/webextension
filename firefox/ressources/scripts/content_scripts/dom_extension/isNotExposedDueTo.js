@@ -49,7 +49,7 @@ var isNotExposedDueTo = function () {
 		}
 	}
 	var visible = this.isNotVisibleDueTo;
-	if (visible.indexOf('css:display') > -1 || visible.indexOf('css:visibility') > -1) {
+	if (!this.matches('area') && visible.indexOf('css:display') > -1 || visible.indexOf('css:visibility') > -1) {
 		result.push('css:other');
 	}
 	return result;
