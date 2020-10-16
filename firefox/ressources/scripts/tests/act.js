@@ -621,7 +621,10 @@ tanaguruTestsList.push({
 	lang: 'en',
 	name: 'HTML page has an non-empty title.',
 	description: 'This rule checks that a non-embedded HTML page has a title.',
-	query: '*:not(svg) title', 
+	query: 'title', 
+	filter: function (item) {
+		return !item.matches('svg title');
+	},
 	analyzeElements: function (collection) {
 		if (collection.length > 0) {
 			for (var i = 0; i < collection.length; i++) {
@@ -638,7 +641,10 @@ tanaguruTestsList.push({
 	lang: 'en',
 	name: 'HTML page has a title.',
 	description: 'This rule checks that a non-embedded HTML page has a title.',
-	query: '*:not(svg) title', 
+	query: 'title', 
+	filter: function (item) {
+		return !item.matches('svg title');
+	},
 	expectedNbElements: { min: 1 },
 	ressources: { 'act': ['2779a5'], 'wcag20': ['2.4.2'] }, 
 	tags: ['a11y', 'pageTitle']
@@ -648,7 +654,10 @@ tanaguruTestsList.push({
 	lang: 'en',
 	name: 'HTML page title is descriptive.',
 	description: 'This rule checks that the first title in an HTML page describes the topic or purpose of that page.',
-	query: '*:not(svg) title', 
+	query: 'title', 
+	filter: function (item) {
+		return !item.matches('svg title');
+	},
 	analyzeElements: function (collection) {
 		if (collection.length > 0) {
 			for (var i = 0; i < collection.length; i++) {
