@@ -579,15 +579,6 @@ function getXPath(element) {
 	return (element.parentNode.nodeType == 1 ? getXPath(element.parentNode) : '') + '/' + element.tagName.toLowerCase() + '[' + (position ? position : '1') + ']' + (element.hasAttribute('id') ? '[@id="' + element.getAttribute('id') + '"]' : '') + (element.hasAttribute('class') ? '[@class="' + element.getAttribute('class') + '"]' : '');
 }
 
-function getCssSelector (el){
-	let path = [], parent;
-	while (parent = el.parentNode) {
-		path.unshift(`${el.tagName}:nth-child(${[].indexOf.call(parent.children, el)+1})`);
-		el = parent;
-	}
-	return `${path.join(' > ')}`.toLowerCase();
-}
-
 function addBooleanResult(name, data) {
 	/*
 		addBooleanResult(browser.i18n.getMessage("msgHeadings"), {
@@ -662,12 +653,70 @@ function manageOutput(element) {
 			fakeelement.innerHTML = '[...]';
 		}
 	}
-	return { status: status, outer: fakeelement.outerHTML, cssSelector: getCssSelector(element), xpath: getXPath(element), role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isNotVisibleDueTo: isNotVisibleDueTo, isNotExposedDueTo: isNotExposedDueTo };
+	return { status: status, outer: fakeelement.outerHTML, cssSelector: getUniqueSelector(element), xpath: getXPath(element), role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isNotVisibleDueTo: isNotVisibleDueTo, isNotExposedDueTo: isNotExposedDueTo };
 }
 
 function createTanaguruTag(tag, status) {
 	if (!window.tanaguru.tags[tag]) {
 		window.tanaguru.tags[tag] = { id: tag, name: 'tag' + tag.charAt(0).toUpperCase() + tag.slice(1), status: status, nbfailures: 0 };
+	}
+}
+
+const specialCharRegex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+function getUniqueSelector(elSrc) {
+	if (!(elSrc instanceof Element)) return;
+	let sSel,
+		aAttr = ['name', 'value', 'title', 'placeholder', 'data-*'],
+		aSel = [],
+		getSelector = function(el) {
+			if (el.id && !specialCharRegex.test(el.id) ) {
+				aSel.unshift('#' + el.id);
+				return true;
+			}
+			aSel.unshift(sSel = el.nodeName.toLowerCase());
+			if (el.className &&
+				typeof el.className === 'string' &&
+				!specialCharRegex.test(el.className)) {
+				aSel[0] = sSel += '.' + el.className.trim().replace(/ +/g, '.');
+				if (uniqueQuery()) return true;
+			}
+			for (let i=0; i<aAttr.length; ++i) {
+				if (aAttr[i]==='data-*') {
+					let aDataAttr = [].filter.call(el.attributes, function(attr) {
+						return attr.name.indexOf('data-')===0;
+					});
+					for (let j=0; j<aDataAttr.length; ++j) {
+						aSel[0] = sSel += '[' + aDataAttr[j].name + '="' + aDataAttr[j].value + '"]';
+						if (uniqueQuery()) return true;
+					}
+				} else if (el[aAttr[i]]) {
+					aSel[0] = sSel += '[' + aAttr[i] + '="' + el[aAttr[i]] + '"]';
+					if (uniqueQuery()) return true;
+				}
+			}
+
+			let elChild = el,
+				sChild,
+				n = 1;
+			while (elChild = elChild.previousElementSibling) {
+				if (elChild.nodeName===el.nodeName) ++n;
+			}
+			aSel[0] = sSel += ':nth-of-type(' + n + ')';
+			if (uniqueQuery()) return true;
+
+			elChild = el;
+			n = 1;
+			while (elChild = elChild.previousElementSibling) ++n;
+			aSel[0] = sSel = sSel.replace(/:nth-of-type\(\d+\)/, n>1 ? ':nth-child(' + n + ')' : ':first-child');
+			if (uniqueQuery()) return true;
+			return false;
+		},
+		uniqueQuery = function() {
+			return document.querySelectorAll(aSel.join('>')||null).length===1;
+		};
+	while (elSrc.parentNode) {
+		if (getSelector(elSrc)) return aSel.join(' > ');
+		elSrc = elSrc.parentNode;
 	}
 }
 
