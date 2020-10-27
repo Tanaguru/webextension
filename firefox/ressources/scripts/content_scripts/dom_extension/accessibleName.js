@@ -22,13 +22,7 @@
 
 // accessibleName.
 var getAccessibleName = function () {
-	console.log(this.outerHTML);
-	
-	
-	//return 'ok';
-	
-	
-    // Data.
+	// Data.
     var ARIA = {
         nameFromContentSupported: '[role="button"], [role="cell"], [role="checkbox"], [role="columnheader"], [role="gridcell"], [role="heading"], [role="link"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"], [role="radio"], [role="row"], [role="rowgroup"], [role="rowheader"], [role="switch"], [role="tab"], [role="tooltip"], [role="treeitem"]'
     };
