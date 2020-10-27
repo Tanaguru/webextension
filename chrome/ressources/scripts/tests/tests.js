@@ -768,7 +768,12 @@ var getAccessibleName = function () {
                         result = this.getAttribute('aria-valuenow');
                     }
                     else if (this.matches(controls.nativeranges)) {
-                        result = this.value;
+                        if (this.result) {
+				result = this.value;
+			}
+			else {
+				result = '';
+			}
                     }
                 }
             }
