@@ -4805,9 +4805,5 @@ for (var i = 0; i < tanaguruTestsList.length; i++) {
 	createTanaguruTest(test);
 }
 
-for(var tag of window.tanaguru.tags){
-	tag.name = chrome.i18n.getMessage(tag.name);
-}
-
 // code.
 loadTanaguruTests();

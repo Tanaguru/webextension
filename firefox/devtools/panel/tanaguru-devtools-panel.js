@@ -1269,7 +1269,7 @@ alltagspanel.querySelector('#earl' + response[0].tests[test].type.charAt(0).toUp
 			tab.setAttribute('tabindex', '-1');
 			tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
 			var span = document.createElement('span');
-			span.appendChild(document.createTextNode(response[0].tags[tag].name));
+			span.appendChild(document.createTextNode(browser.i18n.getMessage(response[0].tags[tag].name)));
 			tab.appendChild(span);
 			if (response[0].tags[tag].nbfailures > 0) {
 				tab.appendChild(document.createTextNode(' '));
