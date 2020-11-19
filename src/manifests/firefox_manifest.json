@@ -1,0 +1,9 @@
+{
+	"developer": {
+		"name": "Romain Gervois"
+	},
+
+	"devtools_page": "devtools/tanaguru-devtools.html",
+	"default_locale": "fr",
+	"applications": { "gecko": { "id": "webextension@tanaguru.com" } }
+}
