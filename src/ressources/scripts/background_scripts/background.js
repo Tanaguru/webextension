@@ -1,3 +1,6 @@
+const TEST_LIST_DIR = '/ressources/scripts/tests/lists/';
+const TEST_LIST_FILE_PATH = TEST_LIST_DIR + 'act.js';
+
 function handleMessage(request, sender, sendResponse) {
 	if (request.command === 'initPopup') {
 		
@@ -17,7 +20,7 @@ function handleMessage(request, sender, sendResponse) {
 		);
 	}
 	else if (request.command === 'executeTests') {
-		var response = browser.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/act.js' });
+		var response = browser.tabs.executeScript(request.tabId, { file: TEST_LIST_FILE_PATH });
 		response = response.then(function (result) {
 			return browser.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/init-tests.js' }).then(function (result) {
 				return browser.tabs.executeScript(request.tabId, { code: 'loadTanaguruTests();' });

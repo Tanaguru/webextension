@@ -4,6 +4,7 @@ const { exit } = require('process')
 
 const SRC_DIR = './src/'
 const DIST_DIR = './dist/'
+
 const POLYFILL_PATH = './node_modules/webextension-polyfill/dist/browser-polyfill.js' 
 const POLYFILL_MAP_PATH = './node_modules/webextension-polyfill/dist/browser-polyfill.js.map' 
 

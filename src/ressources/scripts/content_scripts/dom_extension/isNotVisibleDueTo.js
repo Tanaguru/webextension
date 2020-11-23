@@ -26,5 +26,5 @@ var isNotVisibleDueTo = function () {
 };
 
 if (!HTMLElement.prototype.hasOwnProperty('isNotVisibleDueTo')) Object.defineProperty(HTMLElement.prototype, 'isNotVisibleDueTo', { get: isNotVisibleDueTo });
-if (MathMLElement && !MathMLElement.prototype.hasOwnProperty('isNotVisibleDueTo')) Object.defineProperty(MathMLElement.prototype, 'isNotVisibleDueTo', { get: isNotVisibleDueTo });
+//if (MathMLElement && !MathMLElement.prototype.hasOwnProperty('isNotVisibleDueTo')) Object.defineProperty(MathMLElement.prototype, 'isNotVisibleDueTo', { get: isNotVisibleDueTo });
 if (!SVGElement.prototype.hasOwnProperty('isNotVisibleDueTo')) Object.defineProperty(SVGElement.prototype, 'isNotVisibleDueTo', { get: isNotVisibleDueTo });

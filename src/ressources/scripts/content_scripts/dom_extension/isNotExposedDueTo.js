@@ -56,5 +56,5 @@ var isNotExposedDueTo = function () {
 };
 
 if (!HTMLElement.prototype.hasOwnProperty('isNotExposedDueTo')) Object.defineProperty(HTMLElement.prototype, 'isNotExposedDueTo', { get: isNotExposedDueTo });
-if (MathMLElement && !MathMLElement.prototype.hasOwnProperty('isNotExposedDueTo')) Object.defineProperty(MathMLElement.prototype, 'isNotExposedDueTo', { get: isNotExposedDueTo });
+//if (MathMLElement && !MathMLElement.prototype.hasOwnProperty('isNotExposedDueTo')) Object.defineProperty(MathMLElement.prototype, 'isNotExposedDueTo', { get: isNotExposedDueTo });
 if (!SVGElement.prototype.hasOwnProperty('isNotExposedDueTo')) Object.defineProperty(SVGElement.prototype, 'isNotExposedDueTo', { get: isNotExposedDueTo });
