@@ -217,13 +217,15 @@ var getAccessibleName = function () {
                     unless the element is marked as presentational (role="presentation" or role="none").
                     Comment: For example, in HTML, the img element's alt attribute defines a text alternative string, and the label element provides text for the referenced form element. In SVG2, the desc and title elements provide a description of their parent element.  
                 */
-                if (this.matches('area, img') && !this.matches('[role="none"], [role="presentation"]')) { // COMMENT : Not allowed on area & img with alt="text". 
-                    if (this.hasAttribute('alt')) {
-                        result = this.getAttribute('alt');
-                    }
-                    else if (this.hasAttribute('title')) {
-                        /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
-                        result = this.getAttribute('title');
+                if (this.matches('area, img')) {
+                    if (!this.matches('[role="none"], [role="presentation"]')) { // COMMENT : Not allowed on area & img with alt="text".
+                        if (this.hasAttribute('alt')) {
+                            result = this.getAttribute('alt');
+                        }
+                        else if (this.hasAttribute('title')) {
+                            /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
+                            result = this.getAttribute('title');
+                        }
                     }
                 }
                 else if (this.matches('svg') && !this.matches('[role="none"], [role="presentation"]')) {
@@ -247,9 +249,19 @@ var getAccessibleName = function () {
                         var parentcssaftercontent = '';
                         if (replacedElements.indexOf(this.tagName.toLowerCase()) == -1) {
                             parentcssbeforecontent = window.getComputedStyle(this, '::before').getPropertyValue('content');
-                            parentcssbeforecontent = parentcssbeforecontent == 'none' ? '' : parentcssbeforecontent.substring(1, parentcssbeforecontent.length - 1);
+                            if (!(/^url\(/.test(parentcssbeforecontent))) {
+                                parentcssbeforecontent = parentcssbeforecontent == 'none' ? '' : parentcssbeforecontent.substring(1, parentcssbeforecontent.length - 1);
+                            }
+                            else {
+                                parentcssbeforecontent = '';
+                            }
                             parentcssaftercontent = window.getComputedStyle(this, '::after').getPropertyValue('content');
-                            parentcssaftercontent = parentcssaftercontent == 'none' ? '' : parentcssaftercontent.substring(1, parentcssaftercontent.length - 1);
+                            if (!(/^url\(/.test(parentcssaftercontent))) {
+                                parentcssaftercontent = parentcssaftercontent == 'none' ? '' : parentcssaftercontent.substring(1, parentcssaftercontent.length - 1);
+                            }
+                            else {
+                                parentcssaftercontent = '';
+                            }
                         }
                         result = parentcssbeforecontent;
                         if (this.matches('button')) {
@@ -265,9 +277,19 @@ var getAccessibleName = function () {
                                     var cssaftercontent = '';
                                     if (replacedElements.indexOf(nodes[i].tagName.toLowerCase()) == -1) {
                                         cssbeforecontent = window.getComputedStyle(nodes[i], '::before').getPropertyValue('content');
-                                        cssbeforecontent = cssbeforecontent == 'none' ? '' : cssbeforecontent.substring(1, cssbeforecontent.length - 1);
+                                        if (!(/^url\(/.test(cssbeforecontent))) {
+                                            cssbeforecontent = cssbeforecontent == 'none' ? '' : cssbeforecontent.substring(1, cssbeforecontent.length - 1);
+                                        }
+                                        else {
+                                            cssbeforecontent = '';
+                                        }
                                         cssaftercontent = window.getComputedStyle(nodes[i], '::after').getPropertyValue('content');
-                                        cssaftercontent = cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1);
+                                        if (!(/^url\(/.test(cssaftercontent))) {
+                                            cssaftercontent += cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1); 
+                                        }
+                                        else {
+                                            cssaftercontent = '';
+                                        }
                                     }
                                     if (this.matches('[data-labelbytraversal="true"]')) {
                                         nodes[i].setAttribute('data-labelbytraversal', 'true');
@@ -309,7 +331,7 @@ var getAccessibleName = function () {
                 else if (this.matches('iframe[title]') && !this.matches('[role="none"], [role="presentation"]')) {
                     result = this.getAttribute('title');
                 }
-                else if (!this.hasAttribute('role') || this.matches(ARIA.nameFromContentSupported)) { // Name from Content (TODO : implement it in ARIA).
+                else if ((!this.hasAttribute('role') || this.matches('[role="none"], [role="presentation"]')) || this.matches(ARIA.nameFromContentSupported)) { // Name from Content (TODO : implement it in ARIA).
                     var controlsselectors = [];
                     for (var specificcontrols in controls) {
                         controlsselectors.push(controls[specificcontrols]);
@@ -320,9 +342,19 @@ var getAccessibleName = function () {
                     var parentcssaftercontent = '';
                     if (replacedElements.indexOf(this.tagName.toLowerCase()) == -1) {
                         parentcssbeforecontent = window.getComputedStyle(this, '::before').getPropertyValue('content');
-                        parentcssbeforecontent = parentcssbeforecontent == 'none' ? '' : parentcssbeforecontent.substring(1, parentcssbeforecontent.length - 1);
+                        if (!(/^url\(/.test(parentcssbeforecontent))) {
+                            parentcssbeforecontent = parentcssbeforecontent == 'none' ? '' : parentcssbeforecontent.substring(1, parentcssbeforecontent.length - 1);
+                        }
+                        else {
+                            parentcssbeforecontent = '';
+                        }
                         parentcssaftercontent = window.getComputedStyle(this, '::after').getPropertyValue('content');
-                        parentcssaftercontent = parentcssaftercontent == 'none' ? '' : parentcssaftercontent.substring(1, parentcssaftercontent.length - 1);
+                        if (!(/^url\(/.test(parentcssaftercontent))) {
+                            parentcssaftercontent = parentcssaftercontent == 'none' ? '' : parentcssaftercontent.substring(1, parentcssaftercontent.length - 1);
+                        }
+                        else {
+                            parentcssaftercontent = '';
+                        }
                     }
                     result = parentcssbeforecontent;
                     for (var i = 0; i < nodes.length; i++) {
@@ -336,9 +368,19 @@ var getAccessibleName = function () {
                             var cssaftercontent = '';
                             if (replacedElements.indexOf(nodes[i].tagName.toLowerCase()) == -1) {
                                 cssbeforecontent = window.getComputedStyle(nodes[i], '::before').getPropertyValue('content');
-                                cssbeforecontent = cssbeforecontent == 'none' ? '' : cssbeforecontent.substring(1, cssbeforecontent.length - 1);
+                                if (!(/^url\(/.test(cssbeforecontent))) {
+                                    cssbeforecontent = cssbeforecontent == 'none' ? '' : cssbeforecontent.substring(1, cssbeforecontent.length - 1);
+                                }
+                                else {
+                                    cssbeforecontent = '';
+                                }
                                 cssaftercontent = window.getComputedStyle(nodes[i], '::after').getPropertyValue('content');
-                                cssaftercontent = cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1);
+                                if (!(/^url\(/.test(cssaftercontent))) {
+                                    cssaftercontent = cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1);
+                                }
+                                else {
+                                    cssaftercontent = '';
+                                }
                             }
                             if (nodes[i].matches(controlsselectors)) {
                                 nodes[i].setAttribute('data-controlembeddedinlabel', 'true');
