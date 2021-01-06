@@ -17,10 +17,10 @@ document.addEventListener('DOMContentLoaded', function(event) {
 	/* Support de template. */
 	if ('content' in document.createElement('template')) {
 		var html = document.querySelector('html');
-		html.setAttribute('lang', browser.i18n.getMessage('extensionLang'));
+		html.setAttribute('lang', chrome.i18n.getMessage('extensionLang'));
 		var template = document.getElementById('popup');
 		template = template.content;
-		var manifest = browser.runtime.getManifest();
+		var manifest = chrome.runtime.getManifest();
 		var span = template.querySelectorAll('span');
 		for (var i = 0; i < span.length; i++) {
 			var data = span[i].firstChild.nodeValue.split('.');
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 				var content = manifest[data[1]];
 			}
 			else {
-				var content = browser.i18n.getMessage(data[1]);
+				var content = chrome.i18n.getMessage(data[1]);
 			}
 			span[i].innerHTML = content;
 			if (data[0] != 'manifest') {
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 							link.appendChild(document.createTextNode(spannodes[j].hasAttribute('data-text') ? spannodes[j].getAttribute('data-text') : link.getAttribute('href')));
 							if (spannodes[j].getAttribute('data-newwindow') == 'true') {
 								link.setAttribute('target', '_blank');
-								link.setAttribute('title', link.firstChild.nodeValue + ' ' + browser.i18n.getMessage('extensionNewWindow'));
+								link.setAttribute('title', link.firstChild.nodeValue + ' ' + chrome.i18n.getMessage('extensionNewWindow'));
 							}
 							spannodes[j].parentNode.replaceChild(link, spannodes[j]);
 						}

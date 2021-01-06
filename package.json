@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Tanaguru/webextension#readme",
   "dependencies": {
+    "path": "^0.12.7",
     "yargs": "^16.1.1"
   }
 }
