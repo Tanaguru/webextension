@@ -311,9 +311,13 @@ div.navigation li:first-child {
 	margin-bottom: 1em;
 }
 
-div.navigation li:first-child + li {
+div.navigation #alltests {
 	border-bottom: solid 1px #e5e5e5;
 	border-top: solid 1px #e5e5e5;
+}
+
+div.navigation #tabContrast + #alltests {
+	margin-top: 0.5em;
 }
 
 div.navigation li:not(.ressource) + li.ressource {
