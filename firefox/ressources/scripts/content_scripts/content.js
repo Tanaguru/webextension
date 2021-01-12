@@ -686,11 +686,11 @@ function getUniqueSelector(elSrc) {
 						return attr.name.indexOf('data-')===0;
 					});
 					for (let j=0; j<aDataAttr.length; ++j) {
-						aSel[0] = sSel += '[' + aDataAttr[j].name + '="' + aDataAttr[j].value + '"]';
+						aSel[0] = sSel += '[' + aDataAttr[j].name + '="' + aDataAttr[j].value.replaceAll('"','\\"').replaceAll("'","\\'").replaceAll("\n"," ") + '"]';
 						if (uniqueQuery()) return true;
 					}
 				} else if (el[aAttr[i]]) {
-					aSel[0] = sSel += '[' + aAttr[i] + '="' + el[aAttr[i]] + '"]';
+					aSel[0] = sSel += '[' + aAttr[i] + '="' + el[aAttr[i]].replaceAll('"','\\"').replaceAll("'","\\'").replaceAll("\n"," ") + '"]';
 					if (uniqueQuery()) return true;
 				}
 			}
@@ -712,7 +712,13 @@ function getUniqueSelector(elSrc) {
 			return false;
 		},
 		uniqueQuery = function() {
-			return document.querySelectorAll(aSel.join('>')||null).length===1;
+			elements = [];
+			try{
+				elements = document.querySelectorAll(aSel.join('>')||null);
+			}catch(error){
+				console.error(error);
+			}
+			return elements.length===1;
 		};
 	while (elSrc.parentNode) {
 		if (getSelector(elSrc)) return aSel.join(' > ');
