@@ -25,6 +25,9 @@ function handleMessage(request, sender, sendResponse) {
 		});
 		return response;
 	}
+	else if (request.command === 'getContrasts') {
+		return browser.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/contrasts.js' });
+	}
 	else if (request.command == 'downloadTestCsvFile') {
 		browser.downloads.download({
 			url: request.data.url,
@@ -87,7 +90,7 @@ function handleUpdated(tabId, changeInfo, tabInfo) {
   console.log("Changed attributes: " + changeInfo);
   console.log("New tab Info: " + tabInfo);
   
-  browser.devtools.reload();
+  //browser.devtools.reload();
   
 }
 browser.tabs.onUpdated.addListener(handleUpdated);
