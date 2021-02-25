@@ -315,37 +315,43 @@ button.addEventListener('click', function () {
 						var td = document.createElement('td');
 						td.style.textAlign = 'right';
 						
-						/*
+						
 						var L = [];
 						// Couleur 1.
-						var red1 = 0;
-						var RsRGB1 = red1 / 255;
+						var color1codes = response[0][i].foreground.substring(4, response[0][i].foreground.length - 1);
+						color1codes = color1codes.split(',');
+						var color1 = {};
+						color1.red = parseInt(color1codes[0].trim());
+						color1.green = parseInt(color1codes[1].trim()); 
+						color1.blue = parseInt(color1codes[2].trim());
+						var RsRGB1 = color1.red / 255;
 						var cR1 = (RsRGB1 <= 0.03928) ? (RsRGB1 / 12.92) : Math.pow(((RsRGB1 + 0.055) / 1.055), 2.4);
-						var green1 = 0;
-						var GsRGB1 = green1 / 255;
+						var GsRGB1 = color1.green / 255;
 						var cG1 = (GsRGB1 <= 0.03928) ? (GsRGB1 / 12.92) : Math.pow(((GsRGB1 + 0.055) / 1.055), 2.4);
-						var blue1 = 0;
-						var BsRGB1 = blue1 / 255;
+						var BsRGB1 = color1.blue / 255;
 						var cB1 = (BsRGB1 <= 0.03928) ? (BsRGB1 / 12.92) : Math.pow(((BsRGB1 + 0.055) / 1.055), 2.4);
 						L.push(0.2126 * cR1 + 0.7152 * cG1 + 0.0722 * cB1);
 						// Couleur 2.
-						var red2 = 0;
-						var RsRGB2 = red2 / 255;
+						var color2codes = response[0][i].background.substring(4, response[0][i].background.length - 1);
+						color2codes = color2codes.split(',');
+						var color2 = {};
+						color2.red = parseInt(color2codes[0].trim());
+						color2.green = parseInt(color2codes[1].trim()); 
+						color2.blue = parseInt(color2codes[2].trim());
+						var RsRGB2 = color2.red / 255;
 						var cR2 = (RsRGB2 <= 0.03928) ? (RsRGB2 / 12.92) : Math.pow(((RsRGB2 + 0.055) / 1.055), 2.4);
-						var green2 = 0;
-						var GsRGB2 = green2 / 255;
+						var GsRGB2 = color2.green / 255;
 						var cG2 = (GsRGB2 <= 0.03928) ? (GsRGB2 / 12.92) : Math.pow(((GsRGB2 + 0.055) / 1.055), 2.4);
-						var blue2 = 0;
-						var BsRGB2 = blue2 / 255;
+						var BsRGB2 = color2.blue / 255;
 						var cB2 = (BsRGB2 <= 0.03928) ? (BsRGB2 / 12.92) : Math.pow(((BsRGB2 + 0.055) / 1.055), 2.4);
 						L.push(0.2126 * cR2 + 0.7152 * cG2 + 0.0722 * cB2);
 						// Ratio
-						var L1 = Math.min.apply(null, L);
-						var L2 = Math.max.apply(null, L);
-						var contrastratio = (L1 + 0.05) / (L2 + 0.05);
-						*/
+						var L1 = Math.max.apply(null, L);
+						var L2 = Math.min.apply(null, L);
+						var contrastratio = ((L1 + 0.05) / (L2 + 0.05)).toFixed(2);
 						
-						//td.appendChild(document.createTextNode(contrastratio + ':1'));
+						
+						td.appendChild(document.createTextNode(contrastratio + ':1'));
 						tr.appendChild(td);
 						var td = document.createElement('td');
 						var button = document.createElement('button');
