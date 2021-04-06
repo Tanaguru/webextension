@@ -541,7 +541,6 @@ tanaguruTestsList.push({
 	name: 'HTML page has an empty lang attribute.',
 	description: 'This rule checks that an HTML page has a non-empty lang attribute.',
 	query: 'html[lang]', 
-	expectedNbElements: 0, 
 	filter: function (item) {
 		return item.getAttribute('lang').trim().length == 0;
 	},
