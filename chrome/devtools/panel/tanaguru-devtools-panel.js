@@ -356,7 +356,7 @@ button.addEventListener('click', function () {
 						tr.appendChild(td);
 						var td = document.createElement('td');
 						var button = document.createElement('button');
-						button.setAttribute('data-xpath', result.xpath);
+						button.setAttribute('data-xpath', response[result].xpath);
 						button.setAttribute('type', 'button');
 						button.innerHTML = '<img src="images/inspect.png" alt="Révéler dans l\'inspecteur" />';
 						button.addEventListener('click', function (event) {
