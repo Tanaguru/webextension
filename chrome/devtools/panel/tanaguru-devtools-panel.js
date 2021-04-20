@@ -249,6 +249,144 @@ button.addEventListener('click', function () {
 		
 		main.children[1].appendChild(dashboardpanel);
 		ul.appendChild(dashboard);
+
+
+
+		// UI. Contrasts.
+
+		var contrast = document.createElement('li');
+		contrast.setAttribute('id', 'tabContrast');
+		contrast.setAttribute('role', 'tab');
+		contrast.setAttribute('aria-selected', 'false');
+		contrast.setAttribute('tabindex', '-1');
+		contrast.appendChild(document.createTextNode(chrome.i18n.getMessage('contrastHeading')));
+		contrast.addEventListener('focus', function (event) {
+			if (!this.matches('[data-loaded="true"]')) {
+				this.setAttribute('data-loaded', 'true');
+				chrome.runtime.sendMessage({
+					tabId: chrome.devtools.inspectedWindow.tabId,
+					command: 'getContrasts'
+				}, function (response) {
+					var div = document.querySelector('#' + document.activeElement.getAttribute('aria-controls') + ' div');
+					var table = document.createElement('table');
+					table.setAttribute('border', '');
+					table.innerHTML = '<caption class="visually-hidden"></caption><tr class="theadings"><th scope="col" abbr="Numéro" style="width: auto;">N°</th><th scope="col" style="width: auto;">Balise</th><th scope="col" style="text-align: left; width: auto;">Passage de texte</th><th abbr="Couleur de texte" style="width: 20px;"><abbr title="Couleur de texte">CT</abbr></th><th abbr="Couleur de fond" style="width: 20px;"><abbr title="Couleur de fond">CF</abbr></th><th scope="col" style="text-align: right; width: auto;">Ratio estimé</th><th scope="col">Actions</th></tr>';
+					var i = 0;
+					var response = response.response[0];
+					for (var result in response) {
+						var tr = document.createElement('tr');
+						var th = document.createElement('td');
+						th.style.textAlign = 'left';
+						th.style.width = 'auto';
+						i++;
+						th.appendChild(document.createTextNode(i));
+						tr.appendChild(th);
+						var td = document.createElement('td');
+						td.style.textAlign = 'left';
+						td.style.width = 'auto';
+						td.appendChild(document.createTextNode(response[result].tag));
+						tr.appendChild(td);
+						var td = document.createElement('td');
+						td.style.textAlign = 'left';
+						td.style.width = 'auto';
+						td.appendChild(document.createTextNode(response[result].text));
+						tr.appendChild(td);
+						var td = document.createElement('td');
+						td.style.textAlign = 'left';
+						td.style.width = 'auto';
+						var rspan = document.createElement('span');
+						rspan.setAttribute('style', 'display: block; border: solid 1px #000; background-color: ' + response[result].foreground + '; height: 18px;');
+						var tdspan = document.createElement('span');
+						tdspan.setAttribute('class', 'visually-hidden');
+						tdspan.appendChild(document.createTextNode(response[result].foreground));
+						rspan.appendChild(tdspan);
+						td.appendChild(rspan);
+						tr.appendChild(td);
+						var td = document.createElement('td');
+						td.style.textAlign = 'left';
+						td.style.width = 'auto';
+						var rspan = document.createElement('span');
+						rspan.setAttribute('style', 'display: block; border: solid 1px #000; background-color: ' + response[result].background + '; height: 18px;');
+						var tdspan = document.createElement('span');
+						tdspan.setAttribute('class', 'visually-hidden');
+						tdspan.appendChild(document.createTextNode(response[result].background));
+						rspan.appendChild(tdspan);
+						td.appendChild(rspan);
+						tr.appendChild(td);
+						var td = document.createElement('td');
+						td.style.textAlign = 'right';
+						
+						
+						var L = [];
+						// Couleur 1.
+						var color1codes = response[result].foreground.substring(4, response[result].foreground.length - 1);
+						color1codes = color1codes.split(',');
+						var color1 = {};
+						color1.red = parseInt(color1codes[0].trim());
+						color1.green = parseInt(color1codes[1].trim()); 
+						color1.blue = parseInt(color1codes[2].trim());
+						var RsRGB1 = color1.red / 255;
+						var cR1 = (RsRGB1 <= 0.03928) ? (RsRGB1 / 12.92) : Math.pow(((RsRGB1 + 0.055) / 1.055), 2.4);
+						var GsRGB1 = color1.green / 255;
+						var cG1 = (GsRGB1 <= 0.03928) ? (GsRGB1 / 12.92) : Math.pow(((GsRGB1 + 0.055) / 1.055), 2.4);
+						var BsRGB1 = color1.blue / 255;
+						var cB1 = (BsRGB1 <= 0.03928) ? (BsRGB1 / 12.92) : Math.pow(((BsRGB1 + 0.055) / 1.055), 2.4);
+						L.push(0.2126 * cR1 + 0.7152 * cG1 + 0.0722 * cB1);
+						// Couleur 2.
+						var color2codes = response[result].background.substring(4, response[result].background.length - 1);
+						color2codes = color2codes.split(',');
+						var color2 = {};
+						color2.red = parseInt(color2codes[0].trim());
+						color2.green = parseInt(color2codes[1].trim()); 
+						color2.blue = parseInt(color2codes[2].trim());
+						var RsRGB2 = color2.red / 255;
+						var cR2 = (RsRGB2 <= 0.03928) ? (RsRGB2 / 12.92) : Math.pow(((RsRGB2 + 0.055) / 1.055), 2.4);
+						var GsRGB2 = color2.green / 255;
+						var cG2 = (GsRGB2 <= 0.03928) ? (GsRGB2 / 12.92) : Math.pow(((GsRGB2 + 0.055) / 1.055), 2.4);
+						var BsRGB2 = color2.blue / 255;
+						var cB2 = (BsRGB2 <= 0.03928) ? (BsRGB2 / 12.92) : Math.pow(((BsRGB2 + 0.055) / 1.055), 2.4);
+						L.push(0.2126 * cR2 + 0.7152 * cG2 + 0.0722 * cB2);
+						// Ratio
+						var L1 = Math.max.apply(null, L);
+						var L2 = Math.min.apply(null, L);
+						var contrastratio = ((L1 + 0.05) / (L2 + 0.05)).toFixed(2);
+						
+						
+						td.appendChild(document.createTextNode(contrastratio + ':1'));
+						tr.appendChild(td);
+						var td = document.createElement('td');
+						var button = document.createElement('button');
+						button.setAttribute('data-xpath', result.xpath);
+						button.setAttribute('type', 'button');
+						button.innerHTML = '<img src="images/inspect.png" alt="Révéler dans l\'inspecteur" />';
+						button.addEventListener('click', function (event) {
+							var css = cssify(this.getAttribute('data-xpath'));
+							chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('" + css + "'))");
+						});
+						var ul = document.createElement('ul');
+						ul.appendChild(document.createElement('li'));
+						ul.firstChild.appendChild(button);
+						td.appendChild(ul);
+						tr.appendChild(td);
+						table.appendChild(tr);
+					}
+					div.appendChild(table);
+				});
+			}
+		}, false);
+
+		var contrastpanel = document.createElement('div');
+		contrastpanel.setAttribute('role', 'tabpanel');
+		contrastpanel.setAttribute('aria-labelledby', contrast.getAttribute('id'));
+		contrastpanel.setAttribute('id', 'tabpanelContrast');
+		contrastpanel.setAttribute('aria-hidden', 'true');
+		contrast.setAttribute('aria-controls', contrastpanel.getAttribute('id'));
+		contrastpanel.innerHTML = '<h2>' + chrome.i18n.getMessage('contrastHeading') + '</h2><div></div>';
+		main.children[1].appendChild(contrastpanel);
+		ul.appendChild(contrast);
+
+
+
 		main.children[1].addEventListener('click', function(event) {
 			var element = event.target;
 			if (element.tagName.toLowerCase() == 'button') {
