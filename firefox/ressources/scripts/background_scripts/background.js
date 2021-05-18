@@ -6,7 +6,7 @@ function handleMessage(request, sender, sendResponse) {
 		
 	}
 	else if (request.command === 'copyClipboard') {
-		chrome.notifications.create(
+		browser.notifications.create(
 			'', 
 			{
 				iconUrl: '/ressources/images/tanaguru.png',
@@ -17,49 +17,50 @@ function handleMessage(request, sender, sendResponse) {
 		);
 	}
 	else if (request.command === 'executeTests') {
-		chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/tests.js' }, function (result) {
-			sendResponse({ command: 'executeTestsResults', response: result, timer: request.timer });
+		var response = browser.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/act.js' });
+		response = response.then(function (result) {
+			return browser.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/init-tests.js' }).then(function (result) {
+				return browser.tabs.executeScript(request.tabId, { code: 'loadTanaguruTests();' });
+			});
 		});
+		return response;
 	}
 	else if (request.command === 'getContrasts') {
-		chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/contrasts.js' }, function (result) {
-			sendResponse({ command: 'getContrasts', response: result });
-		});
+		return browser.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/contrasts.js' });
 	}
 	else if (request.command == 'downloadTestCsvFile') {
-		chrome.downloads.download({
+		browser.downloads.download({
 			url: request.data.url,
 			filename: request.data.filename,
 			saveAs: true
 		});
 	}
 	else if (request.command === 'notify') {
-		chrome.browserAction.enable();
-		var manifest = chrome.runtime.getManifest();
+		browser.browserAction.enable();
+		var manifest = browser.runtime.getManifest();
 		if (request.count > 0) {
 			var counttext = request.count > 99 ? '+99' : request.count.toString();
-			chrome.browserAction.setBadgeText({ text: counttext });
-			chrome.browserAction.setTitle({ title: manifest.browser_action.default_title + ' (' + request.count + ' erreurs)' });
+			browser.browserAction.setBadgeText({ text: counttext });
+			browser.browserAction.setTitle({ title: manifest.browser_action.default_title + ' (' + request.count + ' erreurs)' });
 		}
 		else {
-			chrome.browserAction.setBadgeText({ text: '' });
-			chrome.browserAction.setTitle({ title: manifest.browser_action.default_title });
+			browser.browserAction.setBadgeText({ text: '' });
+			browser.browserAction.setTitle({ title: manifest.browser_action.default_title });
 		}
 	}
 	else if (request.command == 'highlight') {
-		chrome.tabs.insertCSS(request.tabId, {
+		browser.tabs.insertCSS(request.tabId, {
 			file: '/ressources/styles/highlight.css'
 		});
-		chrome.tabs.executeScript(request.tabId, {
+		browser.tabs.executeScript(request.tabId, {
 		    code: 'var element = "' + request.element + '";'
 		}, function() {
-		    chrome.tabs.executeScript(request.tabId, {file: '/ressources/scripts/highlight.js'});
+		    browser.tabs.executeScript(request.tabId, {file: '/ressources/scripts/highlight.js'});
 		});
 	}
-	return true;
 }
 
-chrome.runtime.onMessage.addListener(handleMessage);
+browser.runtime.onMessage.addListener(handleMessage);
 
 
 
@@ -69,19 +70,19 @@ chrome.runtime.onMessage.addListener(handleMessage);
 /* Fires when the active tab in a window changes. Note that the tab's URL may not be set at the time this event fired, but you can listen to tabs.onUpdated events to be notified when a URL is set. */
 function handleActivated(activeInfo) {
 	console.log("Tab " + activeInfo.tabId + " was activated.");
-	var manifest = chrome.runtime.getManifest();
-	chrome.browserAction.setBadgeText({ text: '' });
-	chrome.browserAction.setTitle({ title: manifest.browser_action.default_title });
+	var manifest = browser.runtime.getManifest();
+	browser.browserAction.setBadgeText({ text: '' });
+	browser.browserAction.setTitle({ title: manifest.browser_action.default_title });
 	
 	// détecter si le panneau devtools est affiché...
 	
 }
-chrome.tabs.onActivated.addListener(handleActivated);
+browser.tabs.onActivated.addListener(handleActivated);
 
 /* Fired when a tab is updated. */
 function handleUpdated(tabId, changeInfo, tabInfo) {
   
-  //var gettingCurrent = chrome.tabs.getCurrent();
+  //var gettingCurrent = browser.tabs.getCurrent();
   //gettingCurrent.then(onGot, onError);
   
   console.log("Tab " + tabId + " was updated.");
@@ -89,7 +90,7 @@ function handleUpdated(tabId, changeInfo, tabInfo) {
   console.log("Changed attributes: " + changeInfo);
   console.log("New tab Info: " + tabInfo);
   
-  //chrome.devtools.reload();
+  //browser.devtools.reload();
   
 }
-chrome.tabs.onUpdated.addListener(handleUpdated);
+browser.tabs.onUpdated.addListener(handleUpdated);
