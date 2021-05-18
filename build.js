@@ -2,9 +2,12 @@ const fs = require('fs')
 const fse = require('fs-extra')
 const path = require('path')
 
+const VERSION_FILE = path.join(__dirname, 'VERSION.txt')
+
 const SRC_DIR = path.join(__dirname, 'src')
 const DIST_DIR = path.join(__dirname, 'dist')
 
+const REFERENCES_DIR = path.join(SRC_DIR,'references')
 const MANIFESTS_DIR = path.join(SRC_DIR,'manifests')
 const COMMON_MANIFEST_FILE_NAME = 'common_manifest.json'
 
@@ -25,20 +28,18 @@ function buildManifest(vendor){
     console.log('Build ', vendor, ' manifest')
     let vendorManifest = require(path.join(MANIFESTS_DIR,vendor + '_manifest.json'))
     let manifest = Object.assign({}, COMMON_MANIFEST, vendorManifest)
-    fs.writeFileSync(
-        path.join(DIST_DIR, vendor, 'manifest.json'),
-        JSON.stringify(manifest))
+    return JSON.stringify(manifest)
 }
 
-function copySources(vendor){
-    console.log('Copy ', vendor, ' sources')
+function copySources(vendor, dir){
+    console.log('Copy sources in ' + dir)
     fse.copySync(
         SRC_DIR,
-        path.join(DIST_DIR, vendor),
+        dir,
         {
             recursive: true,
             filter: (src, dest) => {
-                return !src.includes(MANIFESTS_DIR) && !src.includes(TEST_DIR);
+                return !src.includes(MANIFESTS_DIR) && !src.includes(REFERENCES_DIR) ;
             }
         }
     )
@@ -46,10 +47,10 @@ function copySources(vendor){
 
 function buildScripts(testFile){
     let script = ""
-    if(fs.existsSync(path.join(TEST_DIR, testFile))){
+    if(fs.existsSync(path.join(REFERENCES_DIR, testFile))){
         script = fs.readFileSync(path.join(TEST_DIR, 'content.js'));
         script += '\n';
-        script+= fs.readFileSync(path.join(TEST_DIR, testFile));
+        script+= fs.readFileSync(path.join(REFERENCES_DIR, testFile));
         script += '\n';
         script += fs.readFileSync(path.join(TEST_DIR, 'init-tests.js'))
     }else{
@@ -61,16 +62,32 @@ function buildScripts(testFile){
 console.log('Start build')
 clean();
 // build manifests
-let files = fs.readdirSync(MANIFESTS_DIR);
-let script = buildScripts('tests.js');
-for(const file of files){
-    if(file !== COMMON_MANIFEST_FILE_NAME){
-        let vendor = file.split('_manifest.json')[0]
-        fs.mkdirSync(path.join(DIST_DIR, vendor))
-        buildManifest(vendor);
-        copySources(vendor);
-        fs.mkdirSync(path.join(DIST_DIR, vendor, 'ressources', 'scripts', 'tests'));
-        fs.writeFileSync(path.join(DIST_DIR, vendor, 'ressources', 'scripts', 'tests', 'tests.js'), script);
+let version = fs.readFileSync(VERSION_FILE).toString();
+let manifests = fs.readdirSync(MANIFESTS_DIR);
+let references = fs.readdirSync(REFERENCES_DIR).map(value => value.split('.')[0]);
+
+let test_contents = {}
+for(const reference of references){
+    console.log("Create script for reference " + reference)
+    test_contents[reference] = buildScripts(reference + '.js');
+}
+
+for(const manifest of manifests){
+    if(manifest !== COMMON_MANIFEST_FILE_NAME){
+        let vendor = manifest.split('_manifest.json')[0]
+        let manifestContent = buildManifest(vendor);
+        for(const reference of references){
+
+            let dir = path.join(DIST_DIR, vendor, version, 'tanaguru-' + reference + '-' + vendor + '-' + version)
+            fs.mkdirSync(dir, { recursive: true })
+            fs.writeFileSync(
+                path.join(dir, 'manifest.json'),
+                manifestContent);
+            copySources(vendor, dir);
+
+            fs.mkdirSync(path.join(dir, 'ressources', 'scripts', 'tests'), { recursive: true });
+            fs.writeFileSync(path.join(dir, 'ressources', 'scripts', 'tests', 'tests.js'), test_contents[reference]);
+        }
     }
 }
 
