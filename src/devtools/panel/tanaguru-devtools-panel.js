@@ -252,7 +252,7 @@ button.addEventListener('click', function () {
 
 
 
-		// UI. Contrasts.
+		//? START UI. Contrasts.
 
 		var contrast = document.createElement('li');
 		contrast.setAttribute('id', 'tabContrast');
@@ -267,110 +267,203 @@ button.addEventListener('click', function () {
 					tabId: chrome.devtools.inspectedWindow.tabId,
 					command: 'getContrasts'
 				}, function (response) {
+					// panel container
 					var div = document.querySelector('#' + document.activeElement.getAttribute('aria-controls') + ' div');
-					var table = document.createElement('table');
-					table.setAttribute('border', '');
-					table.innerHTML = '<caption class="visually-hidden"></caption><tr class="theadings"><th scope="col" abbr="Numéro" style="width: auto;">N°</th><th scope="col" style="width: auto;">Balise</th><th scope="col" style="text-align: left; width: auto;">Passage de texte</th><th abbr="Couleur de texte" style="width: 20px;"><abbr title="Couleur de texte">CT</abbr></th><th abbr="Couleur de fond" style="width: 20px;"><abbr title="Couleur de fond">CF</abbr></th><th scope="col" style="text-align: right; width: auto;">Ratio estimé</th><th scope="col">Actions</th></tr>';
-					var i = 0;
+
+					// panel list
+					var contrastPanelList = document.createElement('ul');
+					contrastPanelList.style.padding = 0;
+
 					var response = response.response[0];
-					for (var result in response) {
-						var tr = document.createElement('tr');
-						var th = document.createElement('td');
-						th.style.textAlign = 'left';
-						th.style.width = 'auto';
-						i++;
-						th.appendChild(document.createTextNode(i));
-						tr.appendChild(th);
-						var td = document.createElement('td');
-						td.style.textAlign = 'left';
-						td.style.width = 'auto';
-						td.appendChild(document.createTextNode(response[result].tag));
-						tr.appendChild(td);
-						var td = document.createElement('td');
-						td.style.textAlign = 'left';
-						td.style.width = 'auto';
-						td.appendChild(document.createTextNode(response[result].text));
-						tr.appendChild(td);
-						var td = document.createElement('td');
-						td.style.textAlign = 'left';
-						td.style.width = 'auto';
-						var rspan = document.createElement('span');
-						rspan.setAttribute('style', 'display: block; border: solid 1px #000; background-color: ' + response[result].foreground + '; height: 18px;');
-						var tdspan = document.createElement('span');
-						tdspan.setAttribute('class', 'visually-hidden');
-						tdspan.appendChild(document.createTextNode(response[result].foreground));
-						rspan.appendChild(tdspan);
-						td.appendChild(rspan);
-						tr.appendChild(td);
-						var td = document.createElement('td');
-						td.style.textAlign = 'left';
-						td.style.width = 'auto';
-						var rspan = document.createElement('span');
-						rspan.setAttribute('style', 'display: block; border: solid 1px #000; background-color: ' + response[result].background + '; height: 18px;');
-						var tdspan = document.createElement('span');
-						tdspan.setAttribute('class', 'visually-hidden');
-						tdspan.appendChild(document.createTextNode(response[result].background));
-						rspan.appendChild(tdspan);
-						td.appendChild(rspan);
-						tr.appendChild(td);
-						var td = document.createElement('td');
-						td.style.textAlign = 'right';
-						
-						
-						var L = [];
-						// Couleur 1.
-						var color1codes = response[result].foreground.substring(4, response[result].foreground.length - 1);
-						color1codes = color1codes.split(',');
-						var color1 = {};
-						color1.red = parseInt(color1codes[0].trim());
-						color1.green = parseInt(color1codes[1].trim()); 
-						color1.blue = parseInt(color1codes[2].trim());
-						var RsRGB1 = color1.red / 255;
-						var cR1 = (RsRGB1 <= 0.03928) ? (RsRGB1 / 12.92) : Math.pow(((RsRGB1 + 0.055) / 1.055), 2.4);
-						var GsRGB1 = color1.green / 255;
-						var cG1 = (GsRGB1 <= 0.03928) ? (GsRGB1 / 12.92) : Math.pow(((GsRGB1 + 0.055) / 1.055), 2.4);
-						var BsRGB1 = color1.blue / 255;
-						var cB1 = (BsRGB1 <= 0.03928) ? (BsRGB1 / 12.92) : Math.pow(((BsRGB1 + 0.055) / 1.055), 2.4);
-						L.push(0.2126 * cR1 + 0.7152 * cG1 + 0.0722 * cB1);
-						// Couleur 2.
-						var color2codes = response[result].background.substring(4, response[result].background.length - 1);
-						color2codes = color2codes.split(',');
-						var color2 = {};
-						color2.red = parseInt(color2codes[0].trim());
-						color2.green = parseInt(color2codes[1].trim()); 
-						color2.blue = parseInt(color2codes[2].trim());
-						var RsRGB2 = color2.red / 255;
-						var cR2 = (RsRGB2 <= 0.03928) ? (RsRGB2 / 12.92) : Math.pow(((RsRGB2 + 0.055) / 1.055), 2.4);
-						var GsRGB2 = color2.green / 255;
-						var cG2 = (GsRGB2 <= 0.03928) ? (GsRGB2 / 12.92) : Math.pow(((GsRGB2 + 0.055) / 1.055), 2.4);
-						var BsRGB2 = color2.blue / 255;
-						var cB2 = (BsRGB2 <= 0.03928) ? (BsRGB2 / 12.92) : Math.pow(((BsRGB2 + 0.055) / 1.055), 2.4);
-						L.push(0.2126 * cR2 + 0.7152 * cG2 + 0.0722 * cB2);
-						// Ratio
-						var L1 = Math.max.apply(null, L);
-						var L2 = Math.min.apply(null, L);
-						var contrastratio = ((L1 + 0.05) / (L2 + 0.05)).toFixed(2);
-						
-						
-						td.appendChild(document.createTextNode(contrastratio + ':1'));
-						tr.appendChild(td);
-						var td = document.createElement('td');
-						var button = document.createElement('button');
-						button.setAttribute('data-xpath', response[result].xpath);
-						button.setAttribute('type', 'button');
-						button.innerHTML = '<img src="images/inspect.png" alt="Révéler dans l\'inspecteur" />';
-						button.addEventListener('click', function (event) {
-							var css = cssify(this.getAttribute('data-xpath'));
-							chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('" + css + "'))");
-						});
-						var ul = document.createElement('ul');
-						ul.appendChild(document.createElement('li'));
-						ul.firstChild.appendChild(button);
-						td.appendChild(ul);
-						tr.appendChild(td);
-						table.appendChild(tr);
-					}
-					div.appendChild(table);
+
+					// create a table by status
+					var invalid45 = ['failed', 'Ces éléments doivent respecter un ratio de contraste de 4.5:1', 'Invalidé', []];
+					var invalid3 = ['failed', 'Ces éléments doivent respecter un ratio de contraste de 3:1', 'Invalidé', []];
+					var valid345 = ['passed', 'Ces éléments ont un ratio de contraste valide', 'Validé', []];
+					var cantTell45 = ['cantTell', 'Vérifier que ces éléments respectent un ratio de contraste de 4.5:1', 'Indéterminé', []];
+					var cantTell3 = ['cantTell', 'Vérifier que ces éléments respectent un ratio de contraste de 4.5:1', 'Indéterminé', []];
+
+					// sort results by status
+					response.forEach(result => {
+						if(result.valid.target === 4.5) {
+							if(result.valid.status === 2) {
+								valid345[3].push(result);
+							} else if(result.valid.status === 1) {
+								invalid45[3].push(result);
+							} else {
+								cantTell45[3].push(result);
+							}
+						} else {
+							if(result.valid.status === 2) {
+								valid345[3].push(result);
+							} else if(result.valid.status === 1) {
+								invalid3[3].push(result);
+							} else {
+								cantTell3[3].push(result);
+							}
+						}
+					});
+
+					// we store all results in a neat table
+					var allSections = [];
+					allSections.push(invalid45, invalid3, cantTell45, cantTell3, valid345);
+
+					// index for button aria-control of the list items
+					var itemID = 1
+
+					// get a list item by status
+					allSections.forEach(section => {
+						// if no results for this status, the table isn't generated
+						if(section[3].length > 0) {
+							// Necessary variables for the text contents of the item (li)
+							var sectionClass = section[0];
+							var sectionName = section[1];
+							var sectionTitle = section[2];
+
+							// item
+							var contrastPanelListItem = document.createElement('li');
+							contrastPanelListItem.setAttribute('class', 'testparent');
+							contrastPanelListItem.style.listStyleType = 'none';
+							var contrastPanelListTitle = document.createElement('h3');
+							contrastPanelListTitle.setAttribute('class', sectionClass);
+
+							// button
+							var contrastPanelListButton = document.createElement('button');
+							contrastPanelListButton.setAttribute('type', 'button');
+							contrastPanelListButton.setAttribute('data-action', 'showhide-action');
+							contrastPanelListButton.setAttribute('aria-expanded', 'false');
+	
+							// status
+							var state = document.createElement('span');
+							state.setAttribute('class', 'status');
+							state.appendChild(document.createTextNode(sectionTitle));
+							contrastPanelListButton.appendChild(state);
+	
+							// count
+							var strong = document.createElement('strong');
+							var strongcount = section[3].length;
+							strong.appendChild(document.createTextNode(' ' + strongcount + ' '));
+							contrastPanelListButton.appendChild(strong);
+	
+							// description
+							var span = document.createElement('span');
+							span.appendChild(document.createTextNode(sectionName));
+							contrastPanelListButton.appendChild(span);
+	
+							// section construction
+							contrastPanelListTitle.appendChild(contrastPanelListButton);
+							contrastPanelListItem.appendChild(contrastPanelListTitle);
+							var contrastPanelListDiv = document.createElement('div');
+							contrastPanelListDiv.setAttribute('id', 'testsection' + itemID);
+							contrastPanelListButton.setAttribute('aria-controls', contrastPanelListDiv.getAttribute('id'));
+							contrastPanelListDiv.setAttribute('hidden', 'hidden');
+	
+							// table
+							var table = document.createElement('table');
+							table.setAttribute('border', '');
+							table.innerHTML = '<caption class="visually-hidden"></caption><tr class="theadings"><th scope="col" abbr="Numéro" style="width: auto;">N°</th><th scope="col" style="width: auto;">Balise</th><th scope="col" style="text-align: left; width: auto;">Passage de texte</th><th scope="col" style="width: auto;">Taille</th><th scope="col" style="width: auto;">Graisse</th><th abbr="Couleur de texte" style="width: 20px;"><abbr title="Couleur de texte">CT</abbr></th><th abbr="Couleur de fond" style="width: 20px;"><abbr title="Couleur de fond">CF</abbr></th><th scope="col" style="text-align: right; width: auto;">Ratio estimé</th><th scope="col">Actions</th></tr>';
+	
+							// index for result number
+							var i = 0;
+	
+							// get all results for the current status
+							section[3].forEach(result => {
+								// result number
+								var tr = document.createElement('tr');
+								var th = document.createElement('td');
+								th.style.textAlign = 'left';
+								th.style.width = 'auto';
+								i++;
+								th.appendChild(document.createTextNode(i));
+								tr.appendChild(th);
+
+								// result tag
+								var td = document.createElement('td');
+								td.style.textAlign = 'left';
+								td.style.width = 'auto';
+								td.appendChild(document.createTextNode(result.tag));
+								tr.appendChild(td);
+
+								// result text node
+								var td = document.createElement('td');
+								td.style.textAlign = 'left';
+								td.style.width = 'auto';
+								td.appendChild(document.createTextNode(result.text));
+								tr.appendChild(td);
+
+								// text font size
+								var td = document.createElement('td');
+								td.style.textAlign = 'left';
+								td.style.width = 'auto';
+								td.appendChild(document.createTextNode(result.size));
+								tr.appendChild(td);
+
+								// text font weight
+								var td = document.createElement('td');
+								td.style.textAlign = 'left';
+								td.style.width = 'auto';
+								td.appendChild(document.createTextNode(result.weight));
+								tr.appendChild(td);
+
+								// text color
+								var td = document.createElement('td');
+								td.style.textAlign = 'left';
+								td.style.width = 'auto';
+								var rspan = document.createElement('span');
+								rspan.setAttribute('style', 'display: block; border: solid 1px #000; background-color: ' + result.foreground + '; height: 18px;');
+								var tdspan = document.createElement('span');
+								tdspan.setAttribute('class', 'visually-hidden');
+								tdspan.appendChild(document.createTextNode(result.foreground));
+								rspan.appendChild(tdspan);
+								td.appendChild(rspan);
+								tr.appendChild(td);
+
+								// text background color
+								var td = document.createElement('td');
+								td.style.textAlign = 'left';
+								td.style.width = 'auto';
+								var rspan = document.createElement('span');
+								rspan.setAttribute('style', 'display: block; border: solid 1px #000; background-color: ' + result.background + '; height: 18px;');
+								var tdspan = document.createElement('span');
+								tdspan.setAttribute('class', 'visually-hidden');
+								tdspan.appendChild(document.createTextNode(result.background));
+								rspan.appendChild(tdspan);
+								td.appendChild(rspan);
+								tr.appendChild(td);
+
+								// result contrast ratio
+								var td = document.createElement('td');
+								td.style.textAlign = 'right';
+								td.appendChild(document.createTextNode(result.ratio + ':1'));
+								tr.appendChild(td);
+
+								// button to view the text node in the code inspector
+								var td = document.createElement('td');
+								var button = document.createElement('button');
+								button.setAttribute('data-xpath', result.xpath);
+								button.setAttribute('type', 'button');
+								button.innerHTML = '<img src="images/inspect.png" alt="Révéler dans l\'inspecteur" />';
+								button.addEventListener('click', function (event) {
+									var css = cssify(this.getAttribute('data-xpath'));
+									chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('" + css + "'))");
+								});
+								var ul = document.createElement('ul');
+								ul.appendChild(document.createElement('li'));
+								ul.firstChild.appendChild(button);
+								td.appendChild(ul);
+								tr.appendChild(td);
+								table.appendChild(tr);
+							});
+	
+							contrastPanelListDiv.appendChild(table);
+							contrastPanelListItem.appendChild(contrastPanelListDiv);
+							contrastPanelList.appendChild(contrastPanelListItem);
+							itemID++;
+						}
+					});
+
+					div.appendChild(contrastPanelList);
+					
 				});
 			}
 		}, false);
@@ -384,6 +477,8 @@ button.addEventListener('click', function () {
 		contrastpanel.innerHTML = '<h2>' + chrome.i18n.getMessage('contrastHeading') + '</h2><div></div>';
 		main.children[1].appendChild(contrastpanel);
 		ul.appendChild(contrast);
+
+		//? END UI. Contrasts.
 
 
 
