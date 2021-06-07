@@ -1,6 +1,7 @@
 const fs = require('fs')
 const fse = require('fs-extra')
 const path = require('path')
+const {zip} = require('zip-a-folder')
 
 const VERSION_FILE = path.join(__dirname, 'VERSION.txt')
 
@@ -24,10 +25,12 @@ function clean(){
     fs.mkdirSync(DIST_DIR)
 }
 
-function buildManifest(vendor){
+function buildManifest(vendor, version, reference){
     console.log('Build ', vendor, ' manifest')
     let vendorManifest = require(path.join(MANIFESTS_DIR,vendor + '_manifest.json'))
     let manifest = Object.assign({}, COMMON_MANIFEST, vendorManifest)
+    manifest.version = version
+    manifest.short_name = "Tanaguru " + reference.toUpperCase() + " " +vendor
     return JSON.stringify(manifest)
 }
 
@@ -59,6 +62,7 @@ function buildScripts(testFile){
     return script
 }
 
+
 console.log('Start build')
 clean();
 // build manifests
@@ -75,9 +79,8 @@ for(const reference of references){
 for(const manifest of manifests){
     if(manifest !== COMMON_MANIFEST_FILE_NAME){
         let vendor = manifest.split('_manifest.json')[0]
-        let manifestContent = buildManifest(vendor);
         for(const reference of references){
-
+            let manifestContent = buildManifest(vendor, version, reference);
             let dir = path.join(DIST_DIR, vendor, version, 'tanaguru-' + reference + '-' + vendor + '-' + version)
             fs.mkdirSync(dir, { recursive: true })
             fs.writeFileSync(
@@ -87,6 +90,7 @@ for(const manifest of manifests){
 
             fs.mkdirSync(path.join(dir, 'ressources', 'scripts', 'tests'), { recursive: true });
             fs.writeFileSync(path.join(dir, 'ressources', 'scripts', 'tests', 'tests.js'), test_contents[reference]);
+            zip(dir, dir + ".zip");
         }
     }
 }
