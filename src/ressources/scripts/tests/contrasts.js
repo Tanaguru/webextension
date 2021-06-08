@@ -33,19 +33,29 @@ function getLuminance(color) {
  ** Get the contrast ratio
  * https://www.w3.org/TR/WCAG20/#contrast-ratiodef
  * @param {string} textColor 
- * @param {string} bgColor 
+ * @param {array} bgColor 
  * @returns 
  */
 function getRatio(textColor, bgColor) {
 
 	if(textColor && bgColor) {
-		// the lighter of the colors
-		var lum1 = Math.max(getLuminance(textColor), getLuminance(bgColor));
-		// the darker of the colors
-		var lum2 = Math.min(getLuminance(textColor), getLuminance(bgColor));
+		var minRatio = 21;
 
+		bgColor.forEach(element => {
+			// the lighter of the colors
+			var lum1 = Math.max(getLuminance(textColor), getLuminance(element));
+			// the darker of the colors
+			var lum2 = Math.min(getLuminance(textColor), getLuminance(element));
+
+			// current ratio
+			var currentRatio = ((lum1 + 0.05) / (lum2 + 0.05));
+
+			// change minRatio if the current ratio < previously min ratio
+			minRatio = (currentRatio < minRatio) ? currentRatio : minRatio;
+		});
+		
 		// returns the contrast ratio rounded to 2 decimal
-		return ((lum1 + 0.05) / (lum2 + 0.05)).toFixed(2);
+		return minRatio.toFixed(2);
 	}
 
 	return null;
@@ -63,6 +73,7 @@ function validContrast(size, weight, ratio) {
 	valid.status = 0; // 0: cant tell - 1: invalid - 2: valid
 
 	if(size && weight) {
+		// console.log(size, weight);
 		size = parseInt(size.split('px')[0]);
 
 		// bold text
@@ -102,28 +113,47 @@ function validContrast(size, weight, ratio) {
 }
 
 /**
+ * Get colors on property
+ * @param {string} value 
+ * @returns 
+ */
+function getColors(value) {
+	var regex = /rgb\((?:\d+, \d+, \d+\))/g; // rgb(numbers, numbers, numbers) -> global
+	var matches = value.match(regex);
+	return matches;
+}
+
+/**
  * Get the background of the element
  * @param {node} element 
  * @returns 
  */
 function getBgColor(element) {
-
 	// if the element don't have a background color
-	if(!window.getComputedStyle(element, null).getPropertyValue('background-color').match(/^rgb\(/)) {
+	if(!window.getComputedStyle(element, null).getPropertyValue('background-color').match(/rgb\(/)) {
 		// check if he has a background image
-		if(window.getComputedStyle(element, null).getPropertyValue('background-image') !== 'none') {
+		if(window.getComputedStyle(element, null).getPropertyValue('background-image').match(/rgb\(/)) {
+			// if there are colors like linear-gradient, get it
+			var value = window.getComputedStyle(element, null).getPropertyValue('background-image');
+			return getColors(value);
+		} else if(window.getComputedStyle(element, null).getPropertyValue('background-image') !== 'none') {
+			// else its an image
 			return null; //TODO process the images
 		} else {
 			// get the parent node
 			var parent = element.parentNode;
+			if(window.getComputedStyle(parent, null).getPropertyValue('background-image').match(/rgb\(/)) {
+				var value = window.getComputedStyle(parent, null).getPropertyValue('background-image');
+				return getColors(value);
 			// and check if he has a background image
-			if(window.getComputedStyle(parent, null).getPropertyValue('background-image') !== 'none') {
+			} else if(window.getComputedStyle(parent, null).getPropertyValue('background-image') !== 'none') {
 				return null;
 			// else, search bg color on each parent until find one
 			} else {
 				while(parent) {
-					if(window.getComputedStyle(parent, null).getPropertyValue('background-color').match(/^rgb\(/)) {
-						return window.getComputedStyle(parent, null).getPropertyValue('background-color');
+					if(window.getComputedStyle(parent, null).getPropertyValue('background-color').match(/rgb\(/)) {
+						var value = window.getComputedStyle(parent, null).getPropertyValue('background-color');
+						return getColors(value);
 					} else {
 						parent = parent.parentNode;
 					}
@@ -132,7 +162,8 @@ function getBgColor(element) {
 		}
 	} else {
 		// if the lement has a bg color, return it
-		return window.getComputedStyle(element, null).getPropertyValue('background-color');
+		var value = window.getComputedStyle(element, null).getPropertyValue('background-color');
+		return getColors(value);
 	}
 
 	return null;
@@ -148,8 +179,6 @@ while (tw.nextNode()) {
 	var textColor = window.getComputedStyle(element, null).getPropertyValue('color');
 	var bgColor = getBgColor(element);
 	var ratio = getRatio(textColor, bgColor);
-	
-	
 
 	var o = {
 		tag: element.tagName.toLowerCase(),
