@@ -354,7 +354,7 @@ button.addEventListener('click', function () {
 							contrastPanelListTitle.appendChild(contrastPanelListButton);
 							contrastPanelListItem.appendChild(contrastPanelListTitle);
 							var contrastPanelListDiv = document.createElement('div');
-							contrastPanelListDiv.setAttribute('id', 'testsection' + itemID);
+							contrastPanelListDiv.setAttribute('id', 'contrastsection' + itemID);
 							contrastPanelListButton.setAttribute('aria-controls', contrastPanelListDiv.getAttribute('id'));
 							contrastPanelListDiv.setAttribute('hidden', 'hidden');
 	
