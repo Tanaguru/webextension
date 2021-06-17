@@ -276,43 +276,11 @@ button.addEventListener('click', function () {
 
 					var response = response.response[0];
 
-					// create a table by status
-					var invalid45 = ['failed', 'Ces éléments doivent respecter un ratio de contraste de 4.5:1', 'Invalidé', []];
-					var invalid3 = ['failed', 'Ces éléments doivent respecter un ratio de contraste de 3:1', 'Invalidé', []];
-					var valid345 = ['passed', 'Ces éléments ont un ratio de contraste valide', 'Validé', []];
-					var cantTell45 = ['cantTell', 'Vérifier que ces éléments respectent un ratio de contraste de 4.5:1', 'Indéterminé', []];
-					var cantTell3 = ['cantTell', 'Vérifier que ces éléments respectent un ratio de contraste de 4.5:1', 'Indéterminé', []];
-
-					// sort results by status
-					response.forEach(result => {
-						if(result.valid.target === 4.5) {
-							if(result.valid.status === 2) {
-								valid345[3].push(result);
-							} else if(result.valid.status === 1) {
-								invalid45[3].push(result);
-							} else {
-								cantTell45[3].push(result);
-							}
-						} else {
-							if(result.valid.status === 2) {
-								valid345[3].push(result);
-							} else if(result.valid.status === 1) {
-								invalid3[3].push(result);
-							} else {
-								cantTell3[3].push(result);
-							}
-						}
-					});
-
-					// we store all results in a neat table
-					var allSections = [];
-					allSections.push(invalid45, invalid3, cantTell45, cantTell3, valid345);
-
 					// index for button aria-control of the list items
 					var itemID = 1
 
 					// get a list item by status
-					allSections.forEach(section => {
+					response.forEach(section => {
 						// if no results for this status, the table isn't generated
 						if(section[3].length > 0) {
 							// Necessary variables for the text contents of the item (li)
@@ -368,12 +336,12 @@ button.addEventListener('click', function () {
 	
 							// get all results for the current status
 							section[3].forEach(result => {
+								i++;
 								// result number
 								var tr = document.createElement('tr');
 								var th = document.createElement('td');
 								th.style.textAlign = 'left';
 								th.style.width = 'auto';
-								i++;
 								th.appendChild(document.createTextNode(i));
 								tr.appendChild(th);
 

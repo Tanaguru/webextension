@@ -1,5 +1,15 @@
+if(!document.body.style.backgroundColor && !document.body.style.background) {
+	document.body.style.backgroundColor = '#fff';
+}
 var tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
 var textNodeList = [];
+
+// create a table by status
+var invalid45 = ['failed', 'Ces éléments doivent respecter un ratio de contraste de 4.5:1', 'Invalidé', []];
+var invalid3 = ['failed', 'Ces éléments doivent respecter un ratio de contraste de 3:1', 'Invalidé', []];
+var valid345 = ['passed', 'Ces éléments ont un ratio de contraste valide', 'Validé', []];
+var cantTell45 = ['cantTell', 'Vérifier que ces éléments respectent un ratio de contraste de 4.5:1', 'Indéterminé', []];
+var cantTell3 = ['cantTell', 'Vérifier que ces éléments respectent un ratio de contraste de 3:1', 'Indéterminé', []];
 
 /**
  ** Get the relative luminance of an RGB color
@@ -69,12 +79,14 @@ function getRatio(textColor, bgColor) {
  * @returns 
  */
 function validContrast(size, weight, ratio) {
-	var valid = [['target'], ['status']];
-	valid.status = 0; // 0: cant tell - 1: invalid - 2: valid
+	var valid = {
+		target: null,
+		status: 0 // 0: cant tell - 1: invalid - 2: valid
+	}
 
 	if(size && weight) {
 		// console.log(size, weight);
-		size = parseInt(size.split('px')[0]);
+		size = parseFloat(size.split('px')[0]);
 
 		// bold text
 		if(weight >= 700) {
@@ -193,8 +205,25 @@ while (tw.nextNode()) {
 	};
 
 	if (['noscript', 'script', 'style'].indexOf(o.tag) == -1 && o.text.trim().length > 0) {
-		textNodeList.push(o);
+		if(o.valid.target == 4.5) {
+			if(o.valid.status == 2) {
+				valid345[3].push(o);
+			} else if(o.valid.status == 1) {
+				invalid45[3].push(o);
+			} else {
+				cantTell45[3].push(o);
+			}
+		} else {
+			if(o.valid.status == 2) {
+				valid345[3].push(o);
+			} else if(o.valid.status == 1) {
+				invalid3[3].push(o);
+			} else {
+				cantTell3[3].push(o);
+			}
+		}
 	}
 }
 
+textNodeList.push(invalid45, invalid3, cantTell45, cantTell3, valid345);
 textNodeList;
