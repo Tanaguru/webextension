@@ -42,7 +42,7 @@ function getLuminance(color) {
 /**
  ** Get the contrast ratio
  * https://www.w3.org/TR/WCAG20/#contrast-ratiodef
- * @param {string} textColor 
+ * @param {array} textColor 
  * @param {array} bgColor 
  * @returns 
  */
@@ -51,17 +51,19 @@ function getRatio(textColor, bgColor) {
 	if(textColor && bgColor) {
 		var minRatio = 21;
 
-		bgColor.forEach(element => {
-			// the lighter of the colors
-			var lum1 = Math.max(getLuminance(textColor), getLuminance(element));
-			// the darker of the colors
-			var lum2 = Math.min(getLuminance(textColor), getLuminance(element));
+		bgColor.forEach(bg => {
+			textColor.forEach(fg => {
+				// the lighter of the colors
+				var lum1 = Math.max(getLuminance(fg), getLuminance(bg));
+				// the darker of the colors
+				var lum2 = Math.min(getLuminance(fg), getLuminance(bg));
 
-			// current ratio
-			var currentRatio = ((lum1 + 0.05) / (lum2 + 0.05));
+				// current ratio
+				var currentRatio = ((lum1 + 0.05) / (lum2 + 0.05));
 
-			// change minRatio if the current ratio < previously min ratio
-			minRatio = (currentRatio < minRatio) ? currentRatio : minRatio;
+				// change minRatio if the current ratio < previously min ratio
+				minRatio = (currentRatio < minRatio) ? currentRatio : minRatio;
+			})
 		});
 		
 		// returns the contrast ratio rounded to 2 decimal
@@ -130,8 +132,37 @@ function validContrast(size, weight, ratio) {
  * @returns 
  */
 function getColors(value) {
-	var regex = /rgb\((?:\d+, \d+, \d+\))/g; // rgb(numbers, numbers, numbers) -> global
-	var matches = value.match(regex);
+	if(value.match(/rgb\(/)) {
+		var regex = /rgb\((?:\d+, \d+, \d+\))/g; // rgb(numbers, numbers, numbers) -> global
+		var matches = value.match(regex);
+	} else if(value.match(/rgba\(/)) {
+		var regex = /rgba\((?:\d+, \d+, \d+, \d?[,.]?\d*\))/g; // rgba(numbers, numbers, numbers, numbers) -> global
+		var results = value.match(regex);
+		var matches = [];
+
+		results.forEach(result => {
+			// table of red, green and blue values in 8bit
+			var colorValues = result.substr(5, result.length - 1).split(',');
+
+			// translate each color in sRGB
+			var R = parseInt(colorValues[0].trim()) / 255;
+			R = (R === 0) ? (173 / 255) : R;
+			var G = parseInt(colorValues[1].trim()) / 255;
+			G = (G === 0) ? (173 / 255) : G;
+			var B = parseInt(colorValues[2].trim()) / 255;
+			B = (B === 0) ? (173 / 255) : B;
+			var a = parseFloat(colorValues[3].trim());
+			
+			var alpha = 1 - a;
+			var red = Math.round((a * R + alpha * R) * 255);
+			var green = Math.round((a * G + alpha * G) * 255);
+			var blue = Math.round((a * B + alpha * B) * 255);
+
+			var rgbColor = 'rgb('+red+', '+green+', '+blue+')';
+			matches.push(rgbColor);
+		});
+	}
+	
 	return matches;
 }
 
@@ -188,7 +219,7 @@ while (tw.nextNode()) {
 
 	var size = window.getComputedStyle(element, null).getPropertyValue('font-size');
 	var weight = window.getComputedStyle(element, null).getPropertyValue('font-weight');
-	var textColor = window.getComputedStyle(element, null).getPropertyValue('color');
+	var textColor = getColors(window.getComputedStyle(element, null).getPropertyValue('color'));
 	var bgColor = getBgColor(element);
 	var ratio = getRatio(textColor, bgColor);
 
