@@ -1,6 +1,7 @@
 [data-tanaguruhighlight="true"] {
 	position: relative;
 	transform: scale(1.5);
+	outline: 10000px solid rgba(0, 0, 0, 0.8);
 }
 
 [data-tanaguruhighlight="true"]::before {
@@ -13,3 +14,4 @@
 	height: 100%;
 	width: 100%;
 }
+
