@@ -141,22 +141,18 @@ function getColors(value) {
 		var matches = [];
 
 		results.forEach(result => {
-			// table of red, green and blue values in 8bit
+			// table of red, green, blue and alpha values
 			var colorValues = result.substr(5, result.length - 1).split(',');
 
-			// translate each color in sRGB
-			var R = parseInt(colorValues[0].trim()) / 255;
-			R = (R === 0) ? (173 / 255) : R;
-			var G = parseInt(colorValues[1].trim()) / 255;
-			G = (G === 0) ? (173 / 255) : G;
-			var B = parseInt(colorValues[2].trim()) / 255;
-			B = (B === 0) ? (173 / 255) : B;
+			var R = parseInt(colorValues[0].trim());
+			var G = parseInt(colorValues[1].trim());
+			var B = parseInt(colorValues[2].trim());
 			var a = parseFloat(colorValues[3].trim());
 			
-			var alpha = 1 - a;
-			var red = Math.round((a * R + alpha * R) * 255);
-			var green = Math.round((a * G + alpha * G) * 255);
-			var blue = Math.round((a * B + alpha * B) * 255);
+			// translate RGBA to RGB
+			var red = Math.round(255 * (1 - a) + R/10);
+			var green = Math.round(255 * (1 - a) + G/10);
+			var blue = Math.round(255 * (1 - a) + B/10);
 
 			var rgbColor = 'rgb('+red+', '+green+', '+blue+')';
 			matches.push(rgbColor);
