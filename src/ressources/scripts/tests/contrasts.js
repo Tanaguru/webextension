@@ -133,10 +133,10 @@ function validContrast(size, weight, ratio) {
  */
 function getColors(value) {
 	if(value.match(/rgb\(/)) {
-		var regex = /rgb\((?:\d+, \d+, \d+\))/g; // rgb(numbers, numbers, numbers) -> global
-		var matches = value.match(regex);
+		var regex = /rgb\((?:\d+, ?\d+, ?\d+\))/g; // rgb(numbers, numbers, numbers) -> global
+		return value.match(regex);
 	} else if(value.match(/rgba\(/)) {
-		var regex = /rgba\((?:\d+, \d+, \d+, \d?[,.]?\d*\))/g; // rgba(numbers, numbers, numbers, numbers) -> global
+		var regex = /rgba\((?:\d+, ?\d+, ?\d+, ?\d?[,.]?\d*\))/g; // rgba(numbers, numbers, numbers, numbers) -> global
 		var results = value.match(regex);
 		var matches = [];
 
@@ -157,9 +157,9 @@ function getColors(value) {
 			var rgbColor = 'rgb('+red+', '+green+', '+blue+')';
 			matches.push(rgbColor);
 		});
+
+		return matches;
 	}
-	
-	return matches;
 }
 
 /**
@@ -168,85 +168,76 @@ function getColors(value) {
  * @returns 
  */
 function getBgColor(element) {
-	// if the element don't have a background color
-	if(!window.getComputedStyle(element, null).getPropertyValue('background-color').match(/rgb\(/)) {
-		// check if he has a background image
-		if(window.getComputedStyle(element, null).getPropertyValue('background-image').match(/rgb\(/)) {
-			// if there are colors like linear-gradient, get it
-			var value = window.getComputedStyle(element, null).getPropertyValue('background-image');
-			return getColors(value);
-		} else if(window.getComputedStyle(element, null).getPropertyValue('background-image') !== 'none') {
-			// else its an image
-			return null; //TODO process the images
-		} else {
-			// get the parent node
-			var parent = element.parentNode;
-			if(window.getComputedStyle(parent, null).getPropertyValue('background-image').match(/rgb\(/)) {
-				var value = window.getComputedStyle(parent, null).getPropertyValue('background-image');
-				return getColors(value);
-			// and check if he has a background image
-			} else if(window.getComputedStyle(parent, null).getPropertyValue('background-image') !== 'none') {
+
+	if(window.getComputedStyle(element, null).getPropertyValue('background-image').match(/url\(/)) {
+		// if has bg image
+		return null; //TODO process the images
+	} else if(window.getComputedStyle(element, null).getPropertyValue('background-image').match(/rgba?\(/g)) {
+		// if there are colors like linear-gradient, get it
+		return getColors(window.getComputedStyle(element, null).getPropertyValue('background-image'));
+	} else if(window.getComputedStyle(element, null).getPropertyValue('background-color').match(/rgba?\(/g)) {
+		return getColors(window.getComputedStyle(element, null).getPropertyValue('background-color'));
+	} else {
+		// get the parent node
+		var parent = element.parentNode;
+		
+		while(parent) {
+			if(window.getComputedStyle(parent, null).getPropertyValue('background-image').match(/url\(/)) {
 				return null;
-			// else, search bg color on each parent until find one
+			} else if(window.getComputedStyle(parent, null).getPropertyValue('background-image').match(/rgba?\(/g)) {
+				return getColors(window.getComputedStyle(parent, null).getPropertyValue('background-image'));
+			} else if(window.getComputedStyle(parent, null).getPropertyValue('background-color').match(/rgba?\(/g)) {
+				return getColors(window.getComputedStyle(parent, null).getPropertyValue('background-color'));
 			} else {
-				while(parent) {
-					if(window.getComputedStyle(parent, null).getPropertyValue('background-color').match(/rgb\(/)) {
-						var value = window.getComputedStyle(parent, null).getPropertyValue('background-color');
-						return getColors(value);
-					} else {
-						parent = parent.parentNode;
-					}
-				}
+				parent = parent.parentNode;
 			}
 		}
-	} else {
-		// if the lement has a bg color, return it
-		var value = window.getComputedStyle(element, null).getPropertyValue('background-color');
-		return getColors(value);
-	}
 
-	return null;
+		return null;
+	}
 }
 
 // get datas for each text node
 while (tw.nextNode()) {
 	var cn = tw.currentNode;
-	var element = cn.parentNode;
+	if(cn.nodeValue.trim().length > 0) {
+		var element = cn.parentNode;
 
-	var size = window.getComputedStyle(element, null).getPropertyValue('font-size');
-	var weight = window.getComputedStyle(element, null).getPropertyValue('font-weight');
-	var textColor = getColors(window.getComputedStyle(element, null).getPropertyValue('color'));
-	var bgColor = getBgColor(element);
-	var ratio = getRatio(textColor, bgColor);
+		var size = window.getComputedStyle(element, null).getPropertyValue('font-size');
+		var weight = window.getComputedStyle(element, null).getPropertyValue('font-weight');
+		var textColor = getColors(window.getComputedStyle(element, null).getPropertyValue('color'));
+		var bgColor = getBgColor(element);
+		var ratio = getRatio(textColor, bgColor);
 
-	var o = {
-		tag: element.tagName.toLowerCase(),
-		text: cn.nodeValue,
-		size: size,
-		weight: weight,
-		foreground: textColor,
-		background: bgColor,
-		ratio: ratio,
-		xpath: getXPath(element),
-		valid: validContrast(size, weight, ratio)
-	};
+		var o = {
+			tag: element.tagName.toLowerCase(),
+			text: cn.nodeValue,
+			size: size,
+			weight: weight,
+			foreground: textColor,
+			background: bgColor,
+			ratio: ratio,
+			xpath: getXPath(element),
+			valid: validContrast(size, weight, ratio)
+		};
 
-	if (['noscript', 'script', 'style'].indexOf(o.tag) == -1 && o.text.trim().length > 0) {
-		if(o.valid.target == 4.5) {
-			if(o.valid.status == 2) {
-				valid345[3].push(o);
-			} else if(o.valid.status == 1) {
-				invalid45[3].push(o);
+		if (['noscript', 'script', 'style'].indexOf(o.tag) == -1) {
+			if(o.valid.target == 4.5) {
+				if(o.valid.status == 2) {
+					valid345[3].push(o);
+				} else if(o.valid.status == 1) {
+					invalid45[3].push(o);
+				} else {
+					cantTell45[3].push(o);
+				}
 			} else {
-				cantTell45[3].push(o);
-			}
-		} else {
-			if(o.valid.status == 2) {
-				valid345[3].push(o);
-			} else if(o.valid.status == 1) {
-				invalid3[3].push(o);
-			} else {
-				cantTell3[3].push(o);
+				if(o.valid.status == 2) {
+					valid345[3].push(o);
+				} else if(o.valid.status == 1) {
+					invalid3[3].push(o);
+				} else {
+					cantTell3[3].push(o);
+				}
 			}
 		}
 	}
