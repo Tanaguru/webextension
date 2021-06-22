@@ -87,7 +87,6 @@ function validContrast(size, weight, ratio) {
 	}
 
 	if(size && weight) {
-		// console.log(size, weight);
 		size = parseFloat(size.split('px')[0]);
 
 		// bold text
@@ -127,39 +126,61 @@ function validContrast(size, weight, ratio) {
 }
 
 /**
- * Get colors on property
+ * Get RGB values
  * @param {string} value 
  * @returns 
  */
-function getColors(value) {
-	if(value.match(/rgb\(/)) {
-		var regex = /rgb\((?:\d+, ?\d+, ?\d+\))/g; // rgb(numbers, numbers, numbers) -> global
-		return value.match(regex);
-	} else if(value.match(/rgba\(/)) {
-		var regex = /rgba\((?:\d+, ?\d+, ?\d+, ?\d?[,.]?\d*\))/g; // rgba(numbers, numbers, numbers, numbers) -> global
-		var results = value.match(regex);
-		var matches = [];
+function getRGB(value) {
+	// rgb(numbers, numbers, numbers) -> global
+	var regex = /rgb\((?:\d+, ?\d+, ?\d+\))/g;
+	return value.match(regex);
+}
 
-		results.forEach(result => {
-			// table of red, green, blue and alpha values
-			var colorValues = result.substr(5, result.length - 1).split(',');
+/**
+ * Translate RGBA values in RGB
+ * @param {string} value 
+ * @param {string} parent 
+ * @returns 
+ */
+function getRGBA(value, parent) {
+	// rgba(numbers, numbers, numbers, numbers) -> global
+	var regex = /rgba\((?:\d+, ?\d+, ?\d+, ?\d?[,.]?\d*\))/g;
+	var results = value.match(regex);
+	var matches = [];
 
-			var R = parseInt(colorValues[0].trim());
-			var G = parseInt(colorValues[1].trim());
-			var B = parseInt(colorValues[2].trim());
-			var a = parseFloat(colorValues[3].trim());
-			
-			// translate RGBA to RGB
-			var red = Math.round(255 * (1 - a) + R/10);
-			var green = Math.round(255 * (1 - a) + G/10);
-			var blue = Math.round(255 * (1 - a) + B/10);
+	results.forEach(result => {
+		// table of red, green, blue and alpha values
+		var colorValues = result.substr(5, result.length - 1).split(',');
+		var R = parseInt(colorValues[0].trim());
+		var G = parseInt(colorValues[1].trim());
+		var B = parseInt(colorValues[2].trim());
+		var a = parseFloat(colorValues[3].trim());
 
-			var rgbColor = 'rgb('+red+', '+green+', '+blue+')';
+		// if opacity is 100%, its useless to translate
+		if(a !== 1) {
+			// for each color applied on the parent, calculate RGB values for the element's current RGBA color
+			parent.forEach(el => {
+				// table of red, green and blue values of the parent
+				var parentValues = el.substr(4, el.length - 1).split(',');
+				var Rp = parseInt(parentValues[0].trim());
+				var Gp = parseInt(parentValues[1].trim());
+				var Bp = parseInt(parentValues[2].trim());
+
+				// translate RGBA to RGB
+				var red = R === Rp ? R : Math.round(Rp * (1 - a) + R * a);
+				var green = G === Gp ? G : Math.round(Gp * (1 - a) + G * a);
+				var blue = B === Bp ? B : Math.round(Bp * (1 - a) + B * a);
+
+				var rgbColor = 'rgb('+red+', '+green+', '+blue+')';
+				matches.push(rgbColor);
+			})
+		} else {
+			var rgbColor = 'rgb('+R+', '+G+', '+B+')';
 			matches.push(rgbColor);
-		});
+		}
+	});
 
-		return matches;
-	}
+	return matches;
 }
 
 /**
@@ -168,31 +189,147 @@ function getColors(value) {
  * @returns 
  */
 function getBgColor(element) {
+	var bgColors = [];
+	var bgImage = window.getComputedStyle(element, null).getPropertyValue('background-image');
+	var bgColor = window.getComputedStyle(element, null).getPropertyValue('background-color');
 
-	if(window.getComputedStyle(element, null).getPropertyValue('background-image').match(/url\(/)) {
+	if(bgImage.match(/url\(/)) {
 		// if has bg image
 		return null; //TODO process the images
-	} else if(window.getComputedStyle(element, null).getPropertyValue('background-image').match(/rgba?\(/g)) {
+	} else if(bgImage.match(/rgba?\(/g)) {
 		// if there are colors like linear-gradient, get it
-		return getColors(window.getComputedStyle(element, null).getPropertyValue('background-image'));
-	} else if(window.getComputedStyle(element, null).getPropertyValue('background-color').match(/rgba?\(/g)) {
-		return getColors(window.getComputedStyle(element, null).getPropertyValue('background-color'));
-	} else {
-		// get the parent node
-		var parent = element.parentNode;
-		
-		while(parent) {
-			if(window.getComputedStyle(parent, null).getPropertyValue('background-image').match(/url\(/)) {
-				return null;
-			} else if(window.getComputedStyle(parent, null).getPropertyValue('background-image').match(/rgba?\(/g)) {
-				return getColors(window.getComputedStyle(parent, null).getPropertyValue('background-image'));
-			} else if(window.getComputedStyle(parent, null).getPropertyValue('background-color').match(/rgba?\(/g)) {
-				return getColors(window.getComputedStyle(parent, null).getPropertyValue('background-color'));
+		if(bgImage.match(/rgba\(/)) {
+			var pbg = getParentBg(element);
+
+			if(pbg) {
+				getRGBA(bgImage, pbg).forEach(result => {
+					bgColors.push(result);
+				})
 			} else {
-				parent = parent.parentNode;
+				return null; //TODO parent's background is an image
 			}
 		}
 
+		if(bgImage.match(/rgb\(/)) {
+			getRGB(bgImage).forEach(result => {
+				bgColors.push(result);
+			})
+		}
+	} else if(bgColor.match(/rgba?\(/g)) {
+		if(bgColor.match(/rgba\(/)) {
+			var pbg = getParentBg(element);
+
+			if(pbg) {
+				getRGBA(bgColor, pbg).forEach(result => {
+					bgColors.push(result);
+				})
+			} else {
+				return null;
+			}
+		} else if(bgColor.match(/rgb\(/)) {
+			getRGB(bgColor).forEach(result => {
+				bgColors.push(result);
+			})
+		}
+	} else {
+		// if no background is applied on the element, we look for one on the parents
+		// get the parent node
+		var element = element.parentNode;
+
+		while(element) {
+			if(bgImage.match(/url\(/)) {
+				return null;
+			} else if(bgImage.match(/rgba?\(/g)) {
+				if(bgImage.match(/rgba\(/)) {
+					var pbg = getParentBg(element);
+
+					if(pbg) {
+						getRGBA(bgImage, pbg).forEach(result => {
+							bgColors.push(result);
+						})
+					} else {
+						return null;
+					}
+				}
+
+				if(bgImage.match(/rgb\(/)) {
+					getRGB(bgImage).forEach(result => {
+						bgColors.push(result);
+					})
+				}
+			} else if(bgColor.match(/rgba?\(/g)) {
+				if(bgColor.match(/rgba\(/)) {
+					var pbg = getParentBg(element);
+
+					if(pbg) {
+						getRGBA(bgColor, pbg).forEach(result => {
+							bgColors.push(result);
+						})
+					} else {
+						return null;
+					}
+				} else if(bgColor.match(/rgb\(/)) {
+					getRGB(bgColor).forEach(result => {
+						bgColors.push(result);
+					})
+				}
+			} else {
+				element = element.parentNode;
+			}
+		}
+	}
+
+	return bgColors;
+}
+
+/**
+ * Get parent's bg color for the background with opacity < 1
+ * @param {node} element 
+ * @returns 
+ */
+function getParentBg(element) {
+	// get the parent node
+	element = element.parentNode;
+
+	while(element) {
+		if(window.getComputedStyle(element, null).getPropertyValue('background-color').match(/rgb\(/)) {
+			return getRGB(window.getComputedStyle(element, null).getPropertyValue('background-color'));
+		} else {
+			element = element.parentNode;
+		}
+	}
+
+	return null;
+}
+
+/**
+ * Get final results (foreground, background, ratio)
+ * @param {node} element 
+ * @returns 
+ */
+function getResults(element) {
+	var bgColors = getBgColor(element);
+
+	// get the background color
+	if(bgColors) {
+		var textColor = window.getComputedStyle(element, null).getPropertyValue('color');
+		var colors = null;
+
+		if(textColor.match(/rgb\(/)) {
+			colors = getRGB(textColor);
+		} else if(textColor.match(/rgba\(/)) {
+			colors = getRGBA(textColor, bgColors);
+		} else {
+			return null;
+		}
+
+		var ratio = getRatio(colors, bgColors);
+
+		return {
+			background: bgColors[0],
+			ratio: ratio
+		}
+	} else {
 		return null;
 	}
 }
@@ -200,44 +337,42 @@ function getBgColor(element) {
 // get datas for each text node
 while (tw.nextNode()) {
 	var cn = tw.currentNode;
-	if(cn.nodeValue.trim().length > 0) {
-		var element = cn.parentNode;
+	var element = cn.parentNode;
+
+	// we don't process empty strings, nor script/noscript/style tags.
+	if(cn.nodeValue.trim().length > 0 && ['noscript', 'script', 'style'].indexOf(element.tagName.toLowerCase()) == -1) {
 
 		var size = window.getComputedStyle(element, null).getPropertyValue('font-size');
 		var weight = window.getComputedStyle(element, null).getPropertyValue('font-weight');
-		var textColor = getColors(window.getComputedStyle(element, null).getPropertyValue('color'));
-		var bgColor = getBgColor(element);
-		var ratio = getRatio(textColor, bgColor);
+		var results = getResults(element);
 
 		var o = {
 			tag: element.tagName.toLowerCase(),
 			text: cn.nodeValue,
 			size: size,
 			weight: weight,
-			foreground: textColor,
-			background: bgColor,
-			ratio: ratio,
+			foreground: window.getComputedStyle(element, null).getPropertyValue('color'),
+			background: results ? results.background : null,
+			ratio: results ? results.ratio : null,
 			xpath: getXPath(element),
-			valid: validContrast(size, weight, ratio)
+			valid: validContrast(size, weight, results ? results.ratio : null)
 		};
 
-		if (['noscript', 'script', 'style'].indexOf(o.tag) == -1) {
-			if(o.valid.target == 4.5) {
-				if(o.valid.status == 2) {
-					valid345[3].push(o);
-				} else if(o.valid.status == 1) {
-					invalid45[3].push(o);
-				} else {
-					cantTell45[3].push(o);
-				}
+		if(o.valid.target == 4.5) {
+			if(o.valid.status == 2) {
+				valid345[3].push(o);
+			} else if(o.valid.status == 1) {
+				invalid45[3].push(o);
 			} else {
-				if(o.valid.status == 2) {
-					valid345[3].push(o);
-				} else if(o.valid.status == 1) {
-					invalid3[3].push(o);
-				} else {
-					cantTell3[3].push(o);
-				}
+				cantTell45[3].push(o);
+			}
+		} else {
+			if(o.valid.status == 2) {
+				valid345[3].push(o);
+			} else if(o.valid.status == 1) {
+				invalid3[3].push(o);
+			} else {
+				cantTell3[3].push(o);
 			}
 		}
 	}
