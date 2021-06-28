@@ -15,7 +15,7 @@ var cantTell3 = ['cantTell', 'Vérifier que ces éléments respectent un ratio d
  *TODO
  * text-shadow
  * image
- ** hidden element
+ * element positionned off screen
  ** rgba bg on rgba parent
  */
 
@@ -363,19 +363,56 @@ function getOpacity(element) {
 }
 
 /**
+ ** Get element's visibility
+ * @param {node} element 
+ * @returns 
+ */
+ function getVisibility(element) {
+
+	while(element && element.tagName != 'HTML') {
+		if(element.hasAttribute('hidden') || window.getComputedStyle(element, null).getPropertyValue('display') === 'none') {
+			return false;
+		} else {
+			element = element.parentNode;
+		}
+	}
+
+	return true;
+}
+
+/**
+ ** Get element's position
+ * @param {node} element 
+ * @returns 
+ */
+ function getPosition(element) {
+
+	while(element && element.tagName != 'HTML') {
+		if(window.getComputedStyle(element, null).getPropertyValue('position') !== 'static') {
+			return true;
+		} else {
+			element = element.parentNode;
+		}
+	}
+
+	return false;
+}
+
+/**
  ** Get final results (foreground, background, ratio)
  * @param {node} element 
  * @returns 
  */
-function getResults(element) {
-	var opacity = getOpacity(element);
-	var bgColors = getBgColor(element, opacity);
+function getResults(element, opacity) {
+	var position = getPosition(element);
+	// if the element isn't repositioned, get the background color
+	var bgColors = position ? null : getBgColor(element, opacity);
 
-	// get the background color
 	if(bgColors) {
 		var textColor = window.getComputedStyle(element, null).getPropertyValue('color');
 		var colors = null;
 
+		// get RGB text color
 		if(textColor.match(/rgb\(/)) {
 			if(opacity < 1) {
 				var colorValues = textColor.substr(4, textColor.length - 1).split(',');
@@ -409,38 +446,44 @@ while (tw.nextNode()) {
 
 	// we don't process empty strings, nor script/noscript/style tags.
 	if(cn.nodeValue.trim().length > 0 && ['noscript', 'script', 'style'].indexOf(element.tagName.toLowerCase()) == -1) {
+		var opacity = getOpacity(element);
+		// we exclude the hidden elements
+		if(getVisibility(element) && window.getComputedStyle(element, null).getPropertyValue('visibility') !== 'hidden' && opacity > 0) {
+			var size = window.getComputedStyle(element, null).getPropertyValue('font-size');
+			var weight = window.getComputedStyle(element, null).getPropertyValue('font-weight');
+			var results = getResults(element, opacity);
+	
+			var o = {
+				tag: element.tagName.toLowerCase(),
+				text: cn.nodeValue,
+				size: size,
+				weight: weight,
+				foreground: window.getComputedStyle(element, null).getPropertyValue('color'),
+				background: results ? results.background : null,
+				ratio: results ? results.ratio : null,
+				xpath: getXPath(element),
+				valid: validContrast(size, weight, results ? results.ratio : null)
+			};
 
-		var size = window.getComputedStyle(element, null).getPropertyValue('font-size');
-		var weight = window.getComputedStyle(element, null).getPropertyValue('font-weight');
-		var results = getResults(element);
-
-		var o = {
-			tag: element.tagName.toLowerCase(),
-			text: cn.nodeValue,
-			size: size,
-			weight: weight,
-			foreground: window.getComputedStyle(element, null).getPropertyValue('color'),
-			background: results ? results.background : null,
-			ratio: results ? results.ratio : null,
-			xpath: getXPath(element),
-			valid: validContrast(size, weight, results ? results.ratio : null)
-		};
-
-		if(o.valid.target == 4.5) {
-			if(o.valid.status == 2) {
-				valid345[3].push(o);
-			} else if(o.valid.status == 1) {
-				invalid45[3].push(o);
-			} else {
-				cantTell45[3].push(o);
-			}
-		} else {
-			if(o.valid.status == 2) {
-				valid345[3].push(o);
-			} else if(o.valid.status == 1) {
-				invalid3[3].push(o);
-			} else {
-				cantTell3[3].push(o);
+			// we exclude elements with same foreground & background colors
+			if(o.foreground !== o.background) {
+				if(o.valid.target == 4.5) {
+					if(o.valid.status == 2) {
+						valid345[3].push(o);
+					} else if(o.valid.status == 1) {
+						invalid45[3].push(o);
+					} else {
+						cantTell45[3].push(o);
+					}
+				} else {
+					if(o.valid.status == 2) {
+						valid345[3].push(o);
+					} else if(o.valid.status == 1) {
+						invalid3[3].push(o);
+					} else {
+						cantTell3[3].push(o);
+					}
+				}
 			}
 		}
 	}
