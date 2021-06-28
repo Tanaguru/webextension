@@ -253,28 +253,36 @@ button.addEventListener('click', function () {
 
 
 		//? START UI. Contrasts.
-
 		var contrast = document.createElement('li');
 		contrast.setAttribute('id', 'tabContrast');
 		contrast.setAttribute('role', 'tab');
 		contrast.setAttribute('aria-selected', 'false');
 		contrast.setAttribute('tabindex', '-1');
-		contrast.appendChild(document.createTextNode(chrome.i18n.getMessage('contrastHeading')));
-		contrast.addEventListener('focus', function (event) {
-			if (!this.matches('[data-loaded="true"]')) {
-				this.setAttribute('data-loaded', 'true');
-				chrome.runtime.sendMessage({
-					tabId: chrome.devtools.inspectedWindow.tabId,
-					command: 'getContrasts'
-				}, function (response) {
+
+		chrome.runtime.sendMessage({
+			tabId: chrome.devtools.inspectedWindow.tabId,
+			command: 'getContrasts'
+		}, function (response) {
+			var response = response.response[0];
+
+			var contrastTabHeading = document.createElement('span');
+			contrastTabHeading.appendChild(document.createTextNode(chrome.i18n.getMessage('contrastHeading')));
+			contrast.appendChild(contrastTabHeading);
+			
+			var contrastTabCounter = document.createElement('strong');
+			var contrastErrorCounter = response[0][3].length + response[1][3].length;
+			contrastTabCounter.appendChild(document.createTextNode(contrastErrorCounter));
+			contrast.appendChild(contrastTabCounter);
+
+			contrast.addEventListener('focus', function (event) {
+				if (!this.matches('[data-loaded="true"]')) {
+					this.setAttribute('data-loaded', 'true');
 					// panel container
 					var div = document.querySelector('#' + document.activeElement.getAttribute('aria-controls') + ' div');
 
 					// panel list
 					var contrastPanelList = document.createElement('ul');
 					contrastPanelList.style.padding = 0;
-
-					var response = response.response[0];
 
 					// index for button aria-control of the list items
 					var itemID = 1
@@ -431,10 +439,10 @@ button.addEventListener('click', function () {
 					});
 
 					div.appendChild(contrastPanelList);
-					
-				});
-			}
-		}, false);
+
+				}
+			}, false);
+		});
 
 		var contrastpanel = document.createElement('div');
 		contrastpanel.setAttribute('role', 'tabpanel');
