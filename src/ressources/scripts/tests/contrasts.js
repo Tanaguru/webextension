@@ -195,13 +195,13 @@ function getRGBA(value, parent, opacity) {
  ** Get the background of the element
  * @param {node} element
  * @param {number} opacity
+ * @param pbg
  * @returns 
  */
-function getBgColor(element, opacity) {
+function getBgColor(element, opacity, pbg) {
 	var bgColors = [];
 	var bgImage = window.getComputedStyle(element, null).getPropertyValue('background-image');
 	var bgColor = window.getComputedStyle(element, null).getPropertyValue('background-color');
-	var pbg = getParentBg(element);
 
 	if(bgImage.match(/url\(/) || (opacity < 1 && !pbg) || (bgImage.match(/rgba\(/) && !pbg) || (bgColor.match(/rgba\(/) && !pbg)) {
 		// if has bg image
@@ -254,93 +254,10 @@ function getBgColor(element, opacity) {
 			});
 		}
 	} else {
-		// if no background is applied on the element, we look for one on the parents
-		element = element.parentNode;
-		while(element && element.tagName != 'HTML') {
-			pbg = getParentBg(element);
-			opacity = getOpacity(element);
-			bgImage = window.getComputedStyle(element, null).getPropertyValue('background-image');
-			bgColor = window.getComputedStyle(element, null).getPropertyValue('background-color');
-
-			if(bgImage.match(/url\(/) || (opacity < 1 && !pbg) || (bgImage.match(/rgba\(/) && !pbg) || (bgColor.match(/rgba\(/) && !pbg)) {
-				return null;
-			} else if(bgImage.match(/rgba?\(/g)) {
-				if(bgImage.match(/rgba\(/)) {
-					getRGBA(bgImage, pbg, opacity).forEach(result => {
-						bgColors.push(result);
-					});
-				}
-
-				if(bgImage.match(/rgb\(/)) {
-					getRGB(bgImage).forEach(result => {
-						if(opacity < 1) {
-							var colorValues = result.substr(4, result.length - 1).split(',');
-							var R = parseInt(colorValues[0].trim());
-							var G = parseInt(colorValues[1].trim());
-							var B = parseInt(colorValues[2].trim());
-							var RGBA = 'rgba('+R+','+G+','+B+','+1+')';
-		
-							getRGBA(RGBA, pbg, opacity).forEach(el => {
-								bgColors.push(el);
-							});
-						} else {
-							bgColors.push(result);
-						}
-					});
-				}
-			} else if(bgColor.match(/rgba?\(/g)) {
-				if(bgColor.match(/rgba\(/)) {
-					getRGBA(bgColor, pbg, opacity).forEach(result => {
-						bgColors.push(result);
-					});
-				} else if(bgColor.match(/rgb\(/)) {
-					getRGB(bgColor).forEach(result => {
-						if(opacity < 1) {
-							var colorValues = result.substr(4, result.length - 1).split(',');
-							var R = parseInt(colorValues[0].trim());
-							var G = parseInt(colorValues[1].trim());
-							var B = parseInt(colorValues[2].trim());
-							var RGBA = 'rgba('+R+','+G+','+B+','+1+')';
-		
-							getRGBA(RGBA, pbg, opacity).forEach(el => {
-								bgColors.push(el);
-							});
-						} else {
-							bgColors.push(result);
-						}
-					});
-				}
-			} else {
-				element = element.parentNode;
-			}
-		}
+		return null;
 	}
 
 	return bgColors;
-}
-
-/**
- ** Get parent's bg color for the background with opacity < 1
- * @param {node} element 
- * @returns 
- */
-function getParentBg(element) {
-	// get the parent node
-	element = element.parentNode;
-
-	while(element) {
-		if(window.getComputedStyle(element, null).getPropertyValue('background-color').match(/rgb\(/)) {
-			return getRGB(window.getComputedStyle(element, null).getPropertyValue('background-color'));
-		} else {
-			if(element.tagName != 'BODY') {
-				element = element.parentNode;
-			} else {
-				element = null;
-			}
-		}
-	}
-
-	return null;
 }
 
 /**
@@ -386,16 +303,39 @@ function getOpacity(element) {
  * @returns 
  */
  function getPosition(element) {
-
+	var x = 1;
 	while(element && element.tagName != 'HTML') {
-		if(window.getComputedStyle(element, null).getPropertyValue('position') !== 'static') {
-			return true;
+		var position = window.getComputedStyle(element, null).getPropertyValue('position');
+		if(position !== 'static' && position !== 'relative') {
+			return {
+				level: x,
+				element: element
+			};
 		} else {
+			x++;
 			element = element.parentNode;
 		}
 	}
 
 	return false;
+}
+
+function getBgLevel(element) {
+	var x = 1;
+
+	while(element && element.tagName != 'HTML') {
+		if(window.getComputedStyle(element, null).getPropertyValue('background-image') !== 'none' || window.getComputedStyle(element, null).getPropertyValue('background-color') !== 'rgba(0, 0, 0, 0)') {
+			return {
+				level: x,
+				element: element
+			}
+		} else {
+			x++;
+			element = element.parentNode;
+		}
+	}
+
+	return null;
 }
 
 /**
@@ -404,9 +344,32 @@ function getOpacity(element) {
  * @returns 
  */
 function getResults(element, opacity) {
-	var position = getPosition(element);
-	// if the element isn't repositioned, get the background color
-	var bgColors = position ? null : getBgColor(element, opacity);
+	var bg = getBgLevel(element);
+	var bgP = getPosition(element);
+	var position = (!bgP || bgP.level > bg.level) ? null : bgP;
+	var bgOpacity = getOpacity(bg.element);
+
+	if(!position && (bgOpacity < 1 || window.getComputedStyle(bg.element, null).getPropertyValue('background-image').match(/rgba\(/) || window.getComputedStyle(bg.element, null).getPropertyValue('background-color').match(/rgba\(/))) {
+		var parent = getBgLevel(bg.element.parentNode);
+
+		if(parent) {
+			var parentP = getPosition(bg.element.parentNode);
+			var pPosition = (!parentP || parentP.level > parent.level) ? null : parentP;
+	
+			if(!pPosition && getOpacity(parent.element) === 1 && !window.getComputedStyle(parent.element, null).getPropertyValue('background-image').match(/rgba\(/) && !window.getComputedStyle(parent.element, null).getPropertyValue('background-color').match(/rgba\(/)) {
+				var pbg = getBgColor(parent.element, 1, null);
+				var bgColors = getBgColor(bg.element, bgOpacity, pbg);
+			} else {
+				var bgColors = null;
+			}
+		} else {
+			var bgColors = null;
+		}
+		
+	} else if(!position) {
+		// if the element isn't repositioned, get the background color
+		var bgColors = getBgColor(bg.element, bgOpacity, null);
+	}
 
 	if(bgColors) {
 		var textColor = window.getComputedStyle(element, null).getPropertyValue('color');
