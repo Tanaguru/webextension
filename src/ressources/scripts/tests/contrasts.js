@@ -5,11 +5,18 @@ var tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
 var textNodeList = [];
 
 // create a table by status
-var invalid45 = ['failed', 'Ces éléments doivent respecter un ratio de contraste de 4.5:1', 'Invalidé', []];
-var invalid3 = ['failed', 'Ces éléments doivent respecter un ratio de contraste de 3:1', 'Invalidé', []];
-var valid345 = ['passed', 'Ces éléments ont un ratio de contraste valide', 'Validé', []];
-var cantTell45 = ['cantTell', 'Vérifier que ces éléments respectent un ratio de contraste de 4.5:1', 'Indéterminé', []];
-var cantTell3 = ['cantTell', 'Vérifier que ces éléments respectent un ratio de contraste de 3:1', 'Indéterminé', []];
+var invalid45 = ['failed', 'Ces éléments visibles semblent ne pas avoir un contraste suffisant d\'au moins 4.5:1', 'Invalidé', []];
+var invalid3 = ['failed', 'Ces éléments visibles semblent ne pas avoir un contraste suffisant d\'au moins 3:1', 'Invalidé', []];
+var invalid45V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste inférieur à 4.5:1', 'Non applicable', []];
+var invalid3V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste inférieur à 3:1', 'Non applicable', []];
+var valid45 = ['passed', 'Ces éléments visibles semblent avoir un contraste suffisant de 4.5:1', 'Validé', []];
+var valid3 = ['passed', 'Ces éléments visibles semblent avoir un contraste suffisant de 3:1', 'Validé', []];
+var valid45V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste d\'au moins 4.5:1', 'Non applicable', []];
+var valid3V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste d\'au moins 3:1', 'Non applicable', []];
+var cantTell45 = ['cantTell', 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 4.5:1', 'Non testé', []];
+var cantTell3 = ['cantTell', 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 3:1', 'Non testé', []];
+var cantTell45V = ['cantTell', 'Ces éléments non visibles devraient respecter un contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles', 'Non testé', []];
+var cantTell3V = ['cantTell', 'Ces éléments non visibles devraient respecter un contraste d\'au 3:1 s\'ils peuvent être rendus visibles', 'Non testé', []];
 
 /**
  *TODO
@@ -285,6 +292,9 @@ function getOpacity(element) {
  * @returns 
  */
  function getVisibility(element) {
+	if(window.getComputedStyle(element, null).getPropertyValue('visibility') === 'hidden' || opacity === 0) {
+		return false;
+	}
 
 	while(element && element.tagName != 'HTML') {
 		if(element.hasAttribute('hidden') || window.getComputedStyle(element, null).getPropertyValue('display') === 'none') {
@@ -339,7 +349,7 @@ function getBgLevel(element) {
 }
 
 /**
- ** Get final results (foreground, background, ratio)
+ ** Get final results (foreground, background, ratio, visibility)
  * @param {node} element 
  * @returns 
  */
@@ -393,12 +403,19 @@ function getResults(element, opacity) {
 			return null;
 		}
 
+		var ratio = getRatio(colors, bgColors);
+
 		return {
 			background: bgColors[0],
-			ratio: getRatio(colors, bgColors)
+			ratio: ratio,
+			visible: (getVisibility(element) || ratio > 1) ? true : false
 		}
 	} else {
-		return null;
+		return {
+			background: null,
+			ratio: null,
+			visible: getVisibility(element)
+		}
 	}
 }
 
@@ -409,48 +426,65 @@ while (tw.nextNode()) {
 
 	// we don't process empty strings, nor script/noscript/style tags.
 	if(cn.nodeValue.trim().length > 0 && ['noscript', 'script', 'style'].indexOf(element.tagName.toLowerCase()) == -1) {
+		
+		var size = window.getComputedStyle(element, null).getPropertyValue('font-size');
+		var weight = window.getComputedStyle(element, null).getPropertyValue('font-weight');
 		var opacity = getOpacity(element);
-		// we exclude the hidden elements
-		if(getVisibility(element) && window.getComputedStyle(element, null).getPropertyValue('visibility') !== 'hidden' && opacity > 0) {
-			var size = window.getComputedStyle(element, null).getPropertyValue('font-size');
-			var weight = window.getComputedStyle(element, null).getPropertyValue('font-weight');
-			var results = getResults(element, opacity);
-	
-			var o = {
-				tag: element.tagName.toLowerCase(),
-				text: cn.nodeValue,
-				size: size,
-				weight: weight,
-				foreground: window.getComputedStyle(element, null).getPropertyValue('color'),
-				background: results ? results.background : null,
-				ratio: results ? results.ratio : null,
-				xpath: getXPath(element),
-				valid: validContrast(size, weight, results ? results.ratio : null)
-			};
+		var results = getResults(element, opacity);
 
-			// we exclude elements with same foreground & background colors
-			if(o.foreground !== o.background) {
-				if(o.valid.target == 4.5) {
-					if(o.valid.status == 2) {
-						valid345[3].push(o);
-					} else if(o.valid.status == 1) {
-						invalid45[3].push(o);
-					} else {
-						cantTell45[3].push(o);
-					}
+		var o = {
+			tag: element.tagName.toLowerCase(),
+			text: cn.nodeValue,
+			size: size,
+			weight: weight,
+			foreground: window.getComputedStyle(element, null).getPropertyValue('color'),
+			background: results.background,
+			ratio: results.ratio,
+			xpath: getXPath(element),
+			valid: validContrast(size, weight, results.ratio)
+		};
+
+		if(o.valid.target == 4.5) {
+			if(results.visible) {
+				if(o.valid.status == 2) {
+					valid45[3].push(o);
+				} else if(o.valid.status == 1) {
+					invalid45[3].push(o);
 				} else {
-					if(o.valid.status == 2) {
-						valid345[3].push(o);
-					} else if(o.valid.status == 1) {
-						invalid3[3].push(o);
-					} else {
-						cantTell3[3].push(o);
-					}
+					cantTell45[3].push(o);
+				}
+			} else {
+				if(o.valid.status == 2) {
+					valid45V[3].push(o);
+				} else if(o.valid.status == 1) {
+					invalid45V[3].push(o);
+				} else {
+					cantTell45V[3].push(o);
 				}
 			}
+			
+		} else {
+			if(results.visible) {
+				if(o.valid.status == 2) {
+					valid3[3].push(o);
+				} else if(o.valid.status == 1) {
+					invalid3[3].push(o);
+				} else {
+					cantTell3[3].push(o);
+				}
+			} else {
+				if(o.valid.status == 2) {
+					valid3V[3].push(o);
+				} else if(o.valid.status == 1) {
+					invalid3V[3].push(o);
+				} else {
+					cantTell3V[3].push(o);
+				}
+			}
+			
 		}
 	}
 }
 
-textNodeList.push(invalid45, invalid3, cantTell45, cantTell3, valid345);
+textNodeList.push(invalid45, invalid3, cantTell45, cantTell3, cantTell45V, cantTell3V, valid45, valid3, invalid45V, invalid3V, valid45V, valid3V);
 textNodeList;
