@@ -16,7 +16,7 @@ var valid3V = ['inapplicable', 'Ces éléments non visibles semblent avoir un co
 var cantTell45 = ['cantTell', 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 4.5:1', 'Non testé', []];
 var cantTell3 = ['cantTell', 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 3:1', 'Non testé', []];
 var cantTell45V = ['cantTell', 'Ces éléments non visibles devraient respecter un contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles', 'Non testé', []];
-var cantTell3V = ['cantTell', 'Ces éléments non visibles devraient respecter un contraste d\'au 3:1 s\'ils peuvent être rendus visibles', 'Non testé', []];
+var cantTell3V = ['cantTell', 'Ces éléments non visibles devraient respecter un contraste d\'au moins 3:1 s\'ils peuvent être rendus visibles', 'Non testé', []];
 
 /**
  *TODO
@@ -291,19 +291,24 @@ function getOpacity(element) {
  * @param {node} element 
  * @returns 
  */
- function getVisibility(element) {
-	if(window.getComputedStyle(element, null).getPropertyValue('visibility') === 'hidden' || opacity === 0) {
+ function getVisibility(element, opacity) {
+	if(window.getComputedStyle(element, null).getPropertyValue('visibility') === 'hidden' || opacity == 0) {
 		return false;
 	}
 
+	var regexScale0 = /matrix\(0,0,0,0,0,0\)/;
+	var regexClipP = /.{6,7}\(0px|.{6,7}\(.+[, ]0px/g;
+	var regexClip = /rect\(0px,0px,0px,0px\)/;
+	
+
 	while(element && element.tagName != 'HTML') {
-		if(element.hasAttribute('hidden') || window.getComputedStyle(element, null).getPropertyValue('display') === 'none') {
+		if(element.hasAttribute('hidden') || window.getComputedStyle(element, null).getPropertyValue('display').trim() === 'none' || window.getComputedStyle(element, null).getPropertyValue('transform').replace(/ /g, '').match(regexScale0) || window.getComputedStyle(element, null).getPropertyValue('clip-path').match(regexClipP) || (window.getComputedStyle(element, null).getPropertyValue('clip').replace(/ /g, '').match(regexClip) && window.getComputedStyle(element, null).getPropertyValue('position').trim() === 'absolute')) {
 			return false;
 		} else {
 			element = element.parentNode;
 		}
 	}
-
+	
 	return true;
 }
 
@@ -316,7 +321,7 @@ function getOpacity(element) {
 	var x = 1;
 	while(element && element.tagName != 'HTML') {
 		var position = window.getComputedStyle(element, null).getPropertyValue('position');
-		if(position !== 'static' && position !== 'relative') {
+		if(position !== 'static') {
 			return {
 				level: x,
 				element: element
@@ -408,13 +413,13 @@ function getResults(element, opacity) {
 		return {
 			background: bgColors[0],
 			ratio: ratio,
-			visible: (getVisibility(element) || ratio > 1) ? true : false
+			visible: (getVisibility(element, opacity) && ratio > 1) ? true : false
 		}
 	} else {
 		return {
 			background: null,
 			ratio: null,
-			visible: getVisibility(element)
+			visible: getVisibility(element, opacity)
 		}
 	}
 }
@@ -462,7 +467,6 @@ while (tw.nextNode()) {
 					cantTell45V[3].push(o);
 				}
 			}
-			
 		} else {
 			if(results.visible) {
 				if(o.valid.status == 2) {
@@ -481,7 +485,6 @@ while (tw.nextNode()) {
 					cantTell3V[3].push(o);
 				}
 			}
-			
 		}
 	}
 }
