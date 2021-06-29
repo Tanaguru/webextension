@@ -5,24 +5,25 @@ var tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
 var textNodeList = [];
 
 // create a table by status
-var invalid45 = ['failed', 'Ces éléments visibles semblent ne pas avoir un contraste suffisant d\'au moins 4.5:1', 'Invalidé', []];
-var invalid3 = ['failed', 'Ces éléments visibles semblent ne pas avoir un contraste suffisant d\'au moins 3:1', 'Invalidé', []];
-var invalid45V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste inférieur à 4.5:1', 'Non applicable', []];
-var invalid3V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste inférieur à 3:1', 'Non applicable', []];
+var invalid45 = ['failed', 'Ces éléments visibles devraient respecter un contraste d\'au moins 4.5:1', 'Invalidé', []];
+var invalid3 = ['failed', 'Ces éléments visibles devraient respecter un contraste d\'au moins 3:1', 'Invalidé', []];
+var invalid45V = ['inapplicable', 'Ces éléments non visibles devraient respecter contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles', 'Non applicable', []];
+var invalid3V = ['inapplicable', 'Ces éléments non visibles devraient respecter contraste d\'au moins 3:1 s\'ils peuvent être rendus visibles', 'Non applicable', []];
 var valid45 = ['passed', 'Ces éléments visibles semblent avoir un contraste suffisant de 4.5:1', 'Validé', []];
 var valid3 = ['passed', 'Ces éléments visibles semblent avoir un contraste suffisant de 3:1', 'Validé', []];
-var valid45V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste d\'au moins 4.5:1', 'Non applicable', []];
-var valid3V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste d\'au moins 3:1', 'Non applicable', []];
+var valid45V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste suffisant de 4.5:1', 'Non applicable', []];
+var valid3V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste suffisant de 3:1', 'Non applicable', []];
 var cantTell45 = ['cantTell', 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 4.5:1', 'Non testé', []];
 var cantTell3 = ['cantTell', 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 3:1', 'Non testé', []];
-var cantTell45V = ['cantTell', 'Ces éléments non visibles devraient respecter un contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles', 'Non testé', []];
-var cantTell3V = ['cantTell', 'Ces éléments non visibles devraient respecter un contraste d\'au moins 3:1 s\'ils peuvent être rendus visibles', 'Non testé', []];
+var cantTell45V = ['cantTell', 'Vérifier que ces éléments non visibles respectent un contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles', 'Non testé', []];
+var cantTell3V = ['cantTell', 'Vérifier que ces éléments non visibles respectent un contraste d\'au moins 3:1 s\'ils peuvent être rendus visibles', 'Non testé', []];
 
 /**
  *TODO
  * text-shadow
  * image
- * element positionned off screen
+ * positions
+ ** transform -> translate
  ** rgba bg on rgba parent
  */
 
@@ -292,18 +293,39 @@ function getOpacity(element) {
  * @returns 
  */
  function getVisibility(element, opacity) {
-	if(window.getComputedStyle(element, null).getPropertyValue('visibility') === 'hidden' || opacity == 0) {
+	/**
+	 ** check inherited properties
+	 * visibility
+	 * hidden
+	 * width = 0
+	 */
+	if(window.getComputedStyle(element, null).getPropertyValue('visibility') === 'hidden' || opacity == 0 || element.offsetWidth === 0) {
 		return false;
 	}
 
-	var regexScale0 = /matrix\(0,0,0,0,0,0\)/;
-	var regexClipP = /.{6,7}\(0px|.{6,7}\(.+[, ]0px/g;
-	var regexClip = /rect\(0px,0px,0px,0px\)/;
+	var regexScale0 = /matrix\(0,0,0,0,0,0\)/; // scale(0)
+	var regexClipP = /.{6,7}\(0px|.{6,7}\(.+[, ]0px/g; // circle(0) || ellipse(0)
+	var regexClip = /rect\(0px,0px,0px,0px\)/; // rect(0)
 	
-
+	/**
+	 ** check properties not inherited
+	 * hidden
+	 * display: none
+	 * transform: scale(0)
+	 * clip-path: circle(0) || ellipse(0)
+	 * clip: rect(0,0,0,0) && position: absolute
+	 * height: 0 && overflow: hidden
+	 * element positioned offscreen
+	 */
 	while(element && element.tagName != 'HTML') {
-		if(element.hasAttribute('hidden') || window.getComputedStyle(element, null).getPropertyValue('display').trim() === 'none' || window.getComputedStyle(element, null).getPropertyValue('transform').replace(/ /g, '').match(regexScale0) || window.getComputedStyle(element, null).getPropertyValue('clip-path').match(regexClipP) || (window.getComputedStyle(element, null).getPropertyValue('clip').replace(/ /g, '').match(regexClip) && window.getComputedStyle(element, null).getPropertyValue('position').trim() === 'absolute')) {
+		if(window.getComputedStyle(element, null).getPropertyValue('transform').replace(/ /g, '').match(regexScale0) || window.getComputedStyle(element, null).getPropertyValue('clip-path').match(regexClipP) || (window.getComputedStyle(element, null).getPropertyValue('clip').replace(/ /g, '').match(regexClip) && window.getComputedStyle(element, null).getPropertyValue('position').trim() === 'absolute') || (element.offsetHeight === 0 && window.getComputedStyle(element, null).getPropertyValue('overflow').trim() === 'hidden')) {
 			return false;
+		} else if(window.getComputedStyle(element, null).getPropertyValue('position').trim() !== 'static' && window.getComputedStyle(element, null).getPropertyValue('position').trim() !== 'sticky') {
+			if(element.offsetLeft + element.offsetWidth <= 0 || element.offsetTop + element.offsetHeight <= 0) {
+				return false;
+			} else {
+				return true;
+			}
 		} else {
 			element = element.parentNode;
 		}
@@ -322,6 +344,14 @@ function getOpacity(element) {
 	while(element && element.tagName != 'HTML') {
 		var position = window.getComputedStyle(element, null).getPropertyValue('position');
 		if(position !== 'static') {
+			var top = window.getComputedStyle(element, null).getPropertyValue('top');
+			var bottom = window.getComputedStyle(element, null).getPropertyValue('bottom');
+			var left = window.getComputedStyle(element, null).getPropertyValue('left');
+			var right = window.getComputedStyle(element, null).getPropertyValue('right');
+			if(position === 'relative' && top === '0px' && bottom === '0px' && left === '0px' && right === '0px') {
+				return false;
+			}
+
 			return {
 				level: x,
 				element: element
