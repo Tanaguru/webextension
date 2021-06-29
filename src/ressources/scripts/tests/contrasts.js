@@ -420,31 +420,40 @@ function getResults(element, opacity) {
 		var textColor = window.getComputedStyle(element, null).getPropertyValue('color');
 		var colors = null;
 
-		// get RGB text color
-		if(textColor.match(/rgb\(/)) {
-			if(opacity < 1) {
-				var colorValues = textColor.substr(4, textColor.length - 1).split(',');
-				var R = parseInt(colorValues[0].trim());
-				var G = parseInt(colorValues[1].trim());
-				var B = parseInt(colorValues[2].trim());
-				textColor = 'rgba('+R+','+G+','+B+','+1+')';
+		if(window.getComputedStyle(element, null).getPropertyValue('text-shadow') === 'none') {
+			// get RGB text color
+			if(textColor.match(/rgb\(/)) {
+				if(opacity < 1) {
+					var colorValues = textColor.substr(4, textColor.length - 1).split(',');
+					var R = parseInt(colorValues[0].trim());
+					var G = parseInt(colorValues[1].trim());
+					var B = parseInt(colorValues[2].trim());
+					textColor = 'rgba('+R+','+G+','+B+','+1+')';
+					colors = getRGBA(textColor, bgColors, opacity);
+				} else {
+					colors = getRGB(textColor);
+				}
+			} else if(textColor.match(/rgba\(/)) {
 				colors = getRGBA(textColor, bgColors, opacity);
 			} else {
-				colors = getRGB(textColor);
+				return null;
 			}
-		} else if(textColor.match(/rgba\(/)) {
-			colors = getRGBA(textColor, bgColors, opacity);
+
+			var ratio = getRatio(colors, bgColors);
+
+			return {
+				background: bgColors[0],
+				ratio: ratio,
+				visible: (getVisibility(element, opacity) && ratio > 1) ? true : false
+			}
 		} else {
-			return null;
+			return {
+				background: bgColors[0],
+				ratio: null,
+				visible: getVisibility(element, opacity)
+			}
 		}
-
-		var ratio = getRatio(colors, bgColors);
-
-		return {
-			background: bgColors[0],
-			ratio: ratio,
-			visible: (getVisibility(element, opacity) && ratio > 1) ? true : false
-		}
+		
 	} else {
 		return {
 			background: null,
