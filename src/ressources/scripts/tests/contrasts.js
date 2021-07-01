@@ -274,12 +274,13 @@ function getBgColor(element, opacity, pbg) {
  */
 function getOpacity(element) {
 	var opacity = 1;
-	var regexFilter = /opacity\( ?0 ?\)/; // opacity(0)
+	var regexFilter = /opacity\( ?\d?.?\d+ ?\)/; // opacity(value)
 
+	// we look for the lowest opacity value on the element & its parents
 	while(element && element.tagName != 'HTML') {
 		if(window.getComputedStyle(element, null).getPropertyValue('filter').match(regexFilter)) {
 			var filterO = window.getComputedStyle(element, null).getPropertyValue('filter').match(regexFilter)[0];
-			var value = filterO.substr(8, (filterO.length - 1) - 8).trim();
+			var value = filterO.substr(8, filterO.length - 9).trim();
 			opacity = (value < opacity) ? value : opacity;
 		}
 
