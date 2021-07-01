@@ -294,38 +294,49 @@ function getOpacity(element) {
  */
  function getVisibility(element, opacity) {
 	/**
-	 ** check inherited properties
+	 ** check element hidden with inherited properties
 	 * visibility
 	 * hidden
-	 * width = 0
 	 */
-	if(window.getComputedStyle(element, null).getPropertyValue('visibility') === 'hidden' || opacity == 0 || element.offsetWidth === 0) {
+	if(window.getComputedStyle(element, null).getPropertyValue('visibility') === 'hidden' || opacity == 0) {
 		return false;
 	}
 
-	var regexScale0 = /matrix\(0,0,0,0,0,0\)/; // scale(0)
+	// get DOMRect of element (size & position)
+	var rect = element.getBoundingClientRect(),
+	scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+	scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+	var pos = { top: rect.top + scrollTop, left: rect.left + scrollLeft };
+
+	// width 0 & not overflow
+	if(rect.width === 0 && !(element.scrollWidth > element.offsetWidth)) {
+		return false;
+	}
+
+	// element positioned offscreen
+	if((pos.top + rect.height <= 0) || (pos.left + rect.width <= 0)) {
+		return false;
+	}
+
 	var regexClipP = /.{6,7}\(0px|.{6,7}\(.+[, ]0px/g; // circle(0) || ellipse(0)
 	var regexClip = /rect\(0px,0px,0px,0px\)/; // rect(0)
 	
 	/**
-	 ** check properties not inherited
-	 * hidden
-	 * display: none
-	 * transform: scale(0)
+	 ** check element hidden with properties not inherited
 	 * clip-path: circle(0) || ellipse(0)
 	 * clip: rect(0,0,0,0) && position: absolute
+	 * width: 0 && overflow: hidden
 	 * height: 0 && overflow: hidden
-	 * element positioned offscreen
 	 */
 	while(element && element.tagName != 'HTML') {
-		if(window.getComputedStyle(element, null).getPropertyValue('transform').replace(/ /g, '').match(regexScale0) || window.getComputedStyle(element, null).getPropertyValue('clip-path').match(regexClipP) || (window.getComputedStyle(element, null).getPropertyValue('clip').replace(/ /g, '').match(regexClip) && window.getComputedStyle(element, null).getPropertyValue('position').trim() === 'absolute') || (element.offsetHeight === 0 && window.getComputedStyle(element, null).getPropertyValue('overflow').trim() === 'hidden')) {
+		
+		if(
+			window.getComputedStyle(element, null).getPropertyValue('clip-path').match(regexClipP)
+			|| (window.getComputedStyle(element, null).getPropertyValue('clip').replace(/ /g, '').match(regexClip) && window.getComputedStyle(element, null).getPropertyValue('position').trim() === 'absolute')
+			|| (rect.width === 0 && window.getComputedStyle(element, null).getPropertyValue('overflow').trim() === 'hidden')
+			|| (rect.height === 0 && window.getComputedStyle(element, null).getPropertyValue('overflow').trim() === 'hidden')
+		) {
 			return false;
-		} else if(window.getComputedStyle(element, null).getPropertyValue('position').trim() !== 'static' && window.getComputedStyle(element, null).getPropertyValue('position').trim() !== 'sticky') {
-			if(element.offsetLeft + element.offsetWidth <= 0 || element.offsetTop + element.offsetHeight <= 0) {
-				return false;
-			} else {
-				return true;
-			}
 		} else {
 			element = element.parentNode;
 		}
