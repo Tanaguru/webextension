@@ -23,7 +23,6 @@ var cantTell3V = ['cantTell', 'Vérifier que ces éléments non visibles respect
  * text-shadow
  * image
  * positions
- ** transform -> translate
  ** rgba bg on rgba parent
  */
 
@@ -275,13 +274,20 @@ function getBgColor(element, opacity, pbg) {
  */
 function getOpacity(element) {
 	var opacity = 1;
+	var regexFilter = /opacity\( ?0 ?\)/; // opacity(0)
 
 	while(element && element.tagName != 'HTML') {
+		if(window.getComputedStyle(element, null).getPropertyValue('filter').match(regexFilter)) {
+			var filterO = window.getComputedStyle(element, null).getPropertyValue('filter').match(regexFilter)[0];
+			var value = filterO.substr(8, (filterO.length - 1) - 8).trim();
+			opacity = (value < opacity) ? value : opacity;
+		}
+
 		if(window.getComputedStyle(element, null).getPropertyValue('opacity') < opacity) {
 			opacity = window.getComputedStyle(element, null).getPropertyValue('opacity');
-		} else {
-			element = element.parentNode;
 		}
+		
+		element = element.parentNode;
 	}
 
 	return opacity;
@@ -329,12 +335,12 @@ function getOpacity(element) {
 	 * height: 0 && overflow: hidden
 	 */
 	while(element && element.tagName != 'HTML') {
-		
+
 		if(
 			window.getComputedStyle(element, null).getPropertyValue('clip-path').match(regexClipP)
 			|| (window.getComputedStyle(element, null).getPropertyValue('clip').replace(/ /g, '').match(regexClip) && window.getComputedStyle(element, null).getPropertyValue('position').trim() === 'absolute')
-			|| (rect.width === 0 && window.getComputedStyle(element, null).getPropertyValue('overflow').trim() === 'hidden')
-			|| (rect.height === 0 && window.getComputedStyle(element, null).getPropertyValue('overflow').trim() === 'hidden')
+			|| (element.offsetWidth === 0 && window.getComputedStyle(element, null).getPropertyValue('overflow').trim() === 'hidden')
+			|| (element.offsetHeight === 0 && window.getComputedStyle(element, null).getPropertyValue('overflow').trim() === 'hidden')
 		) {
 			return false;
 		} else {
