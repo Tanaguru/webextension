@@ -301,9 +301,9 @@ function getOpacity(element) {
  */
  function getVisibility(element, opacity) {
 	/**
-	 ** check element hidden with inherited properties
-	 * visibility
-	 * hidden
+	 ** checks if the element is hidden with :
+	 * visibility: hidden
+	 * opacity: 0
 	 */
 	if(window.getComputedStyle(element, null).getPropertyValue('visibility') === 'hidden' || opacity == 0) {
 		return false;
@@ -313,9 +313,16 @@ function getOpacity(element) {
 	var rect = element.getBoundingClientRect(),
 	scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
 	scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+	// x - y positions
 	var pos = { top: rect.top + scrollTop, left: rect.left + scrollLeft };
 
-	// width 0 & not overflow
+	/**
+	 ** Checks if the element has a null width & not overflow its container
+	 * display: none
+	 * hidden attribute
+	 * transform: scale(0)
+	 */
 	if(rect.width === 0 && !(element.scrollWidth > element.offsetWidth)) {
 		return false;
 	}
@@ -329,7 +336,7 @@ function getOpacity(element) {
 	var regexClip = /rect\(0px,0px,0px,0px\)/; // rect(0)
 	
 	/**
-	 ** check element hidden with properties not inherited
+	 ** checks if the element is hidden with :
 	 * clip-path: circle(0) || ellipse(0)
 	 * clip: rect(0,0,0,0) && position: absolute
 	 * width: 0 && overflow: hidden
@@ -353,52 +360,63 @@ function getOpacity(element) {
 }
 
 /**
+ ** Checks if the element is fully positioned inside its closest parent with a bgcolor
+ * @param {node} element 
+ * @returns 
+ */
+ function checkStacking(element, parent) {
+	var position = window.getComputedStyle(element, null).getPropertyValue('position');
+
+	if(position !== 'static') {
+		if(getPosition(parent).top <= getPosition(element).top 
+		&& getPosition(parent).left <= getPosition(element).left 
+		&& getPosition(parent).bottom >= getPosition(element).bottom 
+		&& getPosition(parent).right >= getPosition(element).right) {
+			return true;
+		}
+
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ ** Get the closest node with a bg propertie
+ * @param {node} element 
+ * @returns 
+ */
+function getBg(element) {
+
+	while(element && element.tagName != 'HTML') {
+		if(window.getComputedStyle(element, null).getPropertyValue('background-image') !== 'none' 
+		|| window.getComputedStyle(element, null).getPropertyValue('background-color') !== 'rgba(0, 0, 0, 0)') {
+			return element;
+		}
+
+		element = element.parentNode;
+	}
+
+	return null;
+}
+
+/**
  ** Get element's position
  * @param {node} element 
  * @returns 
  */
- function getPosition(element) {
-	var x = 1;
-	while(element && element.tagName != 'HTML') {
-		var position = window.getComputedStyle(element, null).getPropertyValue('position');
-		if(position !== 'static') {
-			var top = window.getComputedStyle(element, null).getPropertyValue('top');
-			var bottom = window.getComputedStyle(element, null).getPropertyValue('bottom');
-			var left = window.getComputedStyle(element, null).getPropertyValue('left');
-			var right = window.getComputedStyle(element, null).getPropertyValue('right');
-			if(position === 'relative' && top === '0px' && bottom === '0px' && left === '0px' && right === '0px') {
-				return false;
-			}
+function getPosition(element) {
+	// get DOMRect of element (size & position)
+	var rect = element.getBoundingClientRect(),
+	scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+	scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-			return {
-				level: x,
-				element: element
-			};
-		} else {
-			x++;
-			element = element.parentNode;
-		}
-	}
-
-	return false;
-}
-
-function getBgLevel(element) {
-	var x = 1;
-
-	while(element && element.tagName != 'HTML') {
-		if(window.getComputedStyle(element, null).getPropertyValue('background-image') !== 'none' || window.getComputedStyle(element, null).getPropertyValue('background-color') !== 'rgba(0, 0, 0, 0)') {
-			return {
-				level: x,
-				element: element
-			}
-		} else {
-			x++;
-			element = element.parentNode;
-		}
-	}
-
-	return null;
+	return {
+		top: rect.top + scrollTop,
+		left: rect.left + scrollLeft,
+		bottom: rect.top + scrollTop + rect.height,
+		right: rect.left + scrollLeft + rect.width
+	};
 }
 
 /**
@@ -407,21 +425,22 @@ function getBgLevel(element) {
  * @returns 
  */
 function getResults(element, opacity) {
-	var bg = getBgLevel(element);
-	var bgP = getPosition(element);
-	var position = (!bgP || bgP.level > bg.level) ? null : bgP;
-	var bgOpacity = getOpacity(bg.element);
+	var bg = getBg(element);
+	var position = bg ? checkStacking(element, bg) : null;
+	var bgOpacity = getOpacity(bg);
 
-	if(!position && (bgOpacity < 1 || window.getComputedStyle(bg.element, null).getPropertyValue('background-image').match(/rgba\(/) || window.getComputedStyle(bg.element, null).getPropertyValue('background-color').match(/rgba\(/))) {
-		var parent = getBgLevel(bg.element.parentNode);
+	// if the bg isn't opaque
+	if(position && (bgOpacity < 1 || window.getComputedStyle(bg, null).getPropertyValue('background-image').match(/rgba\(/) || window.getComputedStyle(bg, null).getPropertyValue('background-color').match(/rgba\(/))) {
+		var parent = getBg(bg.parentNode);
 
+		// get its parent to calculate its RGB color
 		if(parent) {
-			var parentP = getPosition(bg.element.parentNode);
-			var pPosition = (!parentP || parentP.level > parent.level) ? null : parentP;
+			var pPosition = checkStacking(bg, parent);
 	
-			if(!pPosition && getOpacity(parent.element) === 1 && !window.getComputedStyle(parent.element, null).getPropertyValue('background-image').match(/rgba\(/) && !window.getComputedStyle(parent.element, null).getPropertyValue('background-color').match(/rgba\(/)) {
-				var pbg = getBgColor(parent.element, 1, null);
-				var bgColors = getBgColor(bg.element, bgOpacity, pbg);
+			// if the parent's bg is opaque, calculate the color
+			if(pPosition && getOpacity(parent) === 1 && !window.getComputedStyle(parent, null).getPropertyValue('background-image').match(/rgba\(/) && !window.getComputedStyle(parent, null).getPropertyValue('background-color').match(/rgba\(/)) {
+				var pbg = getBgColor(parent, 1, null);
+				var bgColors = getBgColor(bg, bgOpacity, pbg);
 			} else {
 				var bgColors = null;
 			}
@@ -429,9 +448,8 @@ function getResults(element, opacity) {
 			var bgColors = null;
 		}
 		
-	} else if(!position) {
-		// if the element isn't repositioned, get the background color
-		var bgColors = getBgColor(bg.element, bgOpacity, null);
+	} else if(position) {
+		var bgColors = getBgColor(bg, bgOpacity, null);
 	}
 
 	if(bgColors) {
