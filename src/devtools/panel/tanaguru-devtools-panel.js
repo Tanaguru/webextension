@@ -255,24 +255,32 @@ button.addEventListener('click', function () {
 		//? START UI. Contrasts.
 		var contrast = document.createElement('li');
 		contrast.setAttribute('id', 'tabContrast');
-		contrast.setAttribute('role', 'tab');
-		contrast.setAttribute('aria-selected', 'false');
-		contrast.setAttribute('tabindex', '-1');
+
+		var contrastTabHeading = document.createElement('span');
+		contrastTabHeading.appendChild(document.createTextNode(chrome.i18n.getMessage('contrastHeading')));
+		contrast.appendChild(contrastTabHeading);
+
+		var loadingContrast = document.createElement('span');
+		loadingContrast.classList.add('contrast-loading');
+		loadingContrast.innerHTML = '<img src="images/loader.png" alt="Analyse en cours" tabindex="-1"></img>';
+		contrast.appendChild(loadingContrast);
 
 		chrome.runtime.sendMessage({
 			tabId: chrome.devtools.inspectedWindow.tabId,
 			command: 'getContrasts'
 		}, function (response) {
 			var response = response.response[0];
-
-			var contrastTabHeading = document.createElement('span');
-			contrastTabHeading.appendChild(document.createTextNode(chrome.i18n.getMessage('contrastHeading')));
-			contrast.appendChild(contrastTabHeading);
+			contrast.removeChild(loadingContrast);
+			contrast.setAttribute('role', 'tab');
+			contrast.setAttribute('aria-selected', 'false');
+			contrast.setAttribute('tabindex', '-1');
 			
-			var contrastTabCounter = document.createElement('strong');
 			var contrastErrorCounter = response[0][3].length + response[1][3].length;
-			contrastTabCounter.appendChild(document.createTextNode(contrastErrorCounter));
-			contrast.appendChild(contrastTabCounter);
+			if(contrastErrorCounter > 0) {
+				var contrastTabCounter = document.createElement('strong');
+				contrastTabCounter.appendChild(document.createTextNode(contrastErrorCounter));
+				contrast.appendChild(contrastTabCounter);
+			}
 
 			contrast.addEventListener('focus', function (event) {
 				if (!this.matches('[data-loaded="true"]')) {
@@ -399,7 +407,16 @@ button.addEventListener('click', function () {
 								td.style.textAlign = 'left';
 								td.style.width = 'auto';
 								var rspan = document.createElement('span');
-								rspan.setAttribute('style', 'display: block; border: solid 1px #000; background-color: ' + result.background + '; height: 18px;');
+								if(result.background && result.background !== 'image') {
+									rspan.setAttribute('style', 'display: block; border: solid 1px #000; background-color: ' + result.background + '; height: 18px;');
+								} else if(result.background === 'image') {
+									rspan.setAttribute('aria-describedby', 'contrast-bgImage')
+									rspan.classList.add('contrast-bgImage');
+								} else {
+									rspan.setAttribute('aria-describedby', 'contrast-bgNull')
+									rspan.classList.add('contrast-bgNull');
+								}
+								
 								var tdspan = document.createElement('span');
 								tdspan.setAttribute('class', 'visually-hidden');
 								tdspan.appendChild(document.createTextNode(result.background));
@@ -410,7 +427,7 @@ button.addEventListener('click', function () {
 								// result contrast ratio
 								var td = document.createElement('td');
 								td.style.textAlign = 'right';
-								td.appendChild(document.createTextNode(result.ratio + ':1'));
+								result.ratio ? td.appendChild(document.createTextNode(result.ratio + ':1')) : td.appendChild(document.createTextNode('?'));
 								tr.appendChild(td);
 
 								// button to view the text node in the code inspector
@@ -450,7 +467,7 @@ button.addEventListener('click', function () {
 		contrastpanel.setAttribute('id', 'tabpanelContrast');
 		contrastpanel.setAttribute('aria-hidden', 'true');
 		contrast.setAttribute('aria-controls', contrastpanel.getAttribute('id'));
-		contrastpanel.innerHTML = '<h2>' + chrome.i18n.getMessage('contrastHeading') + '</h2><div></div>';
+		contrastpanel.innerHTML = '<h2>' + chrome.i18n.getMessage('contrastHeading') + '</h2><div><p>' + chrome.i18n.getMessage('contrastDescription1') + '</p><p>' + chrome.i18n.getMessage('contrastDescription2') + '</p><p class="contrast-legend">' + chrome.i18n.getMessage('contrastLegend1') + '<span class="contrast-bgImage"></span><span id="contrast-bgImage">' + chrome.i18n.getMessage('contrastLegend2') + '</span><span class="contrast-bgNull"></span><span id="contrast-bgNull">' + chrome.i18n.getMessage('contrastLegend3') + '</span></p></div>';
 		main.children[1].appendChild(contrastpanel);
 		ul.appendChild(contrast);
 
