@@ -13,16 +13,16 @@ var valid45 = ['passed', 'Ces éléments visibles semblent avoir un contraste su
 var valid3 = ['passed', 'Ces éléments visibles semblent avoir un contraste suffisant de 3:1', 'Validé', []];
 var valid45V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste suffisant de 4.5:1', 'Non applicable', []];
 var valid3V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste suffisant de 3:1', 'Non applicable', []];
-var cantTell45 = ['cantTell', 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 4.5:1', 'Non testé', []];
-var cantTell3 = ['cantTell', 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 3:1', 'Non testé', []];
-var cantTell45V = ['cantTell', 'Vérifier que ces éléments non visibles respectent un contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles', 'Non testé', []];
-var cantTell3V = ['cantTell', 'Vérifier que ces éléments non visibles respectent un contraste d\'au moins 3:1 s\'ils peuvent être rendus visibles', 'Non testé', []];
+var cantTell45 = ['cantTell', 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 4.5:1', 'Indéterminé', []];
+var cantTell3 = ['cantTell', 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 3:1', 'Indéterminé', []];
+var cantTell45V = ['cantTell', 'Vérifier que ces éléments non visibles respectent un contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles', 'Indéterminé', []];
+var cantTell3V = ['cantTell', 'Vérifier que ces éléments non visibles respectent un contraste d\'au moins 3:1 s\'ils peuvent être rendus visibles', 'Indéterminé', []];
 
 /**
  *TODO
  * text-shadow
  * image
- * positions
+ * positions (outside its parent)
  ** rgba bg on rgba parent
  */
 
@@ -210,9 +210,12 @@ function getBgColor(element, opacity, pbg) {
 	var bgImage = window.getComputedStyle(element, null).getPropertyValue('background-image');
 	var bgColor = window.getComputedStyle(element, null).getPropertyValue('background-color');
 
-	if(bgImage.match(/url\(/) || (opacity < 1 && !pbg) || (bgImage.match(/rgba\(/) && !pbg) || (bgColor.match(/rgba\(/) && !pbg)) {
-		// if has bg image
-		return null; //TODO process the images
+	if(bgImage.match(/url\(/)) {
+		return 'image';
+	}
+
+	if((opacity < 1 && !pbg) || (bgImage.match(/rgba\(/) && !pbg) || (bgColor.match(/rgba\(/) && !pbg)) {
+		return null;
 	} else if(bgImage.match(/rgba?\(/g)) {
 		// if there are colors like linear-gradient, get it
 		if(bgImage.match(/rgba\(/)) {
@@ -440,6 +443,7 @@ function getResults(element, opacity) {
 			// if the parent's bg is opaque, calculate the color
 			if(pPosition && getOpacity(parent) === 1 && !window.getComputedStyle(parent, null).getPropertyValue('background-image').match(/rgba\(/) && !window.getComputedStyle(parent, null).getPropertyValue('background-color').match(/rgba\(/)) {
 				var pbg = getBgColor(parent, 1, null);
+				pbg = (pbg === 'image') ? null : pbg;
 				var bgColors = getBgColor(bg, bgOpacity, pbg);
 			} else {
 				var bgColors = null;
@@ -452,7 +456,7 @@ function getResults(element, opacity) {
 		var bgColors = getBgColor(bg, bgOpacity, null);
 	}
 
-	if(bgColors) {
+	if(bgColors && bgColors !== 'image') {
 		var textColor = window.getComputedStyle(element, null).getPropertyValue('color');
 		var colors = null;
 
@@ -492,7 +496,7 @@ function getResults(element, opacity) {
 		
 	} else {
 		return {
-			background: null,
+			background: bgColors,
 			ratio: null,
 			visible: getVisibility(element, opacity)
 		}

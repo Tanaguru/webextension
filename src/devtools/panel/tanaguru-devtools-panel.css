@@ -746,3 +746,49 @@ td code {
 #export-items li {
 	margin: 0.5em 0;
 }
+
+/** contrast */
+#tabContrast .contrast-loading {
+	float: right;
+	margin-right: 0.5em;
+	width: 2em;
+}
+
+.contrast-legend .contrast-bgImage,
+.contrast-legend .contrast-bgNull {
+	display: inline-block;
+	width: 18px;
+	margin: 0 0.5em 0 1em;
+	vertical-align: middle;
+}
+
+.contrast-loading img {
+	width: 100%;
+	height: auto;
+}
+
+.contrast-bgImage {
+	background: center / contain no-repeat url("./images/bg-img.png");
+	display: block;
+	border: solid 1px #000;
+	height: 18px;
+}
+
+.contrast-bgNull {
+	position: relative;
+	display: block;
+	border: solid 1px #000;
+	color: red;
+	height: 18px;
+}
+
+.contrast-bgNull::after {
+	content: 'X';
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	text-align: center;
+	font-weight: bold;
+}
