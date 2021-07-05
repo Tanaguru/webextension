@@ -1172,15 +1172,199 @@ tanaguruTestsList.push({
 });
 
 // 3.2 Dans chaque page web, le contraste entre la couleur du texte et la couleur de son arrière-plan est-il suffisamment élevé (hors cas particuliers) ?
-// 3.2.1 Dans chaque page web, le texte et le texte en image sans effet de graisse d'une taille restituée inférieure à 24px vérifient-ils une de ces conditions (hors cas particuliers) ?
+
 tanaguruTestsList.push({
     contrast: 'invalid_45',
     lang: 'fr',
     name: 'Ces éléments visibles devraient respecter un contraste d\'au moins 4.5:1',
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
     tags: ['a11y', 'contrast'],
-    expectedNbElements: 0,
-    ressources: {'rgaa': ['3.2.1']}
+    filter: function (item) {
+        return true;
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'failed';
+        }
+    },
+    ressources: {'rgaa': ['3.2']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'invalid_3',
+    lang: 'fr',
+    name: 'Ces éléments visibles devraient respecter un contraste d\'au moins 3:1',
+    description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
+    tags: ['a11y', 'contrast'],
+    filter: function (item) {
+        return true;
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'failed';
+        }
+    },
+    ressources: {'rgaa': ['3.2']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'valid_45',
+    lang: 'fr',
+    name: 'Ces éléments visibles semblent avoir un contraste suffisant de 4.5:1',
+    filter: function (item) {
+        return true;
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'valid_3',
+    lang: 'fr',
+    name: 'Ces éléments visibles semblent avoir un contraste suffisant de 3:1',
+    filter: function (item) {
+        return true;
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'cantTell_45',
+    lang: 'fr',
+    name: 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 4.5:1',
+    filter: function (item) {
+        return true;
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'cantTell';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'cantTell_3',
+    lang: 'fr',
+    name: 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 3:1',
+    filter: function (item) {
+        return true;
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'cantTell';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'invalid_45V',
+    lang: 'fr',
+    name: 'Ces éléments non visibles devraient respecter contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles',
+    filter: function (item) {
+        return true;
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'invalid_3V',
+    lang: 'fr',
+    name: 'Ces éléments non visibles devraient respecter contraste d\'au moins 3:1 s\'ils peuvent être rendus visibles',
+    filter: function (item) {
+        return true;
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'cantTell_45V',
+    lang: 'fr',
+    name: 'Vérifier que ces éléments non visibles respectent un contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles',
+    filter: function (item) {
+        return true;
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'cantTell_3V',
+    lang: 'fr',
+    name: 'Vérifier que ces éléments non visibles respectent un contraste d\'au moins 3:1 s\'ils peuvent être rendus visibles',
+    filter: function (item) {
+        return true;
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'valid_45V',
+    lang: 'fr',
+    name: 'Ces éléments non visibles semblent avoir un contraste suffisant de 4.5:1',
+    filter: function (item) {
+        return true;
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'valid_3V',
+    lang: 'fr',
+    name: 'Ces éléments non visibles semblent avoir un contraste suffisant de 3:1',
+    filter: function (item) {
+        return true;
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2']}
 });
 
 // 4.1.1 Chaque média temporel pré-enregistré seulement audio, vérifie-t-il, si nécessaire, l'une de ces conditions (hors cas particuliers) ?

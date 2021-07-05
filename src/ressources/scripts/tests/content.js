@@ -1128,7 +1128,7 @@ function createTanaguruTest(test) {
         // Sélection des éléments.
         var elements = test.hasOwnProperty('contrast') ? textNodeList[test.contrast] : document.querySelectorAll(test.query);
 
-        if (elements) {
+        if (elements.length > 0) {
             // Statut du test par défaut.
             var status = 'cantTell';
             // Initialisation des tags.
