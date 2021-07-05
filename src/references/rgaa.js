@@ -1171,6 +1171,18 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['2.2.1']}
 });
 
+// 3.2 Dans chaque page web, le contraste entre la couleur du texte et la couleur de son arrière-plan est-il suffisamment élevé (hors cas particuliers) ?
+// 3.2.1 Dans chaque page web, le texte et le texte en image sans effet de graisse d'une taille restituée inférieure à 24px vérifient-ils une de ces conditions (hors cas particuliers) ?
+tanaguruTestsList.push({
+    contrast: 'invalid_45',
+    lang: 'fr',
+    name: 'Ces éléments visibles devraient respecter un contraste d\'au moins 4.5:1',
+    description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
+    tags: ['a11y', 'contrast'],
+    expectedNbElements: 0,
+    ressources: {'rgaa': ['3.2.1']}
+});
+
 // 4.1.1 Chaque média temporel pré-enregistré seulement audio, vérifie-t-il, si nécessaire, l'une de ces conditions (hors cas particuliers) ?
 
 tanaguruTestsList.push({

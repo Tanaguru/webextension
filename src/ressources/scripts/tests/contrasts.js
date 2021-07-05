@@ -1,22 +1,37 @@
+//? CONTRAST SCRIPT
+
 if(!document.body.style.backgroundColor && !document.body.style.background) {
 	document.body.style.backgroundColor = '#fff';
 }
 var tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-var textNodeList = [];
+var textNodeList = {
+	invalid_45: [],
+	invalid_3: [],
+	invalid_45V: [],
+	invalid_3V: [],
+	valid_45: [],
+	valid_3: [],
+	valid_45V: [],
+	valid_3V: [],
+	cantTell_45: [],
+	cantTell_3: [],
+	cantTell_45V: [],
+	cantTell_3V: []
+};
 
 // create a table by status
-var invalid45 = ['failed', 'Ces éléments visibles devraient respecter un contraste d\'au moins 4.5:1', 'Invalidé', []];
-var invalid3 = ['failed', 'Ces éléments visibles devraient respecter un contraste d\'au moins 3:1', 'Invalidé', []];
-var invalid45V = ['inapplicable', 'Ces éléments non visibles devraient respecter contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles', 'Non applicable', []];
-var invalid3V = ['inapplicable', 'Ces éléments non visibles devraient respecter contraste d\'au moins 3:1 s\'ils peuvent être rendus visibles', 'Non applicable', []];
-var valid45 = ['passed', 'Ces éléments visibles semblent avoir un contraste suffisant de 4.5:1', 'Validé', []];
-var valid3 = ['passed', 'Ces éléments visibles semblent avoir un contraste suffisant de 3:1', 'Validé', []];
-var valid45V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste suffisant de 4.5:1', 'Non applicable', []];
-var valid3V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste suffisant de 3:1', 'Non applicable', []];
-var cantTell45 = ['cantTell', 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 4.5:1', 'Indéterminé', []];
-var cantTell3 = ['cantTell', 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 3:1', 'Indéterminé', []];
-var cantTell45V = ['cantTell', 'Vérifier que ces éléments non visibles respectent un contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles', 'Indéterminé', []];
-var cantTell3V = ['cantTell', 'Vérifier que ces éléments non visibles respectent un contraste d\'au moins 3:1 s\'ils peuvent être rendus visibles', 'Indéterminé', []];
+// var invalid45 = ['failed', 'Ces éléments visibles devraient respecter un contraste d\'au moins 4.5:1', 'Invalidé', []];
+// var invalid3 = ['failed', 'Ces éléments visibles devraient respecter un contraste d\'au moins 3:1', 'Invalidé', []];
+// var invalid45V = ['inapplicable', 'Ces éléments non visibles devraient respecter contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles', 'Non applicable', []];
+// var invalid3V = ['inapplicable', 'Ces éléments non visibles devraient respecter contraste d\'au moins 3:1 s\'ils peuvent être rendus visibles', 'Non applicable', []];
+// var valid45 = ['passed', 'Ces éléments visibles semblent avoir un contraste suffisant de 4.5:1', 'Validé', []];
+// var valid3 = ['passed', 'Ces éléments visibles semblent avoir un contraste suffisant de 3:1', 'Validé', []];
+// var valid45V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste suffisant de 4.5:1', 'Non applicable', []];
+// var valid3V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste suffisant de 3:1', 'Non applicable', []];
+// var cantTell45 = ['cantTell', 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 4.5:1', 'Indéterminé', []];
+// var cantTell3 = ['cantTell', 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 3:1', 'Indéterminé', []];
+// var cantTell45V = ['cantTell', 'Vérifier que ces éléments non visibles respectent un contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles', 'Indéterminé', []];
+// var cantTell3V = ['cantTell', 'Vérifier que ces éléments non visibles respectent un contraste d\'au moins 3:1 s\'ils peuvent être rendus visibles', 'Indéterminé', []];
 
 /**
  *TODO
@@ -531,42 +546,42 @@ while (tw.nextNode()) {
 		if(o.valid.target == 4.5) {
 			if(results.visible) {
 				if(o.valid.status == 2) {
-					valid45[3].push(o);
+					textNodeList.valid_45.push(o);
 				} else if(o.valid.status == 1) {
-					invalid45[3].push(o);
+					textNodeList.invalid_45.push(o);
 				} else {
-					cantTell45[3].push(o);
+					textNodeList.cantTell_45.push(o);
 				}
 			} else {
 				if(o.valid.status == 2) {
-					valid45V[3].push(o);
+					textNodeList.valid_45V.push(o);
 				} else if(o.valid.status == 1) {
-					invalid45V[3].push(o);
+					textNodeList.invalid_45V.push(o);
 				} else {
-					cantTell45V[3].push(o);
+					textNodeList.cantTell_45V.push(o);
 				}
 			}
 		} else {
 			if(results.visible) {
 				if(o.valid.status == 2) {
-					valid3[3].push(o);
+					textNodeList.valid_3.push(o);
 				} else if(o.valid.status == 1) {
-					invalid3[3].push(o);
+					textNodeList.invalid_3.push(o);
 				} else {
-					cantTell3[3].push(o);
+					textNodeList.cantTell_3.push(o);
 				}
 			} else {
 				if(o.valid.status == 2) {
-					valid3V[3].push(o);
+					textNodeList.valid_3V.push(o);
 				} else if(o.valid.status == 1) {
-					invalid3V[3].push(o);
+					textNodeList.invalid_3V.push(o);
 				} else {
-					cantTell3V[3].push(o);
+					textNodeList.cantTell_3V.push(o);
 				}
 			}
 		}
 	}
 }
 
-textNodeList.push(invalid45, invalid3, cantTell45, cantTell3, cantTell45V, cantTell3V, valid45, valid3, invalid45V, invalid3V, valid45V, valid3V);
+// textNodeList.push(invalid45, invalid3, cantTell45, cantTell3, cantTell45V, cantTell3V, valid45, valid3, invalid45V, invalid3V, valid45V, valid3V);
 textNodeList;
