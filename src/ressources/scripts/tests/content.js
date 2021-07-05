@@ -1124,9 +1124,10 @@ function createTanaguruTest(test) {
         addResultSet("Nouvelle syntaxe d'écriture des tests", result);
         // Intégrer chaque résultat dans window.tanaguru.tests.
     }
-    else if (test.hasOwnProperty('query') && test.query.constructor == String) {
+    else if ((test.hasOwnProperty('query') && test.query.constructor == String) || test.hasOwnProperty('contrast')) {
         // Sélection des éléments.
-        var elements = document.querySelectorAll(test.query);
+        var elements = test.hasOwnProperty('contrast') ? textNodeList[test.contrast] : document.querySelectorAll(test.query);
+
         if (elements) {
             // Statut du test par défaut.
             var status = 'cantTell';
@@ -1207,7 +1208,8 @@ function createTanaguruTest(test) {
                         }
                     }
                 }
-            }
+            } 
+
             // Mises à jour des tags (statut du tag et nombre de résultats en erreur).
             if (test.hasOwnProperty('tags') && test.tags.constructor == Array) {
                 for (var i = 0; i < test.tags.length; i++) {
@@ -1230,8 +1232,15 @@ function createTanaguruTest(test) {
             // Chargement du résultat.
             var outputelements = [];
             for (var i = 0; i < elements.length; i++) {
-                outputelements.push(manageOutput(elements[i]));
+                if(!test.hasOwnProperty('contrast')) {
+                    outputelements.push(manageOutput(elements[i]));
+                }
             }
+
+            if(test.hasOwnProperty('contrast')) {
+                outputelements = elements;
+            }
+
             var result = {
                 name: test.name,
                 type: status,

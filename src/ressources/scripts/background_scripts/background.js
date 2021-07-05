@@ -21,11 +21,11 @@ function handleMessage(request, sender, sendResponse) {
 			sendResponse({ command: 'executeTestsResults', response: result, timer: request.timer });
 		});
 	}
-	else if (request.command === 'getContrasts') {
-		chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/contrasts.js' }, function (result) {
-			sendResponse({ command: 'getContrasts', response: result });
-		});
-	}
+	// else if (request.command === 'getContrasts') {
+	// 	chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/contrasts.js' }, function (result) {
+	// 		sendResponse({ command: 'getContrasts', response: result });
+	// 	});
+	// }
 	else if (request.command == 'downloadTestCsvFile') {
 		chrome.downloads.download({
 			url: request.data.url,
