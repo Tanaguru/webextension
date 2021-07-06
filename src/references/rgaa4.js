@@ -1274,7 +1274,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     contrast: 'invalid_45V',
     lang: 'fr',
-    name: 'Ces éléments non visibles devraient respecter contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles',
+    name: 'Ces éléments non visibles devraient respecter un contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles',
     filter: function (item) {
         return true;
     },
