@@ -19,20 +19,6 @@ var textNodeList = {
 	cantTell_3V: []
 };
 
-// create a table by status
-// var invalid45 = ['failed', 'Ces éléments visibles devraient respecter un contraste d\'au moins 4.5:1', 'Invalidé', []];
-// var invalid3 = ['failed', 'Ces éléments visibles devraient respecter un contraste d\'au moins 3:1', 'Invalidé', []];
-// var invalid45V = ['inapplicable', 'Ces éléments non visibles devraient respecter contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles', 'Non applicable', []];
-// var invalid3V = ['inapplicable', 'Ces éléments non visibles devraient respecter contraste d\'au moins 3:1 s\'ils peuvent être rendus visibles', 'Non applicable', []];
-// var valid45 = ['passed', 'Ces éléments visibles semblent avoir un contraste suffisant de 4.5:1', 'Validé', []];
-// var valid3 = ['passed', 'Ces éléments visibles semblent avoir un contraste suffisant de 3:1', 'Validé', []];
-// var valid45V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste suffisant de 4.5:1', 'Non applicable', []];
-// var valid3V = ['inapplicable', 'Ces éléments non visibles semblent avoir un contraste suffisant de 3:1', 'Non applicable', []];
-// var cantTell45 = ['cantTell', 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 4.5:1', 'Indéterminé', []];
-// var cantTell3 = ['cantTell', 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 3:1', 'Indéterminé', []];
-// var cantTell45V = ['cantTell', 'Vérifier que ces éléments non visibles respectent un contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles', 'Indéterminé', []];
-// var cantTell3V = ['cantTell', 'Vérifier que ces éléments non visibles respectent un contraste d\'au moins 3:1 s\'ils peuvent être rendus visibles', 'Indéterminé', []];
-
 /**
  *TODO
  * text-shadow
@@ -532,6 +518,7 @@ while (tw.nextNode()) {
 		var results = getResults(element, opacity);
 
 		var o = {
+			node: element,
 			tag: element.tagName.toLowerCase(),
 			text: cn.nodeValue,
 			size: size,
@@ -540,7 +527,9 @@ while (tw.nextNode()) {
 			background: results.background,
 			ratio: results.ratio,
 			xpath: getXPath(element),
-			valid: validContrast(size, weight, results.ratio)
+			valid: validContrast(size, weight, results.ratio),
+			role: {},
+			isNotVisibleDueTo: results.visible ? [] : ["css:other"]
 		};
 
 		if(o.valid.target == 4.5) {
@@ -583,5 +572,4 @@ while (tw.nextNode()) {
 	}
 }
 
-// textNodeList.push(invalid45, invalid3, cantTell45, cantTell3, cantTell45V, cantTell3V, valid45, valid3, invalid45V, invalid3V, valid45V, valid3V);
 textNodeList;

@@ -647,7 +647,8 @@ th:nth-child(3) {
 	text-align: left;
 }		
 		
-td:nth-child(4), td:nth-child(5) {
+/* old selector : td:nth-child(4), td:nth-child(5) */
+.testsection-td-colored {
 	background-color: rgba(43, 123, 146, .75);
 	color: #fff;
 	text-align: center;
@@ -758,6 +759,7 @@ td code {
 .contrast-legend .contrast-bgNull {
 	display: inline-block;
 	width: 18px;
+	height: 18px;
 	margin: 0 0.5em 0 1em;
 	vertical-align: middle;
 }
@@ -770,15 +772,19 @@ td code {
 .contrast-bgImage {
 	background: center / contain no-repeat url("./images/bg-img.png");
 	display: block;
+	margin: auto;
 	border: solid 1px #000;
+	width: 18px;
 	height: 18px;
 }
 
 .contrast-bgNull {
 	position: relative;
 	display: block;
+	margin: auto;
 	border: solid 1px #000;
 	color: red;
+	width: 18px;
 	height: 18px;
 }
 

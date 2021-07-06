@@ -1128,9 +1128,10 @@ function createTanaguruTest(test) {
         // Sélection des éléments.
         var elements = test.hasOwnProperty('contrast') ? textNodeList[test.contrast] : document.querySelectorAll(test.query);
 
-        if (elements.length > 0) {
+        if (elements.length > 0 && (!test.hasOwnProperty('filter') ? true : (test.filter.constructor == Function && Array.from(elements).filter(test.filter).length > 0))) {
             // Statut du test par défaut.
-            var status = 'cantTell';
+            var status = 'inapplicable';
+
             // Initialisation des tags.
             initTanaguru();
             if (test.hasOwnProperty('tags') && test.tags.constructor == Array) {
@@ -1141,11 +1142,13 @@ function createTanaguruTest(test) {
             else {
                 createTanaguruTag('others', status);
             }
+
             // Gestion du compteur d'éléments testés (avant filtre).
             var counter = null;
             if (test.hasOwnProperty('counter') && test.counter == 'beforefilter') {
                 counter = elements.length;
             }
+
             // Filtre additionnel sur la sélection d'éléments.
             if (test.hasOwnProperty('filter')) {
                 if (test.filter.constructor == Function) {
@@ -1156,10 +1159,12 @@ function createTanaguruTest(test) {
                     // Erreur : valeur de la propriété filter.
                 }
             }
+
             // Gestion du compteur d'éléments testés (après filtre).
             if (test.hasOwnProperty('counter') && test.counter == 'afterfilter') {
                 counter = elements.length;
             }
+
             // Calcul du statut du test.
             if (test.hasOwnProperty('expectedNbElements')) {
                 if (Number.isInteger(test.expectedNbElements)) {
@@ -1192,6 +1197,7 @@ function createTanaguruTest(test) {
                 inapplicable: 1,
                 untested: 0
             };
+
             // Traitement par collection.
             var failedincollection = null;
             if (test.hasOwnProperty('analyzeElements')) {
@@ -1229,15 +1235,32 @@ function createTanaguruTest(test) {
                     window.tanaguru.tags['others'].nbfailures += failedincollection ? failedincollection : (elements.length > 0 ? elements.length : 1);
                 }
             }
+
             // Chargement du résultat.
             var outputelements = [];
-            for (var i = 0; i < elements.length; i++) {
-                if(!test.hasOwnProperty('contrast')) {
+            if(!test.hasOwnProperty('contrast')) {
+                for (var i = 0; i < elements.length; i++) {
                     outputelements.push(manageOutput(elements[i]));
                 }
             }
-
+            
             if(test.hasOwnProperty('contrast')) {
+                for (var i = 0; i < elements.length; i++) {
+                    var node = elements[i].node;
+                    var accessibleName = node.accessibleName;
+                    var implicitARIASemantic = node.implicitARIASemantic;
+                    var explicitARIASemantic = node.explicitARIASemantic;
+                    var canBeReachedUsingKeyboardWith = node.canBeReachedUsingKeyboardWith;
+                    var isNotExposedDueTo = node.isNotExposedDueTo;
+
+                    elements[i].role.implicit = implicitARIASemantic;
+                    elements[i].role.explicit = explicitARIASemantic;
+                    elements[i].accessibleName = accessibleName;
+                    elements[i].canBeReachedUsingKeyboardWith = canBeReachedUsingKeyboardWith;
+                    elements[i].isNotExposedDueTo = isNotExposedDueTo;
+                    delete elements[i].node;
+                }
+                
                 outputelements = elements;
             }
 
@@ -1272,6 +1295,7 @@ function createTanaguruTest(test) {
             if (failedincollection) {
                 result.failedincollection = failedincollection;
             }
+
             addResultSet("Nouvelle syntaxe d'écriture des tests", result);
             // Intégrer chaque résultat dans window.tanaguru.tests.
         }
