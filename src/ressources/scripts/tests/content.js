@@ -1128,7 +1128,7 @@ function createTanaguruTest(test) {
         // Sélection des éléments.
         var elements = test.hasOwnProperty('contrast') ? textNodeList[test.contrast] : document.querySelectorAll(test.query);
 
-        if (elements.length > 0 && (!test.hasOwnProperty('filter') ? true : (test.filter.constructor == Function && Array.from(elements).filter(test.filter).length > 0))) {
+        if (elements && elements.length > 0) {
             // Statut du test par défaut.
             var status = 'inapplicable';
 

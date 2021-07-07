@@ -1172,199 +1172,336 @@ tanaguruTestsList.push({
 });
 
 // 3.2 Dans chaque page web, le contraste entre la couleur du texte et la couleur de son arrière-plan est-il suffisamment élevé (hors cas particuliers) ?
-
+// 3.2.1 Dans chaque page web, le texte et le texte en image sans effet de graisse d'une taille restituée inférieure à 24px vérifient-ils une de ces conditions (hors cas particuliers) ? 
 tanaguruTestsList.push({
     contrast: 'invalid_45',
     lang: 'fr',
-    name: 'Ces éléments visibles devraient respecter un contraste d\'au moins 4.5:1',
+    name: 'Textes visibles sans effet de graisse et d\'une taille restituée inférieure à 24px ayant un contraste inférieur à 4.5:1',
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
     tags: ['a11y', 'contrast'],
-    filter: function (item) {
-        return true;
-    },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'failed';
         }
     },
-    ressources: {'rgaa': ['3.2']}
-});
-
-tanaguruTestsList.push({
-    contrast: 'invalid_3',
-    lang: 'fr',
-    name: 'Ces éléments visibles devraient respecter un contraste d\'au moins 3:1',
-    description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
-    tags: ['a11y', 'contrast'],
-    filter: function (item) {
-        return true;
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'failed';
-        }
-    },
-    ressources: {'rgaa': ['3.2']}
+    ressources: {'rgaa': ['3.2.1']}
 });
 
 tanaguruTestsList.push({
     contrast: 'valid_45',
     lang: 'fr',
-    name: 'Ces éléments visibles semblent avoir un contraste suffisant de 4.5:1',
-    filter: function (item) {
-        return true;
-    },
+    name: 'Textes visibles sans effet de graisse et d\'une taille restituée inférieure à 24px ayant un contraste suffisant de 4.5:1',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'passed';
         }
     },
     tags: ['a11y', 'contrast'],
-    ressources: {'rgaa': ['3.2']}
-});
-
-tanaguruTestsList.push({
-    contrast: 'valid_3',
-    lang: 'fr',
-    name: 'Ces éléments visibles semblent avoir un contraste suffisant de 3:1',
-    filter: function (item) {
-        return true;
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
-    },
-    tags: ['a11y', 'contrast'],
-    ressources: {'rgaa': ['3.2']}
+    ressources: {'rgaa': ['3.2.1']}
 });
 
 tanaguruTestsList.push({
     contrast: 'cantTell_45',
     lang: 'fr',
-    name: 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 4.5:1',
-    filter: function (item) {
-        return true;
-    },
+    name: 'Vérifier que ces éléments texte sans effet de graisse et d\'une taille restituée inférieure à 24px respectent un contraste d\'au moins 4.5:1',
+    description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'cantTell';
         }
     },
     tags: ['a11y', 'contrast'],
-    ressources: {'rgaa': ['3.2']}
-});
-
-tanaguruTestsList.push({
-    contrast: 'cantTell_3',
-    lang: 'fr',
-    name: 'Vérifier que ces éléments visibles respectent un contraste d\'au moins 3:1',
-    filter: function (item) {
-        return true;
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
-    tags: ['a11y', 'contrast'],
-    ressources: {'rgaa': ['3.2']}
+    ressources: {'rgaa': ['3.2.1']}
 });
 
 tanaguruTestsList.push({
     contrast: 'invalid_45V',
     lang: 'fr',
-    name: 'Ces éléments non visibles devraient respecter un contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles',
-    filter: function (item) {
-        return true;
-    },
+    name: 'Textes non visibles sans effet de graisse et d\'une taille restituée inférieure à 24px ayant un contraste inférieur à 4.5:1',
+    description: 'Si ces éléments texte peuvent être rendus visibles, ils devraient respecter un contraste de 4.5:1 minimum.',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'inapplicable';
         }
     },
     tags: ['a11y', 'contrast'],
-    ressources: {'rgaa': ['3.2']}
-});
-
-tanaguruTestsList.push({
-    contrast: 'invalid_3V',
-    lang: 'fr',
-    name: 'Ces éléments non visibles devraient respecter contraste d\'au moins 3:1 s\'ils peuvent être rendus visibles',
-    filter: function (item) {
-        return true;
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
-    },
-    tags: ['a11y', 'contrast'],
-    ressources: {'rgaa': ['3.2']}
+    ressources: {'rgaa': ['3.2.1']}
 });
 
 tanaguruTestsList.push({
     contrast: 'cantTell_45V',
     lang: 'fr',
-    name: 'Vérifier que ces éléments non visibles respectent un contraste d\'au moins 4.5:1 s\'ils peuvent être rendus visibles',
-    filter: function (item) {
-        return true;
-    },
+    name: 'Textes non visibles sans effet de graisse et d\'une taille restituée inférieure à 24px',
+    description: 'Si ces éléments texte peuvent être rendus visibles, vérifier qu\'ils respectent un contraste de 4.5:1 minimum.',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'inapplicable';
         }
     },
     tags: ['a11y', 'contrast'],
-    ressources: {'rgaa': ['3.2']}
-});
-
-tanaguruTestsList.push({
-    contrast: 'cantTell_3V',
-    lang: 'fr',
-    name: 'Vérifier que ces éléments non visibles respectent un contraste d\'au moins 3:1 s\'ils peuvent être rendus visibles',
-    filter: function (item) {
-        return true;
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
-    },
-    tags: ['a11y', 'contrast'],
-    ressources: {'rgaa': ['3.2']}
+    ressources: {'rgaa': ['3.2.1']}
 });
 
 tanaguruTestsList.push({
     contrast: 'valid_45V',
     lang: 'fr',
-    name: 'Ces éléments non visibles semblent avoir un contraste suffisant de 4.5:1',
-    filter: function (item) {
-        return true;
-    },
+    name: 'Textes non visibles sans effet de graisse et d\'une taille restituée inférieure à 24px ayant un contraste suffisant de 4.5:1',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'inapplicable';
         }
     },
     tags: ['a11y', 'contrast'],
-    ressources: {'rgaa': ['3.2']}
+    ressources: {'rgaa': ['3.2.1']}
+});
+
+// 3.2.2 Dans chaque page web, le texte et le texte en image en gras d’une taille restituée inférieure à 18,5px vérifient-ils une de ces conditions (hors cas particuliers) ?
+tanaguruTestsList.push({
+    contrast: 'invalid_45G',
+    lang: 'fr',
+    name: 'Textes visibles en gras d\'une taille restituée inférieure à 18.5px ayant un contraste inférieur à 4.5:1',
+    description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
+    tags: ['a11y', 'contrast'],
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'failed';
+        }
+    },
+    ressources: {'rgaa': ['3.2.2']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'valid_45G',
+    lang: 'fr',
+    name: 'Textes visibles en gras d\'une taille restituée inférieure à 18.5px ayant un contraste suffisant de 4.5:1',
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2.2']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'cantTell_45G',
+    lang: 'fr',
+    name: 'Vérifier que ces éléments texte en gras d\'une taille restituée inférieure à 18.5px respectent un contraste d\'au moins 4.5:1',
+    description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'cantTell';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2.2']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'invalid_45GV',
+    lang: 'fr',
+    name: 'Textes non visibles en gras d\'une taille restituée inférieure à 18.5px ayant un contraste inférieur à 4.5:1',
+    description: 'Si ces éléments texte peuvent être rendus visibles, ils devraient respecter un contraste de 4.5:1 minimum.',
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2.2']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'cantTell_45GV',
+    lang: 'fr',
+    name: 'Textes non visibles en gras d\'une taille restituée inférieure à 18.5px',
+    description: 'Si ces éléments texte peuvent être rendus visibles, vérifier qu\'ils respectent un contraste de 4.5:1 minimum.',
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2.2']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'valid_45GV',
+    lang: 'fr',
+    name: 'Textes non visibles en gras d\'une taille restituée inférieure à 18.5px ayant un contraste suffisant de 4.5:1',
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2.2']}
+});
+
+// 3.2.3 Dans chaque page web, le texte et le texte en image sans effet de graisse d’une taille restituée supérieure ou égale à 24px vérifient-ils une de ces conditions (hors cas particuliers) ? 
+tanaguruTestsList.push({
+    contrast: 'invalid_3',
+    lang: 'fr',
+    name: 'Textes visibles sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px ayant un contraste inférieur à 3:1',
+    description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
+    tags: ['a11y', 'contrast'],
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'failed';
+        }
+    },
+    ressources: {'rgaa': ['3.2.3']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'valid_3',
+    lang: 'fr',
+    name: 'Textes visibles sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px ayant un contraste suffisant de 3:1',
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2.3']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'cantTell_3',
+    lang: 'fr',
+    name: 'Vérifier que ces éléments texte sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px respectent un contraste d\'au moins 3:1',
+    description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'cantTell';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2.3']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'invalid_3V',
+    lang: 'fr',
+    name: 'Textes non visibles sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px ayant un contraste inférieur à 3:1',
+    description: 'Si ces éléments texte peuvent être rendus visibles, ils devraient respecter un contraste de 3:1 minimum.',
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2.3']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'cantTell_3V',
+    lang: 'fr',
+    name: 'Textes non visibles sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px',
+    description: 'Si ces éléments texte peuvent être rendus visibles, vérifier qu\'ils respectent un contraste de 3:1 minimum.',
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2.3']}
 });
 
 tanaguruTestsList.push({
     contrast: 'valid_3V',
     lang: 'fr',
-    name: 'Ces éléments non visibles semblent avoir un contraste suffisant de 3:1',
-    filter: function (item) {
-        return true;
-    },
+    name: 'Textes non visibles sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px ayant un contraste suffisant de 3:1',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'inapplicable';
         }
     },
     tags: ['a11y', 'contrast'],
-    ressources: {'rgaa': ['3.2']}
+    ressources: {'rgaa': ['3.2.3']}
+});
+
+// 3.2.4 Dans chaque page web, le texte et le texte en image en gras d'une taille restituée supérieure ou égale à 18,5px vérifient-ils une de ces conditions (hors cas particuliers) ? 
+tanaguruTestsList.push({
+    contrast: 'invalid_3G',
+    lang: 'fr',
+    name: 'Textes visibles en gras d\'une taille restituée supérieure ou égale à 18.5px ayant un contraste inférieur à 3:1',
+    description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
+    tags: ['a11y', 'contrast'],
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'failed';
+        }
+    },
+    ressources: {'rgaa': ['3.2.4']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'valid_3G',
+    lang: 'fr',
+    name: 'Textes visibles en gras d\'une taille restituée supérieure ou égale à 18.5px ayant un contraste suffisant de 3:1',
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2.4']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'cantTell_3G',
+    lang: 'fr',
+    name: 'Vérifier que ces éléments texte en gras d\'une taille restituée supérieure ou égale à 18.5px respectent un contraste d\'au moins 3:1',
+    description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'cantTell';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2.4']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'invalid_3GV',
+    lang: 'fr',
+    name: 'Textes non visibles en gras d\'une taille restituée supérieure ou égale à 18.5px ayant un contraste inférieur à 3:1',
+    description: 'Si ces éléments texte peuvent être rendus visibles, ils devraient respecter un contraste de 3:1 minimum.',
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2.4']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'cantTell_3GV',
+    lang: 'fr',
+    name: 'Textes non visibles en gras d\'une taille restituée supérieure ou égale à 18.5px',
+    description: 'Si ces éléments texte peuvent être rendus visibles, vérifier qu\'ils respectent un contraste de 3:1 minimum.',
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2.4']}
+});
+
+tanaguruTestsList.push({
+    contrast: 'valid_3GV',
+    lang: 'fr',
+    name: 'Textes non visibles en gras d\'une taille restituée supérieure ou égale à 18.5px ayant un contraste suffisant de 3:1',
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'contrast'],
+    ressources: {'rgaa': ['3.2.4']}
 });
 
 // 4.1.1 Chaque média temporel pré-enregistré seulement audio, vérifie-t-il, si nécessaire, l'une de ces conditions (hors cas particuliers) ?
@@ -1730,6 +1867,39 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['6.1.1']}
 });
 
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens visibles non restitués',
+    query: 'a:not([role]), [role="link"]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') == null) {
+            return item.isNotExposedDueTo.length != 0 && getVisibility(item, getOpacity(item));
+        }
+    },
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.1']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens non visibles non restitués',
+    query: 'a:not([role]), [role="link"]',
+    filter: function (item) {
+        if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') == null) {
+            return item.isNotExposedDueTo.length != 0 && !getVisibility(item, getOpacity(item));
+        }
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.1']}
+});
+
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens avec un nom accessible',
@@ -1757,7 +1927,7 @@ tanaguruTestsList.push({
     query: 'a, [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textcontent == "")) {
+        if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
             return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
         }
     },
@@ -1767,11 +1937,43 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
+    name: 'Liste des liens images visibles non restitués"',
+    query: 'a, [role="link"]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
+            return item.isNotExposedDueTo.length != 0 && getVisibility(item, getOpacity(item));
+        }
+    },
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.1']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens images non visibles non restitués"',
+    query: 'a, [role="link"]',
+    filter: function (item) {
+        if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
+            return item.isNotExposedDueTo.length != 0 && !getVisibility(item, getOpacity(item));
+        }
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.1']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
     name: 'Liste des liens images avec un nom accessibe',
-    query: 'a:not([role]), [role="link"]',
+    query: 'a, [role="link"]',
     description:'Vérifiez la pertinence des noms accessibles des images',
     filter: function (item) {
-        if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textcontent == "")) {
+        if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
             return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
         }
     },
