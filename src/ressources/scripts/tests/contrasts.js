@@ -5,18 +5,42 @@ if(!document.body.style.backgroundColor && !document.body.style.background) {
 }
 var tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
 var textNodeList = {
+	//? 'invalid', 'valid', 'cantTell' = contrast ratio status
+	//? '45' = minimum contrast ratio : 4.5:1
+	//? '3' = minimum contrast ratio : 3:1
+	//? 'V' = non visible elements
+	//? 'G' = font weight >= 700
+	// 3.2.1
 	invalid_45: [],
-	invalid_3: [],
 	invalid_45V: [],
-	invalid_3V: [],
 	valid_45: [],
-	valid_3: [],
 	valid_45V: [],
-	valid_3V: [],
 	cantTell_45: [],
-	cantTell_3: [],
 	cantTell_45V: [],
-	cantTell_3V: []
+
+	// 3.2.2
+	invalid_45G: [],
+	invalid_45GV: [],
+	valid_45G: [],
+	valid_45GV: [],
+	cantTell_45G: [],
+	cantTell_45GV: [],
+
+	// 3.2.3
+	invalid_3: [],
+	invalid_3V: [],
+	valid_3: [],
+	valid_3V: [],
+	cantTell_3: [],
+	cantTell_3V: [],
+
+	// 3.2.4
+	invalid_3G: [],
+	invalid_3GV: [],
+	valid_3G: [],
+	valid_3GV: [],
+	cantTell_3G: [],
+	cantTell_3GV: []
 };
 
 /**
@@ -533,7 +557,7 @@ while (tw.nextNode()) {
 		};
 
 		if(o.valid.target == 4.5) {
-			if(results.visible) {
+			if(results.visible && o.weight < 700) {
 				if(o.valid.status == 2) {
 					textNodeList.valid_45.push(o);
 				} else if(o.valid.status == 1) {
@@ -541,7 +565,15 @@ while (tw.nextNode()) {
 				} else {
 					textNodeList.cantTell_45.push(o);
 				}
-			} else {
+			} else if(results.visible) {
+				if(o.valid.status == 2) {
+					textNodeList.valid_45G.push(o);
+				} else if(o.valid.status == 1) {
+					textNodeList.invalid_45G.push(o);
+				} else {
+					textNodeList.cantTell_45G.push(o);
+				}
+			} else if(o.weight < 700) {
 				if(o.valid.status == 2) {
 					textNodeList.valid_45V.push(o);
 				} else if(o.valid.status == 1) {
@@ -549,9 +581,17 @@ while (tw.nextNode()) {
 				} else {
 					textNodeList.cantTell_45V.push(o);
 				}
+			} else {
+				if(o.valid.status == 2) {
+					textNodeList.valid_45GV.push(o);
+				} else if(o.valid.status == 1) {
+					textNodeList.invalid_45GV.push(o);
+				} else {
+					textNodeList.cantTell_45GV.push(o);
+				}
 			}
 		} else {
-			if(results.visible) {
+			if(results.visible && o.weight < 700) {
 				if(o.valid.status == 2) {
 					textNodeList.valid_3.push(o);
 				} else if(o.valid.status == 1) {
@@ -559,13 +599,29 @@ while (tw.nextNode()) {
 				} else {
 					textNodeList.cantTell_3.push(o);
 				}
-			} else {
+			} else if(results.visible) {
+				if(o.valid.status == 2) {
+					textNodeList.valid_3G.push(o);
+				} else if(o.valid.status == 1) {
+					textNodeList.invalid_3G.push(o);
+				} else {
+					textNodeList.cantTell_3G.push(o);
+				}
+			} else if(o.weight < 700) {
 				if(o.valid.status == 2) {
 					textNodeList.valid_3V.push(o);
 				} else if(o.valid.status == 1) {
 					textNodeList.invalid_3V.push(o);
 				} else {
 					textNodeList.cantTell_3V.push(o);
+				}
+			} else {
+				if(o.valid.status == 2) {
+					textNodeList.valid_3GV.push(o);
+				} else if(o.valid.status == 1) {
+					textNodeList.invalid_3GV.push(o);
+				} else {
+					textNodeList.cantTell_3GV.push(o);
 				}
 			}
 		}
