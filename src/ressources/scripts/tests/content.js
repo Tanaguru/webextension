@@ -1124,11 +1124,17 @@ function createTanaguruTest(test) {
         addResultSet("Nouvelle syntaxe d'écriture des tests", result);
         // Intégrer chaque résultat dans window.tanaguru.tests.
     }
-    else if ((test.hasOwnProperty('query') && test.query.constructor == String) || test.hasOwnProperty('contrast')) {
+    else if ((test.hasOwnProperty('query') && test.query.constructor == String) || test.hasOwnProperty('contrast') || test.hasOwnProperty('code')) {
         // Sélection des éléments.
-        var elements = test.hasOwnProperty('contrast') ? textNodeList[test.contrast] : document.querySelectorAll(test.query);
+        if(test.hasOwnProperty('contrast')) {
+            var elements = textNodeList[test.contrast];
+        } else if(test.hasOwnProperty('code')) {
+            var elements = getDuplicateID();
+        } else {
+            var elements = document.querySelectorAll(test.query);
+        }
 
-        if (elements && elements.length > 0) {
+        if (elements/* && elements.length > 0*/) {
             // Statut du test par défaut.
             var status = 'inapplicable';
 
@@ -3630,3 +3636,26 @@ var testsRessources = {
         testUrl: 'https://www.w3.org/WAI/WCAG21/Techniques/{{technology}}/{{id}}'
     }
 };
+
+function getDuplicateID() {
+    var nodelist = document.querySelectorAll('[id]:not([id=""])');
+    var ids = [];
+    var query = null;
+    nodelist.forEach(node => {
+        if (node.id.trim().length > 0) {
+            if(ids[node.id] && ids[node.id] < 2) {
+                query = query === null ? '' : query;
+                query += '[id='+node.id+'],'
+            }
+
+            if (!ids[node.id]) {
+                ids[node.id] = 0;
+            }
+
+            ids[node.id]++;
+        }
+    });
+
+    query = query === null ? query : query.slice(0, -1);
+    return document.querySelectorAll(query);
+}
