@@ -1,9 +1,8 @@
 // TODO: début RGAA.
 var tanaguruTestsList = [];
 
-
+// 1.1 Chaque image porteuse d'information a-t-elle une alternative textuelle ?
 // 1.1.1 - Chaque image (balise <img> ou balise possédant l'attribut WAI-ARIA role="img") porteuse d'information a-t-elle une alternative textuelle ? // ne pas traiter les images liens
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'liste des images (balise img ou balise possédant l&#x2018;attribut WAI-ARIA role="img") sans nom accessible',
@@ -11,15 +10,14 @@ tanaguruTestsList.push({
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
-        var IName = item.tagName;
-        if (IName != 'svg') {
+        var IName = item.tagName.toLowerCase();
+        if (IName != 'svg' && IName != 'object' && IName != 'embed' && IName != 'canvas') {
             if (!item.closest('a')){
-                if (IName == 'IMG') {
-                    if (item.hasAttribute('alt')){
-                        if (item.getAttribute('alt') != '') {
-                            return item.getAttribute('alt') == ' ' ;
+                if (IName == 'img') {
+                    if (item.hasAttribute('alt') && !item.hasAttribute('aria-label') && !item.hasAttribute('aria-labelledby')){
+                        if (item.getAttribute('alt') === '') {
+                            return false;
                         }
-                        return false;
                     }
                 }
                 return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
@@ -36,25 +34,24 @@ tanaguruTestsList.push({
     query: 'img:not([role]), [role="img"]',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
     filter: function (item) {
-        var IName = item.tagName;
-        if (IName != 'svg') {
-            if (IName == 'IMG') {
-                if (item.hasAttribute('alt')){
-                    if (item.getAttribute('alt') != '') {
-                        if(item.getAttribute('alt') == ' ') {
+        var IName = item.tagName.toLowerCase();
+        if (IName != 'svg' && IName != 'object' && IName != 'embed' && IName != 'canvas') {
+            if (!item.closest('a')) {
+                if (IName == 'img') {
+                    if (item.hasAttribute('alt') && !item.hasAttribute('aria-label') && !item.hasAttribute('aria-labelledby')){
+                        if (item.getAttribute('alt') === '') {
                             return false;
                         }
                     }
-                    else return false;
                 }
+                if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
+                    item.setAttribute('data-tanaguruAltLong','true');
+                }
+                else if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length <= 80) {
+                    item.setAttribute('data-tanaguruAltLong','false');
+                }
+                return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
             }
-            if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
-                item.setAttribute('data-tanaguruAltLong','true');
-            }
-            else if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length <= 80) {
-                item.setAttribute('data-tanaguruAltLong','false');
-            }
-            return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
         }
     },
     analyzeElements: function (collection) {
@@ -71,7 +68,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018images réactives (balise area) sans nom accessible ?',
+    name: 'Liste d&#x2018images réactives (balise area) sans nom accessible.',
     query: 'area:not([role])',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
     expectedNbElements: 0,
@@ -123,7 +120,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018images réactives (balise area) avec un nom accessible ?',
+    name: 'Liste d&#x2018images réactives (balise area) avec un nom accessible.',
     query: 'area:not([role])',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
     filter: function (item) {
@@ -184,7 +181,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste de boutons de type image (balise input avec l&#x2018;attribut type="image") Sans nom accessible ?',
+    name: 'Liste de boutons de type image (balise input avec l&#x2018;attribut type="image") sans nom accessible.',
     query: 'input[type="image"]:not([role])',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
     expectedNbElements: 0,
@@ -197,7 +194,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste de boutons de type image (balise input avec l&#x2018;attribut type="image") avec un nom accessible ?',
+    name: 'Liste de boutons de type image (balise input avec l&#x2018;attribut type="image") avec un nom accessible.',
     query: 'input[type="image"]:not([role])',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
     filter: function (item) {
@@ -223,7 +220,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste de zones cliquables d&#x2018une image réactive côté serveur qui ne sont pas doublée d&#x2018;un lien dans la page ?',
+    name: 'Liste de zones cliquables d&#x2018une image réactive côté serveur qui ne sont pas doublée d&#x2018;un lien dans la page.',
     query: 'img[ismap]:not([role])',
     expectedNbElements: 0,
     filter: function (item) {
@@ -252,7 +249,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste de zones cliquables d&#x2018une image réactive côté serveur doublée d&#x2018;un lien dans la page ?',
+    name: 'Liste de zones cliquables d&#x2018une image réactive côté serveur doublée d&#x2018;un lien dans la page.',
     query: 'img[ismap]:not([role])',
     filter: function (item) {
         var parentLink = item.closest('a');
@@ -284,6 +281,19 @@ tanaguruTestsList.push({
 });
 
 // 1.1.5 - Chaque image vectorielle (balise <svg>) porteuse d'information, vérifie-t-elle ces conditions ? // à tester
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste d&#x2018;images vectorielles (balise svg) restituées ne possédant pas d\'attribut role="img".',
+    query: 'svg',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if(item.isNotExposedDueTo.length == 0) {
+            return item.getAttribute('role') !== 'img';
+        }
+    },
+    tags: ['a11y', 'images'],
+    ressources: { 'rgaa': ['1.1.5'] }
+});
 
 tanaguruTestsList.push({
     lang: 'fr',
@@ -323,15 +333,28 @@ tanaguruTestsList.push({
 });
 
 // 1.1.6 - Chaque image objet (balise <object> avec l'attribut type="image/…") porteuse d'information, vérifie-t-elle une de ces conditions ? // semble KO sur l'accessible name //gère que le 1er cas dans le RGAA4
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste d&#x2018;images objet (balise object avec l&#x2018;attribut type="image/…") restituées ne possédant pas d\'attribut role="img".',
+    query: 'object[type]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if(item.isNotExposedDueTo.length == 0) {
+            return item.getAttribute('role') !== 'img';
+        }
+    },
+    tags: ['a11y', 'images'],
+    ressources: { 'rgaa': ['1.1.6'] }
+});
 
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d&#x2018;images objet (balise object avec l&#x2018;attribut type="image/…") sans nom accessible ?',
-    query: 'object[type]:not([role])',
+    query: 'object[type]',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
-        if (item.getAttribute('type').startsWith("image/")){
+        if (item.getAttribute('type').startsWith("image/") && (item.getAttribute('role') === 'img' || !item.hasAttribute('role'))){
             return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
         }
     },
@@ -339,13 +362,15 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['1.1.6'] }
 });
 
+//TODO hasAccessibleName ne teste pas le title sur les balises object
+
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d&#x2018;images objet (balise object avec l&#x2018;attribut type="image/…") avec un nom accessible ?',
-    query: 'object[type]:not([role])',
+    query: 'object[type]',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
     filter: function (item) {
-        if (item.getAttribute('type').startsWith("image/")){
+        if (item.getAttribute('type').startsWith("image/") && (item.getAttribute('role') === 'img' || !item.hasAttribute('role'))){
             if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
                 item.setAttribute('data-tanaguruAltLong','true');
             }
@@ -366,15 +391,28 @@ tanaguruTestsList.push({
 });
 
 // 1.1.7 - Chaque image embarquée (balise <embed> avec l'attribut type="image/…") porteuse d'information, vérifie-t-elle une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste d&#x2018;images embarquées (balise embed avec l&#x2018;attribut type="image/…") restituées ne possédant pas d\'attribut role="img".',
+    query: 'embed[type]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if(item.isNotExposedDueTo.length == 0) {
+            return item.getAttribute('role') !== 'img';
+        }
+    },
+    tags: ['a11y', 'images'],
+    ressources: { 'rgaa': ['1.1.7'] }
+});
 
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d&#x2018;images embarquées (balise embed avec l&#x2018;attribut type="image/…") sans nom accessible ?',
-    query: 'embed[type]:not([role])',
+    query: 'embed[type]',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
-        if (item.getAttribute('type').startsWith("image/")){
+        if (item.getAttribute('type').startsWith("image/") && (item.getAttribute('role') === 'img' || !item.hasAttribute('role'))){
 
             return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
         }
@@ -386,11 +424,11 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d&#x2018;images embarquées (balise embed avec l&#x2018;attribut type="image/…") avec un nom accessible ?',
-    query: 'embed[type]:not([role])',
+    query: 'embed[type]',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
-        if (item.getAttribute('type').startsWith("image/")){
+        if (item.getAttribute('type').startsWith("image/") && (item.getAttribute('role') === 'img' || !item.hasAttribute('role'))){
             if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
                 item.setAttribute('data-tanaguruAltLong','true');
             }
@@ -411,15 +449,30 @@ tanaguruTestsList.push({
 });
 
 // 1.1.8 - Chaque image bitmap (balise <canvas>) porteuse d'information, vérifie-t-elle une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste d&#x2018;images bitmap (balise canvas) restituées ne possédant pas d\'attribut role="img".',
+    query: 'canvas',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if(item.isNotExposedDueTo.length == 0) {
+            return item.getAttribute('role') !== 'img';
+        }
+    },
+    tags: ['a11y', 'images'],
+    ressources: { 'rgaa': ['1.1.8'] }
+});
 
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d&#x2018images bitmap (balise canvas) sans nom accessible ?',
-    query: 'canvas:not([role])',
+    query: 'canvas',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+        if(item.getAttribute('role') === 'img' || !item.hasAttribute('role')) {
+            return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+        }
     },
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.1.8'] }
@@ -428,15 +481,17 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d&#x2018images bitmap (balise canvas) avec un nom accessible ?',
-    query: 'canvas:not([role])',
+    query: 'canvas',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
-        if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
-            item.setAttribute('data-tanaguruAltLong','true');
-        }
-        else if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length <= 80) {
-            item.setAttribute('data-tanaguruAltLong','false');
+        if(item.getAttribute('role') === 'img' || !item.hasAttribute('role')) {
+            if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
+                item.setAttribute('data-tanaguruAltLong','true');
+            }
+            else if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length <= 80) {
+                item.setAttribute('data-tanaguruAltLong','false');
+            }
         }
     },
     analyzeElements: function (collection) {
