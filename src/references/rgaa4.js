@@ -1515,7 +1515,7 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['4.1.1']}
 });
 
-// // 4.1.2 Chaque média temporel pré-enregistré seulement vidéo, vérifie-t-il, si nécessaire, l'une de ces conditions (hors cas particuliers) ?
+// 4.1.2 Chaque média temporel pré-enregistré seulement vidéo, vérifie-t-il, si nécessaire, l'une de ces conditions (hors cas particuliers) ?
 
 tanaguruTestsList.push({
     lang: 'fr',
@@ -1526,7 +1526,7 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['4.1.2']}
 });
 
-// // 4.1.3  Chaque média temporel synchronisé pré-enregistré vérifie-t-il, si nécessaire, une de ces conditions (hors cas particuliers) ?
+// 4.1.3  Chaque média temporel synchronisé pré-enregistré vérifie-t-il, si nécessaire, une de ces conditions (hors cas particuliers) ?
 
 tanaguruTestsList.push({
     lang: 'fr',
@@ -1548,7 +1548,7 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['4.2.1']}
 });
 
-// 4.2.2 Pour chaque média temporel pré-enregistré seulement audio, ayant une transcription textuelle, celle-ci est-elle pertinente (hors cas particuliers) ?
+// 4.2.2 Chaque média temporel pré-enregistré seulement vidéo vérifie-t-il une de ces conditions (hors cas particuliers) ?
 
 tanaguruTestsList.push({
     lang: 'fr',
@@ -1559,7 +1559,7 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['4.2.2']}
 });
 
-// 4.2.3 Pour chaque média temporel pré-enregistré seulement audio, ayant une transcription textuelle, celle-ci est-elle pertinente (hors cas particuliers) ?
+// 4.2.3 Chaque média temporel synchronisé pré-enregistré vérifie-t-il, si nécessaire, une de ces conditions (hors cas particuliers) ?
 
 tanaguruTestsList.push({
     lang: 'fr',
@@ -1581,7 +1581,7 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['4.3.1']}
 });
 
-// // 4.3.2 Pour chaque média temporel synchronisé pré-enregistré possédant des sous-titres synchronisés diffusés via une balise <track>, la balise <track> possède-t-elle un attribut kind="captions" ?
+// 4.3.2 Pour chaque média temporel synchronisé pré-enregistré possédant des sous-titres synchronisés diffusés via une balise <track>, la balise <track> possède-t-elle un attribut kind="captions" ?
 
 tanaguruTestsList.push({
     lang: 'fr',
@@ -1671,6 +1671,26 @@ tanaguruTestsList.push({
         }
     },
     ressources: {'rgaa': ['4.4.1']}
+});
+
+// 4.10 Chaque son déclenché automatiquement est-il contrôlable par l'utilisateur ?
+// 4.10.1 Chaque séquence sonore déclenchée automatiquement via une balise <object>, <video>, <audio>, <embed>, <bgsound> ou un code JavaScript vérifie-t-elle une de ces conditions ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Liste des sons déclenchés automatiquement et non contrôlables par l\'utilisateur.',
+	query: 'audio[autoplay]:not([controls])',
+    tags: ['a11y', 'audio'],
+    ressources: {'rgaa': ['4.10.1'] },
+	comments: "Implémentation partielle"
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Liste des sons déclenchés automatiquement et contrôlables par l\'utilisateur.',
+	query: 'audio[autoplay][controls]',
+	tags: ['a11y', 'audio'],
+    ressources: {'rgaa': ['4.10.1'] },
+	comments: "Implémentation partielle"
 });
 
 // 5.1.1  Pour chaque tableau de données complexe un résumé est-il disponible ?
@@ -1795,7 +1815,7 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['5.4.1']}
 });
 
-// 5.5.1
+// 5.5.1 Pour chaque tableau de données ayant un titre, ce titre permet-il d'identifier le contenu du tableau de données de manière claire et concise ?
 
 tanaguruTestsList.push({
     lang: 'fr',
@@ -1808,7 +1828,7 @@ tanaguruTestsList.push({
         }
     },
     tags: ['a11y', 'tables'],
-    ressources: {'rgaa': ['5.4.1']}
+    ressources: {'rgaa': ['5.5.1']}
 });
 
 tanaguruTestsList.push({
@@ -1845,10 +1865,47 @@ tanaguruTestsList.push({
         }
     },
     tags: ['a11y', 'tables'],
-    ressources: {'rgaa': ['5.4.1']}
+    ressources: {'rgaa': ['5.5.1']}
 });
 
-
+// 5.7 Pour chaque tableau de données, la technique appropriée permettant d'associer chaque cellule avec ses en-têtes est-elle utilisée (hors cas particuliers) ?
+// 5.7.4 Pour chaque contenu de balise <td> ou <th> associée à un ou plusieurs en-têtes possédant un attribut id, la balise vérifie-t-elle ces conditions ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "L'attribut Headers spécifié sur une cellule fait référence à des en-têtes du même élément de tableau.",
+	query: 'table td[headers]',
+	filter: function (item) {
+		var headers = item.getAttribute('headers');
+		if (/^.+(\s.+)*$/.test(headers)) {
+			headers = headers.split(' ');
+			if (headers.length > 1) {
+				var result = true;
+				for (var i = 0; i < headers.length; i++) {
+					var th = document.querySelector('th[id="' + headers[i] + '"]');
+					result = th ? th.closest('table') == item.closest('table') : false;
+					if (!result) {
+						break;
+					}
+				}
+				return result;
+			}
+			else {
+				var th = document.querySelector('th[id="' + headers + '"]');
+				return th ? th.closest('table') == item.closest('table') : false;
+			}
+		}
+		else {
+			return false;
+		}
+	},
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.7.4']}
+});
 
 
 // 6.1.1 Chaque lien texte vérifie-t-il une de ces conditions (hors cas particuliers) ?
@@ -1986,10 +2043,173 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['6.1.1']}
 });
 
+// 7.1 Chaque script est-il, si nécessaire, compatible avec les technologies d'assistance ?
+// 7.1.2 Chaque script qui génère ou contrôle un composant d'interface respecte-t-il une de ces conditions ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Boutons visibles sans nom accessible.',
+	query: 'button:not([role]), [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
+	expectedNbElements: 0,
+    explanations: {
+		'passed': "Cette page ne contient pas de bouton visible sans nom accessible.",
+		'failed': "Des boutons visibles sans nom accessible sont présents dans la page."
+	},
+	filter: function (item) {
+        if(getVisibility(item, getOpacity(item))) {
+            return !item.hasAccessibleName();
+        }
+	},
+	tags: ['a11y', 'buttons', 'accessiblename'],
+	ressources: {'rgaa': ['7.1.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Boutons visibles avec un nom accessible.',
+	query: 'button:not([role]), [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
+	filter: function (item) {
+        if(getVisibility(item, getOpacity(item))) {
+            return item.hasAccessibleName();
+        }
+	},
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+	tags: ['a11y', 'buttons', 'accessiblename'],
+	ressources: {'rgaa': ['7.1.1']}
+});
+
 // 8.1.1 Pour chaque page web, le type de document (balise doctype) est-il présent ?
 // Comment gérer le doctype
 
-// 8.2.2 Pour chaque déclaration de type de document, le code source généré de la page vérifie-t-il ces conditions (hors cas particuliers) ?
+// 8.2 Pour chaque page web, le code source généré est-il valide selon le type de document spécifié ?
+// 8.2.1 Pour chaque déclaration de type de document, le code source généré de la page vérifie-t-il ces conditions (hors cas particuliers) ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Valeurs d\'attribut id dupliqués dans la page',
+    code: 'duplicate_id',
+    expectedNbElements: 0,
+    explanations: {
+        'passed': "Cette page ne contient pas d'attribut ID dupliqué'.",
+		'failed': "Des attributs ID dupliqués sont présents dans la page."
+    },
+    mark: { attrs: ['id'] },
+    tags: ['a11y', 'code'],
+	ressources: {'rgaa': ['8.2.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Attributs role avec une valeur invalide',
+	query: '[role]',
+	expectedNbElements: 0,
+    explanations: {
+        'passed': "Cette page ne contient pas d'attribut role avec une valeur invalide'.",
+		'failed': "Des attributs role avec une valeur invalide sont présents dans la page."
+    },
+	filter: function (item) {
+		if (item.isNotExposedDueTo.length == 0) {
+			if (item.getAttribute('role').trim() == 0) {
+				return false;
+			}
+			return !item.hasValidRole();
+		}
+		return false;
+	},
+    tags: ['a11y', 'aria', 'code'],
+	ressources: {'rgaa': ['8.2.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Attributs role avec une valeur valide',
+	query: '[role]',
+	filter: function (item) {
+		return item.isNotExposedDueTo.length == 0 ? item.hasValidRole() : false;
+	},
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+	tags: ['a11y', 'aria', 'code'],
+	ressources: {'rgaa': ['8.2.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Attributs aria-* définis dans WAI-ARIA.',
+	query: '*',
+	filter: function (item) {
+		if (item.isNotExposedDueTo.length == 0) {
+			return Array.from(item.attributes).filter(function(attributeNode) {
+				return /^aria-.*$/.test(attributeNode.nodeName);
+			}).length > 0;
+		}
+		return false;
+	},
+	analyzeElements: function (collection) {
+		var definedStatesProperties = ARIA.getAllStatesProperties('js');
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+			var attributes = Array.from(collection[i].attributes);
+			for (var a = 0; a < attributes.length; a++) {
+				if (/^aria-.*$/.test(attributes[a].nodeName)) {
+					if (definedStatesProperties.indexOf(attributes[a].nodeName) == -1) {
+						collection[i].status = 'failed';
+						break;
+					}
+				}
+			}
+		}
+	},
+	tags: ['a11y', 'aria', 'code'],
+	ressources: {'rgaa': ['8.2.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Propiétés ARIA avec une valeur invalide.',
+	query: '*',
+	expectedNbElements: 0,
+    explanations: {
+        'passed': "Cette page ne contient pas de propriété ARIA avec une valeur invalide'.",
+		'failed': "Des propriétés ARIA avec une valeur invalide sont présentes dans la page."
+    },
+	filter: function (item) {
+		if (item.isNotExposedDueTo.length == 0) {
+			if (Array.from(item.attributes).filter(function(attributeNode) { return /^aria-.*$/.test(attributeNode.nodeName); }).length > 0) {
+				return item.hasAriaAttributesWithInvalidValues({ permissive: true });
+			}
+		}
+		return false;
+	},
+	tags: ['a11y', 'aria', 'code'],
+	ressources: {'rgaa': ['8.2.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Propriétés ARIA non autorisées sur leur élément.',
+	query: '*',
+	expectedNbElements: 0,
+    explanations: {
+        'passed': "Cette page ne contient pas de propriété ARIA non autorisée'.",
+		'failed': "Des propriétés ARIA non autorisées sont présentes dans la page."
+    },
+	filter: function (item) {
+		if (item.isNotExposedDueTo.length == 0) {
+			if (Array.from(item.attributes).filter(function(attributeNode) { return /^aria-.*$/.test(attributeNode.nodeName); }).length > 0) {
+				return item.hasProhibitedAriaAttributes();
+			}
+		}
+		return false;
+	},
+	tags: ['a11y', 'aria', 'code'],
+	ressources: {'rgaa': ['8.2.1']}
+});
 
 // 8.3.1 : Pour chaque page web, l'indication de langue par défaut vérifie-t-elle une de ces conditions ?
 // incomplete (devrait gérer les attributs lang sur les éléments contenant du texte)
@@ -1997,30 +2217,102 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'La langue de la page n&#x2018;est pas spécifié',
+    name: 'La langue de la page n&#x2018;est pas spécifiée.',
     expectedNbElements: 0,
     query: 'html:not([lang])',
-    tags: ['a11y', 'languages'],
+    tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.3.1']}
 });
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Pour chaque page web, l&#x2018;indication de langue par défaut vérifie-t-elle une de ces conditions ?',
-    query: 'html',
-    filter: function (item) {
-        return (item.hasAttribute('lang'));
-    },
+    name: 'La langue de la page est spécifiée.',
+    query: 'html[lang]',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'passed';
         }
     },
-    tags: ['a11y', 'languages'],
+    tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.3.1']}
 });
 
 //8.4.1 Pour chaque page web ayant une langue par défaut, le code de langue est-il pertinent ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Page HTML avec un attribut lang vide.',
+	query: 'html[lang]',
+	expectedNbElements: 0,
+	filter: function (item) {
+		return item.getAttribute('lang').trim().length == 0;
+	},
+	tags: ['a11y', 'languages', 'mandatory'],
+    ressources: {'rgaa': ['8.4.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Page HTML avec un attribut lang non vide.',
+	query: 'html[lang]',
+	filter: function (item) {
+		return item.getAttribute('lang').trim().length > 0;
+	},
+	tags: ['a11y', 'languages', 'mandatory'],
+    ressources: {'rgaa': ['8.4.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Page HTML avec des attributs lang et xml:lang dont les valeurs ne correspondent pas.",
+	query: 'html[lang][xml\\:lang]',
+	expectedNbElements: 0,
+	filter: function (item) {
+		return !item.hasValidLanguageCode || (item.getAttribute('xml:lang').trim().length > 0 && item.getAttribute('lang') != item.getAttribute('xml:lang'));
+	},
+	tags: ['a11y', 'languages', 'mandatory'],
+    ressources: {'rgaa': ['8.4.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Page HTML avec des attributs lang et xml:lang dont les valeurs correspondent."',
+	query: 'html[lang][xml\\:lang]',
+	filter: function (item) {
+		return item.hasValidLanguageCode && item.getAttribute('lang') == item.getAttribute('xml:lang');
+	},
+	analyzeElements: function (collection) {
+		if (collection.length == 1) {
+			collection[0].status = 'passed';
+		}
+	},
+	tags: ['a11y', 'languages', 'mandatory'],
+    ressources: {'rgaa': ['8.4.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'La langue de la page HTML est invalide.',
+	query: 'html[lang]',
+	expectedNbElements: 0,
+	filter: function (item) {
+		return item.getAttribute('lang').trim().length > 0 && !item.hasValidLanguageCode();
+	},
+	tags: ['a11y', 'languages', 'mandatory'],
+    ressources: {'rgaa': ['8.4.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'La langue de la page HTML est valide.',
+	query: 'html[lang]',
+	filter: function (item) {
+		return item.getAttribute('lang').trim().length > 0 && item.hasValidLanguageCode();
+	},
+	tags: ['a11y', 'languages', 'mandatory'],
+    ressources: {'rgaa': ['8.4.1']}
+});
+
+
 // vérifier la validité
 /*
 tanaguruTestsList.push({
@@ -2147,7 +2439,45 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['8.7.1']}
 });
 
-//8.8.1 à implémenter
+// 8.8 Dans chaque page web, le code de langue de chaque changement de langue est-il valide et pertinent ?
+//8.8.1 Pour chaque page web, le code de langue de chaque changement de langue vérifie-t-il ces conditions ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Elements avec un attribut lang invalide.',
+	query: 'body [lang]',
+	expectedNbElements: 0,
+	filter: function (item) {
+		var lang = item.getAttribute('lang');
+		if (lang != '') {
+			return lang.trim().length == 0 ? true : !item.hasValidLanguageCode();
+		}
+		else {
+			return false;
+		}
+	},
+    tags: ['a11y', 'languages', 'mandatory'],
+	ressources: { 'rgaa': ['8.8.1'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Elements avec un attribut lang valide..',
+	query: 'body [lang]',
+	filter: function (item) {
+		var lang = item.getAttribute('lang');
+		if (lang != '') {
+			return lang.trim().length > 0 ? item.hasValidLanguageCode() : false;
+		}
+		else {
+			return false;
+		}
+	},
+    tags: ['a11y', 'languages', 'mandatory'],
+	ressources: { 'rgaa': ['8.8.1'] }
+});
+
+// 8.9 Dans chaque page web, les balises ne doivent pas être utilisées uniquement à des fins de présentation. Cette règle est-elle respectée ?
+// 8.9.1 Dans chaque page web les balises (à l'exception de <div>, <span> et <table>) ne doivent pas être utilisées uniquement à des fins de présentation. Cette règle est-elle respectée ?
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Dans chaque page web, les balises ne doivent pas être utilisées uniquement à des fins de présentation. Cette règle est-elle respectée ?',
@@ -2156,12 +2486,13 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         var textBetween = item.previousSibling.nodeValue;
-        if ((textBetween == "")||(textBetween == null)){
+        textBetween = textBetween ? textBetween.trim().length : textBetween;
+        if (!textBetween){
             return item.isNotExposedDueTo.length == 0;
         }
     },
     tags: ['a11y','mandatory'],
-    ressources: {'rgaa': ['8.6.1']}
+    ressources: {'rgaa': ['8.9.1']}
 });
 
 // 8.10.2 : Dans chaque page web, chaque changement du sens de lecture (attribut dir) vérifie-t-il ces conditions ?
@@ -2225,7 +2556,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Vérifier la pertinece des titres (balise <hx> ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level)',
+    name: 'Vérifier la pertinence des titres (balise <hx> ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level)',
     query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"][aria-level="1"], [role="heading"][aria-level="2"], [role="heading"][aria-level="3"], [role="heading"][aria-level="4"], [role="heading"][aria-level="5"], [role="heading"][aria-level="6"]',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
@@ -2337,7 +2668,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Dans chaque page web, les balises servant à la présentation de l&#x2018information ne doivent pas être présentes dans le code source généré des pages.',
+    name: 'Dans chaque page web, les attributs servant à la présentation de l&#x2018information ne doivent pas être présents dans le code source généré des pages.',
     query: '[width],[height]',
     expectedNbElements: 0,
     filter: function (item) {
@@ -2348,6 +2679,44 @@ tanaguruTestsList.push({
     mark: { attrs: ['width','height']},
     tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.1.2'] }
+});
+
+// 10.4 Dans chaque page web, le texte reste-t-il lisible lorsque la taille des caractères est augmentée jusqu'à 200%, au moins (hors cas particuliers) ?
+// 10.4.2 Dans chaque page web, l'augmentation de la taille des caractères jusqu'à 200 %, au moins, doit être possible pour l’ensemble du texte dans la page. Cette règle est-elle respectée selon une de ces conditions (hors cas particuliers) ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'La meta viewport ne doit pas empêcher le zoom.',
+	query: 'meta[name="viewport"][content]',
+	filter: function (item) {
+		var content = item.getAttribute('content').trim();
+		if (content.length > 0) {
+			return /^\s*[^,=]+\s*=\s*[^,=]+\s*(,\s*[^,=]+\s*=\s*[^,=]+\s*)*$/i.test(content);
+		}
+		else {
+			return false;
+		}
+	},
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+			var content = collection[i].getAttribute('content').trim();
+			content = content.indexOf(',') > -1 ? content.split(',') : content = [content];
+			for (var j = 0; j < content.length; j++) {
+				var property = content[j].split('=');
+				var propertyName = property[0].trim().toLowerCase();
+				var propertyValue = property[1].trim().toLowerCase();
+				if (propertyName == 'user-scalable') {
+					collection[i].status = propertyValue == 'no' ? 'failed' : 'passed';
+				}
+				else if (propertyName == 'maximum-scale' && /^\d+(\.\d+)?$/.test(propertyValue)) { // TODO : cas 1. / +1. / .1 / +.1
+					propertyValue = parseFloat(propertyValue);
+					collection[i].status = propertyValue < 2 ? 'failed' : 'passed';
+				}
+			}
+		}
+	},
+	tags: ['a11y', 'presentation', 'meta'],
+    ressources: { 'rgaa': ['10.4.2'] }
 });
 
 // 11.1.1 Chaque champ de formulaire vérifie-t-il une de ces conditions ?
@@ -2378,7 +2747,7 @@ tanaguruTestsList.push({
         }
     },
     tags: ['a11y', 'forms', 'accessiblename'],
-    ressources: { 'rgaa': ['11.1.1']}
+    ressources: { 'rgaa': ['11.1.1'] }
 });
 
 // 11.1.2 : à traiter.
@@ -2398,7 +2767,7 @@ tanaguruTestsList.push({
         }
     },
     tags: ['a11y', 'forms', 'accessiblename'],
-    ressources: { 'rgaa': ['11.3.1']}
+    ressources: { 'rgaa': ['11.3.1'] }
 });
 // voir pour extraire l'éléments porteur du nom accessible @rg
 
@@ -2417,9 +2786,50 @@ tanaguruTestsList.push({
         }
     },
     tags: ['a11y', 'forms', 'accessiblename'],
-    ressources: { 'rgaa': ['11.3.1']}
+    ressources: { 'rgaa': ['11.3.1'] }
 });
 
+// 12.8 Dans chaque page web, l'ordre de tabulation est-il cohérent ?
+// 12.8.1 Dans chaque page web, l'ordre de tabulation dans le contenu est-il cohérent ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Les éléments qui ne sont pas restitués ne sont pas tabulables.',
+	query: '[aria-hidden="true"]',
+	expectedNbElements: 0,
+	filter: function (item) {
+		var visibleState = item.isNotVisibleDueTo;
+		if (visibleState.length == 0 || (visibleState.indexOf('css:display') == -1 && visibleState.indexOf('css:visibility') == -1)) {
+			var focusables = item.querySelectorAll(HTML.getFocusableElementsSelector());
+			if (focusables.length == 0) {
+				focusables = [];
+				var elementsWithTabindex = item.querySelectorAll('[tabindex]');
+				for (var i = 0; i < elementsWithTabindex.length; i++) {
+					if (/^[1-9]{1}\d*$/.test(elementsWithTabindex[i].getAttribute('tabindex'))) {
+						focusables.push(elementsWithTabindex[i]);
+						break;
+					}
+				}
+			}
+			return focusables.length > 0;
+		}
+		else {
+			return false;
+		}
+	},
+    tags: ['a11y', 'keyboard'],
+    ressources: { 'rgaa': ['12.8.1'] }
+});
+
+// 12.9 Dans chaque page web, la navigation ne doit pas contenir de piège au clavier. Cette règle est-elle respectée ?
+// 12.9.1 Dans chaque page web, chaque élément recevant le focus vérifie-t-il une de ces conditions ?
+tanaguruTestsList.push({
+	lang: 'en',
+	name: 'Il est possible d\'atteindre l\'élément suivant ou précédent pouvant recevoir le focus avec la touche de tabulation.',
+	query: '[onblur]',
+	tags: ['a11y', 'keyboard'],
+    ressources: { 'rgaa': ['12.9.1'] },
+	comments: "peut détecter l'attribut onblur (peut-être aussi l'événement) mais ce n'est pas vraiment une preuve que c'est un piège à clavier"
+});
 
 //13.1 Pour chaque page web, chaque procédé de rafraîchissement (balise <object>, balise <embed>, balise <svg>, balise <canvas>, balise <meta>) vérifie-t-il une de ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
