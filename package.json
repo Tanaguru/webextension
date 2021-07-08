@@ -1,0 +1,28 @@
+{
+  "name": "tanaguru",
+  "version": "1.0.0",
+  "description": "Tanaguru web extension",
+  "main": "index.js",
+  "devDependencies": {
+    "fs-extra": "^9.0.1",
+    "webextension-polyfill": "^0.7.0"
+  },
+  "scripts": {
+    "build": "node build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tanaguru/webextension.git"
+  },
+  "author": "rgervois",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Tanaguru/webextension/issues"
+  },
+  "homepage": "https://github.com/Tanaguru/webextension#readme",
+  "dependencies": {
+    "path": "^0.12.7",
+    "yargs": "^16.1.1",
+    "zip-a-folder": "^1.0.1"
+  }
+}
