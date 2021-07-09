@@ -288,7 +288,10 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if(item.isNotExposedDueTo.length == 0) {
-            return item.getAttribute('role') !== 'img';
+            if(item.hasAttribute('role')) {
+                return item.getAttribute('role') !== 'img' && !item.hasValidRole();
+            }
+            return true;
         }
     },
     tags: ['a11y', 'images'],
@@ -297,7 +300,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images vectorielles (balise svg) sans nom accessible ?',
+    name: 'Liste d&#x2018;images vectorielles (balise svg) sans nom accessible',
     query: 'svg[role="img"]',
     expectedNbElements: 0,
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
@@ -310,7 +313,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images vectorielles (balise svg) avec un nom accessible ?',
+    name: 'Liste d&#x2018;images vectorielles (balise svg) avec un nom accessible',
     query: 'svg[role="img"]',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
     filter: function (item) {
@@ -340,7 +343,10 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if(item.isNotExposedDueTo.length == 0) {
-            return item.getAttribute('role') !== 'img';
+            if(item.hasAttribute('role')) {
+                return item.getAttribute('role') !== 'img' && !item.hasValidRole();
+            }
+            return true;
         }
     },
     tags: ['a11y', 'images'],
@@ -349,7 +355,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images objet (balise object avec l&#x2018;attribut type="image/…") sans nom accessible ?',
+    name: 'Liste d&#x2018;images objet (balise object avec l&#x2018;attribut type="image/…") sans nom accessible',
     query: 'object[type]',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
     expectedNbElements: 0,
@@ -362,11 +368,11 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['1.1.6'] }
 });
 
-//TODO hasAccessibleName ne teste pas le title sur les balises object
+//TODO hasAccessibleName ne teste pas le title sur les balises object & embed
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images objet (balise object avec l&#x2018;attribut type="image/…") avec un nom accessible ?',
+    name: 'Liste d&#x2018;images objet (balise object avec l&#x2018;attribut type="image/…") avec un nom accessible',
     query: 'object[type]',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
     filter: function (item) {
@@ -398,7 +404,10 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if(item.isNotExposedDueTo.length == 0) {
-            return item.getAttribute('role') !== 'img';
+            if(item.hasAttribute('role')) {
+                return item.getAttribute('role') !== 'img' && !item.hasValidRole();
+            }
+            return true;
         }
     },
     tags: ['a11y', 'images'],
@@ -407,7 +416,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images embarquées (balise embed avec l&#x2018;attribut type="image/…") sans nom accessible ?',
+    name: 'Liste d&#x2018;images embarquées (balise embed avec l&#x2018;attribut type="image/…") sans nom accessible',
     query: 'embed[type]',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
     expectedNbElements: 0,
@@ -423,10 +432,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images embarquées (balise embed avec l&#x2018;attribut type="image/…") avec un nom accessible ?',
+    name: 'Liste d&#x2018;images embarquées (balise embed avec l&#x2018;attribut type="image/…") avec un nom accessible',
     query: 'embed[type]',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
-    expectedNbElements: 0,
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/") && (item.getAttribute('role') === 'img' || !item.hasAttribute('role'))){
             if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
@@ -456,7 +464,10 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if(item.isNotExposedDueTo.length == 0) {
-            return item.getAttribute('role') !== 'img';
+            if(item.hasAttribute('role')) {
+                return item.getAttribute('role') !== 'img' && !item.hasValidRole();
+            }
+            return true;
         }
     },
     tags: ['a11y', 'images'],
@@ -465,7 +476,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018images bitmap (balise canvas) sans nom accessible ?',
+    name: 'Liste d&#x2018images bitmap (balise canvas) sans nom accessible',
     query: 'canvas',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
     expectedNbElements: 0,
@@ -480,10 +491,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018images bitmap (balise canvas) avec un nom accessible ?',
+    name: 'Liste d&#x2018images bitmap (balise canvas) avec un nom accessible',
     query: 'canvas',
     description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
-    expectedNbElements: 0,
     filter: function (item) {
         if(item.getAttribute('role') === 'img' || !item.hasAttribute('role')) {
             if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
@@ -492,6 +502,7 @@ tanaguruTestsList.push({
             else if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length <= 80) {
                 item.setAttribute('data-tanaguruAltLong','false');
             }
+            return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
         }
     },
     analyzeElements: function (collection) {
@@ -511,19 +522,33 @@ tanaguruTestsList.push({
     name: 'Liste d&#x2018;images (balise img) ignorées par les technologies d&#x2018;assistance',
     query: 'img:not([role]), img[role="presentation"]',
     filter: function (item) {
-        if (item.hasAttribute('alt')){
-            if(item.getAttribute('alt') == '') {
-                return true;
+        var parent = item.parentNode;
+
+        if(parent) {
+            var parentTag = parent.tagName.toLowerCase();
+
+            if(parentTag === 'figure' && parent.querySelector('figcaption')) {
+                if(parent.querySelector('figcaption').textContent) {
+                    return !parent.querySelector('figcaption').textContent.trim().length > 0;
+                }
             }
         }
+        
         if (item.hasAttribute('aria-hidden')){
-            if (item.getAttribute('aria-hidden="true"')) {
+            if (item.getAttribute('aria-hidden') == "true") {
                 return true;
             }
         }
+
         if (item.hasAttribute('role')){
             if (item.getAttribute('role') == "presentation") {
                 return true;
+            }
+        }
+
+        if (item.hasAttribute('alt')){
+            if(item.getAttribute('alt') == '') {
+                return !item.hasAccessibleName();
             }
         }
         return false;
@@ -542,18 +567,26 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste de zones non cliquables (balise area sans attribut href) ignorées par les technologies d&#x2018;assistance ?',
-    query: 'area:not([role]):not([href]), area[role="presentation"]',
+    name: 'Liste de zones non cliquables (balise area sans attribut href) ignorées par les technologies d&#x2018;assistance',
+    query: 'area:not([role]):not([href]), area[role="presentation"]:not([href])',
     filter: function (item) {
         if (item.hasAttribute('role')){
-            if ((item.getAttribute('role') == "presentation")||item.getAttribute('aria-hidden="true"')) {
+            if ((item.getAttribute('role') == "presentation")) {
                 return true;
             };
         };
-        if (( item.hasAttribute('alt') && !item.hasAttribute('aria-label') )){
-            return item.getAttribute('alt')=='';
+
+        if (item.hasAttribute('aria-hidden')){
+            if (item.getAttribute('aria-hidden') == "true") {
+                return true;
+            }
         }
-        else return false;
+
+        if (item.hasAttribute('alt') && !item.hasAttribute('aria-label')){
+            return item.getAttribute('alt') == '';
+        }
+        
+        return false;
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -569,22 +602,67 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images objets (balise object avec l&#x2018;attribut type="image/…") ignorées par les technologies d&#x2018;assistance ?',
-    query: 'object[type]:not([role])',
+    name: 'Liste d&#x2018;images objets (balise object avec l&#x2018;attribut type="image/…") ignorées par les technologies d&#x2018;assistance',
+    query: 'object[type]:not([role]), object[type][role="img"]',
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/")){
-            if (item.getAttribute('aria-hidden="true"')) {
-                return true;
-            };
-            return item.isNotExposedDueTo.length != 0;
+            var parent = item.parentNode;
+
+            if(parent) {
+                var parentTag = parent.tagName.toLowerCase();
+
+                if(parentTag === 'figure' && parent.querySelector('figcaption')) {
+                    if(parent.querySelector('figcaption').textContent) {
+                        return !parent.querySelector('figcaption').textContent.trim().length > 0;
+                    }
+                }
+            }
+
+            //TODO pas possible de tester si l'élément a un aria-hidden="true" ET un nom accessible car hasAccessibleName() renvoie false quand isNotExposedDueTo.length === 0
+            if (item.textContent && item.textContent.trim().length > 0) {
+                return false;
+            }
+
+            return item.isNotExposedDueTo.length !== 0;
         }
+
+        return false;
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'passed';
         }
     },
-    mark: { attrs: ['alt','aria-hidden','role']},
+    mark: { attrs: ['aria-hidden']},
+    tags: ['a11y', 'images', 'accessiblename'],
+    ressources: { 'rgaa': ['1.2.3'] }
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste d&#x2018;images objets (balise object avec l&#x2018;attribut type="image/…") non ignorées par les technologies d&#x2018;assistance',
+    query: 'object[type][aria-hidden="true"]:not([role]), object[type][aria-hidden="true"][role="img"]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if (item.getAttribute('type').startsWith("image/")){
+            var parent = item.parentNode;
+
+            if(parent) {
+                var parentTag = parent.tagName.toLowerCase();
+
+                if(parentTag === 'figure' && parent.querySelector('figcaption')) {
+                    if(parent.querySelector('figcaption').textContent) {
+                        return !parent.querySelector('figcaption').textContent.trim().length > 0;
+                    }
+                }
+            }
+
+            //TODO pas possible de tester si l'élément a un aria-hidden="true" ET un nom accessible car hasAccessibleName() renvoie false quand isNotExposedDueTo.length === 0
+            if (item.textContent && item.textContent.trim().length > 0) {
+                return true;
+            }
+        }
+    },
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.2.3'] }
 });
@@ -593,9 +671,41 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: ' vectorielle (balise svg) ignorées par les technologies d&#x2018;assistance ?',
+    name: 'Liste d&#x2018;image vectorielle (balise svg) ignorées par les technologies d&#x2018;assistance',
     query: 'svg[aria-hidden="true"]',
     filter: function (item) {
+        var parent = item.parentNode;
+
+        if(parent) {
+            var parentTag = parent.tagName.toLowerCase();
+
+            if(parentTag === 'figure' && parent.querySelector('figcaption')) {
+                if(parent.querySelector('figcaption').textContent) {
+                    return !parent.querySelector('figcaption').textContent.trim().length > 0;
+                }
+            }
+        }
+
+        var titleTag = item.querySelectorAll("title");
+        var descTag = item.querySelectorAll('desc');
+        var titleAtt = item.querySelectorAll('[title]');
+
+        if(titleAtt.length > 0 || item.hasAttribute('title')) {
+            return false;
+        }
+
+        for (var i = 0; i < titleTag.length; i++) {
+            if(titleTag[i].textContent.length > 0) {
+                return false;
+            }
+        }
+
+        for (var i = 0; i < descTag.length; i++) {
+            if(descTag[i].textContent.length > 0) {
+                return false;
+            }
+        }
+
         return !item.hasAccessibleName();
     },
     analyzeElements: function (collection) {
@@ -610,20 +720,43 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: ' Liste d&#x2018;image vectorielle (balise svg) de décoration non ignorées par les technologies d&#x2018;assistance ?',
+    name: 'Liste d&#x2018;image vectorielle (balise svg) non ignorées par les technologies d&#x2018;assistance',
     query: 'svg[aria-hidden="true"]',
+    expectedNbElements: 0,
     filter: function (item) {
+        var parent = item.parentNode;
+
+        if(parent) {
+            var parentTag = parent.tagName.toLowerCase();
+
+            if(parentTag === 'figure' && parent.querySelector('figcaption')) {
+                if(parent.querySelector('figcaption').textContent) {
+                    return !parent.querySelector('figcaption').textContent.trim().length > 0;
+                }
+            }
+        }
+
         var titleTag = item.querySelectorAll("title");
+        var descTag = item.querySelectorAll('desc');
+        var titleAtt = item.querySelectorAll('[title]');
+
+        if(titleAtt.length > 0 || item.hasAttribute('title')) {
+            return true;
+        }
+
         for (var i = 0; i < titleTag.length; i++) {
-            return !titleTag[i].hasAccessibleName;
+            if(titleTag[i].textContent.length > 0) {
+                return true;
+            }
+        }
+
+        for (var i = 0; i < descTag.length; i++) {
+            if(descTag[i].textContent.length > 0) {
+                return true;
+            }
         }
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'failed';
-        }
-    },
-    mark: { attrs: ['aria-hidden']},
+    mark: { attrs: ['title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.2.4'] }
 });
@@ -632,33 +765,86 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018images bitmap (balise canvas) ignorées par les technologies d&#x2018assistance ?',
+    name: 'Liste d&#x2018images bitmap (balise canvas) ignorées par les technologies d&#x2018;assistance',
     query: 'canvas[aria-hidden="true"]',
-    expectedNbElements: 0,
     filter: function (item) {
-        return item.isNotExposedDueTo.length != 0 && item.hasAccessibleName();
+        var parent = item.parentNode;
+
+        if(parent) {
+            var parentTag = parent.tagName.toLowerCase();
+
+            if(parentTag === 'figure' && parent.querySelector('figcaption')) {
+                if(parent.querySelector('figcaption').textContent) {
+                    return !parent.querySelector('figcaption').textContent.trim().length > 0;
+                }
+            }
+        }
+
+        //TODO pas possible de tester si l'élément a un aria-hidden="true" ET un nom accessible car hasAccessibleName() renvoie false quand isNotExposedDueTo.length === 0
+        if (item.textContent && item.textContent.trim().length > 0) {
+            return false;
+        }
+
+        return !item.hasAccessibleName();
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'passed';
         }
     },
-    mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
+    mark: { attrs: ['alt','aria-hidden','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.2.5'] }
 });
 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste d&#x2018images bitmap (balise canvas) non ignorées par les technologies d&#x2018;assistance',
+    query: 'canvas[aria-hidden="true"]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        var parent = item.parentNode;
+
+        if(parent) {
+            var parentTag = parent.tagName.toLowerCase();
+
+            if(parentTag === 'figure' && parent.querySelector('figcaption')) {
+                if(parent.querySelector('figcaption').textContent) {
+                    return !parent.querySelector('figcaption').textContent.trim().length > 0;
+                }
+            }
+        }
+
+        //TODO pas possible de tester si l'élément a un aria-hidden="true" ET un nom accessible car hasAccessibleName() renvoie false quand isNotExposedDueTo.length === 0
+        if (item.textContent && item.textContent.trim().length > 0) {
+            return true;
+        }
+    },
+    tags: ['a11y', 'images', 'accessiblename'],
+    ressources: { 'rgaa': ['1.2.5'] }
+});
 
 // 1.2.6 Chaque image embarquée (balise <embed> avec l'attribut type="image/…") de décoration, sans légende, vérifie-t-elle ces conditions ? // à tester
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018images embarquées (balise embed avec l&#x2018;attribut type="image/…") ignorées par les technologies d&#x2018assistance ?',
-    query: 'embed[type]:not([role])',
-    expectedNbElements: 0,
+    name: 'Liste d&#x2018images embarquées (balise embed avec l&#x2018;attribut type="image/…") ignorées par les technologies d&#x2018assistance',
+    query: 'embed[type]:not([role]), embed[type][role="img"]',
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/")){
-            return item.isNotExposedDueTo.length != 0 && item.hasAccessibleName();
+            var parent = item.parentNode;
+
+            if(parent) {
+                var parentTag = parent.tagName.toLowerCase();
+
+                if(parentTag === 'figure' && parent.querySelector('figcaption')) {
+                    if(parent.querySelector('figcaption').textContent) {
+                        return !parent.querySelector('figcaption').textContent.trim().length > 0;
+                    }
+                }
+            }
+
+            return !item.hasAccessibleName();
         }
     },
     analyzeElements: function (collection) {
@@ -666,7 +852,7 @@ tanaguruTestsList.push({
             collection[i].status = 'passed';
         }
     },
-    mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
+    mark: { attrs: ['aria-hidden']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.2.6'] }
 });
@@ -675,23 +861,17 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Ces d&#x2018images (balise img ou balises possédant l&#x2018attribut WAI-ARIA role="img") ont-elles un nom accessible pertinent ?',
+    name: 'Ces images (balise img ou balises possédant l&#x2018;attribut WAI-ARIA role="img") ont-elles un nom accessible pertinent ?',
     query: 'img:not([role]), [role="img"]',
     filter: function (item) {
-        var IName = item.tagName;
-        if (IName != 'svg') {
-            if (IName == 'IMG') {
-                if (item.hasAttribute('alt')){
-                    return item.getAttribute('alt') == ' '||item.getAttribute('alt') == '';
-                }
-            }
-            if (item.isNotExposedDueTo.length == 0 && item.hasAccessibleName()){
+        var IName = item.tagName.toLowerCase();
+        if (IName != 'svg' && IName != 'object' && IName != 'embed' && IName != 'canvas') {
+            if (item.hasAccessibleName()){
                 if (item.accessibleName.length > 80) {
                     item.addClass('tanaguruLongAlt');
                 }
                 return true;
             }
-            return false;
         }
     },
     analyzeElements: function (collection) {
@@ -708,19 +888,17 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Ces zones (balise area) d&#x2018une image réactive ont-elles un nom accessible pertinent ?',
+    name: 'Ces zones (balise area) d&#x2018;une image réactive ont-elles un nom accessible pertinent ?',
     query: 'area:not([role])',
     filter: function (item) {
-        if (item.hasAttribute('alt')){
-            return item.getAttribute('alt') == ' ';
-        }
-        return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+        return item.hasAccessibleName();
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'cantTell';
         }
     },
+    mark: { attrs: ['alt','aria-label']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.2'] }
 });
@@ -732,13 +910,14 @@ tanaguruTestsList.push({
     name: 'Ces boutons de type image (balise input avec l&#x2018;attribut type="image") ont-elles un nom accessible pertinent ?',
     query: 'input[type="image"]:not([role])',
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+        return item.hasAccessibleName();
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'cantTell';
         }
     },
+    mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.3'] }
 });
@@ -748,10 +927,10 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Ces images objet (balise object avec l&#x2018;attribut type="image/…") ont-elles un nom accessible pertinent ?',
-    query: 'object[type]:not([role])',
+    query: 'object[type]:not([role], object[type][role="img"]',
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/")){
-            return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+            return item.hasAccessibleName();
         }
     },
     analyzeElements: function (collection) {
@@ -759,6 +938,7 @@ tanaguruTestsList.push({
             collection[i].status = 'canTell';
         }
     },
+    mark: { attrs: ['aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.4'] }
 });
@@ -768,11 +948,10 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Ces images embarquées (balise embed avec l&#x2018;attribut type="image/…") ont-elles un nom accessible pertinent ?',
-    query: 'embed[type]:not([role])',
-    expectedNbElements: 0,
+    query: 'embed[type]:not([role]), embed[type][role="img"]',
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/")){
-            return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+            return item.hasAccessibleName();
         }
     },
     analyzeElements: function (collection) {
@@ -780,6 +959,7 @@ tanaguruTestsList.push({
             collection[i].status = 'cantTell';
         }
     },
+    mark: { attrs: ['aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.5'] }
 });
@@ -798,6 +978,7 @@ tanaguruTestsList.push({
             collection[i].status = 'cantTell';
         }
     },
+    mark: { attrs: ['aria-label','aria-labelledby']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.6'] }
 });
@@ -807,8 +988,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: ' Ces images bitmap (balise canvas) ont-elles un nom accessible pertinent ?',
-    query: 'canvas:not([role])',
-    expectedNbElements: 0,
+    query: 'canvas:not([role]), canvas[role="img"]',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
     },
@@ -817,6 +997,7 @@ tanaguruTestsList.push({
             collection[i].status = 'cantTell';
         }
     },
+    mark: { attrs: ['aria-label','aria-labelledby']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.7'] }
 });
@@ -825,11 +1006,12 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: ' Pour chaque image bitmap (balise canvas) porteuse d&#x2018information, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente (hors cas particuliers) ?',
-    query: 'canvas:not([role])',
-    expectedNbElements: 0,
+    name: 'Liste des images bitmap (balise canvas) porteuse d&#x2018information, ayant un contenu alternatif entre sa balise ouvrante et sa balise fermante correctement restitué par les technologies d\'assistance',
+    query: 'canvas[role="img"]',
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+        if (item.textContent && item.textContent.trim().length > 0) {
+            return item.isNotExposedDueTo.length === 0;
+        }
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -840,16 +1022,31 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['1.3.8'] }
 });
 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des images bitmap (balise canvas) porteuse d&#x2018information, ayant un contenu alternatif entre sa balise ouvrante et sa balise fermante non restitué par les technologies d\'assistance',
+    query: 'canvas[role="img"]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if (item.textContent && item.textContent.trim().length > 0) {
+            return !item.isNotExposedDueTo.length === 0;
+        }
+    },
+    tags: ['a11y', 'images', 'accessiblename'],
+    ressources: { 'rgaa': ['1.3.8'] }
+});
+
 // 1.3.9 Pour chaque image porteuse d'information et ayant une alternative textuelle, l'alternative textuelle est-elle courte et concise (hors cas particuliers) ?
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Le nom accessible de ces images est-il court ?',
+    name: 'Images avec un nom accessible trop long',
     query: '[data-tanaguruAltLong="true"]',
     expectedNbElements: 0,
     filter: function (item) {
         return true;
     },
+    mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.9'] }
 });
@@ -866,34 +1063,41 @@ tanaguruTestsList.push({
             collection[i].status = 'cantTell';
         }
     },
+    mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.9'] }
 });
 
 // 1.4.1 à traiter
 
-// 1.9.1 Chaque légende d&#x2018image est-elle, si nécessaire, correctement reliée à l&#x2018image correspondante ?
+// 1.9.1 Chaque image pourvue d'une légende (balise <img>, <input> avec l'attribut type="image" ou balise possédant un attribut WAI-ARIA role="img" associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ? 
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: ' Liste des légendes d&#x2018image non reliées à l&#x2018image correspondante ?',
-    query: 'figure img, figure input[type="image"], figure input[role="image"]',
+    name: 'Liste des légendes d&#x2018image (balise img, balise input type="image" ou balise role="img") non reliées à l&#x2018image correspondante',
+    query: 'figure img, figure input[type="image"], figure [role="img"]',
     expectedNbElements: 0,
     filter: function (item) {
-        var parentFigure = item.closest('figure');
-        if (parentFigure.hasAttribute('role')) {
-            var parentRole = parentFigure.getAttribute('role');
-            if ((parentRole == 'figure')||(parentRole == 'group')) {
-                if (parentFigure.hasAttribute('aria-label')) {
-                    var parentFigureLabel = parentFigure.getAttribute('aria-label');
-                    if (parentFigure.querySelector('figcaption')) {
-                        var figcaptionValue = parentFigure.querySelector('figcaption').accessibleName;
-                        return figcaptionValue != parentFigureLabel;
+        var IName = item.tagName.toLowerCase();
+        if (IName != 'svg' && IName != 'object' && IName != 'embed' && IName != 'canvas') {
+            var parentFigure = item.closest('figure');
+            var figcaption = parentFigure.querySelector('figcaption');
+            if(figcaption && figcaption.textContent.length > 0) {
+                if (parentFigure.hasAttribute('role')) {
+                    var parentRole = parentFigure.getAttribute('role');
+                    if ((parentRole == 'figure') || (parentRole == 'group')) {
+                        if (parentFigure.hasAttribute('aria-label')) {
+                            var parentFigureLabel = parentFigure.getAttribute('aria-label');
+                            if (parentFigure.querySelector('figcaption')) {
+                                var figcaptionValue = figcaption.accessibleName;
+                                return figcaptionValue.trim().toLowerCase() != parentFigureLabel.trim().toLowerCase();
+                            }
+                        }
                     }
                 }
+                return true;
             }
         }
-        return true;
     },
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.9.1'] }
@@ -901,23 +1105,28 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des légendes d&#x2018image reliées à l&#x2018image correspondante ?',
-    query: 'figure img, figure input[type="image"], figure input[role="image"]',
+    name: 'Liste des légendes d&#x2018image (balise img, balise input type="image" ou balise role="img") reliées à l&#x2018image correspondante',
+    query: 'figure img, figure input[type="image"], figure [role="img"]',
     filter: function (item) {
-        var parentFigure = item.closest('figure');
-        if (parentFigure.hasAttribute('role')) {
-            var parentRole = parentFigure.getAttribute('role');
-            if ((parentRole == 'figure')||(parentRole == 'group')) {
-                if (parentFigure.hasAttribute('aria-label')) {
-                    var parentFigureLabel = parentFigure.getAttribute('aria-label');
-                    if (parentFigure.querySelector('figcaption')) {
-                        var figcaptionValue = parentFigure.querySelector('figcaption').accessibleName;
-                        return figcaptionValue == parentFigureLabel;
+        var IName = item.tagName.toLowerCase();
+        if (IName != 'svg' && IName != 'object' && IName != 'embed' && IName != 'canvas') {
+            var parentFigure = item.closest('figure');
+            var figcaption = parentFigure.querySelector('figcaption');
+            if(figcaption && figcaption.textContent.length > 0) {
+                if (parentFigure.hasAttribute('role')) {
+                    var parentRole = parentFigure.getAttribute('role');
+                    if ((parentRole == 'figure') || (parentRole == 'group')) {
+                        if (parentFigure.hasAttribute('aria-label')) {
+                            var parentFigureLabel = parentFigure.getAttribute('aria-label');
+                            if (parentFigure.querySelector('figcaption')) {
+                                var figcaptionValue = figcaption.accessibleName;
+                                return figcaptionValue.trim().toLowerCase() == parentFigureLabel.trim().toLowerCase();
+                            }
+                        }
                     }
                 }
             }
         }
-        return false;
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -929,27 +1138,29 @@ tanaguruTestsList.push({
 });
 
 // 1.9.2 Chaque image objet pourvue d'une légende (balise object avec l'attribut type="image/…" associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ? xxx
-
 tanaguruTestsList.push({
     lang: 'fr',
-    name: ' Chaque image objet pourvue d&#x2018une légende (balise object avec l&#x2018;attribut type="image/…" associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ?',
-    query: 'figure object[type="image"]',
+    name: 'Liste des légendes d&#x2018image objet non reliées à l&#x2018image correspondante',
+    query: 'figure object[type]',
     expectedNbElements: 0,
     filter: function (item) {
         var parentFigure = item.closest('figure');
-        if (parentFigure.hasAttribute('role')) {
-            var parentRole = parentFigure.getAttribute('role');
-            if ((parentRole == 'figure')||(parentRole == 'group')) {
-                if (parentFigure.hasAttribute('aria-label')) {
-                    var parentFigureLabel = parentFigure.getAttribute('aria-label');
-                    if (parentFigure.querySelector('figcaption')) {
-                        var figcaptionValue = parentFigure.querySelector('figcaption').accessibleName;
-                        return figcaptionValue != parentFigureLabel;
+        var figcaption = parentFigure.querySelector('figcaption');
+        if(figcaption && figcaption.textContent.length > 0) {
+            if (parentFigure.hasAttribute('role')) {
+                var parentRole = parentFigure.getAttribute('role');
+                if ((parentRole == 'figure') || (parentRole == 'group')) {
+                    if (parentFigure.hasAttribute('aria-label')) {
+                        var parentFigureLabel = parentFigure.getAttribute('aria-label');
+                        if (parentFigure.querySelector('figcaption')) {
+                            var figcaptionValue = figcaption.accessibleName;
+                            return figcaptionValue.trim().toLowerCase() != parentFigureLabel.trim().toLowerCase();
+                        }
                     }
                 }
             }
+            return true;
         }
-        return true;
     },
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.9.2'] }
@@ -957,23 +1168,25 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: ' Chaque image objet pourvue d&#x2018une légende (balise object avec l&#x2018;attribut type="image/…" associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ?',
-    query: 'figure object[type="image"]',
+    name: 'Liste des légendes d&#x2018image objet reliées à l&#x2018image correspondante',
+    query: 'figure object[type]',
     filter: function (item) {
         var parentFigure = item.closest('figure');
-        if (parentFigure.hasAttribute('role')) {
-            var parentRole = parentFigure.getAttribute('role');
-            if ((parentRole == 'figure')||(parentRole == 'group')) {
-                if (parentFigure.hasAttribute('aria-label')) {
-                    var parentFigureLabel = parentFigure.getAttribute('aria-label');
-                    if (parentFigure.querySelector('figcaption')) {
-                        var figcaptionValue = parentFigure.querySelector('figcaption').accessibleName;
-                        return figcaptionValue == parentFigureLabel;
+        var figcaption = parentFigure.querySelector('figcaption');
+        if(figcaption && figcaption.textContent.length > 0) {
+            if (parentFigure.hasAttribute('role')) {
+                var parentRole = parentFigure.getAttribute('role');
+                if ((parentRole == 'figure') || (parentRole == 'group')) {
+                    if (parentFigure.hasAttribute('aria-label')) {
+                        var parentFigureLabel = parentFigure.getAttribute('aria-label');
+                        if (parentFigure.querySelector('figcaption')) {
+                            var figcaptionValue = figcaption.accessibleName;
+                            return figcaptionValue.trim().toLowerCase() == parentFigureLabel.trim().toLowerCase();
+                        }
                     }
                 }
             }
         }
-        return false;
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -988,24 +1201,27 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: ' Chaque image embarquée pourvue d&#x2018une légende (balise <embed> associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ?',
+    name: 'Liste des légendes d&#x2018image embarquées (balise embed) non reliées à l&#x2018image correspondante',
     query: 'figure embed',
     expectedNbElements: 0,
     filter: function (item) {
         var parentFigure = item.closest('figure');
-        if (parentFigure.hasAttribute('role')) {
-            var parentRole = parentFigure.getAttribute('role');
-            if ((parentRole == 'figure')||(parentRole == 'group')) {
-                if (parentFigure.hasAttribute('aria-label')) {
-                    var parentFigureLabel = parentFigure.getAttribute('aria-label');
-                    if (parentFigure.querySelector('figcaption')) {
-                        var figcaptionValue = parentFigure.querySelector('figcaption').accessibleName;
-                        return figcaptionValue != parentFigureLabel;
+        var figcaption = parentFigure.querySelector('figcaption');
+        if(figcaption && figcaption.textContent.length > 0) {
+            if (parentFigure.hasAttribute('role')) {
+                var parentRole = parentFigure.getAttribute('role');
+                if ((parentRole == 'figure') || (parentRole == 'group')) {
+                    if (parentFigure.hasAttribute('aria-label')) {
+                        var parentFigureLabel = parentFigure.getAttribute('aria-label');
+                        if (parentFigure.querySelector('figcaption')) {
+                            var figcaptionValue = figcaption.accessibleName;
+                            return figcaptionValue.trim().toLowerCase() != parentFigureLabel.trim().toLowerCase();
+                        }
                     }
                 }
             }
+            return true;
         }
-        return true;
     },
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.9.3'] }
@@ -1013,23 +1229,25 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: ' Chaque image embarquée pourvue d&#x2018une légende (balise <embed> associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ?',
+    name: 'Liste des légendes d&#x2018image embarquées (balise embed) reliées à l&#x2018image correspondante',
     query: 'figure embed',
     filter: function (item) {
         var parentFigure = item.closest('figure');
-        if (parentFigure.hasAttribute('role')) {
-            var parentRole = parentFigure.getAttribute('role');
-            if ((parentRole == 'figure')||(parentRole == 'group')) {
-                if (parentFigure.hasAttribute('aria-label')) {
-                    var parentFigureLabel = parentFigure.getAttribute('aria-label');
-                    if (parentFigure.querySelector('figcaption')) {
-                        var figcaptionValue = parentFigure.querySelector('figcaption').accessibleName;
-                        return figcaptionValue == parentFigureLabel;
+        var figcaption = parentFigure.querySelector('figcaption');
+        if(figcaption && figcaption.textContent.length > 0) {
+            if (parentFigure.hasAttribute('role')) {
+                var parentRole = parentFigure.getAttribute('role');
+                if ((parentRole == 'figure') || (parentRole == 'group')) {
+                    if (parentFigure.hasAttribute('aria-label')) {
+                        var parentFigureLabel = parentFigure.getAttribute('aria-label');
+                        if (parentFigure.querySelector('figcaption')) {
+                            var figcaptionValue = figcaption.accessibleName;
+                            return figcaptionValue.trim().toLowerCase() == parentFigureLabel.trim().toLowerCase();
+                        }
                     }
                 }
             }
         }
-        return false;
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -1044,24 +1262,27 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: ' Chaque image vectorielle pourvue d&#x2018une légende (balise svg associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ?',
+    name: 'Liste des légendes d&#x2018image vectorielles (balise svg) non reliées à l&#x2018image correspondante',
     query: 'figure svg',
     expectedNbElements: 0,
     filter: function (item) {
         var parentFigure = item.closest('figure');
-        if (parentFigure.hasAttribute('role')) {
-            var parentRole = parentFigure.getAttribute('role');
-            if ((parentRole == 'figure')||(parentRole == 'group')) {
-                if (parentFigure.hasAttribute('aria-label')) {
-                    var parentFigureLabel = parentFigure.getAttribute('aria-label');
-                    if (parentFigure.querySelector('figcaption')) {
-                        var figcaptionValue = parentFigure.querySelector('figcaption').accessibleName;
-                        return figcaptionValue != parentFigureLabel;
+        var figcaption = parentFigure.querySelector('figcaption');
+        if(figcaption && figcaption.textContent.length > 0) {
+            if (parentFigure.hasAttribute('role')) {
+                var parentRole = parentFigure.getAttribute('role');
+                if ((parentRole == 'figure') || (parentRole == 'group')) {
+                    if (parentFigure.hasAttribute('aria-label')) {
+                        var parentFigureLabel = parentFigure.getAttribute('aria-label');
+                        if (parentFigure.querySelector('figcaption')) {
+                            var figcaptionValue = figcaption.accessibleName;
+                            return figcaptionValue.trim().toLowerCase() != parentFigureLabel.trim().toLowerCase();
+                        }
                     }
                 }
             }
+            return true;
         }
-        return true;
     },
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.9.4'] }
@@ -1069,23 +1290,25 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: ' Chaque image vectorielle pourvue d&#x2018une légende (balise svg associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ?',
+    name: 'Liste des légendes d&#x2018image vectorielles (balise svg) reliées à l&#x2018image correspondante',
     query: 'figure svg',
     filter: function (item) {
         var parentFigure = item.closest('figure');
-        if (parentFigure.hasAttribute('role')) {
-            var parentRole = parentFigure.getAttribute('role');
-            if ((parentRole == 'figure')||(parentRole == 'group')) {
-                if (parentFigure.hasAttribute('aria-label')) {
-                    var parentFigureLabel = parentFigure.getAttribute('aria-label');
-                    if (parentFigure.querySelector('figcaption')) {
-                        var figcaptionValue = parentFigure.querySelector('figcaption').accessibleName;
-                        return figcaptionValue == parentFigureLabel;
+        var figcaption = parentFigure.querySelector('figcaption');
+        if(figcaption && figcaption.textContent.length > 0) {
+            if (parentFigure.hasAttribute('role')) {
+                var parentRole = parentFigure.getAttribute('role');
+                if ((parentRole == 'figure') || (parentRole == 'group')) {
+                    if (parentFigure.hasAttribute('aria-label')) {
+                        var parentFigureLabel = parentFigure.getAttribute('aria-label');
+                        if (parentFigure.querySelector('figcaption')) {
+                            var figcaptionValue = figcaption.accessibleName;
+                            return figcaptionValue.trim().toLowerCase() == parentFigureLabel.trim().toLowerCase();
+                        }
                     }
                 }
             }
         }
-        return false;
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -1100,24 +1323,27 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: ' Chaque image bitmap pourvue d&#x2018une légende (balise canvas associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ?',
+    name: 'Liste des légendes d&#x2018image bitmap (balise canvas) non reliées à l&#x2018image correspondante',
     query: 'figure canvas',
     expectedNbElements: 0,
     filter: function (item) {
         var parentFigure = item.closest('figure');
-        if (parentFigure.hasAttribute('role')) {
-            var parentRole = parentFigure.getAttribute('role');
-            if ((parentRole == 'figure')||(parentRole == 'group')) {
-                if (parentFigure.hasAttribute('aria-label')) {
-                    var parentFigureLabel = parentFigure.getAttribute('aria-label');
-                    if (parentFigure.querySelector('figcaption')) {
-                        var figcaptionValue = parentFigure.querySelector('figcaption').accessibleName;
-                        return figcaptionValue != parentFigureLabel;
+        var figcaption = parentFigure.querySelector('figcaption');
+        if(figcaption && figcaption.textContent.length > 0) {
+            if (parentFigure.hasAttribute('role')) {
+                var parentRole = parentFigure.getAttribute('role');
+                if ((parentRole == 'figure') || (parentRole == 'group')) {
+                    if (parentFigure.hasAttribute('aria-label')) {
+                        var parentFigureLabel = parentFigure.getAttribute('aria-label');
+                        if (parentFigure.querySelector('figcaption')) {
+                            var figcaptionValue = figcaption.accessibleName;
+                            return figcaptionValue.trim().toLowerCase() != parentFigureLabel.trim().toLowerCase();
+                        }
                     }
                 }
             }
+            return true;
         }
-        return true;
     },
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.9.5'] }
@@ -1125,23 +1351,25 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: ' Chaque image bitmap pourvue d&#x2018;une légende (balise canvas associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ?',
+    name: 'Liste des légendes d&#x2018image bitmap (balise canvas) reliées à l&#x2018image correspondante',
     query: 'figure canvas',
     filter: function (item) {
         var parentFigure = item.closest('figure');
-        if (parentFigure.hasAttribute('role')) {
-            var parentRole = parentFigure.getAttribute('role');
-            if ((parentRole == 'figure')||(parentRole == 'group')) {
-                if (parentFigure.hasAttribute('aria-label')) {
-                    var parentFigureLabel = parentFigure.getAttribute('aria-label');
-                    if (parentFigure.querySelector('figcaption')) {
-                        var figcaptionValue = parentFigure.querySelector('figcaption').accessibleName;
-                        return figcaptionValue == parentFigureLabel;
+        var figcaption = parentFigure.querySelector('figcaption');
+        if(figcaption && figcaption.textContent.length > 0) {
+            if (parentFigure.hasAttribute('role')) {
+                var parentRole = parentFigure.getAttribute('role');
+                if ((parentRole == 'figure') || (parentRole == 'group')) {
+                    if (parentFigure.hasAttribute('aria-label')) {
+                        var parentFigureLabel = parentFigure.getAttribute('aria-label');
+                        if (parentFigure.querySelector('figcaption')) {
+                            var figcaptionValue = figcaption.accessibleName;
+                            return figcaptionValue.trim().toLowerCase() == parentFigureLabel.trim().toLowerCase();
+                        }
                     }
                 }
             }
         }
-        return false;
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
