@@ -1418,8 +1418,8 @@ tanaguruTestsList.push({
     name: 'Vérifier la pertinence des titres des cadres suivants',
     query: 'iframe[title]:not([role]), frame[title]:not([role])',
     filter: function (item) {
-        var titleAttr = item.getAttribute('title');
-        if (titleAttr == "" || titleAttr == " ") {
+        var titleAttr = item.getAttribute('title').trim();
+        if (titleAttr.length === 0) {
             return !item.isNotExposedDueTo.length == 0;
         }
         return item.isNotExposedDueTo.length == 0;
@@ -1438,15 +1438,11 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Les cadres suivants ont un titre non pertinent',
     query: 'iframe[title]:not([role]), frame[title]:not([role])',
+    expectedNbElements: 0,
     filter: function (item) {
-        var titleAttr = item.getAttribute('title');
-        if (titleAttr == "" || titleAttr == " ") {
+        var titleAttr = item.getAttribute('title').trim();
+        if (titleAttr.length === 0) {
             return item.isNotExposedDueTo.length == 0;
-        }
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'failed';
         }
     },
     mark: { attrs: ['title']},
@@ -1875,7 +1871,7 @@ tanaguruTestsList.push({
         var trackTag = item.querySelectorAll('track');
         if (trackTag.length != 0) {
             for (var i = 0; i < trackTag.length; i++) {
-                return trackTag[i].getAttribute('kind') != 'subtitles';
+                return trackTag[i].getAttribute('kind') != 'captions';
             }
         }
     },
@@ -1887,7 +1883,7 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['4.3.2']}
 });
 
-// retourne Indéterminé à la place de Validé. // @rg
+// retourne Indéterminé à la place de Validé. // @rg // corrigé @severine
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des médias temporels synchronisés possédant des sous-titres synchronisés diffusés via une balise <track> avec attribut kind="captions"',
@@ -1897,7 +1893,7 @@ tanaguruTestsList.push({
         var trackTag = item.querySelectorAll('track');
         if (trackTag.length != 0) {
             for (var i = 0; i < trackTag.length; i++) {
-                return trackTag[i].getAttribute('kind') == 'subtitles';
+                return trackTag[i].getAttribute('kind') == 'captions';
             }
         }
         return false;
@@ -1922,7 +1918,7 @@ tanaguruTestsList.push({
         var trackTag = item.querySelectorAll('track');
         if (trackTag.length != 0) {
             for (var i = 0; i < trackTag.length; i++) {
-                return trackTag[i].getAttribute('kind') == 'subtitles';
+                return trackTag[i].getAttribute('kind') == 'captions';
             }
         }
         return false;
