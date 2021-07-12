@@ -119,7 +119,6 @@ function manageHoveredImageButton(event) {
 	}
 }
 
-
 var html = document.querySelector('html');
 html.setAttribute('lang', chrome.i18n.getMessage('extensionLang'));
 var main = document.createElement('main');
@@ -194,12 +193,22 @@ button.addEventListener('click', function () {
 					if (newcurrenttabpanel.getAttribute('id') == 'tests') {
 						newcurrenttabpanel.setAttribute('aria-labelledby', element.getAttribute('id'));
 						
-
 						// IN PROGRESS
-							var newcurrenttabpanelheadingtext = element.firstChild.firstChild.nodeValue;
-							var currenttabpanelheading = newcurrenttabpanel.querySelector('h2');
-							currenttabpanelheading.replaceChild(document.createTextNode(newcurrenttabpanelheadingtext), currenttabpanelheading.firstChild);
+						var newcurrenttabpanelheadingtext = element.firstChild.firstChild.nodeValue;
+						var currenttabpanelheading = newcurrenttabpanel.querySelector('h2');
+						currenttabpanelheading.replaceChild(document.createTextNode(newcurrenttabpanelheadingtext), currenttabpanelheading.firstChild);
 
+						// contrast panel description
+						if(element.getAttribute('id') === 'contrast' && !document.querySelector('.contrast-panel-desc')) {
+							var contrastPanelDesc = document.createElement('div');
+							contrastPanelDesc.classList.add('contrast-panel-desc');
+							contrastPanelDesc.innerHTML = '<p>' + chrome.i18n.getMessage('contrastDescription1') + '</p><p>' + chrome.i18n.getMessage('contrastDescription2') + '</p><p class="contrast-legend">' + chrome.i18n.getMessage('contrastLegend1') + '<span class="contrast-bgImage"></span><span id="contrast-bgImage">' + chrome.i18n.getMessage('contrastLegend2') + '</span><span class="contrast-bgNull"></span><span id="contrast-bgNull">' + chrome.i18n.getMessage('contrastLegend3') + '</span></p>';
+							newcurrenttabpanel.insertBefore(contrastPanelDesc, currenttabpanelheading.nextSibling);
+						} else {
+							if(document.querySelector('.contrast-panel-desc')) {
+								newcurrenttabpanel.removeChild(document.querySelector('.contrast-panel-desc'));
+							}
+						}
 
 						newcurrenttabpanel.parentNode.scrollTop = 0;
 						var tests = newcurrenttabpanel.querySelectorAll('h3');
@@ -238,7 +247,6 @@ button.addEventListener('click', function () {
 		dashboardpanelheading.appendChild(document.createTextNode(dashboard.textContent));
 		dashboardpanel.appendChild(dashboardpanelheading);
 		
-		
 		// UI. Dashboard.
 		dashboardpanel.setAttribute('style', 'height: 100%; padding: 0; margin: 0; position: relative;');
 		var dashboardpanelp = document.createElement('p'); 
@@ -246,147 +254,28 @@ button.addEventListener('click', function () {
 		dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')));
 		dashboardpanel.appendChild(dashboardpanelp);
 		
-		
 		main.children[1].appendChild(dashboardpanel);
 		ul.appendChild(dashboard);
 
+		//TODO traiter les tests par tag et les afficher au fur et à mesure en ajoutant un loader comme ci dessous
+		// var tab = document.createElement('li');
+		// tab.setAttribute('id', 'tabTag');
+		// var loadingTab = document.createElement('span');
+		// loadingTab.classList.add('tab-loading');
+		// loadingTab.innerHTML = '<img src="images/loader.png" alt="Analyse en cours" tabindex="-1"></img>';
+		// tab.appendChild(loadingTab);
+		// tab.removeChild(loadingTab);
+		// tab.setAttribute('role', 'tab');
+		// tab.setAttribute('aria-selected', 'false');
+		// tab.setAttribute('tabindex', '-1');
 
-
-		// UI. Contrasts.
-
-		var contrast = document.createElement('li');
-		contrast.setAttribute('id', 'tabContrast');
-		contrast.setAttribute('role', 'tab');
-		contrast.setAttribute('aria-selected', 'false');
-		contrast.setAttribute('tabindex', '-1');
-		contrast.appendChild(document.createTextNode(chrome.i18n.getMessage('contrastHeading')));
-		contrast.addEventListener('focus', function (event) {
-			if (!this.matches('[data-loaded="true"]')) {
-				this.setAttribute('data-loaded', 'true');
-				chrome.runtime.sendMessage({
-					tabId: chrome.devtools.inspectedWindow.tabId,
-					command: 'getContrasts'
-				}, function (response) {
-					var div = document.querySelector('#' + document.activeElement.getAttribute('aria-controls') + ' div');
-					var table = document.createElement('table');
-					table.setAttribute('border', '');
-					table.innerHTML = '<caption class="visually-hidden"></caption><tr class="theadings"><th scope="col" abbr="Numéro" style="width: auto;">N°</th><th scope="col" style="width: auto;">Balise</th><th scope="col" style="text-align: left; width: auto;">Passage de texte</th><th abbr="Couleur de texte" style="width: 20px;"><abbr title="Couleur de texte">CT</abbr></th><th abbr="Couleur de fond" style="width: 20px;"><abbr title="Couleur de fond">CF</abbr></th><th scope="col" style="text-align: right; width: auto;">Ratio estimé</th><th scope="col">Actions</th></tr>';
-					var i = 0;
-					var response = response.response[0];
-					for (var result in response) {
-						var tr = document.createElement('tr');
-						var th = document.createElement('td');
-						th.style.textAlign = 'left';
-						th.style.width = 'auto';
-						i++;
-						th.appendChild(document.createTextNode(i));
-						tr.appendChild(th);
-						var td = document.createElement('td');
-						td.style.textAlign = 'left';
-						td.style.width = 'auto';
-						td.appendChild(document.createTextNode(response[result].tag));
-						tr.appendChild(td);
-						var td = document.createElement('td');
-						td.style.textAlign = 'left';
-						td.style.width = 'auto';
-						td.appendChild(document.createTextNode(response[result].text));
-						tr.appendChild(td);
-						var td = document.createElement('td');
-						td.style.textAlign = 'left';
-						td.style.width = 'auto';
-						var rspan = document.createElement('span');
-						rspan.setAttribute('style', 'display: block; border: solid 1px #000; background-color: ' + response[result].foreground + '; height: 18px;');
-						var tdspan = document.createElement('span');
-						tdspan.setAttribute('class', 'visually-hidden');
-						tdspan.appendChild(document.createTextNode(response[result].foreground));
-						rspan.appendChild(tdspan);
-						td.appendChild(rspan);
-						tr.appendChild(td);
-						var td = document.createElement('td');
-						td.style.textAlign = 'left';
-						td.style.width = 'auto';
-						var rspan = document.createElement('span');
-						rspan.setAttribute('style', 'display: block; border: solid 1px #000; background-color: ' + response[result].background + '; height: 18px;');
-						var tdspan = document.createElement('span');
-						tdspan.setAttribute('class', 'visually-hidden');
-						tdspan.appendChild(document.createTextNode(response[result].background));
-						rspan.appendChild(tdspan);
-						td.appendChild(rspan);
-						tr.appendChild(td);
-						var td = document.createElement('td');
-						td.style.textAlign = 'right';
-						
-						
-						var L = [];
-						// Couleur 1.
-						var color1codes = response[result].foreground.substring(4, response[result].foreground.length - 1);
-						color1codes = color1codes.split(',');
-						var color1 = {};
-						color1.red = parseInt(color1codes[0].trim());
-						color1.green = parseInt(color1codes[1].trim()); 
-						color1.blue = parseInt(color1codes[2].trim());
-						var RsRGB1 = color1.red / 255;
-						var cR1 = (RsRGB1 <= 0.03928) ? (RsRGB1 / 12.92) : Math.pow(((RsRGB1 + 0.055) / 1.055), 2.4);
-						var GsRGB1 = color1.green / 255;
-						var cG1 = (GsRGB1 <= 0.03928) ? (GsRGB1 / 12.92) : Math.pow(((GsRGB1 + 0.055) / 1.055), 2.4);
-						var BsRGB1 = color1.blue / 255;
-						var cB1 = (BsRGB1 <= 0.03928) ? (BsRGB1 / 12.92) : Math.pow(((BsRGB1 + 0.055) / 1.055), 2.4);
-						L.push(0.2126 * cR1 + 0.7152 * cG1 + 0.0722 * cB1);
-						// Couleur 2.
-						var color2codes = response[result].background.substring(4, response[result].background.length - 1);
-						color2codes = color2codes.split(',');
-						var color2 = {};
-						color2.red = parseInt(color2codes[0].trim());
-						color2.green = parseInt(color2codes[1].trim()); 
-						color2.blue = parseInt(color2codes[2].trim());
-						var RsRGB2 = color2.red / 255;
-						var cR2 = (RsRGB2 <= 0.03928) ? (RsRGB2 / 12.92) : Math.pow(((RsRGB2 + 0.055) / 1.055), 2.4);
-						var GsRGB2 = color2.green / 255;
-						var cG2 = (GsRGB2 <= 0.03928) ? (GsRGB2 / 12.92) : Math.pow(((GsRGB2 + 0.055) / 1.055), 2.4);
-						var BsRGB2 = color2.blue / 255;
-						var cB2 = (BsRGB2 <= 0.03928) ? (BsRGB2 / 12.92) : Math.pow(((BsRGB2 + 0.055) / 1.055), 2.4);
-						L.push(0.2126 * cR2 + 0.7152 * cG2 + 0.0722 * cB2);
-						// Ratio
-						var L1 = Math.max.apply(null, L);
-						var L2 = Math.min.apply(null, L);
-						var contrastratio = ((L1 + 0.05) / (L2 + 0.05)).toFixed(2);
-						
-						
-						td.appendChild(document.createTextNode(contrastratio + ':1'));
-						tr.appendChild(td);
-						var td = document.createElement('td');
-						var button = document.createElement('button');
-						button.setAttribute('data-xpath', response[result].xpath);
-						button.setAttribute('type', 'button');
-						button.innerHTML = '<img src="images/inspect.png" alt="Révéler dans l\'inspecteur" />';
-						button.addEventListener('click', function (event) {
-							var css = cssify(this.getAttribute('data-xpath'));
-							chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('" + css + "'))");
-						});
-						var ul = document.createElement('ul');
-						ul.appendChild(document.createElement('li'));
-						ul.firstChild.appendChild(button);
-						td.appendChild(ul);
-						tr.appendChild(td);
-						table.appendChild(tr);
-					}
-					div.appendChild(table);
-				});
-			}
-		}, false);
-
-		var contrastpanel = document.createElement('div');
-		contrastpanel.setAttribute('role', 'tabpanel');
-		contrastpanel.setAttribute('aria-labelledby', contrast.getAttribute('id'));
-		contrastpanel.setAttribute('id', 'tabpanelContrast');
-		contrastpanel.setAttribute('aria-hidden', 'true');
-		contrast.setAttribute('aria-controls', contrastpanel.getAttribute('id'));
-		contrastpanel.innerHTML = '<h2>' + chrome.i18n.getMessage('contrastHeading') + '</h2><div></div>';
-		main.children[1].appendChild(contrastpanel);
-		ul.appendChild(contrast);
-
-
-
+		/**
+		 ** Manage action buttons in right column
+		 * showhide-action
+		 * highlight-action
+		 * inspect-action
+		 * about-action
+		 */
 		main.children[1].addEventListener('click', function(event) {
 			var element = event.target;
 			if (element.tagName.toLowerCase() == 'button') {
@@ -550,27 +439,32 @@ button.addEventListener('click', function () {
 				}
 			}
 		}, false);
+
 		var tab = document.createElement('li');
 		tab.setAttribute('role', 'tab');
 		tab.setAttribute('aria-selected', 'false');
 		tab.setAttribute('id', 'alltests');
 		tab.setAttribute('tabindex', '-1');
+
 		var span = document.createElement('span');
 		span.appendChild(document.createTextNode(chrome.i18n.getMessage('allTags')));
 		tab.appendChild(span);
 		ul.appendChild(tab);
+
 		var alltagspanel = document.createElement('div');
 		alltagspanel.setAttribute('role', 'tabpanel');
 		alltagspanel.setAttribute('aria-labelledby', tab.getAttribute('id'));
 		alltagspanel.setAttribute('id', 'tests');
 		alltagspanel.setAttribute('aria-hidden', 'true');
 		tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
+
 		var alltagspanelheading = document.createElement('h2');
 		alltagspanelheading.appendChild(document.createTextNode(tab.textContent));
 		alltagspanel.appendChild(alltagspanelheading);
+		
 		var t = 1;
-		var response = response.response;
-		response[0].tests.sort(function compare(a,b) {
+		var response = response.response[0];
+		response.tests.sort(function compare(a,b) {
 			if (a.type == 'failed' && b.type != 'failed') return -1;
 			if (a.type != 'failed' && b.type == 'failed') return 1;
 			if (a.type == 'cantTell' && b.type == 'passed') return -1;
@@ -582,15 +476,24 @@ button.addEventListener('click', function () {
 			return 0;
 		});
 		
-		
-		
 		// IN PROGRESS
 		var statuses = ['failed', 'cantTell', 'passed', 'inapplicable', 'untested'];
-		var statuseslist = document.createElement('ul'); statuseslist.style.margin = '1em'; statuseslist.style.padding = '0'; statuseslist.style.listStyleType = 'none'; statuseslist.style.fontSize = '0.8em';
+
+		var statuseslist = document.createElement('ul');
+		statuseslist.style.margin = '1em';
+		statuseslist.style.padding = '0';
+		statuseslist.style.listStyleType = 'none';
+		statuseslist.style.fontSize = '0.8em';
 		statuseslist.hidden = true;
+
 		var statusescontents = document.createDocumentFragment();
 		for (var s = 0; s < statuses.length; s++) {
-			var status = document.createElement('li'); status.style.display = 'inline-block'; status.style.border = 'solid 1px black'; status.style.marginRight = '0.5em'; status.style.padding = '0.5em 1em';
+			var status = document.createElement('li');
+			status.style.display = 'inline-block';
+			status.style.border = 'solid 1px black';
+			status.style.marginRight = '0.5em';
+			status.style.padding = '0.5em 1em';
+
 			status.appendChild(document.createTextNode(chrome.i18n.getMessage('earl' + statuses[s].charAt(0).toUpperCase() + statuses[s].slice(1))));
 			statuseslist.appendChild(status);
 			var statuscontent = document.createElement('div');
@@ -600,110 +503,124 @@ button.addEventListener('click', function () {
 		alltagspanel.appendChild(statuseslist);
 		alltagspanel.appendChild(statusescontents);
 
-
 		// IN PROGRESS
 		var reftests = {};
 
-
 		// IN PROGRESS
 		var ressourcestests = [];
-		
-		
-		
+
 		var updatedashboardp = false;
-		for (var test in response[0].tests) {
-			
-			
+		// display tests results
+		response.tests.forEach(test => {
 			// UI. Dashboard.
-			if (updatedashboardp == false && response[0].tests[test].type == 'failed') {
+			// manage message on dashboard panel
+			if (updatedashboardp == false && test.type == 'failed') {
 				dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultFailed')), dashboardpanelp.firstChild);
 				updatedashboardp = true;
 			}
 			
-			
 			var testelement = document.createElement('div');
-			testelement.setAttribute('class', 'testparent ' + response[0].tests[test].tags.join(' '));
-			if (response[0].tests[test].hasOwnProperty('ressources')) {
-				var testressources = response[0].tests[test].ressources;
-				for (var r in testressources) {
+			testelement.setAttribute('class', 'testparent ' + test.tags.join(' '));
+
+			if (test.hasOwnProperty('ressources')) {
+				// var testressources = test.ressources;
+				for (var r = 0; r < test.ressources.length; r++) {
 					testelement.className += ' ' + r;
 				}
 			}
+
+			// create test button
 			var tabpanelsection = document.createElement('h3');
-			tabpanelsection.setAttribute('class', response[0].tests[test].type);
+			tabpanelsection.setAttribute('class', test.type);
 			var tabpanelsectionbutton = document.createElement('button');
 			tabpanelsectionbutton.setAttribute('type', 'button');
 			tabpanelsectionbutton.setAttribute('data-action', 'showhide-action');
 			tabpanelsectionbutton.setAttribute('aria-expanded', 'false');
 			
-			
-			
-			// IN PROGRESS
+			// IN PROGRESS - test référence
 			var testref = document.createElement('em');
-			testref.style.paddingRight = '1em'; testref.style.verticalAlign = 'bottom'; testref.style.display = 'inline-block'; testref.style.overflow = 'hidden'; testref.style.textOverflow = 'ellipsis'; testref.style.width = '80px'; testref.style.textAlign = 'right';
-			if (!reftests.hasOwnProperty(response[0].tests[test].tags[0].toUpperCase())) {
-				reftests[response[0].tests[test].tags[0].toUpperCase()] = 0;
+			testref.style.paddingRight = '1em';
+			testref.style.verticalAlign = 'bottom';
+			testref.style.display = 'inline-block';
+			testref.style.overflow = 'hidden';
+			testref.style.textOverflow = 'ellipsis';
+			testref.style.width = '80px';
+			testref.style.textAlign = 'right';
+
+			if (!reftests.hasOwnProperty(test.tags[0].toUpperCase())) {
+				reftests[test.tags[0].toUpperCase()] = 0;
 			}
-			reftests[response[0].tests[test].tags[0].toUpperCase()] += 1;
-			var testid = response[0].tests[test].tags[0].toUpperCase() + '-' + reftests[response[0].tests[test].tags[0].toUpperCase()];
-			if (response[0].tests[test].hasOwnProperty('id')) {
+
+			reftests[test.tags[0].toUpperCase()] += 1;
+			var testid = test.tags[0].toUpperCase() + '-' + reftests[test.tags[0].toUpperCase()];
+
+			if (test.hasOwnProperty('id')) {
 				testref.setAttribute('data-autoid', testid);
-				testid = response[0].tests[test].id;
+				testid = test.id;
 			}
+
 			testref.setAttribute('title', testid);
 			testref.appendChild(document.createTextNode(testid));
 			tabpanelsectionbutton.appendChild(testref);
 
-
-
-			// IN PROGRESS
-			if (response[0].tests[test].hasOwnProperty('ressources')) {
-				var testressources = response[0].tests[test].ressources;
-				for (var r in testressources) {
+			// IN PROGRESS - test ressources
+			if (test.hasOwnProperty('ressources')) {
+				// var testressources = test.ressources;
+				for (var r = 0; r < test.ressources.length; r++) {
 					if (ressourcestests.indexOf(r) == -1) {
 						ressourcestests.push(r);
 					}
 				}
 			}
 			
-			
-			
+			// display test status on the button
 			var status = document.createElement('span');
 			status.setAttribute('class', 'status');
-			status.appendChild(document.createTextNode(chrome.i18n.getMessage('earl' + response[0].tests[test].type.charAt(0).toUpperCase() + response[0].tests[test].type.slice(1))));
+			status.appendChild(document.createTextNode(chrome.i18n.getMessage('earl' + test.type.charAt(0).toUpperCase() + test.type.slice(1))));
 			tabpanelsectionbutton.appendChild(status);
-			if (!((response[0].tests[test].type == 'failed' && response[0].tests[test].data.length == 0) || response[0].tests[test].type == 'untested')) {
+
+			// display the number of elements on test button
+			if (!((test.type == 'failed' && test.data.length == 0) || test.type == 'untested')) {
 				var strong = document.createElement('strong');
-				var strongcount = response[0].tests[test].hasOwnProperty('failedincollection') ? response[0].tests[test].failedincollection : response[0].tests[test].data.length;
-				strong.appendChild(document.createTextNode(strongcount + (response[0].tests[test].hasOwnProperty('counter') ? ' / ' +  response[0].tests[test].counter : '')));
+				var strongcount = test.hasOwnProperty('failedincollection') ? test.failedincollection : test.data.length;
+				strong.appendChild(document.createTextNode(strongcount + (test.hasOwnProperty('counter') ? ' / ' +  test.counter : '')));
 				tabpanelsectionbutton.appendChild(strong);
 				tabpanelsectionbutton.appendChild(document.createTextNode(' '));
 			}
+
+			// display the test name on the button
 			var span = document.createElement('span');
-			span.innerHTML = response[0].tests[test].name.charAt(0).toUpperCase() + response[0].tests[test].name.slice(1);
+			span.innerHTML = test.name.charAt(0).toUpperCase() + test.name.slice(1);
 			tabpanelsectionbutton.appendChild(span);
 			tabpanelsection.appendChild(tabpanelsectionbutton);
+
+			// create results container
 			var tabpanelsectiondiv = document.createElement('div');
 			tabpanelsectiondiv.setAttribute('id', 'testsection' + t);
 			tabpanelsectionbutton.setAttribute('aria-controls', tabpanelsectiondiv.getAttribute('id'));
 			tabpanelsectiondiv.setAttribute('hidden', 'hidden');
 			testelement.appendChild(tabpanelsection);
-			if (response[0].tests[test].description) {
+
+			// test description
+			if (test.description) {
 				var tabpanelsectionp = document.createElement('p');
-				tabpanelsectionp.innerHTML = response[0].tests[test].description;
+				tabpanelsectionp.innerHTML = test.description;
 				tabpanelsectiondiv.appendChild(tabpanelsectionp);
 			}
-			if (response[0].tests[test].explanation) {
+
+			// test explanation
+			if (test.explanation) {
 				var tabpanelsectionp = document.createElement('p');
-				tabpanelsectionp.innerHTML = response[0].tests[test].explanation;
+				tabpanelsectionp.innerHTML = test.explanation;
 				tabpanelsectiondiv.appendChild(tabpanelsectionp);
 			}
 			
-			
-			
-			var beforetable = document.createElement('div'); beforetable.setAttribute('class', 'beforetable');
+			// add test tags before table
+			var beforetable = document.createElement('div');
+			beforetable.setAttribute('class', 'beforetable');
 			var tagssection = document.createElement('div');
 			tagssection.setAttribute('class', 'tags');
+
 			tagssection.addEventListener('click', function(event) {
 				var element = event.target;
 				if (element.tagName.toLowerCase() == 'button') {
@@ -712,27 +629,31 @@ button.addEventListener('click', function () {
 					tab.focus();
 				}
 			}, false);
+
 			var tabpanelsectionp = document.createElement('p');
 			tabpanelsectionp.appendChild(document.createTextNode('Étiquettes : '));
-			if (response[0].tests[test].tags.length == 1) {
-				var tagid = 'tag' + response[0].tests[test].tags[0].charAt(0).toUpperCase() + response[0].tests[test].tags[0].slice(1);
+
+			if (test.tags.length == 1) {
+				var tagid = 'tag' + test.tags[0].charAt(0).toUpperCase() + test.tags[0].slice(1);
 				var tagbutton = document.createElement('button');
 				tagbutton.setAttribute('type', 'button');
-				tagbutton.setAttribute('data-tagid', response[0].tests[test].tags[0]);
+				tagbutton.setAttribute('data-tagid', test.tags[0]);
 				tagbutton.setAttribute('title', chrome.i18n.getMessage('uiTagButton').replace(new RegExp('{tagName}'), chrome.i18n.getMessage(tagid)));
 				tagbutton.appendChild(document.createTextNode(chrome.i18n.getMessage(tagid)));
 				tabpanelsectionp.appendChild(tagbutton);
 				tabpanelsectionp.appendChild(document.createTextNode('.'));
 			}
+
 			tagssection.appendChild(tabpanelsectionp);
-			if (response[0].tests[test].tags.length > 1) {
+
+			if (test.tags.length > 1) {
 				var tagsul = document.createElement('ul');
-				for (var i = 0; i < response[0].tests[test].tags.length; i++) {
+				for (var i = 0; i < test.tags.length; i++) {
 					var tagli = document.createElement('li');
-					var tagid = 'tag' + response[0].tests[test].tags[i].charAt(0).toUpperCase() + response[0].tests[test].tags[i].slice(1);
+					var tagid = 'tag' + test.tags[i].charAt(0).toUpperCase() + test.tags[i].slice(1);
 					var tagbutton = document.createElement('button');
 					tagbutton.setAttribute('type', 'button');
-					tagbutton.setAttribute('data-tagid', response[0].tests[test].tags[i]);
+					tagbutton.setAttribute('data-tagid', test.tags[i]);
 					tagbutton.setAttribute('title', chrome.i18n.getMessage('uiTagButton').replace(new RegExp('{tagName}'), chrome.i18n.getMessage(tagid)));
 					tagbutton.appendChild(document.createTextNode(chrome.i18n.getMessage(tagid)));
 					tagli.appendChild(tagbutton);
@@ -740,33 +661,55 @@ button.addEventListener('click', function () {
 				}
 				tagssection.appendChild(tagsul);
 			}
+
 			beforetable.appendChild(tagssection);
 			tabpanelsectiondiv.appendChild(beforetable);
 			
-			
-			
-			
-			if (response[0].tests[test].data.length > 0) {
+			// display results in table
+			if (test.data.length > 0) {
 				var countvisible = 0;
 				var countinvisible = 0;
 				var countkeyboardyes = 0;
 				var countkeyboardno = 0;
 				var countreaderyes = 0;
 				var countreaderno = 0;
+
+				// table
 				var table = document.createElement('table');
 				table.setAttribute('border', '');
+
+				// table caption
 				var caption = document.createElement('caption');
 				caption.setAttribute('class', 'visually-hidden');
 				caption.appendChild(document.createTextNode(tabpanelsection.textContent));
 				table.appendChild(caption);
-				var tableheadings = [
-					{ name: 'N°', abbr: 'Numéro' }, 
-					{ name: 'Statut', export: 'required' }, 
-					{ name: 'Item', export: 'required' }, 
-					{ name: 'Atteignable au clavier ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAASCAYAAABB7B6eAAAABGdBTUEAALGPC/xhBQAAAjBJREFUOBGt1M1LVUEYgPF7ND/KLG4qRVibIgJvoIsgcOGuEFdRRC10I5LQP6ArbRUu3dqudkG4cCEGlktNSElF6YPioqGVRmEp+XF6njoH5F69XawXfsw0vTPzzsy5JhL/IcIwrEAvgszlCjIH9vnvc8xLBkEQ7nP+3tOoOokBXN4t68Bug38bYzErdsFq1KGf6p/QZkXWnWVlZAyweDNDLRjCezxn8TTtvweLpzCEZL6r/b4iJlQw4Wgek26TM2JuHpt85WTLAYn1TOjGBxhuuhG127QqisaO0K7j544xv0RtRmO2xkl0u8EEnXtwURPncBHT8GRVGMclvIHvdgajMO8TlpGCeecRF9WZYIM0WrEJ49GfJhymXYj6D6N2klZGPGaOuUY817VcM+11+OP4iDsoxAtMYgwn4FGfYRaeyrBaP8uX8GoXMYynGMEWlhB6JUYxatCANnhN7TiEVXTADRsj9h3z/8pg7gxa4RoXcBChJ/C+fLxbqMQP+FDXYQElaIIL3IDhia+hFD74VTh2E4fxBd7Cto+cpmPVa7Diz1iH3/oKrPA4XuMUjHmcxRK+4xjMtWqLdC37fZ7A+zqNTpjsL9QNH6AWHtdTmht/gnHfE07BaltwH1dgUX6ZWyb6jXuXb+HO83iFBZTDa8gVzjPXOc59B6t3zSKvqIeOCw3CsEofPf5d+GXlCm/AE1qo72HRRiO+uYGPeBc+molGiPgPof1csTMv7nt1j9H1C4W7DIhH/jVRAAAAAElFTkSuQmCC' },
-					{ name: 'Restitué ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAABGdBTUEAALGPC/xhBQAAAlBJREFUOBGV00tIVUEcx/F7xAfaQ0vCUtQitCgQqoWohI9N0MNFYVKgEiRo9JAgIqhFunAjggs3UYvoIqK0cGFqFPlEoVwYoeIjDHqYgWiu6/r9HWbiei5XOgOfO/+Z+c+cO3PmOAEfJRQKHSW9BJWYRh+GHMfZoPZXWGw/gviJD+hGP75gAdW+VmTCIcyiF3nhk2nvwA2soil8LGpMooPXCNok4rN4hHqkq5+6ABu4bPMiagb3ItZMKCROQiZGoC2/go7hG86ZvNvEc0iMWNAkPGew0Q4Sx2MMnUg1OdrFLeicM6Cj+IoyO09bSIGS4lAKJdvtlRP/QNq/CSagTw+7Yx40QHw/hp8EaKt/cRc1XJF31Iu4CJUcJGOQ3AvqCCvzxFmmvUadHMNPHV6w0G/qFlyDyhsUu1Eg0EFdhDa0sHCS+qk1/xQ+qk05gO8aOIxlHEQePiMWVRh1U80P7WLo3PTiEtGOaeyG7rKO7ISe9MfMcahDnlh9erDOuYGwC63Q2Q4hH5fMLh8Qz2BKExrwkobiOoyb+DGx3nY2JjCD88jCEvQvE0zudeJ1nFRbC2kbelm7sAidsfpHUY8jeAi9KPUP46mJte0nWIH3BbrJexi4Bz3gNJSYqcm20K6EznQn9uE9BnHM5kStSQqi2ZtA3xXUQldRn28P3CPw5ka0SUyDviJ9KbpKWwp9WnwJKVsG/qfBpAp88ubS9xZ62/4LE/VPdfeu2tnEZ7CKXNvnu9aC+IU+6AwV39xuIfdyb5egMRY5TlWLeDzjsk9SRy2bAMhld532BdwAAAAASUVORK5CYII=' }, 
-					{ name: 'Actions', export: 'no' }
-				];
+
+				// table headings
+				if(!test.tags.includes('contrast')) {
+					var tableheadings = [
+						{ name: 'N°', abbr: 'Numéro' }, 
+						{ name: 'Statut', export: 'required' }, 
+						{ name: 'Item', export: 'required' }, 
+						{ name: 'Atteignable au clavier ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAASCAYAAABB7B6eAAAABGdBTUEAALGPC/xhBQAAAjBJREFUOBGt1M1LVUEYgPF7ND/KLG4qRVibIgJvoIsgcOGuEFdRRC10I5LQP6ArbRUu3dqudkG4cCEGlktNSElF6YPioqGVRmEp+XF6njoH5F69XawXfsw0vTPzzsy5JhL/IcIwrEAvgszlCjIH9vnvc8xLBkEQ7nP+3tOoOokBXN4t68Bug38bYzErdsFq1KGf6p/QZkXWnWVlZAyweDNDLRjCezxn8TTtvweLpzCEZL6r/b4iJlQw4Wgek26TM2JuHpt85WTLAYn1TOjGBxhuuhG127QqisaO0K7j544xv0RtRmO2xkl0u8EEnXtwURPncBHT8GRVGMclvIHvdgajMO8TlpGCeecRF9WZYIM0WrEJ49GfJhymXYj6D6N2klZGPGaOuUY817VcM+11+OP4iDsoxAtMYgwn4FGfYRaeyrBaP8uX8GoXMYynGMEWlhB6JUYxatCANnhN7TiEVXTADRsj9h3z/8pg7gxa4RoXcBChJ/C+fLxbqMQP+FDXYQElaIIL3IDhia+hFD74VTh2E4fxBd7Cto+cpmPVa7Diz1iH3/oKrPA4XuMUjHmcxRK+4xjMtWqLdC37fZ7A+zqNTpjsL9QNH6AWHtdTmht/gnHfE07BaltwH1dgUX6ZWyb6jXuXb+HO83iFBZTDa8gVzjPXOc59B6t3zSKvqIeOCw3CsEofPf5d+GXlCm/AE1qo72HRRiO+uYGPeBc+molGiPgPof1csTMv7nt1j9H1C4W7DIhH/jVRAAAAAElFTkSuQmCC' },
+						{ name: 'Restitué ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAABGdBTUEAALGPC/xhBQAAAlBJREFUOBGV00tIVUEcx/F7xAfaQ0vCUtQitCgQqoWohI9N0MNFYVKgEiRo9JAgIqhFunAjggs3UYvoIqK0cGFqFPlEoVwYoeIjDHqYgWiu6/r9HWbiei5XOgOfO/+Z+c+cO3PmOAEfJRQKHSW9BJWYRh+GHMfZoPZXWGw/gviJD+hGP75gAdW+VmTCIcyiF3nhk2nvwA2soil8LGpMooPXCNok4rN4hHqkq5+6ABu4bPMiagb3ItZMKCROQiZGoC2/go7hG86ZvNvEc0iMWNAkPGew0Q4Sx2MMnUg1OdrFLeicM6Cj+IoyO09bSIGS4lAKJdvtlRP/QNq/CSagTw+7Yx40QHw/hp8EaKt/cRc1XJF31Iu4CJUcJGOQ3AvqCCvzxFmmvUadHMNPHV6w0G/qFlyDyhsUu1Eg0EFdhDa0sHCS+qk1/xQ+qk05gO8aOIxlHEQePiMWVRh1U80P7WLo3PTiEtGOaeyG7rKO7ISe9MfMcahDnlh9erDOuYGwC63Q2Q4hH5fMLh8Qz2BKExrwkobiOoyb+DGx3nY2JjCD88jCEvQvE0zudeJ1nFRbC2kbelm7sAidsfpHUY8jeAi9KPUP46mJte0nWIH3BbrJexi4Bz3gNJSYqcm20K6EznQn9uE9BnHM5kStSQqi2ZtA3xXUQldRn28P3CPw5ka0SUyDviJ9KbpKWwp9WnwJKVsG/qfBpAp88ubS9xZ62/4LE/VPdfeu2tnEZ7CKXNvnu9aC+IU+6AwV39xuIfdyb5egMRY5TlWLeDzjsk9SRy2bAMhld532BdwAAAAASUVORK5CYII=' }, 
+						{ name: 'Actions', export: 'no' }
+					];
+				} else {
+					var tableheadings = [
+						{ name: 'N°', abbr: 'Numéro' }, 
+						{ name: 'Balise', export: 'required' }, 
+						{ name: 'Passage de texte', export: 'required' }, 
+						{ name: 'Taille', export: 'required' }, 
+						{ name: 'Graisse', export: 'required' }, 
+						{ name: 'CT', abbr: 'Couleur de texte' }, 
+						{ name: 'CF', abbr: 'Couleur de fond' }, 
+						{ name: 'Ratio estimé', export: 'required' }, 
+						{ name: 'Atteignable au clavier ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAASCAYAAABB7B6eAAAABGdBTUEAALGPC/xhBQAAAjBJREFUOBGt1M1LVUEYgPF7ND/KLG4qRVibIgJvoIsgcOGuEFdRRC10I5LQP6ArbRUu3dqudkG4cCEGlktNSElF6YPioqGVRmEp+XF6njoH5F69XawXfsw0vTPzzsy5JhL/IcIwrEAvgszlCjIH9vnvc8xLBkEQ7nP+3tOoOokBXN4t68Bug38bYzErdsFq1KGf6p/QZkXWnWVlZAyweDNDLRjCezxn8TTtvweLpzCEZL6r/b4iJlQw4Wgek26TM2JuHpt85WTLAYn1TOjGBxhuuhG127QqisaO0K7j544xv0RtRmO2xkl0u8EEnXtwURPncBHT8GRVGMclvIHvdgajMO8TlpGCeecRF9WZYIM0WrEJ49GfJhymXYj6D6N2klZGPGaOuUY817VcM+11+OP4iDsoxAtMYgwn4FGfYRaeyrBaP8uX8GoXMYynGMEWlhB6JUYxatCANnhN7TiEVXTADRsj9h3z/8pg7gxa4RoXcBChJ/C+fLxbqMQP+FDXYQElaIIL3IDhia+hFD74VTh2E4fxBd7Cto+cpmPVa7Diz1iH3/oKrPA4XuMUjHmcxRK+4xjMtWqLdC37fZ7A+zqNTpjsL9QNH6AWHtdTmht/gnHfE07BaltwH1dgUX6ZWyb6jXuXb+HO83iFBZTDa8gVzjPXOc59B6t3zSKvqIeOCw3CsEofPf5d+GXlCm/AE1qo72HRRiO+uYGPeBc+molGiPgPof1csTMv7nt1j9H1C4W7DIhH/jVRAAAAAElFTkSuQmCC' },
+						{ name: 'Restitué ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAABGdBTUEAALGPC/xhBQAAAlBJREFUOBGV00tIVUEcx/F7xAfaQ0vCUtQitCgQqoWohI9N0MNFYVKgEiRo9JAgIqhFunAjggs3UYvoIqK0cGFqFPlEoVwYoeIjDHqYgWiu6/r9HWbiei5XOgOfO/+Z+c+cO3PmOAEfJRQKHSW9BJWYRh+GHMfZoPZXWGw/gviJD+hGP75gAdW+VmTCIcyiF3nhk2nvwA2soil8LGpMooPXCNok4rN4hHqkq5+6ABu4bPMiagb3ItZMKCROQiZGoC2/go7hG86ZvNvEc0iMWNAkPGew0Q4Sx2MMnUg1OdrFLeicM6Cj+IoyO09bSIGS4lAKJdvtlRP/QNq/CSagTw+7Yx40QHw/hp8EaKt/cRc1XJF31Iu4CJUcJGOQ3AvqCCvzxFmmvUadHMNPHV6w0G/qFlyDyhsUu1Eg0EFdhDa0sHCS+qk1/xQ+qk05gO8aOIxlHEQePiMWVRh1U80P7WLo3PTiEtGOaeyG7rKO7ISe9MfMcahDnlh9erDOuYGwC63Q2Q4hH5fMLh8Qz2BKExrwkobiOoyb+DGx3nY2JjCD88jCEvQvE0zudeJ1nFRbC2kbelm7sAidsfpHUY8jeAi9KPUP46mJte0nWIH3BbrJexi4Bz3gNJSYqcm20K6EznQn9uE9BnHM5kStSQqi2ZtA3xXUQldRn28P3CPw5ka0SUyDviJ9KbpKWwp9WnwJKVsG/qfBpAp88ubS9xZ62/4LE/VPdfeu2tnEZ7CKXNvnu9aC+IU+6AwV39xuIfdyb5egMRY5TlWLeDzjsk9SRy2bAMhld532BdwAAAAASUVORK5CYII=' }, 
+						{ name: 'Actions', export: 'no' }
+					];
+				}
+				
 				var tr = document.createElement('tr');
 				tr.setAttribute('class', 'theadings');
 				for (var k = 0; k < tableheadings.length; k++) {
@@ -791,50 +734,143 @@ button.addEventListener('click', function () {
 					tr.appendChild(th);
 				}
 				table.appendChild(tr);
-				var codehighlight = response[0].tests[test].mark ? response[0].tests[test].mark : null;
-				for (var h = 0; h < response[0].tests[test].data.length; h++) {
+
+				var codehighlight = test.mark ? test.mark : null;
+
+				// table content
+				for (var h = 0; h < test.data.length; h++) {
 					var tr = document.createElement('tr');
+
+					// numéro
 					var td = document.createElement('td');
 					td.appendChild(document.createTextNode('1A' + (h + 1)));
 					tr.appendChild(td);
-					var td = document.createElement('td');
-					td.appendChild(document.createTextNode(response[0].tests[test].data[h].status));
-					tr.appendChild(td);
-					var td = document.createElement('td');
-					var code = document.createElement('code');
-					if (codehighlight && codehighlight.hasOwnProperty('attrs')) {
-						var codecontent = response[0].tests[test].data[h].outer.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-						for (var a = 0; a < codehighlight.attrs.length; a++) {
-							codecontent = codecontent.replace(new RegExp(' (' + codehighlight.attrs[a] + '=&quot;(?:(?!&quot;).)*&quot;)'), ' <mark>$1</mark>'); // / key="([^"]*)"/	
+
+					
+					if(!test.tags.includes('contrast')) {
+						// statut
+						var td = document.createElement('td');
+						td.style.textAlign = 'center';
+						td.appendChild(document.createTextNode(test.data[h].status));
+						tr.appendChild(td);
+
+						// item
+						var td = document.createElement('td');
+						var code = document.createElement('code');
+						if (codehighlight && codehighlight.hasOwnProperty('attrs')) {
+							var codecontent = test.data[h].outer.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+							for (var a = 0; a < codehighlight.attrs.length; a++) {
+								codecontent = codecontent.replace(new RegExp(' (' + codehighlight.attrs[a] + '=&quot;(?:(?!&quot;).)*&quot;)'), ' <mark>$1</mark>'); // / key="([^"]*)"/	
+							}
+							code.innerHTML = codecontent;
 						}
-						code.innerHTML = codecontent;
+						else {
+							code.appendChild(document.createTextNode(test.data[h].outer));
+						}
+						var divcode = document.createElement('div');
+						divcode.setAttribute('class', 'code');
+						divcode.appendChild(code);
+						td.appendChild(divcode);
+						tr.appendChild(td);
 					}
-					else {
-						code.appendChild(document.createTextNode(response[0].tests[test].data[h].outer));
+
+					if(test.tags.includes('contrast')) {
+						// result tag
+						var td = document.createElement('td');
+						td.style.textAlign = 'center';
+						td.style.width = 'auto';
+						td.appendChild(document.createTextNode(test.data[h].tag));
+						tr.appendChild(td);
+
+						// result text node
+						var td = document.createElement('td');
+						td.style.textAlign = 'left';
+						td.style.width = 'auto';
+						td.appendChild(document.createTextNode(test.data[h].text));
+						tr.appendChild(td);
+
+						// text font size
+						var td = document.createElement('td');
+						td.style.textAlign = 'center';
+						td.style.width = 'auto';
+						td.classList.add('testsection-td-colored');
+						td.appendChild(document.createTextNode(test.data[h].size));
+						tr.appendChild(td);
+
+						// text font weight
+						var td = document.createElement('td');
+						td.style.textAlign = 'center';
+						td.style.width = 'auto';
+						td.classList.add('testsection-td-colored');
+						td.appendChild(document.createTextNode(test.data[h].weight));
+						tr.appendChild(td);
+
+						// text color
+						var td = document.createElement('td');
+						td.style.width = 'auto';
+						var rspan = document.createElement('span');
+						rspan.setAttribute('style', 'display: block; margin: auto; border: solid 1px #000; background-color: ' + test.data[h].foreground + '; height: 18px; width: 18px;');
+						var tdspan = document.createElement('span');
+						tdspan.setAttribute('class', 'visually-hidden');
+						tdspan.appendChild(document.createTextNode(test.data[h].foreground));
+						rspan.appendChild(tdspan);
+						td.appendChild(rspan);
+						tr.appendChild(td);
+
+						// text background color
+						var td = document.createElement('td');
+						td.style.width = 'auto';
+						var rspan = document.createElement('span');
+						if(test.data[h].background && test.data[h].background !== 'image') {
+							rspan.setAttribute('style', 'display: block; margin: auto; border: solid 1px #000; background-color: ' + test.data[h].background + '; height: 18px; width: 18px;');
+						} else if(test.data[h].background === 'image') {
+							rspan.setAttribute('aria-describedby', 'contrast-bgImage')
+							rspan.classList.add('contrast-bgImage');
+						} else {
+							rspan.setAttribute('aria-describedby', 'contrast-bgNull')
+							rspan.classList.add('contrast-bgNull');
+						}
+
+						var tdspan = document.createElement('span');
+						tdspan.setAttribute('class', 'visually-hidden');
+						tdspan.appendChild(document.createTextNode(test.data[h].background));
+						rspan.appendChild(tdspan);
+						td.appendChild(rspan);
+						tr.appendChild(td);
+
+						// result contrast ratio
+						var td = document.createElement('td');
+						td.style.textAlign = 'center';
+						test.data[h].ratio ? td.appendChild(document.createTextNode(test.data[h].ratio + ':1')) : td.appendChild(document.createTextNode('?'));
+						tr.appendChild(td);
 					}
-					var divcode = document.createElement('div');
-					divcode.setAttribute('class', 'code');
-					divcode.appendChild(code);
-					td.appendChild(divcode);
-					tr.appendChild(td);
+					
+
+					// atteignable au clavier
+					// if(!test.tags.includes('contrast')) {
+						var td = document.createElement('td');
+						td.classList.add('testsection-td-colored');
+						var canbereachedimg = document.createElement('img');
+						if (test.data[h].canBeReachedUsingKeyboardWith.length > 0) {
+							countkeyboardyes += 1;
+							canbereachedimg.setAttribute('class', 'keyboardyes');
+						}
+						else {
+							countkeyboardno += 1;
+							canbereachedimg.setAttribute('class', 'keyboardno');
+						}
+						canbereachedimg.setAttribute('src', test.data[h].canBeReachedUsingKeyboardWith.length > 0 ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAANpJREFUKBXVkLEOAVEQRddGSGxBQ6dQKJXiD1ZEpVT4ANGLSucvRCtq0YqaUukDVBQKEsI6T3Jls5uXkGhMcnbum7kz72Ud528iCIIGJL5+MEN9uMEQ3I8XYO7CHRT+a5iTC3XbJnoduIJigvAcPkkYgdk6iC6g1oILKGaItG5tqkp+QE8L0D6cQLFAeOqbmzMwVpdsfkgbanAAxQqRew9KUEzBVC7yGY6h8xpdkD+WaZoXzEMDkltEMTYQLWDKwlJT5B2Uoz7rGXMeNrCHitVoazBUgqqt/5P6E3SkJ/cZVE0PAAAAAElFTkSuQmCC' : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAALtJREFUKBWlk2EOgjAMhaeBY+1eAn/0VuLN4M/8XtykW5oZYpPSjvdeu7ESQraUUix5L1Y8FiP+wHd8+SFcMu9OHAOPiFubvQIQZksijxIPDlAVcHDtYPg2cQgT7664orWqsC3QEl9WRe4LSwUIN3xrRFpPhdONEJ+NeO0KCqgO+PnOWWibrnZB7p9ZQEPUDi64orWjAG91z7o3aweB8wC0hT/3DPDXhGm2Nau7OpQP50XwerYLCeD0X/UGVSXGYbh63LAAAAAASUVORK5CYII=');
+						canbereachedimg.setAttribute('alt', test.data[h].canBeReachedUsingKeyboardWith.length > 0 ? 'Oui (' + test.data[h].canBeReachedUsingKeyboardWith.join(' / ') + ')' : 'Non');
+						canbereachedimg.setAttribute('title', canbereachedimg.getAttribute('alt'));
+						td.appendChild(canbereachedimg);
+						tr.appendChild(td);
+					// }
+
+					// restitué
 					var td = document.createElement('td');
-					var canbereachedimg = document.createElement('img');
-					if (response[0].tests[test].data[h].canBeReachedUsingKeyboardWith.length > 0) {
-						countkeyboardyes += 1;
-						canbereachedimg.setAttribute('class', 'keyboardyes');
-					}
-					else {
-						countkeyboardno += 1;
-						canbereachedimg.setAttribute('class', 'keyboardno');
-					}
-					canbereachedimg.setAttribute('src', response[0].tests[test].data[h].canBeReachedUsingKeyboardWith.length > 0 ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAANpJREFUKBXVkLEOAVEQRddGSGxBQ6dQKJXiD1ZEpVT4ANGLSucvRCtq0YqaUukDVBQKEsI6T3Jls5uXkGhMcnbum7kz72Ud528iCIIGJL5+MEN9uMEQ3I8XYO7CHRT+a5iTC3XbJnoduIJigvAcPkkYgdk6iC6g1oILKGaItG5tqkp+QE8L0D6cQLFAeOqbmzMwVpdsfkgbanAAxQqRew9KUEzBVC7yGY6h8xpdkD+WaZoXzEMDkltEMTYQLWDKwlJT5B2Uoz7rGXMeNrCHitVoazBUgqqt/5P6E3SkJ/cZVE0PAAAAAElFTkSuQmCC' : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAALtJREFUKBWlk2EOgjAMhaeBY+1eAn/0VuLN4M/8XtykW5oZYpPSjvdeu7ESQraUUix5L1Y8FiP+wHd8+SFcMu9OHAOPiFubvQIQZksijxIPDlAVcHDtYPg2cQgT7664orWqsC3QEl9WRe4LSwUIN3xrRFpPhdONEJ+NeO0KCqgO+PnOWWibrnZB7p9ZQEPUDi64orWjAG91z7o3aweB8wC0hT/3DPDXhGm2Nau7OpQP50XwerYLCeD0X/UGVSXGYbh63LAAAAAASUVORK5CYII=');
-					canbereachedimg.setAttribute('alt', response[0].tests[test].data[h].canBeReachedUsingKeyboardWith.length > 0 ? 'Oui (' + response[0].tests[test].data[h].canBeReachedUsingKeyboardWith.join(' / ') + ')' : 'Non');
-					canbereachedimg.setAttribute('title', canbereachedimg.getAttribute('alt'));
-					td.appendChild(canbereachedimg);
-					tr.appendChild(td);
-					var td = document.createElement('td');
+					td.classList.add('testsection-td-colored');
 					var exposedimg = document.createElement('img');
-					if (response[0].tests[test].data[h].isNotExposedDueTo.length > 0) {
+					if (test.data[h].isNotExposedDueTo.length > 0) {
 						countreaderno += 1;
 						exposedimg.setAttribute('class', 'readerno');
 					}
@@ -842,11 +878,13 @@ button.addEventListener('click', function () {
 						countreaderyes += 1;
 						exposedimg.setAttribute('class', 'readeryes');
 					}
-					exposedimg.setAttribute('src', response[0].tests[test].data[h].isNotExposedDueTo.length > 0 ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAALtJREFUKBWlk2EOgjAMhaeBY+1eAn/0VuLN4M/8XtykW5oZYpPSjvdeu7ESQraUUix5L1Y8FiP+wHd8+SFcMu9OHAOPiFubvQIQZksijxIPDlAVcHDtYPg2cQgT7664orWqsC3QEl9WRe4LSwUIN3xrRFpPhdONEJ+NeO0KCqgO+PnOWWibrnZB7p9ZQEPUDi64orWjAG91z7o3aweB8wC0hT/3DPDXhGm2Nau7OpQP50XwerYLCeD0X/UGVSXGYbh63LAAAAAASUVORK5CYII=' : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAANpJREFUKBXVkLEOAVEQRddGSGxBQ6dQKJXiD1ZEpVT4ANGLSucvRCtq0YqaUukDVBQKEsI6T3Jls5uXkGhMcnbum7kz72Ud528iCIIGJL5+MEN9uMEQ3I8XYO7CHRT+a5iTC3XbJnoduIJigvAcPkkYgdk6iC6g1oILKGaItG5tqkp+QE8L0D6cQLFAeOqbmzMwVpdsfkgbanAAxQqRew9KUEzBVC7yGY6h8xpdkD+WaZoXzEMDkltEMTYQLWDKwlJT5B2Uoz7rGXMeNrCHitVoazBUgqqt/5P6E3SkJ/cZVE0PAAAAAElFTkSuQmCC');
-					exposedimg.setAttribute('alt', response[0].tests[test].data[h].isNotExposedDueTo.length > 0 ? 'Non (' + response[0].tests[test].data[h].isNotExposedDueTo.join(' / ') + ')' : 'Oui');
+					exposedimg.setAttribute('src', test.data[h].isNotExposedDueTo.length > 0 ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAALtJREFUKBWlk2EOgjAMhaeBY+1eAn/0VuLN4M/8XtykW5oZYpPSjvdeu7ESQraUUix5L1Y8FiP+wHd8+SFcMu9OHAOPiFubvQIQZksijxIPDlAVcHDtYPg2cQgT7664orWqsC3QEl9WRe4LSwUIN3xrRFpPhdONEJ+NeO0KCqgO+PnOWWibrnZB7p9ZQEPUDi64orWjAG91z7o3aweB8wC0hT/3DPDXhGm2Nau7OpQP50XwerYLCeD0X/UGVSXGYbh63LAAAAAASUVORK5CYII=' : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAANpJREFUKBXVkLEOAVEQRddGSGxBQ6dQKJXiD1ZEpVT4ANGLSucvRCtq0YqaUukDVBQKEsI6T3Jls5uXkGhMcnbum7kz72Ud528iCIIGJL5+MEN9uMEQ3I8XYO7CHRT+a5iTC3XbJnoduIJigvAcPkkYgdk6iC6g1oILKGaItG5tqkp+QE8L0D6cQLFAeOqbmzMwVpdsfkgbanAAxQqRew9KUEzBVC7yGY6h8xpdkD+WaZoXzEMDkltEMTYQLWDKwlJT5B2Uoz7rGXMeNrCHitVoazBUgqqt/5P6E3SkJ/cZVE0PAAAAAElFTkSuQmCC');
+					exposedimg.setAttribute('alt', test.data[h].isNotExposedDueTo.length > 0 ? 'Non (' + test.data[h].isNotExposedDueTo.join(' / ') + ')' : 'Oui');
 					exposedimg.setAttribute('title', exposedimg.getAttribute('alt'));
 					td.appendChild(exposedimg);
 					tr.appendChild(td);
+
+					// actions
 					var td = document.createElement('td');
 					var actionslist = document.createElement('ul');
 					var actions = [{
@@ -859,9 +897,9 @@ button.addEventListener('click', function () {
 						name: "A propos de cet élément",
 						image: 'images/about.png',
 						image_hover: 'images/about_hover.png',
-						attrs: { 'data-xpath': response[0].tests[test].data[h].xpath }
+						attrs: { 'data-xpath': test.data[h].xpath }
 					}];
-					if (response[0].tests[test].data[h].isNotVisibleDueTo.length == 0) {
+					if (test.data[h].isNotVisibleDueTo.length == 0) {
 						countvisible += 1;
 						var highlightaction = {
 							id: 'highlight-action',
@@ -874,7 +912,7 @@ button.addEventListener('click', function () {
 					else {
 						countinvisible += 1;
 						var highlightaction = {
-							name: "Cet élément n'est pas visible à l'écran (" + response[0].tests[test].data[h].isNotVisibleDueTo.join(' / ') + ").",
+							name: "Cet élément n'est pas visible à l'écran (" + test.data[h].isNotVisibleDueTo.join(' / ') + ").",
 							image: 'images/see_disabled.png',
 							attrs: { 'class': 'hidden' }
 						};
@@ -926,17 +964,15 @@ button.addEventListener('click', function () {
 					}
 					td.appendChild(actionslist);
 					tr.appendChild(td);
+
 					table.appendChild(tr);
 				}
+
 				tabpanelsectiondiv.appendChild(table);
 				
-				
-				
+				// filter results
 				var tableactions = document.createElement('div');
 				tableactions.setAttribute('class', 'tableactions');
-				
-				
-				
 				if ((countvisible > 0 && countinvisible > 0) || (countkeyboardyes > 0 && countkeyboardno > 0) || (countreaderyes > 0 && countreaderno > 0)) {
 					var selectparent = document.createElement('p');
 					selectparent.setAttribute('class', 'filter');
@@ -1072,17 +1108,13 @@ button.addEventListener('click', function () {
 					tableactions.appendChild(selectparent);
 				}
 				
-				
+				// export data
 				var exportparent = document.createElement('p');
 				exportparent.setAttribute('class', 'export');
 				var exportbutton = document.createElement('button');
-				
-				
 				exportbutton.style.color = '#d90b0b'; /* background-color: #d90b0b; background: linear-gradient(top, #ef362c, #d90b0b); */
-				
-				
 				exportbutton.setAttribute('type', 'button');
-				exportbutton.setAttribute('title', 'Exporter les données du test - ' + response[0].tests[test].name.charAt(0).toUpperCase() + response[0].tests[test].name.slice(1));
+				exportbutton.setAttribute('title', 'Exporter les données du test - ' + test.name.charAt(0).toUpperCase() + test.name.slice(1));
 				exportbutton.setAttribute('aria-label', exportbutton.getAttribute('title'));
 				exportbutton.appendChild(document.createTextNode('\u2b07')); // Exporter les données de ce test
 				exportbutton.addEventListener('click', function(event) {
@@ -1136,10 +1168,6 @@ button.addEventListener('click', function () {
 					filep.appendChild(fileinput);
 					file.appendChild(filep);
 					tanagurupopin.appendChild(file);
-					
-					
-					
-					
 					
 					var exportitems = document.createElement('div');
 					exportitems.setAttribute('id', 'export-items');
@@ -1330,10 +1358,6 @@ button.addEventListener('click', function () {
 					exportitems.appendChild(exportorder);
 					tanagurupopin.appendChild(exportitems);
 					
-					
-					
-					
-					
 					var exportbuttonparent = document.createElement('div');
 					var ebpp = document.createElement('p');
 					var exportbutton = document.createElement('button'); exportbutton.style.fontSize = '0.8em';
@@ -1375,62 +1399,54 @@ button.addEventListener('click', function () {
 					document.querySelector('main').classList.add('tanaguru-popin-show');
 					tanagurupopin.removeAttribute('hidden');
 					closebutton.focus();
-					
 				}, false);
 				exportparent.appendChild(exportbutton);
 				tableactions.appendChild(exportparent);
+
 				beforetable.appendChild(tableactions);
-				
-				
 			}
+
 			testelement.appendChild(tabpanelsectiondiv);
-			
-			
-			
+
 			// IN PROGRESS
-			alltagspanel.querySelector('#earl' + response[0].tests[test].type.charAt(0).toUpperCase() + response[0].tests[test].type.slice(1)).appendChild(testelement);
+			alltagspanel.querySelector('#earl' + test.type.charAt(0).toUpperCase() + test.type.slice(1)).appendChild(testelement);
 			//alltagspanel.appendChild(testelement);
 			
-			
-			
 			t++;
-		}
+		});
+
 		main.children[1].appendChild(alltagspanel);
-		for (var tag in response[0].tags) {
+
+		// generate tab in left column
+		response.tags.forEach(tag => {
 			var tab = document.createElement('li');
 			tab.setAttribute('role', 'tab');
 			tab.setAttribute('aria-selected', 'false');
-			tab.setAttribute('id', response[0].tags[tag].id);
+			tab.setAttribute('id', tag.id);
 			tab.setAttribute('tabindex', '-1');
 			tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
 			var span = document.createElement('span');
-			span.appendChild(document.createTextNode(response[0].tags[tag].name));
+			span.appendChild(document.createTextNode(tag.name));
 			tab.appendChild(span);
-			if (response[0].tags[tag].nbfailures > 0) {
+			if (tag.nbfailures > 0) {
 				tab.appendChild(document.createTextNode(' '));
 				var strong = document.createElement('strong');
-				strong.appendChild(document.createTextNode(response[0].tags[tag].nbfailures));
+				strong.appendChild(document.createTextNode(tag.nbfailures));
 				tab.appendChild(strong);
 			}
 
-
 			// IN PROGRESS
-					//if (response[0].tags[tag].nbfailures > 0) {
-					if (ul.querySelector('strong')) {
-						var lastwithfailures = ul.querySelectorAll('strong');
-						lastwithfailures = lastwithfailures[lastwithfailures.length - 1];
-						lastwithfailures = lastwithfailures.parentNode;
-						lastwithfailures.insertAdjacentElement('afterend', tab);
-					}
-					else {
-						ul.appendChild(tab);
+			//if (tag.nbfailures > 0) {
+			if (ul.querySelector('strong')) {
+				var lastwithfailures = ul.querySelectorAll('strong');
+				lastwithfailures = lastwithfailures[lastwithfailures.length - 1];
+				lastwithfailures = lastwithfailures.parentNode;
+				lastwithfailures.insertAdjacentElement('afterend', tab);
 			}
-
-
-
-		}
-
-
+			else {
+				ul.appendChild(tab);
+			}
+		});
 
 		ressourcestests.sort();
 		for (var r = 0; r < ressourcestests.length; r++) {
@@ -1447,14 +1463,13 @@ button.addEventListener('click', function () {
 			ul.appendChild(tab);
 		}
 
-
-
 		nav.appendChild(ul);
 		main.children[0].appendChild(nav);
 		main.children[1].querySelector('p').remove(); // Supprime le loading...
 		dashboard.focus();
 	});
 }, false);
+
 button.appendChild(document.createTextNode("Analyser cette page"));
 var p = document.createElement('p');
 p.appendChild(button);

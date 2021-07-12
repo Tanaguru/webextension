@@ -51,7 +51,9 @@ function copySources(vendor, dir){
 function buildScripts(testFile){
     let script = ""
     if(fs.existsSync(path.join(REFERENCES_DIR, testFile))){
-        script = fs.readFileSync(path.join(TEST_DIR, 'content.js'));
+        script = fs.readFileSync(path.join(TEST_DIR, 'contrasts.js'));
+        script += '\n';
+        script += fs.readFileSync(path.join(TEST_DIR, 'content.js'));
         script += '\n';
         script+= fs.readFileSync(path.join(REFERENCES_DIR, testFile));
         script += '\n';
