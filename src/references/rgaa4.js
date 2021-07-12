@@ -1496,7 +1496,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     contrast: 'invalid_45V',
     lang: 'fr',
-    name: 'Textes non visibles sans effet de graisse et d\'une taille restituée inférieure à 24px ayant un contraste inférieur à 4.5:1',
+    name: 'Textes non visibles ou désactivés sans effet de graisse et d\'une taille restituée inférieure à 24px ayant un contraste inférieur à 4.5:1',
     description: 'Si ces éléments texte peuvent être rendus visibles, ils devraient respecter un contraste de 4.5:1 minimum.',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -1510,7 +1510,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     contrast: 'cantTell_45V',
     lang: 'fr',
-    name: 'Textes non visibles sans effet de graisse et d\'une taille restituée inférieure à 24px',
+    name: 'Textes non visibles ou désactivés sans effet de graisse et d\'une taille restituée inférieure à 24px',
     description: 'Si ces éléments texte peuvent être rendus visibles, vérifier qu\'ils respectent un contraste de 4.5:1 minimum.',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -1524,7 +1524,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     contrast: 'valid_45V',
     lang: 'fr',
-    name: 'Textes non visibles sans effet de graisse et d\'une taille restituée inférieure à 24px ayant un contraste suffisant de 4.5:1',
+    name: 'Textes non visibles ou désactivés sans effet de graisse et d\'une taille restituée inférieure à 24px ayant un contraste suffisant de 4.5:1',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'inapplicable';
@@ -1579,7 +1579,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     contrast: 'invalid_45GV',
     lang: 'fr',
-    name: 'Textes non visibles en gras d\'une taille restituée inférieure à 18.5px ayant un contraste inférieur à 4.5:1',
+    name: 'Textes non visibles ou désactivés en gras d\'une taille restituée inférieure à 18.5px ayant un contraste inférieur à 4.5:1',
     description: 'Si ces éléments texte peuvent être rendus visibles, ils devraient respecter un contraste de 4.5:1 minimum.',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -1593,7 +1593,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     contrast: 'cantTell_45GV',
     lang: 'fr',
-    name: 'Textes non visibles en gras d\'une taille restituée inférieure à 18.5px',
+    name: 'Textes non visibles ou désactivés en gras d\'une taille restituée inférieure à 18.5px',
     description: 'Si ces éléments texte peuvent être rendus visibles, vérifier qu\'ils respectent un contraste de 4.5:1 minimum.',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -1607,7 +1607,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     contrast: 'valid_45GV',
     lang: 'fr',
-    name: 'Textes non visibles en gras d\'une taille restituée inférieure à 18.5px ayant un contraste suffisant de 4.5:1',
+    name: 'Textes non visibles ou désactivés en gras d\'une taille restituée inférieure à 18.5px ayant un contraste suffisant de 4.5:1',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'inapplicable';
@@ -1662,7 +1662,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     contrast: 'invalid_3V',
     lang: 'fr',
-    name: 'Textes non visibles sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px ayant un contraste inférieur à 3:1',
+    name: 'Textes non visibles ou désactivés sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px ayant un contraste inférieur à 3:1',
     description: 'Si ces éléments texte peuvent être rendus visibles, ils devraient respecter un contraste de 3:1 minimum.',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -1676,7 +1676,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     contrast: 'cantTell_3V',
     lang: 'fr',
-    name: 'Textes non visibles sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px',
+    name: 'Textes non visibles ou désactivés sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px',
     description: 'Si ces éléments texte peuvent être rendus visibles, vérifier qu\'ils respectent un contraste de 3:1 minimum.',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -1690,7 +1690,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     contrast: 'valid_3V',
     lang: 'fr',
-    name: 'Textes non visibles sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px ayant un contraste suffisant de 3:1',
+    name: 'Textes non visibles ou désactivés sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px ayant un contraste suffisant de 3:1',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'inapplicable';
@@ -1745,7 +1745,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     contrast: 'invalid_3GV',
     lang: 'fr',
-    name: 'Textes non visibles en gras d\'une taille restituée supérieure ou égale à 18.5px ayant un contraste inférieur à 3:1',
+    name: 'Textes non visibles ou désactivés en gras d\'une taille restituée supérieure ou égale à 18.5px ayant un contraste inférieur à 3:1',
     description: 'Si ces éléments texte peuvent être rendus visibles, ils devraient respecter un contraste de 3:1 minimum.',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -1759,7 +1759,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     contrast: 'cantTell_3GV',
     lang: 'fr',
-    name: 'Textes non visibles en gras d\'une taille restituée supérieure ou égale à 18.5px',
+    name: 'Textes non visibles ou désactivés en gras d\'une taille restituée supérieure ou égale à 18.5px',
     description: 'Si ces éléments texte peuvent être rendus visibles, vérifier qu\'ils respectent un contraste de 3:1 minimum.',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -1773,7 +1773,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     contrast: 'valid_3GV',
     lang: 'fr',
-    name: 'Textes non visibles en gras d\'une taille restituée supérieure ou égale à 18.5px ayant un contraste suffisant de 3:1',
+    name: 'Textes non visibles ou désactivés en gras d\'une taille restituée supérieure ou égale à 18.5px ayant un contraste suffisant de 3:1',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'inapplicable';
