@@ -535,11 +535,12 @@ while (tw.nextNode()) {
 
 	// we don't process empty strings, nor script/noscript/style tags.
 	if(cn.nodeValue.trim().length > 0 && ['noscript', 'script', 'style'].indexOf(element.tagName.toLowerCase()) == -1) {
-		
+		var disabledElements = ['button', 'fieldset', 'input', 'optgroup', 'option', 'select', 'textarea'];
 		var size = window.getComputedStyle(element, null).getPropertyValue('font-size');
 		var weight = window.getComputedStyle(element, null).getPropertyValue('font-weight');
 		var opacity = getOpacity(element);
 		var results = getResults(element, opacity);
+		var isDisabled = (disabledElements.includes(element.tagName.toLowerCase()) && element.hasAttribute('disabled')) ? true : false;
 
 		var o = {
 			node: element,
@@ -557,7 +558,7 @@ while (tw.nextNode()) {
 		};
 
 		if(o.valid.target == 4.5) {
-			if(results.visible && o.weight < 700) {
+			if(results.visible && !isDisabled && o.weight < 700) {
 				if(o.valid.status == 2) {
 					textNodeList.valid_45.push(o);
 				} else if(o.valid.status == 1) {
@@ -565,7 +566,7 @@ while (tw.nextNode()) {
 				} else {
 					textNodeList.cantTell_45.push(o);
 				}
-			} else if(results.visible) {
+			} else if(results.visible && !isDisabled) {
 				if(o.valid.status == 2) {
 					textNodeList.valid_45G.push(o);
 				} else if(o.valid.status == 1) {
@@ -591,7 +592,7 @@ while (tw.nextNode()) {
 				}
 			}
 		} else {
-			if(results.visible && o.weight < 700) {
+			if(results.visible && !isDisabled && o.weight < 700) {
 				if(o.valid.status == 2) {
 					textNodeList.valid_3.push(o);
 				} else if(o.valid.status == 1) {
@@ -599,7 +600,7 @@ while (tw.nextNode()) {
 				} else {
 					textNodeList.cantTell_3.push(o);
 				}
-			} else if(results.visible) {
+			} else if(results.visible && !isDisabled) {
 				if(o.valid.status == 2) {
 					textNodeList.valid_3G.push(o);
 				} else if(o.valid.status == 1) {
