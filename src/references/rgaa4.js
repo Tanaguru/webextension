@@ -226,7 +226,6 @@ tanaguruTestsList.push({
     filter: function (item) {
         var parentLink = item.closest('a');
         if (parentLink != null) {
-            console.log(item.outerHTML);
             var hrefValue = parentLink.getAttribute('href');
             var linkPage = document.querySelectorAll('a');
             var cpt = 0;
@@ -2118,7 +2117,6 @@ tanaguruTestsList.push({
     filter: function (item) {
         var hascaption = item.querySelector('caption');
         if (hascaption != null) {
-            console.log(hascaption);
             if ((hascaption.innerText == "") || (hascaption.innerText == " ")) {
                 return true;
             }
@@ -2790,7 +2788,6 @@ tanaguruTestsList.push({
 });
 
 // 9.1.1 : Dans chaque page web, la hiérarchie entre les titres (balise hx ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) est-elle pertinente ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des titres de niveau qui ne respecte pas la hierarchie de titres***',
@@ -2820,10 +2817,9 @@ tanaguruTestsList.push({
 });
 
 // 9.1.2 : Dans chaque page web, le contenu de chaque titre (balise <hx> ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) est-il pertinent ?
-
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des titres (balise <hx> ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) non pertinent ?',
+    name: 'Liste des titres (balise <hx> ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) non pertinent',
     query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"][aria-level="1"], [role="heading"][aria-level="2"], [role="heading"][aria-level="3"], [role="heading"][aria-level="4"], [role="heading"][aria-level="5"], [role="heading"][aria-level="6"]',
     expectedNbElements: 0,
     filter: function (item) {
@@ -2850,10 +2846,9 @@ tanaguruTestsList.push({
 });
 
 // 9.2.1 Dans chaque page web, la structure du document vérifie-t-elle ces conditions (hors cas particuliers) ?
-
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Vérifier que les éléments suivant sont des zones d&#x2018;entêtes ?',
+    name: 'Vérifier que les éléments suivant sont des zones d&#x2018;entêtes',
     query: 'header',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0;
@@ -2869,7 +2864,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Vérifier que les éléments suivant sont des zones de pied de page ?',
+    name: 'Vérifier que les éléments suivant sont des zones de pied de page',
     query: 'footer',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0;
@@ -2885,7 +2880,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Vérifier que les éléments suivant sont des zones navigation ',
+    name: 'Vérifier que les éléments suivant sont des zones navigation',
     query: 'nav',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0;
@@ -2901,26 +2896,37 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Vérifier que l&#x2018;éléments suivant est la zone de contenu principale ?',
+    name: 'Vérifier que l&#x2018;éléments suivant est la zone de contenu principale',
     query: 'main',
-    expectedNbElements : { max: 1 },
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0;
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'Passed';
+            collection[i].status = 'cantTell';
         }
     },
     tags: ['a11y', 'structure', 'accessiblename'],
     ressources: { 'rgaa': ['9.1.2'] }
 });
 
-// 10.1.1 : Dans chaque page web, les balises servant à la présentation de l'information ne doivent pas être présentes dans le code source généré des pages. Cette règle est-elle respectée ?
-
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Dans chaque page web, les balises servant à la présentation de l&#x2018information ne doivent pas être présentes dans le code source généré des pages.',
+    name: 'La structure du document utilise une balise main visible unique',
+    query: 'main',
+    expectedNbElements : { max: 1 },
+    filter: function (item) {
+        return item.isNotExposedDueTo.length == 0;
+    },
+    tags: ['a11y', 'structure', 'accessiblename'],
+    ressources: { 'rgaa': ['9.1.2'] }
+});
+
+
+// 10.1.1 : Dans chaque page web, les balises servant à la présentation de l'information ne doivent pas être présentes dans le code source généré des pages. Cette règle est-elle respectée ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des balises servant à la présentation de l&#x2018information présentes dans le code source généré de la page.',
     query: 'basefont, blink, center, font, marquee, s, strike, tt, big',
     expectedNbElements: 0,
     filter: function (item) {
@@ -2931,31 +2937,15 @@ tanaguruTestsList.push({
 });
 
 // 10.1.2 : Dans chaque page web, les attributs servant à la présentation de l'information ne doivent pas être présents dans le code source généré des pages. Cette règle est-elle respectée ?
-
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Dans chaque page web, les attributs servant à la présentation de l&#x2018information ne doivent pas être présents dans le code source généré des pages.',
-    query: '[align], [alink], [background], [bgcolor], [border], [cellpadding], [cellspacing], [char], [charoff], [clear], [compact], [color], [frameborder], [hspace], [link], [marginheight], [marginwidth], [text], [valign], [vlink], [vspace], [size]',
+    name: 'Liste des attributs servant à la présentation de l&#x2018information présents dans le code source généré de la page.',
+    query: '[align], [alink], [background], [bgcolor], [border], [cellpadding], [cellspacing], [char], [charoff], [clear], [compact], [color], [frameborder], [hspace], [link], [marginheight], [marginwidth], [text], [valign], [vlink], [vspace], [size], :not(img, object, embed, canvas, svg)[width], :not(img, object, embed, canvas, svg)[height]',
     expectedNbElements: 0,
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0;
     },
-    mark: { attrs: ['align','alink','background','bgcolor','border','cellpadding','cellspacing','char','charoff','clear','compact', 'color', 'frameborder', 'hspace', 'link', 'marginheight', 'marginwidth', 'text', 'valign', 'vlink', 'vspace', 'size']},
-    tags: ['a11y', 'presentation'],
-    ressources: { 'rgaa': ['10.1.2'] }
-});
-
-tanaguruTestsList.push({
-    lang: 'fr',
-    name: 'Dans chaque page web, les attributs servant à la présentation de l&#x2018information ne doivent pas être présents dans le code source généré des pages.',
-    query: '[width],[height]',
-    expectedNbElements: 0,
-    filter: function (item) {
-        if (item.tagName == "IMG" || item.tagName == "OBJECT" || item.tagName == "EMBED" || item.tagName == "CANVAS" || item.tagName == "SVG")
-        {return false;}
-        else return item.isNotExposedDueTo.length == 0;
-    },
-    mark: { attrs: ['width','height']},
+    mark: { attrs: ['align','alink','background','bgcolor','border','cellpadding','cellspacing','char','charoff','clear','compact', 'color', 'frameborder', 'hspace', 'link', 'marginheight', 'marginwidth', 'text', 'valign', 'vlink', 'vspace', 'size', 'width', 'height']},
     tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.1.2'] }
 });
@@ -2998,8 +2988,8 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['10.4.2'] }
 });
 
+// 11.1 Chaque champ de formulaire a-t-il une étiquette ?
 // 11.1.1 Chaque champ de formulaire vérifie-t-il une de ces conditions ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des champs de formulaires sans nom accessible',
@@ -3009,7 +2999,7 @@ tanaguruTestsList.push({
         return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
     },
     tags: ['a11y', 'forms', 'accessiblename'],
-    ressources: { 'rgaa': ['10.1.2'] }
+    ressources: { 'rgaa': ['11.1.1'] }
 });
 
 tanaguruTestsList.push({
@@ -3029,16 +3019,191 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['11.1.1'] }
 });
 
-// 11.1.2 : à traiter.
+// 11.1.2 : Chaque champ de formulaire associé à une balise <label> ayant un attribut for, vérifie-t-il ces conditions ? 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des intitulés de champs de formulaire non reliés à leur champ.',
+    query: 'label[for]',
+    expectedNbElements: 0,
+    explanations: {
+        'passed': 'Aucun intitulés de champs de formulaires non relié à son champs n\'a été trouvé dans la page',
+        'failed': 'Des intitulés de champs de formulaire sont mal reliés ou pas reliés à leur champ.'
+    },
+    filter: function (item) {
+        if(item.isNotExposedDueTo.length == 0 && item.getAttribute('for').trim().length > 0) {
+            var id = item.getAttribute('for');
+            var fields = document.querySelectorAll('[id='+id+']');
 
-//11.2 :
+            if(fields.length === 0 || fields.length > 1) {
+                return true;
+            }
+        }
+    },
+    mark: {attrs: ['for']},
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.1.2'] }
+});
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Vérifier que le nom accessible de chaque champ de formulaire est pertinent.',
-    query: 'input[type="password"]:not([role]), input[type="checkbox"]:not([role]), [role="checkbox"], [role="switch"], input[type="radio"]:not([role]), [role="radio"], select:not([role]), [role="combobox"], input[type="search"]:not([role]), [role="searchbox"], input[type="range"]:not([role]), [role="slider"], input[type="number"]:not([role]), [role="spinbutton"], input:not([type]):not([role]), input[type="email"]:not([role]), input[type="tel"]:not([role]), input[type="text"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), [contenteditable="true"]:not([role]), [role="textbox"], [role="listbox"], [role="menuitemcheckbox"], [role="menuitemradio"]',
+    name: 'Liste des intitulés de champs de formulaire reliés à leur champ.',
+    query: 'label[for]',
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+        if(item.isNotExposedDueTo.length == 0 && item.getAttribute('for').trim().length > 0) {
+            var id = item.getAttribute('for');
+            var fields = document.querySelectorAll('[id='+id+']');
+            if(0 < fields.length && fields.length < 2) {
+                if(htmlData.elements[fields[0].tagName.toLowerCase()]) {
+                    return htmlData.elements[fields[0].tagName.toLowerCase()].category === 'forms';
+                }
+            }
+        }
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    mark: {attrs: ['for']},
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.1.2'] }
+});
+
+// 11.2 : Chaque étiquette associée à un champ de formulaire est-elle pertinente (hors cas particuliers) ?
+// 11.2.1 : Chaque balise <label> permet-elle de connaître la fonction exacte du champ de formulaire auquel elle est associée ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Vérifiez si la balise label permet de connaître la fonction exacte du champ de formulaire auquel elle est associée.',
+    query: 'label',
+    filter: function (item) {
+        if(item.isNotExposedDueTo.length == 0) {
+            if(item.hasAttribute('for') && item.getAttribute('for').trim().length > 0) {
+                var id = item.getAttribute('for');
+                var tags = document.querySelectorAll('[id='+id+']');
+
+                for(var i = 0; i < tags.length; i++) {
+                    if(htmlData.elements[tags[i].tagName.toLowerCase()]) {
+                        if(htmlData.elements[tags[i].tagName.toLowerCase()].category === 'forms') {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            if(item.hasChildNodes()) {
+                var children = item.childNodes;
+                for(var i = 0; i < children.length; i++) {
+                    if(children[i].tagName) {
+                        if(htmlData.elements[children[i].tagName.toLowerCase()]) {
+                            if(htmlData.elements[children[i].tagName.toLowerCase()].category === 'forms') {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'cantTell';
+        }
+    },
+    mark: {attrs: ['for']},
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.2.1'] }
+});
+
+// 11.2.2 : Chaque attribut title permet-il de connaître la fonction exacte du champ de formulaire auquel il est associé ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Vérifiez si l\'attribut title permet de connaître la fonction exacte du champ de formulaire auquel il est associé.',
+    query: '[title]',
+    filter: function (item) {
+        if(item.isNotExposedDueTo.length == 0) {
+            if(htmlData.elements[item.tagName.toLowerCase()]) {
+                return htmlData.elements[item.tagName.toLowerCase()].category === 'forms';
+            }
+        }
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'cantTell';
+        }
+    },
+    mark: {attrs: ['title']},
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.2.2'] }
+});
+
+// 11.2.3 : Chaque étiquette implémentée via l'attribut WAI-ARIA aria-label permet-elle de connaître la fonction exacte du champ de formulaire auquel elle est associée ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Vérifiez si l\'attribut WAI-ARIA aria-label permet de connaître la fonction exacte du champ de formulaire auquel il est associé.',
+    query: '[aria-label]',
+    filter: function (item) {
+        if(item.isNotExposedDueTo.length == 0) {
+            if(htmlData.elements[item.tagName.toLowerCase()]) {
+                return htmlData.elements[item.tagName.toLowerCase()].category === 'forms';
+            }
+        }
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'cantTell';
+        }
+    },
+    mark: {attrs: ['aria-label']},
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.2.3'] }
+});
+
+// 11.2.4 : Chaque passage de texte associé via l'attribut WAI-ARIA aria-labelledby permet-il de connaître la fonction exacte du champ de formulaire auquel il est associé ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Vérifiez si le passage de texte associé via l\'attribut WAI-ARIA aria-labelledby permet de connaître la fonction exacte du champ de formulaire auquel il est associé.',
+    query: '[aria-labelledby]',
+    filter: function (item) {
+        if(item.isNotExposedDueTo.length == 0) {
+            if(htmlData.elements[item.tagName.toLowerCase()]) {
+                return htmlData.elements[item.tagName.toLowerCase()].category === 'forms';
+            }
+        }
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'cantTell';
+        }
+    },
+    mark: {attrs: ['aria-labelledby']},
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.2.4'] }
+});
+
+// tanaguruTestsList.push({
+//     lang: 'fr',
+//     name: 'Vérifier que le nom accessible de chaque champ de formulaire est pertinent.',
+//     query: 'input[type="password"]:not([role]), input[type="checkbox"]:not([role]), [role="checkbox"], [role="switch"], input[type="radio"]:not([role]), [role="radio"], select:not([role]), [role="combobox"], input[type="search"]:not([role]), [role="searchbox"], input[type="range"]:not([role]), [role="slider"], input[type="number"]:not([role]), [role="spinbutton"], input:not([type]):not([role]), input[type="email"]:not([role]), input[type="tel"]:not([role]), input[type="text"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), [contenteditable="true"]:not([role]), [role="textbox"], [role="listbox"], [role="menuitemcheckbox"], [role="menuitemradio"]',
+//     filter: function (item) {
+//         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+//     },
+//     analyzeElements: function (collection) {
+//         for (var i = 0; i < collection.length; i++) {
+//             collection[i].status = 'cantTell';
+//         }
+//     },
+//     tags: ['a11y', 'forms', 'accessiblename'],
+//     ressources: { 'rgaa': ['11.3.1'] }
+// });
+// voir pour extraire l'éléments porteur du nom accessible @rg
+
+//11.5.1 : Les champs de même nature vérifient-ils l'une de ces conditions, si nécessaire ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Vérifier que l&#x2018;utilisation des balises fieldset et les attributs role group sont bien nécessaire',
+    query: 'fieldset, [role="group"]',
+    filter: function (item) {
+        return item.isNotExposedDueTo.length == 0;
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -3048,13 +3213,46 @@ tanaguruTestsList.push({
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.3.1'] }
 });
-// voir pour extraire l'éléments porteur du nom accessible @rg
 
-//11.5.1 : Les champs de même nature vérifient-ils l'une de ces conditions, si nécessaire ?
+// 11.6 Dans chaque formulaire, chaque regroupement de champs de même nature a-t-il une légende ?
+// 11.6.1 : Chaque regroupement de champs de même nature possède-t-il une légende ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des regroupement de champs sans légende.',
+    query: 'fieldset, [role="group"]',
+    expectedNbElements: 0,
+    explanations: {
+        'passed': 'Aucun regroupement de champs sans légende n\'a été trouvé sur cette page.',
+        'failed': 'Des regroupements de champs sans légendes ont été trouvé sur cette page.'
+    },
+    filter: function (item) {
+        return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+    },
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.6.1'] }
+});
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Vérifier que l&#x2018;utilisation des balises fieldset et les attributs role group sont bien nécessaire',
+    name: 'Liste des regroupement de champs avec légende.',
+    query: 'fieldset, [role="group"]',
+    filter: function (item) {
+        return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.6.1'] }
+});
+
+// 11.7 Dans chaque formulaire, chaque légende associée à un regroupement de champs de même nature est-elle pertinente ?
+// 11.7.1 Chaque légende associée à un regroupement de champs de même nature est-elle pertinente ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Vérifiez si les légendes associées aux regroupements de champs de formulaires sont pertinentes.',
     query: 'fieldset, [role="group"]',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
@@ -3064,8 +3262,86 @@ tanaguruTestsList.push({
             collection[i].status = 'cantTell';
         }
     },
+    mark: {attrs: ['aria-label', 'aria-labelledby']},
     tags: ['a11y', 'forms', 'accessiblename'],
-    ressources: { 'rgaa': ['11.3.1'] }
+    ressources: { 'rgaa': ['11.7.1'] }
+});
+
+// 11.8 Dans chaque formulaire, les items de même nature d'une liste de choix sont-ils regroupés de manière pertinente ?
+// 11.8.2 Dans chaque balise <select>, chaque balise <optgroup> possède-t-elle un attribut label ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des éléments optgroup sans attribut label.',
+    query: 'select optgroup',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if(item.hasAttribute('label') && item.getAttribute('label').trim().length > 0) {
+            return item.isNotExposedDueTo.length != 0;
+        }
+        return item.isNotExposedDueTo.length == 0;
+    },
+    explanations: {
+        'passed': 'Aucun éléments optgroup sans attribut label n\'a été trouvé sur cette page.',
+        'failed': 'Des éléments optgroup sans attribut label ont été trouvé sur cette page.'
+    },
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.8.2'] }
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des éléments optgroup avec attribut label.',
+    query: 'select optgroup[label]',
+    filter: function (item) {
+        if(item.getAttribute('label').trim().length > 0) {
+            return item.isNotExposedDueTo.length == 0;
+        }
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    mark: {attrs: ['label']},
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.8.2'] }
+});
+
+// 11.8.3 Pour chaque balise <optgroup> ayant un attribut label, le contenu de l'attribut label est-il pertinent ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Vérifiez la pertinence de l\'attribut label sur l\'élément optgroup.',
+    query: 'select optgroup[label]',
+    filter: function (item) {
+        return item.isNotExposedDueTo.length == 0;
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'cantTell';
+        }
+    },
+    mark: {attrs: ['label']},
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.8.3'] }
+});
+
+// 11.9 Dans chaque formulaire, l'intitulé de chaque bouton est-il pertinent (hors cas particuliers) ?
+// 11.9.1 L'intitulé de chaque bouton est-il pertinent ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Vérifiez la pertinence des intitulés de ces boutons.',
+    query: 'input[type="submit"][value], input[type="reset"][value], input[type="button"][value], button, input[type="image"][alt], input[type="submit"][aria-label], input[type="submit"][aria-labelledby], input[type="submit"][title], input[type="reset"][aria-label], input[type="reset"][aria-labelledby], input[type="reset"][title], input[type="button"][aria-label], input[type="button"][aria-labelledby], input[type="button"][title], [role="button"]',
+    filter: function (item) {
+        return item.isNotExposedDueTo.length == 0;
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'cantTell';
+        }
+    },
+    mark: {attrs: ['aria-labelledby', 'aria-label', 'alt', 'value', 'title']},
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.9.1'] }
 });
 
 // 12.8 Dans chaque page web, l'ordre de tabulation est-il cohérent ?

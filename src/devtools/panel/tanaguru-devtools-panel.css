@@ -532,7 +532,7 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 }
 
 [role="tabpanel"] h3.failed + div mark {
-	background: -moz-linear-gradient(top, #ef362c, #d90b0b);
+	background-color: #d90b0b;
 	color: #fff;
 }
 
@@ -571,7 +571,7 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 }
 
 [role="tabpanel"] h3.cantTell + div mark {
-	background: -moz-linear-gradient(top, #588ECE, #2A609E);
+	background-color: #2A609E;
 	color: #fff;
 }	
 		
