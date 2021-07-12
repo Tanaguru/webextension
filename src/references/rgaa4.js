@@ -868,7 +868,7 @@ tanaguruTestsList.push({
         if (IName != 'svg' && IName != 'object' && IName != 'embed' && IName != 'canvas') {
             if (item.hasAccessibleName()){
                 if (item.accessibleName.length > 80) {
-                    item.addClass('tanaguruLongAlt');
+                    item.classList.add('tanaguruLongAlt');
                 }
                 return true;
             }
