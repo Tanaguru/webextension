@@ -2324,7 +2324,7 @@ tanaguruTestsList.push({
 // 7.1.2 Chaque script qui génère ou contrôle un composant d'interface respecte-t-il une de ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Boutons visibles sans nom accessible.',
+	name: 'Boutons visibles ou restitués sans nom accessible.',
 	query: 'button:not([role]), [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
 	expectedNbElements: 0,
     explanations: {
@@ -2332,8 +2332,10 @@ tanaguruTestsList.push({
 		'failed': "Des boutons visibles sans nom accessible sont présents dans la page."
 	},
 	filter: function (item) {
-        if(getVisibility(item, getOpacity(item))) {
-            return !item.hasAccessibleName();
+        if(getVisibility(item, getOpacity(item)) || item.isNotExposedDueTo.length === 0) {
+            if(!item.matches('input[type="reset"]:not([aria-labelledby], [aria-label], [value], [title]), input[type="submit"]:not([aria-labelledby], [aria-label], [value], [title])')) {
+                return !item.hasAccessibleName();
+            }
         }
 	},
 	tags: ['a11y', 'buttons', 'accessiblename'],
@@ -2342,10 +2344,14 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Boutons visibles avec un nom accessible.',
+	name: 'Boutons visibles ou restitués avec un nom accessible.',
 	query: 'button:not([role]), [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
 	filter: function (item) {
-        if(getVisibility(item, getOpacity(item))) {
+        if(getVisibility(item, getOpacity(item)) || item.isNotExposedDueTo.length === 0) {
+            if(item.matches('input[type="reset"]:not([aria-labelledby], [aria-label], [value], [title]), input[type="submit"]:not([aria-labelledby], [aria-label], [value], [title])')) {
+                return true;
+            }
+
             return item.hasAccessibleName();
         }
 	},
@@ -3416,7 +3422,7 @@ tanaguruTestsList.push({
             }
         }
     },
-    ressources: { 'rgaa': ['13.3.1']},
+    ressources: { 'rgaa': ['13.1.1']},
     tags: ['a11y', 'meta']
 });
 
