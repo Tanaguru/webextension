@@ -2364,8 +2364,109 @@ tanaguruTestsList.push({
 	ressources: {'rgaa': ['7.1.1']}
 });
 
+// 8.1 Chaque page web est-elle définie par un type de document ?
 // 8.1.1 Pour chaque page web, le type de document (balise doctype) est-il présent ?
-// Comment gérer le doctype
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Le type de document (balise doctype) est présent sur la page.',
+    node: document.doctype,
+    expectedNbElements: 1,
+    explanations: {
+        'passed': "Cette page possède bien une balise doctype.",
+		'failed': "Cette page n'a pas de balise doctype."
+    },
+    tags: ['a11y', 'code'],
+	ressources: {'rgaa': ['8.1.1']}
+});
+
+// 8.1.2 Pour chaque page web, le type de document (balise doctype) est-il valide ?
+// https://www.w3.org/QA/2002/04/valid-dtd-list.html
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Le type de document (balise doctype) est valide.',
+    node: document.doctype,
+    analyzeElements: function(collection) {
+        for (var i = 0; i < collection.length; i++) {
+            var item = collection[i];
+            var nameList = ['html', 'math', 'svg:svg', 'svg'];
+            var htmlList = [
+                '-//W3C//DTD HTML 4.01//ENhttp://www.w3.org/TR/html4/strict.dtd',
+                '-//W3C//DTD HTML 4.01 Transitional//ENhttp://www.w3.org/TR/html4/loose.dtd',
+                '-//W3C//DTD HTML 4.01 Frameset//ENhttp://www.w3.org/TR/html4/frameset.dtd',
+                '-//W3C//DTD XHTML 1.0 Strict//ENhttp://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd',
+                '-//W3C//DTD XHTML 1.0 Transitional//ENhttp://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd',
+                '-//W3C//DTD XHTML 1.0 Frameset//ENhttp://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd',
+                '-//W3C//DTD XHTML 1.1//ENhttp://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd',
+                '-//W3C//DTD XHTML Basic 1.1//ENhttp://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd',
+                '-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//ENhttp://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd',
+                '-//IETF//DTD HTML 2.0//EN',
+                '-//W3C//DTD HTML 3.2 Final//EN',
+                '-//W3C//DTD XHTML Basic 1.0//ENhttp://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd'
+            ];
+            var mathList = [
+                '-//W3C//DTD MathML 2.0//ENhttp://www.w3.org/Math/DTD/mathml2/mathml2.dtd',
+                'http://www.w3.org/Math/DTD/mathml1/mathml.dtd'
+            ];
+            var svgList = [
+                '-//W3C//DTD SVG 1.1//ENhttp://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd',
+                '-//W3C//DTD SVG 1.0//ENhttp://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd',
+                '-//W3C//DTD SVG 1.1 Basic//ENhttp://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd',
+                '-//W3C//DTD SVG 1.1 Tiny//ENhttp://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd'
+            ];
+            var svgSvg = '-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//ENhttp://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd';
+
+            var name = item.name.toLowerCase();
+
+            if(nameList.includes(name)) {
+                if(name === 'html' && !item.publicId && !item.systemId) {
+                    item.status = 'passed';
+                }
+
+                else if(name === 'html' && htmlList.includes(item.publicId+item.systemId)) {
+                    item.status = 'passed';
+                }
+
+                else if(name === 'math' && mathList.includes(item.publicId+item.systemId)) {
+                    item.status = 'passed';
+                }
+
+                else if(name === 'svg' && svgList.includes(item.publicId+item.systemId)) {
+                    item.status = 'passed';
+                }
+
+                else if(name === 'svg:svg' && item.publicId+item.systemId === svgSvg) {
+                    item.status = 'passed';
+                }
+
+                else item.status = 'failed';
+            }
+
+            else item.status = 'failed';
+		}
+    },
+    tags: ['a11y', 'code'],
+	ressources: {'rgaa': ['8.1.2']}
+});
+
+// 8.1.3 Pour chaque page web possédant une déclaration de type de document, celle-ci est-elle située avant la balise <html> dans le code source ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Le type de document est déclaré avant l\'ouverture de la balise html.',
+    node: document.doctype,
+    analyzeElements: function(collection) {
+        for (var i = 0; i < collection.length; i++) {
+            var sibling = collection[i].nextSibling;
+			if(sibling && sibling.tagName && sibling.tagName.toLowerCase() === 'html') {
+                collection[i].status = 'passed';
+            } else {
+                collection[i].status = 'failed';
+            }
+		}
+    },
+    tags: ['a11y', 'code'],
+	ressources: {'rgaa': ['8.1.1']}
+});
+
 
 // 8.2 Pour chaque page web, le code source généré est-il valide selon le type de document spécifié ?
 // 8.2.1 Pour chaque déclaration de type de document, le code source généré de la page vérifie-t-il ces conditions (hors cas particuliers) ?

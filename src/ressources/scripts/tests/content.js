@@ -1068,14 +1068,18 @@ function manageOutput(element) {
     var canBeReachedUsingKeyboardWith = element.canBeReachedUsingKeyboardWith;
     var isNotVisibleDueTo = element.isNotVisibleDueTo;
     var isNotExposedDueTo = element.isNotExposedDueTo;
-    var fakeelement = element.cloneNode(true);
-    var e = document.createElement(fakeelement.tagName.toLowerCase());
-    if (e.outerHTML.indexOf("/") != -1) {
+    if(element.tagName) {
+        var fakeelement = element.cloneNode(true);
+    } else if(['html', 'math', 'svg:svg', 'svg'].includes(element.name.toLowerCase())) {
+        var fakeelement = "<!DOCTYPE "+element.name+(element.publicId ? ' PUBLIC "' + element.publicId + '"' : '')+(!element.publicId && element.systemId ? ' SYSTEM' : '')+(element.systemId ? ' "' + element.systemId + '"' : '')+'>';
+    }
+    var e = fakeelement.tagName ? document.createElement(fakeelement.tagName.toLowerCase()) : null;
+    if (e && e.outerHTML.indexOf("/") != -1) {
         if (fakeelement.innerHTML.length > 512) {
             fakeelement.innerHTML = '[...]';
         }
     }
-    return { status: status, outer: fakeelement.outerHTML, xpath: getXPath(element), role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isNotVisibleDueTo: isNotVisibleDueTo, isNotExposedDueTo: isNotExposedDueTo };
+    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, xpath: e ? getXPath(element) : null, role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: e ? canBeReachedUsingKeyboardWith : [], isNotVisibleDueTo: e ? isNotVisibleDueTo : ['doctype'], isNotExposedDueTo: e ? isNotExposedDueTo : '' };
 }
 
 function createTanaguruTag(tag, status) {
@@ -1122,12 +1126,14 @@ function createTanaguruTest(test) {
         addResultSet("Nouvelle syntaxe d'écriture des tests", result);
         // Intégrer chaque résultat dans window.tanaguru.tests.
     }
-    else if ((test.hasOwnProperty('query') && test.query.constructor == String) || test.hasOwnProperty('contrast') || test.hasOwnProperty('code')) {
+    else if ((test.hasOwnProperty('query') && test.query.constructor == String) || test.hasOwnProperty('contrast') || test.hasOwnProperty('code') || test.hasOwnProperty('node')) {
         // Sélection des éléments.
         if(test.hasOwnProperty('contrast')) {
             var elements = textNodeList[test.contrast];
         } else if(test.hasOwnProperty('code')) {
             var elements = getDuplicateID();
+        } else if(test.hasOwnProperty('node')) {
+            var elements = test.node ? [test.node] : [];
         } else {
             var elements = document.querySelectorAll(test.query);
         }
