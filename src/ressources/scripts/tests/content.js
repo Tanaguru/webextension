@@ -1626,10 +1626,25 @@ var languages = {
 // hasValidLanguageCode.
 var hasValidLanguageCode = function () {
     var r = /^[a-z]{2,}(-[a-z]{2,})?$/i;
-    if (r.test(this.lang)) {
-        var computedlang = this.lang;
-        if (this.lang.includes('-')) {
-            computedlang = this.lang.split('-');
+    var lang1 = this.hasAttribute('lang') ? this.getAttribute('lang').trim() : null;
+    var lang2 = this.hasAttribute('xml:lang') ? this.getAttribute('xml:lang').trim() : null;
+    console.log(lang1, lang2);
+    if(lang1 !== null && lang2 !== null) {
+        if(lang1 != lang2) {
+            return false;
+        } else {
+            var lang = lang1;
+        }
+    } else if(lang1) {
+        var lang = lang1;
+    } else {
+        var lang = lang2;
+    }
+
+    if (r.test(lang)) {
+        var computedlang = lang;
+        if (lang.includes('-')) {
+            computedlang = lang.split('-');
             computedlang = computedlang[0];
         }
         return languages.data.hasOwnProperty(computedlang);

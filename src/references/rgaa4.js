@@ -2597,13 +2597,12 @@ tanaguruTestsList.push({
 
 // 8.3.1 : Pour chaque page web, l'indication de langue par défaut vérifie-t-elle une de ces conditions ?
 // incomplete (devrait gérer les attributs lang sur les éléments contenant du texte)
-// gérer xml:lang
 
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'La langue de la page n&#x2018;est pas spécifiée.',
     expectedNbElements: 0,
-    query: 'html:not([lang])',
+    query: 'html:not([lang], [xml\\:lang])',
     tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.3.1']}
 });
@@ -2611,12 +2610,13 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'La langue de la page est spécifiée.',
-    query: 'html[lang]',
+    query: 'html[lang], html[xml\\:lang]',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'passed';
         }
     },
+    mark: {attrs: ['lang', 'xml\\:lang']},
     tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.3.1']}
 });
@@ -2625,11 +2625,18 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Page HTML avec un attribut lang vide.',
-	query: 'html[lang]',
+	query: 'html[lang], html[xml\\:lang]',
 	expectedNbElements: 0,
 	filter: function (item) {
-		return item.getAttribute('lang').trim().length == 0;
+        if(item.hasAttribute('lang') && !item.hasAttribute('xml:lang')) {
+            return item.getAttribute('lang').trim().length == 0;
+        } else if (item.hasAttribute('xml:lang') && !item.hasAttribute('lang')) {
+            return item.getAttribute('xml:lang').trim().length == 0;
+        } else {
+            return item.getAttribute('lang').trim().length == 0 || item.getAttribute('xml:lang').trim().length == 0;
+        }
 	},
+    mark: {attrs: ['lang', 'xml\\:lang']},
 	tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.4.1']}
 });
@@ -2637,10 +2644,22 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Page HTML avec un attribut lang non vide.',
-	query: 'html[lang]',
+	query: 'html[lang], html[xml\\:lang]',
 	filter: function (item) {
-		return item.getAttribute('lang').trim().length > 0;
+		if(item.hasAttribute('lang') && !item.hasAttribute('xml:lang')) {
+            return item.getAttribute('lang').trim().length > 0;
+        } else if (item.hasAttribute('xml:lang') && !item.hasAttribute('lang')) {
+            return item.getAttribute('xml:lang').trim().length > 0;
+        } else {
+            return item.getAttribute('lang').trim().length > 0 || item.getAttribute('xml:lang').trim().length > 0;
+        }
 	},
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    mark: {attrs: ['lang', 'xml\\:lang']},
 	tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.4.1']}
 });
@@ -2651,8 +2670,11 @@ tanaguruTestsList.push({
 	query: 'html[lang][xml\\:lang]',
 	expectedNbElements: 0,
 	filter: function (item) {
-		return !item.hasValidLanguageCode || (item.getAttribute('xml:lang').trim().length > 0 && item.getAttribute('lang') != item.getAttribute('xml:lang'));
+        if(item.getAttribute('lang').trim().length > 0 || item.getAttribute('xml:lang').trim().length > 0) {
+            return item.getAttribute('lang') != item.getAttribute('xml:lang');
+        }
 	},
+    mark: {attrs: ['lang', 'xml\\:lang']},
 	tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.4.1']}
 });
@@ -2662,13 +2684,16 @@ tanaguruTestsList.push({
 	name: 'Page HTML avec des attributs lang et xml:lang dont les valeurs correspondent."',
 	query: 'html[lang][xml\\:lang]',
 	filter: function (item) {
-		return item.hasValidLanguageCode && item.getAttribute('lang') == item.getAttribute('xml:lang');
+        if(item.getAttribute('lang').trim().length > 0) {
+            return item.getAttribute('lang') == item.getAttribute('xml:lang');
+        }
 	},
 	analyzeElements: function (collection) {
 		if (collection.length == 1) {
 			collection[0].status = 'passed';
 		}
 	},
+    mark: {attrs: ['lang', 'xml\\:lang']},
 	tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.4.1']}
 });
@@ -2676,11 +2701,12 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'La langue de la page HTML est invalide.',
-	query: 'html[lang]',
+	query: 'html[lang], html[xml\\:lang]',
 	expectedNbElements: 0,
 	filter: function (item) {
-		return item.getAttribute('lang').trim().length > 0 && !item.hasValidLanguageCode();
+		return !item.hasValidLanguageCode();
 	},
+    mark: {attrs: ['lang', 'xml\\:lang']},
 	tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.4.1']}
 });
@@ -2688,10 +2714,16 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'La langue de la page HTML est valide.',
-	query: 'html[lang]',
+	query: 'html[lang], html[xml\\:lang]',
 	filter: function (item) {
-		return item.getAttribute('lang').trim().length > 0 && item.hasValidLanguageCode();
+		return item.hasValidLanguageCode();
 	},
+    analyzeElements: function(collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    mark: {attrs: ['lang', 'xml\\:lang']},
 	tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.4.1']}
 });
@@ -2741,12 +2773,12 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'La page n&#x2018;a pas de  titre de page (balise title)',
-    query: 'title',
+    name: 'La page n&#x2018;a pas de  titre de page (balise title).',
+    query: 'head',
     expectedNbElements: 0,
     filter: function (item) {
-        if (item.matches('svg title')){
-            return false;
+        if (!item.querySelector('title')){
+            return true;
         }
     },
     tags: ['a11y','mandatory'],
@@ -2755,14 +2787,8 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'La page a un titre de page (balise title) ?',
-    query: 'title',
-    filter: function (item) {
-        if (item.matches('svg title')){
-            return false;
-        }
-        return true;
-    },
+    name: 'La page a un titre de page (balise title).',
+    query: 'head title',
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'passed';
@@ -2775,13 +2801,12 @@ tanaguruTestsList.push({
 //8.6.1 Pour chaque page web ayant un titre de page (balise title), le contenu de cette balise est-il pertinent ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Vérifier la pertinence du titre de page (balise title) ?',
-    query: 'title',
-    filter: function (item) {
-        if (item.matches('svg title')){
-            return false;
+    name: 'Vérifier la pertinence du titre de page (balise title).',
+    query: 'head title',
+    filter: function(item) {
+        if(item.textContent.trim().length > 0) {
+            return true;
         }
-        return true;
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -2795,11 +2820,10 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Le titre de la page (balise title) n&#x2018;est pas pertinent',
-    query: 'title',
+    query: 'head title',
     expectedNbElements: 0,
     filter: function (item) {
-        var titleContent=item.textContent;
-        return (titleContent=="")||(titleContent==" ");
+        return item.textContent.trim().length === 0;
     },
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.6.1']}
@@ -2808,8 +2832,8 @@ tanaguruTestsList.push({
 //8.7.1 Dans chaque page web, chaque texte écrit dans une langue différente de la langue par défaut vérifie-t-il une de ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Dans chaque page web, chaque texte écrit dans une langue différente de la langue par défaut vérifie-t-il une de ces conditions (hors cas particuliers) ?',
-    query: '[lang],[xml\\:lang]',
+    name: 'Vérifiez que pour chaque texte écrit dans une langue différente de la langue par défaut le langage est correctement indiqué.',
+    query: 'body [lang], body [xml\\:lang]',
     filter: function (item) {
         return (item.hasAttribute('lang')||item.hasAttribute('xml:lang'));
     },
@@ -2828,34 +2852,29 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Elements avec un attribut lang invalide.',
-	query: 'body [lang]',
+	query: 'body [lang], body [xml\\:lang]',
 	expectedNbElements: 0,
 	filter: function (item) {
-		var lang = item.getAttribute('lang');
-		if (lang != '') {
-			return lang.trim().length == 0 ? true : !item.hasValidLanguageCode();
-		}
-		else {
-			return false;
-		}
+        return !item.hasValidLanguageCode();
 	},
+    mark: { attrs: ['lang', 'xml:lang']},
     tags: ['a11y', 'languages', 'mandatory'],
 	ressources: { 'rgaa': ['8.8.1'] }
 });
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Elements avec un attribut lang valide..',
-	query: 'body [lang]',
+	name: 'Elements avec un attribut lang valide.',
+	query: 'body [lang], body [xml\\:lang]',
 	filter: function (item) {
-		var lang = item.getAttribute('lang');
-		if (lang != '') {
-			return lang.trim().length > 0 ? item.hasValidLanguageCode() : false;
-		}
-		else {
-			return false;
-		}
+		return item.hasValidLanguageCode();
 	},
+    analyzeElements: function(collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    mark: { attrs: ['lang', 'xml:lang']},
     tags: ['a11y', 'languages', 'mandatory'],
 	ressources: { 'rgaa': ['8.8.1'] }
 });
@@ -2864,7 +2883,7 @@ tanaguruTestsList.push({
 // 8.9.1 Dans chaque page web les balises (à l'exception de <div>, <span> et <table>) ne doivent pas être utilisées uniquement à des fins de présentation. Cette règle est-elle respectée ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Dans chaque page web, les balises ne doivent pas être utilisées uniquement à des fins de présentation. Cette règle est-elle respectée ?',
+    name: 'Les balises ne doivent pas être utilisées uniquement à des fins de présentation.',
     description: 'ne pas utiliser de double br pour créer des espaces entre les éléments textes',
     query: 'br + br',
     expectedNbElements: 0,
@@ -2882,7 +2901,7 @@ tanaguruTestsList.push({
 // 8.10.2 : Dans chaque page web, chaque changement du sens de lecture (attribut dir) vérifie-t-il ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Dans chaque page web, chaque changement du sens de lecture (attribut dir) vérifie-t-il ces conditions ?',
+    name: 'Changements du sens de lecture (attribut dir) non conforme.',
     query: '[dir]',
     expectedNbElements: 0,
     filter: function (item) {
