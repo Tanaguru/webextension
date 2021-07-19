@@ -5,9 +5,9 @@ var tanaguruTestsList = [];
 // 1.1.1 - Chaque image (balise <img> ou balise possédant l'attribut WAI-ARIA role="img") porteuse d'information a-t-elle une alternative textuelle ? // ne pas traiter les images liens
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'liste des images (balise img ou balise possédant l&#x2018;attribut WAI-ARIA role="img") sans nom accessible',
+    name: 'liste des images (balise img ou balise possédant l\'attribut WAI-ARIA role="img") sans nom accessible',
     query: 'img:not([role]), [role="img"]',
-    description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
+    description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
         var IName = item.tagName.toLowerCase();
@@ -30,9 +30,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des images (balise img ou balise possédant l&#x2018;attribut WAI-ARIA role="img") avec un nom accessible',
+    name: 'Liste des images (balise img ou balise possédant l\'attribut WAI-ARIA role="img") avec un nom accessible',
     query: 'img:not([role]), [role="img"]',
-    description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
+    description: 'ce test vérifie si les images restituées par les technologies d\'assistances ont un nom accessible',
     filter: function (item) {
         var IName = item.tagName.toLowerCase();
         if (IName != 'svg' && IName != 'object' && IName != 'embed' && IName != 'canvas') {
@@ -68,9 +68,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018images réactives (balise area) sans nom accessible.',
+    name: 'Liste d\'images réactives (balise area) sans nom accessible.',
     query: 'area:not([role])',
-    description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
+    description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
         if (item.hasAttribute('href')){
@@ -120,9 +120,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018images réactives (balise area) avec un nom accessible.',
+    name: 'Liste d\'images réactives (balise area) avec un nom accessible.',
     query: 'area:not([role])',
-    description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
+    description: 'ce test vérifie si les images restituées par les technologies d\'assistances ont un nom accessible',
     filter: function (item) {
         if (item.hasAttribute('href')){
             if (item.hasAttribute('aria-label')){
@@ -181,9 +181,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste de boutons de type image (balise input avec l&#x2018;attribut type="image") sans nom accessible.',
+    name: 'Liste de boutons de type image (balise input avec l\'attribut type="image") sans nom accessible.',
     query: 'input[type="image"]:not([role])',
-    description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
+    description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
@@ -194,9 +194,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste de boutons de type image (balise input avec l&#x2018;attribut type="image") avec un nom accessible.',
+    name: 'Liste de boutons de type image (balise input avec l\'attribut type="image") avec un nom accessible.',
     query: 'input[type="image"]:not([role])',
-    description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
+    description: 'ce test vérifie si les images restituées par les technologies d\'assistances ont un nom accessible',
     filter: function (item) {
         if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
             item.setAttribute('data-tanaguruAltLong','true');
@@ -220,7 +220,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste de zones cliquables d&#x2018une image réactive côté serveur qui ne sont pas doublée d&#x2018;un lien dans la page.',
+    name: 'Liste de zones cliquables d\'une image réactive côté serveur qui ne sont pas doublée d\'un lien dans la page.',
     query: 'img[ismap]:not([role])',
     expectedNbElements: 0,
     filter: function (item) {
@@ -248,7 +248,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste de zones cliquables d&#x2018une image réactive côté serveur doublée d&#x2018;un lien dans la page.',
+    name: 'Liste de zones cliquables d\'une image réactive côté serveur doublée d\'un lien dans la page.',
     query: 'img[ismap]:not([role])',
     filter: function (item) {
         var parentLink = item.closest('a');
@@ -282,7 +282,7 @@ tanaguruTestsList.push({
 // 1.1.5 - Chaque image vectorielle (balise <svg>) porteuse d'information, vérifie-t-elle ces conditions ? // à tester
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images vectorielles (balise svg) restituées ne possédant pas d\'attribut role="img".',
+    name: 'Liste d\'images vectorielles (balise svg) restituées ne possédant pas d\'attribut role="img".',
     query: 'svg',
     expectedNbElements: 0,
     filter: function (item) {
@@ -299,10 +299,10 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images vectorielles (balise svg) sans nom accessible',
+    name: 'Liste d\'images vectorielles (balise svg) sans nom accessible',
     query: 'svg[role="img"]',
     expectedNbElements: 0,
-    description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
+    description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
     },
@@ -312,9 +312,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images vectorielles (balise svg) avec un nom accessible',
+    name: 'Liste d\'images vectorielles (balise svg) avec un nom accessible',
     query: 'svg[role="img"]',
-    description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
+    description: 'ce test vérifie si les images restituées par les technologies d\'assistances ont un nom accessible',
     filter: function (item) {
         if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
             item.setAttribute('data-tanaguruAltLong','true');
@@ -337,7 +337,7 @@ tanaguruTestsList.push({
 // 1.1.6 - Chaque image objet (balise <object> avec l'attribut type="image/…") porteuse d'information, vérifie-t-elle une de ces conditions ? // semble KO sur l'accessible name //gère que le 1er cas dans le RGAA4
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images objet (balise object avec l&#x2018;attribut type="image/…") restituées ne possédant pas d\'attribut role="img".',
+    name: 'Liste d\'images objet (balise object avec l\'attribut type="image/…") restituées ne possédant pas d\'attribut role="img".',
     query: 'object[type]',
     expectedNbElements: 0,
     filter: function (item) {
@@ -354,9 +354,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images objet (balise object avec l&#x2018;attribut type="image/…") sans nom accessible',
+    name: 'Liste d\'images objet (balise object avec l\'attribut type="image/…") sans nom accessible',
     query: 'object[type]',
-    description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
+    description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/") && (item.getAttribute('role') === 'img' || !item.hasAttribute('role'))){
@@ -371,9 +371,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images objet (balise object avec l&#x2018;attribut type="image/…") avec un nom accessible',
+    name: 'Liste d\'images objet (balise object avec l\'attribut type="image/…") avec un nom accessible',
     query: 'object[type]',
-    description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
+    description: 'ce test vérifie si les images restituées par les technologies d\'assistances ont un nom accessible',
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/") && (item.getAttribute('role') === 'img' || !item.hasAttribute('role'))){
             if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
@@ -398,7 +398,7 @@ tanaguruTestsList.push({
 // 1.1.7 - Chaque image embarquée (balise <embed> avec l'attribut type="image/…") porteuse d'information, vérifie-t-elle une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images embarquées (balise embed avec l&#x2018;attribut type="image/…") restituées ne possédant pas d\'attribut role="img".',
+    name: 'Liste d\'images embarquées (balise embed avec l\'attribut type="image/…") restituées ne possédant pas d\'attribut role="img".',
     query: 'embed[type]',
     expectedNbElements: 0,
     filter: function (item) {
@@ -415,9 +415,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images embarquées (balise embed avec l&#x2018;attribut type="image/…") sans nom accessible',
+    name: 'Liste d\'images embarquées (balise embed avec l\'attribut type="image/…") sans nom accessible',
     query: 'embed[type]',
-    description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
+    description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/") && (item.getAttribute('role') === 'img' || !item.hasAttribute('role'))){
@@ -431,9 +431,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images embarquées (balise embed avec l&#x2018;attribut type="image/…") avec un nom accessible',
+    name: 'Liste d\'images embarquées (balise embed avec l\'attribut type="image/…") avec un nom accessible',
     query: 'embed[type]',
-    description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
+    description: 'ce test vérifie si les images restituées par les technologies d\'assistances ont un nom accessible',
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/") && (item.getAttribute('role') === 'img' || !item.hasAttribute('role'))){
             if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
@@ -458,7 +458,7 @@ tanaguruTestsList.push({
 // 1.1.8 - Chaque image bitmap (balise <canvas>) porteuse d'information, vérifie-t-elle une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images bitmap (balise canvas) restituées ne possédant pas d\'attribut role="img".',
+    name: 'Liste d\'images bitmap (balise canvas) restituées ne possédant pas d\'attribut role="img".',
     query: 'canvas',
     expectedNbElements: 0,
     filter: function (item) {
@@ -475,9 +475,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018images bitmap (balise canvas) sans nom accessible',
+    name: 'Liste d\'images bitmap (balise canvas) sans nom accessible',
     query: 'canvas',
-    description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances n&#x2018;ont pas de nom accessible',
+    description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
         if(item.getAttribute('role') === 'img' || !item.hasAttribute('role')) {
@@ -490,9 +490,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018images bitmap (balise canvas) avec un nom accessible',
+    name: 'Liste d\'images bitmap (balise canvas) avec un nom accessible',
     query: 'canvas',
-    description: 'ce test vérifie si les images restituées par les technologies d&#x2018;assistances ont un nom accessible',
+    description: 'ce test vérifie si les images restituées par les technologies d\'assistances ont un nom accessible',
     filter: function (item) {
         if(item.getAttribute('role') === 'img' || !item.hasAttribute('role')) {
             if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
@@ -518,7 +518,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images (balise img) ignorées par les technologies d&#x2018;assistance',
+    name: 'Liste d\'images (balise img) ignorées par les technologies d\'assistance',
     query: 'img:not([role]), img[role="presentation"]',
     filter: function (item) {
         var parent = item.parentNode;
@@ -566,7 +566,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste de zones non cliquables (balise area sans attribut href) ignorées par les technologies d&#x2018;assistance',
+    name: 'Liste de zones non cliquables (balise area sans attribut href) ignorées par les technologies d\'assistance',
     query: 'area:not([role]):not([href]), area[role="presentation"]:not([href])',
     filter: function (item) {
         if (item.hasAttribute('role')){
@@ -601,7 +601,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images objets (balise object avec l&#x2018;attribut type="image/…") ignorées par les technologies d&#x2018;assistance',
+    name: 'Liste d\'images objets (balise object avec l\'attribut type="image/…") ignorées par les technologies d\'assistance',
     query: 'object[type]:not([role]), object[type][role="img"]',
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/")){
@@ -639,7 +639,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;images objets (balise object avec l&#x2018;attribut type="image/…") non ignorées par les technologies d&#x2018;assistance',
+    name: 'Liste d\'images objets (balise object avec l\'attribut type="image/…") non ignorées par les technologies d\'assistance',
     query: 'object[type][aria-hidden="true"]:not([role]), object[type][aria-hidden="true"][role="img"]',
     expectedNbElements: 0,
     filter: function (item) {
@@ -670,7 +670,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;image vectorielle (balise svg) ignorées par les technologies d&#x2018;assistance',
+    name: 'Liste d\'image vectorielle (balise svg) ignorées par les technologies d\'assistance',
     query: 'svg[aria-hidden="true"]',
     filter: function (item) {
         var parent = item.parentNode;
@@ -719,7 +719,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018;image vectorielle (balise svg) non ignorées par les technologies d&#x2018;assistance',
+    name: 'Liste d\'image vectorielle (balise svg) non ignorées par les technologies d\'assistance',
     query: 'svg[aria-hidden="true"]',
     expectedNbElements: 0,
     filter: function (item) {
@@ -764,7 +764,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018images bitmap (balise canvas) ignorées par les technologies d&#x2018;assistance',
+    name: 'Liste d\'images bitmap (balise canvas) ignorées par les technologies d\'assistance',
     query: 'canvas[aria-hidden="true"]',
     filter: function (item) {
         var parent = item.parentNode;
@@ -798,7 +798,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018images bitmap (balise canvas) non ignorées par les technologies d&#x2018;assistance',
+    name: 'Liste d\'images bitmap (balise canvas) non ignorées par les technologies d\'assistance',
     query: 'canvas[aria-hidden="true"]',
     expectedNbElements: 0,
     filter: function (item) {
@@ -827,7 +827,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d&#x2018images embarquées (balise embed avec l&#x2018;attribut type="image/…") ignorées par les technologies d&#x2018assistance',
+    name: 'Liste d\'images embarquées (balise embed avec l\'attribut type="image/…") ignorées par les technologies d\'assistance',
     query: 'embed[type]:not([role]), embed[type][role="img"]',
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/")){
@@ -860,7 +860,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Ces images (balise img ou balises possédant l&#x2018;attribut WAI-ARIA role="img") ont-elles un nom accessible pertinent ?',
+    name: 'Ces images (balise img ou balises possédant l\'attribut WAI-ARIA role="img") ont-elles un nom accessible pertinent ?',
     query: 'img:not([role]), [role="img"]',
     filter: function (item) {
         var IName = item.tagName.toLowerCase();
@@ -887,7 +887,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Ces zones (balise area) d&#x2018;une image réactive ont-elles un nom accessible pertinent ?',
+    name: 'Ces zones (balise area) d\'une image réactive ont-elles un nom accessible pertinent ?',
     query: 'area:not([role])',
     filter: function (item) {
         return item.hasAccessibleName();
@@ -906,7 +906,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Ces boutons de type image (balise input avec l&#x2018;attribut type="image") ont-elles un nom accessible pertinent ?',
+    name: 'Ces boutons de type image (balise input avec l\'attribut type="image") ont-elles un nom accessible pertinent ?',
     query: 'input[type="image"]:not([role])',
     filter: function (item) {
         return item.hasAccessibleName();
@@ -925,7 +925,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Ces images objet (balise object avec l&#x2018;attribut type="image/…") ont-elles un nom accessible pertinent ?',
+    name: 'Ces images objet (balise object avec l\'attribut type="image/…") ont-elles un nom accessible pertinent ?',
     query: 'object[type]:not([role], object[type][role="img"]',
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/")){
@@ -946,7 +946,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Ces images embarquées (balise embed avec l&#x2018;attribut type="image/…") ont-elles un nom accessible pertinent ?',
+    name: 'Ces images embarquées (balise embed avec l\'attribut type="image/…") ont-elles un nom accessible pertinent ?',
     query: 'embed[type]:not([role]), embed[type][role="img"]',
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/")){
@@ -1005,7 +1005,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des images bitmap (balise canvas) porteuse d&#x2018information, ayant un contenu alternatif entre sa balise ouvrante et sa balise fermante correctement restitué par les technologies d\'assistance',
+    name: 'Liste des images bitmap (balise canvas) porteuse d\'information, ayant un contenu alternatif entre sa balise ouvrante et sa balise fermante correctement restitué par les technologies d\'assistance',
     query: 'canvas[role="img"]',
     filter: function (item) {
         if (item.textContent && item.textContent.trim().length > 0) {
@@ -1023,7 +1023,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des images bitmap (balise canvas) porteuse d&#x2018information, ayant un contenu alternatif entre sa balise ouvrante et sa balise fermante non restitué par les technologies d\'assistance',
+    name: 'Liste des images bitmap (balise canvas) porteuse d\'information, ayant un contenu alternatif entre sa balise ouvrante et sa balise fermante non restitué par les technologies d\'assistance',
     query: 'canvas[role="img"]',
     expectedNbElements: 0,
     filter: function (item) {
@@ -1073,7 +1073,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des légendes d&#x2018image (balise img, balise input type="image" ou balise role="img") non reliées à l&#x2018image correspondante',
+    name: 'Liste des légendes d\'image (balise img, balise input type="image" ou balise role="img") non reliées à l\'image correspondante',
     query: 'figure img, figure input[type="image"], figure [role="img"]',
     expectedNbElements: 0,
     filter: function (item) {
@@ -1104,7 +1104,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des légendes d&#x2018image (balise img, balise input type="image" ou balise role="img") reliées à l&#x2018image correspondante',
+    name: 'Liste des légendes d\'image (balise img, balise input type="image" ou balise role="img") reliées à l\'image correspondante',
     query: 'figure img, figure input[type="image"], figure [role="img"]',
     filter: function (item) {
         var IName = item.tagName.toLowerCase();
@@ -1139,7 +1139,7 @@ tanaguruTestsList.push({
 // 1.9.2 Chaque image objet pourvue d'une légende (balise object avec l'attribut type="image/…" associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ? xxx
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des légendes d&#x2018image objet non reliées à l&#x2018image correspondante',
+    name: 'Liste des légendes d\'image objet non reliées à l\'image correspondante',
     query: 'figure object[type]',
     expectedNbElements: 0,
     filter: function (item) {
@@ -1167,7 +1167,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des légendes d&#x2018image objet reliées à l&#x2018image correspondante',
+    name: 'Liste des légendes d\'image objet reliées à l\'image correspondante',
     query: 'figure object[type]',
     filter: function (item) {
         var parentFigure = item.closest('figure');
@@ -1200,7 +1200,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des légendes d&#x2018image embarquées (balise embed) non reliées à l&#x2018image correspondante',
+    name: 'Liste des légendes d\'image embarquées (balise embed) non reliées à l\'image correspondante',
     query: 'figure embed',
     expectedNbElements: 0,
     filter: function (item) {
@@ -1228,7 +1228,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des légendes d&#x2018image embarquées (balise embed) reliées à l&#x2018image correspondante',
+    name: 'Liste des légendes d\'image embarquées (balise embed) reliées à l\'image correspondante',
     query: 'figure embed',
     filter: function (item) {
         var parentFigure = item.closest('figure');
@@ -1261,7 +1261,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des légendes d&#x2018image vectorielles (balise svg) non reliées à l&#x2018image correspondante',
+    name: 'Liste des légendes d\'image vectorielles (balise svg) non reliées à l\'image correspondante',
     query: 'figure svg',
     expectedNbElements: 0,
     filter: function (item) {
@@ -1289,7 +1289,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des légendes d&#x2018image vectorielles (balise svg) reliées à l&#x2018image correspondante',
+    name: 'Liste des légendes d\'image vectorielles (balise svg) reliées à l\'image correspondante',
     query: 'figure svg',
     filter: function (item) {
         var parentFigure = item.closest('figure');
@@ -1322,7 +1322,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des légendes d&#x2018image bitmap (balise canvas) non reliées à l&#x2018image correspondante',
+    name: 'Liste des légendes d\'image bitmap (balise canvas) non reliées à l\'image correspondante',
     query: 'figure canvas',
     expectedNbElements: 0,
     filter: function (item) {
@@ -1350,7 +1350,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des légendes d&#x2018image bitmap (balise canvas) reliées à l&#x2018image correspondante',
+    name: 'Liste des légendes d\'image bitmap (balise canvas) reliées à l\'image correspondante',
     query: 'figure canvas',
     filter: function (item) {
         var parentFigure = item.closest('figure');
@@ -1788,7 +1788,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des médias temporels seulement audios',
     query: 'audio, object[type="audio/x-wav"], object[type="audio/mpeg"], object[type="application/ogg"], object[type="audio/x-midi"]',
-    description:'Vérifiez si nécessaire la présence d&#x2018;une transcription textuelle',
+    description:'Vérifiez si nécessaire la présence d\'une transcription textuelle',
     tags: ['a11y', 'audio'],
     ressources: {'rgaa': ['4.1.1']}
 });
@@ -1799,7 +1799,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des médias temporels seulement vidéos',
     query: 'video, object[type="video/mpeg"], object[type="video/avi"], object[type="video/x-ms-wmv"], object[type="video/quicktime"]',
-    description:'Vérifiez si nécessaire que l&#x2018;information est également présente sous forme d&#x2018;audio ou de transcription',
+    description:'Vérifiez si nécessaire que l\'information est également présente sous forme d\'audio ou de transcription',
     tags: ['a11y', 'videos'],
     ressources: {'rgaa': ['4.1.2']}
 });
@@ -1810,7 +1810,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des médias temporels synchronisés',
     query: 'video, object[type="video/mpeg"], object[type="video/avi"], object[type="video/x-ms-wmv"], object[type="video/quicktime"]',
-    description:'Vérifiez si nécessaire la présence d&#x2018;une audio-description et d&#x2018;une transcription',
+    description:'Vérifiez si nécessaire la présence d\'une audio-description et d\'une transcription',
     tags: ['a11y', 'videos'],
     ressources: {'rgaa': ['4.1.3']}
 });
@@ -1832,7 +1832,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des médias temporels seulement vidéos',
     query: 'video, object[type="video/mpeg"], object[type="video/avi"], object[type="video/x-ms-wmv"], object[type="video/quicktime"]',
-    description:'Vérifiez si nécessaire la pertinence de l&#x2018;alternative audio ou de la transcription',
+    description:'Vérifiez si nécessaire la pertinence de l\'alternative audio ou de la transcription',
     tags: ['a11y', 'videos'],
     ressources: {'rgaa': ['4.2.2']}
 });
@@ -1843,7 +1843,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des médias temporels synchronisés',
     query: 'video, object[type="video/mpeg"], object[type="video/avi"], object[type="video/x-ms-wmv"], object[type="video/quicktime"]',
-    description:'Vérifiez si nécessaire la pertinence de l&#x2018;audio-description ou de la transcription',
+    description:'Vérifiez si nécessaire la pertinence de l\'audio-description ou de la transcription',
     tags: ['a11y', 'videos'],
     ressources: {'rgaa': ['4.2.3']}
 });
@@ -1934,7 +1934,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des médias temporels synchronisés',
     query: 'video',
-    description:'Vérifiez, s&#x2018;ils existent, la pertinence des sous-titres',
+    description:'Vérifiez, s\'ils existent, la pertinence des sous-titres',
     tags: ['a11y', 'videos'],
     filter: function (item) {
         var trackTag = item.querySelectorAll('track');
@@ -1977,7 +1977,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des tableaux complexes sans résumé',
     query: 'table:not([role]), [role="table"]',
-    description:'Vérifiez si le tableau est complexe, qu&#x2018;il comporte un résumé',
+    description:'Vérifiez si le tableau est complexe, qu\'il comporte un résumé',
     filter: function (item) {
         var thTag = item.querySelectorAll('th');
         var colspanAttribut = item.querySelectorAll('[colspan]');
@@ -2000,7 +2000,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des tableaux complexes avec résumé',
     query: 'table:not([role]), [role="table"]',
-    description:'Vérifiez si le tableau est complexe, qu&#x2018;il comporte un résumé',
+    description:'Vérifiez si le tableau est complexe, qu\'il comporte un résumé',
     filter: function (item) {
         var thTag = item.querySelectorAll('th');
         var colspanAttribut = item.querySelectorAll('[colspan]');
@@ -2600,7 +2600,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'La langue de la page n&#x2018;est pas spécifiée.',
+    name: 'La langue de la page n\'est pas spécifiée.',
     expectedNbElements: 0,
     query: 'html:not([lang], [xml\\:lang])',
     tags: ['a11y', 'languages', 'mandatory'],
@@ -2792,7 +2792,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'La page n&#x2018;a pas de  titre de page (balise title).',
+    name: 'La page n\'a pas de  titre de page (balise title).',
     query: 'head',
     expectedNbElements: 0,
     filter: function (item) {
@@ -2838,7 +2838,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Le titre de la page (balise title) n&#x2018;est pas pertinent',
+    name: 'Le titre de la page (balise title) n\'est pas pertinent',
     query: 'head title',
     expectedNbElements: 0,
     filter: function (item) {
@@ -3054,7 +3054,7 @@ tanaguruTestsList.push({
 // 9.2.1 Dans chaque page web, la structure du document vérifie-t-elle ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Vérifier que les éléments suivant sont des zones d&#x2018;entêtes',
+    name: 'Vérifier que les éléments suivant sont des zones d\'entêtes',
     query: 'header',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0;
@@ -3102,7 +3102,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Vérifier que l&#x2018;éléments suivant est la zone de contenu principale',
+    name: 'Vérifier que l\'éléments suivant est la zone de contenu principale',
     query: 'main',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0;
@@ -3132,7 +3132,7 @@ tanaguruTestsList.push({
 // 10.1.1 : Dans chaque page web, les balises servant à la présentation de l'information ne doivent pas être présentes dans le code source généré des pages. Cette règle est-elle respectée ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des balises servant à la présentation de l&#x2018information présentes dans le code source généré de la page.',
+    name: 'Liste des balises servant à la présentation de l\'information présentes dans le code source généré de la page.',
     query: 'basefont, blink, center, font, marquee, s, strike, tt, big',
     expectedNbElements: 0,
     filter: function (item) {
@@ -3145,7 +3145,7 @@ tanaguruTestsList.push({
 // 10.1.2 : Dans chaque page web, les attributs servant à la présentation de l'information ne doivent pas être présents dans le code source généré des pages. Cette règle est-elle respectée ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des attributs servant à la présentation de l&#x2018information présents dans le code source généré de la page.',
+    name: 'Liste des attributs servant à la présentation de l\'information présents dans le code source généré de la page.',
     query: '[align], [alink], [background], [bgcolor], [border], [cellpadding], [cellspacing], [char], [charoff], [clear], [compact], [color], [frameborder], [hspace], [link], [marginheight], [marginwidth], [text], [valign], [vlink], [vspace], [size], :not(img, object, embed, canvas, svg)[width], :not(img, object, embed, canvas, svg)[height]',
     expectedNbElements: 0,
     filter: function (item) {
@@ -3406,7 +3406,7 @@ tanaguruTestsList.push({
 //11.5.1 : Les champs de même nature vérifient-ils l'une de ces conditions, si nécessaire ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Vérifier que l&#x2018;utilisation des balises fieldset et les attributs role group sont bien nécessaire',
+    name: 'Vérifier que l\'utilisation des balises fieldset et les attributs role group sont bien nécessaire',
     query: 'fieldset, [role="group"]',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0;
@@ -3630,7 +3630,7 @@ tanaguruTestsList.push({
 // 13.9 Dans chaque page web, le contenu proposé est-il consultable quelle que soit l'orientation de l'écran (portrait ou paysage) (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'en',
-    name: 'la page est consultable quelque soit l&#x2018;orientation de l&#x2018;écran',
+    name: 'la page est consultable quelque soit l\'orientation de l\'écran',
     status: 'untested',
     ressources: { 'rgaa': ['13.9.1'] },
     tags: ['a11y'],
