@@ -2629,11 +2629,11 @@ tanaguruTestsList.push({
 	expectedNbElements: 0,
 	filter: function (item) {
         if(item.hasAttribute('lang') && !item.hasAttribute('xml:lang')) {
-            return item.getAttribute('lang').trim().length == 0;
+            return item.getAttribute('lang').length == 0;
         } else if (item.hasAttribute('xml:lang') && !item.hasAttribute('lang')) {
-            return item.getAttribute('xml:lang').trim().length == 0;
+            return item.getAttribute('xml:lang').length == 0;
         } else {
-            return item.getAttribute('lang').trim().length == 0 || item.getAttribute('xml:lang').trim().length == 0;
+            return item.getAttribute('lang').length == 0 || item.getAttribute('xml:lang').length == 0;
         }
 	},
     mark: {attrs: ['lang', 'xml\\:lang']},
@@ -2647,11 +2647,11 @@ tanaguruTestsList.push({
 	query: 'html[lang], html[xml\\:lang]',
 	filter: function (item) {
 		if(item.hasAttribute('lang') && !item.hasAttribute('xml:lang')) {
-            return item.getAttribute('lang').trim().length > 0;
+            return item.getAttribute('lang').length > 0;
         } else if (item.hasAttribute('xml:lang') && !item.hasAttribute('lang')) {
-            return item.getAttribute('xml:lang').trim().length > 0;
+            return item.getAttribute('xml:lang').length > 0;
         } else {
-            return item.getAttribute('lang').trim().length > 0 || item.getAttribute('xml:lang').trim().length > 0;
+            return item.getAttribute('lang').length > 0 || item.getAttribute('xml:lang').length > 0;
         }
 	},
     analyzeElements: function (collection) {
@@ -2670,8 +2670,12 @@ tanaguruTestsList.push({
 	query: 'html[lang][xml\\:lang]',
 	expectedNbElements: 0,
 	filter: function (item) {
-        if(item.getAttribute('lang').trim().length > 0 || item.getAttribute('xml:lang').trim().length > 0) {
-            return item.getAttribute('lang') != item.getAttribute('xml:lang');
+        var lang1 = item.getAttribute('lang');
+        var lang2 = item.getAttribute('xml:lang');
+        if(lang1.length > 0 || lang2.length > 0) {
+            var langA = lang1.includes('-') ? lang1.split('-')[0] : lang1;
+            var langB = lang2.includes('-') ? lang2.split('-')[0] : lang2;
+            return langA != langB;
         }
 	},
     mark: {attrs: ['lang', 'xml\\:lang']},
@@ -2684,8 +2688,12 @@ tanaguruTestsList.push({
 	name: 'Page HTML avec des attributs lang et xml:lang dont les valeurs correspondent."',
 	query: 'html[lang][xml\\:lang]',
 	filter: function (item) {
-        if(item.getAttribute('lang').trim().length > 0) {
-            return item.getAttribute('lang') == item.getAttribute('xml:lang');
+        var lang1 = item.getAttribute('lang');
+        var lang2 = item.getAttribute('xml:lang');
+        if(lang1.length > 0 || lang2.length > 0) {
+            var langA = lang1.includes('-') ? lang1.split('-')[0] : lang1;
+            var langB = lang2.includes('-') ? lang2.split('-')[0] : lang2;
+            return langA == langB;
         }
 	},
 	analyzeElements: function (collection) {
@@ -2704,6 +2712,17 @@ tanaguruTestsList.push({
 	query: 'html[lang], html[xml\\:lang]',
 	expectedNbElements: 0,
 	filter: function (item) {
+        if(item.hasAttribute('lang') && !item.hasAttribute('xml:lang')) {
+            if(item.getAttribute('lang').length === 0) {
+                return false;
+            }
+        } else if (item.hasAttribute('xml:lang') && !item.hasAttribute('lang')) {
+            if(item.getAttribute('xml:lang').length === 0) {
+                return false;
+            }
+        } else if(item.getAttribute('lang').length === 0 && item.getAttribute('xml:lang').length === 0) {
+            return false;
+        }
 		return !item.hasValidLanguageCode();
 	},
     mark: {attrs: ['lang', 'xml\\:lang']},
@@ -2848,14 +2867,75 @@ tanaguruTestsList.push({
 });
 
 // 8.8 Dans chaque page web, le code de langue de chaque changement de langue est-il valide et pertinent ?
-//8.8.1 Pour chaque page web, le code de langue de chaque changement de langue vérifie-t-il ces conditions ? 
+//8.8.1 Pour chaque page web, le code de langue de chaque changement de langue vérifie-t-il ces conditions ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Elements avec un attribut lang vide.',
+	query: 'body [lang], body [xml\\:lang]',
+	expectedNbElements: 0,
+	filter: function (item) {
+        if(item.hasAttribute('lang') && !item.hasAttribute('xml:lang')) {
+            if(item.getAttribute('lang').length === 0) {
+                return true;
+            }
+        } else if (item.hasAttribute('xml:lang') && !item.hasAttribute('lang')) {
+            if(item.getAttribute('xml:lang').length === 0) {
+                return true;
+            }
+        } else if(item.getAttribute('lang').length === 0 || item.getAttribute('xml:lang').length === 0) {
+            return true;
+        }
+	},
+    mark: { attrs: ['lang', 'xml:lang']},
+    tags: ['a11y', 'languages', 'mandatory'],
+	ressources: { 'rgaa': ['8.8.1'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Elements avec un attribut lang non vide.',
+	query: 'body [lang], body [xml\\:lang]',
+	filter: function (item) {
+        if(item.hasAttribute('lang') && !item.hasAttribute('xml:lang')) {
+            if(item.getAttribute('lang').length > 0) {
+                return true;
+            }
+        } else if (item.hasAttribute('xml:lang') && !item.hasAttribute('lang')) {
+            if(item.getAttribute('xml:lang').length > 0) {
+                return true;
+            }
+        } else if(item.getAttribute('lang').length > 0 || item.getAttribute('xml:lang').length > 0) {
+            return true;
+        }
+	},
+    analyzeElements: function(collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    mark: { attrs: ['lang', 'xml:lang']},
+    tags: ['a11y', 'languages', 'mandatory'],
+	ressources: { 'rgaa': ['8.8.1'] }
+});
+
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Elements avec un attribut lang invalide.',
 	query: 'body [lang], body [xml\\:lang]',
 	expectedNbElements: 0,
 	filter: function (item) {
-        return !item.hasValidLanguageCode();
+        if(item.hasAttribute('lang') && !item.hasAttribute('xml:lang')) {
+            if(item.getAttribute('lang').length === 0) {
+                return false;
+            }
+        } else if (item.hasAttribute('xml:lang') && !item.hasAttribute('lang')) {
+            if(item.getAttribute('xml:lang').length === 0) {
+                return false;
+            }
+        } else if(item.getAttribute('lang').length === 0 && item.getAttribute('xml:lang').length === 0) {
+            return false;
+        }
+		return !item.hasValidLanguageCode();
 	},
     mark: { attrs: ['lang', 'xml:lang']},
     tags: ['a11y', 'languages', 'mandatory'],
