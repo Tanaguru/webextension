@@ -3237,8 +3237,16 @@ tanaguruTestsList.push({
     },
     filter: function (item) {
         if(item.isNotExposedDueTo.length == 0 && item.getAttribute('for').trim().length > 0) {
+            var startDigit = /^\d/;
             var id = item.getAttribute('for');
-            var fields = document.querySelectorAll('[id='+id+']');
+
+            if(id.match(startDigit)) {
+                id = '\\3'+id.substring(0, 1)+' '+id.substring(1, id.length).replace(/[!"#$%&'()*+,-./:;<=>?@[\]^`{|}~]/g, "\\$&");
+            } else {
+                id = id.replace(/[!"#$%&'()*+,-./:;<=>?@[\]^`{|}~]/g, "\\$&");
+            }
+            
+            var fields = document.querySelectorAll('#'+id);
 
             if(fields.length === 0 || fields.length > 1) {
                 return true;
@@ -3256,8 +3264,16 @@ tanaguruTestsList.push({
     query: 'label[for]',
     filter: function (item) {
         if(item.isNotExposedDueTo.length == 0 && item.getAttribute('for').trim().length > 0) {
+            var startDigit = /^\d/;
             var id = item.getAttribute('for');
-            var fields = document.querySelectorAll('[id='+id+']');
+
+            if(id.match(startDigit)) {
+                id = '\\3'+id.substring(0, 1)+' '+id.substring(1, id.length).replace(/[!"#$%&'()*+,-./:;<=>?@[\]^`{|}~]/g, "\\$&");
+            } else {
+                id = id.replace(/[!"#$%&'()*+,-./:;<=>?@[\]^`{|}~]/g, "\\$&");
+            }
+
+            var fields = document.querySelectorAll('#'+id);
             if(0 < fields.length && fields.length < 2) {
                 if(htmlData.elements[fields[0].tagName.toLowerCase()]) {
                     return htmlData.elements[fields[0].tagName.toLowerCase()].category === 'forms';
@@ -3284,8 +3300,15 @@ tanaguruTestsList.push({
     filter: function (item) {
         if(item.isNotExposedDueTo.length == 0) {
             if(item.hasAttribute('for') && item.getAttribute('for').trim().length > 0) {
+                var startDigit = /^\d/;
                 var id = item.getAttribute('for');
-                var tags = document.querySelectorAll('[id='+id+']');
+
+                if(id.match(startDigit)) {
+                    id = '\\3'+id.substring(0, 1)+' '+id.substring(1, id.length).replace(/[!"#$%&'()*+,-./:;<=>?@[\]^`{|}~]/g, "\\$&");
+                } else {
+                    id = id.replace(/[!"#$%&'()*+,-./:;<=>?@[\]^`{|}~]/g, "\\$&");
+                }
+                var tags = document.querySelectorAll('#'+id);
 
                 for(var i = 0; i < tags.length; i++) {
                     if(htmlData.elements[tags[i].tagName.toLowerCase()]) {
