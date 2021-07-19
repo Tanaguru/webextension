@@ -594,7 +594,7 @@ button.addEventListener('click', function () {
 
 			// display the test name on the button
 			var span = document.createElement('span');
-			span.innerHTML = test.name.charAt(0).toUpperCase() + test.name.slice(1);
+			span.textContent = test.name.charAt(0).toUpperCase() + test.name.slice(1);
 			tabpanelsectionbutton.appendChild(span);
 			tabpanelsection.appendChild(tabpanelsectionbutton);
 
@@ -608,14 +608,14 @@ button.addEventListener('click', function () {
 			// test description
 			if (test.description) {
 				var tabpanelsectionp = document.createElement('p');
-				tabpanelsectionp.innerHTML = test.description;
+				tabpanelsectionp.textContent = test.description;
 				tabpanelsectiondiv.appendChild(tabpanelsectionp);
 			}
 
 			// test explanation
 			if (test.explanation) {
 				var tabpanelsectionp = document.createElement('p');
-				tabpanelsectionp.innerHTML = test.explanation;
+				tabpanelsectionp.textContent = test.explanation;
 				tabpanelsectiondiv.appendChild(tabpanelsectionp);
 			}
 			
