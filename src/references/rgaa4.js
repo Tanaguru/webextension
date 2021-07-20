@@ -1,7 +1,33 @@
 // TODO: début RGAA.
 var tanaguruTestsList = [];
 
-// 1.1 Chaque image porteuse d'information a-t-elle une alternative textuelle ?
+/**
+ ** Thématiques
+ ** Images
+ * Cadres (terminé)
+ ** Couleurs
+ ** Multimédia
+ ** Tableaux
+ * Liens (terminé)
+ ** Scripts
+ ** Eléments obligatoires
+ ** Structuration de l'information
+ ** Présentation de l'information
+ ** Formulaires
+ ** Navigation
+ ** Consultation
+ */
+
+/**
+ *? IMAGES
+ ** 1.1 / 1.2 / 1.3 / 1.4 et 1.9 OK
+ *TODO hasAccessibleName ne teste pas le title sur les balises object & embed
+ *TODO pas possible de tester si un élément a un aria-hidden="true" ET un nom accessible car hasAccessibleName() renvoie false quand isNotExposedDueTo.length === 0
+ *! comment identifier les images test / captcha ?
+ *TODO Voir s'il est possible de traiter partiellement le critère 1.7
+ */
+
+//* 1.1 Chaque image porteuse d'information a-t-elle une alternative textuelle ?
 // 1.1.1 - Chaque image (balise <img> ou balise possédant l'attribut WAI-ARIA role="img") porteuse d'information a-t-elle une alternative textuelle ? // ne pas traiter les images liens
 tanaguruTestsList.push({
     lang: 'fr',
@@ -65,7 +91,6 @@ tanaguruTestsList.push({
 });
 
 // 1.1.2 - Chaque zone d'une image réactive (balise <area>) porteuse d'information a-t-elle une alternative textuelle ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images réactives (balise area) sans nom accessible.',
@@ -178,7 +203,6 @@ tanaguruTestsList.push({
 });
 
 // 1.1.3 - Chaque bouton de type image (balise <input> avec l'attribut type="image") a-t-il une alternative textuelle ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste de boutons de type image (balise input avec l\'attribut type="image") sans nom accessible.',
@@ -217,7 +241,6 @@ tanaguruTestsList.push({
 });
 
 // 1.1.4 - Chaque zone cliquable d'une image réactive côté serveur est-elle doublée d'un lien dans la page ? // à tester
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste de zones cliquables d\'une image réactive côté serveur qui ne sont pas doublée d\'un lien dans la page.',
@@ -367,8 +390,6 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['1.1.6'] }
 });
 
-//TODO hasAccessibleName ne teste pas le title sur les balises object & embed
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images objet (balise object avec l\'attribut type="image/…") avec un nom accessible',
@@ -514,8 +535,8 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['1.1.8'] }
 });
 
-//1.2.1 Chaque image (balise <img>) de décoration, sans légende, vérifie-t-elle une de ces conditions ?
-
+//* 1.2 Chaque image de décoration est-elle correctement ignorée par les technologies d'assistance ?
+// 1.2.1 Chaque image (balise <img>) de décoration, sans légende, vérifie-t-elle une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images (balise img) ignorées par les technologies d\'assistance',
@@ -563,7 +584,6 @@ tanaguruTestsList.push({
 });
 
 // 1.2.2 Chaque zone non cliquable (balise <area> sans attribut href) de décoration, vérifie-t-elle une de ces conditions ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste de zones non cliquables (balise area sans attribut href) ignorées par les technologies d\'assistance',
@@ -598,7 +618,6 @@ tanaguruTestsList.push({
 });
 
 // 1.2.3 Chaque image objet (balise object avec l'attribut type="image/…") de décoration, sans légende, vérifie-t-elle ces conditions ? // pourquoi pas de gestion de role presentation dans le RGAA // à tester
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images objets (balise object avec l\'attribut type="image/…") ignorées par les technologies d\'assistance',
@@ -617,7 +636,6 @@ tanaguruTestsList.push({
                 }
             }
 
-            //TODO pas possible de tester si l'élément a un aria-hidden="true" ET un nom accessible car hasAccessibleName() renvoie false quand isNotExposedDueTo.length === 0
             if (item.textContent && item.textContent.trim().length > 0) {
                 return false;
             }
@@ -656,7 +674,6 @@ tanaguruTestsList.push({
                 }
             }
 
-            //TODO pas possible de tester si l'élément a un aria-hidden="true" ET un nom accessible car hasAccessibleName() renvoie false quand isNotExposedDueTo.length === 0
             if (item.textContent && item.textContent.trim().length > 0) {
                 return true;
             }
@@ -667,7 +684,6 @@ tanaguruTestsList.push({
 });
 
 // 1.2.4 Chaque image vectorielle (balise svg) de décoration, sans légende, vérifie-t-elle ces conditions ? // à tester
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'image vectorielle (balise svg) ignorées par les technologies d\'assistance',
@@ -761,7 +777,6 @@ tanaguruTestsList.push({
 });
 
 // 1.2.5  Chaque image bitmap (balise <canvas>) de décoration, sans légende, vérifie-t-elle ces conditions ? // à tester
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images bitmap (balise canvas) ignorées par les technologies d\'assistance',
@@ -779,7 +794,6 @@ tanaguruTestsList.push({
             }
         }
 
-        //TODO pas possible de tester si l'élément a un aria-hidden="true" ET un nom accessible car hasAccessibleName() renvoie false quand isNotExposedDueTo.length === 0
         if (item.textContent && item.textContent.trim().length > 0) {
             return false;
         }
@@ -814,7 +828,6 @@ tanaguruTestsList.push({
             }
         }
 
-        //TODO pas possible de tester si l'élément a un aria-hidden="true" ET un nom accessible car hasAccessibleName() renvoie false quand isNotExposedDueTo.length === 0
         if (item.textContent && item.textContent.trim().length > 0) {
             return true;
         }
@@ -824,11 +837,10 @@ tanaguruTestsList.push({
 });
 
 // 1.2.6 Chaque image embarquée (balise <embed> avec l'attribut type="image/…") de décoration, sans légende, vérifie-t-elle ces conditions ? // à tester
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images embarquées (balise embed avec l\'attribut type="image/…") ignorées par les technologies d\'assistance',
-    query: 'embed[type]:not([role]), embed[type][role="img"]',
+    query: 'embed[aria-hidden="true"][type]:not([role]), embed[aria-hidden="true"][type][role="img"]',
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/")){
             var parent = item.parentNode;
@@ -856,12 +868,13 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['1.2.6'] }
 });
 
-// 1.3.1
-
+//* 1.3 Pour chaque image porteuse d'information ayant une alternative textuelle, cette alternative est-elle pertinente (hors cas particuliers) ?
+// 1.3.1 Pour chaque image (balise <img> ou balise possédant l'attribut WAI-ARIA role="img") porteuse d'information, ayant une alternative textuelle, cette alternative est-elle pertinente (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Ces images (balise img ou balises possédant l\'attribut WAI-ARIA role="img") ont-elles un nom accessible pertinent ?',
     query: 'img:not([role]), [role="img"]',
+    description: 'La pertinence du nom accessible dépend du contexte de l\'image, image porteuse d\'information ou image-test/CAPTCHA.',
     filter: function (item) {
         var IName = item.tagName.toLowerCase();
         if (IName != 'svg' && IName != 'object' && IName != 'embed' && IName != 'canvas') {
@@ -880,14 +893,14 @@ tanaguruTestsList.push({
     },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
-    ressources: { 'rgaa': ['1.3.1'] }
+    ressources: { 'rgaa': ['1.3.1', '1.4.1'] }
 });
 
 // 1.3.2 - Pour chaque zone (balise <area>) d'une image réactive porteuse d'information, ayant une alternative textuelle, cette alternative est-elle pertinente (hors cas particuliers) ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Ces zones (balise area) d\'une image réactive ont-elles un nom accessible pertinent ?',
+    description: 'La pertinence du nom accessible dépend du contexte de l\'image, image porteuse d\'information ou image-test/CAPTCHA.',
     query: 'area:not([role])',
     filter: function (item) {
         return item.hasAccessibleName();
@@ -897,16 +910,16 @@ tanaguruTestsList.push({
             collection[i].status = 'cantTell';
         }
     },
-    mark: { attrs: ['alt','aria-label']},
+    mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
-    ressources: { 'rgaa': ['1.3.2'] }
+    ressources: { 'rgaa': ['1.3.2', '1.4.2'] }
 });
 
 // 1.3.3 Pour chaque bouton de type image (balise <input> avec l'attribut type="image"), ayant une alternative textuelle, cette alternative est-elle pertinente (hors cas particuliers) ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Ces boutons de type image (balise input avec l\'attribut type="image") ont-elles un nom accessible pertinent ?',
+    description: 'La pertinence du nom accessible dépend du contexte de l\'image, image porteuse d\'information ou image-test/CAPTCHA.',
     query: 'input[type="image"]:not([role])',
     filter: function (item) {
         return item.hasAccessibleName();
@@ -918,14 +931,14 @@ tanaguruTestsList.push({
     },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
-    ressources: { 'rgaa': ['1.3.3'] }
+    ressources: { 'rgaa': ['1.3.3', '1.4.3'] }
 });
 
 // 1.3.4 Pour chaque image objet (balise <object> avec l'attribut type="image/…") porteuse d'information, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente (hors cas particuliers) ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Ces images objet (balise object avec l\'attribut type="image/…") ont-elles un nom accessible pertinent ?',
+    description: 'La pertinence du nom accessible dépend du contexte de l\'image, image porteuse d\'information ou image-test/CAPTCHA.',
     query: 'object[type]:not([role], object[type][role="img"]',
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/")){
@@ -939,14 +952,14 @@ tanaguruTestsList.push({
     },
     mark: { attrs: ['aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
-    ressources: { 'rgaa': ['1.3.4'] }
+    ressources: { 'rgaa': ['1.3.4', '1.4.4'] }
 });
 
 // 1.3.5 Pour chaque image embarquée (balise <embed> avec l'attribut type="image/…") porteuse d'information, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente (hors cas particuliers) ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Ces images embarquées (balise embed avec l\'attribut type="image/…") ont-elles un nom accessible pertinent ?',
+    description: 'La pertinence du nom accessible dépend du contexte de l\'image, image porteuse d\'information ou image-test/CAPTCHA.',
     query: 'embed[type]:not([role]), embed[type][role="img"]',
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/")){
@@ -960,14 +973,14 @@ tanaguruTestsList.push({
     },
     mark: { attrs: ['aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
-    ressources: { 'rgaa': ['1.3.5'] }
+    ressources: { 'rgaa': ['1.3.5', '1.4.5'] }
 });
 
 // 1.3.6 Pour chaque image vectorielle (balise <svg>) porteuse d'information, ayant une alternative textuelle, cette alternative est-elle pertinente (hors cas particuliers) ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Ces images images vectorielles (balise svg) ont-elles un nom accessible pertinent ?',
+    description: 'La pertinence du nom accessible dépend du contexte de l\'image, image porteuse d\'information ou image-test/CAPTCHA.',
     query: 'svg[role="img"]',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
@@ -979,14 +992,14 @@ tanaguruTestsList.push({
     },
     mark: { attrs: ['aria-label','aria-labelledby']},
     tags: ['a11y', 'images', 'accessiblename'],
-    ressources: { 'rgaa': ['1.3.6'] }
+    ressources: { 'rgaa': ['1.3.6', '1.4.6'] }
 });
 
 // 1.3.7 Pour chaque image bitmap (balise <canvas>) porteuse d'information, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente (hors cas particuliers) ? // traiter le cas particulier
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: ' Ces images bitmap (balise canvas) ont-elles un nom accessible pertinent ?',
+    description: 'La pertinence du nom accessible dépend du contexte de l\'image, image porteuse d\'information ou image-test/CAPTCHA.',
     query: 'canvas:not([role]), canvas[role="img"]',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
@@ -998,11 +1011,10 @@ tanaguruTestsList.push({
     },
     mark: { attrs: ['aria-label','aria-labelledby']},
     tags: ['a11y', 'images', 'accessiblename'],
-    ressources: { 'rgaa': ['1.3.7'] }
+    ressources: { 'rgaa': ['1.3.7', '1.4.7'] }
 });
 
 // 1.3.8 Pour chaque image bitmap (balise <canvas>) porteuse d'information et ayant un contenu alternatif entre <canvas> et </canvas>, ce contenu alternatif est-il correctement restitué par les technologies d'assistance ? //traiter le cas particulier
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des images bitmap (balise canvas) porteuse d\'information, ayant un contenu alternatif entre sa balise ouvrante et sa balise fermante correctement restitué par les technologies d\'assistance',
@@ -1036,7 +1048,6 @@ tanaguruTestsList.push({
 });
 
 // 1.3.9 Pour chaque image porteuse d'information et ayant une alternative textuelle, l'alternative textuelle est-elle courte et concise (hors cas particuliers) ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Images avec un nom accessible trop long',
@@ -1067,10 +1078,8 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['1.3.9'] }
 });
 
-// 1.4.1 à traiter
-
+//* 1.9 Chaque légende d'image est-elle, si nécessaire, correctement reliée à l'image correspondante ?
 // 1.9.1 Chaque image pourvue d'une légende (balise <img>, <input> avec l'attribut type="image" ou balise possédant un attribut WAI-ARIA role="img" associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ? 
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des légendes d\'image (balise img, balise input type="image" ou balise role="img") non reliées à l\'image correspondante',
@@ -1197,7 +1206,6 @@ tanaguruTestsList.push({
 });
 
 //1.9.3 Chaque image embarquée pourvue d'une légende (balise <embed> associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des légendes d\'image embarquées (balise embed) non reliées à l\'image correspondante',
@@ -1258,7 +1266,6 @@ tanaguruTestsList.push({
 });
 
 //1.9.4 Chaque image vectorielle pourvue d'une légende (balise <svg> associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des légendes d\'image vectorielles (balise svg) non reliées à l\'image correspondante',
@@ -1319,7 +1326,6 @@ tanaguruTestsList.push({
 });
 
 // 1.9.5 Chaque image bitmap pourvue d'une légende (balise canvas associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des légendes d\'image bitmap (balise canvas) non reliées à l\'image correspondante',
@@ -1379,8 +1385,12 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['1.9.5'] }
 });
 
-// 2.1.1 Chaque cadre a-t-il un titre de cadre ?
+/**
+ *? CADRES (terminé)
+ */
 
+//* 2.1 Chaque cadre a-t-il un titre de cadre ?
+// 2.1.1 Chaque cadre (balise <iframe> ou <frame>) a-t-il un attribut title ?
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des cadres sans attribut title',
@@ -1410,18 +1420,14 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['2.1.1']}
 });
 
-// 2.2.1 Pour chaque cadre ayant un titre de cadre, ce titre de cadre est-il pertinent ?
-
+//* 2.2 Pour chaque cadre ayant un titre de cadre, ce titre de cadre est-il pertinent ?
+// 2.2.1 Pour chaque cadre (balise <iframe> ou <frame>) ayant un attribut title, le contenu de cet attribut est-il pertinent ?
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier la pertinence des titres des cadres suivants',
     query: 'iframe[title]:not([role]), frame[title]:not([role])',
     filter: function (item) {
-        var titleAttr = item.getAttribute('title').trim();
-        if (titleAttr.length === 0) {
-            return !item.isNotExposedDueTo.length == 0;
-        }
-        return item.isNotExposedDueTo.length == 0;
+        return item.isNotExposedDueTo.length == 0 && item.getAttribute('title').trim().length > 0;
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -1439,17 +1445,21 @@ tanaguruTestsList.push({
     query: 'iframe[title]:not([role]), frame[title]:not([role])',
     expectedNbElements: 0,
     filter: function (item) {
-        var titleAttr = item.getAttribute('title').trim();
-        if (titleAttr.length === 0) {
-            return item.isNotExposedDueTo.length == 0;
-        }
+        return item.isNotExposedDueTo.length == 0 && item.getAttribute('title').trim().length == 0;
     },
     mark: { attrs: ['title']},
     tags: ['a11y', 'frames', 'accessiblename'],
     ressources: {'rgaa': ['2.2.1']}
 });
 
-// 3.2 Dans chaque page web, le contraste entre la couleur du texte et la couleur de son arrière-plan est-il suffisamment élevé (hors cas particuliers) ?
+/**
+ *? COULEURS
+ *TODO prendre en compte les attributs tel quel "value" ou "placeholder" dans les tests du critère 3.2
+ *TODO 3.3.1
+ *! voir si l'on peut traiter certains éléments graphique
+ */
+
+//* 3.2 Dans chaque page web, le contraste entre la couleur du texte et la couleur de son arrière-plan est-il suffisamment élevé (hors cas particuliers) ?
 // 3.2.1 Dans chaque page web, le texte et le texte en image sans effet de graisse d'une taille restituée inférieure à 24px vérifient-ils une de ces conditions (hors cas particuliers) ? 
 tanaguruTestsList.push({
     contrast: 'invalid_45',
@@ -1782,126 +1792,176 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['3.2.4']}
 });
 
-// 4.1.1 Chaque média temporel pré-enregistré seulement audio, vérifie-t-il, si nécessaire, l'une de ces conditions (hors cas particuliers) ?
+/**
+ *? MULTIMEDIA
+ */
 
+//* 4.1 Chaque média temporel pré-enregistré a-t-il, si nécessaire, une transcription textuelle ou une audiodescription (hors cas particuliers) ?
+// 4.1.1 Chaque média temporel pré-enregistré seulement audio, vérifie-t-il, si nécessaire, l'une de ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des médias temporels seulement audios',
-    query: 'audio, object[type="audio/x-wav"], object[type="audio/mpeg"], object[type="application/ogg"], object[type="audio/x-midi"]',
+    query: 'audio, object[type], embed[type]',
     description:'Vérifiez si nécessaire la présence d\'une transcription textuelle',
+    filter: function(item) {
+        var tag = item.tagName.toLowerCase();
+        if(tag === 'audio') {
+            return true;
+        } else if(tag === 'object' && (item.getAttribute('type').startsWith('audio/') || item.getAttribute('type') === "application/ogg")) {
+            return true;
+        } else if(tag === 'embed' && (item.getAttribute('type').startsWith('audio/'))) {
+            return true;
+        }
+    },
     tags: ['a11y', 'audio'],
     ressources: {'rgaa': ['4.1.1']}
 });
 
 // 4.1.2 Chaque média temporel pré-enregistré seulement vidéo, vérifie-t-il, si nécessaire, l'une de ces conditions (hors cas particuliers) ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des médias temporels seulement vidéos',
-    query: 'video, object[type="video/mpeg"], object[type="video/avi"], object[type="video/x-ms-wmv"], object[type="video/quicktime"]',
+    query: 'video, object[type], embed[type]',
     description:'Vérifiez si nécessaire que l\'information est également présente sous forme d\'audio ou de transcription',
+    filter: function(item) {
+        var tag = item.tagName.toLowerCase();
+        if(tag === 'video') {
+            return true;
+        } else {
+            return item.getAttribute('type').startsWith('video/');
+        }
+    },
     tags: ['a11y', 'videos'],
     ressources: {'rgaa': ['4.1.2']}
 });
 
 // 4.1.3  Chaque média temporel synchronisé pré-enregistré vérifie-t-il, si nécessaire, une de ces conditions (hors cas particuliers) ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des médias temporels synchronisés',
-    query: 'video, object[type="video/mpeg"], object[type="video/avi"], object[type="video/x-ms-wmv"], object[type="video/quicktime"]',
+    query: 'video, object[type], embed[type]',
     description:'Vérifiez si nécessaire la présence d\'une audio-description et d\'une transcription',
+    filter: function(item) {
+        var tag = item.tagName.toLowerCase();
+        if(tag === 'video') {
+            return true;
+        } else {
+            return item.getAttribute('type').startsWith('video/');
+        }
+    },
     tags: ['a11y', 'videos'],
     ressources: {'rgaa': ['4.1.3']}
 });
 
+//* 4.2 Pour chaque média temporel pré-enregistré ayant une transcription textuelle ou une audiodescription synchronisée, celles-ci sont-elles pertinentes (hors cas particuliers) ?
 // 4.2.1 Pour chaque média temporel pré-enregistré seulement audio, ayant une transcription textuelle, celle-ci est-elle pertinente (hors cas particuliers) ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des médias temporels seulement audios',
-    query: 'audio, object[type="audio/x-wav"], object[type="audio/mpeg"], object[type="application/ogg"], object[type="audio/x-midi"]',
+    query: 'audio, object[type], embed[type]',
     description:'Vérifiez si elle est présente la pertinence de la transcription textuelle',
+    filter: function(item) {
+        var tag = item.tagName.toLowerCase();
+        if(tag === 'audio') {
+            return true;
+        } else if(tag === 'object' && (item.getAttribute('type').startsWith('audio/') || item.getAttribute('type') === "application/ogg")) {
+            return true;
+        } else if(tag === 'embed' && (item.getAttribute('type').startsWith('audio/'))) {
+            return true;
+        }
+    },
     tags: ['a11y', 'audio'],
     ressources: {'rgaa': ['4.2.1']}
 });
 
 // 4.2.2 Chaque média temporel pré-enregistré seulement vidéo vérifie-t-il une de ces conditions (hors cas particuliers) ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des médias temporels seulement vidéos',
-    query: 'video, object[type="video/mpeg"], object[type="video/avi"], object[type="video/x-ms-wmv"], object[type="video/quicktime"]',
+    query: 'video, object[type], embed[type]',
     description:'Vérifiez si nécessaire la pertinence de l\'alternative audio ou de la transcription',
+    filter: function(item) {
+        var tag = item.tagName.toLowerCase();
+        if(tag === 'video') {
+            return true;
+        } else {
+            return item.getAttribute('type').startsWith('video/');
+        }
+    },
     tags: ['a11y', 'videos'],
     ressources: {'rgaa': ['4.2.2']}
 });
 
 // 4.2.3 Chaque média temporel synchronisé pré-enregistré vérifie-t-il, si nécessaire, une de ces conditions (hors cas particuliers) ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des médias temporels synchronisés',
-    query: 'video, object[type="video/mpeg"], object[type="video/avi"], object[type="video/x-ms-wmv"], object[type="video/quicktime"]',
+    query: 'video, object[type], embed[type]',
     description:'Vérifiez si nécessaire la pertinence de l\'audio-description ou de la transcription',
+    filter: function(item) {
+        var tag = item.tagName.toLowerCase();
+        if(tag === 'video') {
+            return true;
+        } else {
+            return item.getAttribute('type').startsWith('video/');
+        }
+    },
     tags: ['a11y', 'videos'],
     ressources: {'rgaa': ['4.2.3']}
 });
 
+//* 4.3 Chaque média temporel synchronisé pré-enregistré a-t-il, si nécessaire, des sous-titres synchronisés (hors cas particuliers) ?
 // 4.3.1 Chaque média temporel synchronisé pré-enregistré vérifie-t-il, si nécessaire, l'une de ces conditions (hors cas particuliers) ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des médias temporels synchronisés',
-    query: 'video, object[type="video/mpeg"], object[type="video/avi"], object[type="video/x-ms-wmv"], object[type="video/quicktime"]',
+    query: 'video, object[type], embed[type]',
     description:'Vérifiez si nécessaire la présence de sous-titres',
+    filter: function(item) {
+        var tag = item.tagName.toLowerCase();
+        if(tag === 'video') {
+            return true;
+        } else {
+            return item.getAttribute('type').startsWith('video/');
+        }
+    },
     tags: ['a11y', 'videos'],
     ressources: {'rgaa': ['4.3.1']}
 });
 
 // 4.3.2 Pour chaque média temporel synchronisé pré-enregistré possédant des sous-titres synchronisés diffusés via une balise <track>, la balise <track> possède-t-elle un attribut kind="captions" ?
-
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des médias temporels synchronisés possédant des sous-titres synchronisés diffusés via une balise <track> sans attribut kind="captions"',
-    query: 'video',
-    tags: ['a11y', 'videos'],
+    name: 'Liste des sous-titres synchronisés diffusés via une balise <track> sans attribut kind="captions"',
+    query: 'video track',
+    expectedNbElements: 0,
     filter: function (item) {
-        var trackTag = item.querySelectorAll('track');
-        if (trackTag.length != 0) {
-            for (var i = 0; i < trackTag.length; i++) {
-                return trackTag[i].getAttribute('kind') != 'captions';
-            }
+        if(item.hasAttribute('kind')) {
+            return item.getAttribute('kind') == 'captions' ? false : true;
+        } else {
+            return true;
         }
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'failed';
-        }
-    },
+    tags: ['a11y', 'videos'],
     ressources: {'rgaa': ['4.3.2']}
 });
 
 // retourne Indéterminé à la place de Validé. // @rg // corrigé @severine
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des médias temporels synchronisés possédant des sous-titres synchronisés diffusés via une balise <track> avec attribut kind="captions"',
-    query: 'video',
-    tags: ['a11y', 'videos'],
+    name: 'Liste des sous-titres synchronisés diffusés via une balise <track> avec attribut kind="captions"',
+    query: 'video track',
     filter: function (item) {
-        var trackTag = item.querySelectorAll('track');
-        if (trackTag.length != 0) {
-            for (var i = 0; i < trackTag.length; i++) {
-                return trackTag[i].getAttribute('kind') == 'captions';
-            }
+        if(item.hasAttribute('kind')) {
+            return item.getAttribute('kind') == 'captions'
         }
-        return false;
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'passed';
         }
     },
+    tags: ['a11y', 'videos'],
     ressources: {'rgaa': ['4.3.2']}
 });
 
@@ -2482,6 +2542,7 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['6.1.5']}
 });
 
+//TODO 6.2 à revoir, il faut vérifier que chaque lien possède un noeud enfant visible
 // 6.2.1 Dans chaque page web, chaque lien a-t-il un intitulé entre <a> et </a> ?
 tanaguruTestsList.push({
     lang: 'fr',
