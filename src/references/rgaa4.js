@@ -2996,28 +2996,86 @@ tanaguruTestsList.push({
 // 9.1.1 : Dans chaque page web, la hiérarchie entre les titres (balise hx ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) est-elle pertinente ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des titres de niveau qui ne respecte pas la hierarchie de titres***',
+    name: 'Liste des titres de niveau qui ne respectent pas la hierarchie de titres',
     query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"]',
-    analyzeElements: function (elements) {
-        var badHierarchie = -1;
-        for (var e = 0; e < elements.length; e++) {
-            if (e + 1 < elements.length) {
-                var currentlevel = parseInt(elements[e].hasAttribute('aria-level') ? elements[e].getAttribute('aria-level') : elements[e].tagName.substring(1));
-                var nextelement = elements[e + 1];
-                var nextlevel = parseInt(nextelement.hasAttribute('aria-level') ? nextelement.getAttribute('aria-level') : nextelement.tagName.substring(1));
-                if (nextlevel - currentlevel > 1) {
-                    //elements[e + 1].status = 'failed';
-                    badHierarchie = (e+1);
+    expectedNbElements: 0,
+    explanations: {
+        'passed': 'La hiérarchie entre les titres de niveau est pertinente sur cette page.',
+        'failed': 'Des titres de niveau(n) non précédés d\'un titre de niveau(n-1) ont été trouvés.'
+    },
+    filter: function (item) {
+        if(item.tagName.toLowerCase().match(/^h\d$/) || item.hasAttribute('aria-level')) {
+            var currentlevel = parseInt(item.hasAttribute('aria-level') ? item.getAttribute('aria-level') : item.tagName.substring(1));
+            var currentElement = item.hasAttribute('aria-level') ? '[role="heading"][aria-level="'+currentlevel+'"]' : item.tagName;
+            
+            if(currentlevel === 1) {
+                return false;
+            }
+            var parent = item.parentNode;
+            while(parent) {
+                if(currentlevel < 8) {
+                    var headings = parent.querySelectorAll(currentElement+',h'+(currentlevel-1)+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
+                } else {
+                    var headings = parent.querySelectorAll(currentElement+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
                 }
-                if (e == badHierarchie) {
-                    elements[e].status = 'failed';
-                }
-                else {
-                    elements[e].status = 'passed';
+                
+
+                for(var i = 0; i < headings.length; i++) {
+                    if(headings[i] === item) {
+                        parent = parent.tagName.toLowerCase() != 'body' ? parent.parentNode : null;
+                        break;
+                    } else {
+                        return false;
+                    }
                 }
             }
+
+            return true;
         }
     },
+    mark: {attrs: ['role', 'aria-level']},
+    tags: ['a11y', 'headings'],
+    ressources: { 'rgaa': ['9.1.1'] }
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des titres de niveau qui respectent la hierarchie de titres',
+    query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"]',
+    filter: function (item) {
+        if(item.tagName.toLowerCase().match(/^h\d$/) || item.hasAttribute('aria-level')) {
+            var currentlevel = parseInt(item.hasAttribute('aria-level') ? item.getAttribute('aria-level') : item.tagName.substring(1));
+            var currentElement = item.hasAttribute('aria-level') ? '[role="heading"][aria-level="'+currentlevel+'"]' : item.tagName;
+            if(currentlevel === 1) {
+                return true;
+            }
+            var parent = item.parentNode;
+            while(parent) {
+                if(currentlevel < 8) {
+                    var headings = parent.querySelectorAll(currentElement+',h'+(currentlevel-1)+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
+                } else {
+                    var headings = parent.querySelectorAll(currentElement+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
+                }
+
+                for(var i = 0; i < headings.length; i++) {
+                    if(headings[i] === item) {
+                        parent = parent.tagName.toLowerCase() != 'body' ? parent.parentNode : null;
+                        break;
+                    } else {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    mark: {attrs: ['role', 'aria-level']},
     tags: ['a11y', 'headings'],
     ressources: { 'rgaa': ['9.1.1'] }
 });
