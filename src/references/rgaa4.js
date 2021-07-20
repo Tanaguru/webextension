@@ -2185,43 +2185,43 @@ tanaguruTestsList.push({
 });
 
 
-// 6.1.1 Chaque lien texte vérifie-t-il une de ces conditions (hors cas particuliers) ?
-
+// 6.1.1 Pour chaque lien texte l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des liens sans nom accessible',
-    query: 'a:not([role]), [role="link"]',
+    name: 'Liste des liens texte sans nom accessible',
+    query: 'a[href]:not([role]), [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') == null) {
+        if (item.querySelector('img, [role="img"], svg, object[type="image"], canvas') == null) {
             return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
         }
     },
+    mark: {attrs: ['role']},
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.1']}
 });
 
-
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des liens visibles non restitués',
-    query: 'a:not([role]), [role="link"]',
+    name: 'Liste des liens texte visibles non restitués',
+    query: 'a[href]:not([role]), [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') == null) {
+        if (item.querySelector('img, [role="img"], svg, object[type="image"], canvas') == null) {
             return item.isNotExposedDueTo.length != 0 && getVisibility(item, getOpacity(item));
         }
     },
+    mark: {attrs: ['role']},
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.1']}
 });
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des liens non visibles non restitués',
-    query: 'a:not([role]), [role="link"]',
+    name: 'Liste des liens texte non visibles non restitués',
+    query: 'a[href]:not([role]), [role="link"]',
     filter: function (item) {
-        if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') == null) {
+        if (item.querySelector('img, [role="img"], svg, object[type="image"], canvas') == null) {
             return item.isNotExposedDueTo.length != 0 && !getVisibility(item, getOpacity(item));
         }
     },
@@ -2230,17 +2230,18 @@ tanaguruTestsList.push({
             collection[i].status = 'inapplicable';
         }
     },
+    mark: {attrs: ['role']},
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.1']}
 });
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des liens avec un nom accessible',
-    query: 'a:not([role]), [role="link"]',
+    name: 'Liste des liens texte avec un nom accessible',
+    query: 'a[href]:not([role]), [role="link"]',
     description:'Vérifiez la pertinence des noms accessibles des liens',
     filter: function (item) {
-        if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') == null) {
+        if (item.querySelector('img, [role="img"], svg, object[type="image"], canvas') == null) {
             return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
         }
     },
@@ -2249,46 +2250,46 @@ tanaguruTestsList.push({
             collection[i].status = 'cantTell';
         }
     },
+    mark: {attrs: ['role']},
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.1']}
 });
 
-// 6.1.2 Chaque lien image vérifie-t-il une de ces conditions (hors cas particuliers) ? // Gestion des liens sont bizarres
-
+// 6.1.2 Pour chaque lien image l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des liens images sans nom accessible"',
-    query: 'a, [role="link"]',
+    name: 'Liste des liens images sans nom accessible',
+    query: 'a[href]:not([role]), [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
+        if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent == "")) {
             return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
-    ressources: {'rgaa': ['6.1.1']}
+    ressources: {'rgaa': ['6.1.2']}
 });
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des liens images visibles non restitués"',
-    query: 'a, [role="link"]',
+    name: 'Liste des liens images visibles non restitués',
+    query: 'a[href]:not([role]), [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
+        if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent == "")) {
             return item.isNotExposedDueTo.length != 0 && getVisibility(item, getOpacity(item));
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
-    ressources: {'rgaa': ['6.1.1']}
+    ressources: {'rgaa': ['6.1.2']}
 });
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des liens images non visibles non restitués"',
-    query: 'a, [role="link"]',
+    name: 'Liste des liens images non visibles non restitués',
+    query: 'a[href]:not([role]), [role="link"]',
     filter: function (item) {
-        if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
+        if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent == "")) {
             return item.isNotExposedDueTo.length != 0 && !getVisibility(item, getOpacity(item));
         }
     },
@@ -2298,16 +2299,16 @@ tanaguruTestsList.push({
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
-    ressources: {'rgaa': ['6.1.1']}
+    ressources: {'rgaa': ['6.1.2']}
 });
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des liens images avec un nom accessibe',
-    query: 'a, [role="link"]',
+    name: 'Liste des liens images avec un nom accessible',
+    query: 'a[href]:not([role]), [role="link"]',
     description:'Vérifiez la pertinence des noms accessibles des images',
     filter: function (item) {
-        if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
+        if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent == "")) {
             return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
         }
     },
@@ -2317,7 +2318,227 @@ tanaguruTestsList.push({
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
-    ressources: {'rgaa': ['6.1.1']}
+    ressources: {'rgaa': ['6.1.2']}
+});
+
+// 6.1.3 Pour chaque lien composite l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens composites sans nom accessible',
+    query: 'a[href]:not([role]), [role="link"]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
+            return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+        }
+    },
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.3']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens composites visibles non restitués',
+    query: 'a[href]:not([role]), [role="link"]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
+            return item.isNotExposedDueTo.length != 0 && getVisibility(item, getOpacity(item));
+        }
+    },
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.3']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens composites non visibles non restitués',
+    query: 'a[href]:not([role]), [role="link"]',
+    filter: function (item) {
+        if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
+            return item.isNotExposedDueTo.length != 0 && !getVisibility(item, getOpacity(item));
+        }
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.3']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens composites avec un nom accessible',
+    query: 'a[href]:not([role]), [role="link"]',
+    description:'Vérifiez la pertinence des noms accessibles.',
+    filter: function (item) {
+        if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
+            return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+        }
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'cantTell';
+        }
+    },
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.3']}
+});
+
+// 6.1.4 Pour chaque lien SVG l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens SVG sans nom accessible',
+    query: 'svg a[href]:not([role]), svg [role="link"]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+    },
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.4']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens SVG visibles non restitués',
+    query: 'svg a[href]:not([role]), svg [role="link"]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        return item.isNotExposedDueTo.length != 0 && getVisibility(item, getOpacity(item));
+    },
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.4']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens SVG non visibles non restitués',
+    query: 'svg a[href]:not([role]), svg [role="link"]',
+    filter: function (item) {
+        return item.isNotExposedDueTo.length != 0 && !getVisibility(item, getOpacity(item));
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'inapplicable';
+        }
+    },
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.4']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens SVG avec un nom accessible',
+    query: 'svg a[href]:not([role]), svg [role="link"]',
+    description:'Vérifiez la pertinence des noms accessibles.',
+    filter: function (item) {
+        return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'cantTell';
+        }
+    },
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.4']}
+});
+
+// 6.1.5 Pour chaque lien ayant un intitulé visible, le nom accessible du lien contient-il au moins l'intitulé visible (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens ayant un intitulé visible non repris dans le nom accessible.',
+    query: 'a[href]:not([role]), [role="link"], svg a[href]:not([role]), svg [role="link"]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if(getVisibility(item, getOpacity(item)) && item.textContent.trim().length > 1) {
+            var linkName = item.textContent.trim().replace(/[[:ponct::]]/, '').toLowerCase();
+            var linkAccessibleName = item.accessibleName.replace(/[[:ponct::]]/, '').toLowerCase();
+            return item.isNotExposedDueTo.length == 0 && !linkAccessibleName.match(linkName);
+        }
+    },
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.5']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens ayant un intitulé visible bien repris dans le nom accessible.',
+    query: 'a[href]:not([role]), [role="link"], svg a[href]:not([role]), svg [role="link"]',
+    filter: function (item) {
+        if(getVisibility(item, getOpacity(item)) && item.textContent.trim().length > 1) {
+            var linkName = item.textContent.trim().replace(/[[:ponct::]]/, '').toLowerCase();
+            var linkAccessibleName = item.accessibleName.replace(/[[:ponct::]]/, '').toLowerCase();
+            return item.isNotExposedDueTo.length == 0 && linkAccessibleName.match(linkName);
+        }
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.5']}
+});
+
+// 6.2.1 Dans chaque page web, chaque lien a-t-il un intitulé entre <a> et </a> ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens sans nom accessible entre <a> et </a>.',
+    query: 'a[href]:not([role]), [role="link"]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if(item.isNotExposedDueTo.length == 0 || getVisibility(item, getOpacity(item))) {
+            var children = item.childNodes;
+            var linkContent = false;
+            for(var i = 0; i < children.length; i++) {
+                if(children[i].nodeType === 1 && children[i].hasAccessibleName()) {
+                    linkContent = true;
+                    break;
+                }
+
+                if(children[i].nodeType === 3 && children[i].textContent.trim().length > 0) {
+                    linkContent = true;
+                    break;
+                }
+            }
+            return !linkContent;
+        }
+    },
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.2.1']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens avec un nom accessible entre <a> et </a>.',
+    query: 'a[href]:not([role]), [role="link"]',
+    filter: function (item) {
+        if(item.isNotExposedDueTo.length == 0 || getVisibility(item, getOpacity(item))) {
+            var children = item.childNodes;
+            var linkContent = false;
+            for(var i = 0; i < children.length; i++) {
+                if(children[i].nodeType === 1 && children[i].hasAccessibleName()) {
+                    linkContent = true;
+                    break;
+                }
+
+                if(children[i].nodeType === 3 && children[i].textContent.trim().length > 0) {
+                    linkContent = true;
+                    break;
+                }
+            }
+            return linkContent;
+        }
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.2.1']}
 });
 
 // 7.1 Chaque script est-il, si nécessaire, compatible avec les technologies d'assistance ?
