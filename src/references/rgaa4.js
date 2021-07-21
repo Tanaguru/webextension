@@ -2,11 +2,11 @@
 var tanaguruTestsList = [];
 
 /**
- ** Thématiques
- ** Images
+ *? Thématiques
+ *! Images (bloqué)
  * Cadres (terminé)
  ** Couleurs
- ** Multimédia
+ *! Multimédia (bloqué)
  ** Tableaux
  * Liens (terminé)
  ** Scripts
@@ -1794,6 +1794,8 @@ tanaguruTestsList.push({
 
 /**
  *? MULTIMEDIA
+ ** 4.1 à 4.7 + 4.10/4.11 OK
+ *TODO voir si l'on peut identifier de façon assez précise les médias non temporels
  */
 
 //* 4.1 Chaque média temporel pré-enregistré a-t-il, si nécessaire, une transcription textuelle ou une audiodescription (hors cas particuliers) ?
@@ -1937,16 +1939,16 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if(item.hasAttribute('kind')) {
-            return item.getAttribute('kind') == 'captions' ? false : true;
+            return item.getAttribute('kind') != 'captions';
         } else {
             return true;
         }
     },
+    mark: {attrs: ['kind']},
     tags: ['a11y', 'videos'],
     ressources: {'rgaa': ['4.3.2']}
 });
 
-// retourne Indéterminé à la place de Validé. // @rg // corrigé @severine
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des sous-titres synchronisés diffusés via une balise <track> avec attribut kind="captions"',
@@ -1961,32 +1963,19 @@ tanaguruTestsList.push({
             collection[i].status = 'passed';
         }
     },
+    mark: {attrs: ['kind']},
     tags: ['a11y', 'videos'],
     ressources: {'rgaa': ['4.3.2']}
 });
 
 // 4.4.1 Pour chaque média temporel synchronisé pré-enregistré ayant des sous-titres synchronisés, ces sous-titres sont-ils pertinents ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des médias temporels synchronisés possédant des sous-titres via la balise track',
-    query: 'video',
+    query: 'video track[kind="captions"]',
     description:'Vérifiez la pertinence des sous-titres',
+    mark: {attrs: ['kind']},
     tags: ['a11y', 'videos'],
-    filter: function (item) {
-        var trackTag = item.querySelectorAll('track');
-        if (trackTag.length != 0) {
-            for (var i = 0; i < trackTag.length; i++) {
-                return trackTag[i].getAttribute('kind') == 'captions';
-            }
-        }
-        return false;
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     ressources: {'rgaa': ['4.4.1']}
 });
 
@@ -2011,63 +2000,198 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['4.4.1']}
 });
 
-// 4.10 Chaque son déclenché automatiquement est-il contrôlable par l'utilisateur ?
+//* 4.5 Chaque média temporel pré-enregistré a-t-il, si nécessaire, une audiodescription synchronisée (hors cas particuliers) ?
+//* 4.6 Pour chaque média temporel pré-enregistré ayant une audiodescription synchronisée, celle-ci est-elle pertinente ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des médias temporels vidéo',
+    query: 'video, object[type], embed[type]',
+    description:'Vérifiez si nécessaire la présence d\'une audiodescription synchronisée et sa pertinence',
+    filter: function(item) {
+        var tag = item.tagName.toLowerCase();
+        if(tag === 'video') {
+            return true;
+        } else {
+            return item.getAttribute('type').startsWith('video/');
+        }
+    },
+    tags: ['a11y', 'videos'],
+    ressources: {'rgaa': ['4.5.1', '4.5.2', '4.6.1', '4.6.2']}
+});
+
+//* 4.7 Chaque média temporel est-il clairement identifiable (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des médias temporels',
+    query: 'video, audio, object[type], embed[type]',
+    description:'Vérifiez que le contenu textuel adjacent permet d\'identifier clairement le média.',
+    filter: function(item) {
+        var tag = item.tagName.toLowerCase();
+        if(tag === 'video' || tag === 'audio') {
+            return true;
+        } else {
+            var mediaType = item.getAttribute('type');
+            return mediaType.startsWith('video/') || mediaType.startsWith('audio/') || mediaType === 'application/ogg';
+        }
+    },
+    tags: ['a11y', 'videos', 'audio'],
+    ressources: {'rgaa': ['4.7.1']}
+});
+
+//* 4.10 Chaque son déclenché automatiquement est-il contrôlable par l'utilisateur ?
 // 4.10.1 Chaque séquence sonore déclenchée automatiquement via une balise <object>, <video>, <audio>, <embed>, <bgsound> ou un code JavaScript vérifie-t-elle une de ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Liste des sons déclenchés automatiquement et non contrôlables par l\'utilisateur.',
-	query: 'audio[autoplay]:not([controls])',
-    tags: ['a11y', 'audio'],
+	name: 'Liste des sons durant plus de 3secondes déclenchés automatiquement et non contrôlables par l\'utilisateur.',
+	query: 'audio[autoplay]:not([muted]), video[autoplay]:not([muted])',
+    expectedNbElements: 0,
+    filter: function(item) {
+        if(item.duration <= 3 && !item.hasAttribute('loop')) {
+            return false;
+        }
+
+        if(item.hasAttribute('controls')) {
+            return false;
+        }
+
+        return true;
+    },
+    tags: ['a11y', 'audio', 'videos'],
     ressources: {'rgaa': ['4.10.1'] },
 	comments: "Implémentation partielle"
 });
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Liste des sons déclenchés automatiquement et contrôlables par l\'utilisateur.',
-	query: 'audio[autoplay][controls]',
-	tags: ['a11y', 'audio'],
+	name: 'Liste des sons déclenchés automatiquement qui sont contrôlables par l\'utilisateur ou durent maximum 3secondes.',
+	query: 'audio[autoplay]:not([muted]), video[autoplay]:not([muted])',
+    filter: function(item) {
+        if(item.duration <= 3 && !item.hasAttribute('loop')) {
+            return true;
+        }
+
+        if(item.hasAttribute('controls')) {
+            return true;
+        }
+
+        return false;
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+	tags: ['a11y', 'audio', 'videos'],
     ressources: {'rgaa': ['4.10.1'] },
 	comments: "Implémentation partielle"
 });
 
-// 5.1.1  Pour chaque tableau de données complexe un résumé est-il disponible ?
+//* 4.11 La consultation de chaque média temporel est-elle, si nécessaire, contrôlable par le clavier et tout dispositif de pointage ?
+// 4.11.1 Chaque média temporel a-t-il, si nécessaire, les fonctionnalités de contrôle de sa consultation ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des médias temporels ayant les fonctionnalités de contrôle de sa consultation',
+    query: 'video[controls], audio[controls]',
+    analyzeElements: function(collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    tags: ['a11y', 'videos', 'audio'],
+    ressources: {'rgaa': ['4.11.1']}
+});
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux complexes sans résumé',
+    name: 'Liste des médias temporels',
+    query: 'video:not([controls]), audio:not([controls]), object[type], embed[type]',
+    description:'Vérifiez si nécessaire la présence des fonctionnalités de contrôle de la consultation de ces médias.',
+    filter: function(item) {
+        var tag = item.tagName.toLowerCase();
+        if(tag === 'video' || tag === 'audio') {
+            return true;
+        } else {
+            var mediaType = item.getAttribute('type');
+            return mediaType.startsWith('video/') || mediaType.startsWith('audio/') || mediaType === 'application/ogg';
+        }
+    },
+    tags: ['a11y', 'videos', 'audio'],
+    ressources: {'rgaa': ['4.11.1']}
+});
+
+// 4.11.2/4.11.3 Pour chaque média temporel, chaque fonctionnalité vérifie-t-elle une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des médias temporels',
+    query: 'video, audio, object[type], embed[type]',
+    description:'Vérifiez que chaque fonctionnalité de ces médias est contrôlable ET activable par le clavier et tout dispositif de pointage.',
+    filter: function(item) {
+        var tag = item.tagName.toLowerCase();
+        if(tag === 'video' || tag === 'audio') {
+            return true;
+        } else {
+            var mediaType = item.getAttribute('type');
+            return mediaType.startsWith('video/') || mediaType.startsWith('audio/') || mediaType === 'application/ogg';
+        }
+    },
+    tags: ['a11y', 'videos', 'audio'],
+    ressources: {'rgaa': ['4.11.2', '4.11.3']}
+});
+
+/**
+ *? TABLEAUX
+ */
+
+//* 5.1 Chaque tableau de données complexe a-t-il un résumé ?
+// 5.1.1  Pour chaque tableau de données complexe un résumé est-il disponible ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des tableaux complexes sans résumé.',
     query: 'table:not([role]), [role="table"]',
-    description:'Vérifiez si le tableau est complexe, qu\'il comporte un résumé',
+    expectedNbElements: 0,
+    explanations: {
+        'passed': 'aucun tableau de données complexe sans résumé n\'a été trouvé sur cette page.',
+        'failed': 'des tableaux de données complexes sans résumé ont été trouvé sur cette page.'
+    },
     filter: function (item) {
-        var thTag = item.querySelectorAll('th');
-        var colspanAttribut = item.querySelectorAll('[colspan]');
-        var rowspanAttribut = item.querySelectorAll('[rowspan]');
-        if (thTag.length !=0 &&(colspanAttribut.length != 0 || rowspanAttribut.length != 0)) {
-            var hasCaption = item.querySelector('caption')
-            return item.querySelector('caption') == null;
+        if(item.isNotExposedDueTo.length > 0 && !getVisibility(item, getOpacity(item))) {
+            return;
+        }
+        if(item.querySelectorAll('th').length > 1 || item.querySelectorAll('[role="columnheader"], [role="rowheader"]').length > 1) {
+            var isComplex = item.querySelectorAll('[colspan], [rowspan], [aria-colspan], [aria-rowspan]').length > 0;
+            if(isComplex) {
+                if(item.querySelector('caption')) {
+                    return item.querySelector('caption').textContent.trim().length === 0;
+                } else if(item.hasAttribute('role') && item.hasAttribute('aria-describedby')) {
+                    var id = item.getAttribute('aria-describedby');
+                    var summary = document.getElementById(id);
+                    return !summary || summary.textContent.trim().length === 0;
+                }
+                return true;
+            }
         }
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'failed';
-        }
-    },
+    mark: {attrs: ['aria-describedby']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.1.1']}
 });
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux complexes avec résumé',
+    name: 'Liste des tableaux complexes avec résumé.',
     query: 'table:not([role]), [role="table"]',
-    description:'Vérifiez si le tableau est complexe, qu\'il comporte un résumé',
     filter: function (item) {
-        var thTag = item.querySelectorAll('th');
-        var colspanAttribut = item.querySelectorAll('[colspan]');
-        var rowspanAttribut = item.querySelectorAll('[rowspan]');
-        if (thTag.length !=0 && (colspanAttribut.length != 0 || rowspanAttribut.length != 0)) {
-            var hasCaption = item.querySelector('caption')
-            return item.querySelector('caption') != null;
+        if(item.querySelectorAll('th').length > 1 || item.querySelectorAll('[role="columnheader"], [role="rowheader"]').length > 1) {
+            var isComplex = item.querySelectorAll('[colspan], [rowspan], [aria-colspan], [aria-rowspan]').length > 0;
+            if(isComplex) {
+                if(item.querySelector('caption')) {
+                    return item.querySelector('caption').textContent.trim().length > 0;
+                } else if(item.hasAttribute('role') && item.hasAttribute('aria-describedby')) {
+                    var id = item.getAttribute('aria-describedby');
+                    var summary = document.getElementById(id);
+                    return summary && summary.textContent.trim().length > 0;
+                }
+            }
         }
     },
     analyzeElements: function (collection) {
@@ -2075,24 +2199,29 @@ tanaguruTestsList.push({
             collection[i].status = 'passed';
         }
     },
+    mark: {attrs: ['aria-describedby']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.1.1']}
 });
 
 // 5.2.1  Pour chaque tableau de données complexe ayant un résumé, celui-ci est-il pertinent ?
-
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux complexes avec résumé',
+    name: 'Liste des tableaux complexes avec un résumé pertinent.',
     query: 'table:not([role]), [role="table"]',
     description:'Vérifiez la pertinence du résumé du tableau complexe',
     filter: function (item) {
-        var thTag = item.querySelectorAll('th');
-        var colspanAttribut = item.querySelectorAll('[colspan]');
-        var rowspanAttribut = item.querySelectorAll('[rowspan]');
-        if (thTag.length !=0 && (colspanAttribut.length != 0 || rowspanAttribut.length != 0)) {
-            var hasCaption = item.querySelector('caption')
-            return item.querySelector('caption') != null;
+        if(item.querySelectorAll('th').length > 1 || item.querySelectorAll('[role="columnheader"], [role="rowheader"]').length > 1) {
+            var isComplex = item.querySelectorAll('[colspan], [rowspan], [aria-colspan], [aria-rowspan]').length > 0;
+            if(isComplex) {
+                if(item.querySelector('caption')) {
+                    return item.querySelector('caption').textContent.trim().length > 0;
+                } else if(item.hasAttribute('role') && item.hasAttribute('aria-describedby')) {
+                    var id = item.getAttribute('aria-describedby');
+                    var summary = document.getElementById(id);
+                    return summary && summary.textContent.trim().length > 0;
+                }
+            }
         }
     },
     analyzeElements: function (collection) {
@@ -2100,24 +2229,24 @@ tanaguruTestsList.push({
             collection[i].status = 'cantTell';
         }
     },
+    mark: {attrs: ['aria-describedby']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.2.1']}
 });
 
+//* 5.3 Pour chaque tableau de mise en forme, le contenu linéarisé reste-t-il compréhensible ?
 // 5.3.1 Chaque tableau de mise en forme vérifie-t-il ces conditions (hors cas particuliers) ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des tableaux de mise en forme sans role présentation',
-    query: 'table[border="0"][width="100%"]',
+    query: 'table:not([role="presentation"])',
     description:'Vérifiez que le contenu linéarisé reste compréhensible',
     expectedNbElements: 0,
     filter: function (item) {
-        if (item.hasAttribute("role")) {
-            var roleAttr = item.getAttribute("role");
-            return roleAttr == "presentation";
+        if(item.isNotExposedDueTo.length > 0 && !getVisibility(item, getOpacity(item))) {
+            return;
         }
-        return true;
+        return item.querySelectorAll('th', '[role="columnheader"]', '[role="rowheader"]').length === 0;
     },
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.3.1']}
@@ -2128,27 +2257,53 @@ tanaguruTestsList.push({
     name: 'Liste des tableaux de mise en forme avec role présentation',
     query: 'table[role="presentation"]',
     description:'Vérifiez que le contenu linéarisé reste compréhensible',
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
+    mark: {attrs: ['role']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.3.1']}
 });
 
 // 5.4.1 Pour chaque tableau de données ayant un titre, le titre est-il correctement associé au tableau de données ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des tableaux de données avec un titre correctement associé au tableau.',
+    query: 'table:not([role]), [role="table"]',
+    filter: function(item) {
+        if(item.querySelectorAll('th', '[role="columnheader"]', '[role="rowheader"]').length > 0) {
+            if(item.querySelector('caption') != null) {
+                return true;
+            }
+
+            if(item.hasAttribute('title') || item.hasAttribute('aria-label')) {
+                return true;
+            }
+
+            if(item.hasAttribute('aria-labelledby')) {
+                return document.getElementById(item.getAttribute('aria-labelledby')) != null;
+            }
+        }
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    mark: {attrs: ['title', 'aria-label', 'aria-labelledby']},
+    tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.4.1']}
+});
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux de données avec un titre',
-    query: 'table:not([role]) caption, *[role="table"] caption,table[title]:not([role]),*[title][role="table"],table[aria-label]:not([role]),*[aria-label][role="table"],table[aria-labelledby]:not([role]),*[aria-labelledby][role="table"]',
-    description:'Vérifiez que le tableau est bien un tableau de données',
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
+    name: 'Liste des tableaux de données avec un titre mal associé au tableau.',
+    query: 'table:not([role])[aria-labelledby], [role="table"][aria-labelledby]',
+    expectedNbElements: 0,
+    filter: function(item) {
+        if(item.isNotExposedDueTo.length > 0 && !getVisibility(item, getOpacity(item))) {
+            return;
         }
+        return document.getElementById(item.getAttribute('aria-labelledby')) == null;
     },
+    mark: {attrs: ['aria-labelledby']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.4.1']}
 });
@@ -2189,8 +2344,8 @@ tanaguruTestsList.push({
         }
         if (item.hasAttribute("aria-labelledby")) {
             var hasAriaLabelledby = item.getAttribute("aria-labelledby");
-            var linkTag = document.querySelector(['#' +hasAriaLabelledby]);
-            if (linkTag.hasAccessibleName) {
+            var linkTag = document.getElementById(hasAriaLabelledby);
+            if (linkTag && !linkTag.hasAccessibleName()) {
                 return true;
             }
         }

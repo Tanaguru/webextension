@@ -1140,7 +1140,7 @@ function createTanaguruTest(test) {
 
         if (elements/* && elements.length > 0*/) {
             // Statut du test par défaut.
-            var status = 'inapplicable';
+            var status = 'cantTell';
 
             // Initialisation des tags.
             initTanaguru();
@@ -1203,8 +1203,8 @@ function createTanaguruTest(test) {
             var statuspriority = {
                 failed: 4,
                 passed: 3,
-                cantTell: 2,
-                inapplicable: 1,
+                inapplicable: 2,
+                cantTell: 1,
                 untested: 0
             };
 
