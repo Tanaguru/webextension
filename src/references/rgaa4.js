@@ -7,8 +7,8 @@ var tanaguruTestsList = [];
  * Cadres (terminé)
  ** Couleurs
  *! Multimédia (bloqué)
- ** Tableaux
- * Liens (terminé)
+ *! Tableaux (bloqué)
+ *TODO Liens (BUG)
  ** Scripts
  ** Eléments obligatoires
  ** Structuration de l'information
@@ -2140,6 +2140,9 @@ tanaguruTestsList.push({
 
 /**
  *? TABLEAUX
+ ** 5.1 à 5.5 et 5.8 OK
+ ** 5.7 implémentation partielle
+ *TODO voir si l'on peut identifier correctement les en-têtes ne s'appliquant pas sur toute la ligne/colonne
  */
 
 //* 5.1 Chaque tableau de données complexe a-t-il un résumé ?
@@ -2246,7 +2249,7 @@ tanaguruTestsList.push({
         if(item.isNotExposedDueTo.length > 0 && !getVisibility(item, getOpacity(item))) {
             return;
         }
-        return item.querySelectorAll('th', '[role="columnheader"]', '[role="rowheader"]').length === 0;
+        return item.querySelectorAll('th, [role="columnheader"], [role="rowheader"]').length === 0;
     },
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.3.1']}
@@ -2268,7 +2271,7 @@ tanaguruTestsList.push({
     name: 'Liste des tableaux de données avec un titre correctement associé au tableau.',
     query: 'table:not([role]), [role="table"]',
     filter: function(item) {
-        if(item.querySelectorAll('th', '[role="columnheader"]', '[role="rowheader"]').length > 0) {
+        if(item.querySelectorAll('th, [role="columnheader"], [role="rowheader"]').length > 0) {
             if(item.querySelector('caption') != null) {
                 return true;
             }
@@ -2309,17 +2312,17 @@ tanaguruTestsList.push({
 });
 
 // 5.5.1 Pour chaque tableau de données ayant un titre, ce titre permet-il d'identifier le contenu du tableau de données de manière claire et concise ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des tableaux de données avec un titre',
-    query: 'table:not([role]) caption, *[role="table"] caption,table[title]:not([role]),*[title][role="table"],table[aria-label]:not([role]),*[aria-label][role="table"],table[aria-labelledby]:not([role]),*[aria-labelledby][role="table"]',
+    query: 'table:not([role]), [role="table"]',
     description:'Vérifiez la pertinence du titre',
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
+    filter: function(item) {
+        if(item.querySelectorAll('th, [role="columnheader"], [role="rowheader"]').length > 0) {
+            return item.hasAccessibleName();
         }
     },
+    mark: {attrs: ['title', 'aria-label', 'aria-labelledby']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.5.1']}
 });
@@ -2330,42 +2333,89 @@ tanaguruTestsList.push({
     query: 'table:not([role]), [role="table"]',
     expectedNbElements: 0,
     filter: function (item) {
-        var hascaption = item.querySelector('caption');
-        if (hascaption != null) {
-            if ((hascaption.innerText == "") || (hascaption.innerText == " ")) {
-                return true;
-            }
+        if(item.isNotExposedDueTo.length > 0 && !getVisibility(item, getOpacity(item))) {
+            return;
         }
-        if (item.hasAttribute("aria-label")) {
-            var hasAriaLabel = item.getAttribute("aria-label");
-            if ((hasAriaLabel == "") || (hasAriaLabel == " ")) {
-                return true;
-            }
-        }
-        if (item.hasAttribute("aria-labelledby")) {
-            var hasAriaLabelledby = item.getAttribute("aria-labelledby");
-            var linkTag = document.getElementById(hasAriaLabelledby);
-            if (linkTag && !linkTag.hasAccessibleName()) {
-                return true;
-            }
-        }
-        if (item.hasAttribute("title")) {
-            var hasTitle = item.getAttribute("title")
-            if ((hasTitle == "")|| (hasTitle == " ")) {
-                return true;
-            }
+        if(item.querySelectorAll('th, [role="columnheader"], [role="rowheader"]').length > 0) {
+            return !item.hasAccessibleName();
         }
     },
+    mark: {attrs: ['title', 'aria-label', 'aria-labelledby']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.5.1']}
 });
 
-// 5.7 Pour chaque tableau de données, la technique appropriée permettant d'associer chaque cellule avec ses en-têtes est-elle utilisée (hors cas particuliers) ?
+//* 5.7 Pour chaque tableau de données, la technique appropriée permettant d'associer chaque cellule avec ses en-têtes est-elle utilisée (hors cas particuliers) ?
+// 5.7.2 Pour chaque contenu de balise <th> s'appliquant à la totalité de la ligne ou de la colonne et possédant un attribut scope, la balise <th> vérifie-t-elle une de ces conditions ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "En-têtes de tableau associant les cellules de sa ligne ou colonne avec un attribut scope valide.",
+	query: 'th[scope]',
+	filter: function (item) {
+		var row = item.parentNode;
+        if(row.querySelectorAll('th').length === 1 && row.querySelectorAll('td').length > 0) {
+            return item.getAttribute('scope') === 'row';
+        }
+
+        if(row.querySelectorAll('td').length === 0) {
+            return item.getAttribute('scope') === 'col';
+        }
+	},
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+    mark: {attrs: ['scope']},
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.7.2']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "En-têtes de tableau associant les cellules de sa ligne ou colonne avec un attribut scope invalide.",
+	query: 'th[scope]',
+    expectedNbElements: 0,
+	filter: function (item) {
+        if(item.isNotExposedDueTo.length > 0 && !getVisibility(item, getOpacity(item))) {
+            return;
+        }
+		var scope = item.getAttribute('scope');
+        return scope != 'row' && scope != 'col';
+	},
+    mark: {attrs: ['scope']},
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.7.2']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "En-têtes de tableau associant les cellules de sa ligne ou colonne avec un attribut scope.",
+	query: 'th[scope]',
+    description: "Vérifier la pertinence de l'attribut scope.",
+	filter: function (item) {
+		var row = item.parentNode;
+        if(row.querySelectorAll('th').length === 1 && row.querySelectorAll('td').length > 0 && item.getAttribute('scope') === 'row') {
+            return;
+        }
+
+        if(row.querySelectorAll('td').length === 0 && item.getAttribute('scope') === 'col') {
+            return;
+        }
+
+        var scope = item.getAttribute('scope');
+        return scope === 'row' || scope === 'col';
+	},
+    mark: {attrs: ['scope']},
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.7.2']}
+});
+
 // 5.7.4 Pour chaque contenu de balise <td> ou <th> associée à un ou plusieurs en-têtes possédant un attribut id, la balise vérifie-t-elle ces conditions ?
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "L'attribut Headers spécifié sur une cellule fait référence à des en-têtes du même élément de tableau.",
-	query: 'table td[headers]',
+	query: 'table td[headers], table th[headers]',
 	filter: function (item) {
 		var headers = item.getAttribute('headers');
 		if (/^.+(\s.+)*$/.test(headers)) {
@@ -2395,10 +2445,95 @@ tanaguruTestsList.push({
 			collection[i].status = 'passed';
 		}
 	},
+    mark: {attrs: ['headers']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.4']}
 });
 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "L'attribut Headers spécifié sur une cellule ne fait pas référence à des en-têtes du même élément de tableau.",
+	query: 'table td[headers], table th[headers]',
+    expectedNbElements: 0,
+	filter: function (item) {
+        if(item.isNotExposedDueTo.length > 0 && !getVisibility(item, getOpacity(item))) {
+            return;
+        }
+		var headers = item.getAttribute('headers');
+		if (/^.+(\s.+)*$/.test(headers)) {
+			headers = headers.split(' ');
+			if (headers.length > 1) {
+				var result = true;
+				for (var i = 0; i < headers.length; i++) {
+					var th = document.querySelector('th[id="' + headers[i] + '"]');
+					result = th ? th.closest('table') == item.closest('table') : false;
+					if (!result) {
+						break;
+					}
+				}
+				return !result;
+			}
+			else {
+				var th = document.querySelector('th[id="' + headers + '"]');
+				return th ? th.closest('table') != item.closest('table') : true;
+			}
+		}
+		else {
+			return false;
+		}
+	},
+    mark: {attrs: ['headers']},
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.7.4']}
+});
+
+//* 5.8 Chaque tableau de mise en forme ne doit pas utiliser d'éléments propres aux tableaux de données. Cette règle est-elle respectée ?
+// 5.8.1 Chaque tableau de mise en forme (balise <table>) vérifie-t-il ces conditions ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Liste des tableaux de mise en forme utilisant des éléments propre aux tableaux de données.",
+	query: 'table[role="presentation"]',
+    expectedNbElements: 0,
+	filter: function (item) {
+        if(item.isNotExposedDueTo.length > 0 && !getVisibility(item, getOpacity(item))) {
+            return;
+        }
+
+		if(item.hasAttribute('summary') && getAttribute('summary').length > 0) {
+            return true;
+        }
+
+        if(item.querySelectorAll('caption, th, thead, tfoot, colgroup, [role="rowheader"], [role="columnheader"], td[scope], td[headers], td[axis]').length > 0) {
+            return true;
+        }
+	},
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.7.4']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Liste des tableaux de mise en forme n\'utilisant aucun élément propre aux tableaux de données.",
+	query: 'table[role="presentation"]',
+	filter: function (item) {
+		if(item.hasAttribute('summary') && getAttribute('summary').length > 0) {
+            return false;
+        }
+
+        if(item.querySelectorAll('caption, th, thead, tfoot, colgroup, [role="rowheader"], [role="columnheader"], td[scope], td[headers], td[axis]').length > 0) {
+            return false;
+        }
+
+        return true;
+	},
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.7.4']}
+});
 
 // 6.1.1 Pour chaque lien texte l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
 tanaguruTestsList.push({
