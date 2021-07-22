@@ -1426,7 +1426,7 @@ button.addEventListener('click', function () {
 			tab.setAttribute('tabindex', '-1');
 			tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
 			var span = document.createElement('span');
-			span.appendChild(document.createTextNode(tag.name));
+			span.appendChild(document.createTextNode(chrome.i18n.getMessage('tag' + tag.id.charAt(0).toUpperCase() + tag.id.slice(1))));
 			tab.appendChild(span);
 			if (tag.nbfailures > 0) {
 				tab.appendChild(document.createTextNode(' '));

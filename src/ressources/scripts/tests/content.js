@@ -1054,7 +1054,7 @@ function loadTanaguruTests() {
         tags.push(window.tanaguru.tags[tag]);
     }
     tags = tags.sort(function (a, b) {
-        return a.name.localeCompare(b.name);
+        return a.id.localeCompare(b.id);
     });
     var result = { tags: tags, tests: window.tanaguru.tests };
     window.tanaguru = undefined;
@@ -1082,7 +1082,7 @@ function manageOutput(element) {
 
 function createTanaguruTag(tag, status) {
     if (!window.tanaguru.tags[tag]) {
-        window.tanaguru.tags[tag] = { id: tag, name: chrome.i18n.getMessage('tag' + tag.charAt(0).toUpperCase() + tag.slice(1)), status: status, nbfailures: 0 };
+        window.tanaguru.tags[tag] = { id: tag, status: status, nbfailures: 0 };
     }
 }
 
