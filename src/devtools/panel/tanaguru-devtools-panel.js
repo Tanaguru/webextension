@@ -464,14 +464,11 @@ button.addEventListener('click', function () {
 		
 		var t = 1;
 		var response = response.response[0];
-		
-		response.tags.forEach(tag => {
-			tag.name = chrome.i18n.getMessage('tag' + tag.id.charAt(0).toUpperCase() + tag.id.slice(1));
-		});
 
-		response.tags = response.tags.sort(function (a, b) {
-			return a.name.localeCompare(b.name);
-		});
+		response.tags.map(tag =>
+			tag.name = chrome.i18n.getMessage('tag' + tag.id.charAt(0).toUpperCase() + tag.id.slice(1))
+		);
+		response.tags.sort((a, b) => a.name.localeCompare(b.name));
 
 		response.tests.sort(function compare(a,b) {
 			if (a.type == 'failed' && b.type != 'failed') return -1;
