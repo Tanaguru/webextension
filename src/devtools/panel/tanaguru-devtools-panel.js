@@ -464,6 +464,15 @@ button.addEventListener('click', function () {
 		
 		var t = 1;
 		var response = response.response[0];
+		
+		response.tags.forEach(tag => {
+			tag.name = chrome.i18n.getMessage('tag' + tag.id.charAt(0).toUpperCase() + tag.id.slice(1));
+		});
+
+		response.tags = response.tags.sort(function (a, b) {
+			return a.name.localeCompare(b.name);
+		});
+
 		response.tests.sort(function compare(a,b) {
 			if (a.type == 'failed' && b.type != 'failed') return -1;
 			if (a.type != 'failed' && b.type == 'failed') return 1;
@@ -1426,7 +1435,7 @@ button.addEventListener('click', function () {
 			tab.setAttribute('tabindex', '-1');
 			tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
 			var span = document.createElement('span');
-			span.appendChild(document.createTextNode(chrome.i18n.getMessage('tag' + tag.id.charAt(0).toUpperCase() + tag.id.slice(1))));
+			span.appendChild(document.createTextNode(tag.name));
 			tab.appendChild(span);
 			if (tag.nbfailures > 0) {
 				tab.appendChild(document.createTextNode(' '));

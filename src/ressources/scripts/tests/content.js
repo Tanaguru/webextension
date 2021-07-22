@@ -1053,9 +1053,9 @@ function loadTanaguruTests() {
     for (var tag in window.tanaguru.tags) {
         tags.push(window.tanaguru.tags[tag]);
     }
-    tags = tags.sort(function (a, b) {
-        return a.id.localeCompare(b.id);
-    });
+    // tags = tags.sort(function (a, b) {
+    //     return a.id.localeCompare(b.id);
+    // });
     var result = { tags: tags, tests: window.tanaguru.tests };
     window.tanaguru = undefined;
     return result;
