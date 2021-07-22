@@ -1875,7 +1875,7 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') == null) {
-            return item.isNotExposedDueTo.length != 0 && getVisibility(item, getOpacity(item));
+            return item.isNotExposedDueTo.length != 0 && item.isNotVisibleDueTo.length === 0;
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -1888,7 +1888,7 @@ tanaguruTestsList.push({
     query: 'a:not([role]), [role="link"]',
     filter: function (item) {
         if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') == null) {
-            return item.isNotExposedDueTo.length != 0 && !getVisibility(item, getOpacity(item));
+            return item.isNotExposedDueTo.length != 0 && item.isNotVisibleDueTo.length > 0;
         }
     },
     analyzeElements: function (collection) {
@@ -1942,7 +1942,7 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
-            return item.isNotExposedDueTo.length != 0 && getVisibility(item, getOpacity(item));
+            return item.isNotExposedDueTo.length != 0 && item.isNotVisibleDueTo.length === 0;
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -1955,7 +1955,7 @@ tanaguruTestsList.push({
     query: 'a, [role="link"]',
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
-            return item.isNotExposedDueTo.length != 0 && !getVisibility(item, getOpacity(item));
+            return item.isNotExposedDueTo.length != 0 && item.isNotVisibleDueTo.length > 0;
         }
     },
     analyzeElements: function (collection) {
