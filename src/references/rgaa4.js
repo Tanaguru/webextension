@@ -2803,8 +2803,8 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if(getVisibility(item, getOpacity(item)) && item.textContent.trim().length > 1) {
-            var linkName = item.textContent.trim().replace(/[[:ponct::]]/, '').toLowerCase();
-            var linkAccessibleName = item.accessibleName.replace(/[[:ponct::]]/, '').toLowerCase();
+            var linkName = item.textContent.trim().replace(/[!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '').toLowerCase();
+            var linkAccessibleName = item.accessibleName.replace(/[!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '').toLowerCase();
             return item.isNotExposedDueTo.length == 0 && !linkAccessibleName.match(linkName);
         }
     },
@@ -2818,8 +2818,8 @@ tanaguruTestsList.push({
     query: 'a[href]:not([role]), [role="link"], svg a[href]:not([role]), svg [role="link"]',
     filter: function (item) {
         if(getVisibility(item, getOpacity(item)) && item.textContent.trim().length > 1) {
-            var linkName = item.textContent.trim().replace(/[[:ponct::]]/, '').toLowerCase();
-            var linkAccessibleName = item.accessibleName.replace(/[[:ponct::]]/, '').toLowerCase();
+            var linkName = item.textContent.trim().replace(/[!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '').toLowerCase();
+            var linkAccessibleName = item.accessibleName.replace(/[!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '').toLowerCase();
             return item.isNotExposedDueTo.length == 0 && linkAccessibleName.match(linkName);
         }
     },
