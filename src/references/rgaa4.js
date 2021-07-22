@@ -8,7 +8,7 @@ var tanaguruTestsList = [];
  ** Couleurs
  *! Multimédia (bloqué)
  *! Tableaux (bloqué)
- *TODO Liens (BUG)
+ * Liens (terminé)
  ** Scripts
  ** Eléments obligatoires
  ** Structuration de l'information
@@ -2535,6 +2535,12 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['5.7.4']}
 });
 
+/**
+ *? LIENS
+ ** 6.1 & 6.2 OK
+ */
+
+//* 6.1 Chaque lien est-il explicite (hors cas particuliers) ?
 // 6.1.1 Pour chaque lien texte l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -2613,7 +2619,16 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent == "")) {
-            return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+            var images = item.querySelectorAll('img, [role="img"], svg, object[type="image"], canvas');
+            var linkName = false;
+            var i = 0;
+            while(images[i] && !linkName) {
+                if(images[i].hasAccessibleName()) {
+                    linkName = true;
+                }
+                i++;
+            }
+            return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName() && !linkName;
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -2659,7 +2674,16 @@ tanaguruTestsList.push({
     description:'Vérifiez la pertinence des noms accessibles des images',
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent == "")) {
-            return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+            var images = item.querySelectorAll('img, [role="img"], svg, object[type="image"], canvas');
+            var linkName = false;
+            var i = 0;
+            while(images[i] && !linkName) {
+                if(images[i].hasAccessibleName()) {
+                    linkName = true;
+                }
+                i++;
+            }
+            return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName() && linkName;
         }
     },
     analyzeElements: function (collection) {
@@ -2679,7 +2703,16 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
-            return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+            var children = item.childNodes;
+            var linkName = false;
+            var i = 0;
+            while(children[i] && !linkName) {
+                if(children[i].nodeType === 1 && children[i].hasAccessibleName()) {
+                    linkName = true;
+                }
+                i++;
+            }
+            return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName() && !linkName;
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -2725,7 +2758,16 @@ tanaguruTestsList.push({
     description:'Vérifiez la pertinence des noms accessibles.',
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
-            return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+            var children = item.childNodes;
+            var linkName = false;
+            var i = 0;
+            while(children[i] && !linkName) {
+                if(children[i].nodeType === 1 && children[i].hasAccessibleName()) {
+                    linkName = true;
+                }
+                i++;
+            }
+            return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName() && linkName;
         }
     },
     analyzeElements: function (collection) {
@@ -2832,7 +2874,7 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['6.1.5']}
 });
 
-//TODO 6.2 à revoir, il faut vérifier que chaque lien possède un noeud enfant visible
+//* 6.2 Dans chaque page web, chaque lien a-t-il un intitulé ?
 // 6.2.1 Dans chaque page web, chaque lien a-t-il un intitulé entre <a> et </a> ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -2844,7 +2886,7 @@ tanaguruTestsList.push({
             var children = item.childNodes;
             var linkContent = false;
             for(var i = 0; i < children.length; i++) {
-                if(children[i].nodeType === 1 && children[i].hasAccessibleName()) {
+                if(children[i].nodeType === 1 && getVisibility(children[i], getOpacity(children[i]))) {
                     linkContent = true;
                     break;
                 }
@@ -2870,7 +2912,7 @@ tanaguruTestsList.push({
             var children = item.childNodes;
             var linkContent = false;
             for(var i = 0; i < children.length; i++) {
-                if(children[i].nodeType === 1 && children[i].hasAccessibleName()) {
+                if(children[i].nodeType === 1 && getVisibility(children[i], getOpacity(children[i]))) {
                     linkContent = true;
                     break;
                 }
