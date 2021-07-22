@@ -3530,31 +3530,11 @@ if (!SVGElement.prototype.hasOwnProperty('isNotExposedDueTo')) Object.defineProp
 
 var isNotVisibleDueTo = function () {
     var result = [];
-    // if (!(!!(this.offsetWidth || this.offsetHeight || this.getClientRects().length))) {
-    //     result.push('css:other');
-    // }
-    // if (window.getComputedStyle(this, null).getPropertyValue('display') == 'none') {
-    //     result.push('css:display');
-    // }
-    // else {
-    //     var parent = this.parentNode;
-    //     while (parent && parent.nodeType == 1) {
-    //         if (window.getComputedStyle(parent, null).getPropertyValue('display') == 'none') {
-    //             result.push('css:display');
-    //             break;
-    //         }
-    //         parent = parent.parentNode;
-    //     }
-    // }
-    // if (window.getComputedStyle(this, null).getPropertyValue('opacity') == '0') {
-    //     result.push('css:opacity');
-    // }
-    // if (window.getComputedStyle(this, null).getPropertyValue('visibility') == 'hidden') {
-    //     result.push('css:visibility');
-    // }
+    
     if(!getVisibility(this, getOpacity(this))) {
         result.push('css:other');
     }
+    
     return result;
 };
 
