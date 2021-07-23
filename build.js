@@ -42,7 +42,7 @@ function copySources(vendor, dir){
         {
             recursive: true,
             filter: (src, dest) => {
-                return !src.includes(MANIFESTS_DIR) && !src.includes(REFERENCES_DIR) ;
+                return !src.includes(MANIFESTS_DIR) && !src.includes(REFERENCES_DIR) && !src.includes(TEST_DIR) ;
             }
         }
     )
