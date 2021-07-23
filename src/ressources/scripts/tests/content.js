@@ -3057,7 +3057,7 @@ var ARIA = {
             if (this.isValid()) {
                 var role = new ARIA.Role(role, { getData: true });
                 var prohibitedStatesProperties = role.getProhibitedStatesProperties();
-                return this.canBeUsedInRole(role.role) || prohibitedStatesProperties.indexOf(this.stateProperty) > -1;
+                return this.canBeUsedInRole(role.role) || (prohibitedStatesProperties && prohibitedStatesProperties.indexOf(this.stateProperty) > -1);
             }
             else {
                 return undefined;
