@@ -1,6 +1,6 @@
 //? CONTRAST SCRIPT
 
-if(!document.body.style.backgroundColor && !document.body.style.background) {
+if(!window.getComputedStyle(document.body, null).getPropertyValue('background-color') && !window.getComputedStyle(document.body, null).getPropertyValue('background')) {
 	document.body.style.backgroundColor = '#fff';
 }
 var tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);

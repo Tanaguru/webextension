@@ -2845,9 +2845,11 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if(getVisibility(item, getOpacity(item)) && item.textContent.trim().length > 1) {
-            var linkName = item.textContent.trim().replace(/[!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '').toLowerCase();
-            var linkAccessibleName = item.accessibleName.replace(/[!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '').toLowerCase();
-            return item.isNotExposedDueTo.length == 0 && !linkAccessibleName.match(linkName);
+            var linkName = item.innerText.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var linkAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var regex = new RegExp(linkName, 'mi');
+            
+            return item.isNotExposedDueTo.length == 0 && !linkAccessibleName.match(regex);
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -2860,9 +2862,11 @@ tanaguruTestsList.push({
     query: 'a[href]:not([role]), [role="link"], svg a[href]:not([role]), svg [role="link"]',
     filter: function (item) {
         if(getVisibility(item, getOpacity(item)) && item.textContent.trim().length > 1) {
-            var linkName = item.textContent.trim().replace(/[!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '').toLowerCase();
-            var linkAccessibleName = item.accessibleName.replace(/[!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '').toLowerCase();
-            return item.isNotExposedDueTo.length == 0 && linkAccessibleName.match(linkName);
+            var linkName = item.innerText.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var linkAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var regex = new RegExp(linkName, 'mi');
+
+            return item.isNotExposedDueTo.length == 0 && linkAccessibleName.match(regex);
         }
     },
     analyzeElements: function (collection) {
@@ -2878,25 +2882,16 @@ tanaguruTestsList.push({
 // 6.2.1 Dans chaque page web, chaque lien a-t-il un intitulé entre <a> et </a> ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des liens sans nom accessible entre <a> et </a>.',
+    name: 'Liste des liens sans intitulé entre <a> et </a>.',
     query: 'a[href]:not([role]), [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.isNotExposedDueTo.length == 0 || getVisibility(item, getOpacity(item))) {
-            var children = item.childNodes;
-            var linkContent = false;
-            for(var i = 0; i < children.length; i++) {
-                if(children[i].nodeType === 1 && getVisibility(children[i], getOpacity(children[i]))) {
-                    linkContent = true;
-                    break;
-                }
+        if(item.innerText && item.innerText.trim().length > 0) {
+            return;
+        }
 
-                if(children[i].nodeType === 3 && children[i].textContent.trim().length > 0) {
-                    linkContent = true;
-                    break;
-                }
-            }
-            return !linkContent;
+        if(getVisibility(item, getOpacity(item))) {
+            return item.querySelectorAll('img, [role="img"], object, canvas, svg').length === 0;
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -2905,24 +2900,17 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des liens avec un nom accessible entre <a> et </a>.',
+    name: 'Liste des liens avec un intitulé entre <a> et </a>.',
     query: 'a[href]:not([role]), [role="link"]',
     filter: function (item) {
         if(item.isNotExposedDueTo.length == 0 || getVisibility(item, getOpacity(item))) {
-            var children = item.childNodes;
-            var linkContent = false;
-            for(var i = 0; i < children.length; i++) {
-                if(children[i].nodeType === 1 && getVisibility(children[i], getOpacity(children[i]))) {
-                    linkContent = true;
-                    break;
-                }
-
-                if(children[i].nodeType === 3 && children[i].textContent.trim().length > 0) {
-                    linkContent = true;
-                    break;
-                }
+            if(item.innerText && item.innerText.trim().length > 0) {
+                return true;
             }
-            return linkContent;
+    
+            if(getVisibility(item, getOpacity(item))) {
+                return item.querySelectorAll('img, [role="img"], object, canvas, svg').length > 0;
+            }
         }
     },
     analyzeElements: function (collection) {
