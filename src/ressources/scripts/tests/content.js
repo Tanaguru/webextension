@@ -1070,12 +1070,14 @@ function manageOutput(element) {
     var canBeReachedUsingKeyboardWith = element.canBeReachedUsingKeyboardWith;
     var isNotVisibleDueTo = element.isNotVisibleDueTo;
     var isNotExposedDueTo = element.isNotExposedDueTo;
-    if(element.tagName) {
+
+    if(element.nodeType === 10) {
+        var fakeelement = "<!DOCTYPE "+(element.name ? element.name : '')+(element.publicId ? ' PUBLIC "' + element.publicId + '"' : '')+(!element.publicId && element.systemId ? ' SYSTEM' : '')+(element.systemId ? ' "' + element.systemId + '"' : '')+'>';
+    } else {
         var fakeelement = element.cloneNode(true);
-    } else if(['html', 'math', 'svg:svg', 'svg'].includes(element.name.toLowerCase())) {
-        var fakeelement = "<!DOCTYPE "+element.name+(element.publicId ? ' PUBLIC "' + element.publicId + '"' : '')+(!element.publicId && element.systemId ? ' SYSTEM' : '')+(element.systemId ? ' "' + element.systemId + '"' : '')+'>';
     }
-    var e = fakeelement.tagName ? document.createElement(fakeelement.tagName.toLowerCase()) : null;
+
+    var e = element.nodeType !== 10 ? document.createElement(fakeelement.tagName.toLowerCase()) : null;
     if (e && e.outerHTML.indexOf("/") != -1) {
         if (fakeelement.innerHTML.length > 512) {
             fakeelement.innerHTML = '[...]';
