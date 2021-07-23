@@ -462,23 +462,21 @@ button.addEventListener('click', function () {
 		alltagspanelheading.appendChild(document.createTextNode(tab.textContent));
 		alltagspanel.appendChild(alltagspanelheading);
 		
-		var t = 1;
-		var response = response.response[0];
+		let t = 1;
+		response = response.response[0];
 
-		response.tags.map(tag =>
-			tag.name = chrome.i18n.getMessage('tag' + tag.id.charAt(0).toUpperCase() + tag.id.slice(1))
-		);
-		response.tags.sort((a, b) => a.name.localeCompare(b.name));
+		response.tags.forEach(
+			tag => tag.name = chrome.i18n.getMessage('tag' + tag.id.charAt(0).toUpperCase() + tag.id.slice(1)))
 
-		response.tests.sort(function compare(a,b) {
-			if (a.type == 'failed' && b.type != 'failed') return -1;
-			if (a.type != 'failed' && b.type == 'failed') return 1;
-			if (a.type == 'cantTell' && b.type == 'passed') return -1;
-			if (a.type == 'passed' && b.type == 'cantTell') return 1;
-			if (a.type == 'cantTell' && b.type == 'untested') return -1;
-			if (a.type == 'untested' && b.type == 'cantTell') return 1;
-			if (a.type == 'passed' && b.type == 'untested') return -1;
-			if (a.type == 'untested' && b.type == 'passed') return 1;
+		response.tests = response.tests.sort((a,b) => {
+			if (a.type === 'failed' && b.type !== 'failed') return -1;
+			if (a.type !== 'failed' && b.type === 'failed') return 1;
+			if (a.type === 'cantTell' && b.type === 'passed') return -1;
+			if (a.type === 'passed' && b.type === 'cantTell') return 1;
+			if (a.type === 'cantTell' && b.type === 'untested') return -1;
+			if (a.type === 'untested' && b.type === 'cantTell') return 1;
+			if (a.type === 'passed' && b.type === 'untested') return -1;
+			if (a.type === 'untested' && b.type === 'passed') return 1;
 			return 0;
 		});
 		
