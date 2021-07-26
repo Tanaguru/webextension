@@ -1323,45 +1323,45 @@ function createTanaguruTest(test) {
 // TODO: début HTML.
 
 /*
-	HTML 5.3
-	W3C Working Draft, 18 October 2018
-    https://www.w3.org/TR/html53/
+HTML 5.3
+W3C Working Draft, 18 October 2018
+https://www.w3.org/TR/html53/
 
-    ARIA in HTML
-    W3C Working Draft 20 May 2020
-    https://www.w3.org/TR/html-aria/
+ARIA in HTML
+W3C Working Draft 20 May 2020
+https://www.w3.org/TR/html-aria/
 
-    Note, file updated with :
-    - ARIA 1.2, new roles :
-    * paragraph (p);
-    * blockquote (blockquote);
-    * caption (figcaption);
-    * generic (div and span);
-    * emphasis (em);
-    * strong (strong);
-    * term (dfn);
-    * time (time);
-    * code (code);
-    * subscript (sub);
-    * superscript (sup);
-    * insertion (ins);
-    * deletion (del);
-    * caption (caption).
-    - ARIA 1.2, current associations :
-    * term is not associated with dt (removed here);
-    * definition is not associated with dd (removed here);
-    * link is not associated with area[href] (ignored here - href not involved in HTML spec);
-    * grid is associated with table (ignored here);
-    * gridcell is associated with td (ignored here);
-    * columnheader is associated with th[scope="col"] (added here);
-    * rowheader is associated with th[scope="row"] (added here).
-    - ARIA in HTML :
-    * spinbutton is not associated with input[type="text|search"] (removed here).
-    * textarea is associated with textbox & no mention of aria-multiline (aria-multiline ignored here too).
-    * button is associated with summary (added here).
-    * area is associated with link (added here).
+Note, file updated with :
+- ARIA 1.2, new roles :
+* paragraph (p);
+* blockquote (blockquote);
+* caption (figcaption);
+* generic (div and span);
+* emphasis (em);
+* strong (strong);
+* term (dfn);
+* time (time);
+* code (code);
+* subscript (sub);
+* superscript (sup);
+* insertion (ins);
+* deletion (del);
+* caption (caption).
+- ARIA 1.2, current associations :
+* term is not associated with dt (removed here);
+* definition is not associated with dd (removed here);
+* link is not associated with area[href] (ignored here - href not involved in HTML spec);
+* grid is associated with table (ignored here);
+* gridcell is associated with td (ignored here);
+* columnheader is associated with th[scope="col"] (added here);
+* rowheader is associated with th[scope="row"] (added here).
+- ARIA in HTML :
+* spinbutton is not associated with input[type="text|search"] (removed here).
+* textarea is associated with textbox & no mention of aria-multiline (aria-multiline ignored here too).
+* button is associated with summary (added here).
+* area is associated with link (added here).
 */
-
+//TODO mettre à jour les catégories et intégrer les types de contenus autorisés
 var htmlData = {
     version: 5.3,
     status: 'Working Draft (WD)',
@@ -3674,4 +3674,27 @@ function getDuplicateID() {
 
     query = query === null ? query : query.slice(0, -1);
     return document.querySelectorAll(query);
+}
+
+//TODO recupérer les events appliqué via api
+function listAllEventListeners() {
+    var allElements = Array.from(document.body.querySelectorAll('*'));
+    allElements.push(document.body);
+
+    var types = [];
+    for (let ev in window) {
+      if (/^on/.test(ev)) types[types.length] = ev;
+    }
+  
+    let elements = [];
+    for (let i = 0; i < allElements.length; i++) {
+      var currentElement = allElements[i];
+      for (let j = 0; j < types.length; j++) {
+
+        if (types[j] != 'onload' && typeof currentElement[types[j]] === 'function') {
+          elements.push(currentElement);
+        }
+      }
+    }
+    return elements;
 }

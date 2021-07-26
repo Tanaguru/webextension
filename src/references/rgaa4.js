@@ -9,9 +9,9 @@ var tanaguruTestsList = [];
  *! Multimédia (bloqué)
  *! Tableaux (bloqué)
  * Liens (terminé)
- ** Scripts
+ *! Scripts (bloqué)
  ** Eléments obligatoires
- ** Structuration de l'information
+ * Structuration de l'information (terminé)
  ** Présentation de l'information
  ** Formulaires
  ** Navigation
@@ -20,10 +20,10 @@ var tanaguruTestsList = [];
 
 /**
  *? IMAGES
- ** 1.1 / 1.2 / 1.3 / 1.4 et 1.9 OK
+ ** 1.1 -> 1.7 et 1.9 OK
  *TODO hasAccessibleName ne teste pas le title sur les balises object & embed
  *TODO pas possible de tester si un élément a un aria-hidden="true" ET un nom accessible car hasAccessibleName() renvoie false quand isNotExposedDueTo.length === 0
- *! comment identifier les images test / captcha ?
+ *! 1.4/1.5 comment identifier les images test / captcha ?
  *TODO Voir s'il est possible de traiter partiellement le critère 1.7
  */
 
@@ -886,11 +886,6 @@ tanaguruTestsList.push({
             }
         }
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.1', '1.4.1'] }
@@ -904,11 +899,6 @@ tanaguruTestsList.push({
     query: 'area:not([role])',
     filter: function (item) {
         return item.hasAccessibleName();
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
     },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -924,11 +914,6 @@ tanaguruTestsList.push({
     filter: function (item) {
         return item.hasAccessibleName();
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.3', '1.4.3'] }
@@ -943,11 +928,6 @@ tanaguruTestsList.push({
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/")){
             return item.hasAccessibleName();
-        }
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'canTell';
         }
     },
     mark: { attrs: ['aria-label','aria-labelledby','title']},
@@ -966,11 +946,6 @@ tanaguruTestsList.push({
             return item.hasAccessibleName();
         }
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     mark: { attrs: ['aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.5', '1.4.5'] }
@@ -984,11 +959,6 @@ tanaguruTestsList.push({
     query: 'svg[role="img"]',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
     },
     mark: { attrs: ['aria-label','aria-labelledby']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -1004,11 +974,6 @@ tanaguruTestsList.push({
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     mark: { attrs: ['aria-label','aria-labelledby']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.7', '1.4.7'] }
@@ -1022,11 +987,6 @@ tanaguruTestsList.push({
     filter: function (item) {
         if (item.textContent && item.textContent.trim().length > 0) {
             return item.isNotExposedDueTo.length === 0;
-        }
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
         }
     },
     tags: ['a11y', 'images', 'accessiblename'],
@@ -1068,14 +1028,152 @@ tanaguruTestsList.push({
     filter: function (item) {
         return true;
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.9'] }
+});
+
+// 1.5 Pour chaque image utilisée comme CAPTCHA, une solution d'accès alternatif au contenu ou à la fonction du CAPTCHA est-elle présente ?
+// 1.5.1 Chaque image (balises <img>, <area>, <object>, <embed>, <svg>, <canvas> ou possédant un attribut WAI-ARIA role="img") utilisée comme CAPTCHA vérifie-t-elle une de ces conditions ? 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des images.',
+    query: 'img, area, object, embed, svg, canvas, [role="img"]',
+    description: 'Si ces images sont utilisées comme CAPTCHA, vérifier qu\'il existe une alternative non graphique ou une autre solution d\'accès à la fonctionnalité qui est sécurisée par le CAPTCHA',
+    tags: ['a11y', 'images'],
+    ressources: {'rgaa': ['1.5.1']}
+});
+
+// 1.5.2 Chaque bouton associé à une image (balise <input> avec l'attribut type="image") utilisée comme CAPTCHA vérifie-t-il une de ces conditions ? 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des bouton associé à une image.',
+    query: 'input[type="image"]',
+    description: 'Si ces bouton sont utilisés comme CAPTCHA, vérifier qu\'il existe une alternative non graphique ou une autre solution d\'accès à la fonctionnalité qui est sécurisée par le CAPTCHA',
+    tags: ['a11y', 'images'],
+    ressources: {'rgaa': ['1.5.2']}
+});
+
+// 1.6 Chaque image porteuse d'information a-t-elle, si nécessaire, une description détaillée ?
+// 1.7 Pour chaque image porteuse d'information ayant une description détaillée, cette description est-elle pertinente ?
+// 1.6.1 Chaque image (balise <img>) porteuse d'information, qui nécessite une description détaillée, vérifie-t-elle une de ces conditions ?
+// 1.7.1 Chaque image (balise <img>) porteuse d'information, ayant une description détaillée, vérifie-t-elle ces conditions ? 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des images (balise <img>) porteuses d\'information.',
+    query: 'img',
+    description: 'Vérifier si ces images ont si nécessaire une description détaillée et pertinente.',
+    filter: function (item) {
+        return item.hasAccessibleName();
+    },
+    tags: ['a11y', 'images'],
+    ressources: {'rgaa': ['1.6.1', '1.7.1']}
+});
+
+// 1.6.2 Chaque image objet (balise <object> avec l'attribut type="image/…") porteuse d'information, qui nécessite une description détaillée, vérifie-t-elle une de ces conditions ?
+// 1.7.3 Chaque image objet (balise <object> avec l'attribut type="image/…") porteuse d'information, ayant une description détaillée, vérifie-t-elle ces conditions ? 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des images (balise <object>) porteuses d\'information.',
+    query: 'object[type]',
+    description: 'Vérifier si ces images ont si nécessaire une description détaillée et pertinente.',
+    filter: function (item) {
+        if (item.getAttribute('type').startsWith("image/")){
+            return item.hasAccessibleName();
+        }
+    },
+    tags: ['a11y', 'images'],
+    ressources: {'rgaa': ['1.6.2', '1.7.3']}
+});
+
+//1.6.3 Chaque image embarquée (balise <embed>) porteuse d'information, qui nécessite une description détaillée, vérifie-t-elle une de ces conditions ?
+// 1.7.4 Chaque image embarquée (balise <embed> avec l'attribut type="image/…") porteuse d'information, ayant une description détaillée, vérifie-t-elle ces conditions ? 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des images (balise <embed>) porteuses d\'information.',
+    query: 'embed[type]',
+    description: 'Vérifier si ces images ont si nécessaire une description détaillée et pertinente.',
+    filter: function (item) {
+        if (item.getAttribute('type').startsWith("image/")){
+            return item.hasAccessibleName();
+        }
+    },
+    tags: ['a11y', 'images'],
+    ressources: {'rgaa': ['1.6.3', '1.7.4']}
+});
+
+//1.6.4 Chaque bouton de type image (balise <input> avec l'attribut type="image") porteur d'information, qui nécessite une description détaillée, vérifie-t-elle une de ces conditions ?
+// 1.7.2 Chaque bouton de type image (balise <input> avec l'attribut type="image") porteur d'information, ayant une description détaillée, vérifie-t-elle ces conditions ? 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des images (balise <input>) porteuses d\'information.',
+    query: 'input[type="image"]',
+    description: 'Vérifier si ces images ont si nécessaire une description détaillée et pertinente.',
+    filter: function (item) {
+        return item.hasAccessibleName();
+    },
+    tags: ['a11y', 'images'],
+    ressources: {'rgaa': ['1.6.4', '1.7.2']}
+});
+
+// 1.6.5 Chaque image vectorielle (balise <svg>) porteuse d'information, qui nécessite une description détaillée, vérifie-t-elle une de ces conditions ?
+// 1.6.6 Pour chaque image vectorielle (balise <svg>) porteuse d'information, ayant une description détaillée, la référence éventuelle à la description détaillée dans l'attribut WAI-ARIA aria-label et la description détaillée associée par l'attribut WAI-ARIA aria-labelledby ou aria-describedby sont-elles correctement restituées par les technologies d'assistance ?
+// 1.7.5 Chaque image vectorielle (balise <svg>) porteuse d'information, ayant une description détaillée, vérifie-t-elle ces conditions ? 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des images (balise <svg>) porteuses d\'information.',
+    query: 'svg[role="img"]',
+    description: 'Vérifier si ces images ont si nécessaire une description détaillée, pertinente et correctement restituée par les technologies d\'assistance.',
+    filter: function (item) {
+        return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+    },
+    tags: ['a11y', 'images'],
+    ressources: {'rgaa': ['1.6.5', '1.6.6', '1.7.5']}
+});
+
+// 1.6.7 Chaque image bitmap (balise <canvas>), porteuse d'information, qui nécessite une description détaillée, vérifie-t-elle une de ces conditions ? 
+// 1.6.8 Pour chaque image bitmap (balise <canvas>) porteuse d'information, qui implémente une référence à une description détaillée adjacente, cette référence est-elle correctement restituée par les technologies d'assistance ?
+// 1.7.6 Chaque image bitmap (balise <canvas>) porteuse d'information, ayant une description détaillée, vérifie-t-elle ces conditions ? 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des images (balise <canvas>) porteuses d\'information.',
+    query: 'canvas[role="img"]',
+    description: 'Vérifier si ces images ont si nécessaire une description détaillée, pertinente et correctement restituée par les technologies d\'assistance.',
+    filter: function (item) {
+        return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+    },
+    tags: ['a11y', 'images'],
+    ressources: {'rgaa': ['1.6.7', '1.6.8', '1.7.6']}
+});
+
+// 1.6.9 Pour chaque image (balise <img>, <input> avec l'attribut type="image", <area>, <object>, <embed>, <svg>, <canvas>, ou possédant un attribut WAI-ARIA role="img") porteuse d'information, qui est accompagnée d'une description détaillée et qui utilise un attribut WAI-ARIA aria-describedby, l'attribut WAI-ARIA aria-describedby associe-t-il la description détaillée ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des images qui utilisent l\'attribut aria-describedby.',
+    query: 'img[aria-describedby], input[type="image][aria-describedby], area[aria-describedby], object[type][aria-describedby], embed[type][aria-describedby], [role="img"][aria-describedby]',
+    description: 'Si ces images nécessitent une description détaillée, vérifier que l\'attribut aria-describedby associe cette description.',
+    filter: function (item) {
+        var IName = item.tagName.toLowerCase();
+        if ((IName == 'object' || IName == 'embed') && !item.getAttribute('type').startsWith("image/")) {
+            return false;
+        }
+        return true;
+    },
+    tags: ['a11y', 'images'],
+    ressources: {'rgaa': ['1.6.9']}
+});
+
+// 1.6.10 Chaque balise possédant un attribut WAI-ARIA role="img" porteuse d'information, qui nécessite une description détaillée, vérifie-t-elle une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des images (attribut role="img") porteuses d\'information.',
+    query: '[role="img"]',
+    description: 'Vérifier si ces images ont si nécessaire une description détaillée.',
+    filter: function (item) {
+        return item.hasAccessibleName();
+    },
+    tags: ['a11y', 'images'],
+    ressources: {'rgaa': ['1.6.10']}
 });
 
 //* 1.9 Chaque légende d'image est-elle, si nécessaire, correctement reliée à l'image correspondante ?
@@ -2922,19 +3020,24 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['6.2.1']}
 });
 
+/**
+ *? SCRIPTS
+ ** 7.1 & 7.2 implémentation partielle
+ *TODO implémenter les modèles de conception dans le script content.js
+ */
 // 7.1 Chaque script est-il, si nécessaire, compatible avec les technologies d'assistance ?
-// 7.1.2 Chaque script qui génère ou contrôle un composant d'interface respecte-t-il une de ces conditions ? 
+// 7.1.1 Chaque script qui génère ou contrôle un composant d'interface respecte-t-il une de ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Boutons visibles ou restitués sans nom accessible.',
-	query: 'button:not([role]), [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
+	query: 'button:not([role]), button[role="none"],[role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
 	expectedNbElements: 0,
     explanations: {
 		'passed': "Cette page ne contient pas de bouton visible sans nom accessible.",
 		'failed': "Des boutons visibles sans nom accessible sont présents dans la page."
 	},
 	filter: function (item) {
-        if(getVisibility(item, getOpacity(item)) || item.isNotExposedDueTo.length === 0) {
+        if((getVisibility(item, getOpacity(item)) || item.isNotExposedDueTo.length === 0) && !item.disabled) {
             if(!item.matches('input[type="reset"]:not([aria-labelledby], [aria-label], [value], [title]), input[type="submit"]:not([aria-labelledby], [aria-label], [value], [title])')) {
                 return !item.hasAccessibleName();
             }
@@ -2947,7 +3050,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Boutons visibles ou restitués avec un nom accessible.',
-	query: 'button:not([role]), [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
+	query: 'button:not([role]), button[role="none"], [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
 	filter: function (item) {
         if(getVisibility(item, getOpacity(item)) || item.isNotExposedDueTo.length === 0) {
             if(item.matches('input[type="reset"]:not([aria-labelledby], [aria-label], [value], [title]), input[type="submit"]:not([aria-labelledby], [aria-label], [value], [title])')) {
@@ -2966,6 +3069,24 @@ tanaguruTestsList.push({
 	ressources: {'rgaa': ['7.1.1']}
 });
 
+// 7.2 Pour chaque script ayant une alternative, cette alternative est-elle pertinente ?
+// 7.2.1 Pour chaque script ayant une alternative, cette alternative est-elle pertinente ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Liste des alternatives de script dans des balises <noscript>.',
+    description: 'Vérifier la pertinence de l\'alternative.',
+	query: 'noscript',
+	tags: ['a11y', 'accessiblename'],
+	ressources: {'rgaa': ['7.2.1']}
+});
+
+/**
+ *? ELEMENTS OBLIGATOIRES
+ ** 8.1/8.4->8.8 OK
+ ** 8.3 si l'élément <html> n'a pas d'attribut lang, vérifier que la langue est renseignée pour chaque noeud texte et attribut dont le contenu est affiché ou lu par les lecteurs d'écran
+ ** 8.9.1 voir si l'on peut étoffer
+ *TODO 8.2 implémenter spec HTML dans le script content.js
+ */
 // 8.1 Chaque page web est-elle définie par un type de document ?
 // 8.1.1 Pour chaque page web, le type de document (balise doctype) est-il présent ?
 tanaguruTestsList.push({
@@ -3069,7 +3190,6 @@ tanaguruTestsList.push({
 	ressources: {'rgaa': ['8.1.1']}
 });
 
-
 // 8.2 Pour chaque page web, le code source généré est-il valide selon le type de document spécifié ?
 // 8.2.1 Pour chaque déclaration de type de document, le code source généré de la page vérifie-t-il ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
@@ -3126,30 +3246,54 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Attributs aria-* définis dans WAI-ARIA.',
+	name: 'Attributs aria-* non définis dans WAI-ARIA.',
 	query: '*',
+    expectedNbElements: 0,
+    explanations: {
+        'passed': 'Tous les attributs aria-* trouvés sur cette page sont bien définis dans WAI-ARIA.',
+        'failed': 'Des attributs aria-* non définis dans WAI-ARIA ont été trouvé sur cette page.'
+    },
 	filter: function (item) {
 		if (item.isNotExposedDueTo.length == 0) {
-			return Array.from(item.attributes).filter(function(attributeNode) {
-				return /^aria-.*$/.test(attributeNode.nodeName);
-			}).length > 0;
-		}
-		return false;
-	},
-	analyzeElements: function (collection) {
-		var definedStatesProperties = ARIA.getAllStatesProperties('js');
-		for (var i = 0; i < collection.length; i++) {
-			collection[i].status = 'passed';
-			var attributes = Array.from(collection[i].attributes);
-			for (var a = 0; a < attributes.length; a++) {
+            var attributes = Array.from(item.attributes);
+            var definedStatesProperties = ARIA.getAllStatesProperties('js');
+            for (var a = 0; a < attributes.length; a++) {
 				if (/^aria-.*$/.test(attributes[a].nodeName)) {
 					if (definedStatesProperties.indexOf(attributes[a].nodeName) == -1) {
-						collection[i].status = 'failed';
-						break;
+						return true;
 					}
 				}
 			}
 		}
+	},
+	tags: ['a11y', 'aria', 'code'],
+	ressources: {'rgaa': ['8.2.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Attributs aria-* définis dans WAI-ARIA.',
+	query: '*',
+	filter: function (item) {
+		if (item.isNotExposedDueTo.length == 0) {
+            var attributes = Array.from(item.attributes);
+            var definedStatesProperties = ARIA.getAllStatesProperties('js');
+            var ariaAttributes = false;
+            for (var a = 0; a < attributes.length; a++) {
+				if (/^aria-.*$/.test(attributes[a].nodeName)) {
+					if (definedStatesProperties.indexOf(attributes[a].nodeName) == -1) {
+						return false;
+					}
+                    ariaAttributes = true;
+				}
+			}
+            return ariaAttributes;
+		}
+	},
+	analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
 	},
 	tags: ['a11y', 'aria', 'code'],
 	ressources: {'rgaa': ['8.2.1']}
@@ -3182,7 +3326,7 @@ tanaguruTestsList.push({
 	query: '*',
 	expectedNbElements: 0,
     explanations: {
-        'passed': "Cette page ne contient pas de propriété ARIA non autorisée'.",
+        'passed': "Cette page ne contient pas de propriété ARIA non autorisée.",
 		'failed': "Des propriétés ARIA non autorisées sont présentes dans la page."
     },
 	filter: function (item) {
@@ -3197,9 +3341,21 @@ tanaguruTestsList.push({
 	ressources: {'rgaa': ['8.2.1']}
 });
 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Imbrications de balises HTML non conformes.',
+	query: 'form form, button a, a button, ul>a, ol>a, ul>h1, ul>h2, ul>h3, ul>h4, ul>h5, ul>h6, ol>h1, ol>h2, ol>h3, ol>h4, ol>h5, ol>h6, ul>p, ol>p, ul>span, ol>span, ul>div, ol>div, section main, header main, footer main',
+	expectedNbElements: 0,
+    explanations: {
+        'passed': "Aucune imbrication de balises HTML non conforme n\'a été trouvé sur cette page.",
+		'failed': "Des imbrications de balises HTML ne sont pas conformes sur cette page."
+    },
+	tags: ['a11y', 'code'],
+	ressources: {'rgaa': ['8.2.1']}
+});
+
 // 8.3.1 : Pour chaque page web, l'indication de langue par défaut vérifie-t-elle une de ces conditions ?
 // incomplete (devrait gérer les attributs lang sur les éléments contenant du texte)
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'La langue de la page n\'est pas spécifiée.',
@@ -3349,49 +3505,7 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['8.4.1']}
 });
 
-
-// vérifier la validité
-/*
-tanaguruTestsList.push({
-	lang: 'fr',
-	name: 'Liste des attributs lang invalides',
-	query: 'body [lang]',
-	expectedNbElements: 0,
-	filter: function (item) {
-		var lang = item.getAttribute('lang');
-		if (lang != '') {
-			return lang.trim().length == 0 ? true : !item.hasValidLanguageCode();
-		}
-		else {
-			return false;
-		}
-	},
-	mark: { attrs: ['lang']},
-	tags: ['a11y', 'languages','mandatory'],
-	ressources: {'rgaa': ['8.4.1']}
-});
-
-tanaguruTestsList.push({
-	lang: 'fr',
-	name: 'Liste des attributs lang valides',
-	query: 'body [lang]',
-	filter: function (item) {
-		var lang = item.getAttribute('lang');
-		if (lang != '') {
-			return lang.trim().length > 0 ? item.hasValidLanguageCode() : false;
-		}
-		else {
-			return false;
-		}
-	},
-	mark: { attrs: ['lang']},
-	tags: ['a11y', 'languages','mandatory'],
-	ressources: {'rgaa': ['8.4.1']}
-});
-*/
-
 //8.5.1 Chaque page web a-t-elle un titre de page (balise title) ?
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'La page n\'a pas de  titre de page (balise title).',
@@ -3595,6 +3709,11 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['8.10.2']}
 });
 
+/**
+ *? STRUCTURATION DE L'INFORMATION
+ ** 9.1/9.2 OK
+ ** 9.3/9.4 test non automatisable
+ */
 // 9.1.1 : Dans chaque page web, la hiérarchie entre les titres (balise hx ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) est-elle pertinente ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -3686,7 +3805,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des titres (balise <hx> ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) non pertinent',
-    query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"][aria-level="1"], [role="heading"][aria-level="2"], [role="heading"][aria-level="3"], [role="heading"][aria-level="4"], [role="heading"][aria-level="5"], [role="heading"][aria-level="6"]',
+    query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"][aria-level]',
     expectedNbElements: 0,
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
@@ -3698,14 +3817,9 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier la pertinence des titres (balise <hx> ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level)',
-    query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"][aria-level="1"], [role="heading"][aria-level="2"], [role="heading"][aria-level="3"], [role="heading"][aria-level="4"], [role="heading"][aria-level="5"], [role="heading"][aria-level="6"]',
+    query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"][aria-level]',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
     },
     tags: ['a11y', 'headings', 'accessiblename'],
     ressources: { 'rgaa': ['9.1.2'] }
@@ -3719,13 +3833,8 @@ tanaguruTestsList.push({
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0;
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     tags: ['a11y', 'structure', 'accessiblename'],
-    ressources: { 'rgaa': ['9.1.2'] }
+    ressources: { 'rgaa': ['9.2.1'] }
 });
 
 tanaguruTestsList.push({
@@ -3735,13 +3844,8 @@ tanaguruTestsList.push({
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0;
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     tags: ['a11y', 'structure', 'accessiblename'],
-    ressources: { 'rgaa': ['9.1.2'] }
+    ressources: { 'rgaa': ['9.2.1'] }
 });
 
 tanaguruTestsList.push({
@@ -3751,13 +3855,8 @@ tanaguruTestsList.push({
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0;
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     tags: ['a11y', 'structure', 'accessiblename'],
-    ressources: { 'rgaa': ['9.1.2'] }
+    ressources: { 'rgaa': ['9.2.1'] }
 });
 
 tanaguruTestsList.push({
@@ -3767,13 +3866,8 @@ tanaguruTestsList.push({
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0;
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     tags: ['a11y', 'structure', 'accessiblename'],
-    ressources: { 'rgaa': ['9.1.2'] }
+    ressources: { 'rgaa': ['9.2.1'] }
 });
 
 tanaguruTestsList.push({
@@ -3782,13 +3876,18 @@ tanaguruTestsList.push({
     query: 'main',
     expectedNbElements : { max: 1 },
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0;
+        return item.isNotExposedDueTo.length == 0 && getVisibility(item, getOpacity(item));
     },
     tags: ['a11y', 'structure', 'accessiblename'],
-    ressources: { 'rgaa': ['9.1.2'] }
+    ressources: { 'rgaa': ['9.2.1'] }
 });
 
+/**
+ *? PRESENTATION DE L'INFORMATION
+ ** 10.1 & 10.4 OK
+ */
 
+// 10.1 Dans le site web, des feuilles de style sont-elles utilisées pour contrôler la présentation de l'information ?
 // 10.1.1 : Dans chaque page web, les balises servant à la présentation de l'information ne doivent pas être présentes dans le code source généré des pages. Cette règle est-elle respectée ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -3820,36 +3919,66 @@ tanaguruTestsList.push({
 // 10.4.2 Dans chaque page web, l'augmentation de la taille des caractères jusqu'à 200 %, au moins, doit être possible pour l’ensemble du texte dans la page. Cette règle est-elle respectée selon une de ces conditions (hors cas particuliers) ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'La meta viewport ne doit pas empêcher le zoom.',
+	name: 'La meta viewport n"empêche pas le zoom.',
 	query: 'meta[name="viewport"][content]',
 	filter: function (item) {
 		var content = item.getAttribute('content').trim();
-		if (content.length > 0) {
-			return /^\s*[^,=]+\s*=\s*[^,=]+\s*(,\s*[^,=]+\s*=\s*[^,=]+\s*)*$/i.test(content);
-		}
-		else {
-			return false;
-		}
-	},
-	analyzeElements: function (collection) {
-		for (var i = 0; i < collection.length; i++) {
-			collection[i].status = 'passed';
-			var content = collection[i].getAttribute('content').trim();
+        if(!content.match(/(user-scalable)|(maximum-scale)/igm)) {
+            return true;
+        }
+		if (content.match(/(user-scalable=)|(maximum-scale=)/igm)) {
 			content = content.indexOf(',') > -1 ? content.split(',') : content = [content];
-			for (var j = 0; j < content.length; j++) {
+            for (var j = 0; j < content.length; j++) {
 				var property = content[j].split('=');
 				var propertyName = property[0].trim().toLowerCase();
 				var propertyValue = property[1].trim().toLowerCase();
-				if (propertyName == 'user-scalable') {
-					collection[i].status = propertyValue == 'no' ? 'failed' : 'passed';
+				if (propertyName == 'user-scalable' && propertyValue == "no") {
+					return false;
 				}
-				else if (propertyName == 'maximum-scale' && /^\d+(\.\d+)?$/.test(propertyValue)) { // TODO : cas 1. / +1. / .1 / +.1
-					propertyValue = parseFloat(propertyValue);
-					collection[i].status = propertyValue < 2 ? 'failed' : 'passed';
+				else if (propertyName == 'maximum-scale' && (parseFloat(propertyValue) < 2 && parseFloat(propertyValue) >= 0)) {
+					return false;
+				}
+			}
+
+            return true;
+		}
+	},
+	analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    mark: {attrs: ['content']},
+	tags: ['a11y', 'presentation', 'meta'],
+    ressources: { 'rgaa': ['10.4.2'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'La meta viewport empêche le zoom.',
+	query: 'meta[name="viewport"][content]',
+    expectedNbElements: 0,
+	filter: function (item) {
+		var content = item.getAttribute('content').trim();
+        if(!content.match(/(user-scalable)|(maximum-scale)/igm)) {
+            return;
+        }
+		if (content.match(/(user-scalable=)|(maximum-scale=)/igm)) {
+			content = content.indexOf(',') > -1 ? content.split(',') : content = [content];
+            for (var j = 0; j < content.length; j++) {
+				var property = content[j].split('=');
+				var propertyName = property[0].trim().toLowerCase();
+				var propertyValue = property[1].trim().toLowerCase();
+				if (propertyName == 'user-scalable' && propertyValue == "no") {
+					return true;
+				}
+				else if (propertyName == 'maximum-scale' && (parseFloat(propertyValue) < 2 && parseFloat(propertyValue) >= 0)) {
+					return true;
 				}
 			}
 		}
 	},
+    mark: {attrs: ['content']},
 	tags: ['a11y', 'presentation', 'meta'],
     ressources: { 'rgaa': ['10.4.2'] }
 });
