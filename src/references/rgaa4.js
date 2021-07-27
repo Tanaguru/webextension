@@ -5,9 +5,9 @@ var tanaguruTestsList = [];
  *? Thématiques
  *! Images (bloqué)
  * Cadres (terminé)
- ** Couleurs
- *! Multimédia (bloqué)
- *! Tableaux (bloqué)
+ *! Couleurs (bloqué)
+ **! Multimédia (bloqué)
+ **! Tableaux (bloqué)
  * Liens (terminé)
  *! Scripts (bloqué)
  ** Eléments obligatoires
@@ -547,8 +547,8 @@ tanaguruTestsList.push({
             var parentTag = parent.tagName.toLowerCase();
 
             if(parentTag === 'figure' && parent.querySelector('figcaption')) {
-                if(parent.querySelector('figcaption').textContent) {
-                    return !parent.querySelector('figcaption').textContent.trim().length > 0;
+                if(parent.querySelector('figcaption').textContent.trim().length > 0) {
+                    return false;
                 }
             }
         }
@@ -561,7 +561,7 @@ tanaguruTestsList.push({
 
         if (item.hasAttribute('role')){
             if (item.getAttribute('role') == "presentation") {
-                return true;
+                return !item.hasAttribute('tabindex') || item.getAttribute('tabindex') < 0;
             }
         }
 
@@ -582,6 +582,53 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['1.2.1'] }
 });
 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste d\'images (balise img) de décoration non ignorées par les technologies d\'assistance',
+    query: 'img:not([role]), img[role="presentation"], img[role="none"]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        var parent = item.parentNode;
+
+        if(parent) {
+            var parentTag = parent.tagName.toLowerCase();
+
+            if(parentTag === 'figure' && parent.querySelector('figcaption')) {
+                if(parent.querySelector('figcaption').textContent.trim().length > 0) {
+                    return false;
+                }
+            }
+        }
+        
+        if(item.hasAttribute('aria-hidden')){
+            if(item.getAttribute('aria-hidden') == "true") {
+                return false;
+            }
+        }
+
+        if(item.hasAttribute('role')){
+            if(item.getAttribute('role') == "presentation" || item.getAttribute('role') == "none") {
+                return item.hasAttribute('tabindex') && item.getAttribute('tabindex') >= 0;
+            }
+        }
+
+        if(item.hasAttribute('alt')){
+            if(item.getAttribute('alt') == '') {
+                return item.hasAccessibleName();
+            } else if(item.getAttribute('alt').trim().length == 0) {
+                return true;
+            }
+        } else {
+            return !item.hasAccessibleName();
+        }
+
+        return false;
+    },
+    mark: { attrs: ['alt','role', 'tabindex']},
+    tags: ['a11y', 'images', 'accessiblename'],
+    ressources: { 'rgaa': ['1.2.1'] }
+});
+
 // 1.2.2 Chaque zone non cliquable (balise <area> sans attribut href) de décoration, vérifie-t-elle une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -590,7 +637,7 @@ tanaguruTestsList.push({
     filter: function (item) {
         if (item.hasAttribute('role')){
             if ((item.getAttribute('role') == "presentation")) {
-                return true;
+                return !item.hasAttribute('tabindex') || item.getAttribute('tabindex') < 0;
             };
         };
 
@@ -600,8 +647,8 @@ tanaguruTestsList.push({
             }
         }
 
-        if (item.hasAttribute('alt') && !item.hasAttribute('aria-label')){
-            return item.getAttribute('alt') == '';
+        if (item.hasAttribute('alt') && item.getAttribute('alt') == ''){
+            return !item.hasAccessibleName();
         }
         
         return false;
@@ -612,6 +659,41 @@ tanaguruTestsList.push({
         }
     },
     mark: { attrs: ['alt','aria-hidden','role']},
+    tags: ['a11y', 'images', 'accessiblename'],
+    ressources: { 'rgaa': ['1.2.2'] }
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste de zones non cliquables (balise area sans attribut href) de décoration non ignorées par les technologies d\'assistance',
+    query: 'area:not([role]):not([href]), area[role="presentation"]:not([href]), area[role="none"]:not([href])',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if (item.hasAttribute('aria-hidden')){
+            if (item.getAttribute('aria-hidden') == "true") {
+                return false;
+            }
+        }
+
+        if (item.hasAttribute('role')){
+            if(item.getAttribute('role') == "presentation" || item.getAttribute('role') == "none") {
+                return item.hasAttribute('tabindex') && item.getAttribute('tabindex') >= 0;
+            }
+        };
+
+        if(item.hasAttribute('alt')){
+            if(item.getAttribute('alt') == '') {
+                return item.hasAccessibleName();
+            } else if(item.getAttribute('alt').trim().length == 0) {
+                return true;
+            }
+        } else {
+            return !item.hasAccessibleName();
+        }
+        
+        return false;
+    },
+    mark: { attrs: ['alt','tabindex','role']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.2.2'] }
 });
@@ -629,17 +711,25 @@ tanaguruTestsList.push({
                 var parentTag = parent.tagName.toLowerCase();
 
                 if(parentTag === 'figure' && parent.querySelector('figcaption')) {
-                    if(parent.querySelector('figcaption').textContent) {
-                        return !parent.querySelector('figcaption').textContent.trim().length > 0;
+                    if(parent.querySelector('figcaption').textContent.trim().length > 0) {
+                        return false;
                     }
                 }
             }
 
-            if (item.textContent && item.textContent.trim().length > 0) {
+            if (item.textContent.trim().length > 0) {
                 return false;
             }
 
-            return item.isNotExposedDueTo.length !== 0;
+            if(item.hasAttribute('aria-label') && item.getAttribute('aria-label').length > 0) {
+                return false;
+            }
+
+            if(item.hasAttribute('title') && item.getAttribute('title').length > 0) {
+                return false;
+            }
+
+            return !item.hasAccessibleName();
         }
 
         return false;
@@ -656,7 +746,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d\'images objets (balise object avec l\'attribut type="image/…") non ignorées par les technologies d\'assistance',
+    name: 'Liste d\'images objets (balise object avec l\'attribut type="image/…") de décoration non ignorées par les technologies d\'assistance',
     query: 'object[type][aria-hidden="true"]:not([role]), object[type][aria-hidden="true"][role="img"]',
     expectedNbElements: 0,
     filter: function (item) {
@@ -667,13 +757,21 @@ tanaguruTestsList.push({
                 var parentTag = parent.tagName.toLowerCase();
 
                 if(parentTag === 'figure' && parent.querySelector('figcaption')) {
-                    if(parent.querySelector('figcaption').textContent) {
-                        return !parent.querySelector('figcaption').textContent.trim().length > 0;
+                    if(parent.querySelector('figcaption').textContent.trim().length > 0) {
+                        return false;
                     }
                 }
             }
 
-            if (item.textContent && item.textContent.trim().length > 0) {
+            if (item.textContent.trim().length > 0) {
+                return true;
+            }
+
+            if(item.hasAttribute('aria-label') && item.getAttribute('aria-label').length > 0) {
+                return true;
+            }
+
+            if(item.hasAttribute('title') && item.getAttribute('title').length > 0) {
                 return true;
             }
         }
@@ -694,8 +792,8 @@ tanaguruTestsList.push({
             var parentTag = parent.tagName.toLowerCase();
 
             if(parentTag === 'figure' && parent.querySelector('figcaption')) {
-                if(parent.querySelector('figcaption').textContent) {
-                    return !parent.querySelector('figcaption').textContent.trim().length > 0;
+                if(parent.querySelector('figcaption').textContent.trim().length > 0) {
+                    return false;
                 }
             }
         }
@@ -734,7 +832,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d\'image vectorielle (balise svg) non ignorées par les technologies d\'assistance',
+    name: 'Liste d\'image vectorielle (balise svg) de décoration non ignorées par les technologies d\'assistance',
     query: 'svg[aria-hidden="true"]',
     expectedNbElements: 0,
     filter: function (item) {
@@ -744,8 +842,8 @@ tanaguruTestsList.push({
             var parentTag = parent.tagName.toLowerCase();
 
             if(parentTag === 'figure' && parent.querySelector('figcaption')) {
-                if(parent.querySelector('figcaption').textContent) {
-                    return !parent.querySelector('figcaption').textContent.trim().length > 0;
+                if(parent.querySelector('figcaption').textContent.trim().length > 0) {
+                    return false;
                 }
             }
         }
@@ -769,6 +867,10 @@ tanaguruTestsList.push({
                 return true;
             }
         }
+
+        if(item.hasAttribute('aria-label') && item.getAttribute('aria-label').length > 0) {
+            return true;
+        }
     },
     mark: { attrs: ['title']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -787,13 +889,13 @@ tanaguruTestsList.push({
             var parentTag = parent.tagName.toLowerCase();
 
             if(parentTag === 'figure' && parent.querySelector('figcaption')) {
-                if(parent.querySelector('figcaption').textContent) {
-                    return !parent.querySelector('figcaption').textContent.trim().length > 0;
+                if(parent.querySelector('figcaption').textContent.trim().length > 0) {
+                    return false;
                 }
             }
         }
 
-        if (item.textContent && item.textContent.trim().length > 0) {
+        if (item.textContent.trim().length > 0) {
             return false;
         }
 
@@ -811,7 +913,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste d\'images bitmap (balise canvas) non ignorées par les technologies d\'assistance',
+    name: 'Liste d\'images bitmap (balise canvas) de décoration non ignorées par les technologies d\'assistance',
     query: 'canvas[aria-hidden="true"]',
     expectedNbElements: 0,
     filter: function (item) {
@@ -821,13 +923,17 @@ tanaguruTestsList.push({
             var parentTag = parent.tagName.toLowerCase();
 
             if(parentTag === 'figure' && parent.querySelector('figcaption')) {
-                if(parent.querySelector('figcaption').textContent) {
-                    return !parent.querySelector('figcaption').textContent.trim().length > 0;
+                if(parent.querySelector('figcaption').textContent.trim().length > 0) {
+                    return false;
                 }
             }
         }
 
-        if (item.textContent && item.textContent.trim().length > 0) {
+        if (item.textContent.trim().length > 0) {
+            return true;
+        }
+
+        if(item.hasAttribute('aria-label') && item.getAttribute('aria-label').length > 0) {
             return true;
         }
     },
@@ -848,10 +954,18 @@ tanaguruTestsList.push({
                 var parentTag = parent.tagName.toLowerCase();
 
                 if(parentTag === 'figure' && parent.querySelector('figcaption')) {
-                    if(parent.querySelector('figcaption').textContent) {
-                        return !parent.querySelector('figcaption').textContent.trim().length > 0;
+                    if(parent.querySelector('figcaption').textContent.trim().length > 0) {
+                        return false;
                     }
                 }
+            }
+
+            if(item.hasAttribute('aria-label') && item.getAttribute('aria-label').length > 0) {
+                return false;
+            }
+
+            if(item.hasAttribute('title') && item.getAttribute('title').length > 0) {
+                return false;
             }
 
             return !item.hasAccessibleName();
@@ -860,6 +974,41 @@ tanaguruTestsList.push({
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'passed';
+        }
+    },
+    mark: { attrs: ['aria-hidden']},
+    tags: ['a11y', 'images', 'accessiblename'],
+    ressources: { 'rgaa': ['1.2.6'] }
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste d\'images embarquées (balise embed avec l\'attribut type="image/…") de décoration non ignorées par les technologies d\'assistance',
+    query: 'embed[aria-hidden="true"][type]:not([role]), embed[aria-hidden="true"][type][role="img"]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if (item.getAttribute('type').startsWith("image/")){
+            var parent = item.parentNode;
+
+            if(parent) {
+                var parentTag = parent.tagName.toLowerCase();
+
+                if(parentTag === 'figure' && parent.querySelector('figcaption')) {
+                    if(parent.querySelector('figcaption').textContent.trim().length > 0) {
+                        return false;
+                    }
+                }
+            }
+
+            if(item.hasAttribute('aria-label') && item.getAttribute('aria-label').length > 0) {
+                return true;
+            }
+
+            if(item.hasAttribute('title') && item.getAttribute('title').length > 0) {
+                return true;
+            }
+
+            return item.hasAccessibleName();
         }
     },
     mark: { attrs: ['aria-hidden']},
@@ -1613,7 +1762,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des cadres sans attribut title',
-    query: 'iframe:not([role]), frame:not([role])',
+    query: 'iframe:not([role="presentation"]), frame:not([role="presentation"])',
     expectedNbElements: 0,
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && !item.hasAttribute('title');
@@ -1625,8 +1774,9 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des cadres avec un attribut title',
-    query: 'iframe:not([role]), frame:not([role])',
+    query: 'iframe:not([role="presentation"]), frame:not([role="presentation"])',
     filter: function (item) {
+        console.log(item);
         return item.isNotExposedDueTo.length == 0 && item.hasAttribute('title');
     },
     analyzeElements: function (collection) {
@@ -1644,7 +1794,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier la pertinence des titres des cadres suivants',
-    query: 'iframe[title]:not([role]), frame[title]:not([role])',
+    query: 'iframe[title]:not([role="presentation"]), frame[title]:not([role="presentation"])',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && item.getAttribute('title').trim().length > 0;
     },
@@ -1656,7 +1806,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Les cadres suivants ont un titre non pertinent',
-    query: 'iframe[title]:not([role]), frame[title]:not([role])',
+    query: 'iframe[title]:not([role="presentation"]), frame[title]:not([role="presentation"])',
     expectedNbElements: 0,
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && item.getAttribute('title').trim().length == 0;
