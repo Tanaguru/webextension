@@ -20,11 +20,10 @@ var tanaguruTestsList = [];
 
 /**
  *? IMAGES
- ** 1.1 -> 1.7 et 1.9 OK
+ ** tous les tests sont répertoriés, mais les critères 1.2/1.4 et 1.5 sont améliorables
  *TODO hasAccessibleName ne teste pas le title sur les balises object & embed
  *TODO pas possible de tester si un élément a un aria-hidden="true" ET un nom accessible car hasAccessibleName() renvoie false quand isNotExposedDueTo.length === 0
  *! 1.4/1.5 comment identifier les images test / captcha ?
- *TODO Voir s'il est possible de traiter partiellement le critère 1.7
  */
 
 //* 1.1 Chaque image porteuse d'information a-t-elle une alternative textuelle ?
@@ -869,7 +868,9 @@ tanaguruTestsList.push({
 });
 
 //* 1.3 Pour chaque image porteuse d'information ayant une alternative textuelle, cette alternative est-elle pertinente (hors cas particuliers) ?
+//* 1.4 Pour chaque image utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle, cette alternative permet-elle d'identifier la nature et la fonction de l'image ?
 // 1.3.1 Pour chaque image (balise <img> ou balise possédant l'attribut WAI-ARIA role="img") porteuse d'information, ayant une alternative textuelle, cette alternative est-elle pertinente (hors cas particuliers) ?
+// 1.4.1 Pour chaque image (balise <img>) utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle, cette alternative est-elle pertinente ? 
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Ces images (balise img ou balises possédant l\'attribut WAI-ARIA role="img") ont-elles un nom accessible pertinent ?',
@@ -892,13 +893,19 @@ tanaguruTestsList.push({
 });
 
 // 1.3.2 - Pour chaque zone (balise <area>) d'une image réactive porteuse d'information, ayant une alternative textuelle, cette alternative est-elle pertinente (hors cas particuliers) ?
+// 1.4.2 Pour chaque zone (balise <area>) d'une image réactive utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle, cette alternative est-elle pertinente ? 
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Ces zones (balise area) d\'une image réactive ont-elles un nom accessible pertinent ?',
     description: 'La pertinence du nom accessible dépend du contexte de l\'image, image porteuse d\'information ou image-test/CAPTCHA.',
     query: 'area:not([role])',
     filter: function (item) {
-        return item.hasAccessibleName();
+        if (item.hasAccessibleName()){
+            if (item.accessibleName.length > 80) {
+                item.classList.add('tanaguruLongAlt');
+            }
+            return true;
+        }
     },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -906,13 +913,19 @@ tanaguruTestsList.push({
 });
 
 // 1.3.3 Pour chaque bouton de type image (balise <input> avec l'attribut type="image"), ayant une alternative textuelle, cette alternative est-elle pertinente (hors cas particuliers) ?
+// 1.4.3 Pour chaque bouton de type image (balise <input> avec l'attribut type="image") utilisé comme CAPTCHA ou comme image-test, ayant une alternative textuelle, cette alternative est-elle pertinente ? 
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Ces boutons de type image (balise input avec l\'attribut type="image") ont-elles un nom accessible pertinent ?',
     description: 'La pertinence du nom accessible dépend du contexte de l\'image, image porteuse d\'information ou image-test/CAPTCHA.',
     query: 'input[type="image"]:not([role])',
     filter: function (item) {
-        return item.hasAccessibleName();
+        if (item.hasAccessibleName()){
+            if (item.accessibleName.length > 80) {
+                item.classList.add('tanaguruLongAlt');
+            }
+            return true;
+        }
     },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -920,6 +933,7 @@ tanaguruTestsList.push({
 });
 
 // 1.3.4 Pour chaque image objet (balise <object> avec l'attribut type="image/…") porteuse d'information, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente (hors cas particuliers) ?
+// 1.4.4 Pour chaque image objet (balise <object> avec l'attribut type="image/…") utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente ? 
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Ces images objet (balise object avec l\'attribut type="image/…") ont-elles un nom accessible pertinent ?',
@@ -927,7 +941,12 @@ tanaguruTestsList.push({
     query: 'object[type]:not([role], object[type][role="img"]',
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/")){
-            return item.hasAccessibleName();
+            if (item.hasAccessibleName()){
+                if (item.accessibleName.length > 80) {
+                    item.classList.add('tanaguruLongAlt');
+                }
+                return true;
+            }
         }
     },
     mark: { attrs: ['aria-label','aria-labelledby','title']},
@@ -936,6 +955,7 @@ tanaguruTestsList.push({
 });
 
 // 1.3.5 Pour chaque image embarquée (balise <embed> avec l'attribut type="image/…") porteuse d'information, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente (hors cas particuliers) ?
+// 1.4.5 Pour chaque image embarquée (balise <embed> avec l'attribut type="image/…") utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente ?
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Ces images embarquées (balise embed avec l\'attribut type="image/…") ont-elles un nom accessible pertinent ?',
@@ -943,7 +963,12 @@ tanaguruTestsList.push({
     query: 'embed[type]:not([role]), embed[type][role="img"]',
     filter: function (item) {
         if (item.getAttribute('type').startsWith("image/")){
-            return item.hasAccessibleName();
+            if (item.hasAccessibleName()){
+                if (item.accessibleName.length > 80) {
+                    item.classList.add('tanaguruLongAlt');
+                }
+                return true;
+            }
         }
     },
     mark: { attrs: ['aria-label','aria-labelledby','title']},
@@ -952,13 +977,19 @@ tanaguruTestsList.push({
 });
 
 // 1.3.6 Pour chaque image vectorielle (balise <svg>) porteuse d'information, ayant une alternative textuelle, cette alternative est-elle pertinente (hors cas particuliers) ?
+// 1.4.6 Pour chaque image vectorielle (balise <svg>) utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle, cette alternative est-elle pertinente ? 
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Ces images images vectorielles (balise svg) ont-elles un nom accessible pertinent ?',
     description: 'La pertinence du nom accessible dépend du contexte de l\'image, image porteuse d\'information ou image-test/CAPTCHA.',
     query: 'svg[role="img"]',
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+        if (item.hasAccessibleName()){
+            if (item.accessibleName.length > 80) {
+                item.classList.add('tanaguruLongAlt');
+            }
+            return true;
+        }
     },
     mark: { attrs: ['aria-label','aria-labelledby']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -966,13 +997,19 @@ tanaguruTestsList.push({
 });
 
 // 1.3.7 Pour chaque image bitmap (balise <canvas>) porteuse d'information, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente (hors cas particuliers) ? // traiter le cas particulier
+// 1.4.7 Pour chaque image bitmap (balise <canvas>) utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente ? 
 tanaguruTestsList.push({
     lang: 'fr',
     name: ' Ces images bitmap (balise canvas) ont-elles un nom accessible pertinent ?',
     description: 'La pertinence du nom accessible dépend du contexte de l\'image, image porteuse d\'information ou image-test/CAPTCHA.',
     query: 'canvas:not([role]), canvas[role="img"]',
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
+        if (item.hasAccessibleName()){
+            if (item.accessibleName.length > 80) {
+                item.classList.add('tanaguruLongAlt');
+            }
+            return true;
+        }
     },
     mark: { attrs: ['aria-label','aria-labelledby']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -1033,7 +1070,7 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['1.3.9'] }
 });
 
-// 1.5 Pour chaque image utilisée comme CAPTCHA, une solution d'accès alternatif au contenu ou à la fonction du CAPTCHA est-elle présente ?
+//* 1.5 Pour chaque image utilisée comme CAPTCHA, une solution d'accès alternatif au contenu ou à la fonction du CAPTCHA est-elle présente ?
 // 1.5.1 Chaque image (balises <img>, <area>, <object>, <embed>, <svg>, <canvas> ou possédant un attribut WAI-ARIA role="img") utilisée comme CAPTCHA vérifie-t-elle une de ces conditions ? 
 tanaguruTestsList.push({
     lang: 'fr',
@@ -1054,8 +1091,8 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['1.5.2']}
 });
 
-// 1.6 Chaque image porteuse d'information a-t-elle, si nécessaire, une description détaillée ?
-// 1.7 Pour chaque image porteuse d'information ayant une description détaillée, cette description est-elle pertinente ?
+//* 1.6 Chaque image porteuse d'information a-t-elle, si nécessaire, une description détaillée ?
+//* 1.7 Pour chaque image porteuse d'information ayant une description détaillée, cette description est-elle pertinente ?
 // 1.6.1 Chaque image (balise <img>) porteuse d'information, qui nécessite une description détaillée, vérifie-t-elle une de ces conditions ?
 // 1.7.1 Chaque image (balise <img>) porteuse d'information, ayant une description détaillée, vérifie-t-elle ces conditions ? 
 tanaguruTestsList.push({
@@ -1150,7 +1187,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des images qui utilisent l\'attribut aria-describedby.',
-    query: 'img[aria-describedby], input[type="image][aria-describedby], area[aria-describedby], object[type][aria-describedby], embed[type][aria-describedby], [role="img"][aria-describedby]',
+    query: 'img[aria-describedby], input[type="image"][aria-describedby], area[aria-describedby], object[type][aria-describedby], embed[type][aria-describedby], [role="img"][aria-describedby]',
     description: 'Si ces images nécessitent une description détaillée, vérifier que l\'attribut aria-describedby associe cette description.',
     filter: function (item) {
         var IName = item.tagName.toLowerCase();
@@ -1159,6 +1196,7 @@ tanaguruTestsList.push({
         }
         return true;
     },
+    mark: { attrs: ['aria-describedby']},
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.6.9']}
 });
@@ -1174,6 +1212,89 @@ tanaguruTestsList.push({
     },
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.6.10']}
+});
+
+//* 1.8 Chaque image texte porteuse d'information, en l'absence d'un mécanisme de remplacement, doit si possible être remplacée par du texte stylé. Cette règle est-elle respectée (hors cas particuliers) ?
+// 1.8.1 Chaque image texte (balise <img> ou possédant un attribut WAI-ARIA role="img") porteuse d'information, en l'absence d'un mécanisme de remplacement, doit si possible être remplacée par du texte stylé. Cette règle est-elle respectée (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des images (balise <img> ou possédant un attribut role="img") porteuses d\'information.',
+    query: 'img, [role="img"]',
+    description: 'Si ces images sont des images texte sans mécanisme de remplacement, elles doivent si possible être remplacées par du texte stylé en CSS.',
+    filter: function (item) {
+        return item.hasAccessibleName();
+    },
+    tags: ['a11y', 'images'],
+    ressources: {'rgaa': ['1.8.1']}
+});
+
+// 1.8.2 Chaque bouton « image texte » (balise <input> avec l'attribut type="image") porteur d'information, en l'absence d'un mécanisme de remplacement, doit si possible être remplacé par du texte stylé. Cette règle est-elle respectée (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des images (balise <input>) porteuses d\'information.',
+    query: 'input[type="image"]',
+    description: 'Si ces images sont des images texte sans mécanisme de remplacement, elles doivent si possible être remplacées par du texte stylé en CSS.',
+    filter: function (item) {
+        return item.hasAccessibleName();
+    },
+    tags: ['a11y', 'images'],
+    ressources: {'rgaa': ['1.8.2']}
+});
+
+// 1.8.3 Chaque image texte objet (balise <object> avec l'attribut type="image/…") porteuse d'information, en l'absence d'un mécanisme de remplacement, doit si possible être remplacée par du texte stylé. Cette règle est-elle respectée (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des images (balise <object>) porteuses d\'information.',
+    query: 'object[type]',
+    description: 'Si ces images sont des images texte sans mécanisme de remplacement, elles doivent si possible être remplacées par du texte stylé en CSS.',
+    filter: function (item) {
+        if (item.getAttribute('type').startsWith("image/")){
+            return item.hasAccessibleName();
+        }
+    },
+    tags: ['a11y', 'images'],
+    ressources: {'rgaa': ['1.8.3']}
+});
+
+// 1.8.4 Chaque image texte embarquée (balise <embed> avec l'attribut type="image/…") porteuse d'information, en l'absence d'un mécanisme de remplacement, doit si possible être remplacée par du texte stylé. Cette règle est-elle respectée (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des images (balise <embed>) porteuses d\'information.',
+    query: 'embed[type]',
+    description: 'Si ces images sont des images texte sans mécanisme de remplacement, elles doivent si possible être remplacées par du texte stylé en CSS.',
+    filter: function (item) {
+        if (item.getAttribute('type').startsWith("image/")){
+            return item.hasAccessibleName();
+        }
+    },
+    tags: ['a11y', 'images'],
+    ressources: {'rgaa': ['1.8.4']}
+});
+
+// 1.8.5 Chaque image texte bitmap (balise <canvas>) porteuse d'information, en l'absence d'un mécanisme de remplacement, doit si possible être remplacée par du texte stylé. Cette règle est-elle respectée (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des images (balise <canvas>) porteuses d\'information.',
+    query: 'canvas',
+    description: 'Si ces images sont des images texte sans mécanisme de remplacement, elles doivent si possible être remplacées par du texte stylé en CSS.',
+    filter: function (item) {
+        return item.hasAccessibleName();
+    },
+    tags: ['a11y', 'images'],
+    ressources: {'rgaa': ['1.8.5']}
+});
+
+// 1.8.6 Chaque image texte SVG (balise <svg>) porteuse d'information et dont le texte n’est pas complètement structuré au moyen d’éléments <text>, en l’absence d’un mécanisme de remplacement, doit si possible être remplacée par du texte stylé. Cette règle est-elle respectée (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des images (balise <svg>) porteuses d\'information.',
+    query: 'svg',
+    description: 'Si ces images sont des images texte sans mécanisme de remplacement, elles doivent si possible être remplacées par du texte stylé en CSS.',
+    filter: function (item) {
+        return item.hasAccessibleName();
+    },
+    tags: ['a11y', 'images'],
+    ressources: {'rgaa': ['1.8.6']}
 });
 
 //* 1.9 Chaque légende d'image est-elle, si nécessaire, correctement reliée à l'image correspondante ?
@@ -1527,11 +1648,6 @@ tanaguruTestsList.push({
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && item.getAttribute('title').trim().length > 0;
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     mark: { attrs: ['title']},
     tags: ['a11y', 'frames', 'accessiblename'],
     ressources: {'rgaa': ['2.2.1']}
@@ -1553,9 +1669,65 @@ tanaguruTestsList.push({
 /**
  *? COULEURS
  *TODO prendre en compte les attributs tel quel "value" ou "placeholder" dans les tests du critère 3.2
- *TODO 3.3.1
+ *TODO 3.3.1 répertorier les indications de couleur & les propriétés CSS déterminant une couleur
+ *TODO identifier les mécanismes de contraste
  *! voir si l'on peut traiter certains éléments graphique
  */
+
+//* 3.1 Dans chaque page web, l'information ne doit pas être donnée uniquement par la couleur. Cette règle est-elle respectée ?
+// 3.1.1 Pour chaque mot ou ensemble de mots dont la mise en couleur est porteuse d'information, l'information ne doit pas être donnée uniquement par la couleur. Cette règle est-elle respectée ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Pour chaque mot ou ensemble de mots dont la mise en couleur est porteuse d\'information, l\'information ne doit pas être donnée uniquement par la couleur.',
+    status: 'untested',
+    tags: ['a11y', 'colors'],
+    ressources: {'rgaa': ['3.1.1']}
+});
+
+// 3.1.2 Pour chaque indication de couleur donnée par un texte, l'information ne doit pas être donnée uniquement par la couleur. Cette règle est-elle respectée ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Pour chaque indication de couleur donnée par un texte, l\'information ne doit pas être donnée uniquement par la couleur.',
+    status: 'untested',
+    tags: ['a11y', 'colors'],
+    ressources: {'rgaa': ['3.1.2']}
+});
+
+// 3.1.3 Pour chaque image véhiculant une information, l'information ne doit pas être donnée uniquement par la couleur. Cette règle est-elle respectée ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Pour chaque image véhiculant une information, l\'information ne doit pas être donnée uniquement par la couleur.',
+    status: 'untested',
+    tags: ['a11y', 'colors'],
+    ressources: {'rgaa': ['3.1.3']}
+});
+
+// 3.1.4 Pour chaque propriété CSS déterminant une couleur et véhiculant une information, l'information ne doit pas être donnée uniquement par la couleur. Cette règle est-elle respectée ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Pour chaque propriété CSS déterminant une couleur et véhiculant une information, l\'information ne doit pas être donnée uniquement par la couleur.',
+    status: 'untested',
+    tags: ['a11y', 'colors'],
+    ressources: {'rgaa': ['3.1.4']}
+});
+
+// 3.1.5 Pour chaque média temporel véhiculant une information, l'information ne doit pas être donnée uniquement par la couleur. Cette règle est-elle respectée ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Pour chaque média temporel véhiculant une information, l\'information ne doit pas être donnée uniquement par la couleur.',
+    status: 'untested',
+    tags: ['a11y', 'colors'],
+    ressources: {'rgaa': ['3.1.5']}
+});
+
+// 3.1.6 Pour chaque média non temporel véhiculant une information, l'information ne doit pas être donnée uniquement par la couleur. Cette règle est-elle respectée ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Pour chaque média non temporel véhiculant une information, l\'information ne doit pas être donnée uniquement par la couleur.',
+    status: 'untested',
+    tags: ['a11y', 'colors'],
+    ressources: {'rgaa': ['3.1.6']}
+});
 
 //* 3.2 Dans chaque page web, le contraste entre la couleur du texte et la couleur de son arrière-plan est-il suffisamment élevé (hors cas particuliers) ?
 // 3.2.1 Dans chaque page web, le texte et le texte en image sans effet de graisse d'une taille restituée inférieure à 24px vérifient-ils une de ces conditions (hors cas particuliers) ? 
@@ -1564,7 +1736,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Textes visibles sans effet de graisse et d\'une taille restituée inférieure à 24px ayant un contraste inférieur à 4.5:1',
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'failed';
@@ -1582,7 +1754,7 @@ tanaguruTestsList.push({
             collection[i].status = 'passed';
         }
     },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.1']}
 });
 
@@ -1591,12 +1763,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier que ces éléments texte sans effet de graisse et d\'une taille restituée inférieure à 24px respectent un contraste d\'au moins 4.5:1',
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.1']}
 });
 
@@ -1610,7 +1777,7 @@ tanaguruTestsList.push({
             collection[i].status = 'inapplicable';
         }
     },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.1']}
 });
 
@@ -1624,7 +1791,7 @@ tanaguruTestsList.push({
             collection[i].status = 'inapplicable';
         }
     },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.1']}
 });
 
@@ -1637,7 +1804,7 @@ tanaguruTestsList.push({
             collection[i].status = 'inapplicable';
         }
     },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.1']}
 });
 
@@ -1647,7 +1814,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Textes visibles en gras d\'une taille restituée inférieure à 18.5px ayant un contraste inférieur à 4.5:1',
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'failed';
@@ -1665,7 +1832,7 @@ tanaguruTestsList.push({
             collection[i].status = 'passed';
         }
     },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.2']}
 });
 
@@ -1674,12 +1841,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier que ces éléments texte en gras d\'une taille restituée inférieure à 18.5px respectent un contraste d\'au moins 4.5:1',
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.2']}
 });
 
@@ -1693,7 +1855,7 @@ tanaguruTestsList.push({
             collection[i].status = 'inapplicable';
         }
     },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.2']}
 });
 
@@ -1707,7 +1869,7 @@ tanaguruTestsList.push({
             collection[i].status = 'inapplicable';
         }
     },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.2']}
 });
 
@@ -1720,7 +1882,7 @@ tanaguruTestsList.push({
             collection[i].status = 'inapplicable';
         }
     },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.2']}
 });
 
@@ -1730,7 +1892,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Textes visibles sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px ayant un contraste inférieur à 3:1',
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'failed';
@@ -1748,7 +1910,7 @@ tanaguruTestsList.push({
             collection[i].status = 'passed';
         }
     },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.3']}
 });
 
@@ -1757,12 +1919,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier que ces éléments texte sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px respectent un contraste d\'au moins 3:1',
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.3']}
 });
 
@@ -1776,7 +1933,7 @@ tanaguruTestsList.push({
             collection[i].status = 'inapplicable';
         }
     },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.3']}
 });
 
@@ -1790,7 +1947,7 @@ tanaguruTestsList.push({
             collection[i].status = 'inapplicable';
         }
     },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.3']}
 });
 
@@ -1803,7 +1960,7 @@ tanaguruTestsList.push({
             collection[i].status = 'inapplicable';
         }
     },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.3']}
 });
 
@@ -1813,7 +1970,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Textes visibles en gras d\'une taille restituée supérieure ou égale à 18.5px ayant un contraste inférieur à 3:1',
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
             collection[i].status = 'failed';
@@ -1831,7 +1988,7 @@ tanaguruTestsList.push({
             collection[i].status = 'passed';
         }
     },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.4']}
 });
 
@@ -1840,12 +1997,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier que ces éléments texte en gras d\'une taille restituée supérieure ou égale à 18.5px respectent un contraste d\'au moins 3:1',
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.4']}
 });
 
@@ -1859,7 +2011,7 @@ tanaguruTestsList.push({
             collection[i].status = 'inapplicable';
         }
     },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.4']}
 });
 
@@ -1873,7 +2025,7 @@ tanaguruTestsList.push({
             collection[i].status = 'inapplicable';
         }
     },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.4']}
 });
 
@@ -1886,8 +2038,54 @@ tanaguruTestsList.push({
             collection[i].status = 'inapplicable';
         }
     },
-    tags: ['a11y', 'contrast'],
+    tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.4']}
+});
+
+// 3.2.5 Dans le mécanisme qui permet d'afficher un rapport de contraste conforme, le rapport de contraste entre le texte et la couleur d’arrière-plan est-il suffisamment élevé ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Une mécanisme permet d\'afficher un rapport de contraste conforme entre le texte et sa couleur d\'arrière plan.',
+    status: 'untested',
+    tags: ['a11y', 'colors', 'contrast'],
+    ressources: {'rgaa': ['3.2.5']}
+});
+
+//* 3.3 Dans chaque page web, les couleurs utilisées dans les composants d'interface ou les éléments graphiques porteurs d'informations sont-elles suffisamment contrastées (hors cas particuliers) ?
+// 3.3.1 Dans chaque page web, le rapport de contraste entre les couleurs d'un composant d'interface dans ses différents états et la couleur d'arrière-plan contiguë vérifie-t-il une de ces conditions (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Le rapport de contraste entre les couleurs d\'un composant d\'interface dans ses différents états et la couleur d\'arrière-plan contiguë est de 3:1 au moins.',
+    status: 'untested',
+    tags: ['a11y', 'colors', 'contrast'],
+    ressources: {'rgaa': ['3.3.1']}
+});
+
+// 3.3.2 Dans chaque page web, le rapport de contraste des différentes couleurs composant un élément graphique, lorsqu'elles sont nécessaires à sa compréhension, et la couleur d'arrière-plan contiguë, vérifie-t-il une de ces conditions (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Le rapport de contraste des différentes couleurs composant un élément graphique, lorsqu\'elles sont nécessaires à sa compréhension, et la couleur d\'arrière-plan contiguë est de 3:1 au moins.',
+    status: 'untested',
+    tags: ['a11y', 'colors', 'contrast'],
+    ressources: {'rgaa': ['3.3.2']}
+});
+
+// 3.3.3 Dans chaque page web, le rapport de contraste des différentes couleurs contiguës entre elles d'un élément graphique, lorsqu'elles sont nécessaires à sa compréhension, vérifie-t-il une de ces conditions (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Le rapport de contraste des différentes couleurs contiguës entre elles d\'un élément graphique, lorsqu\'elles sont nécessaires à sa compréhension,  est de 3:1 au moins.',
+    status: 'untested',
+    tags: ['a11y', 'colors', 'contrast'],
+    ressources: {'rgaa': ['3.3.3']}
+});
+
+// 3.3.4 Dans le mécanisme qui permet d'afficher un rapport de contraste conforme, les couleurs du composant ou des éléments graphiques porteurs d’informations qui le composent, sont-elles suffisamment contrastées ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Une mécanisme permet d\'afficher un rapport de contraste conforme pour les composants d\'interface et les éléments graphiques porteurs d\'informations.',
+    status: 'untested',
+    tags: ['a11y', 'colors', 'contrast'],
+    ressources: {'rgaa': ['3.3.4']}
 });
 
 /**
@@ -2089,11 +2287,6 @@ tanaguruTestsList.push({
             return true;
         }
         return false;
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
     },
     ressources: {'rgaa': ['4.4.1']}
 });
@@ -2942,7 +3135,7 @@ tanaguruTestsList.push({
     query: 'a[href]:not([role]), [role="link"], svg a[href]:not([role]), svg [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(getVisibility(item, getOpacity(item)) && item.textContent.trim().length > 1) {
+        if(getVisibility(item, getOpacity(item)) && item.innerText) {
             var linkName = item.innerText.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
             var linkAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
             var regex = new RegExp(linkName, 'mi');
@@ -2959,7 +3152,7 @@ tanaguruTestsList.push({
     name: 'Liste des liens ayant un intitulé visible bien repris dans le nom accessible.',
     query: 'a[href]:not([role]), [role="link"], svg a[href]:not([role]), svg [role="link"]',
     filter: function (item) {
-        if(getVisibility(item, getOpacity(item)) && item.textContent.trim().length > 1) {
+        if(getVisibility(item, getOpacity(item)) && item.innerText) {
             var linkName = item.innerText.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
             var linkAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
             var regex = new RegExp(linkName, 'mi');
