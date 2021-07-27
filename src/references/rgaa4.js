@@ -2986,7 +2986,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens texte sans nom accessible',
-    query: 'a[href]:not([role]), [role="link"]',
+    query: 'a[href], [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
         if (item.querySelector('img, [role="img"], svg, object[type="image"], canvas') == null) {
@@ -3001,7 +3001,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens texte visibles non restitués',
-    query: 'a[href]:not([role]), [role="link"]',
+    query: 'a[href], [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
         if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') == null) {
@@ -3016,7 +3016,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens texte non visibles non restitués',
-    query: 'a[href]:not([role]), [role="link"]',
+    query: 'a[href], [role="link"]',
     filter: function (item) {
         if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') == null) {
             return item.isNotExposedDueTo.length != 0 && item.isNotVisibleDueTo.length > 0;
@@ -3035,7 +3035,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens texte avec un nom accessible',
-    query: 'a[href]:not([role]), [role="link"]',
+    query: 'a[href], [role="link"]',
     description:'Vérifiez la pertinence des noms accessibles des liens',
     filter: function (item) {
         if (item.querySelector('img, [role="img"], svg, object[type="image"], canvas') == null) {
@@ -3056,7 +3056,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens images sans nom accessible',
-    query: 'a[href]:not([role]), [role="link"]',
+    query: 'a[href], [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent == "")) {
@@ -3079,7 +3079,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens images visibles non restitués',
-    query: 'a[href]:not([role]), [role="link"]',
+    query: 'a[href], [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
@@ -3093,7 +3093,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens images non visibles non restitués',
-    query: 'a[href]:not([role]), [role="link"]',
+    query: 'a[href], [role="link"]',
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
             return item.isNotExposedDueTo.length != 0 && item.isNotVisibleDueTo.length > 0;
@@ -3111,7 +3111,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens images avec un nom accessible',
-    query: 'a[href]:not([role]), [role="link"]',
+    query: 'a[href], [role="link"]',
     description:'Vérifiez la pertinence des noms accessibles des images',
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent == "")) {
@@ -3140,7 +3140,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens composites sans nom accessible',
-    query: 'a[href]:not([role]), [role="link"]',
+    query: 'a[href], [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
@@ -3163,7 +3163,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens composites visibles non restitués',
-    query: 'a[href]:not([role]), [role="link"]',
+    query: 'a[href], [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
@@ -3177,7 +3177,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens composites non visibles non restitués',
-    query: 'a[href]:not([role]), [role="link"]',
+    query: 'a[href], [role="link"]',
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
             return item.isNotExposedDueTo.length != 0 && !getVisibility(item, getOpacity(item));
@@ -3195,7 +3195,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens composites avec un nom accessible',
-    query: 'a[href]:not([role]), [role="link"]',
+    query: 'a[href], [role="link"]',
     description:'Vérifiez la pertinence des noms accessibles.',
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
@@ -3224,7 +3224,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens SVG sans nom accessible',
-    query: 'svg a[href]:not([role]), svg [role="link"]',
+    query: 'svg a[href], svg [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
@@ -3236,7 +3236,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens SVG visibles non restitués',
-    query: 'svg a[href]:not([role]), svg [role="link"]',
+    query: 'svg a[href], svg [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
         return item.isNotExposedDueTo.length != 0 && getVisibility(item, getOpacity(item));
@@ -3248,7 +3248,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens SVG non visibles non restitués',
-    query: 'svg a[href]:not([role]), svg [role="link"]',
+    query: 'svg a[href], svg [role="link"]',
     filter: function (item) {
         return item.isNotExposedDueTo.length != 0 && !getVisibility(item, getOpacity(item));
     },
@@ -3264,7 +3264,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens SVG avec un nom accessible',
-    query: 'svg a[href]:not([role]), svg [role="link"]',
+    query: 'svg a[href], svg [role="link"]',
     description:'Vérifiez la pertinence des noms accessibles.',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
@@ -3282,7 +3282,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens ayant un intitulé visible non repris dans le nom accessible.',
-    query: 'a[href]:not([role]), [role="link"], svg a[href]:not([role]), svg [role="link"]',
+    query: 'a[href], [role="link"], svg a[href], svg [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
         if(getVisibility(item, getOpacity(item)) && item.innerText) {
@@ -3300,7 +3300,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens ayant un intitulé visible bien repris dans le nom accessible.',
-    query: 'a[href]:not([role]), [role="link"], svg a[href]:not([role]), svg [role="link"]',
+    query: 'a[href], [role="link"], svg a[href], svg [role="link"]',
     filter: function (item) {
         if(getVisibility(item, getOpacity(item)) && item.innerText) {
             var linkName = item.innerText.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
@@ -3324,7 +3324,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens sans intitulé entre <a> et </a>.',
-    query: 'a[href]:not([role]), [role="link"]',
+    query: 'a[href], [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
         if(item.innerText && item.innerText.trim().length > 0) {
@@ -3342,7 +3342,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens avec un intitulé entre <a> et </a>.',
-    query: 'a[href]:not([role]), [role="link"]',
+    query: 'a[href], [role="link"]',
     filter: function (item) {
         if(item.isNotExposedDueTo.length == 0 || getVisibility(item, getOpacity(item))) {
             if(item.innerText && item.innerText.trim().length > 0) {
