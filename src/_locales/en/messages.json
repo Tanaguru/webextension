@@ -39,6 +39,8 @@
 	"tagCIE" : {"message":"Internet Charter of French Gov"},
 	"tagA11y": { "message": "Accessibility" },
 	"tagButtons": { "message": "Buttons" },
+	"tagColors": { "message": "Colors" }, 
+	"tagContrast": { "message": "Contrast" }, 
 	"tagEcoconception": { "message": "Eco-design" },
 	"tagHeadings": { "message": "Headings" },
 	"tagI18n": { "message": "Internationalization" },

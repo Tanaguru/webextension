@@ -823,7 +823,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that the highest possible contrast of every text character with its background meets the minimal contrast requirement.',
 	status: 'untested',
 	ressources: { 'act': ['afw4f7'], 'wcag20': ['1.4.3', '1.4.6'] },
-	tags: ['a11y', 'contrast'],
+	tags: ['a11y', 'contrast', 'colors'],
 	comments: "Require a special UI & a new method of execution."
 });
 
