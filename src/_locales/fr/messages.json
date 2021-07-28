@@ -74,6 +74,7 @@
 	"tagLanguages": { "message": "Langues" },
 	"tagLinks": { "message": "Liens" },
 	"tagMandatory": { "message": "Éléments obligatoires" },
+	"tagMedia": { "message": "Multimédia" },
 	"tagMeta": { "message": "Métadonnées" },
 	"tagMobile": { "message": "Mobile" },
 	"tagOthers": { "message": "Divers" },

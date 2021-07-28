@@ -1818,6 +1818,7 @@ tanaguruTestsList.push({
 
 /**
  *? COULEURS
+ ** tous les tests sont répertoriés
  *TODO prendre en compte les attributs tel quel "value" ou "placeholder" dans les tests du critère 3.2
  *TODO 3.3.1 répertorier les indications de couleur & les propriétés CSS déterminant une couleur
  *TODO identifier les mécanismes de contraste
@@ -2240,7 +2241,7 @@ tanaguruTestsList.push({
 
 /**
  *? MULTIMEDIA
- ** 4.1 à 4.7 + 4.10/4.11 OK
+ ** tous les tests sont répertoriés
  *TODO voir si l'on peut identifier de façon assez précise les médias non temporels
  */
 
@@ -2261,7 +2262,7 @@ tanaguruTestsList.push({
             return true;
         }
     },
-    tags: ['a11y', 'audio'],
+    tags: ['a11y', 'audio', 'media'],
     ressources: {'rgaa': ['4.1.1']}
 });
 
@@ -2279,7 +2280,7 @@ tanaguruTestsList.push({
             return item.getAttribute('type').startsWith('video/');
         }
     },
-    tags: ['a11y', 'videos'],
+    tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.1.2']}
 });
 
@@ -2297,7 +2298,7 @@ tanaguruTestsList.push({
             return item.getAttribute('type').startsWith('video/');
         }
     },
-    tags: ['a11y', 'videos'],
+    tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.1.3']}
 });
 
@@ -2318,7 +2319,7 @@ tanaguruTestsList.push({
             return true;
         }
     },
-    tags: ['a11y', 'audio'],
+    tags: ['a11y', 'audio', 'media'],
     ressources: {'rgaa': ['4.2.1']}
 });
 
@@ -2336,7 +2337,7 @@ tanaguruTestsList.push({
             return item.getAttribute('type').startsWith('video/');
         }
     },
-    tags: ['a11y', 'videos'],
+    tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.2.2']}
 });
 
@@ -2354,7 +2355,7 @@ tanaguruTestsList.push({
             return item.getAttribute('type').startsWith('video/');
         }
     },
-    tags: ['a11y', 'videos'],
+    tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.2.3']}
 });
 
@@ -2373,7 +2374,7 @@ tanaguruTestsList.push({
             return item.getAttribute('type').startsWith('video/');
         }
     },
-    tags: ['a11y', 'videos'],
+    tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.3.1']}
 });
 
@@ -2391,7 +2392,7 @@ tanaguruTestsList.push({
         }
     },
     mark: {attrs: ['kind']},
-    tags: ['a11y', 'videos'],
+    tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.3.2']}
 });
 
@@ -2410,7 +2411,7 @@ tanaguruTestsList.push({
         }
     },
     mark: {attrs: ['kind']},
-    tags: ['a11y', 'videos'],
+    tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.3.2']}
 });
 
@@ -2421,7 +2422,7 @@ tanaguruTestsList.push({
     query: 'video track[kind="captions"]',
     description:'Vérifiez la pertinence des sous-titres',
     mark: {attrs: ['kind']},
-    tags: ['a11y', 'videos'],
+    tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.4.1']}
 });
 
@@ -2430,7 +2431,6 @@ tanaguruTestsList.push({
     name: 'Liste des médias temporels synchronisés',
     query: 'video',
     description:'Vérifiez, s\'ils existent, la pertinence des sous-titres',
-    tags: ['a11y', 'videos'],
     filter: function (item) {
         var trackTag = item.querySelectorAll('track');
         if (trackTag.length == 0) {
@@ -2438,6 +2438,7 @@ tanaguruTestsList.push({
         }
         return false;
     },
+    tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.4.1']}
 });
 
@@ -2456,7 +2457,7 @@ tanaguruTestsList.push({
             return item.getAttribute('type').startsWith('video/');
         }
     },
-    tags: ['a11y', 'videos'],
+    tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.5.1', '4.5.2', '4.6.1', '4.6.2']}
 });
 
@@ -2475,8 +2476,40 @@ tanaguruTestsList.push({
             return mediaType.startsWith('video/') || mediaType.startsWith('audio/') || mediaType === 'application/ogg';
         }
     },
-    tags: ['a11y', 'videos', 'audio'],
+    tags: ['a11y', 'videos', 'audio', 'media'],
     ressources: {'rgaa': ['4.7.1']}
+});
+
+//* 4.8 Chaque média non temporel a-t-il, si nécessaire, une alternative (hors cas particuliers) ?
+// 4.8.1 Chaque média non temporel vérifie-t-il, si nécessaire, une de ces conditions (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Les médias non temporels ont si nécessaire une alternative.',
+    description:'Vérifiez qu\'un lien ou bouton adjacent, clairement identifiable, permet d’accéder à une alternative.',
+    status: 'untested',
+    tags: ['a11y', 'media'],
+    ressources: {'rgaa': ['4.8.1']}
+});
+
+// 4.8.2 Chaque média non temporel associé à une alternative vérifie-t-il une de ces conditions (hors cas particuliers) ? 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Pour les médias non temporels associés à une alternative, cette alternative doit être accessible.',
+    description:'Vérifiez l\'accessibilité de l\'alternative associée au média non temporel.',
+    status: 'untested',
+    tags: ['a11y', 'media'],
+    ressources: {'rgaa': ['4.8.2']}
+});
+
+//* 4.9 Pour chaque média non temporel ayant une alternative, cette alternative est-elle pertinente ?
+// 4.9.1 Pour chaque média non temporel ayant une alternative, cette alternative permet-elle d'accéder au même contenu et à des fonctionnalités similaires ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Pour les médias non temporels ayant une alternative, cette alternative doit être pertinente.',
+    description:'Vérifiez que l\'alternative permet d\'accéder au même contenu et à des fonctionnalités similaires.',
+    status: 'untested',
+    tags: ['a11y', 'media'],
+    ressources: {'rgaa': ['4.9.1']}
 });
 
 //* 4.10 Chaque son déclenché automatiquement est-il contrôlable par l'utilisateur ?
@@ -2497,7 +2530,7 @@ tanaguruTestsList.push({
 
         return true;
     },
-    tags: ['a11y', 'audio', 'videos'],
+    tags: ['a11y', 'audio', 'videos', 'media'],
     ressources: {'rgaa': ['4.10.1'] },
 	comments: "Implémentation partielle"
 });
@@ -2522,7 +2555,7 @@ tanaguruTestsList.push({
             collection[i].status = 'passed';
         }
     },
-	tags: ['a11y', 'audio', 'videos'],
+	tags: ['a11y', 'audio', 'videos', 'media'],
     ressources: {'rgaa': ['4.10.1'] },
 	comments: "Implémentation partielle"
 });
@@ -2538,7 +2571,7 @@ tanaguruTestsList.push({
             collection[i].status = 'passed';
         }
     },
-    tags: ['a11y', 'videos', 'audio'],
+    tags: ['a11y', 'videos', 'audio', 'media'],
     ressources: {'rgaa': ['4.11.1']}
 });
 
@@ -2556,7 +2589,7 @@ tanaguruTestsList.push({
             return mediaType.startsWith('video/') || mediaType.startsWith('audio/') || mediaType === 'application/ogg';
         }
     },
-    tags: ['a11y', 'videos', 'audio'],
+    tags: ['a11y', 'videos', 'audio', 'media'],
     ressources: {'rgaa': ['4.11.1']}
 });
 
@@ -2575,8 +2608,48 @@ tanaguruTestsList.push({
             return mediaType.startsWith('video/') || mediaType.startsWith('audio/') || mediaType === 'application/ogg';
         }
     },
-    tags: ['a11y', 'videos', 'audio'],
+    tags: ['a11y', 'videos', 'audio', 'media'],
     ressources: {'rgaa': ['4.11.2', '4.11.3']}
+});
+
+//* 4.12 La consultation de chaque média non temporel est-elle contrôlable par le clavier et tout dispositif de pointage ?
+// 4.12.1 Pour chaque média non temporel, chaque fonctionnalité vérifie-t-elle une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Pour chaque média non-temporel, chaque fonctionnalité doit être accessible par le clavier et tout dispositif de pointage.',
+    status: 'untested',
+    tags: ['a11y', 'media', 'keyboard'],
+    ressources: {'rgaa': ['4.12.1']}
+});
+
+// 4.12.2 Pour chaque média non temporel, chaque fonctionnalité vérifie-t-elle une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Pour chaque média non-temporel, chaque fonctionnalité doit être activable par le clavier et tout dispositif de pointage.',
+    status: 'untested',
+    tags: ['a11y', 'media', 'keyboard'],
+    ressources: {'rgaa': ['4.12.2']}
+});
+
+//* 4.13 Chaque média temporel et non temporel est-il compatible avec les technologies d'assistance (hors cas particuliers) ?
+// 4.13.1 Chaque média temporel et non temporel vérifie-t-il une de ces conditions (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Chaque média doit être compatible avec les technologies d\'assistance.',
+    description: 'Vérifier que le nom, le rôle, la valeur, le paramétrage et les changements d\'états des composants d\'interfaces sont accessibles aux technologies ou qu\'une alternative compatible permette d\'accéder aux mêmes fonctionnalités.',
+    status: 'untested',
+    tags: ['a11y', 'media', 'accessibleName'],
+    ressources: {'rgaa': ['4.13.1']}
+});
+
+// 4.13.2 Chaque média temporel et non temporel qui possède une alternative compatible avec les technologies d'assistance, vérifie-t-il une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Pour chaque média ayant une alternative compatible avec les technologies d\'assistance, l\'alternative doit être implémentée correctement.',
+    description: 'Vérifier que l\'alternative ou le lien/bouton permettant d\'y accéder soit adjacent au média, ou qu\'un mécanisme permette de remplacer le média par son alternative.',
+    status: 'untested',
+    tags: ['a11y', 'media', 'accessibleName'],
+    ressources: {'rgaa': ['4.13.2']}
 });
 
 /**
@@ -2785,6 +2858,418 @@ tanaguruTestsList.push({
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.5.1']}
 });
+
+//* 5.6 Pour chaque tableau de données, chaque en-tête de colonnes et chaque en-tête de lignes sont-ils correctement déclarés ?
+// 5.6.1 Pour chaque tableau de données, chaque en-tête de colonnes s'appliquant à la totalité de la colonne vérifie-t-il une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des tableaux de données ayant des en-têtes de colonnes s\'appliquant à la totalité de la colonne, mal déclarés.',
+    query: 'table:not([role]), [role="table"]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if(item.isNotExposedDueTo.length > 0) {
+            return;
+        }
+
+        if(item.tagName.toLowerCase() === 'table') {
+            var scope = item.querySelectorAll('*[scope="col"]');
+            for(var i = 0; i < scope.length; i++) {
+                if(scope[i].tagName.toLowerCase() !== 'th') {
+                    if(!scope[i].hasAttribute('role') || (scope[i].hasAttribute('role') && scope[i].getAttribute('role') !== 'columnheader')) {
+                        return true;
+                    }
+                }
+            }
+
+            var headersList = item.querySelectorAll('*[headers]');
+            var headers = [];
+            for(var i = 0; i < headersList.length; i++) {
+                var list = headersList[i].getAttribute('headers').split(' ');
+                list.forEach(h => {
+                    headers.push(h);
+                });
+            }
+
+            for(var i = 0; i < headers.length; i++) {
+                var header = document.getElementById(headers[i]);
+                header = (header && item.contains(header)) ? header : null;
+                
+                if(!header) {
+                    continue;
+                }
+
+                var headerIndex = [];
+                var parent = header.parentNode;
+                var p = 0;
+                var siblings = parent.children;
+                for(var x = 0; x < siblings.length; x++) {
+                    if(siblings[x] != header) {
+                        if(siblings[x].hasAttribute('colspan')) {
+                            p = p + parseInt(siblings[x].getAttribute('colspan'));
+                        } else {
+                            p++;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+                if(header.hasAttribute('colspan')) {
+                    var size = parseInt(header.getAttribute('colspan'));
+                    for(var x = p; x < size+p; x++) {
+                        headerIndex.push(header.cellIndex+x);
+                    }
+                } else {
+                    headerIndex.push(header.cellIndex+p);
+                }
+
+                var cells = item.querySelectorAll('th, td');
+                var columnHeader = true;
+                cells.forEach(cell => {
+                    var cellIndex = [];
+                    var parentC = cell.parentNode;
+                    var pC = 0;
+                    var siblingsC = parentC.children;
+                    for(var x = 0; x < siblingsC.length; x++) {
+                        if(siblingsC[x] != cell) {
+                            if(siblingsC[x].hasAttribute('colspan')) {
+                                pC = pC + parseInt(siblingsC[x].getAttribute('colspan'));
+                            } else {
+                                pC++;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                    if(cell.hasAttribute('colspan')) {
+                        var size = parseInt(cell.getAttribute('colspan'));
+                        for(var x = pC; x < size+pC; x++) {
+                            cellIndex.push(cell.cellIndex+x);
+                        }
+                    } else {
+                        cellIndex.push(cell.cellIndex+pC);
+                    }
+
+                    if(cellIndex.some(n => headerIndex.includes(n))) {
+                        if(cell.hasAttribute('headers') && cell != header) {
+                            columnHeader = cell.getAttribute('headers').match(header.id) ? columnHeader : false;
+                        } else if(!cell.hasAttribute('headers')) {
+                            columnHeader = cell == header ? columnHeader : false;
+                        }
+                    }
+                });
+
+                if(columnHeader) {
+                    if(header.tagName.toLowerCase() !== 'th') {
+                        if(!header.hasAttribute('role') || (header.hasAttribute('role') && header.getAttribute('role') !== 'columnheader')) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        else if(item.hasAttribute('role') && item.getAttribute('role') === 'table') {
+            var ch = item.querySelectorAll('*[role="columnheader"]');
+            if(ch.length === 0) {
+                // verifier que l'on a pas d'en-tête appliqué à toute une colonne mis en place avec aria-labelledby
+            } else {
+                // c'est ok
+            }
+        }
+
+    },
+    mark: {attrs: ['scope']},
+    tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.6.1']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des tableaux de données ayant des en-têtes de colonnes s\'appliquant à la totalité de la colonne, correctement déclarés.',
+    query: 'table:not([role]), [role="table"]',
+    filter: function (item) {
+        if(item.isNotExposedDueTo.length > 0) {
+            return;
+        }
+
+        if(item.tagName.toLowerCase() === 'table') {
+            var scope = item.querySelectorAll('*[scope="col"]');
+            var result = false;
+            for(var i = 0; i < scope.length; i++) {
+                if(scope[i].tagName.toLowerCase() !== 'th') {
+                    if(scope[i].hasAttribute('role') && scope[i].getAttribute('role') === 'columnheader') {
+                        result = true;;
+                    }
+                } else {
+                    result = true;
+                }
+            }
+
+            var headersList = item.querySelectorAll('*[headers]');
+            var headers = [];
+            for(var i = 0; i < headersList.length; i++) {
+                var list = headersList[i].getAttribute('headers').split(' ');
+                list.forEach(h => {
+                    headers.push(h);
+                });
+            }
+
+            for(var i = 0; i < headers.length; i++) {
+                var header = document.getElementById(headers[i]);
+                header = (header && item.contains(header)) ? header : null;
+                
+                if(!header) {
+                    continue;
+                }
+
+                var headerIndex = [];
+                var parent = header.parentNode;
+                var p = 0;
+                var siblings = parent.children;
+                for(var x = 0; x < siblings.length; x++) {
+                    if(siblings[x] != header) {
+                        if(siblings[x].hasAttribute('colspan')) {
+                            p = p + parseInt(siblings[x].getAttribute('colspan'));
+                        } else {
+                            p++;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+                if(header.hasAttribute('colspan')) {
+                    var size = parseInt(header.getAttribute('colspan'));
+                    for(var x = p; x < size+p; x++) {
+                        headerIndex.push(header.cellIndex+x);
+                    }
+                } else {
+                    headerIndex.push(header.cellIndex+p);
+                }
+
+                var cells = item.querySelectorAll('th, td');
+                var columnHeader = true;
+                cells.forEach(cell => {
+                    var cellIndex = [];
+                    var parentC = cell.parentNode;
+                    var pC = 0;
+                    var siblingsC = parentC.children;
+                    for(var x = 0; x < siblingsC.length; x++) {
+                        if(siblingsC[x] != cell) {
+                            if(siblingsC[x].hasAttribute('colspan')) {
+                                pC = pC + parseInt(siblingsC[x].getAttribute('colspan'));
+                            } else {
+                                pC++;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                    if(cell.hasAttribute('colspan')) {
+                        var size = parseInt(cell.getAttribute('colspan'));
+                        for(var x = pC; x < size+pC; x++) {
+                            cellIndex.push(cell.cellIndex+x);
+                        }
+                    } else {
+                        cellIndex.push(cell.cellIndex+pC);
+                    }
+
+                    if(cellIndex.some(n => headerIndex.includes(n))) {
+                        if(cell.hasAttribute('headers') && cell != header) {
+                            columnHeader = cell.getAttribute('headers').match(header.id) ? columnHeader : false;
+                        } else if(!cell.hasAttribute('headers')) {
+                            columnHeader = cell == header ? columnHeader : false;
+                        }
+                    }
+                });
+
+                if(columnHeader) {
+                    if(header.tagName.toLowerCase() !== 'th') {
+                        if(!header.hasAttribute('role') || (header.hasAttribute('role') && header.getAttribute('role') !== 'columnheader')) {
+                            return;
+                        } else {
+                            result = true;
+                        }
+                    } else {
+                        result = true;
+                    }
+                }
+            }
+
+            return result;
+        }
+    },
+    analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+    mark: {attrs: ['scope']},
+    tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.6.1']}
+});
+
+// 5.6.2 Pour chaque tableau de données, chaque en-tête de lignes s'appliquant à la totalité de la ligne vérifie-t-il une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des tableaux de données ayant des en-têtes de lignes s\'appliquant à la totalité de la ligne, mal déclarés.',
+    query: 'table:not([role]), [role="table"]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if(item.isNotExposedDueTo.length > 0) {
+            return;
+        }
+
+        if(item.tagName.toLowerCase() === 'table') {
+            var scope = item.querySelectorAll('*[scope="row"]');
+            for(var i = 0; i < scope.length; i++) {
+                if(scope[i].tagName.toLowerCase() !== 'th') {
+                    if(!scope[i].hasAttribute('role') || (scope[i].hasAttribute('role') && scope[i].getAttribute('role') !== 'rowheader')) {
+                        return true;
+                    }
+                }
+            }
+
+            var headersList = item.querySelectorAll('*[headers]');
+            var headers = [];
+            for(var i = 0; i < headersList.length; i++) {
+                var list = headersList[i].getAttribute('headers').split(' ');
+                list.forEach(h => {
+                    headers.push(h);
+                });
+            }
+
+            for(var i = 0; i < headers.length; i++) {
+                var header = document.getElementById(headers[i]);
+                header = (header && item.contains(header)) ? header : null;
+                
+                if(!header) {
+                    continue;
+                }
+
+                var parent = header.parentNode;
+                
+                if(header.hasAttribute('rowspan')) {
+                    continue;
+                    // gérer les cellules multilignes
+                    //? les prendre en compte dans le prochain tr
+                }
+
+                var cells = parent.querySelectorAll('th, td');
+                var rowHeader = true;
+                cells.forEach(cell => {
+                    if(cell.hasAttribute('rowspan')) {
+                        // gérer les cellules multilignes
+                        //? les prendre en compte dans le prochain tr
+                    }
+
+                    if(!cell.hasAttribute('headers') || (cell.hasAttribute('headers') && !cell.getAttribute('headers').match(header.id))) {
+                        rowHeader = cell == header ? rowHeader : false;
+                    }
+                });
+
+                if(rowHeader) {
+                    if(header.tagName.toLowerCase() !== 'th') {
+                        if(!header.hasAttribute('role') || (header.hasAttribute('role') && header.getAttribute('role') !== 'rowheader')) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    },
+    mark: {attrs: ['scope']},
+    tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.6.2']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des tableaux de données ayant des en-têtes de lignes s\'appliquant à la totalité de la ligne, correctement déclarés.',
+    query: 'table:not([role]), [role="table"]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if(item.isNotExposedDueTo.length > 0) {
+            return;
+        }
+
+        if(item.tagName.toLowerCase() === 'table') {
+            var scope = item.querySelectorAll('*[scope="row"]');
+            var result = false;
+            for(var i = 0; i < scope.length; i++) {
+                if(scope[i].tagName.toLowerCase() !== 'th') {
+                    if(scope[i].hasAttribute('role') && scope[i].getAttribute('role') === 'rowheader') {
+                        result = true;
+                    }
+                } else {
+                    result = true;
+                }
+            }
+
+            var headersList = item.querySelectorAll('*[headers]');
+            var headers = [];
+            for(var i = 0; i < headersList.length; i++) {
+                var list = headersList[i].getAttribute('headers').split(' ');
+                list.forEach(h => {
+                    headers.push(h);
+                });
+            }
+
+            for(var i = 0; i < headers.length; i++) {
+                var header = document.getElementById(headers[i]);
+                header = (header && item.contains(header)) ? header : null;
+                
+                if(!header) {
+                    continue;
+                }
+
+                var parent = header.parentNode;
+                
+                if(header.hasAttribute('rowspan')) {
+                    continue;
+                    // gérer les cellules multilignes
+                    //? les prendre en compte dans le prochain tr
+                }
+
+                var cells = parent.querySelectorAll('th, td');
+                var rowHeader = true;
+                cells.forEach(cell => {
+                    if(cell.hasAttribute('rowspan')) {
+                        // gérer les cellules multilignes
+                        //? les prendre en compte dans le prochain tr
+                    }
+
+                    if(!cell.hasAttribute('headers') || (cell.hasAttribute('headers') && !cell.getAttribute('headers').match(header.id))) {
+                        rowHeader = cell == header ? rowHeader : false;
+                    }
+                });
+
+                if(rowHeader) {
+                    if(header.tagName.toLowerCase() !== 'th') {
+                        if(header.hasAttribute('role') && header.getAttribute('role') === 'rowheader') {
+                            result = true;
+                        }
+                    } else {
+                        result = true;
+                    }
+                }
+            }
+        }
+
+        return result;
+    },
+    analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+    mark: {attrs: ['scope']},
+    tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.6.2']}
+});
+
+// 5.6.3 Pour chaque tableau de données, chaque en-tête ne s'appliquant pas à la totalité de la ligne ou de la colonne est-il structuré au moyen d'une balise <th> ?
+// 5.6.4 Pour chaque tableau de données, chaque cellule associée à plusieurs en-têtes est-elle structurée au moyen d’une balise <td> ou <th> ?
+
 
 //* 5.7 Pour chaque tableau de données, la technique appropriée permettant d'associer chaque cellule avec ses en-têtes est-elle utilisée (hors cas particuliers) ?
 // 5.7.2 Pour chaque contenu de balise <th> s'appliquant à la totalité de la ligne ou de la colonne et possédant un attribut scope, la balise <th> vérifie-t-elle une de ces conditions ? 
