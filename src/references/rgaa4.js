@@ -2863,119 +2863,119 @@ tanaguruTestsList.push({
 // 5.6.1 Pour chaque tableau de données, chaque en-tête de colonnes s'appliquant à la totalité de la colonne vérifie-t-il une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux de données ayant des en-têtes de colonnes s\'appliquant à la totalité de la colonne, mal déclarés.',
-    query: 'table:not([role]), [role="table"]',
+    name: 'Liste des en-têtes d\'une colonne complète d\'un tableau de données, mal déclarés.',
+    query: 'table:not([role]) *[scope="col"], table:not([role]) *[scope="colgroup"], table:not([role]) *[id]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.isNotExposedDueTo.length > 0) {
-            return;
+        if(item.isNotExposedDueTo.length > 0) return;
+
+        var table = item.closest('table');
+
+        //? header with SCOPE
+        if(item.hasAttribute('scope')) {
+            if(item.getAttribute('scope') === 'col' || item.getAttribute('scope') === 'colgroup') {
+                if(item.tagName.toLowerCase() !== 'th') {
+                    return !(item.hasAttribute('role') && item.getAttribute('role') === 'columnheader');
+                } else return;
+            }
         }
 
-        if(item.tagName.toLowerCase() === 'table') {
-            var scope = item.querySelectorAll('*[scope="col"]');
-            for(var i = 0; i < scope.length; i++) {
-                if(scope[i].tagName.toLowerCase() !== 'th') {
-                    if(!scope[i].hasAttribute('role') || (scope[i].hasAttribute('role') && scope[i].getAttribute('role') !== 'columnheader')) {
-                        return true;
-                    }
-                }
-            }
+        //? if item is TH, columnheader or isn't cell, return
+        if(item.tagName.toLowerCase() !== 'th' && item.tagName.toLowerCase() !== 'td') return;
+        if(item.tagName.toLowerCase() === 'th') return;
+        if(item.hasAttribute('role') && item.getAttribute('role') === 'columnheader') return;
 
-            var headersList = item.querySelectorAll('*[headers]');
-            var headers = [];
-            for(var i = 0; i < headersList.length; i++) {
-                var list = headersList[i].getAttribute('headers').split(' ');
-                list.forEach(h => {
+
+        //? header with ID
+        //? check if this ID corresponding with headers attribute
+        var headersList = table.querySelectorAll('*[headers]');
+        var headers = [];
+
+        for(var i = 0; i < headersList.length; i++) {
+            var list = headersList[i].getAttribute('headers').split(' ');
+
+            list.forEach(h => {
+                if(!headers.includes(h)) {
                     headers.push(h);
-                });
-            }
-
-            for(var i = 0; i < headers.length; i++) {
-                var header = document.getElementById(headers[i]);
-                header = (header && item.contains(header)) ? header : null;
-                
-                if(!header) {
-                    continue;
                 }
-
-                var headerIndex = [];
-                var parent = header.parentNode;
-                var p = 0;
-                var siblings = parent.children;
-                for(var x = 0; x < siblings.length; x++) {
-                    if(siblings[x] != header) {
-                        if(siblings[x].hasAttribute('colspan')) {
-                            p = p + parseInt(siblings[x].getAttribute('colspan'));
-                        } else {
-                            p++;
-                        }
-                    } else {
-                        break;
-                    }
-                }
-                if(header.hasAttribute('colspan')) {
-                    var size = parseInt(header.getAttribute('colspan'));
-                    for(var x = p; x < size+p; x++) {
-                        headerIndex.push(header.cellIndex+x);
-                    }
-                } else {
-                    headerIndex.push(header.cellIndex+p);
-                }
-
-                var cells = item.querySelectorAll('th, td');
-                var columnHeader = true;
-                cells.forEach(cell => {
-                    var cellIndex = [];
-                    var parentC = cell.parentNode;
-                    var pC = 0;
-                    var siblingsC = parentC.children;
-                    for(var x = 0; x < siblingsC.length; x++) {
-                        if(siblingsC[x] != cell) {
-                            if(siblingsC[x].hasAttribute('colspan')) {
-                                pC = pC + parseInt(siblingsC[x].getAttribute('colspan'));
-                            } else {
-                                pC++;
-                            }
-                        } else {
-                            break;
-                        }
-                    }
-                    if(cell.hasAttribute('colspan')) {
-                        var size = parseInt(cell.getAttribute('colspan'));
-                        for(var x = pC; x < size+pC; x++) {
-                            cellIndex.push(cell.cellIndex+x);
-                        }
-                    } else {
-                        cellIndex.push(cell.cellIndex+pC);
-                    }
-
-                    if(cellIndex.some(n => headerIndex.includes(n))) {
-                        if(cell.hasAttribute('headers') && cell != header) {
-                            columnHeader = cell.getAttribute('headers').match(header.id) ? columnHeader : false;
-                        } else if(!cell.hasAttribute('headers')) {
-                            columnHeader = cell == header ? columnHeader : false;
-                        }
-                    }
-                });
-
-                if(columnHeader) {
-                    if(header.tagName.toLowerCase() !== 'th') {
-                        if(!header.hasAttribute('role') || (header.hasAttribute('role') && header.getAttribute('role') !== 'columnheader')) {
-                            return true;
-                        }
-                    }
-                }
-            }
+            });
         }
 
-        else if(item.hasAttribute('role') && item.getAttribute('role') === 'table') {
-            var ch = item.querySelectorAll('*[role="columnheader"]');
-            if(ch.length === 0) {
-                // verifier que l'on a pas d'en-tête appliqué à toute une colonne mis en place avec aria-labelledby
+        if(!headers.includes(item.id)) return;
+
+        //? get column's size & position
+        var row = item.closest('tr');
+        if(!row) return;
+
+        var headerIndex = [];
+        var p = 0;
+        var siblings = row.children;
+
+        for(var x = 0; x < siblings.length; x++) {
+            if(siblings[x] != item) {
+                if(siblings[x].hasAttribute('colspan') && siblings[x].getAttribute('colspan') > 0) {
+                    p = p + parseInt(siblings[x].getAttribute('colspan'));
+                } else p++;
+            } else break;
+        }
+
+        if(item.hasAttribute('colspan') && item.getAttribute('colspan') > 0) {
+            var size = parseInt(item.getAttribute('colspan'));
+
+            for(var x = p; x < size+p; x++) {
+                headerIndex.push(x+1);
+            }
+        } else {
+            headerIndex.push(p+1);
+        }
+
+        //? check if all cells in the column has headers attribute corresponding to the item(header) ID
+        var cells = table.querySelectorAll('th, td');
+        var columnHeader = true;
+
+        cells.forEach(cell => {
+            var cellIndex = [];
+            var rowC = cell.closest('tr');
+            var pC = 0;
+            var siblingsC = rowC.children;
+
+            for(var x = 0; x < siblingsC.length; x++) {
+                if(siblingsC[x] != cell) {
+                    if(siblingsC[x].hasAttribute('colspan') && siblingsC[x].getAttribute('colspan') > 0) {
+                        pC = pC + parseInt(siblingsC[x].getAttribute('colspan'));
+                    } else pC++;
+                } else break;
+            }
+
+            if(cell.hasAttribute('colspan') && cell.getAttribute('colspan') > 0) {
+                var sizeC = parseInt(cell.getAttribute('colspan'));
+
+                for(var x = pC; x < sizeC+pC; x++) {
+                    cellIndex.push(x+1);
+                }
             } else {
-                // c'est ok
+                cellIndex.push(pC+1);
             }
-        }
+
+            if(cellIndex.some(n => headerIndex.includes(n)) && cell != item) {
+                if(cell.hasAttribute('headers')) {
+                    columnHeader = cell.getAttribute('headers').match(item.id) ? columnHeader : false;
+                } else if(!cell.hasAttribute('headers')) {
+                    columnHeader = false;
+                }
+            }
+        });
+
+        return columnHeader;
+
+        // else if(item.hasAttribute('role') && item.getAttribute('role') === 'table') {
+        //     var ch = item.querySelectorAll('*[role="columnheader"]');
+        //     if(ch.length === 0) {
+                // verifier que l'on a pas d'en-tête appliqué à toute une colonne mis en place avec aria-labelledby
+            // } else {
+                // c'est ok
+        //     }
+        // }
 
     },
     mark: {attrs: ['scope']},
@@ -2985,117 +2985,109 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux de données ayant des en-têtes de colonnes s\'appliquant à la totalité de la colonne, correctement déclarés.',
-    query: 'table:not([role]), [role="table"]',
+    name: 'Liste des en-têtes d\'une colonne complète d\'un tableau de données, correctement déclarés.',
+    query: 'table:not([role]) *[scope="col"], table:not([role]) *[scope="colgroup"], table:not([role]) *[id]',
     filter: function (item) {
-        if(item.isNotExposedDueTo.length > 0) {
-            return;
+        if(item.isNotExposedDueTo.length > 0) return;
+
+        var table = item.closest('table');
+
+        //? header with SCOPE
+        if(item.hasAttribute('scope')) {
+            if(item.getAttribute('scope') === 'col' || item.getAttribute('scope') === 'colgroup') {
+                if(item.tagName.toLowerCase() !== 'th') {
+                    return item.hasAttribute('role') && item.getAttribute('role') === 'columnheader';
+                } else return true;
+            }
         }
 
-        if(item.tagName.toLowerCase() === 'table') {
-            var scope = item.querySelectorAll('*[scope="col"]');
-            var result = false;
-            for(var i = 0; i < scope.length; i++) {
-                if(scope[i].tagName.toLowerCase() !== 'th') {
-                    if(scope[i].hasAttribute('role') && scope[i].getAttribute('role') === 'columnheader') {
-                        result = true;;
-                    }
-                } else {
-                    result = true;
-                }
-            }
+        //? if item isn't cell return
+        if(item.tagName.toLowerCase() !== 'th' && item.tagName.toLowerCase() !== 'td') return;
 
-            var headersList = item.querySelectorAll('*[headers]');
-            var headers = [];
-            for(var i = 0; i < headersList.length; i++) {
-                var list = headersList[i].getAttribute('headers').split(' ');
-                list.forEach(h => {
+        //? header with ID
+        //? check if this ID corresponding with headers attibute
+        var headersList = table.querySelectorAll('*[headers]');
+        var headers = [];
+
+        for(var i = 0; i < headersList.length; i++) {
+            var list = headersList[i].getAttribute('headers').split(' ');
+
+            list.forEach(h => {
+                if(!headers.includes(h)) {
                     headers.push(h);
-                });
+                }
+            });
+        }
+
+        if(!headers.includes(item.id)) return;
+
+        //? get column's size & position
+        var row = item.closest('tr');
+        if(!row) return;
+
+        var headerIndex = [];
+        var p = 0;
+        var siblings = row.children;
+
+        for(var x = 0; x < siblings.length; x++) {
+            if(siblings[x] != item) {
+                if(siblings[x].hasAttribute('colspan') && siblings[x].getAttribute('colspan') > 0) {
+                    p = p + parseInt(siblings[x].getAttribute('colspan'));
+                } else p++;
+            } else break;
+        }
+
+        if(item.hasAttribute('colspan') && item.getAttribute('colspan') > 0) {
+            var size = parseInt(item.getAttribute('colspan'));
+
+            for(var x = p; x < size+p; x++) {
+                headerIndex.push(x+1);
+            }
+        } else {
+            headerIndex.push(p+1);
+        }
+
+        //? check if all cells in the column has headers attribute corresponding to the item(header) ID
+        var cells = table.querySelectorAll('th, td');
+        var columnHeader = true;
+
+        cells.forEach(cell => {
+            var cellIndex = [];
+            var rowC = cell.closest('tr');
+            var pC = 0;
+            var siblingsC = rowC.children;
+
+            for(var x = 0; x < siblingsC.length; x++) {
+                if(siblingsC[x] != cell) {
+                    if(siblingsC[x].hasAttribute('colspan') && siblingsC[x].getAttribute('colspan') > 0) {
+                        pC = pC + parseInt(siblingsC[x].getAttribute('colspan'));
+                    } else pC++;
+                } else break;
             }
 
-            for(var i = 0; i < headers.length; i++) {
-                var header = document.getElementById(headers[i]);
-                header = (header && item.contains(header)) ? header : null;
-                
-                if(!header) {
-                    continue;
-                }
+            if(cell.hasAttribute('colspan')&& cell.getAttribute('colspan') > 0) {
+                var sizeC = parseInt(cell.getAttribute('colspan'));
 
-                var headerIndex = [];
-                var parent = header.parentNode;
-                var p = 0;
-                var siblings = parent.children;
-                for(var x = 0; x < siblings.length; x++) {
-                    if(siblings[x] != header) {
-                        if(siblings[x].hasAttribute('colspan')) {
-                            p = p + parseInt(siblings[x].getAttribute('colspan'));
-                        } else {
-                            p++;
-                        }
-                    } else {
-                        break;
-                    }
+                for(var x = pC; x < sizeC+pC; x++) {
+                    cellIndex.push(x+1);
                 }
-                if(header.hasAttribute('colspan')) {
-                    var size = parseInt(header.getAttribute('colspan'));
-                    for(var x = p; x < size+p; x++) {
-                        headerIndex.push(header.cellIndex+x);
-                    }
-                } else {
-                    headerIndex.push(header.cellIndex+p);
-                }
-
-                var cells = item.querySelectorAll('th, td');
-                var columnHeader = true;
-                cells.forEach(cell => {
-                    var cellIndex = [];
-                    var parentC = cell.parentNode;
-                    var pC = 0;
-                    var siblingsC = parentC.children;
-                    for(var x = 0; x < siblingsC.length; x++) {
-                        if(siblingsC[x] != cell) {
-                            if(siblingsC[x].hasAttribute('colspan')) {
-                                pC = pC + parseInt(siblingsC[x].getAttribute('colspan'));
-                            } else {
-                                pC++;
-                            }
-                        } else {
-                            break;
-                        }
-                    }
-                    if(cell.hasAttribute('colspan')) {
-                        var size = parseInt(cell.getAttribute('colspan'));
-                        for(var x = pC; x < size+pC; x++) {
-                            cellIndex.push(cell.cellIndex+x);
-                        }
-                    } else {
-                        cellIndex.push(cell.cellIndex+pC);
-                    }
-
-                    if(cellIndex.some(n => headerIndex.includes(n))) {
-                        if(cell.hasAttribute('headers') && cell != header) {
-                            columnHeader = cell.getAttribute('headers').match(header.id) ? columnHeader : false;
-                        } else if(!cell.hasAttribute('headers')) {
-                            columnHeader = cell == header ? columnHeader : false;
-                        }
-                    }
-                });
-
-                if(columnHeader) {
-                    if(header.tagName.toLowerCase() !== 'th') {
-                        if(!header.hasAttribute('role') || (header.hasAttribute('role') && header.getAttribute('role') !== 'columnheader')) {
-                            return;
-                        } else {
-                            result = true;
-                        }
-                    } else {
-                        result = true;
-                    }
-                }
+            } else {
+                cellIndex.push(pC+1);
             }
 
-            return result;
+            if(cellIndex.some(n => headerIndex.includes(n)) && cell != item) {
+                if(cell.hasAttribute('headers')) {
+                    columnHeader = cell.getAttribute('headers').match(item.id) ? columnHeader : false;
+                } else if(!cell.hasAttribute('headers')) {
+                    columnHeader = false;
+                }
+            }
+        });
+
+        if(columnHeader) {
+            if(item.tagName.toLowerCase() !== 'th') {
+                return item.hasAttribute('role') && item.getAttribute('role') === 'columnheader';
+            } else return true;
         }
     },
     analyzeElements: function (collection) {
@@ -3111,71 +3103,79 @@ tanaguruTestsList.push({
 // 5.6.2 Pour chaque tableau de données, chaque en-tête de lignes s'appliquant à la totalité de la ligne vérifie-t-il une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux de données ayant des en-têtes de lignes s\'appliquant à la totalité de la ligne, mal déclarés.',
-    query: 'table:not([role]), [role="table"]',
+    name: 'Liste des en-têtes d\'une ligne complète d\'un tableau de données, mal déclarés.',
+    query: 'table:not([role]) *[scope="row"], table:not([role]) *[scope="rowgroup"], table:not([role]) *[id]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.isNotExposedDueTo.length > 0) {
-            return;
+        if(item.isNotExposedDueTo.length > 0) return;
+
+        var table = item.closest('table');
+
+        //? header with SCOPE
+        if(item.hasAttribute('scope')) {
+            if(item.getAttribute('scope') === 'row' || item.getAttribute('scope') === 'rowgroup') {
+                if(item.tagName.toLowerCase() !== 'th') {
+                    return !(item.hasAttribute('role') && item.getAttribute('role') === 'rowheader');
+                } else return;
+            }
         }
 
-        if(item.tagName.toLowerCase() === 'table') {
-            var scope = item.querySelectorAll('*[scope="row"]');
-            for(var i = 0; i < scope.length; i++) {
-                if(scope[i].tagName.toLowerCase() !== 'th') {
-                    if(!scope[i].hasAttribute('role') || (scope[i].hasAttribute('role') && scope[i].getAttribute('role') !== 'rowheader')) {
-                        return true;
-                    }
-                }
-            }
+        //? if item is TH, rowheader or isn't cell, return
+        if(item.tagName.toLowerCase() !== 'th' && item.tagName.toLowerCase() !== 'td') return;
+        if(item.tagName.toLowerCase() === 'th') return;
+        if(item.hasAttribute('role') && item.getAttribute('role') === 'rowheader') return;
 
-            var headersList = item.querySelectorAll('*[headers]');
-            var headers = [];
-            for(var i = 0; i < headersList.length; i++) {
-                var list = headersList[i].getAttribute('headers').split(' ');
-                list.forEach(h => {
+        //? header with ID
+        //? check if this ID corresponding with headers attribute
+        var headersList = table.querySelectorAll('*[headers]');
+        var headers = [];
+
+        for(var i = 0; i < headersList.length; i++) {
+            var list = headersList[i].getAttribute('headers').split(' ');
+
+            list.forEach(h => {
+                if(!headers.includes(h)) {
                     headers.push(h);
-                });
-            }
-
-            for(var i = 0; i < headers.length; i++) {
-                var header = document.getElementById(headers[i]);
-                header = (header && item.contains(header)) ? header : null;
-                
-                if(!header) {
-                    continue;
                 }
+            });
+        }
 
-                var parent = header.parentNode;
-                
-                if(header.hasAttribute('rowspan')) {
-                    continue;
-                    // gérer les cellules multilignes
-                    //? les prendre en compte dans le prochain tr
-                }
+        if(!headers.includes(item.id)) return;
 
-                var cells = parent.querySelectorAll('th, td');
-                var rowHeader = true;
-                cells.forEach(cell => {
-                    if(cell.hasAttribute('rowspan')) {
-                        // gérer les cellules multilignes
-                        //? les prendre en compte dans le prochain tr
-                    }
+        //? get row's size & all its cells
+        var rows = table.querySelectorAll('tr');
+        var cells = [];
+        var currentRow = item.closest('tr');
+        if(!currentRow) return;
+        currentRow.setAttribute('data-row-tng', true);
 
-                    if(!cell.hasAttribute('headers') || (cell.hasAttribute('headers') && !cell.getAttribute('headers').match(header.id))) {
-                        rowHeader = cell == header ? rowHeader : false;
-                    }
-                });
+        if(item.hasAttribute('rowspan') && parseInt(item.getAttribute('rowspan')) > 1) {
+            var size = parseInt(item.getAttribute('rowspan'));
 
-                if(rowHeader) {
-                    if(header.tagName.toLowerCase() !== 'th') {
-                        if(!header.hasAttribute('role') || (header.hasAttribute('role') && header.getAttribute('role') !== 'rowheader')) {
-                            return true;
-                        }
+            for(var i = 0; i < rows.length; i++) {
+                if(rows[i] === currentRow) {
+                    for(var x = 1; x < size; x++) {
+                        rows[i+x].setAttribute('data-row-tng', true);
                     }
                 }
             }
         }
+
+        var cells = table.querySelectorAll('[data-row-tng=true] th, [data-row-tng=true] td');
+        var rowHeader = true;
+        
+        //? check if all cells in the row has headers attribute corresponding to the item(header) ID
+        cells.forEach(cell => {
+            if(cell != item) {
+                rowHeader = cell.hasAttribute('headers') && cell.getAttribute('headers').match(item.id) ? rowHeader : false;
+            }
+        });
+
+        rows.forEach(e => {
+            e.removeAttribute('data-row-tng');
+        });
+
+        return rowHeader;
     },
     mark: {attrs: ['scope']},
     tags: ['a11y', 'tables'],
@@ -3184,78 +3184,80 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux de données ayant des en-têtes de lignes s\'appliquant à la totalité de la ligne, correctement déclarés.',
-    query: 'table:not([role]), [role="table"]',
-    expectedNbElements: 0,
+    name: 'Liste des en-têtes d\'une ligne complète d\'un tableau de données, correctement déclarés.',
+    query: 'table:not([role]) *[scope="row"], table:not([role]) *[scope="rowgroup"], table:not([role]) *[id]',
     filter: function (item) {
-        if(item.isNotExposedDueTo.length > 0) {
-            return;
+        if(item.isNotExposedDueTo.length > 0) return;
+
+        var table = item.closest('table');
+
+        //? header with SCOPE
+        if(item.hasAttribute('scope')) {
+            if(item.getAttribute('scope') === 'row' || item.getAttribute('scope') === 'rowgroup') {
+                if(item.tagName.toLowerCase() !== 'th') {
+                    return item.hasAttribute('role') && item.getAttribute('role') === 'rowheader';
+                } else return true;
+            }
         }
 
-        if(item.tagName.toLowerCase() === 'table') {
-            var scope = item.querySelectorAll('*[scope="row"]');
-            var result = false;
-            for(var i = 0; i < scope.length; i++) {
-                if(scope[i].tagName.toLowerCase() !== 'th') {
-                    if(scope[i].hasAttribute('role') && scope[i].getAttribute('role') === 'rowheader') {
-                        result = true;
-                    }
-                } else {
-                    result = true;
-                }
-            }
+        //? if item isn't cell, return
+        if(item.tagName.toLowerCase() !== 'th' && item.tagName.toLowerCase() !== 'td') return;
 
-            var headersList = item.querySelectorAll('*[headers]');
-            var headers = [];
-            for(var i = 0; i < headersList.length; i++) {
-                var list = headersList[i].getAttribute('headers').split(' ');
-                list.forEach(h => {
+        //? header with ID
+        //? check if this ID corresponding with headers attribute
+        var headersList = table.querySelectorAll('*[headers]');
+        var headers = [];
+
+        for(var i = 0; i < headersList.length; i++) {
+            var list = headersList[i].getAttribute('headers').split(' ');
+
+            list.forEach(h => {
+                if(!headers.includes(h)) {
                     headers.push(h);
-                });
-            }
-
-            for(var i = 0; i < headers.length; i++) {
-                var header = document.getElementById(headers[i]);
-                header = (header && item.contains(header)) ? header : null;
-                
-                if(!header) {
-                    continue;
                 }
+            });
+        }
+        
+        if(!headers.includes(item.id)) return;
 
-                var parent = header.parentNode;
-                
-                if(header.hasAttribute('rowspan')) {
-                    continue;
-                    // gérer les cellules multilignes
-                    //? les prendre en compte dans le prochain tr
-                }
+        //? get row's size & all its cells
+        var rows = table.querySelectorAll('tr');
+        var cells = [];
+        var currentRow = item.closest('tr');
+        if(!currentRow) return;
+        currentRow.setAttribute('data-row-tng', true);
 
-                var cells = parent.querySelectorAll('th, td');
-                var rowHeader = true;
-                cells.forEach(cell => {
-                    if(cell.hasAttribute('rowspan')) {
-                        // gérer les cellules multilignes
-                        //? les prendre en compte dans le prochain tr
-                    }
+        if(item.hasAttribute('rowspan') && parseInt(item.getAttribute('rowspan')) > 1) {
+            var size = parseInt(item.getAttribute('rowspan'));
 
-                    if(!cell.hasAttribute('headers') || (cell.hasAttribute('headers') && !cell.getAttribute('headers').match(header.id))) {
-                        rowHeader = cell == header ? rowHeader : false;
-                    }
-                });
-
-                if(rowHeader) {
-                    if(header.tagName.toLowerCase() !== 'th') {
-                        if(header.hasAttribute('role') && header.getAttribute('role') === 'rowheader') {
-                            result = true;
-                        }
-                    } else {
-                        result = true;
+            for(var i = 0; i < rows.length; i++) {
+                if(rows[i] === currentRow) {
+                    for(var x = 1; x < size; x++) {
+                        rows[i+x].setAttribute('data-row-tng', true);
                     }
                 }
             }
         }
 
-        return result;
+        var cells = table.querySelectorAll('[data-row-tng=true] th, [data-row-tng=true] td');
+        var rowHeader = true;
+
+        //? check if all cells in the row has headers attribute corresponding to the item(header) ID
+        cells.forEach(cell => {
+            if(cell != item) {
+                rowHeader = cell.hasAttribute('headers') && cell.getAttribute('headers').match(item.id) ? rowHeader : false;
+            }
+        });
+
+        rows.forEach(e => {
+            e.removeAttribute('data-row-tng');
+        });
+
+        if(rowHeader) {
+            if(item.tagName.toLowerCase() !== 'th') {
+                return item.hasAttribute('role') && item.getAttribute('role') === 'rowheader';
+            } else return true;
+        }
     },
     analyzeElements: function (collection) {
 		for (var i = 0; i < collection.length; i++) {
