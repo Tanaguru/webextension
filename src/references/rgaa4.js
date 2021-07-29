@@ -2654,9 +2654,10 @@ tanaguruTestsList.push({
 
 /**
  *? TABLEAUX
- ** 5.1 à 5.5 et 5.8 OK
+ ** 5.1 à 5.6.2 et 5.6.4 et 5.8 OK
  ** 5.7 implémentation partielle
  *TODO voir si l'on peut identifier correctement les en-têtes ne s'appliquant pas sur toute la ligne/colonne
+ *TODO 5.6.3 à faire
  */
 
 //* 5.1 Chaque tableau de données complexe a-t-il un résumé ?
@@ -3217,7 +3218,7 @@ tanaguruTestsList.push({
                 }
             });
         }
-        
+
         if(!headers.includes(item.id)) return;
 
         //? get row's size & all its cells
@@ -3270,8 +3271,78 @@ tanaguruTestsList.push({
 });
 
 // 5.6.3 Pour chaque tableau de données, chaque en-tête ne s'appliquant pas à la totalité de la ligne ou de la colonne est-il structuré au moyen d'une balise <th> ?
-// 5.6.4 Pour chaque tableau de données, chaque cellule associée à plusieurs en-têtes est-elle structurée au moyen d’une balise <td> ou <th> ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Liste des cellules d'un tableau de données associées à plusieurs en-têtes, correctement balisées.",
+    status: 'untested',
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.6.3']}
+});
 
+// 5.6.4 Pour chaque tableau de données, chaque cellule associée à plusieurs en-têtes est-elle structurée au moyen d’une balise <td> ou <th> ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Liste des cellules d'un tableau de données associées à plusieurs en-têtes, mal balisées.",
+	query: '*[headers]',
+    expectedNbElements: 0,
+	filter: function (item) {
+		if(item.isNotExposedDueTo.length > 0) return;
+
+        var table = item.closest('table');
+        if(!table) return;
+        var headers = item.getAttribute('headers').split(' ');
+        var count = 0;
+
+        for(var i = 0; i < headers.length; i++) {
+            var id = document.getElementById(headers[i]);
+
+            if(id) {
+                count = id.closest('table') == table ? count+1 : count;
+            }
+        }
+
+        if(count > 1) {
+            return item.tagName.toLowerCase() !== 'td' && item.tagName.toLowerCase() !== 'th';
+        }
+	},
+    mark: {attrs: ['headers']},
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.6.4']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Liste des cellules d'un tableau de données associées à plusieurs en-têtes, correctement balisées.",
+	query: '*[headers]',
+	filter: function (item) {
+		if(item.isNotExposedDueTo.length > 0) return;
+
+        var table = item.closest('table');
+        if(!table) return;
+        var headers = item.getAttribute('headers').split(' ');
+        var count = 0;
+
+        for(var i = 0; i < headers.length; i++) {
+            var id = document.getElementById(headers[i]);
+
+            if(id) {
+                count = id.closest('table') == table ? count+1 : count;
+            }
+        }
+
+        if(count > 1) {
+            return item.tagName.toLowerCase() === 'td' || item.tagName.toLowerCase() === 'th';
+        }
+	},
+    analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+    mark: {attrs: ['headers']},
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.6.4']}
+});
 
 //* 5.7 Pour chaque tableau de données, la technique appropriée permettant d'associer chaque cellule avec ses en-têtes est-elle utilisée (hors cas particuliers) ?
 // 5.7.2 Pour chaque contenu de balise <th> s'appliquant à la totalité de la ligne ou de la colonne et possédant un attribut scope, la balise <th> vérifie-t-elle une de ces conditions ? 
@@ -3351,7 +3422,7 @@ tanaguruTestsList.push({
 			if (headers.length > 1) {
 				var result = true;
 				for (var i = 0; i < headers.length; i++) {
-					var th = document.querySelector('th[id="' + headers[i] + '"]');
+					var th = document.getElementById(headers[i]);;
 					result = th ? th.closest('table') == item.closest('table') : false;
 					if (!result) {
 						break;
@@ -3360,7 +3431,7 @@ tanaguruTestsList.push({
 				return result;
 			}
 			else {
-				var th = document.querySelector('th[id="' + headers + '"]');
+				var th = document.getElementById(headers[0]);
 				return th ? th.closest('table') == item.closest('table') : false;
 			}
 		}
@@ -3393,7 +3464,7 @@ tanaguruTestsList.push({
 			if (headers.length > 1) {
 				var result = true;
 				for (var i = 0; i < headers.length; i++) {
-					var th = document.querySelector('th[id="' + headers[i] + '"]');
+					var th = document.getElementById(headers[i]);
 					result = th ? th.closest('table') == item.closest('table') : false;
 					if (!result) {
 						break;
@@ -3402,7 +3473,7 @@ tanaguruTestsList.push({
 				return !result;
 			}
 			else {
-				var th = document.querySelector('th[id="' + headers + '"]');
+				var th = document.getElementById(headers[0]);
 				return th ? th.closest('table') != item.closest('table') : true;
 			}
 		}
