@@ -68,7 +68,7 @@ function buildScripts(testFile){
 console.log('Start build')
 clean();
 // build manifests
-let version = fs.readFileSync(VERSION_FILE).toString();
+let version = fs.readFileSync(VERSION_FILE).toString().trim();
 let manifests = fs.readdirSync(MANIFESTS_DIR);
 let references = fs.readdirSync(REFERENCES_DIR).map(value => value.split('.')[0]);
 
