@@ -21,15 +21,15 @@ Outil d'évaluation de l'accessibilité Web (et plus).
 ## Installer la webextension
 
 1. **Télécharger ou cloner le projet** ici : [répertoire du projet](https://github.com/Tanaguru/webextension)
-2. **Installer les dépendances du projet et effectuer le "build"** : 
+2. Pour installer la webextension, vous aurez besoin de **télécharger et installer Node.js**. [Page de téléchargement de Node.js](https://nodejs.org/fr/download/)
+3. **Installer les dépendances du projet et effectuer le "build"** : 
    - accéder au dossier racine du projet avec un terminal (powershell, git bash...) ou ouvrez le projet avec votre éditeur de code et lancez le terminal.
    - envoyez ces 2 commandes dans le terminal :
   ```bash
   npm install
   npm run-script build
   ```
-
-3. **Installation sur Firefox**
+4. **Installation sur Firefox**
 
 Pour installer la webextension, **dans la barre d’adresse** de Firefox 57 ou supérieur, saisissez **« about:debugging »**. La page « Modules » s’affiche :
 
@@ -45,7 +45,7 @@ Sur cette page, activez le bouton **« Charger un module temporaire »**. Une bo
 
 Note : la webextension est installée temporairement. C’est-à-dire qu’elle sera désinstallée à la fermeture de Firefox.
 
-4. **Installation sur Chrome**
+5. **Installation sur Chrome**
 
 Dans la barre d'adresse du navigateur Chrome, tapez ceci : **chrome://extensions**
 

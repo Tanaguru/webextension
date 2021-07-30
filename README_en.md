@@ -21,7 +21,8 @@ Web accessibility evaluation tool (and more).
 ## Install the webextension
 
 1. **Download or clone the project** ihereci : [project directory](https://github.com/Tanaguru/webextension)
-2. **Install the project dependencies and do the "build"** : 
+2. To install the webextension, you will need to **download and install Node.js**. [Page de téléchargement de Node.js](https://nodejs.org/en/download/)
+3. **Install the project dependencies and do the "build"** : 
    - access the root folder of the project with a terminal (powershell, git bash...) or open the project with your code editor and lauch the terminal.
    - send this 2 commands in the terminal :
   ```bash
@@ -29,7 +30,7 @@ Web accessibility evaluation tool (and more).
   npm run-script build
   ```
 
-3. **Installation on Firefox**
+4. **Installation on Firefox**
 
 To install the webextension, **in the address bar** of Firefox 57 or highter, type **« about:debugging »**. The « Extensions » page displays :
 
@@ -45,7 +46,7 @@ On this page, activate the button **« Load Temporary Add-on... »**. A file dia
 
 Note : the webextension is temporarily installed. It will be uninstalled when you close Firefox.
 
-4. **Installation on Chrome**
+5. **Installation on Chrome**
 
 In the address bar of the Chrome browser, type this : **chrome://extensions**
 
