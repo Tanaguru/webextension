@@ -34,15 +34,15 @@ Web accessibility evaluation tool (and more).
 
 To install the webextension, **in the address bar** of Firefox 57 or highter, type **« about:debugging »**. The « Extensions » page displays :
 
-![](README/install1-1_en.png)
+![extensions page](README/install1-1-en.png)
 
 On this page, activate the link **« This Firefox »**.
 
-![](README/install1-2_en.png)
+!["this firefox" tab](README/install1-2-en.png)
 
 On this page, activate the button **« Load Temporary Add-on... »**. A file dialog box will appear. From this box, select on your local disk, the file **« manifest.json »** in the folder "/webextension/dist/firefox/tanaguru-rgaa4-firefox-1.3.0" for RGAA version or "/webextension/dist/firefox/tanaguru-wcag-firefox-1.3.0" for WCAG version. This selection ends the installation of the webextension.
 
-![](README/install2_en.png)
+![webextension installed](README/install2-en.png)
 
 Note : the webextension is temporarily installed. It will be uninstalled when you close Firefox.
 
@@ -51,11 +51,11 @@ Note : the webextension is temporarily installed. It will be uninstalled when yo
 In the address bar of the Chrome browser, type this : **chrome://extensions**
 
 The extensions page is displayed.
-![extensions page](README/installChrome-1_en.png)
+![extensions page](README/installChrome-1-en.png)
 On this page activate **Developer mode** and click on the button **"Load unpacked"**.
 
 A file dialog box is displayed.
-![file dialog box](README/installChrome-2_en.png)
+![file dialog box](README/installChrome-2-en.png)
 
 From this box, select on your local disk, the folder "/webextension/dist/chrome/tanaguru-rgaa4-chrome-1.3.0" for RGAA version or "/webextension/dist/chrome/tanaguru-wcag-chrome-1.3.0" for WCAG version. This selection ends the installation of the webextension.
 
@@ -63,7 +63,7 @@ From this box, select on your local disk, the folder "/webextension/dist/chrome/
 
 Once the installation is done, a button **"Tanaguru "** appears in the browser toolbar. This button allows the user to know the version of the webextension, the procedure to start the tests and the access to the link allowing to consult the Tanaguru website for more information.
 
-![](README/use1_en.png)
+![webextension popin](README/use1-en.png)
 
 To start the tests, **go to the page to be analyzed**.
 
@@ -75,11 +75,11 @@ Access to the development tool on Chrome : **« Menu > More tools > Developer to
 
 Then in the development tool activate the tab **« Tanaguru »**.
 
-![](README/use2_en.png)
+![tanaguru tab in developer tools](README/use2-en.png)
 
 Activate the button **« Analyser cette page »**. Depending on the « complexity » of the DOM of the page to be analyzed, a message may ask you if you want to « Arrêter le script » ou **« Patienter »** (choose "Patientez" to continue). The results are finally displayed instead of the « Analyser cette page » button.
 
-![](README/use3_en.png)
+![webextension analysis results](README/use3-en.png)
 
 Each result has three buttons :
 
