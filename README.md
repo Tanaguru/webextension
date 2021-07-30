@@ -2,15 +2,34 @@
 
 ![](README/tanaguru.png)
 
+[Click here to read the english version](/README_en.md)
+
 Outil d'évaluation de l'accessibilité Web (et plus).
 
 ## A propos
 
-* Auteur : Romain Gervois ;
-* Projet : Tanaguru Webextension (Firefox, pour le moment) ;
-* Date de rédaction du document : 26/02/2018.
+* Auteur : Tanaguru
+* Projet : Tanaguru Webextension (Firefox et Chrome)
+* Date de rédaction du document : 26/02/2018
+* Date de mise à jour du document : 30/07/2021
+
+## Sommaire
+- [Installer la webextension](#installer-la-webextension)
+- [Utiliser la webextension](#utiliser-la-webextension)
+- [Ecrire un test](#écrire-un-test)
 
 ## Installer la webextension
+
+1. **Télécharger ou cloner le projet** ici : [répertoire du projet](https://github.com/Tanaguru/webextension)
+2. Pour installer la webextension, vous aurez besoin de **télécharger et installer Node.js**. [Page de téléchargement de Node.js](https://nodejs.org/fr/download/)
+3. **Installer les dépendances du projet et effectuer le "build"** : 
+   - accéder au dossier racine du projet avec un terminal (powershell, git bash...) ou ouvrez le projet avec votre éditeur de code et lancez le terminal.
+   - envoyez ces 2 commandes dans le terminal :
+  ```bash
+  npm install
+  npm run-script build
+  ```
+4. **Installation sur Firefox**
 
 Pour installer la webextension, **dans la barre d’adresse** de Firefox 57 ou supérieur, saisissez **« about:debugging »**. La page « Modules » s’affiche :
 
@@ -20,19 +39,40 @@ Sur cette page, activez le lien **« Ce Firefox »**.
 
 ![](README/install1-2.png)
 
-Sur cette page, activez le bouton **« Charger un module temporaire »**. Une boîte de dialogue de fichier s’affiche alors. Depuis cette boîte, sélectionnez sur votre disque local, le fichier **« manifest.json »**. Cette sélection termine l’installation de la webextension.
+Sur cette page, activez le bouton **« Charger un module temporaire »**. Une boîte de dialogue de fichier s’affiche alors. Depuis cette boîte, sélectionnez sur votre disque local, le fichier **« manifest.json »** dans le dossier "/webextension/dist/firefox/tanaguru-rgaa4-firefox-1.3.0" pour la version RGAA ou "/webextension/dist/firefox/tanaguru-wcag-firefox-1.3.0" pour la version WCAG. Cette sélection termine l’installation de la webextension.
 
 ![](README/install2.png)
 
 Note : la webextension est installée temporairement. C’est-à-dire qu’elle sera désinstallée à la fermeture de Firefox.
 
+5. **Installation sur Chrome**
+
+Dans la barre d'adresse du navigateur Chrome, tapez ceci : **chrome://extensions**
+
+La page des extensions s'affiche.
+![page des extensions](README/installChrome-1.png)
+Sur cette page activez le **mode développeur** puis cliquez sur le bouton **"charger l'extension non empaquetée"**.
+
+Une boite de dialogue de fichier s'affiche. 
+![boite de dialogue de fichier](README/installChrome-2.png)
+
+Depuis cette boîte, sélectionnez sur votre disque local, le dossier "/webextension/dist/chrome/tanaguru-rgaa4-chrome-1.3.0" pour la version RGAA ou "/webextension/dist/chrome/tanaguru-wcag-chrome-1.3.0" pour la version WCAG. Cette sélection termine l’installation de la webextension.
+
 ## Utiliser la webextension
 
-Une fois, l’installation réalisée, un bouton **« Tanaguru »** apparait dans la barre d’outils de Firefox. Ce bouton permet à l’utilisateur via l’affichage d’une fenêtre popup de connaître la version de la webextension, la procédure pour démarrer les tests et d’aller consulter le site de Tanaguru pour plus d’informations.
+Une fois, l’installation réalisée, un bouton **« Tanaguru »** apparait dans la barre d’outils du navigateur. Ce bouton permet à l’utilisateur via l’affichage d’une fenêtre popup de connaître la version de la webextension, la procédure pour démarrer les tests et l'accès au lien permettant de consulter le site de Tanaguru pour plus d’informations.
 
 ![](README/use1.png)
 
-Pour démarrer les tests, **rendez-vous sur la page à analyser** puis, si l’outil de développement n’est pas déjà affiché, allez dans **« Outils > Développement Web > Outils de développement »** puis activez l’onglet **« Tanaguru »**.
+Pour démarrer les tests, **rendez-vous sur la page à analyser**.
+
+Ouvrez l'outil de développement. (raccourci clavier : **ctrl+maj+i**)
+
+Accès à l'outil de développement sur Firefox : **« Menu > Outils supplémentaires > Outils de développement web»** 
+
+Accès à l'outil de développement sur Chrome : **« Menu > Plus d'outils > Outils de développement»** 
+
+Puis dans l'outil de développement activez l’onglet **« Tanaguru »**.
 
 ![](README/use2.png)
 
@@ -50,9 +90,11 @@ Chaque résultat est accompagné de trois boutons :
 
 ## Écrire un test
 
-*Mise à jour de la syntaxe d'écriture d'un test (06/11/2018).*
+*Mise à jour de la syntaxe d'écriture d'un test (30/07/2021).*
 
-L’écriture d’un test s’effectue depuis le fichier Javascript **« /ressources/scripts/tests.js »**.
+L’écriture d’un test RGAA s’effectue depuis le fichier Javascript **« /src/references/rgaa4.js »**.
+
+L’écriture d’un test WCAG s’effectue depuis le fichier Javascript **« /src/references/wcag.js »**.
 
 ### Fonction `createTanaguruTest`
 
@@ -70,6 +112,9 @@ createTanaguruTest({});
 | lang | Langue de rédaction du test. | String. |
 | name | Intitulé du test. | String. |
 | query | Sélecteurs CSS permettant de définir l'échantillon. | String. |
+| contrast | Récupérer une liste de noeuds texte, traitée dans le script contrast.js | String (nom de l'index du tableau). |
+| code | Récupérer la liste des noeuds avec un ID dupliqué | String ("id"). |
+| node | Récupérer un noeud non accessible via la propriété query | Node (ex: document.doctype). |
 | filter | Fonction de filtrage permettant de restreindre l'échantillon. | Function. |
 | expectedNbElements | Nombre d'éléments attendus dans l'échantillon (précis ou compris entre deux bornes) permettant de valider ou d'invalider le test. | Integer ou Object (avec propriétés min (Integer), max (Integer) ou les deux). |
 | explanations | Explications associées aux statuts du test. | Object (avec propriétés passed (String) et failed (String)). |
