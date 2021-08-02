@@ -762,8 +762,8 @@ tanaguruTestsList.push({
 	query: '[aria-hidden="true"]',
 	expectedNbElements: 0,
 	filter: function (item) {
-		var visibleState = item.isNotVisibleDueTo;
-		if (visibleState.length == 0 || (visibleState.indexOf('css:display') == -1 && visibleState.indexOf('css:visibility') == -1)) {
+		var exposedState = item.isNotExposedDueTo;
+		if (exposedState.indexOf('css:display') == -1 && exposedState.indexOf('css:visibility') == -1) {
 			var focusables = item.querySelectorAll(HTML.getFocusableElementsSelector());
 			if (focusables.length == 0) {
 				focusables = [];

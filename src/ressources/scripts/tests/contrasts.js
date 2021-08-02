@@ -554,7 +554,7 @@ while (tw.nextNode()) {
 			xpath: getXPath(element),
 			valid: validContrast(size, weight, results.ratio),
 			role: {},
-			isNotVisibleDueTo: results.visible ? [] : ["css:other"]
+			isVisible: results.visible
 		};
 
 		if(o.valid.target == 4.5) {

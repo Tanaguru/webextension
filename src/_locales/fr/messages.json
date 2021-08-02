@@ -53,7 +53,7 @@
 	"contrastThRatio": { "message": "Rapport de contraste" }, 
 	"allTags": { "message": "Tous les tests" },
 	"tagA11y": { "message": "Accessibilité" },
-	"tagAccessibleName": { "message": "Noms accessibles"},
+	"tagAccessiblename": { "message": "Noms accessibles"},
 	"tagAct": { "message": "ACT" }, 
 	"tagAria": {"message" : "Aria"},
 	"tagAudio": { "message": "Audio" },

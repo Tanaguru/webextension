@@ -2638,7 +2638,7 @@ tanaguruTestsList.push({
     name: 'Chaque média doit être compatible avec les technologies d\'assistance.',
     description: 'Vérifier que le nom, le rôle, la valeur, le paramétrage et les changements d\'états des composants d\'interfaces sont accessibles aux technologies ou qu\'une alternative compatible permette d\'accéder aux mêmes fonctionnalités.',
     status: 'untested',
-    tags: ['a11y', 'media', 'accessibleName'],
+    tags: ['a11y', 'media', 'accessiblename'],
     ressources: {'rgaa': ['4.13.1']}
 });
 
@@ -2648,7 +2648,7 @@ tanaguruTestsList.push({
     name: 'Pour chaque média ayant une alternative compatible avec les technologies d\'assistance, l\'alternative doit être implémentée correctement.',
     description: 'Vérifier que l\'alternative ou le lien/bouton permettant d\'y accéder soit adjacent au média, ou qu\'un mécanisme permette de remplacer le média par son alternative.',
     status: 'untested',
-    tags: ['a11y', 'media', 'accessibleName'],
+    tags: ['a11y', 'media', 'accessiblename'],
     ressources: {'rgaa': ['4.13.2']}
 });
 
@@ -2672,7 +2672,7 @@ tanaguruTestsList.push({
         'failed': 'des tableaux de données complexes sans résumé ont été trouvé sur cette page.'
     },
     filter: function (item) {
-        if(item.isNotExposedDueTo.length > 0 && !getVisibility(item, getOpacity(item))) {
+        if(item.isNotExposedDueTo.length > 0 && !item.isVisible) {
             return;
         }
         if(item.querySelectorAll('th').length > 1 || item.querySelectorAll('[role="columnheader"], [role="rowheader"]').length > 1) {
@@ -2761,7 +2761,7 @@ tanaguruTestsList.push({
     description:'Vérifiez que le contenu linéarisé reste compréhensible',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.isNotExposedDueTo.length > 0 && !getVisibility(item, getOpacity(item))) {
+        if(item.isNotExposedDueTo.length > 0 && !item.isVisible) {
             return;
         }
         return item.querySelectorAll('th, [role="columnheader"], [role="rowheader"]').length === 0;
@@ -2816,7 +2816,7 @@ tanaguruTestsList.push({
     query: 'table:not([role])[aria-labelledby], [role="table"][aria-labelledby]',
     expectedNbElements: 0,
     filter: function(item) {
-        if(item.isNotExposedDueTo.length > 0 && !getVisibility(item, getOpacity(item))) {
+        if(item.isNotExposedDueTo.length > 0 && !item.isVisible) {
             return;
         }
         return document.getElementById(item.getAttribute('aria-labelledby')) == null;
@@ -2848,7 +2848,7 @@ tanaguruTestsList.push({
     query: 'table:not([role]), [role="table"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.isNotExposedDueTo.length > 0 && !getVisibility(item, getOpacity(item))) {
+        if(item.isNotExposedDueTo.length > 0 && !item.isVisible) {
             return;
         }
         if(item.querySelectorAll('th, [role="columnheader"], [role="rowheader"]').length > 0) {
@@ -3273,7 +3273,7 @@ tanaguruTestsList.push({
 // 5.6.3 Pour chaque tableau de données, chaque en-tête ne s'appliquant pas à la totalité de la ligne ou de la colonne est-il structuré au moyen d'une balise <th> ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Liste des cellules d'un tableau de données associées à plusieurs en-têtes, correctement balisées.",
+	name: "Chaque en-tête ne s'appliquant pas à la totalité de la ligne ou de la colonne doit être structuré au moyen d'une balise <th>.",
     status: 'untested',
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.3']}
@@ -3376,7 +3376,7 @@ tanaguruTestsList.push({
 	query: 'th[scope]',
     expectedNbElements: 0,
 	filter: function (item) {
-        if(item.isNotExposedDueTo.length > 0 && !getVisibility(item, getOpacity(item))) {
+        if(item.isNotExposedDueTo.length > 0 && !item.isVisible) {
             return;
         }
 		var scope = item.getAttribute('scope');
@@ -3455,7 +3455,7 @@ tanaguruTestsList.push({
 	query: 'table td[headers], table th[headers]',
     expectedNbElements: 0,
 	filter: function (item) {
-        if(item.isNotExposedDueTo.length > 0 && !getVisibility(item, getOpacity(item))) {
+        if(item.isNotExposedDueTo.length > 0 && !item.isVisible) {
             return;
         }
 		var headers = item.getAttribute('headers');
@@ -3494,7 +3494,7 @@ tanaguruTestsList.push({
 	query: 'table[role="presentation"]',
     expectedNbElements: 0,
 	filter: function (item) {
-        if(item.isNotExposedDueTo.length > 0 && !getVisibility(item, getOpacity(item))) {
+        if(item.isNotExposedDueTo.length > 0 && !item.isVisible) {
             return;
         }
 
@@ -3563,7 +3563,7 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') == null) {
-            return item.isNotExposedDueTo.length != 0 && item.isNotVisibleDueTo.length === 0;
+            return item.isNotExposedDueTo.length != 0 && item.isVisible;
         }
     },
     mark: {attrs: ['role']},
@@ -3577,7 +3577,7 @@ tanaguruTestsList.push({
     query: 'a[href], [role="link"]',
     filter: function (item) {
         if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') == null) {
-            return item.isNotExposedDueTo.length != 0 && item.isNotVisibleDueTo.length > 0;
+            return item.isNotExposedDueTo.length != 0 && !item.isVisible;
         }
     },
     analyzeElements: function (collection) {
@@ -3641,7 +3641,7 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
-            return item.isNotExposedDueTo.length != 0 && item.isNotVisibleDueTo.length === 0;
+            return item.isNotExposedDueTo.length != 0 && item.isVisible;
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3654,7 +3654,7 @@ tanaguruTestsList.push({
     query: 'a[href], [role="link"]',
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
-            return item.isNotExposedDueTo.length != 0 && item.isNotVisibleDueTo.length > 0;
+            return item.isNotExposedDueTo.length != 0 && !item.isVisible;
         }
     },
     analyzeElements: function (collection) {
@@ -3725,7 +3725,7 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
-            return item.isNotExposedDueTo.length != 0 && getVisibility(item, getOpacity(item));
+            return item.isNotExposedDueTo.length != 0 && item.isVisible;
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3738,7 +3738,7 @@ tanaguruTestsList.push({
     query: 'a[href], [role="link"]',
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
-            return item.isNotExposedDueTo.length != 0 && !getVisibility(item, getOpacity(item));
+            return item.isNotExposedDueTo.length != 0 && !item.isVisible;
         }
     },
     analyzeElements: function (collection) {
@@ -3797,7 +3797,7 @@ tanaguruTestsList.push({
     query: 'svg a[href], svg [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
-        return item.isNotExposedDueTo.length != 0 && getVisibility(item, getOpacity(item));
+        return item.isNotExposedDueTo.length != 0 && item.isVisible;
     },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.4']}
@@ -3808,7 +3808,7 @@ tanaguruTestsList.push({
     name: 'Liste des liens SVG non visibles non restitués',
     query: 'svg a[href], svg [role="link"]',
     filter: function (item) {
-        return item.isNotExposedDueTo.length != 0 && !getVisibility(item, getOpacity(item));
+        return item.isNotExposedDueTo.length != 0 && !item.isVisible;
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -3843,7 +3843,7 @@ tanaguruTestsList.push({
     query: 'a[href], [role="link"], svg a[href], svg [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(getVisibility(item, getOpacity(item)) && item.innerText) {
+        if(item.isVisible && item.innerText) {
             var linkName = item.innerText.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
             var linkAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
             var regex = new RegExp(linkName, 'mi');
@@ -3860,7 +3860,7 @@ tanaguruTestsList.push({
     name: 'Liste des liens ayant un intitulé visible bien repris dans le nom accessible.',
     query: 'a[href], [role="link"], svg a[href], svg [role="link"]',
     filter: function (item) {
-        if(getVisibility(item, getOpacity(item)) && item.innerText) {
+        if(item.isVisible && item.innerText) {
             var linkName = item.innerText.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
             var linkAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
             var regex = new RegExp(linkName, 'mi');
@@ -3889,7 +3889,7 @@ tanaguruTestsList.push({
             return;
         }
 
-        if(getVisibility(item, getOpacity(item))) {
+        if(item.isVisible) {
             return item.querySelectorAll('img, [role="img"], object, canvas, svg').length === 0;
         }
     },
@@ -3902,12 +3902,12 @@ tanaguruTestsList.push({
     name: 'Liste des liens avec un intitulé entre <a> et </a>.',
     query: 'a[href], [role="link"]',
     filter: function (item) {
-        if(item.isNotExposedDueTo.length == 0 || getVisibility(item, getOpacity(item))) {
+        if(item.isNotExposedDueTo.length == 0 || item.isVisible) {
             if(item.innerText && item.innerText.trim().length > 0) {
                 return true;
             }
     
-            if(getVisibility(item, getOpacity(item))) {
+            if(item.isVisible) {
                 return item.querySelectorAll('img, [role="img"], object, canvas, svg').length > 0;
             }
         }
@@ -3938,7 +3938,7 @@ tanaguruTestsList.push({
 		'failed': "Des boutons visibles sans nom accessible sont présents dans la page."
 	},
 	filter: function (item) {
-        if((getVisibility(item, getOpacity(item)) || item.isNotExposedDueTo.length === 0) && !item.disabled) {
+        if((item.isVisible || item.isNotExposedDueTo.length === 0) && !item.disabled) {
             if(!item.matches('input[type="reset"]:not([aria-labelledby], [aria-label], [value], [title]), input[type="submit"]:not([aria-labelledby], [aria-label], [value], [title])')) {
                 return !item.hasAccessibleName();
             }
@@ -3953,7 +3953,7 @@ tanaguruTestsList.push({
 	name: 'Boutons visibles ou restitués avec un nom accessible.',
 	query: 'button:not([role]), button[role="none"], [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
 	filter: function (item) {
-        if(getVisibility(item, getOpacity(item)) || item.isNotExposedDueTo.length === 0) {
+        if(item.isVisible || item.isNotExposedDueTo.length === 0) {
             if(item.matches('input[type="reset"]:not([aria-labelledby], [aria-label], [value], [title]), input[type="submit"]:not([aria-labelledby], [aria-label], [value], [title])')) {
                 return true;
             }
@@ -4626,6 +4626,7 @@ tanaguruTestsList.push({
         'failed': 'Des titres de niveau(n) non précédés d\'un titre de niveau(n-1) ont été trouvés.'
     },
     filter: function (item) {
+        if(item.isNotExposedDueTo.length > 0) return;
         if(item.tagName.toLowerCase().match(/^h\d$/) || item.hasAttribute('aria-level')) {
             var currentlevel = parseInt(item.hasAttribute('aria-level') ? item.getAttribute('aria-level') : item.tagName.substring(1));
             var currentElement = item.hasAttribute('aria-level') ? '[role="heading"][aria-level="'+currentlevel+'"]' : item.tagName;
@@ -4646,6 +4647,8 @@ tanaguruTestsList.push({
                     if(headings[i] === item) {
                         parent = parent.tagName.toLowerCase() != 'body' ? parent.parentNode : null;
                         break;
+                    } else if(item.isNotExposedDueTo.length > 0) {
+                        continue;
                     } else {
                         return false;
                     }
@@ -4665,6 +4668,7 @@ tanaguruTestsList.push({
     name: 'Liste des titres de niveau qui respectent la hierarchie de titres',
     query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"]',
     filter: function (item) {
+        if(item.isNotExposedDueTo.length > 0) return;
         if(item.tagName.toLowerCase().match(/^h\d$/) || item.hasAttribute('aria-level')) {
             var currentlevel = parseInt(item.hasAttribute('aria-level') ? item.getAttribute('aria-level') : item.tagName.substring(1));
             var currentElement = item.hasAttribute('aria-level') ? '[role="heading"][aria-level="'+currentlevel+'"]' : item.tagName;
@@ -4683,6 +4687,8 @@ tanaguruTestsList.push({
                     if(headings[i] === item) {
                         parent = parent.tagName.toLowerCase() != 'body' ? parent.parentNode : null;
                         break;
+                    } else if(item.isNotExposedDueTo.length > 0) {
+                        continue;
                     } else {
                         return true;
                     }
@@ -4777,7 +4783,7 @@ tanaguruTestsList.push({
     query: 'main',
     expectedNbElements : { max: 1 },
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && getVisibility(item, getOpacity(item));
+        return item.isNotExposedDueTo.length == 0 && item.isVisible;
     },
     tags: ['a11y', 'structure', 'accessiblename'],
     ressources: { 'rgaa': ['9.2.1'] }
@@ -5271,8 +5277,8 @@ tanaguruTestsList.push({
 	query: '[aria-hidden="true"]',
 	expectedNbElements: 0,
 	filter: function (item) {
-		var visibleState = item.isNotVisibleDueTo;
-		if (visibleState.length == 0 || (visibleState.indexOf('css:display') == -1 && visibleState.indexOf('css:visibility') == -1)) {
+		var exposedState = item.isNotExposedDueTo;
+		if (exposedState.indexOf('css:display') == -1 && exposedState.indexOf('css:visibility') == -1) {
 			var focusables = item.querySelectorAll(HTML.getFocusableElementsSelector());
 			if (focusables.length == 0) {
 				focusables = [];

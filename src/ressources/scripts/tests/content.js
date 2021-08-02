@@ -1066,7 +1066,7 @@ function manageOutput(element) {
     var implicitARIASemantic = element.implicitARIASemantic;
     var explicitARIASemantic = element.explicitARIASemantic;
     var canBeReachedUsingKeyboardWith = element.canBeReachedUsingKeyboardWith;
-    var isNotVisibleDueTo = element.isNotVisibleDueTo;
+    var isVisible = element.isVisible;
     var isNotExposedDueTo = element.isNotExposedDueTo;
 
     if(element.nodeType === 10) {
@@ -1081,7 +1081,7 @@ function manageOutput(element) {
             fakeelement.innerHTML = '[...]';
         }
     }
-    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, xpath: e ? getXPath(element) : null, role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: e ? canBeReachedUsingKeyboardWith : [], isNotVisibleDueTo: e ? isNotVisibleDueTo : ['doctype'], isNotExposedDueTo: e ? isNotExposedDueTo : '' };
+    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, xpath: e ? getXPath(element) : null, role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: e ? canBeReachedUsingKeyboardWith : [], isVisible: e ? isVisible : false, isNotExposedDueTo: e ? isNotExposedDueTo : '' };
 }
 
 function createTanaguruTag(tag, status) {
@@ -3503,31 +3503,35 @@ var isNotExposedDueTo = function () {
         result.push('aria:hidden');
     }
     else {
-        var ariahiddenfound = false;
         var pt = this.parentNode;
         while (pt && pt.nodeType == 1) {
             if (pt.getAttribute('aria-hidden') == 'true') {
-                ariahiddenfound = true;
+                result.push('parent-aria:hidden');
                 break;
             }
             pt = pt.parentNode;
         }
-        if (ariahiddenfound) {
-            result.push('parent-aria:hidden');
-        }
     }
-    if (!this.matches('area')) {
-        if (window.getComputedStyle(this, null).getPropertyValue('display') == 'none') {
-            result.push('css:display');
-        }
-        if (window.getComputedStyle(this, null).getPropertyValue('visibility') == 'hidden') {
-            result.push('css:visibility');
-        }
+    if (window.getComputedStyle(this, null).getPropertyValue('display') == 'none') {
+        result.push('css:display');
     }
     else {
+        var parent = this.parentNode;
+        while (parent && parent.nodeType == 1) {
+            if (window.getComputedStyle(parent, null).getPropertyValue('display') == 'none') {
+                result.push('css:display');
+                break;
+            }
+            parent = parent.parentNode;
+        }
+    }
+    if (window.getComputedStyle(this, null).getPropertyValue('visibility') == 'hidden') {
+        result.push('css:visibility');
+    }
+    if (this.matches('area')) {
         var pt = this.parentNode;
         if (pt && pt.matches('map')) {
-            var ptexposition = pt.isNotExposedDueTo;
+            // var ptexposition = pt.isNotExposedDueTo;
             if (pt.hasAttribute('name')) {
                 var img = document.querySelector('img[usemap="#' + pt.getAttribute('name') + '"]');
                 if (img) {
@@ -3547,10 +3551,7 @@ var isNotExposedDueTo = function () {
             result.push('parent-html:unknown');
         }
     }
-    var visible = this.isNotVisibleDueTo;
-    if (visible.indexOf('css:display') > -1 || visible.indexOf('css:visibility') > -1) {
-        result.push('css:other');
-    }
+    
     return result;
 };
 
@@ -3558,19 +3559,13 @@ if (!HTMLElement.prototype.hasOwnProperty('isNotExposedDueTo')) Object.definePro
 //if (MathMLElement && !MathMLElement.prototype.hasOwnProperty('isNotExposedDueTo')) Object.defineProperty(MathMLElement.prototype, 'isNotExposedDueTo', { get: isNotExposedDueTo });
 if (!SVGElement.prototype.hasOwnProperty('isNotExposedDueTo')) Object.defineProperty(SVGElement.prototype, 'isNotExposedDueTo', { get: isNotExposedDueTo });
 
-var isNotVisibleDueTo = function () {
-    var result = [];
-    
-    if(!getVisibility(this, getOpacity(this))) {
-        result.push('css:other');
-    }
-    
-    return result;
+var isVisible = function () {
+    return getVisibility(this, getOpacity(this));
 };
 
-if (!HTMLElement.prototype.hasOwnProperty('isNotVisibleDueTo')) Object.defineProperty(HTMLElement.prototype, 'isNotVisibleDueTo', { get: isNotVisibleDueTo });
-//if (MathMLElement && !MathMLElement.prototype.hasOwnProperty('isNotVisibleDueTo')) Object.defineProperty(MathMLElement.prototype, 'isNotVisibleDueTo', { get: isNotVisibleDueTo });
-if (!SVGElement.prototype.hasOwnProperty('isNotVisibleDueTo')) Object.defineProperty(SVGElement.prototype, 'isNotVisibleDueTo', { get: isNotVisibleDueTo });
+if (!HTMLElement.prototype.hasOwnProperty('isVisible')) Object.defineProperty(HTMLElement.prototype, 'isVisible', { get: isVisible });
+//if (MathMLElement && !MathMLElement.prototype.hasOwnProperty('isVisible')) Object.defineProperty(MathMLElement.prototype, 'isVisible', { get: isVisible });
+if (!SVGElement.prototype.hasOwnProperty('isVisible')) Object.defineProperty(SVGElement.prototype, 'isVisible', { get: isVisible });
 
 if (!SVGElement.prototype.hasOwnProperty('canBeReachedUsingKeyboardWith')) {
     Object.defineProperty(SVGElement.prototype, 'canBeReachedUsingKeyboardWith', {
