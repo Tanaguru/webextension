@@ -3647,6 +3647,29 @@ tanaguruTestsList.push({
 });
 
 // 5.7.5 Pour chaque balise pourvue d'un attribut WAI-ARIA role="rowheader" ou role="columnheader" dont le contenu s'applique à la totalité de la ligne ou de la colonne, la balise vérifie-t-elle une de ces conditions ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Liste des en-têtes ARIA s'appliquant à toute une ligne ou colonne mal renseignés.",
+	query: '[role="rowheader"][data-tng-table="headerColFull"], [role="columnheader"][data-tng-table="headerRowFull"]',
+    expectedNbElements: 0,
+    mark: {attrs: ['role']},
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.7.5']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Liste des en-têtes ARIA s'appliquant à toute une ligne ou colonne correctement renseignés.",
+	query: '[role="columnheader"][data-tng-table="headerColFull"], [role="rowheader"][data-tng-table="headerRowFull"]',
+    analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+    mark: {attrs: ['role']},
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.7.5']}
+});
 
 //* 5.8 Chaque tableau de mise en forme ne doit pas utiliser d'éléments propres aux tableaux de données. Cette règle est-elle respectée ?
 // 5.8.1 Chaque tableau de mise en forme (balise <table>) vérifie-t-il ces conditions ?
@@ -3669,7 +3692,7 @@ tanaguruTestsList.push({
         }
 	},
 	tags: ['a11y', 'tables'],
-    ressources: {'rgaa': ['5.7.4']}
+    ressources: {'rgaa': ['5.8.1']}
 });
 
 tanaguruTestsList.push({
@@ -3693,7 +3716,7 @@ tanaguruTestsList.push({
         }
     },
 	tags: ['a11y', 'tables'],
-    ressources: {'rgaa': ['5.7.4']}
+    ressources: {'rgaa': ['5.8.1']}
 });
 
 /**
