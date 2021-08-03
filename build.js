@@ -30,7 +30,7 @@ function buildManifest(vendor, version, reference){
     let vendorManifest = require(path.join(MANIFESTS_DIR,vendor + '_manifest.json'))
     let manifest = Object.assign({}, COMMON_MANIFEST, vendorManifest)
     manifest.version = version
-    manifest.short_name = "Tanaguru " + reference.toUpperCase() + " " +vendor
+    manifest.short_name = "webextension" + reference.toUpperCase() + "@tanaguru.com"
     return JSON.stringify(manifest)
 }
 
