@@ -2996,6 +2996,7 @@ tanaguruTestsList.push({
         //? header with SCOPE
         if(item.hasAttribute('scope')) {
             if(item.getAttribute('scope') === 'col' || item.getAttribute('scope') === 'colgroup') {
+                item.setAttribute('data-tng-table', 'headerColFull');
                 if(item.tagName.toLowerCase() !== 'th') {
                     return item.hasAttribute('role') && item.getAttribute('role') === 'columnheader';
                 } else return true;
@@ -3086,10 +3087,13 @@ tanaguruTestsList.push({
         });
 
         if(columnHeader) {
+            item.setAttribute('data-tng-table', 'headerColFull');
             if(item.tagName.toLowerCase() !== 'th') {
                 return item.hasAttribute('role') && item.getAttribute('role') === 'columnheader';
             } else return true;
         }
+
+        else item.setAttribute('data-tng-table', 'headerColPart');
     },
     analyzeElements: function (collection) {
 		for (var i = 0; i < collection.length; i++) {
@@ -3195,6 +3199,7 @@ tanaguruTestsList.push({
         //? header with SCOPE
         if(item.hasAttribute('scope')) {
             if(item.getAttribute('scope') === 'row' || item.getAttribute('scope') === 'rowgroup') {
+                item.setAttribute('data-tng-table', 'headerRowFull');
                 if(item.tagName.toLowerCase() !== 'th') {
                     return item.hasAttribute('role') && item.getAttribute('role') === 'rowheader';
                 } else return true;
@@ -3255,10 +3260,13 @@ tanaguruTestsList.push({
         });
 
         if(rowHeader) {
+            item.setAttribute('data-tng-table', 'headerRowFull');
             if(item.tagName.toLowerCase() !== 'th') {
                 return item.hasAttribute('role') && item.getAttribute('role') === 'rowheader';
             } else return true;
         }
+
+        else item.setAttribute('data-tng-table', 'headerRowPart');
     },
     analyzeElements: function (collection) {
 		for (var i = 0; i < collection.length; i++) {
@@ -3273,8 +3281,26 @@ tanaguruTestsList.push({
 // 5.6.3 Pour chaque tableau de données, chaque en-tête ne s'appliquant pas à la totalité de la ligne ou de la colonne est-il structuré au moyen d'une balise <th> ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Chaque en-tête ne s'appliquant pas à la totalité de la ligne ou de la colonne doit être structuré au moyen d'une balise <th>.",
-    status: 'untested',
+	name: "Liste des en-têtes ne s'appliquant pas à la totalité de la ligne ou de la colonne mal structurés.",
+    description: "Ces en-têtes devraient être structurés au moyen d'une balise th.",
+    query: '*[data-tng-table="headerColPart"], *[data-tng-table="headerRowPart"]',
+    expectedNbElements: 0,
+    filter: function(item) {
+        return item.tagName.toLowerCase() != 'th';
+    },
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.6.3']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Liste des en-têtes ne s'appliquant pas à la totalité de la ligne ou de la colonne correctement structurés.",
+    query: 'th[data-tng-table="headerColPart"], th[data-tng-table="headerRowPart"]',
+    analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.3']}
 });
@@ -3345,6 +3371,73 @@ tanaguruTestsList.push({
 });
 
 //* 5.7 Pour chaque tableau de données, la technique appropriée permettant d'associer chaque cellule avec ses en-têtes est-elle utilisée (hors cas particuliers) ?
+// 5.7.1 Pour chaque contenu de balise <th> s'appliquant à la totalité de la ligne ou de la colonne, la balise <th> respecte-t-elle une de ces conditions (hors cas particuliers) ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Liste des en-têtes de tableau s'appliquant à toute une ligne ou colonne mal associés aux cellules.",
+	query: 'th[data-tng-table="headerColFull"], th[data-tng-table="headerRowFull"]',
+    expectedNbElements: 0,
+	filter: function (item) {
+		if(item.hasAttribute('scope')) return;
+
+        if(item.hasAttribute('role')) {
+            let role = item.getAttribute('role');
+            if(role === 'rowheader' || role === 'columnheader') {
+                return;
+            }
+        }
+
+        if(item.hasAttribute('id')) {
+            let id = item.getAttribute('id');
+            item.setAttribute('id', '');
+            if(!document.getElementById(id)) {
+                item.setAttribute('id', id);
+                return;
+            }
+            item.setAttribute('id', id);
+        }
+
+        return true;
+	},
+    mark: {attrs: ['scope', 'id', 'role']},
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.7.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Liste des en-têtes de tableau s'appliquant à toute une ligne ou colonne correctement associés aux cellules.",
+	query: 'th[data-tng-table="headerColFull"], th[data-tng-table="headerRowFull"]',
+	filter: function (item) {
+		if(item.hasAttribute('scope')) return true;
+
+        if(item.hasAttribute('role')) {
+            let role = item.getAttribute('role');
+            if(role === 'rowheader' || role === 'columnheader') {
+                return true;
+            }
+        }
+
+        if(item.hasAttribute('id')) {
+            let id = item.getAttribute('id');
+            item.setAttribute('id', '');
+            if(!document.getElementById(id)) {
+                item.setAttribute('id', id);
+                return true;
+            }
+            item.setAttribute('id', id);
+        }
+	},
+    analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+    mark: {attrs: ['scope', 'id', 'role']},
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.7.1']}
+});
+
 // 5.7.2 Pour chaque contenu de balise <th> s'appliquant à la totalité de la ligne ou de la colonne et possédant un attribut scope, la balise <th> vérifie-t-elle une de ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
@@ -3408,6 +3501,73 @@ tanaguruTestsList.push({
     mark: {attrs: ['scope']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.2']}
+});
+
+// 5.7.3  Pour chaque contenu de balise <th> ne s'appliquant pas à la totalité de la ligne ou de la colonne, la balise <th> vérifie-t-elle ces conditions ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Liste des en-têtes de tableau ne s'appliquant pas à toute une ligne ou colonne mal associés aux cellules.",
+	query: 'th[data-tng-table="headerColPart"], th[data-tng-table="headerRowPart"]',
+    expectedNbElements: 0,
+	filter: function (item) {
+		if(item.hasAttribute('scope')) return true;
+
+        if(item.hasAttribute('role')) {
+            let role = item.getAttribute('role');
+            if(role === 'rowheader' || role === 'columnheader') {
+                return true;
+            }
+        }
+
+        if(item.hasAttribute('id')) {
+            let id = item.getAttribute('id');
+            item.setAttribute('id', '');
+            if(document.getElementById(id)) {
+                item.setAttribute('id', id);
+                return true;
+            }
+            item.setAttribute('id', id);
+        }
+	},
+    mark: {attrs: ['scope', 'id', 'role']},
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.7.3']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Liste des en-têtes de tableau ne s'appliquant pas à toute une ligne ou colonne correctement associés aux cellules.",
+	query: 'th[data-tng-table="headerColPart"], th[data-tng-table="headerRowPart"]',
+	filter: function (item) {
+		if(item.hasAttribute('scope')) return;
+
+        if(item.hasAttribute('role')) {
+            let role = item.getAttribute('role');
+            if(role === 'rowheader' || role === 'columnheader') {
+                return;
+            }
+        }
+
+        if(item.hasAttribute('id')) {
+            let id = item.getAttribute('id');
+            item.setAttribute('id', '');
+            if(document.getElementById(id)) {
+                item.setAttribute('id', id);
+                return;
+            }
+            item.setAttribute('id', id);
+        }
+
+        return true;
+	},
+    analyzeElements: function (collection) {
+		for (var i = 0; i < collection.length; i++) {
+			collection[i].status = 'passed';
+		}
+	},
+    mark: {attrs: ['scope', 'id', 'role']},
+	tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.7.3']}
 });
 
 // 5.7.4 Pour chaque contenu de balise <td> ou <th> associée à un ou plusieurs en-têtes possédant un attribut id, la balise vérifie-t-elle ces conditions ?
@@ -3485,6 +3645,8 @@ tanaguruTestsList.push({
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.4']}
 });
+
+// 5.7.5 Pour chaque balise pourvue d'un attribut WAI-ARIA role="rowheader" ou role="columnheader" dont le contenu s'applique à la totalité de la ligne ou de la colonne, la balise vérifie-t-elle une de ces conditions ? 
 
 //* 5.8 Chaque tableau de mise en forme ne doit pas utiliser d'éléments propres aux tableaux de données. Cette règle est-elle respectée ?
 // 5.8.1 Chaque tableau de mise en forme (balise <table>) vérifie-t-il ces conditions ?

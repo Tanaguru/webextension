@@ -810,7 +810,7 @@ button.addEventListener('click', function () {
 								for(let i = 0; i < codecontent.length - 1; i++) {
 									code.appendChild(document.createTextNode(codecontent[i]+' '));
 									var mark = document.createElement('mark');
-									mark.textContent = codeattrs[i][0];
+									mark.textContent = codeattrs[i];
 									code.appendChild(mark);
 								}
 
