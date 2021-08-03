@@ -3512,26 +3512,28 @@ var isNotExposedDueTo = function () {
             pt = pt.parentNode;
         }
     }
-    if (window.getComputedStyle(this, null).getPropertyValue('display') == 'none') {
-        result.push('css:display');
-    }
-    else {
-        var parent = this.parentNode;
-        while (parent && parent.nodeType == 1) {
-            if (window.getComputedStyle(parent, null).getPropertyValue('display') == 'none') {
-                result.push('css:display');
-                break;
+    if (!this.matches('area')) {
+        if (window.getComputedStyle(this, null).getPropertyValue('display') == 'none') {
+            result.push('css:display');
+        }
+        else {
+            var parent = this.parentNode;
+            while (parent && parent.nodeType == 1) {
+                if (window.getComputedStyle(parent, null).getPropertyValue('display') == 'none') {
+                    result.push('css:display');
+                    break;
+                }
+                parent = parent.parentNode;
             }
-            parent = parent.parentNode;
         }
     }
+    
     if (window.getComputedStyle(this, null).getPropertyValue('visibility') == 'hidden') {
         result.push('css:visibility');
     }
     if (this.matches('area')) {
         var pt = this.parentNode;
         if (pt && pt.matches('map')) {
-            // var ptexposition = pt.isNotExposedDueTo;
             if (pt.hasAttribute('name')) {
                 var img = document.querySelector('img[usemap="#' + pt.getAttribute('name') + '"]');
                 if (img) {

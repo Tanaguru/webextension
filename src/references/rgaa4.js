@@ -96,47 +96,20 @@ tanaguruTestsList.push({
     query: 'area:not([role])',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
-    filter: function (item) {
-        if (item.hasAttribute('href')){
-            if (item.hasAttribute('aria-label')){
-                var alAttribute = item.getAttribute('aria-label');
-                if (alAttribute == " ") {
-                    return item.isNotExposedDueTo.length == 0;
-                }
-                if (alAttribute.length > 0){
-                    return false;
-                }
+    filter: function(item) {
+        if(item.isNotExposedDueTo.length > 0) return;
+
+        if(!item.hasAttribute('href')) {
+            if(item.hasAttribute('aria-hidden')) {
+                if(item.getAttribute('aria-hidden') === true) return;
             }
-            if (item.hasAttribute('alt')){
-                var altAttribute = item.getAttribute('alt');
-                if (altAttribute == " " ){
-                    return item.isNotExposedDueTo.length == 0;
-                }
-                if (altAttribute.length > 0){
-                    return false;
-                }
+    
+            if(item.hasAttribute('alt')) {
+                if(item.getAttribute('alt').length === 0) return;
             }
-            return item.isNotExposedDueTo.length == 0;
         }
-        else {
-            if (item.hasAttribute('aria-label')){
-                var alAttribute = item.getAttribute('aria-label');
-                if (alAttribute == " ") {
-                    return item.isNotExposedDueTo.length == 0;
-                }
-                if (alAttribute.length > 0){
-                    return false;
-                }
-            }
-            if (item.hasAttribute('alt')){
-                var altAttribute = item.getAttribute('alt');
-                if (altAttribute == " " ){
-                    return item.isNotExposedDueTo.length == 0;
-                }
-                return false;
-            }
-            return item.isNotExposedDueTo.length == 0;
-        }
+
+        return !item.hasAccessibleName();
     },
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.1.2'] }
@@ -148,48 +121,19 @@ tanaguruTestsList.push({
     query: 'area:not([role])',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances ont un nom accessible',
     filter: function (item) {
-        if (item.hasAttribute('href')){
-            if (item.hasAttribute('aria-label')){
-                var alAttribute = item.getAttribute('aria-label');
-                if (alAttribute == " ") {
-                    return !item.isNotExposedDueTo.length == 0;
-                }
-                if (alAttribute.length > 0){
-                    return true;
-                }
-            }
-            if (item.hasAttribute('alt')){
-                var altAttribute = item.getAttribute('alt');
-                if (altAttribute == " " ){
-                    return !item.isNotExposedDueTo.length == 0;
-                }
-                if (altAttribute.length > 0){
-                    return true;
-                }
-                else return !item.isNotExposedDueTo.length == 0;
-            }
-            return item.isNotExposedDueTo.length == 0;
-        }
-        else {
-            if (item.hasAttribute('aria-label')){
-                var alAttribute = item.getAttribute('aria-label');
-                if (alAttribute == " ") {
-                    return !item.isNotExposedDueTo.length == 0;
-                }
-                if (alAttribute.length > 0){
-                    return true;
-                }
-            }
-            if (item.hasAttribute('alt')){
-                var altAttribute = item.getAttribute('alt');
-                if (altAttribute == " " ){
-                    return !item.isNotExposedDueTo.length == 0;
-                }
+        if(item.isNotExposedDueTo.length > 0) return;
 
-                return true;
+        if(!item.hasAttribute('href')) {
+            if(item.hasAttribute('aria-hidden')) {
+                if(item.getAttribute('aria-hidden') === true) return;
             }
-            return item.isNotExposedDueTo.length == 0;
+
+            if(item.hasAttribute('alt')) {
+                if(item.getAttribute('alt').length === 0) return;
+            }
         }
+
+        return item.hasAccessibleName();
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -1056,7 +1000,7 @@ tanaguruTestsList.push({
             return true;
         }
     },
-    mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
+    mark: { attrs: ['alt','aria-label']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.2', '1.4.2'] }
 });
