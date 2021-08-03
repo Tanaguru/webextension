@@ -2654,10 +2654,7 @@ tanaguruTestsList.push({
 
 /**
  *? TABLEAUX
- ** 5.1 à 5.6.2 et 5.6.4 et 5.8 OK
- ** 5.7 implémentation partielle
- *TODO voir si l'on peut identifier correctement les en-têtes ne s'appliquant pas sur toute la ligne/colonne
- *TODO 5.6.3 à faire
+ ** complet
  */
 
 //* 5.1 Chaque tableau de données complexe a-t-il un résumé ?
@@ -4108,6 +4105,7 @@ tanaguruTestsList.push({
 
 /**
  *? SCRIPTS
+ ** tous les tests sont répertoriés
  ** 7.1 & 7.2 implémentation partielle
  *TODO implémenter les modèles de conception dans le script content.js
  */
@@ -4155,6 +4153,32 @@ tanaguruTestsList.push({
 	ressources: {'rgaa': ['7.1.1']}
 });
 
+// 7.1.2 Chaque script qui génère ou contrôle un composant d'interface respecte-t-il une de ces conditions ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque script qui génère ou contrôle un composant d'interface doit être correctement restitué par les technologies d'assistance.",
+    status: 'untested',
+	tags: ['a11y', 'accessiblename'],
+	ressources: {'rgaa': ['7.1.2']}
+});
+
+// 7.1.3 Chaque script qui génère ou contrôle un composant d'interface vérifie-t-il ces conditions (hors cas particuliers) ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque script qui génère ou contrôle un composant d'interface doit avoir un nom pertinent et accessible.",
+    status: 'untested',
+	tags: ['a11y', 'accessiblename'],
+	ressources: {'rgaa': ['7.1.3']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque script qui génère ou contrôle un composant d'interface doit avoir un rôle pertinent.",
+    status: 'untested',
+	tags: ['a11y', 'accessiblename'],
+	ressources: {'rgaa': ['7.1.3']}
+});
+
 // 7.2 Pour chaque script ayant une alternative, cette alternative est-elle pertinente ?
 // 7.2.1 Pour chaque script ayant une alternative, cette alternative est-elle pertinente ?
 tanaguruTestsList.push({
@@ -4166,14 +4190,81 @@ tanaguruTestsList.push({
 	ressources: {'rgaa': ['7.2.1']}
 });
 
+// 7.2.2 Chaque élément non textuel mis à jour par un script (dans la page, ou dans un cadre) et ayant une alternative vérifie-t-il ces conditions ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Pour chaque élément non textuel mis à jour par un script (dans la page, ou dans un cadre) et ayant une alternative, l'aternative doit être mise à jour de façon pertinente.",
+    status: 'untested',
+	tags: ['a11y', 'accessiblename'],
+	ressources: {'rgaa': ['7.2.2']}
+});
+
+//* 7.3 Chaque script est-il contrôlable par le clavier et par tout dispositif de pointage (hors cas particuliers) ?
+// 7.3.1 Chaque élément possédant un gestionnaire d'événement contrôlé par un script vérifie-t-il une de ces conditions (hors cas particuliers) ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Pour chaque élément possédant un gestionnaire d'événement contrôlé par un script, l'élément doit être contrôlable par le clavier et tout dispositif de pointage.",
+    status: 'untested',
+	tags: ['a11y', 'keyboard'],
+	ressources: {'rgaa': ['7.3.1']}
+});
+
+// 7.3.2 Un script ne doit pas supprimer le focus d'un élément qui le reçoit. Cette règle est-elle respectée (hors cas particuliers) ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Un script ne doit pas supprimer le focus d'un élément qui le reçoit.",
+    status: 'untested',
+	tags: ['a11y', 'keyboard'],
+	ressources: {'rgaa': ['7.3.2']}
+});
+
+//* 7.4 Pour chaque script qui initie un changement de contexte, l'utilisateur est-il averti ou en a-t-il le contrôle ?
+// 7.4.1 Chaque script qui initie un changement de contexte vérifie-t-il une de ces conditions ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Pour chaque script qui initie un changement de contexte, l'utilisateur doit être averti ou en avoir le contrôle.",
+    status: 'untested',
+	tags: ['a11y'],
+	ressources: {'rgaa': ['7.4.1']}
+});
+
+//* 7.5 Dans chaque page web, les messages de statut sont-ils correctement restitués par les technologies d'assistance ?
+// 7.5.1 Chaque message de statut qui informe de la réussite, du résultat d'une action ou bien de l'état d'une application utilise-t-il l'attribut WAI-ARIA role="status" ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Chaque message de statut qui informe de la réussite, du résultat d\'une action ou bien de l\'état d\'une application doit utiliser l\'attribut WAI-ARIA role="status".',
+    status: 'untested',
+	tags: ['a11y'],
+	ressources: {'rgaa': ['7.5.1']}
+});
+
+// 7.5.2 Chaque message de statut qui présente une suggestion, ou avertit de l'existence d'une erreur utilise-t-il l'attribut WAI-ARIA role="alert" ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Chaque message de statut qui présente une suggestion, ou avertit de l\'existence d\'une erreur doit utiliser l\'attribut WAI-ARIA role="alert".',
+    status: 'untested',
+	tags: ['a11y'],
+	ressources: {'rgaa': ['7.5.2']}
+});
+
+// 7.5.3 Chaque message de statut qui indique la progression d'un processus utilise-t-il l'un des attributs WAI-ARIA role="log", role="progressbar" ou role="status" ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Chaque message de statut qui indique la progression d\'un processus doit utiliser l\'un des attributs WAI-ARIA role="log", role="progressbar" ou role="status".',
+    status: 'untested',
+	tags: ['a11y'],
+	ressources: {'rgaa': ['7.5.3']}
+});
+
 /**
  *? ELEMENTS OBLIGATOIRES
- ** 8.1/8.4->8.8 OK
+ ** tous les tests sont répertoriés
  ** 8.3 si l'élément <html> n'a pas d'attribut lang, vérifier que la langue est renseignée pour chaque noeud texte et attribut dont le contenu est affiché ou lu par les lecteurs d'écran
  ** 8.9.1 voir si l'on peut étoffer
  *TODO 8.2 implémenter spec HTML dans le script content.js
  */
-// 8.1 Chaque page web est-elle définie par un type de document ?
+
+//* 8.1 Chaque page web est-elle définie par un type de document ?
 // 8.1.1 Pour chaque page web, le type de document (balise doctype) est-il présent ?
 tanaguruTestsList.push({
 	lang: 'fr',
@@ -4276,7 +4367,7 @@ tanaguruTestsList.push({
 	ressources: {'rgaa': ['8.1.1']}
 });
 
-// 8.2 Pour chaque page web, le code source généré est-il valide selon le type de document spécifié ?
+//* 8.2 Pour chaque page web, le code source généré est-il valide selon le type de document spécifié ?
 // 8.2.1 Pour chaque déclaration de type de document, le code source généré de la page vérifie-t-il ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
 	lang: 'fr',
@@ -4668,7 +4759,7 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['8.7.1']}
 });
 
-// 8.8 Dans chaque page web, le code de langue de chaque changement de langue est-il valide et pertinent ?
+//* 8.8 Dans chaque page web, le code de langue de chaque changement de langue est-il valide et pertinent ?
 //8.8.1 Pour chaque page web, le code de langue de chaque changement de langue vérifie-t-il ces conditions ?
 tanaguruTestsList.push({
 	lang: 'fr',
@@ -4761,7 +4852,7 @@ tanaguruTestsList.push({
 	ressources: { 'rgaa': ['8.8.1'] }
 });
 
-// 8.9 Dans chaque page web, les balises ne doivent pas être utilisées uniquement à des fins de présentation. Cette règle est-elle respectée ?
+//* 8.9 Dans chaque page web, les balises ne doivent pas être utilisées uniquement à des fins de présentation. Cette règle est-elle respectée ?
 // 8.9.1 Dans chaque page web les balises (à l'exception de <div>, <span> et <table>) ne doivent pas être utilisées uniquement à des fins de présentation. Cette règle est-elle respectée ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -4780,6 +4871,16 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['8.9.1']}
 });
 
+//* 8.10 Dans chaque page web, les changements du sens de lecture sont-ils signalés ?
+// 8.10.1 Dans chaque page web, chaque texte dont le sens de lecture est différent du sens de lecture par défaut est contenu dans une balise possédant un attribut dir ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Chaque texte dont le sens de lecture est différent du sens de lecture par défaut doit être contenu dans une balise possédant un attribut dir.",
+    status: 'untested',
+    tags: ['a11y','mandatory'],
+    ressources: {'rgaa': ['8.10.1']}
+});
+
 // 8.10.2 : Dans chaque page web, chaque changement du sens de lecture (attribut dir) vérifie-t-il ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -4789,6 +4890,25 @@ tanaguruTestsList.push({
     filter: function (item) {
         var dirAttr = item.getAttribute('dir');
         return item.isNotExposedDueTo.length == 0 && !(dirAttr == 'ltr' || dirAttr == 'rtl');
+    },
+    mark: { attrs: ['dir']},
+    tags: ['a11y','mandatory'],
+    ressources: {'rgaa': ['8.10.2']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Changements du sens de lecture (attribut dir) conforme.',
+    description: "Vérifier la pertinence de la valeur de l'attribut dir.",
+    query: '[dir]',
+    filter: function (item) {
+        var dirAttr = item.getAttribute('dir');
+        return item.isNotExposedDueTo.length == 0 && (dirAttr == 'ltr' || dirAttr == 'rtl');
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'cantTell';
+        }
     },
     mark: { attrs: ['dir']},
     tags: ['a11y','mandatory'],
