@@ -801,6 +801,11 @@ var getAccessibleName = function () {
                         result = title.textContent;
                     }
                 }
+                else if(this.matches('object[type], embed[type]') && !this.matches('[role="none"], [role="presentation"]')) {
+                    if(this.getAttribute('type').startsWith('image/') && this.hasAttribute('title')) {
+                        result = this.getAttribute('title');
+                    }
+                }
                 else if (this.matches(controls.nativebuttons) && !this.matches('[role="none"], [role="presentation"]')) { // COMMENT : Not allowed on button, input[type="button"], input[type="image"], input[type="reset"], input[type="submit"].
                     if (this.matches('input[type="image"]')) {
                         if (this.hasAttribute('alt')) {

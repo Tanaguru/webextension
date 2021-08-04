@@ -4058,7 +4058,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Boutons visibles ou restitués sans nom accessible.',
-	query: 'button:not([role]), button[role="none"],[role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
+	query: 'button:not([role]), button[role="none"], [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role]), input[type="button"]:not([role])',
 	expectedNbElements: 0,
     explanations: {
 		'passed': "Cette page ne contient pas de bouton visible sans nom accessible.",
@@ -4066,9 +4066,8 @@ tanaguruTestsList.push({
 	},
 	filter: function (item) {
         if((item.isVisible || item.isNotExposedDueTo.length === 0) && !item.disabled) {
-            if(!item.matches('input[type="reset"]:not([aria-labelledby], [aria-label], [value], [title]), input[type="submit"]:not([aria-labelledby], [aria-label], [value], [title])')) {
-                return !item.hasAccessibleName();
-            }
+            if(item.matches('input[type="reset"]:not([value]), input[type="submit"]:not([value])')) return;
+            return !item.hasAccessibleName();
         }
 	},
 	tags: ['a11y', 'buttons', 'accessiblename'],
@@ -4078,13 +4077,10 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Boutons visibles ou restitués avec un nom accessible.',
-	query: 'button:not([role]), button[role="none"], [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role])',
+	query: 'button:not([role]), button[role="none"], [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role]), input[type="button"]:not([role])',
 	filter: function (item) {
         if(item.isVisible || item.isNotExposedDueTo.length === 0) {
-            if(item.matches('input[type="reset"]:not([aria-labelledby], [aria-label], [value], [title]), input[type="submit"]:not([aria-labelledby], [aria-label], [value], [title])')) {
-                return true;
-            }
-
+            if(item.matches('input[type="reset"]:not([value]), input[type="submit"]:not([value])')) return true;
             return item.hasAccessibleName();
         }
 	},
@@ -4121,6 +4117,50 @@ tanaguruTestsList.push({
     status: 'untested',
 	tags: ['a11y', 'accessiblename'],
 	ressources: {'rgaa': ['7.1.3']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des boutons ayant un intitulé visible non repris dans le nom accessible.',
+    query: 'button:not([role]), button[role="none"], [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role]), input[type="button"]:not([role])',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if(item.closest('form')) return;
+        if(item.isVisible && (item.innerText || item.value) && !item.disabled) {
+            var visibleName = item.innerText ? item.innerText : item.value;
+            var buttonName = visibleName.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var buttonAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var regex = new RegExp(buttonName, 'mi');
+            
+            return item.isNotExposedDueTo.length == 0 && !buttonAccessibleName.match(regex);
+        }
+    },
+    tags: ['a11y', 'accessiblename', 'buttons'],
+    ressources: {'rgaa': ['7.1.3']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des boutons ayant un intitulé visible bien repris dans le nom accessible.',
+    query: 'button:not([role]), button[role="none"], [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role]), input[type="button"]:not([role])',
+    filter: function (item) {
+        if(item.closest('form')) return;
+        if(item.isVisible && (item.innerText || item.value)) {
+            var visibleName = item.innerText ? item.innerText : item.value;
+            var buttonName = visibleName.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var buttonAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var regex = new RegExp(buttonName, 'mi');
+
+            return item.isNotExposedDueTo.length == 0 && buttonAccessibleName.match(regex);
+        }
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    tags: ['a11y', 'accessiblename', 'buttons'],
+    ressources: {'rgaa': ['7.1.3']}
 });
 
 // 7.2 Pour chaque script ayant une alternative, cette alternative est-elle pertinente ?
@@ -4475,6 +4515,42 @@ tanaguruTestsList.push({
 	ressources: {'rgaa': ['8.2.1']}
 });
 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Le titre de la page doit être déclaré dans l'en-tête (balise head).",
+	query: 'body title',
+	expectedNbElements: 0,
+	filter: function (item) {
+		if(item.closest('svg')) return;
+	},
+	tags: ['a11y', 'code'],
+	ressources: {'rgaa': ['8.2.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "La page web doit contenir un seul titre de page (balise title).",
+	query: 'head title, body title',
+	expectedNbElements: {max: 1},
+	filter: function (item) {
+		if(!item.closest('svg')) return true;
+	},
+	tags: ['a11y', 'code'],
+	ressources: {'rgaa': ['8.2.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Le titre de page (balise title) ne doit pas être vide.",
+	query: 'head title, body title',
+	expectedNbElements: 0,
+	filter: function (item) {
+		if(!item.closest('svg')) return item.textContent.trim().length === 0;
+	},
+	tags: ['a11y', 'code'],
+	ressources: {'rgaa': ['8.2.1']}
+});
+
 // 8.3.1 : Pour chaque page web, l'indication de langue par défaut vérifie-t-elle une de ces conditions ?
 // incomplete (devrait gérer les attributs lang sur les éléments contenant du texte)
 tanaguruTestsList.push({
@@ -4629,26 +4705,16 @@ tanaguruTestsList.push({
 //8.5.1 Chaque page web a-t-elle un titre de page (balise title) ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'La page n\'a pas de  titre de page (balise title).',
-    query: 'head',
-    expectedNbElements: 0,
-    filter: function (item) {
-        if (!item.querySelector('title')){
-            return true;
-        }
+    name: 'La page web a un titre de page (balise title).',
+    query: 'head title, body title',
+    expectedNbElements: {min: 1},
+    explanations: {
+        'passed': 'La page possède bien un titre de page.',
+        'failed': 'Aucun titre de page n\'a été trouvé.'
     },
-    tags: ['a11y','mandatory'],
-    ressources: {'rgaa': ['8.5.1']}
-});
-
-tanaguruTestsList.push({
-    lang: 'fr',
-    name: 'La page a un titre de page (balise title).',
-    query: 'head title',
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+    filter: function (item) {
+        if(item.closest('svg')) return;
+        return true;
     },
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.5.1']}
@@ -4658,10 +4724,14 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier la pertinence du titre de page (balise title).',
-    query: 'head title',
+    query: 'head title, body title',
     filter: function(item) {
+        if(item.closest('svg')) return;
         if(item.textContent.trim().length > 0) {
-            return true;
+            let defaultTitles = [
+                'document', 'untitled', 'sans titre', 'untitled document', 'document sans titre', 'no title', 'home', 'accueil'
+            ];
+            return !defaultTitles.includes(item.textContent.trim().toLowerCase());
         }
     },
     analyzeElements: function (collection) {
@@ -4676,10 +4746,17 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Le titre de la page (balise title) n\'est pas pertinent',
-    query: 'head title',
+    query: 'head title, body title',
     expectedNbElements: 0,
     filter: function (item) {
-        return item.textContent.trim().length === 0;
+        if(item.closest('svg')) return;
+        if(item.textContent.trim().length > 0) {
+            let defaultTitles = [
+                'document', 'untitled', 'sans titre', 'untitled document', 'document sans titre', 'no title', 'home', 'accueil'
+            ];
+            return defaultTitles.includes(item.textContent.trim().toLowerCase());
+        }
+        return true;
     },
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.6.1']}
@@ -4861,8 +4938,7 @@ tanaguruTestsList.push({
 
 /**
  *? STRUCTURATION DE L'INFORMATION
- ** 9.1/9.2 OK
- ** 9.3/9.4 test non automatisable
+ ** tous les tests sont répertoriés
  */
 // 9.1.1 : Dans chaque page web, la hiérarchie entre les titres (balise hx ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) est-elle pertinente ?
 tanaguruTestsList.push({
@@ -4981,6 +5057,15 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['9.1.2'] }
 });
 
+// 9.1.3 Dans chaque page web, chaque passage de texte constituant un titre est-il structuré à l'aide d'une balise <hx> ou d'une balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Chaque passage de texte constituant un titre doit être structuré à l'aide d'une balise <hx> ou d'une balise possédant un attribut WAI-ARIA role='heading' associé à un attribut WAI-ARIA aria-level",
+    status: 'untested',
+    tags: ['a11y', 'headings', 'accessiblename'],
+    ressources: { 'rgaa': ['9.1.3'] }
+});
+
 // 9.2.1 Dans chaque page web, la structure du document vérifie-t-elle ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -5038,12 +5123,61 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['9.2.1'] }
 });
 
+//* 9.3 Dans chaque page web, chaque liste est-elle correctement structurée ?
+// 9.3.1 Dans chaque page web, les informations regroupées visuellement sous forme de liste non ordonnée vérifient-elles une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Les informations regroupées visuellement sous forme de liste non ordonnée doivent être structurées comme telle.",
+    status: 'untested',
+    tags: ['a11y', 'structure'],
+    ressources: { 'rgaa': ['9.3.1'] }
+});
+
+// 9.3.2 Dans chaque page web, les informations regroupées visuellement sous forme de liste ordonnée vérifient-elles une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Les informations regroupées visuellement sous forme de liste ordonnée doivent être structurées comme telle.",
+    status: 'untested',
+    tags: ['a11y', 'structure'],
+    ressources: { 'rgaa': ['9.3.2'] }
+});
+
+// 9.3.3 Dans chaque page web, les informations regroupées sous forme de liste de description utilisent-elles les balises <dl> et <dt> / <dd> ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Les informations regroupées visuellement sous forme de liste de description doivent être structurées comme telle.",
+    status: 'untested',
+    tags: ['a11y', 'structure'],
+    ressources: { 'rgaa': ['9.3.3'] }
+});
+
+//* 9.4 Dans chaque page web, chaque citation est-elle correctement indiquée ?
+// 9.4.1 Dans chaque page web, chaque citation courte utilise-t-elle une balise <q> ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Chaque citation courte doit utiliser une balise <q>",
+    status: 'untested',
+    tags: ['a11y', 'structure'],
+    ressources: { 'rgaa': ['9.4.1'] }
+});
+
+// 9.4.2 Dans chaque page web, chaque bloc de citation utilise-t-il une balise <blockquote> ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Chaque bloc de citation doit utiliser une balise <blockquote>",
+    status: 'untested',
+    tags: ['a11y', 'structure'],
+    ressources: { 'rgaa': ['9.4.2'] }
+});
+
 /**
  *? PRESENTATION DE L'INFORMATION
  ** 10.1 & 10.4 OK
+ *TODO 10.4.1 récupérer la liste de noeuds texte -> font-size-200% -> check viewport position
+ *TODO traiter le 10.5 dans la boucle qui passe chaque noeud texte dans le script de contrast, car il n'est pas possible de recupérer simplement les propriétés color et background appliquées directement sur les éléments
  */
 
-// 10.1 Dans le site web, des feuilles de style sont-elles utilisées pour contrôler la présentation de l'information ?
+//* 10.1 Dans le site web, des feuilles de style sont-elles utilisées pour contrôler la présentation de l'information ?
 // 10.1.1 : Dans chaque page web, les balises servant à la présentation de l'information ne doivent pas être présentes dans le code source généré des pages. Cette règle est-elle respectée ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -5071,7 +5205,44 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['10.1.2'] }
 });
 
-// 10.4 Dans chaque page web, le texte reste-t-il lisible lorsque la taille des caractères est augmentée jusqu'à 200%, au moins (hors cas particuliers) ?
+// 10.1.3 Dans chaque page web, l'utilisation des espaces vérifie-t-elle ces conditions ? 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Les espaces ne doivent pas être utiliser pour séparer les lettres d'un mot, simuler des tableaux ou simuler des colonnes de texte.",
+    status: 'untested',
+    tags: ['a11y', 'presentation'],
+    ressources: { 'rgaa': ['10.1.3'] }
+});
+
+//* 10.2 Dans chaque page web, le contenu visible porteur d’information reste-t-il présent lorsque les feuilles de style sont désactivées ?
+// 10.2.1 Dans chaque page web, l'information reste-t-elle présente lorsque les feuilles de style sont désactivées ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "L'information doit rester présente lorsque les feuilles de style sont désactivées.",
+    status: 'untested',
+    tags: ['a11y', 'presentation'],
+    ressources: { 'rgaa': ['10.2.1'] }
+});
+
+//* 10.3 Dans chaque page web, l'information reste-t-elle compréhensible lorsque les feuilles de style sont désactivées ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "L'information doit rester compréhensible lorsque les feuilles de style sont désactivées.",
+    status: 'untested',
+    tags: ['a11y', 'presentation'],
+    ressources: { 'rgaa': ['10.3.1'] }
+});
+
+//* 10.4 Dans chaque page web, le texte reste-t-il lisible lorsque la taille des caractères est augmentée jusqu'à 200%, au moins (hors cas particuliers) ?
+// 10.4.1 Dans chaque page web, l'augmentation de la taille des caractères jusqu'à 200 %, au moins, ne doit pas provoquer de perte d'information. Cette règle est-elle respectée selon une de ces conditions (hors cas particuliers) ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'La taille des caractères doit pouvoir être augmentée jusque 200% sans perdre d\'information.',
+    status: 'untested',
+	tags: ['a11y', 'presentation'],
+    ressources: { 'rgaa': ['10.4.1'] }
+});
+
 // 10.4.2 Dans chaque page web, l'augmentation de la taille des caractères jusqu'à 200 %, au moins, doit être possible pour l’ensemble du texte dans la page. Cette règle est-elle respectée selon une de ces conditions (hors cas particuliers) ? 
 tanaguruTestsList.push({
 	lang: 'fr',
@@ -5138,6 +5309,82 @@ tanaguruTestsList.push({
 	tags: ['a11y', 'presentation', 'meta'],
     ressources: { 'rgaa': ['10.4.2'] }
 });
+
+//* 10.5 Dans chaque page web, les déclarations CSS de couleurs de fond d'élément et de police sont-elles correctement utilisées ?
+// 10.5.1 Dans chaque page web, chaque déclaration CSS de couleurs de police (color), d'un élément susceptible de contenir du texte, est-elle accompagnée d'une déclaration de couleur de fond (background, background-color), au moins, héritée d'un parent ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque déclaration CSS de couleurs de police (color), d'un élément susceptible de contenir du texte, doit être accompagnée d'une déclaration de couleur de fond (background, background-color), au moins, héritée d'un parent.",
+    status: 'untested',
+	tags: ['a11y', 'presentation', 'colors'],
+    ressources: { 'rgaa': ['10.5.1'] }
+});
+
+// 10.5.2 Dans chaque page web, chaque déclaration de couleur de fond (background, background-color), d'un élément susceptible de contenir du texte, est-elle accompagnée d'une déclaration de couleur de police (color) au moins, héritée d'un parent ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque déclaration de couleur de fond (background, background-color), d'un élément susceptible de contenir du texte, doit être accompagnée d'une déclaration de couleur de police (color) au moins, héritée d'un parent.",
+    status: 'untested',
+	tags: ['a11y', 'presentation', 'colors'],
+    ressources: { 'rgaa': ['10.5.2'] }
+});
+
+// 10.5.3 Dans chaque page web, chaque utilisation d'une image pour créer une couleur de fond d'un élément susceptible de contenir du texte, via CSS (background, background-image), est-elle accompagnée d'une déclaration de couleur de fond (background, background-color), au moins, héritée d'un parent ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque utilisation d'une image pour créer une couleur de fond d'un élément susceptible de contenir du texte, via CSS (background, background-image), doit être accompagnée d'une déclaration de couleur de fond (background, background-color), au moins, héritée d'un parent.",
+    status: 'untested',
+	tags: ['a11y', 'presentation', 'colors'],
+    ressources: { 'rgaa': ['10.5.3'] }
+});
+
+//* 10.6 Dans chaque page web, chaque lien dont la nature n'est pas évidente est-il visible par rapport au texte environnant ?
+// 10.6.1 Dans chaque page web, chaque lien texte signalé uniquement par la couleur, et dont la nature n'est pas évidente, vérifie-t-il ces conditions ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque lien texte signalé uniquement par la couleur, et dont la nature n'est pas évidente, doit être visible par rapport au texte environnant.",
+    status: 'untested',
+	tags: ['a11y', 'presentation', 'links'],
+    ressources: { 'rgaa': ['10.6.1'] }
+});
+
+//* 10.7 Dans chaque page web, pour chaque élément recevant le focus, la prise de focus est-elle visible ?
+// 10.7.1 Pour chaque élément recevant le focus, la prise de focus vérifie-t-elle une de ces conditions ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Pour chaque élément recevant le focus, la prise de focus doit être visible.",
+    status: 'untested',
+	tags: ['a11y', 'presentation', 'keyboard', 'contrast'],
+    ressources: { 'rgaa': ['10.7.1'] }
+});
+
+//* 10.8 Pour chaque page web, les contenus cachés ont-ils vocation à être ignorés par les technologies d'assistance ?
+// 10.8.1 Dans chaque page web, chaque contenu caché vérifie-t-il une de ces conditions ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Liste des contenus cachés restitués.",
+    description: "Vérifier que ces éléments ont bien vocation à être restitués par les technologies d'assistance.",
+    query: 'body *',
+    filter: function(item) {
+        return !item.isVisible && item.isNotExposedDueTo.length === 0;
+    },
+	tags: ['a11y', 'presentation'],
+    ressources: { 'rgaa': ['10.8.1'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Liste des contenus cachés non restitués.",
+    description: "Vérifier que ces éléments ont bien vocation à être ignorés par les technologies d'assistance.",
+    query: 'body *',
+    filter: function(item) {
+        return !item.isVisible && item.isNotExposedDueTo.length > 0;
+    },
+	tags: ['a11y', 'presentation'],
+    ressources: { 'rgaa': ['10.8.1'] }
+});
+
+//* 10.9 Dans chaque page web, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle est-elle respectée ?
 
 // 11.1 Chaque champ de formulaire a-t-il une étiquette ?
 // 11.1.1 Chaque champ de formulaire vérifie-t-il une de ces conditions ?
@@ -5516,6 +5763,49 @@ tanaguruTestsList.push({
     mark: {attrs: ['aria-labelledby', 'aria-label', 'alt', 'value', 'title']},
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.9.1'] }
+});
+
+// 11.9.2 Chaque bouton affichant un intitulé visible vérifie-t-il ces conditions (hors cas particuliers) ? 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des boutons de formulaire ayant un intitulé visible non repris dans le nom accessible.',
+    query: 'form button:not([role]), form button[role="none"], form [role="button"], form input[type="submit"]:not([role]), form input[type="reset"]:not([role]), form input[type="button"]:not([role])',
+    expectedNbElements: 0,
+    filter: function (item) {
+        if(item.isVisible && (item.innerText || item.value) && !item.disabled) {
+            var visibleName = item.innerText ? item.innerText : item.value;
+            var buttonName = visibleName.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var buttonAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var regex = new RegExp(buttonName, 'mi');
+
+            return item.isNotExposedDueTo.length == 0 && !buttonAccessibleName.match(regex);
+        }
+    },
+    tags: ['a11y', 'accessiblename', 'buttons', 'forms'],
+    ressources: {'rgaa': ['11.9.2']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des boutons de formulaire ayant un intitulé visible bien repris dans le nom accessible.',
+    query: 'form button:not([role]), form button[role="none"], form [role="button"], form input[type="submit"]:not([role]), form input[type="reset"]:not([role]), form input[type="button"]:not([role])',
+    filter: function (item) {
+        if(item.isVisible && (item.innerText || item.value)) {
+            var visibleName = item.innerText ? item.innerText : item.value;
+            var buttonName = visibleName.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var buttonAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var regex = new RegExp(buttonName, 'mi');
+
+            return item.isNotExposedDueTo.length == 0 && buttonAccessibleName.match(regex);
+        }
+    },
+    analyzeElements: function (collection) {
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].status = 'passed';
+        }
+    },
+    tags: ['a11y', 'accessiblename', 'buttons', 'forms'],
+    ressources: {'rgaa': ['11.9.2']}
 });
 
 // 12.8 Dans chaque page web, l'ordre de tabulation est-il cohérent ?

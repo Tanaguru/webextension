@@ -1,8 +1,10 @@
 //? CONTRAST SCRIPT
-
+var bgBody = true;
 if(!window.getComputedStyle(document.body, null).getPropertyValue('background-color') && !window.getComputedStyle(document.body, null).getPropertyValue('background')) {
 	document.body.style.backgroundColor = '#fff';
+	bgBody = false;
 }
+
 var tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
 var textNodeList = {
 	//? 'invalid', 'valid', 'cantTell' = contrast ratio status
@@ -628,5 +630,7 @@ while (tw.nextNode()) {
 		}
 	}
 }
+
+if(!bgBody) document.body.style.backgroundColor = 'unset';
 
 textNodeList;
