@@ -3,16 +3,16 @@ var tanaguruTestsList = [];
 
 /**
  *? Thématiques
- *! Images (bloqué)
+ *! Images (todo)
  * Cadres (terminé)
- *! Couleurs (bloqué)
- **! Multimédia (bloqué)
- **! Tableaux (bloqué)
+ *! Couleurs (todo)
+ *! Multimédia (bloqué)
+ * Tableaux
  * Liens (terminé)
- *! Scripts (bloqué)
- ** Eléments obligatoires
+ *! Scripts (todo)
+ *! Eléments obligatoires (todo)
  * Structuration de l'information (terminé)
- ** Présentation de l'information
+ *! Présentation de l'information(todo)
  ** Formulaires
  ** Navigation
  ** Consultation
@@ -21,7 +21,6 @@ var tanaguruTestsList = [];
 /**
  *? IMAGES
  ** tous les tests sont répertoriés, mais les critères 1.2/1.4 et 1.5 sont améliorables
- *TODO hasAccessibleName ne teste pas le title sur les balises object & embed
  *TODO pas possible de tester si un élément a un aria-hidden="true" ET un nom accessible car hasAccessibleName() renvoie false quand isNotExposedDueTo.length === 0
  *! 1.4/1.5 comment identifier les images test / captcha ?
  */
@@ -1720,7 +1719,6 @@ tanaguruTestsList.push({
     name: 'Liste des cadres avec un attribut title',
     query: 'iframe:not([role="presentation"]), frame:not([role="presentation"])',
     filter: function (item) {
-        console.log(item);
         return item.isNotExposedDueTo.length == 0 && item.hasAttribute('title');
     },
     analyzeElements: function (collection) {
@@ -5172,9 +5170,10 @@ tanaguruTestsList.push({
 
 /**
  *? PRESENTATION DE L'INFORMATION
- ** 10.1 & 10.4 OK
+ ** Tous les tests sont répertoriés
  *TODO 10.4.1 récupérer la liste de noeuds texte -> font-size-200% -> check viewport position
  *TODO traiter le 10.5 dans la boucle qui passe chaque noeud texte dans le script de contrast, car il n'est pas possible de recupérer simplement les propriétés color et background appliquées directement sur les éléments
+ *TODO 10.12.1 passer chaque noeud texte après avoir défini les propriétés d'espacement du texte sur le document
  */
 
 //* 10.1 Dans le site web, des feuilles de style sont-elles utilisées pour contrôler la présentation de l'information ?
@@ -5385,8 +5384,162 @@ tanaguruTestsList.push({
 });
 
 //* 10.9 Dans chaque page web, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle est-elle respectée ?
+//* 10.10 Dans chaque page web, l'information ne doit pas être donnée par la forme, taille ou position uniquement. Cette règle est-elle implémentée de façon pertinente ?
+// 10.9.1 Dans chaque page web, pour chaque texte ou ensemble de textes, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle est-elle respectée ?
+// 10.10.1 Dans chaque page web, pour chaque texte ou ensemble de textes, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle est-elle implémentée de façon pertinente ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Pour chaque texte ou ensemble de textes, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle doit être respectée et implémentée de façon pertinente.",
+    status: 'untested',
+	tags: ['a11y', 'presentation'],
+    ressources: { 'rgaa': ['10.9.1', '10.10.1'] }
+});
 
-// 11.1 Chaque champ de formulaire a-t-il une étiquette ?
+// 10.9.2 Dans chaque page web, pour chaque image ou ensemble d'images, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle est-elle respectée ?
+// 10.10.2 Dans chaque page web, pour chaque image ou ensemble d'images, l'information ne doit pas être donnée par la forme, taille ou position uniquement. Cette règle est-elle implémentée de façon pertinente ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Pour chaque image ou ensemble d'images, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle doit être respectée et implémentée de façon pertinente.",
+    status: 'untested',
+	tags: ['a11y', 'presentation'],
+    ressources: { 'rgaa': ['10.9.2', '10.10.2'] }
+});
+
+// 10.9.3 Dans chaque page web, pour chaque média temporel, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle est-elle respectée ?
+// 10.10.3 Dans chaque page web, pour chaque média temporel, l'information ne doit pas être donnée par la forme, taille ou position uniquement. Cette règle est-elle implémentée de façon pertinente ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Pour chaque média temporel, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle doit être respectée et implémentée de façon pertinente.",
+    status: 'untested',
+	tags: ['a11y', 'presentation'],
+    ressources: { 'rgaa': ['10.9.3', '10.10.3'] }
+});
+
+// 10.9.4 Dans chaque page web, pour chaque média non temporel, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle est-elle respectée ?
+// 10.10.4 Dans chaque page web, pour chaque média non temporel, l'information ne doit pas être donnée par la forme, taille ou position uniquement. Cette règle est-elle implémentée de façon pertinente ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Pour chaque média non temporel, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle doit être respectée et implémentée de façon pertinente.",
+    status: 'untested',
+	tags: ['a11y', 'presentation'],
+    ressources: { 'rgaa': ['10.9.4', '10.10.4'] }
+});
+
+//* 10.11 Pour chaque page web, les contenus peuvent-ils être présentés sans avoir recours à un défilement vertical pour une fenêtre ayant une hauteur de 256px ou à un défilement horizontal pour une fenêtre ayant une largeur de 320px (hors cas particuliers) ?
+// 10.11.1 Pour chaque page web, lorsque le contenu dont le sens de lecture est horizontal est affiché dans une fenêtre réduite à une largeur de 320px, l'ensemble des informations et des fonctionnalités sont-elles disponibles sans aucun défilement horizontal (hors cas particuliers) ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Si le sens de lecture du contenu est horizontal, il ne doit y avoir aucun défilement horizontal sur les écrans de 320px de large.",
+    query: 'body',
+    analyzeElements: function(collection) {
+        var currentPage = document.createElement("iframe");
+        currentPage.id = 'test10-11-1-tng';
+        currentPage.style.width = "320px";
+        var pageHead = document.head.innerHTML;
+        var pageBody = document.body.outerHTML;
+        document.body.appendChild(currentPage);
+        currentPage.contentWindow.document.head.innerHTML = pageHead;
+        currentPage.contentWindow.document.body.outerHTML = pageBody;
+        var horizontalScroll = currentPage.contentWindow.document.body.scrollWidth - currentPage.contentWindow.document.body.clientWidth;
+        currentPage.remove();
+        if(horizontalScroll > 0) {
+            collection[0].status = 'cantTell';
+        } else {
+            collection[0].status = 'passed';
+        }
+    },
+	tags: ['a11y', 'presentation'],
+    ressources: { 'rgaa': ['10.11.1'] }
+});
+
+// 10.11.2 Pour chaque page web, lorsque le contenu dont le sens de lecture est vertical est affiché dans une fenêtre réduite à une hauteur de 256px, l'ensemble des informations et des fonctionnalités sont-elles disponibles sans aucun défilement vertical (hors cas particuliers) ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Si le sens de lecture du contenu est vertical, il ne doit y avoir aucun défilement vertical sur les écrans de 256px de haut.",
+    query: 'body',
+    analyzeElements: function(collection) {
+        var currentPage = document.createElement("iframe");
+        currentPage.id = 'test10-11-2-tng';
+        currentPage.style.height = "256px";
+        var pageHead = document.head.innerHTML;
+        var pageBody = document.body.outerHTML;
+        document.body.appendChild(currentPage);
+        currentPage.contentWindow.document.head.innerHTML = pageHead;
+        currentPage.contentWindow.document.body.outerHTML = pageBody;
+        var verticalScroll = currentPage.contentWindow.document.body.scrollHeight - currentPage.contentWindow.document.body.clientHeight;
+        currentPage.remove();
+        if(verticalScroll > 0) {
+            collection[0].status = 'cantTell';
+        } else {
+            collection[0].status = 'passed';
+        }
+    },
+	tags: ['a11y', 'presentation'],
+    ressources: { 'rgaa': ['10.11.2'] }
+});
+
+//* 10.12 Dans chaque page web, les propriétés d'espacement du texte peuvent-elles être redéfinies par l'utilisateur sans perte de contenu ou de fonctionnalité (hors cas particuliers) ?
+// 10.12.1 Dans chaque page web, le texte reste-t-il lisible lorsque l'affichage est modifié selon ces conditions (hors cas particuliers) ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Les propriétés d'espacement du texte doivent pouvoir être redéfinies par l'utilisateur sans perte de contenu ou de fonctionnalité.",
+    status: 'untested',
+	tags: ['a11y', 'presentation'],
+    ressources: { 'rgaa': ['10.12.1'] }
+});
+
+//* 10.13 Dans chaque page web, les contenus additionnels apparaissant à la prise de focus ou au survol d'un composant d'interface sont-ils contrôlables par l'utilisateur (hors cas particuliers) ?
+// 10.13.1 Chaque contenu additionnel devenant visible à la prise de focus ou au survol d'un composant d'interface peut-il être masqué par une action utilisateur sans déplacer le focus ou le pointeur de la souris (hors cas particuliers) ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque contenu additionnel devenant visible à la prise de focus ou au survol d'un composant d'interface doit pouvoir être masqué par une action utilisateur sans déplacer le focus ou le pointeur de la souris.",
+    status: 'untested',
+	tags: ['a11y', 'presentation', 'keyboard'],
+    ressources: { 'rgaa': ['10.13.1'] }
+});
+
+// 10.13.2 Chaque contenu additionnel qui apparaît au survol d'un composant d'interface peut-il être survolé par le pointeur de la souris sans disparaître (hors cas particuliers) ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque contenu additionnel qui apparaît au survol d'un composant d'interface doit pouvoir être survolé par le pointeur de la souris sans disparaître.",
+    status: 'untested',
+	tags: ['a11y', 'presentation', 'keyboard'],
+    ressources: { 'rgaa': ['10.13.2'] }
+});
+
+// 10.13.3 Chaque contenu additionnel qui apparaît à la prise de focus ou au survol d'un composant d'interface vérifie-t-il une de ces conditions (hors cas particuliers) ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque contenu additionnel qui apparaît à la prise de focus ou au survol d'un composant d'interface reste visible jusqu'à ce qu'il soit valide ou qu'une action de l'utilisateur le cache.",
+    status: 'untested',
+	tags: ['a11y', 'presentation', 'keyboard'],
+    ressources: { 'rgaa': ['10.13.3'] }
+});
+
+//* 10.14 Dans chaque page web, les contenus additionnels apparaissant via les styles CSS uniquement peuvent-ils être rendus visibles au clavier et par tout dispositif de pointage ?
+// 10.14.1 Dans chaque page web, les contenus additionnels apparaissant au survol d'un composant d'interface via les styles CSS respectent-ils si nécessaire une de ces conditions ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Les contenus additionnels apparaissant au survol d'un composant d'interface via les styles CSS doivent pouvoir être rendus visibles au clavier et par tout dispositif de pointage.",
+    status: 'untested',
+	tags: ['a11y', 'presentation', 'keyboard'],
+    ressources: { 'rgaa': ['10.14.1'] }
+});
+
+// 10.14.2 Dans chaque page web, les contenus additionnels apparaissant au focus d'un composant d'interface via les styles CSS respectent-ils si nécessaire une de ces conditions ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Les contenus additionnels apparaissant au focus d'un composant d'interface via les styles CSS doivent pouvoir être rendus visibles au clavier et par tout dispositif de pointage.",
+    status: 'untested',
+	tags: ['a11y', 'presentation', 'keyboard'],
+    ressources: { 'rgaa': ['10.14.2'] }
+});
+
+/**
+ *? FORMULAIRES
+ */
+
+//* 11.1 Chaque champ de formulaire a-t-il une étiquette ?
 // 11.1.1 Chaque champ de formulaire vérifie-t-il une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -5403,7 +5556,6 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des champs de formulaires avec un nom accessible',
-    description: 'This rule checks that each form field element has an accessible name.',
     query: 'input[type="password"]:not([role]), input[type="checkbox"]:not([role]), [role="checkbox"], [role="switch"], input[type="radio"]:not([role]), [role="radio"], select:not([role]), [role="combobox"], input[type="search"]:not([role]), [role="searchbox"], input[type="range"]:not([role]), [role="slider"], input[type="number"]:not([role]), [role="spinbutton"], input:not([type]):not([role]), input[type="email"]:not([role]), input[type="tel"]:not([role]), input[type="text"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), [contenteditable="true"]:not([role]), [role="textbox"], [role="listbox"], [role="menuitemcheckbox"], [role="menuitemradio"]',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
@@ -5483,7 +5635,45 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['11.1.2'] }
 });
 
-// 11.2 : Chaque étiquette associée à un champ de formulaire est-elle pertinente (hors cas particuliers) ?
+// 11.1.3 Chaque champ de formulaire ayant une étiquette dont le contenu n'est pas visible ou à proximité (masqué, aria-label) ou qui n’est pas accolé au champ (aria-labelledby), vérifie-t-il une de ses conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des champs de formulaires avec une étiquette non visible ou non accolée.',
+    query: 'input[type="password"]:not([role]), input[type="checkbox"]:not([role]), [role="checkbox"], [role="switch"], input[type="radio"]:not([role]), [role="radio"], select:not([role]), [role="combobox"], input[type="search"]:not([role]), [role="searchbox"], input[type="range"]:not([role]), [role="slider"], input[type="number"]:not([role]), [role="spinbutton"], input:not([type]):not([role]), input[type="email"]:not([role]), input[type="tel"]:not([role]), input[type="text"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), [contenteditable="true"]:not([role]), [role="textbox"], [role="listbox"], [role="menuitemcheckbox"], [role="menuitemradio"]',
+    status: 'untested',
+    filter: function (item) {
+        if(item.hasAttribute('aria-labelledby')) {
+            let ariaLabelledby = document.getElementById(item.getAttribute('aria-labelledby'));
+            if(ariaLabelledby && ariaLabelledby.textContent.trim() > 0 && ariaLabelledby.isVisible) {
+                // check the distance
+                // return;
+            }
+        }
+
+        if(item.hasAttribute('id')) {
+            let id = item.getAttribute('aria-label')
+            let label = document.querySelector('label[for='+id+']');
+            if(label && label.textContent.trim() > 0 && label.isVisible) {
+                // check the distance
+                // return;
+            }
+        }
+
+        if(item.hasAttribute('aria-label')) {
+            
+        }
+
+        
+
+        if(item.hasAttribute('title')) {
+            
+        }
+    },
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.1.3'] }
+});
+
+//* 11.2 : Chaque étiquette associée à un champ de formulaire est-elle pertinente (hors cas particuliers) ?
 // 11.2.1 : Chaque balise <label> permet-elle de connaître la fonction exacte du champ de formulaire auquel elle est associée ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -5601,22 +5791,8 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['11.2.4'] }
 });
 
-// tanaguruTestsList.push({
-//     lang: 'fr',
-//     name: 'Vérifier que le nom accessible de chaque champ de formulaire est pertinent.',
-//     query: 'input[type="password"]:not([role]), input[type="checkbox"]:not([role]), [role="checkbox"], [role="switch"], input[type="radio"]:not([role]), [role="radio"], select:not([role]), [role="combobox"], input[type="search"]:not([role]), [role="searchbox"], input[type="range"]:not([role]), [role="slider"], input[type="number"]:not([role]), [role="spinbutton"], input:not([type]):not([role]), input[type="email"]:not([role]), input[type="tel"]:not([role]), input[type="text"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), [contenteditable="true"]:not([role]), [role="textbox"], [role="listbox"], [role="menuitemcheckbox"], [role="menuitemradio"]',
-//     filter: function (item) {
-//         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
-//     },
-//     analyzeElements: function (collection) {
-//         for (var i = 0; i < collection.length; i++) {
-//             collection[i].status = 'cantTell';
-//         }
-//     },
-//     tags: ['a11y', 'forms', 'accessiblename'],
-//     ressources: { 'rgaa': ['11.3.1'] }
-// });
-// voir pour extraire l'éléments porteur du nom accessible @rg
+// 11.2.5 Chaque champ de formulaire ayant un intitulé visible vérifie-t-il ces conditions (hors cas particuliers) ?
+// 11.2.6 Chaque bouton adjacent au champ de formulaire qui fournit une étiquette visible permet-il de connaître la fonction exacte du champ de formulaire auquel il est associé ?
 
 //11.5.1 : Les champs de même nature vérifient-ils l'une de ces conditions, si nécessaire ?
 tanaguruTestsList.push({
