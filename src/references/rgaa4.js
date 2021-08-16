@@ -2620,9 +2620,17 @@ tanaguruTestsList.push({
                 if(item.querySelector('caption')) {
                     return item.querySelector('caption').textContent.trim().length === 0;
                 } else if(item.hasAttribute('role') && item.hasAttribute('aria-describedby')) {
-                    var id = item.getAttribute('aria-describedby');
-                    var summary = document.getElementById(id);
-                    return !summary || summary.textContent.trim().length === 0;
+                    var ids = item.getAttribute('aria-describedby').trim().split(' ');
+                    if(ids.length > 0) {
+                        var summary = '';
+                        ids.forEach(id => {
+                            if(document.getElementById(id)) {
+                                summary += document.getElementById(id).trim();
+                            }
+                        });
+
+                        return summary.length === 0;
+                    }
                 }
                 return true;
             }
@@ -2644,9 +2652,17 @@ tanaguruTestsList.push({
                 if(item.querySelector('caption')) {
                     return item.querySelector('caption').textContent.trim().length > 0;
                 } else if(item.hasAttribute('role') && item.hasAttribute('aria-describedby')) {
-                    var id = item.getAttribute('aria-describedby');
-                    var summary = document.getElementById(id);
-                    return summary && summary.textContent.trim().length > 0;
+                    var ids = item.getAttribute('aria-describedby').trim().split(' ');
+                    if(ids.length > 0) {
+                        var summary = '';
+                        ids.forEach(id => {
+                            if(document.getElementById(id)) {
+                                summary += document.getElementById(id).trim();
+                            }
+                        });
+
+                        return summary.length > 0;
+                    }
                 }
             }
         }
@@ -2674,9 +2690,17 @@ tanaguruTestsList.push({
                 if(item.querySelector('caption')) {
                     return item.querySelector('caption').textContent.trim().length > 0;
                 } else if(item.hasAttribute('role') && item.hasAttribute('aria-describedby')) {
-                    var id = item.getAttribute('aria-describedby');
-                    var summary = document.getElementById(id);
-                    return summary && summary.textContent.trim().length > 0;
+                    var ids = item.getAttribute('aria-describedby').trim().split(' ');
+                    if(ids.length > 0) {
+                        var summary = '';
+                        ids.forEach(id => {
+                            if(document.getElementById(id)) {
+                                summary += document.getElementById(id).trim();
+                            }
+                        });
+
+                        return summary.length > 0;
+                    }
                 }
             }
         }
@@ -2734,7 +2758,7 @@ tanaguruTestsList.push({
                 return true;
             }
 
-            if(item.hasAttribute('aria-labelledby')) {
+            if(item.hasAttribute('aria-labelledby') && item.getAttribute('aria-labelledby').trim().length > 0) {
                 return document.getElementById(item.getAttribute('aria-labelledby')) != null;
             }
         }
@@ -2758,7 +2782,19 @@ tanaguruTestsList.push({
         if(item.isNotExposedDueTo.length > 0 && !item.isVisible) {
             return;
         }
-        return document.getElementById(item.getAttribute('aria-labelledby')) == null;
+        if(item.getAttribute('aria-labelledby').trim().length > 0) {
+            var ids = item.getAttribute('aria-labelledby').trim().split(' ');
+            if(ids.length > 0) {
+                var summary = false;
+                ids.forEach(id => {
+                    if(document.getElementById(id)) {
+                        summary = true;
+                    }
+                });
+
+                return !summary;
+            }
+        }
     },
     mark: {attrs: ['aria-labelledby']},
     tags: ['a11y', 'tables'],
@@ -3326,14 +3362,14 @@ tanaguruTestsList.push({
             }
         }
 
-        if(item.hasAttribute('id')) {
-            let id = item.getAttribute('id');
-            item.setAttribute('id', '');
+        if(item.id.trim().length > 0) {
+            let id = item.id;
+            item.id = "";
             if(!document.getElementById(id)) {
-                item.setAttribute('id', id);
+                item.id = id;
                 return;
             }
-            item.setAttribute('id', id);
+            item.id = id;
         }
 
         return true;
@@ -3357,14 +3393,14 @@ tanaguruTestsList.push({
             }
         }
 
-        if(item.hasAttribute('id')) {
-            let id = item.getAttribute('id');
-            item.setAttribute('id', '');
+        if(item.id.trim().length > 0) {
+            let id = item.id;
+            item.id = "";
             if(!document.getElementById(id)) {
-                item.setAttribute('id', id);
+                item.id = id;
                 return true;
             }
-            item.setAttribute('id', id);
+            item.id = id;
         }
 	},
     analyzeElements: function (collection) {
@@ -3458,14 +3494,14 @@ tanaguruTestsList.push({
             }
         }
 
-        if(item.hasAttribute('id')) {
-            let id = item.getAttribute('id');
-            item.setAttribute('id', '');
+        if(item.id.trim().length > 0) {
+            let id = item.id;
+            item.id = "";
             if(document.getElementById(id)) {
-                item.setAttribute('id', id);
+                item.id = id;
                 return true;
             }
-            item.setAttribute('id', id);
+            item.id = id;
         }
 	},
     mark: {attrs: ['scope', 'id', 'role']},
@@ -3487,14 +3523,14 @@ tanaguruTestsList.push({
             }
         }
 
-        if(item.hasAttribute('id')) {
-            let id = item.getAttribute('id');
-            item.setAttribute('id', '');
+        if(item.id.trim().length > 0) {
+            let id = item.id;
+            item.id = "";
             if(document.getElementById(id)) {
-                item.setAttribute('id', id);
+                item.id = id;
                 return;
             }
-            item.setAttribute('id', id);
+            item.id = id;
         }
 
         return true;
@@ -5638,35 +5674,173 @@ tanaguruTestsList.push({
 // 11.1.3 Chaque champ de formulaire ayant une étiquette dont le contenu n'est pas visible ou à proximité (masqué, aria-label) ou qui n’est pas accolé au champ (aria-labelledby), vérifie-t-il une de ses conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des champs de formulaires avec une étiquette non visible ou non accolée.',
-    query: 'input[type="password"]:not([role]), input[type="checkbox"]:not([role]), [role="checkbox"], [role="switch"], input[type="radio"]:not([role]), [role="radio"], select:not([role]), [role="combobox"], input[type="search"]:not([role]), [role="searchbox"], input[type="range"]:not([role]), [role="slider"], input[type="number"]:not([role]), [role="spinbutton"], input:not([type]):not([role]), input[type="email"]:not([role]), input[type="tel"]:not([role]), input[type="text"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), [contenteditable="true"]:not([role]), [role="textbox"], [role="listbox"], [role="menuitemcheckbox"], [role="menuitemradio"]',
-    status: 'untested',
+    name: 'Liste des champs de formulaires avec une étiquette non visible, ne possédant ni attribut title ni passage de texte visible identifié par un id.',
+    query: 'input[type="password"]:not([role]), input[type="checkbox"]:not([role]), [role="checkbox"], [role="switch"], input[type="radio"]:not([role]), [role="radio"], select:not([role]), [role="combobox"], input[type="search"]:not([role]), [role="searchbox"], input[type="range"]:not([role]), [role="slider"], input[type="number"]:not([role]), [role="spinbutton"], input:not([type]):not([role]), input[type="email"]:not([role]), input[type="tel"]:not([role]), input[type="text"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), [contenteditable="true"]:not([role]), [role="textbox"], [role="listbox"], [role="menuitemcheckbox"], [role="menuitemradio"], input[type="color"]:not([role]), input[type="date"]:not([role])',
+    expectedNbElements: 0,
     filter: function (item) {
-        if(item.hasAttribute('aria-labelledby')) {
-            let ariaLabelledby = document.getElementById(item.getAttribute('aria-labelledby'));
-            if(ariaLabelledby && ariaLabelledby.textContent.trim() > 0 && ariaLabelledby.isVisible) {
-                // check the distance
-                // return;
+        item.focus();
+        let hasLabel = false;
+
+        if(item.hasAttribute('aria-labelledby') && item.getAttribute('aria-labelledby').trim().length > 0) {
+            let ids = item.getAttribute('aria-labelledby').split(' ');
+            let labelIsVisible = false;
+
+            ids.forEach(id => {
+                let el = document.getElementById(id);
+                if(el) {
+                    hasLabel = true;
+                    labelIsVisible = el.isVisible && el.textContent.trim().length > 0 ? true : labelIsVisible;
+                }
+            });
+
+            if(labelIsVisible) {
+                item.setAttribute('data-tng-visible-label', 'labelledby');
+                return;
             }
         }
 
-        if(item.hasAttribute('id')) {
-            let id = item.getAttribute('aria-label')
-            let label = document.querySelector('label[for='+id+']');
-            if(label && label.textContent.trim() > 0 && label.isVisible) {
-                // check the distance
-                // return;
+        if(item.hasAttribute('id') && item.getAttribute('id').trim().length > 0) {
+            let id = item.getAttribute('id');
+            let labels = document.querySelectorAll('label[for]');
+            
+            for(let i = 0; i < labels.length; i++) {
+                let forAttr = labels[i].getAttribute('for');
+                if(forAttr.match(id) && labels[i].textContent.trim().length > 0) {
+                    if(labels[i].isVisible) {
+                        item.setAttribute('data-tng-visible-label', 'label');
+                        return;
+                    }
+                    hasLabel = true;
+                } 
             }
         }
 
-        if(item.hasAttribute('aria-label')) {
-            
+        if(item.hasAttribute('aria-label') && item.getAttribute('aria-label').trim().length > 0) {
+            hasLabel = true;
         }
 
-        
+        if(item.hasAttribute('title') && item.getAttribute('title').trim().length > 0) {
+            return;
+        }
 
-        if(item.hasAttribute('title')) {
+        if(hasLabel) {
+            if(item.hasAttribute('aria-describedby') && item.getAttribute('aria-describedby').trim().length > 0) {
+                let ids = item.getAttribute('aria-describedby').split(' ');
+                ids.forEach(id => {
+                    let el = document.getElementById(id);
+                    if(el && el.textContent.trim().length > 0 && el.isVisible) return;
+                })
+            }
+            return true;
+        }
+    },
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.1.3'] }
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des champs de formulaires avec une étiquette non visible, possédant un attribut title.',
+    description: "Vérifier la pertinence de l'attribut title.",
+    query: 'input[type="password"]:not([role]), input[type="checkbox"]:not([role]), [role="checkbox"], [role="switch"], input[type="radio"]:not([role]), [role="radio"], select:not([role]), [role="combobox"], input[type="search"]:not([role]), [role="searchbox"], input[type="range"]:not([role]), [role="slider"], input[type="number"]:not([role]), [role="spinbutton"], input:not([type]):not([role]), input[type="email"]:not([role]), input[type="tel"]:not([role]), input[type="text"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), [contenteditable="true"]:not([role]), [role="textbox"], [role="listbox"], [role="menuitemcheckbox"], [role="menuitemradio"], input[type="color"]:not([role]), input[type="date"]:not([role])',
+    filter: function (item) {
+        item.focus();
+        let hasLabel = false;
+
+        if(item.hasAttribute('aria-labelledby') && item.getAttribute('aria-labelledby').trim().length > 0) {
+            let ids = item.getAttribute('aria-labelledby').split(' ');
+            let labelIsVisible = false;
+
+            ids.forEach(id => {
+                let el = document.getElementById(id);
+                if(el) {
+                    hasLabel = true;
+                    labelIsVisible = el.isVisible && el.textContent.trim().length > 0 ? true : labelIsVisible;
+                }
+            });
+
+            if(labelIsVisible) return;
+        }
+
+        if(item.hasAttribute('id') && item.getAttribute('id').trim().length > 0) {
+            let id = item.getAttribute('id');
+            let labels = document.querySelectorAll('label[for]');
             
+            for(let i = 0; i < labels.length; i++) {
+                let forAttr = labels[i].getAttribute('for');
+                if(forAttr.match(id) && labels[i].textContent.trim().length > 0) {
+                    if(labels[i].isVisible) return;
+                    hasLabel = true;
+                } 
+            }
+        }
+
+        if(item.hasAttribute('aria-label') && item.getAttribute('aria-label').trim().length > 0) {
+            hasLabel = true;
+        }
+
+        if(hasLabel && item.hasAttribute('title') && item.getAttribute('title').trim().length > 0) {
+            return true;
+        }
+    },
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.1.3'] }
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des champs de formulaires avec une étiquette non visible, possédant un passage de texte visible identifié par un id.',
+    description: "Vérifier la pertinence du passage de texte ainsi que sa proximité avec le champ associé.",
+    query: 'input[type="password"]:not([role]), input[type="checkbox"]:not([role]), [role="checkbox"], [role="switch"], input[type="radio"]:not([role]), [role="radio"], select:not([role]), [role="combobox"], input[type="search"]:not([role]), [role="searchbox"], input[type="range"]:not([role]), [role="slider"], input[type="number"]:not([role]), [role="spinbutton"], input:not([type]):not([role]), input[type="email"]:not([role]), input[type="tel"]:not([role]), input[type="text"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), [contenteditable="true"]:not([role]), [role="textbox"], [role="listbox"], [role="menuitemcheckbox"], [role="menuitemradio"], input[type="color"]:not([role]), input[type="date"]:not([role])',
+    expectedNbElements: 0,
+    filter: function (item) {
+        item.focus();
+        let hasLabel = false;
+
+        if(item.hasAttribute('aria-labelledby') && item.getAttribute('aria-labelledby').trim().length > 0) {
+            let ids = item.getAttribute('aria-labelledby').split(' ');
+            let labelIsVisible = false;
+
+            ids.forEach(id => {
+                let el = document.getElementById(id);
+                if(el) {
+                    hasLabel = true;
+                    labelIsVisible = el.isVisible && el.textContent.trim().length > 0 ? true : labelIsVisible;
+                }
+            });
+
+            if(labelIsVisible) return;
+        }
+
+        if(item.hasAttribute('id') && item.getAttribute('id').trim().length > 0) {
+            let id = item.getAttribute('id');
+            let labels = document.querySelectorAll('label[for]');
+            
+            for(let i = 0; i < labels.length; i++) {
+                let forAttr = labels[i].getAttribute('for');
+                if(forAttr.match(id) && labels[i].textContent.trim().length > 0) {
+                    if(labels[i].isVisible) return;
+                    hasLabel = true;
+                } 
+            }
+        }
+
+        if(item.hasAttribute('aria-label') && item.getAttribute('aria-label').trim().length > 0) {
+            hasLabel = true;
+        }
+
+        if(item.hasAttribute('title') && item.getAttribute('title').trim().length > 0) {
+            return;
+        }
+
+        if(hasLabel) {
+            if(item.hasAttribute('aria-describedby') && item.getAttribute('aria-describedby').trim().length > 0) {
+                let ids = item.getAttribute('aria-describedby').split(' ');
+                ids.forEach(id => {
+                    let el = document.getElementById(id);
+                    if(el && el.textContent.trim().length > 0 && el.isVisible) return true;
+                })
+            }
         }
     },
     tags: ['a11y', 'forms', 'accessiblename'],
