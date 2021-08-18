@@ -5580,7 +5580,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des champs de formulaires sans nom accessible',
-    query: 'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), optgroup:not([role]), option:not([role]), input[type="file"]:not([role]), output:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])',
+    query: 'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), input[type="file"]:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])',
     expectedNbElements: 0,
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
@@ -5592,7 +5592,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des champs de formulaires avec un nom accessible',
-    query: 'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), optgroup:not([role]), option:not([role]), input[type="file"]:not([role]), output:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])',
+    query: 'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), input[type="file"]:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])',
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
     },
@@ -5675,26 +5675,35 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des champs de formulaires avec une étiquette non visible, ne possédant ni attribut title ni passage de texte visible identifié par un id.',
-    query: 'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), optgroup:not([role]), option:not([role]), input[type="file"]:not([role]), output:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])',
+    query: 'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), input[type="file"]:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])',
     expectedNbElements: 0,
     filter: function (item) {
+        if((item.isNotExposedDueTo.length > 0 && !item.isVisible) || item.disabled) return;
+
         item.focus();
         let hasLabel = false;
 
         if(item.hasAttribute('aria-labelledby') && item.getAttribute('aria-labelledby').trim().length > 0) {
             let ids = item.getAttribute('aria-labelledby').split(' ');
             let labelIsVisible = false;
+            let visibleLabel = '';
 
             ids.forEach(id => {
                 let el = document.getElementById(id);
                 if(el) {
                     hasLabel = true;
+                    item.setAttribute('data-tng-has-label', 'labelledby');
                     labelIsVisible = el.isVisible && el.textContent.trim().length > 0 ? true : labelIsVisible;
+                    if(el.isVisible && el.textContent.trim().length > 0) {
+                        labelIsVisible = true;
+                        visibleLabel += el.textContent.trim() + ' ';
+                    }
                 }
             });
 
             if(labelIsVisible) {
                 item.setAttribute('data-tng-visible-label', 'labelledby');
+                item.setAttribute('data-tng-text-label', visibleLabel.trim());
                 return;
             }
         }
@@ -5705,21 +5714,30 @@ tanaguruTestsList.push({
             
             for(let i = 0; i < labels.length; i++) {
                 let forAttr = labels[i].getAttribute('for');
-                if(forAttr.match(id) && labels[i].textContent.trim().length > 0) {
-                    if(labels[i].isVisible) {
-                        item.setAttribute('data-tng-visible-label', 'label');
-                        return;
+                if(forAttr.match(id)) {
+                    if(labels[i].textContent.trim().length > 0) {
+                        if(labels[i].isVisible) {
+                            item.setAttribute('data-tng-visible-label', 'label');
+                            item.setAttribute('data-tng-text-label', labels[i].textContent.trim());
+                            return;
+                        }
+
+                        hasLabel = true;
+                        item.setAttribute('data-tng-has-label', 'label');
                     }
-                    hasLabel = true;
+                    
+                    break;
                 } 
             }
         }
 
         if(item.hasAttribute('aria-label') && item.getAttribute('aria-label').trim().length > 0) {
             hasLabel = true;
+            item.setAttribute('data-tng-has-label', 'arialabel');
         }
 
         if(item.hasAttribute('title') && item.getAttribute('title').trim().length > 0) {
+            item.setAttribute('data-tng-has-label', 'title');
             return;
         }
 
@@ -5728,7 +5746,10 @@ tanaguruTestsList.push({
                 let ids = item.getAttribute('aria-describedby').split(' ');
                 ids.forEach(id => {
                     let el = document.getElementById(id);
-                    if(el && el.textContent.trim().length > 0 && el.isVisible) return;
+                    if(el && el.textContent.trim().length > 0 && el.isVisible) {
+                        item.setAttribute('data-tng-has-label', 'describedby');
+                        return;
+                    }
                 })
             }
             return true;
@@ -5742,47 +5763,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des champs de formulaires avec une étiquette non visible, possédant un attribut title.',
     description: "Vérifier la pertinence de l'attribut title.",
-    query: 'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), optgroup:not([role]), option:not([role]), input[type="file"]:not([role]), output:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])',
-    filter: function (item) {
-        item.focus();
-        let hasLabel = false;
-
-        if(item.hasAttribute('aria-labelledby') && item.getAttribute('aria-labelledby').trim().length > 0) {
-            let ids = item.getAttribute('aria-labelledby').split(' ');
-            let labelIsVisible = false;
-
-            ids.forEach(id => {
-                let el = document.getElementById(id);
-                if(el) {
-                    hasLabel = true;
-                    labelIsVisible = el.isVisible && el.textContent.trim().length > 0 ? true : labelIsVisible;
-                }
-            });
-
-            if(labelIsVisible) return;
-        }
-
-        if(item.hasAttribute('id') && item.getAttribute('id').trim().length > 0) {
-            let id = item.getAttribute('id');
-            let labels = document.querySelectorAll('label[for]');
-            
-            for(let i = 0; i < labels.length; i++) {
-                let forAttr = labels[i].getAttribute('for');
-                if(forAttr.match(id) && labels[i].textContent.trim().length > 0) {
-                    if(labels[i].isVisible) return;
-                    hasLabel = true;
-                } 
-            }
-        }
-
-        if(item.hasAttribute('aria-label') && item.getAttribute('aria-label').trim().length > 0) {
-            hasLabel = true;
-        }
-
-        if(hasLabel && item.hasAttribute('title') && item.getAttribute('title').trim().length > 0) {
-            return true;
-        }
-    },
+    query: '[data-tng-has-label="title"]:not([data-tng-visible-label])',
+    mark: {attrs: ['title']},
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.1.3'] }
 });
@@ -5791,58 +5773,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des champs de formulaires avec une étiquette non visible, possédant un passage de texte visible identifié par un id.',
     description: "Vérifier la pertinence du passage de texte ainsi que sa proximité avec le champ associé.",
-    query: 'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), optgroup:not([role]), option:not([role]), input[type="file"]:not([role]), output:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])',
-    expectedNbElements: 0,
-    filter: function (item) {
-        item.focus();
-        let hasLabel = false;
-
-        if(item.hasAttribute('aria-labelledby') && item.getAttribute('aria-labelledby').trim().length > 0) {
-            let ids = item.getAttribute('aria-labelledby').split(' ');
-            let labelIsVisible = false;
-
-            ids.forEach(id => {
-                let el = document.getElementById(id);
-                if(el) {
-                    hasLabel = true;
-                    labelIsVisible = el.isVisible && el.textContent.trim().length > 0 ? true : labelIsVisible;
-                }
-            });
-
-            if(labelIsVisible) return;
-        }
-
-        if(item.hasAttribute('id') && item.getAttribute('id').trim().length > 0) {
-            let id = item.getAttribute('id');
-            let labels = document.querySelectorAll('label[for]');
-            
-            for(let i = 0; i < labels.length; i++) {
-                let forAttr = labels[i].getAttribute('for');
-                if(forAttr.match(id) && labels[i].textContent.trim().length > 0) {
-                    if(labels[i].isVisible) return;
-                    hasLabel = true;
-                } 
-            }
-        }
-
-        if(item.hasAttribute('aria-label') && item.getAttribute('aria-label').trim().length > 0) {
-            hasLabel = true;
-        }
-
-        if(item.hasAttribute('title') && item.getAttribute('title').trim().length > 0) {
-            return;
-        }
-
-        if(hasLabel) {
-            if(item.hasAttribute('aria-describedby') && item.getAttribute('aria-describedby').trim().length > 0) {
-                let ids = item.getAttribute('aria-describedby').split(' ');
-                ids.forEach(id => {
-                    let el = document.getElementById(id);
-                    if(el && el.textContent.trim().length > 0 && el.isVisible) return true;
-                })
-            }
-        }
-    },
+    query: '[data-tng-has-label="describedby"]:not([data-tng-visible-label])',
+    mark: {attrs: ['aria-describedby']},
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.1.3'] }
 });
@@ -5889,11 +5821,6 @@ tanaguruTestsList.push({
             }
         }
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     mark: {attrs: ['for']},
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.2.1'] }
@@ -5909,11 +5836,6 @@ tanaguruTestsList.push({
             if(htmlData.elements[item.tagName.toLowerCase()]) {
                 return htmlData.elements[item.tagName.toLowerCase()].category === 'forms';
             }
-        }
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
         }
     },
     mark: {attrs: ['title']},
@@ -5933,11 +5855,6 @@ tanaguruTestsList.push({
             }
         }
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     mark: {attrs: ['aria-label']},
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.2.3'] }
@@ -5955,37 +5872,102 @@ tanaguruTestsList.push({
             }
         }
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     mark: {attrs: ['aria-labelledby']},
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.2.4'] }
 });
 
 // 11.2.5 Chaque champ de formulaire ayant un intitulé visible vérifie-t-il ces conditions (hors cas particuliers) ?
-// 11.2.6 Chaque bouton adjacent au champ de formulaire qui fournit une étiquette visible permet-il de connaître la fonction exacte du champ de formulaire auquel il est associé ?
-
-//11.5.1 : Les champs de même nature vérifient-ils l'une de ces conditions, si nécessaire ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Vérifier que l\'utilisation des balises fieldset et les attributs role group sont bien nécessaire',
-    query: 'fieldset, [role="group"]',
+    name: 'Liste des champs de formulaire dont le nom accessible contient l\'intitulé visible.',
+    query: '[data-tng-visible-label]',
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0;
+        return item.accessibleName.includes(item.getAttribute('data-tng-text-label'));
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
+            collection[i].status = 'passed';
         }
     },
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.2.5'] }
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des champs de formulaire dont le nom accessible ne reprend pas l\'intitulé visible.',
+    query: '[data-tng-visible-label]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        console.log(item, item.accessibleName);
+        return !item.accessibleName.includes(item.getAttribute('data-tng-text-label'));
+    },
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.2.5'] }
+});
+// 11.2.6 Chaque bouton adjacent au champ de formulaire qui fournit une étiquette visible permet-il de connaître la fonction exacte du champ de formulaire auquel il est associé ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Chaque bouton adjacent au champ de formulaire qui fournit une étiquette visible doit permettre de connaître la fonction exacte du champs de formulaire auquel il est associé.',
+    status: 'untested',
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.2.6'] }
+});
+
+//* 11.3 Dans chaque formulaire, chaque étiquette associée à un champ de formulaire ayant la même fonction et répétée plusieurs fois dans une même page ou dans un ensemble de pages est-elle cohérente ?
+// 11.3.1 Chaque étiquette associée à un champ de formulaire ayant la même fonction et répétée plusieurs fois dans une même page est-elle cohérente ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Chaque étiquette associée à un champ de formulaire ayant la même fonction et répétée plusieurs fois dans une même page doit être cohérente.',
+    status: 'untested',
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.3.1'] }
 });
 
-// 11.6 Dans chaque formulaire, chaque regroupement de champs de même nature a-t-il une légende ?
+// 11.3.2 Chaque étiquette associée à un champ de formulaire ayant la même fonction et répétée dans un ensemble de pages est-elle cohérente ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Chaque étiquette associée à un champ de formulaire ayant la même fonction et répétée dans un ensemble de pages doit être cohérente.',
+    status: 'untested',
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.3.2'] }
+});
+
+//* 11.4 Dans chaque formulaire, chaque étiquette de champ et son champ associé sont-ils accolés (hors cas particuliers) ?
+// 11.4.1 Chaque étiquette de champ et son champ associé sont-ils accolés ?
+// 11.4.2 Chaque étiquette accolée à un champ (à l'exception des case à cocher, bouton radio ou balise ayant un attribut WAI-ARIA role="checkbox", role="radio" ou role="switch"), vérifie-t-elle ces conditions (hors cas particuliers) ? 
+// 11.4.3 Chaque étiquette accolée à un champ de type checkbox ou radio ou à une balise ayant un attribut WAI-ARIA role="checkbox", role="radio" ou role="switch", vérifie-t-elle ces conditions (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Chaque étiquette de champ et son champ associé doivent être accolés de façon pertinente.',
+    status: 'untested',
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.4.1', '11.4.2', '11.4.3'] }
+});
+
+//* 11.5 Dans chaque formulaire, les champs de même nature sont-ils regroupés, si nécessaire ?
+//11.5.1 : Les champs de même nature vérifient-ils l'une de ces conditions, si nécessaire ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Vérifier que l\'utilisation des balises fieldset et les attributs role group sont bien nécessaire',
+    query: 'fieldset, [role="group"], [role="radiogroup"]',
+    filter: function (item) {
+        return item.isNotExposedDueTo.length == 0;
+    },
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.5.1'] }
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Les champs de même nature doivent si nécessaire être correctement regroupés.',
+    status: 'untested',
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.5.1'] }
+});
+
+//* 11.6 Dans chaque formulaire, chaque regroupement de champs de même nature a-t-il une légende ?
 // 11.6.1 : Chaque regroupement de champs de même nature possède-t-il une légende ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -6019,7 +6001,7 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['11.6.1'] }
 });
 
-// 11.7 Dans chaque formulaire, chaque légende associée à un regroupement de champs de même nature est-elle pertinente ?
+//* 11.7 Dans chaque formulaire, chaque légende associée à un regroupement de champs de même nature est-elle pertinente ?
 // 11.7.1 Chaque légende associée à un regroupement de champs de même nature est-elle pertinente ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -6028,27 +6010,28 @@ tanaguruTestsList.push({
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     mark: {attrs: ['aria-label', 'aria-labelledby']},
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.7.1'] }
 });
 
-// 11.8 Dans chaque formulaire, les items de même nature d'une liste de choix sont-ils regroupés de manière pertinente ?
+//* 11.8 Dans chaque formulaire, les items de même nature d'une liste de choix sont-ils regroupés de manière pertinente ?
+// 11.8.1 Pour chaque balise <select>, les items de même nature d'une liste de choix sont-ils regroupés avec une balise <optgroup>, si nécessaire ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Pour chaque balise <select>, les items de même nature d'une liste de choix doivent, si nécessaire, être regroupés avec une balise <optgroup>.",
+    status: 'untested',
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.8.1'] }
+});
+
 // 11.8.2 Dans chaque balise <select>, chaque balise <optgroup> possède-t-elle un attribut label ?
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des éléments optgroup sans attribut label.',
-    query: 'select optgroup',
+    query: 'select optgroup:not([label])',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.hasAttribute('label') && item.getAttribute('label').trim().length > 0) {
-            return item.isNotExposedDueTo.length != 0;
-        }
         return item.isNotExposedDueTo.length == 0;
     },
     explanations: {
@@ -6064,9 +6047,7 @@ tanaguruTestsList.push({
     name: 'Liste des éléments optgroup avec attribut label.',
     query: 'select optgroup[label]',
     filter: function (item) {
-        if(item.getAttribute('label').trim().length > 0) {
-            return item.isNotExposedDueTo.length == 0;
-        }
+        return item.isNotExposedDueTo.length == 0;
     },
     analyzeElements: function (collection) {
         for (var i = 0; i < collection.length; i++) {
@@ -6081,22 +6062,30 @@ tanaguruTestsList.push({
 // 11.8.3 Pour chaque balise <optgroup> ayant un attribut label, le contenu de l'attribut label est-il pertinent ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Vérifiez la pertinence de l\'attribut label sur l\'élément optgroup.',
+    name: "Element <optgroup> avec un attribut label non pertinent.",
     query: 'select optgroup[label]',
+    expectedNbElements: 0,
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0;
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
+        return item.isNotExposedDueTo.length == 0 && item.getAttribute('label').trim() === 0;
     },
     mark: {attrs: ['label']},
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.8.3'] }
 });
 
-// 11.9 Dans chaque formulaire, l'intitulé de chaque bouton est-il pertinent (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Vérifiez la pertinence de l\'attribut label sur l\'élément optgroup.',
+    query: 'select optgroup[label]',
+    filter: function (item) {
+        return item.isNotExposedDueTo.length == 0;
+    },
+    mark: {attrs: ['label']},
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.8.3'] }
+});
+
+//* 11.9 Dans chaque formulaire, l'intitulé de chaque bouton est-il pertinent (hors cas particuliers) ?
 // 11.9.1 L'intitulé de chaque bouton est-il pertinent ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -6105,13 +6094,8 @@ tanaguruTestsList.push({
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0;
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     mark: {attrs: ['aria-labelledby', 'aria-label', 'alt', 'value', 'title']},
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms', 'accessiblename', 'buttons'],
     ressources: { 'rgaa': ['11.9.1'] }
 });
 
@@ -6158,7 +6142,98 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['11.9.2']}
 });
 
-// 12.8 Dans chaque page web, l'ordre de tabulation est-il cohérent ?
+//* 11.10 Dans chaque formulaire, le contrôle de saisie est-il utilisé de manière pertinente (hors cas particuliers) ?
+// 11.10.1 Les indications du caractère obligatoire de la saisie des champs vérifient-elles une de ces conditions (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Les indications du caractère obligatoire de la saisie des champs doivent être correctement implémentées.",
+    status: 'untested',
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.10.1'] }
+});
+
+// 11.10.2 Les champs obligatoires ayant l'attribut aria-required="true" ou required vérifient-ils une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Les champs obligatoires ayant l'attribut aria-required ou required doivent être doublés d'une indication de champs obligatoire visible.",
+    description: "Vérifier qu'une indication de champ obligatoire est visible ET située dans l'étiquette ou le passage de texte associé au champ préalablement à la validation du formulaire.",
+    query: '[aria-required="true"], [required]',
+    filter: function (item) {
+        return item.isNotExposedDueTo.length === 0;
+    },
+    tags: ['a11y', 'accessiblename', 'forms'],
+    ressources: {'rgaa': ['11.10.2']}
+});
+
+// 11.10.3 Les messages d'erreur indiquant l'absence de saisie d'un champ obligatoire vérifient-ils une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Les messages d'erreur indiquant l'absence de saisie d'un champ obligatoire doivent être correctement implémentées.",
+    status: 'untested',
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.10.3'] }
+});
+
+// 11.10.4 Les champs obligatoires ayant l'attribut aria-invalid="true" vérifient-ils une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Les champs obligatoires ayant l'attribut aria-invalid doivent être associés à un message d'erreur visible.",
+    description: "Pour chaque champ obligatoire, vérifier que le message d’erreur indiquant le caractère invalide est visible ET situé dans l'étiquette ou le passage de texte associé au champ.",
+    query: '[aria-invalid="true"]',
+    filter: function (item) {
+        return item.isNotExposedDueTo.length === 0;
+    },
+    tags: ['a11y', 'accessiblename', 'forms'],
+    ressources: {'rgaa': ['11.10.4']}
+});
+
+// 11.10.5 Les instructions et indications du type de données et/ou de format obligatoires vérifient-elles une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Les instructions et indications du type de données et/ou de format obligatoires doivent être correctement implémentées.",
+    status: 'untested',
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.10.5'] }
+});
+
+// 11.10.6 Les messages d'erreurs fournissant une instruction ou une indication du type de données et/ou de format obligatoire des champs vérifient-ils une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Les messages d'erreurs fournissant une instruction ou une indication du type de données et/ou de format obligatoires doivent être correctement implémentées.",
+    status: 'untested',
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.10.6'] }
+});
+
+// 11.10.7 Les champs ayant l'attribut aria-invalid="true" dont la saisie requiert un type de données et/ou de format obligatoire vérifient-ils une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Les champs ayant l'attribut aria-invalid dont la saisie requiert un type de données et/ou de format obligatoire doivent être doublés d'une indication visible.",
+    description: "Pour chaque champ dont la saisie requiert un type de données et/ou de format obligatoire, vérifier qu'une instruction ou une indication du type de données et/ou de format obligatoire est visible ET située dans la balise <label> ou le passage de texte associée au champ.",
+    query: '[aria-invalid="true"]',
+    filter: function (item) {
+        return item.isNotExposedDueTo.length === 0;
+    },
+    tags: ['a11y', 'accessiblename', 'forms'],
+    ressources: {'rgaa': ['11.10.7']}
+});
+
+//* 11.11 Dans chaque formulaire, le contrôle de saisie est-il accompagné, si nécessaire, de suggestions facilitant la correction des erreurs de saisie ?
+// 11.11.1 Pour chaque erreur de saisie, les types et les formats de données sont-ils suggérés, si nécessaire ?
+// 11.11.2 Pour chaque erreur de saisie, des exemples de valeurs attendues sont-ils suggérés, si nécessaire ?
+
+//* 11.12 Pour chaque formulaire qui modifie ou supprime des données, ou qui transmet des réponses à un test ou à un examen, ou dont la validation a des conséquences financières ou juridiques, les données saisies peuvent-elles être modifiées, mises à jour ou récupérées par l’utilisateur ?
+// 11.12.1 Pour chaque formulaire qui modifie ou supprime des données, ou qui transmet des réponses à un test ou un examen, ou dont la validation a des conséquences financières ou juridiques, la saisie des données vérifie-t-elle une de ces conditions ? 
+// 11.12.2 Chaque formulaire dont la validation modifie ou supprime des données à caractère financier, juridique ou personnel vérifie-t-il une de ces conditions ? 
+
+//* 11.13 La finalité d'un champ de saisie peut-elle être déduite pour faciliter le remplissage automatique des champs avec les données de l'utilisateur ?
+// 11.13.1 Chaque champ de formulaire dont l'objet se rapporte à une information concernant l'utilisateur vérifie-t-il ces conditions ? 
+
+/**
+ *? NAVIGATION
+ */
+
+//* 12.8 Dans chaque page web, l'ordre de tabulation est-il cohérent ?
 // 12.8.1 Dans chaque page web, l'ordre de tabulation dans le contenu est-il cohérent ?
 tanaguruTestsList.push({
 	lang: 'fr',
@@ -6189,7 +6264,7 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['12.8.1'] }
 });
 
-// 12.9 Dans chaque page web, la navigation ne doit pas contenir de piège au clavier. Cette règle est-elle respectée ?
+//* 12.9 Dans chaque page web, la navigation ne doit pas contenir de piège au clavier. Cette règle est-elle respectée ?
 // 12.9.1 Dans chaque page web, chaque élément recevant le focus vérifie-t-il une de ces conditions ?
 tanaguruTestsList.push({
 	lang: 'en',
@@ -6200,7 +6275,12 @@ tanaguruTestsList.push({
 	comments: "peut détecter l'attribut onblur (peut-être aussi l'événement) mais ce n'est pas vraiment une preuve que c'est un piège à clavier"
 });
 
-//13.1 Pour chaque page web, chaque procédé de rafraîchissement (balise <object>, balise <embed>, balise <svg>, balise <canvas>, balise <meta>) vérifie-t-il une de ces conditions (hors cas particuliers) ?
+/**
+ *? CONSULTATION
+ */
+
+//* 13.1 Pour chaque page web, l'utilisateur a-t-il le contrôle de chaque limite de temps modifiant le contenu (hors cas particuliers) ?
+// 13.1.1 Pour chaque page web, chaque procédé de rafraîchissement (balise <object>, balise <embed>, balise <svg>, balise <canvas>, balise <meta>) vérifie-t-il une de ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des balises meta sans procédé de rafraîchissement',
@@ -6234,8 +6314,8 @@ tanaguruTestsList.push({
     tags: ['a11y', 'meta']
 });
 
-
-// 13.9 Dans chaque page web, le contenu proposé est-il consultable quelle que soit l'orientation de l'écran (portrait ou paysage) (hors cas particuliers) ?
+//* 13.9 Dans chaque page web, le contenu proposé est-il consultable quelle que soit l'orientation de l'écran (portrait ou paysage) (hors cas particuliers) ?
+// 13.9.1 Dans chaque page web, chaque contenu vérifie-t-il ces conditions (hors cas particuliers) ? 
 tanaguruTestsList.push({
     lang: 'en',
     name: 'la page est consultable quelque soit l\'orientation de l\'écran',
