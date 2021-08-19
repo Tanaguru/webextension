@@ -13,7 +13,7 @@ var tanaguruTestsList = [];
  *! Eléments obligatoires (todo)
  * Structuration de l'information (terminé)
  *! Présentation de l'information(todo)
- ** Formulaires
+ *! Formulaires (bloqué)
  ** Navigation
  ** Consultation
  */
@@ -5573,6 +5573,9 @@ tanaguruTestsList.push({
 
 /**
  *? FORMULAIRES
+ ** Tous les tests sont répertoriés
+ *TODO voir si l'on peut approfondir les tests 11.10.2 et 11.10.4
+ *TODO traiter la proximité d'une étiquette avec son champ ?? (11.1.3, 11.4)
  */
 
 //* 11.1 Chaque champ de formulaire a-t-il une étiquette ?
@@ -6220,14 +6223,260 @@ tanaguruTestsList.push({
 
 //* 11.11 Dans chaque formulaire, le contrôle de saisie est-il accompagné, si nécessaire, de suggestions facilitant la correction des erreurs de saisie ?
 // 11.11.1 Pour chaque erreur de saisie, les types et les formats de données sont-ils suggérés, si nécessaire ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Pour chaque erreur de saisie, les types et les formats de données doivent si nécessaire être suggérés.",
+    status: 'untested',
+    tags: ['a11y', 'forms'],
+    ressources: {'rgaa': ['11.11.1']}
+});
+
 // 11.11.2 Pour chaque erreur de saisie, des exemples de valeurs attendues sont-ils suggérés, si nécessaire ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Pour chaque erreur de saisie, des exemples de valeurs attendues doivent si nécessaire être suggérés.",
+    status: 'untested',
+    tags: ['a11y', 'forms'],
+    ressources: {'rgaa': ['11.11.2']}
+});
 
 //* 11.12 Pour chaque formulaire qui modifie ou supprime des données, ou qui transmet des réponses à un test ou à un examen, ou dont la validation a des conséquences financières ou juridiques, les données saisies peuvent-elles être modifiées, mises à jour ou récupérées par l’utilisateur ?
-// 11.12.1 Pour chaque formulaire qui modifie ou supprime des données, ou qui transmet des réponses à un test ou un examen, ou dont la validation a des conséquences financières ou juridiques, la saisie des données vérifie-t-elle une de ces conditions ? 
-// 11.12.2 Chaque formulaire dont la validation modifie ou supprime des données à caractère financier, juridique ou personnel vérifie-t-il une de ces conditions ? 
+// 11.12.1 Pour chaque formulaire qui modifie ou supprime des données, ou qui transmet des réponses à un test ou un examen, ou dont la validation a des conséquences financières ou juridiques, la saisie des données vérifie-t-elle une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Pour chaque formulaire qui modifie ou supprime des données, ou qui transmet des réponses à un test ou un examen, ou dont la validation a des conséquences financières ou juridiques, l'utilisateur doit pouvoir valider le formulaire en connaissance de cause.",
+    description: "Pour chaque formulaire qui modifie ou supprime des données, ou qui transmet des réponses à un test ou un examen, ou dont la validation a des conséquences financières ou juridiques, vérifier que l'utilisateur peut modifier ses saisies après la validation formulaire (ou avant la validation lors d'un formulaire en plusieurs étapes) ou que le formulaire possède un mécanisme de confirmation explicite.",
+    query: 'form, [role="form"]',
+    filter: function (item) {
+        return item.isNotExposedDueTo.length === 0;
+    },
+    tags: ['a11y', 'forms'],
+    ressources: {'rgaa': ['11.12.1']}
+});
+
+// 11.12.2 Chaque formulaire dont la validation modifie ou supprime des données à caractère financier, juridique ou personnel vérifie-t-il une de ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Pour chaque formulaire dont la validation modifie ou supprime des données à caractère financier, juridique ou personnel, l'utilisateur doit pouvoir valider le formulaire en connaissance de cause.",
+    description: "Pour chaque formulaire dont la validation modifie ou supprime des données à caractère financier, juridique ou personnel, vérifier que le formulaire possède un mécanisme permettant de récupérer les données supprimées ou modifiées ou un mécanisme de confirmation explicite.",
+    query: 'form, [role="form"]',
+    filter: function (item) {
+        return item.isNotExposedDueTo.length === 0;
+    },
+    tags: ['a11y', 'forms'],
+    ressources: {'rgaa': ['11.12.2']}
+});
 
 //* 11.13 La finalité d'un champ de saisie peut-elle être déduite pour faciliter le remplissage automatique des champs avec les données de l'utilisateur ?
-// 11.13.1 Chaque champ de formulaire dont l'objet se rapporte à une information concernant l'utilisateur vérifie-t-il ces conditions ? 
+// 11.13.1 Chaque champ de formulaire dont l'objet se rapporte à une information concernant l'utilisateur vérifie-t-il ces conditions ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Vérifier que chaque champ de formulaire dont l'objet se rapporte à une information concernant l'utilisateur, possède un attribut autocomplete.",
+    query: 'input[type="text"], input[type="password"], input[type="email"], input[type="tel"], input[type="url"], textarea, input[type="date"], select, input:not([type])',
+    filter: function (item) {
+        return item.isNotExposedDueTo.length === 0;
+    },
+    mark: {attrs: ['autocomplete']},
+    tags: ['a11y', 'forms'],
+    ressources: {'rgaa': ['11.13.1']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Champs de formulaire possèdant un attribut autocomplete invalide.",
+    query: 'input[autocomplete], textarea[autocomplete], select[autocomplete]',
+    expectedNbElements: 0,
+    explanations: {
+        'passed': "Aucun attribut autocomplete invalide n'a été trouvé sur cette page;",
+        'failed': "Des attributs autocomplete invalides ont été trouvé sur cette page. Soit les valeurs de l'attribut ne sont pas référencés dans la spécification HTML5, soit un token 'cible'(home, work...) est utilisé avec un token ne faisant pas parti de la catégorie 'contact', soit les valeurs sont renseignées dans un ordre non valide. (1.groupe, 2.mode, 3.cible, 4.token principal. Exemple: autocomplete='section-parent shipping home email')."
+    },
+    filter: function (item) {
+        //? if na, return
+        if(item.isNotExposedDueTo.length > 0 || item.disabled) return;
+        if(item.hasAttribute('aria-disabled') && item.getAttribute('aria-disabled') === 'true') return;
+
+        if(item.getAttribute('autocomplete') === 'on' || item.getAttribute('autocomplete') === 'off' || item.getAttribute('autocomplete').trim() === '') return;
+
+        if(item.tagName.toLowerCase() === 'input' && item.hasAttribute('type')) {
+            let notField = ['submit', 'reset', 'image', 'button'];
+            if(notField.includes(item.getAttribute('type').toLowerCase())) {
+                return;
+            }
+        }
+
+        if(item.hasAttribute('role') && item.getAttribute('role') === 'button') return;
+
+        //? else get autocomplete values
+        let autocomplete = item.getAttribute('autocomplete').toLowerCase().split(' ');
+
+        /**
+         *? Token groups
+         * order : 1.group, 2.Mode, 3.Hint, 4.Token
+         ** https://html.spec.whatwg.org/#autofill-field
+         */
+        let group = new RegExp(/section-*/);
+        let mode = ['shipping', 'billing'];
+        let hint = ['home', 'work', 'mobile', 'fax', 'pager']; // contact token only
+
+        let normalToken = ['name', 'honorific-prefix', 'given-name', 'additional-name', 'family-name', 'honorific-suffix', 'nickname', 'organization-title', 'username', 'new-password', 'current-password', 'one-time-code', 'organization', 'street-address', 'address-line1', 'address-line2', 'address-line3', 'address-level4', 'address-level3', 'address-level2', 'address-level1', 'country', 'country-name', 'postal-code', 'cc-name', 'cc-given-name', 'cc-additional-name', 'cc-family-name', 'cc-number', 'cc-exp', 'cc-exp-month', 'cc-exp-year', 'cc-csc', 'cc-type', 'transaction-currency', 'transaction-amount', 'language', 'bday', 'bday-day', 'bday-month', 'bday-year', 'sex', 'url', 'photo'];
+        let contactToken = ['tel', 'tel-country-code', 'tel-national', 'tel-area-code', 'tel-local', 'tel-local-prefix', 'tel-local-suffix', 'tel-extension', 'email', 'impp'];
+
+        //? Control groups
+        let textGroup = ['name', 'honorific-prefix', 'given-name', 'additional-name', 'family-name', 'honorific-suffix', 'nickname', 'organization-title', 'organization', 'address-line1', 'address-line2', 'address-line3','address-level4', 'address-level3', 'address-level2', 'address-level1', 'country', 'country-name', 'postal-code', 'cc-name', 'cc-given-name', 'cc-additional-name', 'cc-family-name', 'cc-number', 'cc-csc', 'cc-type', 'transaction-currency', 'language', 'sex', 'tel-country-code', 'tel-national', 'tel-area-code', 'tel-local', 'tel-local-prefix', 'tel-local-suffix', 'tel-extension'];
+        let usernameGroup = ['username', 'email'];
+        let passwordGroup = ['new-password', 'current-password', 'one-time-code'];
+        let multilineGroup = ['street-address'];
+        let monthGroup = ['cc-exp'];
+        let numericGroup = ['cc-exp-month', 'cc-exp-year', 'transaction-amount', 'bday-day', 'bday-month', 'bday-year'];
+        let dateGroup = ['bday'];
+        let urlGroup = ['url', 'photo', 'impp'];
+        let telGroup = ['tel'];
+
+        let controlGroups = [
+            ['text', textGroup],
+            ['email', usernameGroup],
+            ['password', passwordGroup],
+            ['multiline', multilineGroup],
+            ['month', monthGroup],
+            ['number', numericGroup],
+            ['date', dateGroup],
+            ['url', urlGroup],
+            ['tel', telGroup]
+        ];
+
+        /**
+         *? Check validity
+         */
+        if(autocomplete.length === 1) {
+            if(!normalToken.includes(autocomplete[0]) && !contactToken.includes(autocomplete[0])) return true;
+
+            controlGroups.forEach(el => {
+                if(el[1].includes(autocomplete[0])) {
+                    item.setAttribute('data-tng-autocomplete-group', el[0]);
+                    return;
+                }
+            });
+        }
+
+        if(autocomplete.length > 1) {
+            let mainTokenIndex = autocomplete.length - 1;
+            let mainToken = false;
+
+            //? check main token
+            if(normalToken.includes(autocomplete[mainTokenIndex])) {
+                mainToken = 'normal';
+            } else if(contactToken.includes(autocomplete[mainTokenIndex])) {
+                mainToken = 'contact';
+            } else {
+                return true;
+            }
+
+            //? check order tokens
+            if(mainToken === 'normal') {
+                if(autocomplete.length < 4 && !hint.some(x => autocomplete.includes(x))) {
+                    if(autocomplete.length === 2 && (!autocomplete[0].match(group) && !mode.includes(autocomplete[0]))) {
+                        return true;
+                    }
+
+                    if(autocomplete.length === 3) {
+                        if(!autocomplete[0].match(group) || !mode.includes(autocomplete[1])) {
+                            return true;
+                        }
+                    }
+                } else {
+                    return true;
+                }
+            }
+
+            if(mainToken === 'contact') {
+                if(autocomplete.length < 5) {
+                    if(autocomplete.length === 2 && (!autocomplete[0].match(group) && !mode.includes(autocomplete[0]) && !hint.includes(autocomplete[0]))) {
+                        return true;
+                    }
+
+                    if(autocomplete.length === 3) {
+                        if(autocomplete[0].match(group)) {
+                            if(!mode.includes(autocomplete[1]) && !hint.includes(autocomplete[1])) {
+                                return true;
+                            }
+                        } else if(mode.includes(autocomplete[0]) && !hint.includes(autocomplete[1])) {
+                            return true;
+                        } else if(hint.includes(autocomplete[0])) {
+                            return true;
+                        }
+                    }
+
+                    if(autocomplete.length === 4) {
+                        if(!autocomplete[0].match(group) || !mode.includes(autocomplete[1]) || !hint.includes(autocomplete[2])) {
+                            return true;
+                        }
+                    }
+                } else {
+                    return true;
+                }
+            }
+
+            controlGroups.forEach(el => {
+                if(el[1].includes(autocomplete[mainTokenIndex])) {
+                    item.setAttribute('data-tng-autocomplete-group', el[0]);
+                    return;
+                }
+            });
+        }
+    },
+    mark: {attrs: ['autocomplete']},
+    tags: ['a11y', 'forms'],
+    ressources: {'rgaa': ['11.13.1']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Champs de formulaire possèdant un attribut autocomplete valide mais non autorisé sur le type de champ.",
+    query: '[data-tng-autocomplete-group]',
+    expectedNbElements: 0,
+    filter: function(item) {
+        if(item.tagName.toLowerCase() === 'textarea' || item.tagName.toLowerCase() === 'select') {
+            item.setAttribute('data-tng-autocomplete', true);
+            return;
+        }
+
+        let group = item.getAttribute('data-tng-autocomplete-group');
+        let type = '';
+
+        if(item.hasAttribute('type')) {
+            type = item.getAttribute('type').toLowerCase();
+        } else {
+            type = 'text';
+        }
+
+        if(group === 'multiline') return true;
+
+        if(type === 'text' || type === 'search') {
+            item.setAttribute('data-tng-autocomplete', true);
+            return;
+        }
+
+        if(type === group) {
+            item.setAttribute('data-tng-autocomplete', true);
+            return;
+        }
+
+        return true;
+    },
+    mark: {attrs: ['autocomplete', 'type']},
+    tags: ['a11y', 'forms'],
+    ressources: {'rgaa': ['11.13.1']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Champs de formulaire possèdant un attribut autocomplete valide.",
+    query: '[data-tng-autocomplete]',
+    description: "Vérifier que l'attribut autocomplete est pertinent au regard du type d'information attendue.",
+    mark: {attrs: ['autocomplete']},
+    tags: ['a11y', 'forms'],
+    ressources: {'rgaa': ['11.13.1']}
+});
 
 /**
  *? NAVIGATION
