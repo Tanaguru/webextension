@@ -1,5 +1,5 @@
 var sub_regexes = {
-	"tag": "([a-zA-Z][a-zA-Z0-9]{0,10}|\\*)",
+	"tag": "([a-zA-Z0-9-_]*|\\*)",
 	"attribute": "[.a-zA-Z_:][-\\w:.]*(\\(\\))?)",
 	"value": "\\s*[\\w/:][-/\\w\\s,:;.]*"
 };
@@ -202,7 +202,38 @@ button.addEventListener('click', function () {
 						if(element.getAttribute('id') === 'contrast' && !document.querySelector('.contrast-panel-desc')) {
 							var contrastPanelDesc = document.createElement('div');
 							contrastPanelDesc.classList.add('contrast-panel-desc');
-							contrastPanelDesc.innerHTML = '<p>' + chrome.i18n.getMessage('contrastDescription1') + '</p><p>' + chrome.i18n.getMessage('contrastDescription2') + '</p><p class="contrast-legend">' + chrome.i18n.getMessage('contrastLegend1') + '<span class="contrast-bgImage"></span><span id="contrast-bgImage">' + chrome.i18n.getMessage('contrastLegend2') + '</span><span class="contrast-bgNull"></span><span id="contrast-bgNull">' + chrome.i18n.getMessage('contrastLegend3') + '</span></p>';
+
+							var contrastDescription1 = document.createElement('p');
+							contrastDescription1.textContent = chrome.i18n.getMessage('contrastDescription1');
+							contrastPanelDesc.appendChild(contrastDescription1);
+
+							var contrastDescription2 = document.createElement('p');
+							contrastDescription2.textContent = chrome.i18n.getMessage('contrastDescription2');
+							contrastPanelDesc.appendChild(contrastDescription2);
+
+							var contrastLegend = document.createElement('p');
+							contrastLegend.classList.add('contrast-legend');
+							contrastLegend.textContent = chrome.i18n.getMessage('contrastLegend1');
+
+							var contrastBgImage1 = document.createElement('span');
+							contrastBgImage1.classList.add('contrast-bgImage');
+							contrastLegend.appendChild(contrastBgImage1);
+
+							var contrastBgImage2 = document.createElement('span');
+							contrastBgImage2.setAttribute('id','contrast-bgImage');
+							contrastBgImage2.textContent = chrome.i18n.getMessage('contrastLegend2');
+							contrastLegend.appendChild(contrastBgImage2);
+
+							var contrastBgNull1 = document.createElement('span');
+							contrastBgNull1.classList.add('contrast-bgNull');
+							contrastLegend.appendChild(contrastBgNull1);
+
+							var contrastBgNull2 = document.createElement('span');
+							contrastBgNull2.setAttribute('id','contrast-bgNull');
+							contrastBgNull2.textContent = chrome.i18n.getMessage('contrastLegend3');
+							contrastLegend.appendChild(contrastBgNull2);
+
+							contrastPanelDesc.appendChild(contrastLegend);
 							newcurrenttabpanel.insertBefore(contrastPanelDesc, currenttabpanelheading.nextSibling);
 						} else {
 							if(document.querySelector('.contrast-panel-desc')) {
@@ -351,7 +382,7 @@ button.addEventListener('click', function () {
 						closebutton.addEventListener('click', function(event) {
 							var tanagurupopin = this.parentNode.parentNode.parentNode;
 							tanagurupopin.setAttribute('hidden', 'hidden');
-							tanagurupopin.innerHTML = '';
+							tanagurupopin.textContent = '';
 							document.querySelector('main').classList.remove('tanaguru-popin-show');
 							var popinopener = document.querySelector('[data-popinopener="true"]');
 							popinopener.removeAttribute('data-popinopener');
@@ -594,7 +625,7 @@ button.addEventListener('click', function () {
 
 			// display the test name on the button
 			var span = document.createElement('span');
-			span.innerHTML = test.name.charAt(0).toUpperCase() + test.name.slice(1);
+			span.textContent = test.name.charAt(0).toUpperCase() + test.name.slice(1);
 			tabpanelsectionbutton.appendChild(span);
 			tabpanelsection.appendChild(tabpanelsectionbutton);
 
@@ -608,14 +639,14 @@ button.addEventListener('click', function () {
 			// test description
 			if (test.description) {
 				var tabpanelsectionp = document.createElement('p');
-				tabpanelsectionp.innerHTML = test.description;
+				tabpanelsectionp.textContent = test.description;
 				tabpanelsectiondiv.appendChild(tabpanelsectionp);
 			}
 
 			// test explanation
 			if (test.explanation) {
 				var tabpanelsectionp = document.createElement('p');
-				tabpanelsectionp.innerHTML = test.explanation;
+				tabpanelsectionp.textContent = test.explanation;
 				tabpanelsectiondiv.appendChild(tabpanelsectionp);
 			}
 			
@@ -762,11 +793,32 @@ button.addEventListener('click', function () {
 						var td = document.createElement('td');
 						var code = document.createElement('code');
 						if (codehighlight && codehighlight.hasOwnProperty('attrs')) {
-							var codecontent = test.data[h].outer.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+							var outer = test.data[h].outer;
+							var codeattrs = [];
+
 							for (var a = 0; a < codehighlight.attrs.length; a++) {
-								codecontent = codecontent.replace(new RegExp(' (' + codehighlight.attrs[a] + '=&quot;(?:(?!&quot;).)*&quot;)'), ' <mark>$1</mark>'); // / key="([^"]*)"/	
+								if(outer.match(codehighlight.attrs[a])) {
+									let regex  = codehighlight.attrs[a] + '="(?:(?!").)*"';
+									codeattrs.push(outer.match(new RegExp(regex)));
+									outer = outer.replace(new RegExp(' (' + codehighlight.attrs[a] + '="(?:(?!").)*")'), ' &&// '); // / key="([^"]*)"/	
+								}
 							}
-							code.innerHTML = codecontent;
+
+							if(codeattrs.length > 0) {
+								var codecontent = outer.split(' &&// ');
+
+								for(let i = 0; i < codecontent.length - 1; i++) {
+									code.appendChild(document.createTextNode(codecontent[i]+' '));
+									var mark = document.createElement('mark');
+									mark.textContent = codeattrs[i];
+									code.appendChild(mark);
+								}
+
+								code.appendChild(document.createTextNode(codecontent[codecontent.length - 1]));
+							} else {
+								code.appendChild(document.createTextNode(outer));
+							}
+							
 						}
 						else {
 							code.appendChild(document.createTextNode(test.data[h].outer));
@@ -903,7 +955,7 @@ button.addEventListener('click', function () {
 						image_hover: 'images/about_hover.png',
 						attrs: { 'data-xpath': test.data[h].xpath }
 					}];
-					if (test.data[h].isNotVisibleDueTo.length == 0) {
+					if (test.data[h].isVisible) {
 						countvisible += 1;
 						var highlightaction = {
 							id: 'highlight-action',
@@ -916,7 +968,7 @@ button.addEventListener('click', function () {
 					else {
 						countinvisible += 1;
 						var highlightaction = {
-							name: "Cet élément n'est pas visible à l'écran (" + test.data[h].isNotVisibleDueTo.join(' / ') + ").",
+							name: "Cet élément n'est pas visible à l'écran.",
 							image: 'images/see_disabled.png',
 							attrs: { 'class': 'hidden' }
 						};
@@ -1145,7 +1197,7 @@ button.addEventListener('click', function () {
 					closebutton.addEventListener('click', function(event) {
 						var tanagurupopin = this.parentNode.parentNode.parentNode;
 						tanagurupopin.setAttribute('hidden', 'hidden');
-						tanagurupopin.innerHTML = '';
+						tanagurupopin.textContent = '';
 						document.querySelector('main').classList.remove('tanaguru-popin-show');
 						var popinopener = document.querySelector('[data-popinopener="true"]');
 						popinopener.removeAttribute('data-popinopener');

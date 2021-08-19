@@ -858,7 +858,7 @@ if (response[0].tests[test].hasOwnProperty('ressources')) {
 						image_hover: 'images/about_hover.png',
 						attrs: { 'data-xpath': response[0].tests[test].data[h].xpath }
 					}];
-					if (response[0].tests[test].data[h].isNotVisibleDueTo.length == 0) {
+					if (response[0].tests[test].data[h].isVisible) {
 						countvisible += 1;
 						var highlightaction = {
 							id: 'highlight-action',
@@ -871,7 +871,7 @@ if (response[0].tests[test].hasOwnProperty('ressources')) {
 					else {
 						countinvisible += 1;
 						var highlightaction = {
-							name: "Cet élément n'est pas visible à l'écran (" + response[0].tests[test].data[h].isNotVisibleDueTo.join(' / ') + ").",
+							name: "Cet élément n'est pas visible à l'écran.",
 							image: 'images/see_disabled.png',
 							attrs: { 'class': 'hidden' }
 						};

@@ -1,8 +1,10 @@
 //? CONTRAST SCRIPT
-
-if(!document.body.style.backgroundColor && !document.body.style.background) {
+var bgBody = true;
+if(!window.getComputedStyle(document.body, null).getPropertyValue('background-color') && !window.getComputedStyle(document.body, null).getPropertyValue('background')) {
 	document.body.style.backgroundColor = '#fff';
+	bgBody = false;
 }
+
 var tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
 var textNodeList = {
 	//? 'invalid', 'valid', 'cantTell' = contrast ratio status
@@ -535,11 +537,12 @@ while (tw.nextNode()) {
 
 	// we don't process empty strings, nor script/noscript/style tags.
 	if(cn.nodeValue.trim().length > 0 && ['noscript', 'script', 'style'].indexOf(element.tagName.toLowerCase()) == -1) {
-		
+		var disabledElements = ['button', 'fieldset', 'input', 'optgroup', 'option', 'select', 'textarea'];
 		var size = window.getComputedStyle(element, null).getPropertyValue('font-size');
 		var weight = window.getComputedStyle(element, null).getPropertyValue('font-weight');
 		var opacity = getOpacity(element);
 		var results = getResults(element, opacity);
+		var isDisabled = (disabledElements.includes(element.tagName.toLowerCase()) && element.hasAttribute('disabled')) ? true : false;
 
 		var o = {
 			node: element,
@@ -553,11 +556,11 @@ while (tw.nextNode()) {
 			xpath: getXPath(element),
 			valid: validContrast(size, weight, results.ratio),
 			role: {},
-			isNotVisibleDueTo: results.visible ? [] : ["css:other"]
+			isVisible: results.visible
 		};
 
 		if(o.valid.target == 4.5) {
-			if(results.visible && o.weight < 700) {
+			if(results.visible && !isDisabled && o.weight < 700) {
 				if(o.valid.status == 2) {
 					textNodeList.valid_45.push(o);
 				} else if(o.valid.status == 1) {
@@ -565,7 +568,7 @@ while (tw.nextNode()) {
 				} else {
 					textNodeList.cantTell_45.push(o);
 				}
-			} else if(results.visible) {
+			} else if(results.visible && !isDisabled) {
 				if(o.valid.status == 2) {
 					textNodeList.valid_45G.push(o);
 				} else if(o.valid.status == 1) {
@@ -591,7 +594,7 @@ while (tw.nextNode()) {
 				}
 			}
 		} else {
-			if(results.visible && o.weight < 700) {
+			if(results.visible && !isDisabled && o.weight < 700) {
 				if(o.valid.status == 2) {
 					textNodeList.valid_3.push(o);
 				} else if(o.valid.status == 1) {
@@ -599,7 +602,7 @@ while (tw.nextNode()) {
 				} else {
 					textNodeList.cantTell_3.push(o);
 				}
-			} else if(results.visible) {
+			} else if(results.visible && !isDisabled) {
 				if(o.valid.status == 2) {
 					textNodeList.valid_3G.push(o);
 				} else if(o.valid.status == 1) {
@@ -627,5 +630,7 @@ while (tw.nextNode()) {
 		}
 	}
 }
+
+if(!bgBody) document.body.style.backgroundColor = 'unset';
 
 textNodeList;

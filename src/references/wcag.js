@@ -762,8 +762,8 @@ tanaguruTestsList.push({
 	query: '[aria-hidden="true"]',
 	expectedNbElements: 0,
 	filter: function (item) {
-		var visibleState = item.isNotVisibleDueTo;
-		if (visibleState.length == 0 || (visibleState.indexOf('css:display') == -1 && visibleState.indexOf('css:visibility') == -1)) {
+		var exposedState = item.isNotExposedDueTo;
+		if (exposedState.indexOf('css:display') == -1 && exposedState.indexOf('css:visibility') == -1) {
 			var focusables = item.querySelectorAll(HTML.getFocusableElementsSelector());
 			if (focusables.length == 0) {
 				focusables = [];
@@ -823,7 +823,7 @@ tanaguruTestsList.push({
 	description: 'This rule checks that the highest possible contrast of every text character with its background meets the minimal contrast requirement.',
 	status: 'untested',
 	ressources: { 'act': ['afw4f7'], 'wcag20': ['1.4.3', '1.4.6'] },
-	tags: ['a11y', 'contrast'],
+	tags: ['a11y', 'contrast', 'colors'],
 	comments: "Require a special UI & a new method of execution."
 });
 

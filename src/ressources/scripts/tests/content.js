@@ -801,6 +801,11 @@ var getAccessibleName = function () {
                         result = title.textContent;
                     }
                 }
+                else if(this.matches('object[type], embed[type]') && !this.matches('[role="none"], [role="presentation"]')) {
+                    if(this.getAttribute('type').startsWith('image/') && this.hasAttribute('title')) {
+                        result = this.getAttribute('title');
+                    }
+                }
                 else if (this.matches(controls.nativebuttons) && !this.matches('[role="none"], [role="presentation"]')) { // COMMENT : Not allowed on button, input[type="button"], input[type="image"], input[type="reset"], input[type="submit"].
                     if (this.matches('input[type="image"]')) {
                         if (this.hasAttribute('alt')) {
@@ -1066,16 +1071,22 @@ function manageOutput(element) {
     var implicitARIASemantic = element.implicitARIASemantic;
     var explicitARIASemantic = element.explicitARIASemantic;
     var canBeReachedUsingKeyboardWith = element.canBeReachedUsingKeyboardWith;
-    var isNotVisibleDueTo = element.isNotVisibleDueTo;
+    var isVisible = element.isVisible;
     var isNotExposedDueTo = element.isNotExposedDueTo;
-    var fakeelement = element.cloneNode(true);
-    var e = document.createElement(fakeelement.tagName.toLowerCase());
-    if (e.outerHTML.indexOf("/") != -1) {
+
+    if(element.nodeType === 10) {
+        var fakeelement = "<!DOCTYPE "+(element.name ? element.name : '')+(element.publicId ? ' PUBLIC "' + element.publicId + '"' : '')+(!element.publicId && element.systemId ? ' SYSTEM' : '')+(element.systemId ? ' "' + element.systemId + '"' : '')+'>';
+    } else {
+        var fakeelement = element.cloneNode(true);
+    }
+
+    var e = element.nodeType !== 10 ? document.createElement(fakeelement.tagName.toLowerCase()) : null;
+    if (e && e.outerHTML.indexOf("/") != -1) {
         if (fakeelement.innerHTML.length > 512) {
             fakeelement.innerHTML = '[...]';
         }
     }
-    return { status: status, outer: fakeelement.outerHTML, xpath: getXPath(element), role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isNotVisibleDueTo: isNotVisibleDueTo, isNotExposedDueTo: isNotExposedDueTo };
+    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, xpath: e ? getXPath(element) : null, role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: e ? canBeReachedUsingKeyboardWith : [], isVisible: e ? isVisible : false, isNotExposedDueTo: e ? isNotExposedDueTo : '' };
 }
 
 function createTanaguruTag(tag, status) {
@@ -1122,13 +1133,21 @@ function createTanaguruTest(test) {
         addResultSet("Nouvelle syntaxe d'écriture des tests", result);
         // Intégrer chaque résultat dans window.tanaguru.tests.
     }
-    else if ((test.hasOwnProperty('query') && test.query.constructor == String) || test.hasOwnProperty('contrast')) {
+    else if ((test.hasOwnProperty('query') && test.query.constructor == String) || test.hasOwnProperty('contrast') || test.hasOwnProperty('code') || test.hasOwnProperty('node')) {
         // Sélection des éléments.
-        var elements = test.hasOwnProperty('contrast') ? textNodeList[test.contrast] : document.querySelectorAll(test.query);
+        if(test.hasOwnProperty('contrast')) {
+            var elements = textNodeList[test.contrast];
+        } else if(test.hasOwnProperty('code')) {
+            var elements = getDuplicateID();
+        } else if(test.hasOwnProperty('node')) {
+            var elements = test.node ? [test.node] : [];
+        } else {
+            var elements = document.querySelectorAll(test.query);
+        }
 
-        if (elements && elements.length > 0) {
+        if (elements/* && elements.length > 0*/) {
             // Statut du test par défaut.
-            var status = 'inapplicable';
+            var status = 'cantTell';
 
             // Initialisation des tags.
             initTanaguru();
@@ -1191,8 +1210,8 @@ function createTanaguruTest(test) {
             var statuspriority = {
                 failed: 4,
                 passed: 3,
-                cantTell: 2,
-                inapplicable: 1,
+                inapplicable: 2,
+                cantTell: 1,
                 untested: 0
             };
 
@@ -1309,45 +1328,45 @@ function createTanaguruTest(test) {
 // TODO: début HTML.
 
 /*
-	HTML 5.3
-	W3C Working Draft, 18 October 2018
-    https://www.w3.org/TR/html53/
+HTML 5.3
+W3C Working Draft, 18 October 2018
+https://www.w3.org/TR/html53/
 
-    ARIA in HTML
-    W3C Working Draft 20 May 2020
-    https://www.w3.org/TR/html-aria/
+ARIA in HTML
+W3C Working Draft 20 May 2020
+https://www.w3.org/TR/html-aria/
 
-    Note, file updated with :
-    - ARIA 1.2, new roles :
-    * paragraph (p);
-    * blockquote (blockquote);
-    * caption (figcaption);
-    * generic (div and span);
-    * emphasis (em);
-    * strong (strong);
-    * term (dfn);
-    * time (time);
-    * code (code);
-    * subscript (sub);
-    * superscript (sup);
-    * insertion (ins);
-    * deletion (del);
-    * caption (caption).
-    - ARIA 1.2, current associations :
-    * term is not associated with dt (removed here);
-    * definition is not associated with dd (removed here);
-    * link is not associated with area[href] (ignored here - href not involved in HTML spec);
-    * grid is associated with table (ignored here);
-    * gridcell is associated with td (ignored here);
-    * columnheader is associated with th[scope="col"] (added here);
-    * rowheader is associated with th[scope="row"] (added here).
-    - ARIA in HTML :
-    * spinbutton is not associated with input[type="text|search"] (removed here).
-    * textarea is associated with textbox & no mention of aria-multiline (aria-multiline ignored here too).
-    * button is associated with summary (added here).
-    * area is associated with link (added here).
+Note, file updated with :
+- ARIA 1.2, new roles :
+* paragraph (p);
+* blockquote (blockquote);
+* caption (figcaption);
+* generic (div and span);
+* emphasis (em);
+* strong (strong);
+* term (dfn);
+* time (time);
+* code (code);
+* subscript (sub);
+* superscript (sup);
+* insertion (ins);
+* deletion (del);
+* caption (caption).
+- ARIA 1.2, current associations :
+* term is not associated with dt (removed here);
+* definition is not associated with dd (removed here);
+* link is not associated with area[href] (ignored here - href not involved in HTML spec);
+* grid is associated with table (ignored here);
+* gridcell is associated with td (ignored here);
+* columnheader is associated with th[scope="col"] (added here);
+* rowheader is associated with th[scope="row"] (added here).
+- ARIA in HTML :
+* spinbutton is not associated with input[type="text|search"] (removed here).
+* textarea is associated with textbox & no mention of aria-multiline (aria-multiline ignored here too).
+* button is associated with summary (added here).
+* area is associated with link (added here).
 */
-
+//TODO mettre à jour les catégories et intégrer les types de contenus autorisés
 var htmlData = {
     version: 5.3,
     status: 'Working Draft (WD)',
@@ -1613,11 +1632,29 @@ var languages = {
 
 // hasValidLanguageCode.
 var hasValidLanguageCode = function () {
-    var r = /^[a-z]{2,}(-[a-z]{2,})?$/i;
-    if (r.test(this.lang)) {
-        var computedlang = this.lang;
-        if (this.lang.includes('-')) {
-            computedlang = this.lang.split('-');
+    var r = /^[a-z]{2,}(-[a-z]{2,})*$/i;
+    var lang1 = this.hasAttribute('lang') ? this.getAttribute('lang') : null;
+    var lang2 = this.hasAttribute('xml:lang') ? this.getAttribute('xml:lang') : null;
+
+    if(lang1 !== null && lang2 !== null) {
+        var langA = lang1.includes('-') ? lang1.split('-')[0] : lang1;
+        var langB = lang2.includes('-') ? lang2.split('-')[0] : lang2;
+        
+        if(langA != langB) {
+            return false;
+        } else {
+            var lang = lang1;
+        }
+    } else if(lang1) {
+        var lang = lang1;
+    } else if(lang2) {
+        var lang = lang2;
+    }
+
+    if (lang && r.test(lang)) {
+        var computedlang = lang;
+        if (lang.includes('-')) {
+            computedlang = lang.split('-');
             computedlang = computedlang[0];
         }
         return languages.data.hasOwnProperty(computedlang);
@@ -3025,7 +3062,7 @@ var ARIA = {
             if (this.isValid()) {
                 var role = new ARIA.Role(role, { getData: true });
                 var prohibitedStatesProperties = role.getProhibitedStatesProperties();
-                return this.canBeUsedInRole(role.role) || prohibitedStatesProperties.indexOf(this.stateProperty) > -1;
+                return this.canBeUsedInRole(role.role) || (prohibitedStatesProperties && prohibitedStatesProperties.indexOf(this.stateProperty) > -1);
             }
             else {
                 return undefined;
@@ -3471,31 +3508,37 @@ var isNotExposedDueTo = function () {
         result.push('aria:hidden');
     }
     else {
-        var ariahiddenfound = false;
         var pt = this.parentNode;
         while (pt && pt.nodeType == 1) {
             if (pt.getAttribute('aria-hidden') == 'true') {
-                ariahiddenfound = true;
+                result.push('parent-aria:hidden');
                 break;
             }
             pt = pt.parentNode;
-        }
-        if (ariahiddenfound) {
-            result.push('parent-aria:hidden');
         }
     }
     if (!this.matches('area')) {
         if (window.getComputedStyle(this, null).getPropertyValue('display') == 'none') {
             result.push('css:display');
         }
-        if (window.getComputedStyle(this, null).getPropertyValue('visibility') == 'hidden') {
-            result.push('css:visibility');
+        else {
+            var parent = this.parentNode;
+            while (parent && parent.nodeType == 1) {
+                if (window.getComputedStyle(parent, null).getPropertyValue('display') == 'none') {
+                    result.push('css:display');
+                    break;
+                }
+                parent = parent.parentNode;
+            }
         }
     }
-    else {
+    
+    if (window.getComputedStyle(this, null).getPropertyValue('visibility') == 'hidden') {
+        result.push('css:visibility');
+    }
+    if (this.matches('area')) {
         var pt = this.parentNode;
         if (pt && pt.matches('map')) {
-            var ptexposition = pt.isNotExposedDueTo;
             if (pt.hasAttribute('name')) {
                 var img = document.querySelector('img[usemap="#' + pt.getAttribute('name') + '"]');
                 if (img) {
@@ -3515,10 +3558,7 @@ var isNotExposedDueTo = function () {
             result.push('parent-html:unknown');
         }
     }
-    var visible = this.isNotVisibleDueTo;
-    if (visible.indexOf('css:display') > -1 || visible.indexOf('css:visibility') > -1) {
-        result.push('css:other');
-    }
+    
     return result;
 };
 
@@ -3526,19 +3566,13 @@ if (!HTMLElement.prototype.hasOwnProperty('isNotExposedDueTo')) Object.definePro
 //if (MathMLElement && !MathMLElement.prototype.hasOwnProperty('isNotExposedDueTo')) Object.defineProperty(MathMLElement.prototype, 'isNotExposedDueTo', { get: isNotExposedDueTo });
 if (!SVGElement.prototype.hasOwnProperty('isNotExposedDueTo')) Object.defineProperty(SVGElement.prototype, 'isNotExposedDueTo', { get: isNotExposedDueTo });
 
-var isNotVisibleDueTo = function () {
-    var result = [];
-    
-    if(!getVisibility(this, getOpacity(this))) {
-        result.push('css:other');
-    }
-    
-    return result;
+var isVisible = function () {
+    return getVisibility(this, getOpacity(this));
 };
 
-if (!HTMLElement.prototype.hasOwnProperty('isNotVisibleDueTo')) Object.defineProperty(HTMLElement.prototype, 'isNotVisibleDueTo', { get: isNotVisibleDueTo });
-//if (MathMLElement && !MathMLElement.prototype.hasOwnProperty('isNotVisibleDueTo')) Object.defineProperty(MathMLElement.prototype, 'isNotVisibleDueTo', { get: isNotVisibleDueTo });
-if (!SVGElement.prototype.hasOwnProperty('isNotVisibleDueTo')) Object.defineProperty(SVGElement.prototype, 'isNotVisibleDueTo', { get: isNotVisibleDueTo });
+if (!HTMLElement.prototype.hasOwnProperty('isVisible')) Object.defineProperty(HTMLElement.prototype, 'isVisible', { get: isVisible });
+//if (MathMLElement && !MathMLElement.prototype.hasOwnProperty('isVisible')) Object.defineProperty(MathMLElement.prototype, 'isVisible', { get: isVisible });
+if (!SVGElement.prototype.hasOwnProperty('isVisible')) Object.defineProperty(SVGElement.prototype, 'isVisible', { get: isVisible });
 
 if (!SVGElement.prototype.hasOwnProperty('canBeReachedUsingKeyboardWith')) {
     Object.defineProperty(SVGElement.prototype, 'canBeReachedUsingKeyboardWith', {
@@ -3611,3 +3645,58 @@ var testsRessources = {
         testUrl: 'https://www.w3.org/WAI/WCAG21/Techniques/{{technology}}/{{id}}'
     }
 };
+
+function getDuplicateID() {
+    var nodelist = document.querySelectorAll('[id]:not([id=""])');
+    var ids = [];
+    var query = null;
+    nodelist.forEach(node => {
+        if (node.id.trim().length > 0) {
+            if(ids[node.id] && ids[node.id] < 2) {
+                var startDigit = /^\d/;
+                var id = node.id;
+
+                if(id.match(startDigit)) {
+                    id = '\\3'+id.substring(0, 1)+' '+id.substring(1, id.length).replace(/[!"#$%&'()*+,-./:;<=>?@[\]^`{|}~]/g, "\\$&");
+                } else {
+                    id = id.replace(/[!"#$%&'()*+,-./:;<=>?@[\]^`{|}~]/g, "\\$&");
+                }
+
+                query = query === null ? '' : query;
+                query += '[id='+id+'],'
+            }
+
+            if (!ids[node.id]) {
+                ids[node.id] = 0;
+            }
+
+            ids[node.id]++;
+        }
+    });
+
+    query = query === null ? query : query.slice(0, -1);
+    return document.querySelectorAll(query);
+}
+
+//TODO recupérer les events appliqué via api
+function listAllEventListeners() {
+    var allElements = Array.from(document.body.querySelectorAll('*'));
+    allElements.push(document.body);
+
+    var types = [];
+    for (let ev in window) {
+      if (/^on/.test(ev)) types[types.length] = ev;
+    }
+  
+    let elements = [];
+    for (let i = 0; i < allElements.length; i++) {
+      var currentElement = allElements[i];
+      for (let j = 0; j < types.length; j++) {
+
+        if (types[j] != 'onload' && typeof currentElement[types[j]] === 'function') {
+          elements.push(currentElement);
+        }
+      }
+    }
+    return elements;
+}
