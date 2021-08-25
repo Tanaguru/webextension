@@ -4,18 +4,18 @@ var tanaguruTestsList = [];
 /**
  *? Thématiques
  *! Images (todo)
- * Cadres (terminé)
+ * Cadres
  *! Couleurs (todo)
  *! Multimédia (bloqué)
  * Tableaux
- * Liens (terminé)
+ * Liens
  *! Scripts (todo)
  *! Eléments obligatoires (todo)
- * Structuration de l'information (terminé)
+ * Structuration de l'information
  *! Présentation de l'information(todo)
  *! Formulaires (bloqué)
- ** Navigation
- ** Consultation
+ * Navigation
+ * Consultation
  */
 
 /**
@@ -3696,7 +3696,6 @@ tanaguruTestsList.push({
 
 /**
  *? LIENS
- ** 6.1 & 6.2 OK
  */
 
 //* 6.1 Chaque lien est-il explicite (hors cas particuliers) ?
@@ -5683,7 +5682,6 @@ tanaguruTestsList.push({
     filter: function (item) {
         if((item.isNotExposedDueTo.length > 0 && !item.isVisible) || item.disabled) return;
 
-        item.focus();
         let hasLabel = false;
 
         if(item.hasAttribute('aria-labelledby') && item.getAttribute('aria-labelledby').trim().length > 0) {
@@ -5745,13 +5743,27 @@ tanaguruTestsList.push({
         }
 
         if(hasLabel) {
+            item.setAttribute('data-tng-temp', 'focused');
+            item = item.focus();
+            item = document.querySelector('[data-tng-temp]');
+            item.removeAttribute('data-tng-temp');
             if(item.hasAttribute('aria-describedby') && item.getAttribute('aria-describedby').trim().length > 0) {
                 let ids = item.getAttribute('aria-describedby').split(' ');
                 ids.forEach(id => {
                     let el = document.getElementById(id);
-                    if(el && el.textContent.trim().length > 0 && el.isVisible) {
-                        item.setAttribute('data-tng-has-label', 'describedby');
-                        return;
+                    if(el && el.textContent.trim().length > 0) {
+                        if(el.isVisible) {
+                            item.setAttribute('data-tng-has-label', 'describedby');
+                            return;
+                        } 
+                        // else {
+                        //     item.focus();
+                        //     let elFocus = document.getElementById(id);
+                        //     if(elFocus.isVisible) {
+                        //         item.setAttribute('data-tng-has-label', 'describedby-focus');
+                        //         return;
+                        //     }
+                        // }
                     }
                 })
             }
@@ -5781,6 +5793,16 @@ tanaguruTestsList.push({
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.1.3'] }
 });
+
+// tanaguruTestsList.push({
+//     lang: 'fr',
+//     name: 'Liste des champs de formulaires avec une étiquette non visible, possédant un passage de texte visible au focus identifié par un id.',
+//     description: "Vérifier la pertinence du passage de texte ainsi que sa proximité avec le champ associé.",
+//     query: '[data-tng-has-label="describedby-focus"]:not([data-tng-visible-label])',
+//     mark: {attrs: ['aria-describedby']},
+//     tags: ['a11y', 'forms', 'accessiblename'],
+//     ressources: { 'rgaa': ['11.1.3'] }
+// });
 
 //* 11.2 : Chaque étiquette associée à un champ de formulaire est-elle pertinente (hors cas particuliers) ?
 // 11.2.1 : Chaque balise <label> permet-elle de connaître la fonction exacte du champ de formulaire auquel elle est associée ?
@@ -5903,7 +5925,6 @@ tanaguruTestsList.push({
     query: '[data-tng-visible-label]',
     expectedNbElements: 0,
     filter: function (item) {
-        console.log(item, item.accessibleName);
         return !item.accessibleName.includes(item.getAttribute('data-tng-text-label'));
     },
     tags: ['a11y', 'forms', 'accessiblename'],
@@ -6480,7 +6501,9 @@ tanaguruTestsList.push({
 
 /**
  *? NAVIGATION
+ ** tous les tests sont répertoriés
  *TODO voir pour tester les liens d'évitement implémenté de façon "classique"
+ *TODO ordre de tabulation - pièges au clavier - raccourcis clavier
  */
 
 //* 12.1 Chaque ensemble de pages dispose-t-il de deux systèmes de navigation différents, au moins (hors cas particuliers) ?
@@ -6620,31 +6643,53 @@ tanaguruTestsList.push({
 // 12.8.1 Dans chaque page web, l'ordre de tabulation dans le contenu est-il cohérent ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Les éléments qui ne sont pas restitués ne sont pas tabulables.',
-	query: '[aria-hidden="true"]',
+	name: 'Liste des éléments non restitués mais tabulables.',
+	query: HTML.getFocusableElementsSelector(),
 	expectedNbElements: 0,
 	filter: function (item) {
+        if(item.disabled) return;
+
 		var exposedState = item.isNotExposedDueTo;
+
 		if (exposedState.indexOf('css:display') == -1 && exposedState.indexOf('css:visibility') == -1) {
-			var focusables = item.querySelectorAll(HTML.getFocusableElementsSelector());
-			if (focusables.length == 0) {
-				focusables = [];
-				var elementsWithTabindex = item.querySelectorAll('[tabindex]');
-				for (var i = 0; i < elementsWithTabindex.length; i++) {
-					if (/^[1-9]{1}\d*$/.test(elementsWithTabindex[i].getAttribute('tabindex'))) {
-						focusables.push(elementsWithTabindex[i]);
-						break;
-					}
-				}
-			}
-			return focusables.length > 0;
-		}
-		else {
-			return false;
+			return item.isNotExposedDueTo.length > 0;
 		}
 	},
     tags: ['a11y', 'keyboard'],
     ressources: { 'rgaa': ['12.8.1'] }
+});
+
+//TODO peut-on simuler un focus client ?
+// tanaguruTestsList.push({
+// 	lang: 'fr',
+// 	name: 'Liste des éléments non visibles mais tabulables.',
+// 	query: HTML.getFocusableElementsSelector(),
+// 	expectedNbElements: 0,
+// 	filter: function (item) {
+//         if(item.disabled) return;
+
+//         item.setAttribute('data-tng-temp', 'focused');
+//         item.focus();
+//         item = document.querySelector('[data-tng-temp]');
+//         item.removeAttribute('data-tng-temp');
+
+// 		var exposedState = item.isNotExposedDueTo;
+
+// 		if (exposedState.indexOf('css:display') == -1 && exposedState.indexOf('css:visibility') == -1) {
+// 			return !item.isVisible;
+// 		}
+// 	},
+//     tags: ['a11y', 'keyboard'],
+//     ressources: { 'rgaa': ['12.8.1'] }
+// });
+
+// 12.8.2 Pour chaque script qui met à jour ou insère un contenu, l'ordre de tabulation reste-t-il cohérent ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Pour chaque script qui met à jour ou insère un contenu, l'ordre de tabulation doit rester cohérent.",
+    status: 'untested',
+    tags: ['a11y', 'keyboard'],
+    ressources: { 'rgaa': ['12.8.2'] }
 });
 
 //* 12.9 Dans chaque page web, la navigation ne doit pas contenir de piège au clavier. Cette règle est-elle respectée ?
@@ -6658,52 +6703,256 @@ tanaguruTestsList.push({
 	comments: "peut détecter l'attribut onblur (peut-être aussi l'événement) mais ce n'est pas vraiment une preuve que c'est un piège à clavier"
 });
 
+//* 12.10 Dans chaque page web, les raccourcis clavier n'utilisant qu'une seule touche (lettre minuscule ou majuscule, ponctuation, chiffre ou symbole) sont-ils contrôlables par l’utilisateur ?
+// 12.10.1 Dans chaque page web, chaque raccourci clavier n'utilisant qu'une seule touche (lettres minuscule ou majuscule, ponctuation, chiffre ou symbole) vérifie-t-il l'une de ces conditions ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Pour chaque raccourci clavier n'utilisant qu'une seule touche (lettres minuscule ou majuscule, ponctuation, chiffre ou symbole) un mécanisme permet de désactiver ou configurer le raccourci clavier.",
+    status: 'untested',
+    tags: ['a11y', 'keyboard'],
+    ressources: { 'rgaa': ['12.10.1'] }
+});
+
+//* 12.11 Dans chaque page web, les contenus additionnels apparaissant au survol, à la prise de focus ou à l'activation d'un composant d'interface sont-ils, si nécessaire, atteignables au clavier ?
+// 12.11.1 Dans chaque page web, les contenus additionnels apparaissant au survol, à la prise de focus ou à l'activation d'un composant d'interface sont-ils, si nécessaire, atteignables au clavier ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Les contenus additionnels apparaissant au survol, à la prise de focus ou à l'activation d'un composant d'interface doivent, si nécessaire, être atteignables au clavier.",
+    status: 'untested',
+    tags: ['a11y', 'keyboard'],
+    ressources: { 'rgaa': ['12.11.1'] }
+});
+
 /**
  *? CONSULTATION
+ ** tous les tests sont répertoriés
+ *TODO reconnaissance des contenus cryptique
+ *TODO analyse des scripts
+ *TODO contenus en mouvement ou clignotant ?
  */
 
 //* 13.1 Pour chaque page web, l'utilisateur a-t-il le contrôle de chaque limite de temps modifiant le contenu (hors cas particuliers) ?
 // 13.1.1 Pour chaque page web, chaque procédé de rafraîchissement (balise <object>, balise <embed>, balise <svg>, balise <canvas>, balise <meta>) vérifie-t-il une de ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des balises meta sans procédé de rafraîchissement',
+    name: 'Liste des balises meta avec un procédé de rafraîchissement inférieur à 20heures.',
     query: 'meta[http-equiv="refresh"][content]',
+    expectedNbElements: 0,
     filter: function (item) {
         var content = item.getAttribute('content').trim();
+
         if (content.length > 0) {
-            return /^(\s*\d+\s*){1}(;|;(url=)?(.)+)?$/i.test(content);
-        }
-        else {
-            return false;
-        }
-    },
-    analyzeElements: function (collection) {
-        var alreadyTested = false;
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'untested';
-            if (!alreadyTested) {
-                var content = collection[i].getAttribute('content').trim();
-                if (content.indexOf(';') > -1) {
-                    content = content.split(/;(.+)/);
-                    content = content[0];
-                }
-                content = parseInt(content.trim());
-                collection[i].status = content == 0 || content >= 72000 ? 'passed' : 'failed';
-                alreadyTested = true;
+            let redirect = /; *url=.+/i;
+            let refresh = /^(\s*\d+\s*){1}/i;
+
+            if(redirect.test(content)) {
+                item.setAttribute('data-tng-redirect', true);
+                return;
+            } else if(refresh.test(content)) {
+                content = content.split(';')[0].trim();
+                return content > 0 && content < 72000;
             }
         }
     },
-    ressources: { 'rgaa': ['13.1.1']},
-    tags: ['a11y', 'meta']
+    mark: {attrs: ['http-equiv', 'content']},
+    tags: ['a11y', 'meta'],
+    ressources: { 'rgaa': ['13.1.1']}
+});
+
+// 13.1.2  Pour chaque page web, chaque procédé de redirection effectué via une balise <meta> est-il immédiat (hors cas particuliers) ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des balises meta avec un procédé de redirection non immédiat.',
+    query: '[data-tng-redirect]',
+    expectedNbElements: 0,
+    filter: function (item) {
+        var content = item.getAttribute('content').trim();
+        let time = content.match(/^\d+/)[0];
+        if(time) return time > 0;
+    },
+    mark: {attrs: ['http-equiv', 'content']},
+    tags: ['a11y', 'meta'],
+    ressources: { 'rgaa': ['13.1.2']}
+});
+
+// 13.1.3 Pour chaque page web, chaque procédé de redirection effectué via un script vérifie-t-il une de ces conditions (hors cas particuliers) ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque procédé de redirection effectué via un script doit être contrôlable par l'utilisateur ou avoir une limite de temps d'au moins 20heures.",
+    status: 'untested',
+    tags: ['a11y'],
+    ressources: { 'rgaa': ['13.1.3'] }
+});
+
+// 13.1.4 Pour chaque page web, chaque procédé limitant le temps d'une session vérifie-t-il une de ces conditions (hors cas particuliers) ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque procédé limitant le temps d'une session doit être contrôlable par l'utilisateur ou avoir une limite de temps d'au moins 20heures.",
+    status: 'untested',
+    tags: ['a11y'],
+    ressources: { 'rgaa': ['13.1.4'] }
+});
+
+//* 13.2 Dans chaque page web, l'ouverture d'une nouvelle fenêtre ne doit pas être déclenchée sans action de l'utilisateur. Cette règle est-elle respectée ?
+// 13.2.1 Dans chaque page web, l'ouverture d'une nouvelle fenêtre ne doit pas être déclenchée sans action de l'utilisateur. Cette règle est-elle respectée ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Dans chaque page web, l'ouverture d'une nouvelle fenêtre ne doit pas être déclenchée sans action de l'utilisateur.",
+    status: 'untested',
+    tags: ['a11y'],
+    ressources: { 'rgaa': ['13.2.1'] }
+});
+
+//* 13.3 Dans chaque page web, chaque document bureautique en téléchargement possède-t-il, si nécessaire, une version accessible (hors cas particuliers) ?
+// 13.3.1 Dans chaque page web, chaque fonctionnalité de téléchargement d'un document bureautique vérifie-t-elle une de ces conditions ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Pour chaque fonctionnalité de téléchargement d'un document bureautique, le document doit être accessible ou posséder une alternative accessible.",
+    query: '[href][download]',
+    tags: ['a11y'],
+    ressources: { 'rgaa': ['13.3.1'] }
+});
+
+//* 13.4 Pour chaque document bureautique ayant une version accessible, cette version offre-t-elle la même information ?
+// 13.4.1 Chaque document bureautique ayant une version accessible vérifie-t-il une de ces conditions ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Pour chaque document bureautique ayant une version accessible, la version accessible doit offrir la même information.",
+    status: 'untested',
+    tags: ['a11y'],
+    ressources: { 'rgaa': ['13.4.1'] }
+});
+
+//* 13.5 Dans chaque page web, chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) a-t-il une alternative ?
+// 13.5.1 Dans chaque page web, chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) vérifie-t-il une de ces conditions ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) doit avoir une alternative.",
+    status: 'untested',
+    tags: ['a11y', 'accessiblename'],
+    ressources: { 'rgaa': ['13.5.1'] }
+});
+
+//* 13.6 Dans chaque page web, pour chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) ayant une alternative, cette alternative est-elle pertinente ?
+// 13.6.1 Dans chaque page web, chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) vérifie-t-il une de ces conditions ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) doit avoir une alternative pertinente.",
+    status: 'untested',
+    tags: ['a11y', 'accessiblename'],
+    ressources: { 'rgaa': ['13.6.1'] }
+});
+
+//* 13.7 Dans chaque page web, les changements brusques de luminosité ou les effets de flash sont-ils correctement utilisés ?
+// 13.7.1 Dans chaque page web, chaque image ou élément multimédia (balise <video>, balise <img>, balise <svg>, balise <canvas>, balise <embed> ou balise <object>) qui provoque un changement brusque de luminosité ou un effet de flash vérifie-t-elle une de ces conditions ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Pour chaque image ou élément multimédia qui provoque un changement brusque de luminosité ou un effet de flash, l'effet doit avoir une fréquence inférieur à 3secondes ou une surface totale inférieure à 21825pixels.",
+    status: 'untested',
+    tags: ['a11y'],
+    ressources: { 'rgaa': ['13.7.1'] }
+});
+
+// 13.7.2 Dans chaque page web, chaque script qui provoque un changement brusque de luminosité ou un effet de flash vérifie-t-il une de ces conditions ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Pour chaque script qui provoque un changement brusque de luminosité ou un effet de flash, l'effet doit avoir une fréquence inférieur à 3secondes ou une surface totale inférieure à 21825pixels.",
+    status: 'untested',
+    tags: ['a11y'],
+    ressources: { 'rgaa': ['13.7.2'] }
+});
+
+// 13.7.3 Dans chaque page web, chaque mise en forme CSS qui provoque un changement brusque de luminosité ou un effet de flash vérifie-t-elle une de ces conditions ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Pour chaque mise en forme CSS qui provoque un changement brusque de luminosité ou un effet de flash, l'effet doit avoir une fréquence inférieur à 3secondes ou une surface totale inférieure à 21825pixels.",
+    status: 'untested',
+    tags: ['a11y'],
+    ressources: { 'rgaa': ['13.7.3'] }
+});
+
+//* 13.8 Dans chaque page web, chaque contenu en mouvement ou clignotant est-il contrôlable par l'utilisateur ?
+// 13.8.1 Dans chaque page web, chaque contenu en mouvement, déclenché automatiquement, vérifie-t-il une de ces conditions ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque contenu en mouvement déclenché automatiquement doit durer moins de 6 secondes ou être contrôlable par l'utilisateur.",
+    status: 'untested',
+    tags: ['a11y'],
+    ressources: { 'rgaa': ['13.8.1'] }
+});
+
+// 13.8.2 Dans chaque page web, chaque contenu clignotant, déclenché automatiquement, vérifie-t-il une de ces conditions ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque contenu clignotant déclenché automatiquement doit durer moins de 6 secondes ou être contrôlable par l'utilisateur.",
+    status: 'untested',
+    tags: ['a11y'],
+    ressources: { 'rgaa': ['13.8.2'] }
 });
 
 //* 13.9 Dans chaque page web, le contenu proposé est-il consultable quelle que soit l'orientation de l'écran (portrait ou paysage) (hors cas particuliers) ?
 // 13.9.1 Dans chaque page web, chaque contenu vérifie-t-il ces conditions (hors cas particuliers) ? 
 tanaguruTestsList.push({
-    lang: 'en',
-    name: 'la page est consultable quelque soit l\'orientation de l\'écran',
+	lang: 'fr',
+	name: "Le contenu proposé doit être consultable et identique quelle que soit l'orientation de l'écran (portrait ou paysage).",
     status: 'untested',
-    ressources: { 'rgaa': ['13.9.1'] },
     tags: ['a11y'],
-    comments: "Computed styles are not useful/relevant for this test + need to 'identify' some 'root' elements. Require a special UI & a new method of execution ?"
+    ressources: { 'rgaa': ['13.9.1'] }
+});
+
+//* 13.10 Dans chaque page web, les fonctionnalités utilisables ou disponibles au moyen d'un geste complexe peuvent-elles être également disponibles au moyen d'un geste simple (hors cas particuliers) ?
+// 13.10.1 Dans chaque page web, chaque fonctionnalité utilisable ou disponible suite à un contact multipoint est-elle également utilisable ou disponible suite à un contact en un point unique de l’écran (hors cas particuliers) ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque fonctionnalité utilisable ou disponible suite à un contact multipoint doit également être utilisable ou disponible suite à un contact en un point unique de l’écran.",
+    status: 'untested',
+    tags: ['a11y'],
+    ressources: { 'rgaa': ['13.10.1'] }
+});
+
+// 13.10.2 Dans chaque page web, chaque fonctionnalité utilisable ou disponible suite à un geste basé sur le suivi d'une trajectoire sur l'écran est-elle également utilisable ou disponible suite à un contact en un point unique de l'écran (hors cas particuliers) ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Chaque fonctionnalité utilisable ou disponible suite à un geste basé sur le suivi d'une trajectoire sur l'écran doit également être utilisable ou disponible suite à un contact en un point unique de l’écran.",
+    status: 'untested',
+    tags: ['a11y'],
+    ressources: { 'rgaa': ['13.10.2'] }
+});
+
+//* 13.11 Dans chaque page web, les actions déclenchées au moyen d'un dispositif de pointage sur un point unique de l'écran peuvent-elles faire l'objet d'une annulation (hors cas particuliers) ?
+// 13.11.1 Dans chaque page web, les actions déclenchées au moyen d'un dispositif de pointage sur un point unique de l'écran vérifient-elles l'une de ces conditions (hors cas particuliers) ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Les actions déclenchées au moyen d'un dispositif de pointage sur un point unique de l'écran doivent pouvoir faire l'objet d'une annulation.",
+    status: 'untested',
+    tags: ['a11y'],
+    ressources: { 'rgaa': ['13.11.1'] }
+});
+
+//* 13.12 Dans chaque page web, les fonctionnalités qui impliquent un mouvement de l'appareil ou vers l'appareil peuvent-elles être satisfaites de manière alternative (hors cas particuliers) ?
+// 13.12.1 Dans chaque page web, les fonctionnalités disponibles en bougeant l'appareil peuvent-elles être accomplies avec des composants d'interface utilisateur (hors cas particuliers) ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Les fonctionnalités disponibles en bougeant l'appareil doivent pouvoir être accomplies avec des composants d'interface utilisateur.",
+    status: 'untested',
+    tags: ['a11y'],
+    ressources: { 'rgaa': ['13.12.1'] }
+});
+
+// 13.12.2 Dans chaque page web, les fonctionnalités disponibles en faisant un geste en direction de l'appareil peuvent-elles être accomplies avec des composants d'interface utilisateur (hors cas particuliers) ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "Les fonctionnalités disponibles en faisant un geste en direction de l'appareil doivent pouvoir être accomplies avec des composants d'interface utilisateur.",
+    status: 'untested',
+    tags: ['a11y'],
+    ressources: { 'rgaa': ['13.12.2'] }
+});
+
+// 13.12.3 L'utilisateur a-t-il la possibilité de désactiver la détection du mouvement pour éviter un déclenchement accidentel de la fonctionnalité (hors cas particuliers) ?
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "L'utilisateur doit avoir la possibilité de désactiver la détection du mouvement pour éviter un déclenchement accidentel de la fonctionnalité.",
+    status: 'untested',
+    tags: ['a11y'],
+    ressources: { 'rgaa': ['13.12.3'] }
 });
