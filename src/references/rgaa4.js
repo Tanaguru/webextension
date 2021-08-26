@@ -79,9 +79,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -135,9 +133,7 @@ tanaguruTestsList.push({
         return item.hasAccessibleName();
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['alt','aria-label']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -173,9 +169,7 @@ tanaguruTestsList.push({
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'buttons', 'images', 'accessiblename'],
@@ -235,9 +229,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['href']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -290,9 +282,7 @@ tanaguruTestsList.push({
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['aria-hidden']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -349,9 +339,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -409,9 +397,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -468,9 +454,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -516,9 +500,7 @@ tanaguruTestsList.push({
         return false;
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['alt','aria-hidden','role']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -597,9 +579,7 @@ tanaguruTestsList.push({
         return false;
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['alt','aria-hidden','role']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -678,9 +658,7 @@ tanaguruTestsList.push({
         return false;
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['aria-hidden']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -764,9 +742,7 @@ tanaguruTestsList.push({
         return !item.hasAccessibleName();
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['aria-hidden']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -845,9 +821,7 @@ tanaguruTestsList.push({
         return !item.hasAccessibleName();
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['alt','aria-hidden','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -915,9 +889,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['aria-hidden']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -1448,9 +1420,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.9.1'] }
@@ -1508,9 +1478,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.9.2'] }
@@ -1568,9 +1536,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.9.3'] }
@@ -1628,9 +1594,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.9.4'] }
@@ -1688,9 +1652,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.9.5'] }
@@ -1722,9 +1684,7 @@ tanaguruTestsList.push({
         return item.isNotExposedDueTo.length == 0 && item.hasAttribute('title');
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['title']},
     tags: ['a11y', 'frames', 'accessiblename'],
@@ -1831,9 +1791,7 @@ tanaguruTestsList.push({
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
     tags: ['a11y', 'contrast', 'colors'],
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'failed';
-        }
+        collection.map(e => e.status = 'failed');
     },
     ressources: {'rgaa': ['3.2.1']}
 });
@@ -1843,9 +1801,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Textes visibles sans effet de graisse et d\'une taille restituée inférieure à 24px ayant un contraste suffisant de 4.5:1',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.1']}
@@ -1866,9 +1822,7 @@ tanaguruTestsList.push({
     name: 'Textes non visibles ou désactivés sans effet de graisse et d\'une taille restituée inférieure à 24px ayant un contraste inférieur à 4.5:1',
     description: 'Si ces éléments texte peuvent être rendus visibles, ils devraient respecter un contraste de 4.5:1 minimum.',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
+        collection.map(e => e.status = 'inapplicable');
     },
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.1']}
@@ -1880,9 +1834,7 @@ tanaguruTestsList.push({
     name: 'Textes non visibles ou désactivés sans effet de graisse et d\'une taille restituée inférieure à 24px',
     description: 'Si ces éléments texte peuvent être rendus visibles, vérifier qu\'ils respectent un contraste de 4.5:1 minimum.',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
+        collection.map(e => e.status = 'inapplicable');
     },
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.1']}
@@ -1893,9 +1845,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Textes non visibles ou désactivés sans effet de graisse et d\'une taille restituée inférieure à 24px ayant un contraste suffisant de 4.5:1',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
+        collection.map(e => e.status = 'inapplicable');
     },
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.1']}
@@ -1909,9 +1859,7 @@ tanaguruTestsList.push({
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
     tags: ['a11y', 'contrast', 'colors'],
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'failed';
-        }
+        collection.map(e => e.status = 'failed');
     },
     ressources: {'rgaa': ['3.2.2']}
 });
@@ -1921,9 +1869,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Textes visibles en gras d\'une taille restituée inférieure à 18.5px ayant un contraste suffisant de 4.5:1',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.2']}
@@ -1944,9 +1890,7 @@ tanaguruTestsList.push({
     name: 'Textes non visibles ou désactivés en gras d\'une taille restituée inférieure à 18.5px ayant un contraste inférieur à 4.5:1',
     description: 'Si ces éléments texte peuvent être rendus visibles, ils devraient respecter un contraste de 4.5:1 minimum.',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
+        collection.map(e => e.status = 'inapplicable');
     },
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.2']}
@@ -1958,9 +1902,7 @@ tanaguruTestsList.push({
     name: 'Textes non visibles ou désactivés en gras d\'une taille restituée inférieure à 18.5px',
     description: 'Si ces éléments texte peuvent être rendus visibles, vérifier qu\'ils respectent un contraste de 4.5:1 minimum.',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
+        collection.map(e => e.status = 'inapplicable');
     },
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.2']}
@@ -1971,9 +1913,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Textes non visibles ou désactivés en gras d\'une taille restituée inférieure à 18.5px ayant un contraste suffisant de 4.5:1',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
+        collection.map(e => e.status = 'inapplicable');
     },
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.2']}
@@ -1987,9 +1927,7 @@ tanaguruTestsList.push({
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
     tags: ['a11y', 'contrast', 'colors'],
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'failed';
-        }
+        collection.map(e => e.status = 'failed');
     },
     ressources: {'rgaa': ['3.2.3']}
 });
@@ -1999,9 +1937,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Textes visibles sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px ayant un contraste suffisant de 3:1',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.3']}
@@ -2022,9 +1958,7 @@ tanaguruTestsList.push({
     name: 'Textes non visibles ou désactivés sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px ayant un contraste inférieur à 3:1',
     description: 'Si ces éléments texte peuvent être rendus visibles, ils devraient respecter un contraste de 3:1 minimum.',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
+        collection.map(e => e.status = 'inapplicable');
     },
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.3']}
@@ -2036,9 +1970,7 @@ tanaguruTestsList.push({
     name: 'Textes non visibles ou désactivés sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px',
     description: 'Si ces éléments texte peuvent être rendus visibles, vérifier qu\'ils respectent un contraste de 3:1 minimum.',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
+        collection.map(e => e.status = 'inapplicable');
     },
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.3']}
@@ -2049,9 +1981,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Textes non visibles ou désactivés sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px ayant un contraste suffisant de 3:1',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
+        collection.map(e => e.status = 'inapplicable');
     },
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.3']}
@@ -2065,9 +1995,7 @@ tanaguruTestsList.push({
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
     tags: ['a11y', 'contrast', 'colors'],
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'failed';
-        }
+        collection.map(e => e.status = 'failed');
     },
     ressources: {'rgaa': ['3.2.4']}
 });
@@ -2077,9 +2005,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Textes visibles en gras d\'une taille restituée supérieure ou égale à 18.5px ayant un contraste suffisant de 3:1',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.4']}
@@ -2100,9 +2026,7 @@ tanaguruTestsList.push({
     name: 'Textes non visibles ou désactivés en gras d\'une taille restituée supérieure ou égale à 18.5px ayant un contraste inférieur à 3:1',
     description: 'Si ces éléments texte peuvent être rendus visibles, ils devraient respecter un contraste de 3:1 minimum.',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
+        collection.map(e => e.status = 'inapplicable');
     },
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.4']}
@@ -2114,9 +2038,7 @@ tanaguruTestsList.push({
     name: 'Textes non visibles ou désactivés en gras d\'une taille restituée supérieure ou égale à 18.5px',
     description: 'Si ces éléments texte peuvent être rendus visibles, vérifier qu\'ils respectent un contraste de 3:1 minimum.',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
+        collection.map(e => e.status = 'inapplicable');
     },
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.4']}
@@ -2127,9 +2049,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Textes non visibles ou désactivés en gras d\'une taille restituée supérieure ou égale à 18.5px ayant un contraste suffisant de 3:1',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
+        collection.map(e => e.status = 'inapplicable');
     },
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.4']}
@@ -2348,9 +2268,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: {attrs: ['kind']},
     tags: ['a11y', 'videos', 'media'],
@@ -2493,9 +2411,7 @@ tanaguruTestsList.push({
         return false;
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
 	tags: ['a11y', 'audio', 'videos', 'media'],
     ressources: {'rgaa': ['4.10.1'] },
@@ -2509,9 +2425,7 @@ tanaguruTestsList.push({
     name: 'Liste des médias temporels ayant les fonctionnalités de contrôle de sa consultation',
     query: 'video[controls], audio[controls]',
     analyzeElements: function(collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'videos', 'audio', 'media'],
     ressources: {'rgaa': ['4.11.1']}
@@ -2668,9 +2582,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: {attrs: ['aria-describedby']},
     tags: ['a11y', 'tables'],
@@ -2703,11 +2615,6 @@ tanaguruTestsList.push({
                     }
                 }
             }
-        }
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
         }
     },
     mark: {attrs: ['aria-describedby']},
@@ -2764,9 +2671,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: {attrs: ['title', 'aria-label', 'aria-labelledby']},
     tags: ['a11y', 'tables'],
@@ -2866,8 +2771,8 @@ tanaguruTestsList.push({
         //? check if this ID corresponding with headers attribute
         var headersList = table.querySelectorAll('*[headers]');
         var headers = [];
-
-        for(var i = 0; i < headersList.length; i++) {
+        var headersLength = headersList.length;
+        for(var i = 0; i < headersLength; i++) {
             var list = headersList[i].getAttribute('headers').split(' ');
 
             list.forEach(h => {
@@ -2886,8 +2791,9 @@ tanaguruTestsList.push({
         var headerIndex = [];
         var p = 0;
         var siblings = row.children;
+        var siblingsLength = siblings.length;
 
-        for(var x = 0; x < siblings.length; x++) {
+        for(var x = 0; x < siblingsLength; x++) {
             if(siblings[x] != item) {
                 if(siblings[x].hasAttribute('colspan') && siblings[x].getAttribute('colspan') > 0) {
                     p = p + parseInt(siblings[x].getAttribute('colspan'));
@@ -2897,8 +2803,9 @@ tanaguruTestsList.push({
 
         if(item.hasAttribute('colspan') && item.getAttribute('colspan') > 0) {
             var size = parseInt(item.getAttribute('colspan'));
+            var sizeP = size+p;
 
-            for(var x = p; x < size+p; x++) {
+            for(var x = p; x < sizeP; x++) {
                 headerIndex.push(x+1);
             }
         } else {
@@ -2914,8 +2821,9 @@ tanaguruTestsList.push({
             var rowC = cell.closest('tr');
             var pC = 0;
             var siblingsC = rowC.children;
+            var siblingsCLength = siblingsC.length;
 
-            for(var x = 0; x < siblingsC.length; x++) {
+            for(var x = 0; x < siblingsCLength; x++) {
                 if(siblingsC[x] != cell) {
                     if(siblingsC[x].hasAttribute('colspan') && siblingsC[x].getAttribute('colspan') > 0) {
                         pC = pC + parseInt(siblingsC[x].getAttribute('colspan'));
@@ -2925,8 +2833,9 @@ tanaguruTestsList.push({
 
             if(cell.hasAttribute('colspan') && cell.getAttribute('colspan') > 0) {
                 var sizeC = parseInt(cell.getAttribute('colspan'));
+                var sizeCpC = sizeC+pC;
 
-                for(var x = pC; x < sizeC+pC; x++) {
+                for(var x = pC; x < sizeCpC; x++) {
                     cellIndex.push(x+1);
                 }
             } else {
@@ -2985,8 +2894,9 @@ tanaguruTestsList.push({
         //? check if this ID corresponding with headers attibute
         var headersList = table.querySelectorAll('*[headers]');
         var headers = [];
+        var headersLength = headersList.length;
 
-        for(var i = 0; i < headersList.length; i++) {
+        for(var i = 0; i < headersLength; i++) {
             var list = headersList[i].getAttribute('headers').split(' ');
 
             list.forEach(h => {
@@ -3005,8 +2915,9 @@ tanaguruTestsList.push({
         var headerIndex = [];
         var p = 0;
         var siblings = row.children;
+        var siblingsLength = siblings.length;
 
-        for(var x = 0; x < siblings.length; x++) {
+        for(var x = 0; x < siblingsLength; x++) {
             if(siblings[x] != item) {
                 if(siblings[x].hasAttribute('colspan') && siblings[x].getAttribute('colspan') > 0) {
                     p = p + parseInt(siblings[x].getAttribute('colspan'));
@@ -3016,8 +2927,9 @@ tanaguruTestsList.push({
 
         if(item.hasAttribute('colspan') && item.getAttribute('colspan') > 0) {
             var size = parseInt(item.getAttribute('colspan'));
+            var sizeP = size+p;
 
-            for(var x = p; x < size+p; x++) {
+            for(var x = p; x < sizeP; x++) {
                 headerIndex.push(x+1);
             }
         } else {
@@ -3033,8 +2945,9 @@ tanaguruTestsList.push({
             var rowC = cell.closest('tr');
             var pC = 0;
             var siblingsC = rowC.children;
+            var siblingsCLength = siblingsC.length;
 
-            for(var x = 0; x < siblingsC.length; x++) {
+            for(var x = 0; x < siblingsCLength; x++) {
                 if(siblingsC[x] != cell) {
                     if(siblingsC[x].hasAttribute('colspan') && siblingsC[x].getAttribute('colspan') > 0) {
                         pC = pC + parseInt(siblingsC[x].getAttribute('colspan'));
@@ -3044,8 +2957,9 @@ tanaguruTestsList.push({
 
             if(cell.hasAttribute('colspan')&& cell.getAttribute('colspan') > 0) {
                 var sizeC = parseInt(cell.getAttribute('colspan'));
+                var sizeCpC = sizeC+pC;
 
-                for(var x = pC; x < sizeC+pC; x++) {
+                for(var x = pC; x < sizeCpC; x++) {
                     cellIndex.push(x+1);
                 }
             } else {
@@ -3071,10 +2985,8 @@ tanaguruTestsList.push({
         else item.setAttribute('data-tng-table', 'headerColPart');
     },
     analyzeElements: function (collection) {
-		for (var i = 0; i < collection.length; i++) {
-			collection[i].status = 'passed';
-		}
-	},
+		collection.map(e => e.status = 'passed');
+    },
     mark: {attrs: ['scope']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.1']}
@@ -3109,8 +3021,9 @@ tanaguruTestsList.push({
         //? check if this ID corresponding with headers attribute
         var headersList = table.querySelectorAll('*[headers]');
         var headers = [];
+        var headersLength = headersList.length;
 
-        for(var i = 0; i < headersList.length; i++) {
+        for(var i = 0; i < headersLength; i++) {
             var list = headersList[i].getAttribute('headers').split(' ');
 
             list.forEach(h => {
@@ -3131,8 +3044,9 @@ tanaguruTestsList.push({
 
         if(item.hasAttribute('rowspan') && parseInt(item.getAttribute('rowspan')) > 1) {
             var size = parseInt(item.getAttribute('rowspan'));
+            var rowsLength = rows.length;
 
-            for(var i = 0; i < rows.length; i++) {
+            for(var i = 0; i < rowsLength; i++) {
                 if(rows[i] === currentRow) {
                     for(var x = 1; x < size; x++) {
                         rows[i+x].setAttribute('data-row-tng', true);
@@ -3188,8 +3102,9 @@ tanaguruTestsList.push({
         //? check if this ID corresponding with headers attribute
         var headersList = table.querySelectorAll('*[headers]');
         var headers = [];
+        var headersLength = headersList.length;
 
-        for(var i = 0; i < headersList.length; i++) {
+        for(var i = 0; i < headersLength; i++) {
             var list = headersList[i].getAttribute('headers').split(' ');
 
             list.forEach(h => {
@@ -3210,8 +3125,9 @@ tanaguruTestsList.push({
 
         if(item.hasAttribute('rowspan') && parseInt(item.getAttribute('rowspan')) > 1) {
             var size = parseInt(item.getAttribute('rowspan'));
+            var rowsLength = rows.length;
 
-            for(var i = 0; i < rows.length; i++) {
+            for(var i = 0; i < rowsLength; i++) {
                 if(rows[i] === currentRow) {
                     for(var x = 1; x < size; x++) {
                         rows[i+x].setAttribute('data-row-tng', true);
@@ -3244,10 +3160,8 @@ tanaguruTestsList.push({
         else item.setAttribute('data-tng-table', 'headerRowPart');
     },
     analyzeElements: function (collection) {
-		for (var i = 0; i < collection.length; i++) {
-			collection[i].status = 'passed';
-		}
-	},
+		collection.map(e => e.status = 'passed');
+    },
     mark: {attrs: ['scope']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.2']}
@@ -3272,10 +3186,8 @@ tanaguruTestsList.push({
 	name: "Liste des en-têtes ne s'appliquant pas à la totalité de la ligne ou de la colonne correctement structurés.",
     query: 'th[data-tng-table="headerColPart"], th[data-tng-table="headerRowPart"]',
     analyzeElements: function (collection) {
-		for (var i = 0; i < collection.length; i++) {
-			collection[i].status = 'passed';
-		}
-	},
+        collection.map(e => e.status = 'passed');
+    },
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.3']}
 });
@@ -3293,8 +3205,9 @@ tanaguruTestsList.push({
         if(!table) return;
         var headers = item.getAttribute('headers').split(' ');
         var count = 0;
+        var headersLength = headers.length;
 
-        for(var i = 0; i < headers.length; i++) {
+        for(var i = 0; i < headersLength; i++) {
             var id = document.getElementById(headers[i]);
 
             if(id) {
@@ -3322,8 +3235,9 @@ tanaguruTestsList.push({
         if(!table) return;
         var headers = item.getAttribute('headers').split(' ');
         var count = 0;
+        var headersLength = headers.length;
 
-        for(var i = 0; i < headers.length; i++) {
+        for(var i = 0; i < headersLength; i++) {
             var id = document.getElementById(headers[i]);
 
             if(id) {
@@ -3336,10 +3250,8 @@ tanaguruTestsList.push({
         }
 	},
     analyzeElements: function (collection) {
-		for (var i = 0; i < collection.length; i++) {
-			collection[i].status = 'passed';
-		}
-	},
+		collection.map(e => e.status = 'passed');
+    },
     mark: {attrs: ['headers']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.4']}
@@ -3404,10 +3316,8 @@ tanaguruTestsList.push({
         }
 	},
     analyzeElements: function (collection) {
-		for (var i = 0; i < collection.length; i++) {
-			collection[i].status = 'passed';
-		}
-	},
+		collection.map(e => e.status = 'passed');
+    },
     mark: {attrs: ['scope', 'id', 'role']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.1']}
@@ -3429,10 +3339,8 @@ tanaguruTestsList.push({
         }
 	},
 	analyzeElements: function (collection) {
-		for (var i = 0; i < collection.length; i++) {
-			collection[i].status = 'passed';
-		}
-	},
+		collection.map(e => e.status = 'passed');
+    },
     mark: {attrs: ['scope']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.2']}
@@ -3536,10 +3444,8 @@ tanaguruTestsList.push({
         return true;
 	},
     analyzeElements: function (collection) {
-		for (var i = 0; i < collection.length; i++) {
-			collection[i].status = 'passed';
-		}
-	},
+		collection.map(e => e.status = 'passed');
+    },
     mark: {attrs: ['scope', 'id', 'role']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.3']}
@@ -3575,10 +3481,8 @@ tanaguruTestsList.push({
 		}
 	},
 	analyzeElements: function (collection) {
-		for (var i = 0; i < collection.length; i++) {
-			collection[i].status = 'passed';
-		}
-	},
+		collection.map(e => e.status = 'passed');
+    },
     mark: {attrs: ['headers']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.4']}
@@ -3637,10 +3541,8 @@ tanaguruTestsList.push({
 	name: "Liste des en-têtes ARIA s'appliquant à toute une ligne ou colonne correctement renseignés.",
 	query: '[role="columnheader"][data-tng-table="headerColFull"], [role="rowheader"][data-tng-table="headerRowFull"]',
     analyzeElements: function (collection) {
-		for (var i = 0; i < collection.length; i++) {
-			collection[i].status = 'passed';
-		}
-	},
+        collection.map(e => e.status = 'passed');
+    },
     mark: {attrs: ['role']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.5']}
@@ -3686,9 +3588,7 @@ tanaguruTestsList.push({
         return true;
 	},
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.8.1']}
@@ -3707,7 +3607,13 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if (item.querySelector('img, [role="img"], svg, object[type="image"], canvas') == null) {
-            return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+            if(item.isNotExposedDueTo.length == 0) {
+                if(!item.hasAccessibleName()) {
+                    return true;
+                } else {
+                    item.setAttribute('data-tng-link-accessiblename', true);
+                }
+            } 
         }
     },
     mark: {attrs: ['role']},
@@ -3721,8 +3627,12 @@ tanaguruTestsList.push({
     query: 'a[href], [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') == null) {
-            return item.isNotExposedDueTo.length != 0 && item.isVisible;
+        if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') == null && item.isNotExposedDueTo.length != 0) {
+            if(item.isVisible) {
+                return true;
+            } else {
+                item.setAttribute('data-tng-link-na', true);
+            }
         }
     },
     mark: {attrs: ['role']},
@@ -3733,16 +3643,9 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens texte non visibles non restitués',
-    query: 'a[href], [role="link"]',
-    filter: function (item) {
-        if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') == null) {
-            return item.isNotExposedDueTo.length != 0 && !item.isVisible;
-        }
-    },
+    query: '[data-tng-link-na]',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
+        collection.map(e => e.status = 'inapplicable');
     },
     mark: {attrs: ['role']},
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3752,18 +3655,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens texte avec un nom accessible',
-    query: 'a[href], [role="link"]',
+    query: '[data-tng-link-accessiblename]',
     description:'Vérifiez la pertinence des noms accessibles des liens',
-    filter: function (item) {
-        if (item.querySelector('img, [role="img"], svg, object[type="image"], canvas') == null) {
-            return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
-        }
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     mark: {attrs: ['role']},
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.1']}
@@ -3779,14 +3672,24 @@ tanaguruTestsList.push({
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent == "")) {
             var images = item.querySelectorAll('img, [role="img"], svg, object[type="image"], canvas');
             var linkName = false;
-            var i = 0;
-            while(images[i] && !linkName) {
+            var imagesLength = images.length;
+            for(let i = 0; i < imagesLength; i++) {
                 if(images[i].hasAccessibleName()) {
                     linkName = true;
+                    break;
                 }
-                i++;
             }
-            return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName() && !linkName;
+
+            if(item.isNotExposedDueTo.length == 0) {
+                if(!item.hasAccessibleName()) {
+                    return !linkName;
+                } else {
+                    if(linkName) {
+                        item.setAttribute('data-tng-imglink-accessiblename', true);
+                    }
+                }
+                
+            }
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3800,7 +3703,13 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
-            return item.isNotExposedDueTo.length != 0 && item.isVisible;
+            if(item.isNotExposedDueTo.length != 0) {
+                if(item.isVisible) {
+                    return true;
+                } else {
+                    item.setAttribute('data-tng-imglink-na', true);
+                }
+            }
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3810,16 +3719,9 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens images non visibles non restitués',
-    query: 'a[href], [role="link"]',
-    filter: function (item) {
-        if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
-            return item.isNotExposedDueTo.length != 0 && !item.isVisible;
-        }
-    },
+    query: '[data-tng-imglink-na]',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
+        collection.map(e => e.status = 'inapplicable');
     },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.2']}
@@ -3828,27 +3730,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens images avec un nom accessible',
-    query: 'a[href], [role="link"]',
+    query: '[data-tng-imglink-accessiblename]',
     description:'Vérifiez la pertinence des noms accessibles des images',
-    filter: function (item) {
-        if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent == "")) {
-            var images = item.querySelectorAll('img, [role="img"], svg, object[type="image"], canvas');
-            var linkName = false;
-            var i = 0;
-            while(images[i] && !linkName) {
-                if(images[i].hasAccessibleName()) {
-                    linkName = true;
-                }
-                i++;
-            }
-            return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName() && linkName;
-        }
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.2']}
 });
@@ -3863,14 +3746,24 @@ tanaguruTestsList.push({
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
             var children = item.childNodes;
             var linkName = false;
-            var i = 0;
-            while(children[i] && !linkName) {
+            var childrenLength = children.length;
+            for(let i = 0; i < childrenLength; i++) {
                 if(children[i].nodeType === 1 && children[i].hasAccessibleName()) {
                     linkName = true;
+                    break;
                 }
-                i++;
             }
-            return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName() && !linkName;
+
+            if(item.isNotExposedDueTo.length == 0) {
+                if(!item.hasAccessibleName()) {
+                    return !linkName;
+                } else {
+                    if(linkName) {
+                        item.setAttribute('data-tng-cplink-accessiblename', true);
+                    }
+                }
+                
+            }
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3884,7 +3777,13 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
-            return item.isNotExposedDueTo.length != 0 && item.isVisible;
+            if(item.isNotExposedDueTo.length != 0) {
+                if(item.isVisible) {
+                    return true;
+                } else {
+                    item.setAttribute('data-tng-cplink-na', true);
+                }
+            }
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3894,16 +3793,9 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens composites non visibles non restitués',
-    query: 'a[href], [role="link"]',
-    filter: function (item) {
-        if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
-            return item.isNotExposedDueTo.length != 0 && !item.isVisible;
-        }
-    },
+    query: '[data-tng-cplink-na]',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
+        collection.map(e => e.status = 'inapplicable');
     },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.3']}
@@ -3912,27 +3804,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens composites avec un nom accessible',
-    query: 'a[href], [role="link"]',
+    query: '[data-tng-cplink-accessiblename]',
     description:'Vérifiez la pertinence des noms accessibles.',
-    filter: function (item) {
-        if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
-            var children = item.childNodes;
-            var linkName = false;
-            var i = 0;
-            while(children[i] && !linkName) {
-                if(children[i].nodeType === 1 && children[i].hasAccessibleName()) {
-                    linkName = true;
-                }
-                i++;
-            }
-            return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName() && linkName;
-        }
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.3']}
 });
@@ -3944,7 +3817,13 @@ tanaguruTestsList.push({
     query: 'svg a[href], svg [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+        if(item.isNotExposedDueTo.length == 0) {
+            if(!item.hasAccessibleName()) {
+                return true;
+            } else {
+                item.setAttribute('data-tng-svglink-accessiblename', true);
+            }
+        }
     },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.4']}
@@ -3956,7 +3835,13 @@ tanaguruTestsList.push({
     query: 'svg a[href], svg [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
-        return item.isNotExposedDueTo.length != 0 && item.isVisible;
+        if(item.isNotExposedDueTo.length != 0) {
+            if(item.isVisible) {
+                return true;
+            } else {
+                item.setAttribute('data-tng-svglink-na', true);
+            }
+        }
     },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.4']}
@@ -3965,14 +3850,9 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens SVG non visibles non restitués',
-    query: 'svg a[href], svg [role="link"]',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length != 0 && !item.isVisible;
-    },
+    query: '[data-tng-svglink-na]',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'inapplicable';
-        }
+        collection.map(e => e.status = 'inapplicable');
     },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.4']}
@@ -3981,16 +3861,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens SVG avec un nom accessible',
-    query: 'svg a[href], svg [role="link"]',
+    query: '[data-tng-svglink-accessiblename]',
     description:'Vérifiez la pertinence des noms accessibles.',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.4']}
 });
@@ -4002,12 +3874,21 @@ tanaguruTestsList.push({
     query: 'a[href], [role="link"], svg a[href], svg [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.isVisible && item.innerText) {
-            var linkName = item.innerText.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-            var linkAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-            var regex = new RegExp(linkName, 'mi');
-            
-            return item.isNotExposedDueTo.length == 0 && !linkAccessibleName.match(regex);
+        if(item.isVisible) {
+            item.setAttribute('data-tng-visible-link', true);
+            if(item.innerText) {
+                var linkName = item.innerText.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+                var linkAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+                var regex = new RegExp(linkName, 'mi');
+                
+                if(item.isNotExposedDueTo.length == 0) {
+                    if(!linkAccessibleName.match(regex)) {
+                        return true;
+                    } else {
+                        item.setAttribute('data-tng-link-names-match', true);
+                    }
+                }
+            }
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -4017,20 +3898,9 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens ayant un intitulé visible bien repris dans le nom accessible.',
-    query: 'a[href], [role="link"], svg a[href], svg [role="link"]',
-    filter: function (item) {
-        if(item.isVisible && item.innerText) {
-            var linkName = item.innerText.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-            var linkAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-            var regex = new RegExp(linkName, 'mi');
-
-            return item.isNotExposedDueTo.length == 0 && linkAccessibleName.match(regex);
-        }
-    },
+    query: '[data-tng-link-names-match]',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.5']}
@@ -4044,12 +3914,19 @@ tanaguruTestsList.push({
     query: 'a[href], [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.innerText && item.innerText.trim().length > 0) {
-            return;
-        }
-
-        if(item.isVisible) {
-            return item.querySelectorAll('img, [role="img"], object, canvas, svg').length === 0;
+        if(item.isNotExposedDueTo.length == 0 || item.hasAttribute('data-tng-visible-link')) {
+            if(item.innerText && item.innerText.trim().length > 0) {
+                item.setAttribute('data-tng-link-hasname', true);
+                return;
+            }
+    
+            if(item.hasAttribute('data-tng-visible-link')) {
+                if(item.querySelectorAll('img, [role="img"], object, canvas, svg').length === 0) {
+                    return true;
+                } else {
+                    item.setAttribute('data-tng-link-hasname', true);
+                }
+            }
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -4059,22 +3936,9 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens avec un intitulé entre <a> et </a>.',
-    query: 'a[href], [role="link"]',
-    filter: function (item) {
-        if(item.isNotExposedDueTo.length == 0 || item.isVisible) {
-            if(item.innerText && item.innerText.trim().length > 0) {
-                return true;
-            }
-    
-            if(item.isVisible) {
-                return item.querySelectorAll('img, [role="img"], object, canvas, svg').length > 0;
-            }
-        }
-    },
+    query: '[data-tng-link-hasname]',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.2.1']}
@@ -4118,10 +3982,8 @@ tanaguruTestsList.push({
         }
 	},
 	analyzeElements: function (collection) {
-		for (var i = 0; i < collection.length; i++) {
-			collection[i].status = 'passed';
-		}
-	},
+		collection.map(e => e.status = 'passed');
+    },
 	tags: ['a11y', 'buttons', 'accessiblename'],
 	ressources: {'rgaa': ['7.1.1']}
 });
@@ -4188,9 +4050,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'accessiblename', 'buttons'],
     ressources: {'rgaa': ['7.1.3']}
@@ -4303,7 +4163,8 @@ tanaguruTestsList.push({
 	name: 'Le type de document (balise doctype) est valide.',
     node: document.doctype,
     analyzeElements: function(collection) {
-        for (var i = 0; i < collection.length; i++) {
+        let collectionLength = collection.length;
+        for (var i = 0; i < collectionLength; i++) {
             var item = collection[i];
             var nameList = ['html', 'math', 'svg:svg', 'svg'];
             var htmlList = [
@@ -4371,7 +4232,8 @@ tanaguruTestsList.push({
 	name: 'Le type de document est déclaré avant l\'ouverture de la balise html.',
     node: document.doctype,
     analyzeElements: function(collection) {
-        for (var i = 0; i < collection.length; i++) {
+        let collectionLength = collection.length;
+        for (var i = 0; i < collectionLength; i++) {
             var sibling = collection[i].nextSibling;
 			if(sibling && sibling.tagName && sibling.tagName.toLowerCase() === 'html') {
                 collection[i].status = 'passed';
@@ -4430,10 +4292,8 @@ tanaguruTestsList.push({
 		return item.isNotExposedDueTo.length == 0 ? item.hasValidRole() : false;
 	},
 	analyzeElements: function (collection) {
-		for (var i = 0; i < collection.length; i++) {
-			collection[i].status = 'passed';
-		}
-	},
+		collection.map(e => e.status = 'passed');
+    },
 	tags: ['a11y', 'aria', 'code'],
 	ressources: {'rgaa': ['8.2.1']}
 });
@@ -4485,9 +4345,7 @@ tanaguruTestsList.push({
 		}
 	},
 	analyzeElements: function (collection) {
-		for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+		collection.map(e => e.status = 'passed');
 	},
 	tags: ['a11y', 'aria', 'code'],
 	ressources: {'rgaa': ['8.2.1']}
@@ -4600,9 +4458,7 @@ tanaguruTestsList.push({
     name: 'La langue de la page est spécifiée.',
     query: 'html[lang], html[xml\\:lang]',
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: {attrs: ['lang', 'xml\\:lang']},
     tags: ['a11y', 'languages', 'mandatory'],
@@ -4643,9 +4499,7 @@ tanaguruTestsList.push({
         }
 	},
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: {attrs: ['lang', 'xml\\:lang']},
 	tags: ['a11y', 'languages', 'mandatory'],
@@ -4726,9 +4580,7 @@ tanaguruTestsList.push({
 		return item.hasValidLanguageCode();
 	},
     analyzeElements: function(collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: {attrs: ['lang', 'xml\\:lang']},
 	tags: ['a11y', 'languages', 'mandatory'],
@@ -4767,11 +4619,6 @@ tanaguruTestsList.push({
             return !defaultTitles.includes(item.textContent.trim().toLowerCase());
         }
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.6.1']}
 });
@@ -4802,11 +4649,6 @@ tanaguruTestsList.push({
     query: 'body [lang], body [xml\\:lang]',
     filter: function (item) {
         return (item.hasAttribute('lang')||item.hasAttribute('xml:lang'));
-    },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
     },
     mark: { attrs: ['lang', 'xml:lang']},
     tags: ['a11y', 'mandatory'],
@@ -4856,9 +4698,7 @@ tanaguruTestsList.push({
         }
 	},
     analyzeElements: function(collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['lang', 'xml:lang']},
     tags: ['a11y', 'languages', 'mandatory'],
@@ -4897,9 +4737,7 @@ tanaguruTestsList.push({
 		return item.hasValidLanguageCode();
 	},
     analyzeElements: function(collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['lang', 'xml:lang']},
     tags: ['a11y', 'languages', 'mandatory'],
@@ -4959,11 +4797,6 @@ tanaguruTestsList.push({
         var dirAttr = item.getAttribute('dir');
         return item.isNotExposedDueTo.length == 0 && (dirAttr == 'ltr' || dirAttr == 'rtl');
     },
-    analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'cantTell';
-        }
-    },
     mark: { attrs: ['dir']},
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.10.2']}
@@ -5000,8 +4833,8 @@ tanaguruTestsList.push({
                     var headings = parent.querySelectorAll(currentElement+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
                 }
                 
-
-                for(var i = 0; i < headings.length; i++) {
+                let hlength = headings.length;
+                for(var i = 0; i < hlength; i++) {
                     if(headings[i] === item) {
                         parent = parent.tagName.toLowerCase() != 'body' ? parent.parentNode : null;
                         break;
@@ -5041,7 +4874,9 @@ tanaguruTestsList.push({
                     var headings = parent.querySelectorAll(currentElement+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
                 }
 
-                for(var i = 0; i < headings.length; i++) {
+                var headingsLength = headings.length;
+
+                for(var i = 0; i < headingsLength; i++) {
                     if(headings[i] === item) {
                         parent = parent.tagName.toLowerCase() != 'body' ? parent.parentNode : null;
                         break;
@@ -5057,9 +4892,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: {attrs: ['role', 'aria-level']},
     tags: ['a11y', 'headings'],
@@ -5208,6 +5041,7 @@ tanaguruTestsList.push({
  ** Tous les tests sont répertoriés
  *TODO 10.4.1 récupérer la liste de noeuds texte -> font-size-200% -> check viewport position
  *TODO traiter le 10.5 dans la boucle qui passe chaque noeud texte dans le script de contrast, car il n'est pas possible de recupérer simplement les propriétés color et background appliquées directement sur les éléments
+ *TODO 10.11.1 et 10.11.2 voir si on peut être + performant avec l'api windows
  *TODO 10.12.1 passer chaque noeud texte après avoir défini les propriétés d'espacement du texte sur le document
  */
 
@@ -5305,9 +5139,7 @@ tanaguruTestsList.push({
 		}
 	},
 	analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: {attrs: ['content']},
 	tags: ['a11y', 'presentation', 'meta'],
@@ -5394,29 +5226,18 @@ tanaguruTestsList.push({
 
 //* 10.8 Pour chaque page web, les contenus cachés ont-ils vocation à être ignorés par les technologies d'assistance ?
 // 10.8.1 Dans chaque page web, chaque contenu caché vérifie-t-il une de ces conditions ?
-tanaguruTestsList.push({
-	lang: 'fr',
-	name: "Liste des contenus cachés restitués.",
-    description: "Vérifier que ces éléments ont bien vocation à être restitués par les technologies d'assistance.",
-    query: 'body *',
-    filter: function(item) {
-        return !item.isVisible && item.isNotExposedDueTo.length === 0;
-    },
-	tags: ['a11y', 'presentation'],
-    ressources: { 'rgaa': ['10.8.1'] }
-});
-
-tanaguruTestsList.push({
-	lang: 'fr',
-	name: "Liste des contenus cachés non restitués.",
-    description: "Vérifier que ces éléments ont bien vocation à être ignorés par les technologies d'assistance.",
-    query: 'body *',
-    filter: function(item) {
-        return !item.isVisible && item.isNotExposedDueTo.length > 0;
-    },
-	tags: ['a11y', 'presentation'],
-    ressources: { 'rgaa': ['10.8.1'] }
-});
+//! traitement trop long sur firefox
+// tanaguruTestsList.push({
+// 	lang: 'fr',
+// 	name: "Liste des contenus non restitués aux technologies d'assistance.",
+//     description: "Vérifier que ces éléments ont bien vocation à être ignorés par les technologies d'assistance.",
+//     query: 'body *',
+//     filter: function(item) {
+//         return item.isNotExposedDueTo.length > 0;
+//     },
+// 	tags: ['a11y', 'presentation'],
+//     ressources: { 'rgaa': ['10.8.1'] }
+// });
 
 //* 10.9 Dans chaque page web, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle est-elle respectée ?
 //* 10.10 Dans chaque page web, l'information ne doit pas être donnée par la forme, taille ou position uniquement. Cette règle est-elle implémentée de façon pertinente ?
@@ -5460,58 +5281,56 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['10.9.4', '10.10.4'] }
 });
 
+//! 10.11 l'ajout de l'iframe cache les images sur certains sites sous chrome
 //* 10.11 Pour chaque page web, les contenus peuvent-ils être présentés sans avoir recours à un défilement vertical pour une fenêtre ayant une hauteur de 256px ou à un défilement horizontal pour une fenêtre ayant une largeur de 320px (hors cas particuliers) ?
 // 10.11.1 Pour chaque page web, lorsque le contenu dont le sens de lecture est horizontal est affiché dans une fenêtre réduite à une largeur de 320px, l'ensemble des informations et des fonctionnalités sont-elles disponibles sans aucun défilement horizontal (hors cas particuliers) ?
-tanaguruTestsList.push({
-	lang: 'fr',
-	name: "Si le sens de lecture du contenu est horizontal, il ne doit y avoir aucun défilement horizontal sur les écrans de 320px de large.",
-    query: 'body',
-    analyzeElements: function(collection) {
-        var currentPage = document.createElement("iframe");
-        currentPage.id = 'test10-11-1-tng';
-        currentPage.style.width = "320px";
-        var pageHead = document.head.innerHTML;
-        var pageBody = document.body.outerHTML;
-        document.body.appendChild(currentPage);
-        currentPage.contentWindow.document.head.innerHTML = pageHead;
-        currentPage.contentWindow.document.body.outerHTML = pageBody;
-        var horizontalScroll = currentPage.contentWindow.document.body.scrollWidth - currentPage.contentWindow.document.body.clientWidth;
-        currentPage.remove();
-        if(horizontalScroll > 0) {
-            collection[0].status = 'cantTell';
-        } else {
-            collection[0].status = 'passed';
-        }
-    },
-	tags: ['a11y', 'presentation'],
-    ressources: { 'rgaa': ['10.11.1'] }
-});
+// tanaguruTestsList.push({
+// 	lang: 'fr',
+// 	name: "Si le sens de lecture du contenu est horizontal, il ne doit y avoir aucun défilement horizontal sur les écrans de 320px de large.",
+//     query: 'body',
+//     analyzeElements: function(collection) {
+//         var currentPage = document.createElement("iframe");
+//         currentPage.id = 'test10-11-1-tng';
+//         currentPage.style.width = "320px";
+//         currentPage.style.height = "256px";
+//         var pageHead = document.head.innerHTML;
+//         var pageBody = document.body.outerHTML;
+//         document.body.appendChild(currentPage);
+//         currentPage.contentWindow.document.head.innerHTML = pageHead;
+//         currentPage.contentWindow.document.body.outerHTML = pageBody;
+//         var horizontalScroll = currentPage.contentWindow.document.body.scrollWidth - currentPage.contentWindow.document.body.clientWidth;
+//         var verticalScroll = currentPage.contentWindow.document.body.scrollHeight - currentPage.contentWindow.document.body.clientHeight;
+//         currentPage.remove();
+//         if(verticalScroll > 0) {
+//             collection[0].setAttribute('data-tng-verticallScroll', true);
+//         } else {
+//             collection[0].setAttribute('data-tng-verticallScroll', false);
+//         }
+//         if(horizontalScroll > 0) {
+//             collection[0].status = 'cantTell';
+//         } else {
+//             collection[0].status = 'passed';
+//         }
+//     },
+// 	tags: ['a11y', 'presentation'],
+//     ressources: { 'rgaa': ['10.11.1'] }
+// });
 
 // 10.11.2 Pour chaque page web, lorsque le contenu dont le sens de lecture est vertical est affiché dans une fenêtre réduite à une hauteur de 256px, l'ensemble des informations et des fonctionnalités sont-elles disponibles sans aucun défilement vertical (hors cas particuliers) ?
-tanaguruTestsList.push({
-	lang: 'fr',
-	name: "Si le sens de lecture du contenu est vertical, il ne doit y avoir aucun défilement vertical sur les écrans de 256px de haut.",
-    query: 'body',
-    analyzeElements: function(collection) {
-        var currentPage = document.createElement("iframe");
-        currentPage.id = 'test10-11-2-tng';
-        currentPage.style.height = "256px";
-        var pageHead = document.head.innerHTML;
-        var pageBody = document.body.outerHTML;
-        document.body.appendChild(currentPage);
-        currentPage.contentWindow.document.head.innerHTML = pageHead;
-        currentPage.contentWindow.document.body.outerHTML = pageBody;
-        var verticalScroll = currentPage.contentWindow.document.body.scrollHeight - currentPage.contentWindow.document.body.clientHeight;
-        currentPage.remove();
-        if(verticalScroll > 0) {
-            collection[0].status = 'cantTell';
-        } else {
-            collection[0].status = 'passed';
-        }
-    },
-	tags: ['a11y', 'presentation'],
-    ressources: { 'rgaa': ['10.11.2'] }
-});
+// tanaguruTestsList.push({
+// 	lang: 'fr',
+// 	name: "Si le sens de lecture du contenu est vertical, il ne doit y avoir aucun défilement vertical sur les écrans de 256px de haut.",
+//     query: '[data-tng-verticallScroll]',
+//     analyzeElements: function(collection) {
+//         if(collection[0].getAttribute('data-tng-verticallScroll') === 'true') {
+//             collection[0].status = 'cantTell';
+//         }
+
+//         collection[0].status = 'passed';
+//     },
+// 	tags: ['a11y', 'presentation'],
+//     ressources: { 'rgaa': ['10.11.2'] }
+// });
 
 //* 10.12 Dans chaque page web, les propriétés d'espacement du texte peuvent-elles être redéfinies par l'utilisateur sans perte de contenu ou de fonctionnalité (hors cas particuliers) ?
 // 10.12.1 Dans chaque page web, le texte reste-t-il lisible lorsque l'affichage est modifié selon ces conditions (hors cas particuliers) ? 
@@ -5599,9 +5418,7 @@ tanaguruTestsList.push({
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.1.1'] }
@@ -5664,9 +5481,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: {attrs: ['for']},
     tags: ['a11y', 'forms', 'accessiblename'],
@@ -5712,8 +5527,9 @@ tanaguruTestsList.push({
         if(item.hasAttribute('id') && item.getAttribute('id').trim().length > 0) {
             let id = item.getAttribute('id');
             let labels = document.querySelectorAll('label[for]');
+            let labelsLength = labels.length;
             
-            for(let i = 0; i < labels.length; i++) {
+            for(let i = 0; i < labelsLength; i++) {
                 let forAttr = labels[i].getAttribute('for');
                 if(forAttr.match(id)) {
                     if(labels[i].textContent.trim().length > 0) {
@@ -5822,8 +5638,9 @@ tanaguruTestsList.push({
                     id = id.replace(/[!"#$%&'()*+,-./:;<=>?@[\]^`{|}~]/g, "\\$&");
                 }
                 var tags = document.querySelectorAll('#'+id);
+                var tagsLength = tags.length;
 
-                for(var i = 0; i < tags.length; i++) {
+                for(var i = 0; i < tagsLength; i++) {
                     if(htmlData.elements[tags[i].tagName.toLowerCase()]) {
                         if(htmlData.elements[tags[i].tagName.toLowerCase()].category === 'forms') {
                             return true;
@@ -5834,7 +5651,9 @@ tanaguruTestsList.push({
 
             if(item.hasChildNodes()) {
                 var children = item.childNodes;
-                for(var i = 0; i < children.length; i++) {
+                var childrenLength = children.length;
+
+                for(var i = 0; i < childrenLength; i++) {
                     if(children[i].tagName) {
                         if(htmlData.elements[children[i].tagName.toLowerCase()]) {
                             if(htmlData.elements[children[i].tagName.toLowerCase()].category === 'forms') {
@@ -5911,9 +5730,7 @@ tanaguruTestsList.push({
         return item.accessibleName.includes(item.getAttribute('data-tng-text-label'));
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.2.5'] }
@@ -6017,9 +5834,7 @@ tanaguruTestsList.push({
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.6.1'] }
@@ -6074,9 +5889,7 @@ tanaguruTestsList.push({
         return item.isNotExposedDueTo.length == 0;
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     mark: {attrs: ['label']},
     tags: ['a11y', 'forms', 'accessiblename'],
@@ -6158,9 +5971,7 @@ tanaguruTestsList.push({
         }
     },
     analyzeElements: function (collection) {
-        for (var i = 0; i < collection.length; i++) {
-            collection[i].status = 'passed';
-        }
+        collection.map(e => e.status = 'passed');
     },
     tags: ['a11y', 'accessiblename', 'buttons', 'forms'],
     ressources: {'rgaa': ['11.9.2']}

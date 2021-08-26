@@ -6,6 +6,7 @@ if(!window.getComputedStyle(document.body, null).getPropertyValue('background-co
 }
 
 var tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+
 var textNodeList = {
 	//? 'invalid', 'valid', 'cantTell' = contrast ratio status
 	//? '45' = minimum contrast ratio : 4.5:1
@@ -530,8 +531,9 @@ function getResults(element, opacity) {
 	}
 }
 
+let textStart = new Date().getTime() / 1000;
 // get datas for each text node
-while (tw.nextNode()) {
+while(tw.nextNode()) {
 	var cn = tw.currentNode;
 	var element = cn.parentNode;
 
@@ -630,6 +632,9 @@ while (tw.nextNode()) {
 		}
 	}
 }
+
+let textEnd = new Date().getTime() / 1000;
+console.log('Parcours des noeuds texte : ', textEnd - textStart);
 
 if(!bgBody) document.body.style.backgroundColor = 'unset';
 

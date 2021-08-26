@@ -1,5 +1,9 @@
 var statuses = ['failed', 'cantTell', 'passed'];
-for (var i = 0; i < tanaguruTestsList.length; i++) {
+
+let startTest = new Date().getTime() / 1000;
+let testsLength = tanaguruTestsList.length;
+
+for (var i = 0; i < testsLength; i++) {
     /*
         Schéma des clefs :
         testIdName
@@ -33,6 +37,10 @@ for (var i = 0; i < tanaguruTestsList.length; i++) {
     }
     createTanaguruTest(test);
 }
+
+let endTest = new Date().getTime() / 1000;
+let durationTest = endTest - startTest;
+console.log('tests time : ', durationTest);
 
 // code.
 loadTanaguruTests();

@@ -145,8 +145,9 @@ if (!HTMLElement.prototype.hasOwnProperty('availableARIASemantics')) {
                         selectors.push('[role="button"]', '[role="checkbox"]', '[role="menuitem"]', '[role="menuitemcheckbox"]', '[role="menuitemradio"]', '[role="option"]', '[role="radio"]', '[role="switch"]', '[role="tab"]', '[role="treeitem"]');
                     }
                     else {
-                        for (var ariarole in ariaroles) {
-                            selectors.push('[role="' + ariarole + '"]');
+
+                        for(let i = 0; i < ariaroles.length; i++) {
+                            selectors.push('[role="' + ariaroles[i] + '"]');
                         }
                     }
                     break;
@@ -193,8 +194,8 @@ if (!HTMLElement.prototype.hasOwnProperty('availableARIASemantics')) {
                 case 'u':
                 case 'var':
                 case 'wbr':
-                    for (var ariarole in ariaroles) {
-                        selectors.push('[role="' + ariarole + '"]');
+                    for(let i = 0; i < ariaroles.length; i++) {
+                        selectors.push('[role="' + ariaroles[i] + '"]');
                     }
                     break;
                 case 'article':
@@ -252,8 +253,8 @@ if (!HTMLElement.prototype.hasOwnProperty('availableARIASemantics')) {
                         selectors.push('[role="none"]', '[role="presentation"]');
                     }
                     else {
-                        for (var ariarole in ariaroles) {
-                            selectors.push('[role="' + ariarole + '"]');
+                        for(let i = 0; i < ariaroles.length; i++) {
+                            selectors.push('[role="' + ariaroles[i] + '"]');
                         }
                     }
                     break;
@@ -1134,6 +1135,7 @@ function createTanaguruTest(test) {
         // Intégrer chaque résultat dans window.tanaguru.tests.
     }
     else if ((test.hasOwnProperty('query') && test.query.constructor == String) || test.hasOwnProperty('contrast') || test.hasOwnProperty('code') || test.hasOwnProperty('node')) {
+        let start = new Date().getTime() / 1000;
         // Sélection des éléments.
         if(test.hasOwnProperty('contrast')) {
             var elements = textNodeList[test.contrast];
@@ -1148,6 +1150,7 @@ function createTanaguruTest(test) {
         if (elements/* && elements.length > 0*/) {
             // Statut du test par défaut.
             var status = 'cantTell';
+            elements = Array.from(elements);
 
             // Initialisation des tags.
             initTanaguru();
@@ -1169,7 +1172,6 @@ function createTanaguruTest(test) {
             // Filtre additionnel sur la sélection d'éléments.
             if (test.hasOwnProperty('filter')) {
                 if (test.filter.constructor == Function) {
-                    elements = Array.from(elements);
                     elements = elements.filter(test.filter);
                 }
                 else {
@@ -1256,25 +1258,20 @@ function createTanaguruTest(test) {
             // Chargement du résultat.
             var outputelements = [];
             if(!test.hasOwnProperty('contrast')) {
-                for (var i = 0; i < elements.length; i++) {
-                    outputelements.push(manageOutput(elements[i]));
-                }
+                outputelements = elements.map(e => manageOutput(e));
             }
             
             if(test.hasOwnProperty('contrast')) {
-                for (var i = 0; i < elements.length; i++) {
+                let contrastElLength = elements.length;
+                for (var i = 0; i < contrastElLength; i++) {
                     var node = elements[i].node;
-                    var accessibleName = node.accessibleName;
-                    var implicitARIASemantic = node.implicitARIASemantic;
-                    var explicitARIASemantic = node.explicitARIASemantic;
-                    var canBeReachedUsingKeyboardWith = node.canBeReachedUsingKeyboardWith;
-                    var isNotExposedDueTo = node.isNotExposedDueTo;
 
-                    elements[i].role.implicit = implicitARIASemantic;
-                    elements[i].role.explicit = explicitARIASemantic;
-                    elements[i].accessibleName = accessibleName;
-                    elements[i].canBeReachedUsingKeyboardWith = canBeReachedUsingKeyboardWith;
-                    elements[i].isNotExposedDueTo = isNotExposedDueTo;
+                    elements[i].role.implicit = node.implicitARIASemantic;
+                    elements[i].role.explicit = node.explicitARIASemantic;
+                    elements[i].accessibleName = node.accessibleName;
+                    elements[i].canBeReachedUsingKeyboardWith = node.canBeReachedUsingKeyboardWith;
+                    elements[i].isNotExposedDueTo = node.isNotExposedDueTo;
+
                     delete elements[i].node;
                 }
                 
@@ -1313,6 +1310,12 @@ function createTanaguruTest(test) {
                 result.failedincollection = failedincollection;
             }
 
+            let end = new Date().getTime() / 1000;
+            let duration = end - start;
+            if(duration > 0.3) {
+                console.log(test.ressources.rgaa, test.name, duration);
+            }
+            
             addResultSet("Nouvelle syntaxe d'écriture des tests", result);
             // Intégrer chaque résultat dans window.tanaguru.tests.
         }
@@ -1528,7 +1531,9 @@ var htmlData = {
 var HTML = {
     getFocusableElementsSelector: function () {
         var elements = [];
-        for (var element in htmlData.elements) {
+        let htmlDataElLength = htmlData.elements.length;
+        for(var i = 0; i < htmlDataElLength; i++) {
+            let element = htmlData.elements[i];
             if (htmlData.elements[element].hasOwnProperty('focusable')) {
                 var focusable = htmlData.elements[element].focusable;
                 elements.push((focusable.constructor == String ? focusable : element) + ':not([tabindex="-1"])');
