@@ -1006,6 +1006,7 @@ function getXPath(element) {
             }
         }
     }
+
     return (element.parentNode.nodeType == 1 ? getXPath(element.parentNode) : '') + '/' + element.tagName.toLowerCase() + '[' + (position ? position : '1') + ']' + (element.hasAttribute('id') ? '[@id="' + element.getAttribute('id') + '"]' : '') + (element.hasAttribute('class') ? '[@class="' + element.getAttribute('class') + '"]' : '');
 }
 
@@ -1068,9 +1069,9 @@ function loadTanaguruTests() {
 function manageOutput(element) {
     var status = element.status ? element.status : 'cantTell';
     element.status = undefined;
-    var accessibleName = element.accessibleName;
-    var implicitARIASemantic = element.implicitARIASemantic;
-    var explicitARIASemantic = element.explicitARIASemantic;
+    // var accessibleName = element.accessibleName;
+    // var implicitARIASemantic = element.implicitARIASemantic;
+    // var explicitARIASemantic = element.explicitARIASemantic;
     var canBeReachedUsingKeyboardWith = element.canBeReachedUsingKeyboardWith;
     var isVisible = element.isVisible;
     var isNotExposedDueTo = element.isNotExposedDueTo;
@@ -1087,7 +1088,7 @@ function manageOutput(element) {
             fakeelement.innerHTML = '[...]';
         }
     }
-    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, xpath: e ? getXPath(element) : null, role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: e ? canBeReachedUsingKeyboardWith : [], isVisible: e ? isVisible : false, isNotExposedDueTo: e ? isNotExposedDueTo : '' };
+    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, xpath: e ? getXPath(element) : null, /*role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName,*/ canBeReachedUsingKeyboardWith: e ? canBeReachedUsingKeyboardWith : [], isVisible: e ? isVisible : false, isNotExposedDueTo: e ? isNotExposedDueTo : '' };
 }
 
 function createTanaguruTag(tag, status) {
@@ -1266,9 +1267,9 @@ function createTanaguruTest(test) {
                 for (var i = 0; i < contrastElLength; i++) {
                     var node = elements[i].node;
 
-                    elements[i].role.implicit = node.implicitARIASemantic;
-                    elements[i].role.explicit = node.explicitARIASemantic;
-                    elements[i].accessibleName = node.accessibleName;
+                    // elements[i].role.implicit = node.implicitARIASemantic;
+                    // elements[i].role.explicit = node.explicitARIASemantic;
+                    // elements[i].accessibleName = node.accessibleName;
                     elements[i].canBeReachedUsingKeyboardWith = node.canBeReachedUsingKeyboardWith;
                     elements[i].isNotExposedDueTo = node.isNotExposedDueTo;
 

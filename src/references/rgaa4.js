@@ -3606,14 +3606,27 @@ tanaguruTestsList.push({
     query: 'a[href], [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if (item.querySelector('img, [role="img"], svg, object[type="image"], canvas') == null) {
-            if(item.isNotExposedDueTo.length == 0) {
+        if(item.isVisible) {
+            item.setAttribute('data-tng-visibleLink', true);
+        } else {
+            item.setAttribute('data-tng-visibleLink', false);
+        }
+
+        if(item.closest('svg')) {
+            item.setAttribute('data-tng-svgLink', true);
+        }
+
+        if(item.isNotExposedDueTo.length == 0) {
+            item.setAttribute('data-tng-exposedLink', true);
+            if (item.querySelector('img, [role="img"], svg, object[type="image"], canvas') == null && !item.hasAttribute('data-tng-svgLink')) {
                 if(!item.hasAccessibleName()) {
                     return true;
                 } else {
                     item.setAttribute('data-tng-link-accessiblename', true);
                 }
-            } 
+            }
+        } else {
+            item.setAttribute('data-tng-exposedLink', false);
         }
     },
     mark: {attrs: ['role']},
@@ -3624,15 +3637,11 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens texte visibles non restitués',
-    query: 'a[href], [role="link"]',
+    query: '[data-tng-visibleLink="true"][data-tng-exposedLink="false"]:not([data-tng-svgLink])',
     expectedNbElements: 0,
     filter: function (item) {
-        if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') == null && item.isNotExposedDueTo.length != 0) {
-            if(item.isVisible) {
-                return true;
-            } else {
-                item.setAttribute('data-tng-link-na', true);
-            }
+        if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas')) {
+            return true;
         }
     },
     mark: {attrs: ['role']},
@@ -3643,7 +3652,12 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens texte non visibles non restitués',
-    query: '[data-tng-link-na]',
+    query: '[data-tng-visibleLink="false"][data-tng-exposedLink="false"]:not([data-tng-svgLink])',
+    filter: function (item) {
+        if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas')) {
+            return true;
+        }
+    },
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'inapplicable');
     },
@@ -3666,10 +3680,11 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens images sans nom accessible',
-    query: 'a[href], [role="link"]',
+    query: 'a[href]:not([data-tng-svgLink]), [role="link"]:not([data-tng-svgLink])',
     expectedNbElements: 0,
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent == "")) {
+            item.setAttribute('data-tng-imglink', true);
             var images = item.querySelectorAll('img, [role="img"], svg, object[type="image"], canvas');
             var linkName = false;
             var imagesLength = images.length;
@@ -3680,7 +3695,7 @@ tanaguruTestsList.push({
                 }
             }
 
-            if(item.isNotExposedDueTo.length == 0) {
+            if(item.getAttribute('data-tng-exposedLink') === 'true') {
                 if(!item.hasAccessibleName()) {
                     return !linkName;
                 } else {
@@ -3699,19 +3714,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens images visibles non restitués',
-    query: 'a[href], [role="link"]',
+    query: '[data-tng-imglink][data-tng-visibleLink="true"][data-tng-exposedLink="false"]',
     expectedNbElements: 0,
-    filter: function (item) {
-        if ((item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas') != null) && (item.textContent == "")) {
-            if(item.isNotExposedDueTo.length != 0) {
-                if(item.isVisible) {
-                    return true;
-                } else {
-                    item.setAttribute('data-tng-imglink-na', true);
-                }
-            }
-        }
-    },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.2']}
 });
@@ -3719,7 +3723,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens images non visibles non restitués',
-    query: '[data-tng-imglink-na]',
+    query: '[data-tng-imglink][data-tng-visibleLink="false"][data-tng-exposedLink="false"]',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'inapplicable');
     },
@@ -3740,10 +3744,11 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens composites sans nom accessible',
-    query: 'a[href], [role="link"]',
+    query: 'a[href]:not([data-tng-svgLink]), [role="link"]:not([data-tng-svgLink])',
     expectedNbElements: 0,
     filter: function (item) {
         if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
+            item.setAttribute('data-tng-cplink', true);
             var children = item.childNodes;
             var linkName = false;
             var childrenLength = children.length;
@@ -3754,7 +3759,7 @@ tanaguruTestsList.push({
                 }
             }
 
-            if(item.isNotExposedDueTo.length == 0) {
+            if(item.getAttribute('data-tng-exposedLink') === 'true') {
                 if(!item.hasAccessibleName()) {
                     return !linkName;
                 } else {
@@ -3773,19 +3778,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens composites visibles non restitués',
-    query: 'a[href], [role="link"]',
+    query: '[data-tng-cplink][data-tng-visibleLink="true"][data-tng-exposedLink="false"]',
     expectedNbElements: 0,
-    filter: function (item) {
-        if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
-            if(item.isNotExposedDueTo.length != 0) {
-                if(item.isVisible) {
-                    return true;
-                } else {
-                    item.setAttribute('data-tng-cplink-na', true);
-                }
-            }
-        }
-    },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.3']}
 });
@@ -3793,7 +3787,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens composites non visibles non restitués',
-    query: '[data-tng-cplink-na]',
+    query: '[data-tng-cplink][data-tng-visibleLink="false"][data-tng-exposedLink="false"]',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'inapplicable');
     },
@@ -3814,15 +3808,13 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens SVG sans nom accessible',
-    query: 'svg a[href], svg [role="link"]',
+    query: '[data-tng-svgLink][data-tng-exposedLink="true"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.isNotExposedDueTo.length == 0) {
-            if(!item.hasAccessibleName()) {
-                return true;
-            } else {
-                item.setAttribute('data-tng-svglink-accessiblename', true);
-            }
+        if(!item.hasAccessibleName()) {
+            return true;
+        } else {
+            item.setAttribute('data-tng-svglink-accessiblename', true);
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3832,17 +3824,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens SVG visibles non restitués',
-    query: 'svg a[href], svg [role="link"]',
+    query: '[data-tng-svgLink][data-tng-visibleLink="true"][data-tng-exposedLink="false"]',
     expectedNbElements: 0,
-    filter: function (item) {
-        if(item.isNotExposedDueTo.length != 0) {
-            if(item.isVisible) {
-                return true;
-            } else {
-                item.setAttribute('data-tng-svglink-na', true);
-            }
-        }
-    },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.4']}
 });
@@ -3850,7 +3833,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens SVG non visibles non restitués',
-    query: '[data-tng-svglink-na]',
+    query: '[data-tng-svgLink][data-tng-visibleLink="false"][data-tng-exposedLink="false"]',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'inapplicable');
     },
@@ -3871,23 +3854,18 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens ayant un intitulé visible non repris dans le nom accessible.',
-    query: 'a[href], [role="link"], svg a[href], svg [role="link"]',
+    query: '[data-tng-visibleLink="true"][data-tng-exposedLink="true"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.isVisible) {
-            item.setAttribute('data-tng-visible-link', true);
-            if(item.innerText) {
-                var linkName = item.innerText.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-                var linkAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-                var regex = new RegExp(linkName, 'mi');
-                
-                if(item.isNotExposedDueTo.length == 0) {
-                    if(!linkAccessibleName.match(regex)) {
-                        return true;
-                    } else {
-                        item.setAttribute('data-tng-link-names-match', true);
-                    }
-                }
+        if(item.innerText) {
+            var linkName = item.innerText.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var linkAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var regex = new RegExp(linkName, 'mi');
+            
+            if(!linkAccessibleName.match(regex)) {
+                return true;
+            } else {
+                item.setAttribute('data-tng-link-names-match', true);
             }
         }
     },
@@ -3911,21 +3889,19 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens sans intitulé entre <a> et </a>.',
-    query: 'a[href], [role="link"]',
+    query: '[data-tng-visibleLink="true"], [data-tng-exposedLink="true"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.isNotExposedDueTo.length == 0 || item.hasAttribute('data-tng-visible-link')) {
-            if(item.innerText && item.innerText.trim().length > 0) {
+        if(item.innerText && item.innerText.trim().length > 0) {
+            item.setAttribute('data-tng-link-hasname', true);
+            return;
+        }
+
+        if(item.hasAttribute('data-tng-visibleLink') && item.getAttribute('data-tng-visibleLink') === 'true') {
+            if(!item.hasAttribute('data-tng-imglink')) {
+                return true;
+            } else {
                 item.setAttribute('data-tng-link-hasname', true);
-                return;
-            }
-    
-            if(item.hasAttribute('data-tng-visible-link')) {
-                if(item.querySelectorAll('img, [role="img"], object, canvas, svg').length === 0) {
-                    return true;
-                } else {
-                    item.setAttribute('data-tng-link-hasname', true);
-                }
             }
         }
     },
@@ -4276,9 +4252,13 @@ tanaguruTestsList.push({
 			if (item.getAttribute('role').trim() == 0) {
 				return false;
 			}
-			return !item.hasValidRole();
+
+            if(item.hasValidRole()) {
+                item.setAttribute('data-tng-validRole', true);
+            } else {
+                return true;
+            }
 		}
-		return false;
 	},
     tags: ['a11y', 'aria', 'code'],
 	ressources: {'rgaa': ['8.2.1']}
@@ -4287,10 +4267,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Attributs role avec une valeur valide',
-	query: '[role]',
-	filter: function (item) {
-		return item.isNotExposedDueTo.length == 0 ? item.hasValidRole() : false;
-	},
+	query: '[data-tng-validRole]',
 	analyzeElements: function (collection) {
 		collection.map(e => e.status = 'passed');
     },
@@ -4300,7 +4277,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Attributs aria-* non définis dans WAI-ARIA.',
+	name: 'Elements possédants des attributs aria-* non définis dans WAI-ARIA.',
 	query: '*',
     expectedNbElements: 0,
     explanations: {
@@ -4309,15 +4286,16 @@ tanaguruTestsList.push({
     },
 	filter: function (item) {
 		if (item.isNotExposedDueTo.length == 0) {
-            var attributes = Array.from(item.attributes);
-            var definedStatesProperties = ARIA.getAllStatesProperties('js');
-            for (var a = 0; a < attributes.length; a++) {
-				if (/^aria-.*$/.test(attributes[a].nodeName)) {
-					if (definedStatesProperties.indexOf(attributes[a].nodeName) == -1) {
-						return true;
-					}
-				}
-			}
+            if(!item.hasInvalidAriaAttributes) {
+                for (var a = 0; a < item.attributes.length; a++) {
+                    if (item.attributes[a].name.match(/^aria-.*$/)) {
+                        item.setAttribute('data-tng-validAria', true);
+                        return;
+                    }
+                }
+                return true;
+            }
+            
 		}
 	},
 	tags: ['a11y', 'aria', 'code'],
@@ -4326,24 +4304,8 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Attributs aria-* définis dans WAI-ARIA.',
-	query: '*',
-	filter: function (item) {
-		if (item.isNotExposedDueTo.length == 0) {
-            var attributes = Array.from(item.attributes);
-            var definedStatesProperties = ARIA.getAllStatesProperties('js');
-            var ariaAttributes = false;
-            for (var a = 0; a < attributes.length; a++) {
-				if (/^aria-.*$/.test(attributes[a].nodeName)) {
-					if (definedStatesProperties.indexOf(attributes[a].nodeName) == -1) {
-						return false;
-					}
-                    ariaAttributes = true;
-				}
-			}
-            return ariaAttributes;
-		}
-	},
+	name: 'Elements possédants uniquement des attributs aria-* définis dans WAI-ARIA.',
+	query: '[data-tng-validAria]',
 	analyzeElements: function (collection) {
 		collection.map(e => e.status = 'passed');
 	},
@@ -4354,19 +4316,14 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Propiétés ARIA avec une valeur invalide.',
-	query: '*',
+	query: '[data-tng-validAria]',
 	expectedNbElements: 0,
     explanations: {
         'passed': "Cette page ne contient pas de propriété ARIA avec une valeur invalide'.",
 		'failed': "Des propriétés ARIA avec une valeur invalide sont présentes dans la page."
     },
 	filter: function (item) {
-		if (item.isNotExposedDueTo.length == 0) {
-			if (Array.from(item.attributes).filter(function(attributeNode) { return /^aria-.*$/.test(attributeNode.nodeName); }).length > 0) {
-				return item.hasAriaAttributesWithInvalidValues({ permissive: true });
-			}
-		}
-		return false;
+		return item.hasAriaAttributesWithInvalidValues({ permissive: true });
 	},
 	tags: ['a11y', 'aria', 'code'],
 	ressources: {'rgaa': ['8.2.1']}
@@ -4375,19 +4332,14 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Propriétés ARIA non autorisées sur leur élément.',
-	query: '*',
+	query: '[data-tng-validAria]',
 	expectedNbElements: 0,
     explanations: {
         'passed': "Cette page ne contient pas de propriété ARIA non autorisée.",
 		'failed': "Des propriétés ARIA non autorisées sont présentes dans la page."
     },
 	filter: function (item) {
-		if (item.isNotExposedDueTo.length == 0) {
-			if (Array.from(item.attributes).filter(function(attributeNode) { return /^aria-.*$/.test(attributeNode.nodeName); }).length > 0) {
-				return item.hasProhibitedAriaAttributes();
-			}
-		}
-		return false;
+		return item.hasProhibitedAriaAttributes();
 	},
 	tags: ['a11y', 'aria', 'code'],
 	ressources: {'rgaa': ['8.2.1']}
@@ -4442,23 +4394,15 @@ tanaguruTestsList.push({
 	ressources: {'rgaa': ['8.2.1']}
 });
 
-// 8.3.1 : Pour chaque page web, l'indication de langue par défaut vérifie-t-elle une de ces conditions ?
-// incomplete (devrait gérer les attributs lang sur les éléments contenant du texte)
-tanaguruTestsList.push({
-    lang: 'fr',
-    name: 'La langue de la page n\'est pas spécifiée.',
-    expectedNbElements: 0,
-    query: 'html:not([lang], [xml\\:lang])',
-    tags: ['a11y', 'languages', 'mandatory'],
-    ressources: {'rgaa': ['8.3.1']}
-});
-
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'La langue de la page est spécifiée.',
-    query: 'html[lang], html[xml\\:lang]',
-    analyzeElements: function (collection) {
-        collection.map(e => e.status = 'passed');
+    expectedNbElements: 1,
+    node: document.documentElement,
+    filter: function(item) {
+        if(item.hasAttribute('lang') || item.hasAttribute('xml\\:lang')) {
+            return true;
+        }
     },
     mark: {attrs: ['lang', 'xml\\:lang']},
     tags: ['a11y', 'languages', 'mandatory'],
