@@ -18,6 +18,21 @@ var tanaguruTestsList = [];
  * Consultation
  */
 
+//* 10.8 Pour chaque page web, les contenus cachés ont-ils vocation à être ignorés par les technologies d'assistance ?
+// 10.8.1 Dans chaque page web, chaque contenu caché vérifie-t-il une de ces conditions ?
+//! traitement trop long sur firefox
+// tanaguruTestsList.push({
+// 	lang: 'fr',
+// 	name: "Liste des contenus non restitués aux technologies d'assistance.",
+//     description: "Vérifier que ces éléments ont bien vocation à être ignorés par les technologies d'assistance.",
+//     query: 'body *',
+//     filter: function(item) {
+//         return item.isNotExposedDueTo.length > 0;
+//     },
+// 	tags: ['a11y', 'presentation'],
+//     ressources: { 'rgaa': ['10.8.1'] }
+// });
+
 /**
  *? IMAGES
  ** tous les tests sont répertoriés, mais les critères 1.2/1.4 et 1.5 sont améliorables
@@ -30,21 +45,35 @@ var tanaguruTestsList = [];
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'liste des images (balise img ou balise possédant l\'attribut WAI-ARIA role="img") sans nom accessible',
-    query: 'img:not([role]), [role="img"]',
+    query: 'img[data-tng-el-exposed="true"]:not([role]), [role="img"][data-tng-el-exposed="true"]',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
-        var IName = item.tagName.toLowerCase();
+        if(item.closest('a')) {
+            item.setAttribute('data-tng-image-link', true);
+            return;
+        }
+
+        let IName = item.tagName.toLowerCase();
         if (IName != 'svg' && IName != 'object' && IName != 'embed' && IName != 'canvas') {
-            if (!item.closest('a')){
-                if (IName == 'img') {
-                    if (item.hasAttribute('alt') && !item.hasAttribute('aria-label') && !item.hasAttribute('aria-labelledby')){
-                        if (item.getAttribute('alt') === '') {
-                            return false;
-                        }
+            item.setAttribute('data-tng-img-roleImg', true);
+            if (IName == 'img') {
+                if (item.hasAttribute('alt') && !item.hasAttribute('aria-label') && !item.hasAttribute('aria-labelledby')){
+                    if (item.getAttribute('alt') === '') {
+
+                        return false;
                     }
                 }
-                return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+            }
+
+            item.setAttribute('data-tng-informative-img', true);
+
+            if(item.accessibleName == '') {
+                return true;
+            } else if(item.accessibleName.length > 80) {
+                item.setAttribute('data-tanaguruAltLong','true');
+            } else {
+                item.setAttribute('data-tanaguruAltLong','false');
             }
         }
     },
@@ -55,29 +84,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des images (balise img ou balise possédant l\'attribut WAI-ARIA role="img") avec un nom accessible',
-    query: 'img:not([role]), [role="img"]',
+    query: 'img[data-tanaguruAltLong], [role="img"][data-tanaguruAltLong]',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances ont un nom accessible',
-    filter: function (item) {
-        var IName = item.tagName.toLowerCase();
-        if (IName != 'svg' && IName != 'object' && IName != 'embed' && IName != 'canvas') {
-            if (!item.closest('a')) {
-                if (IName == 'img') {
-                    if (item.hasAttribute('alt') && !item.hasAttribute('aria-label') && !item.hasAttribute('aria-labelledby')){
-                        if (item.getAttribute('alt') === '') {
-                            return false;
-                        }
-                    }
-                }
-                if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
-                    item.setAttribute('data-tanaguruAltLong','true');
-                }
-                else if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length <= 80) {
-                    item.setAttribute('data-tanaguruAltLong','false');
-                }
-                return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
-            }
-        }
-    },
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -90,23 +98,29 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images réactives (balise area) sans nom accessible.',
-    query: 'area:not([role])',
+    query: 'area[data-tng-el-exposed="true"]:not([role])',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function(item) {
-        if(item.isNotExposedDueTo.length > 0) return;
-
         if(!item.hasAttribute('href')) {
             if(item.hasAttribute('aria-hidden')) {
                 if(item.getAttribute('aria-hidden') === true) return;
             }
     
             if(item.hasAttribute('alt')) {
-                if(item.getAttribute('alt').length === 0) return;
+                if(item.getAttribute('alt').length === 0 && !item.getAttribute('aria-label')) return;
             }
         }
 
-        return !item.hasAccessibleName();
+        item.setAttribute('data-tng-informative-img', true);
+
+        if(item.accessibleName == '') {
+            return true;
+        } else if(item.accessibleName.length > 80) {
+            item.setAttribute('data-tanaguruAltLong','true');
+        } else {
+            item.setAttribute('data-tanaguruAltLong','false');
+        }
     },
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.1.2'] }
@@ -115,23 +129,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images réactives (balise area) avec un nom accessible.',
-    query: 'area:not([role])',
+    query: 'area[data-tanaguruAltLong]',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances ont un nom accessible',
-    filter: function (item) {
-        if(item.isNotExposedDueTo.length > 0) return;
-
-        if(!item.hasAttribute('href')) {
-            if(item.hasAttribute('aria-hidden')) {
-                if(item.getAttribute('aria-hidden') === true) return;
-            }
-
-            if(item.hasAttribute('alt')) {
-                if(item.getAttribute('alt').length === 0) return;
-            }
-        }
-
-        return item.hasAccessibleName();
-    },
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -144,11 +143,17 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste de boutons de type image (balise input avec l\'attribut type="image") sans nom accessible.',
-    query: 'input[type="image"]:not([role])',
+    query: 'input[type="image"][data-tng-el-exposed="true"]:not([role])',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+        if(item.accessibleName == '') {
+            return true;
+        } else if(item.accessibleName.length > 80) {
+            item.setAttribute('data-tanaguruAltLong','true');
+        } else {
+            item.setAttribute('data-tanaguruAltLong','false');
+        }
     },
     tags: ['a11y', 'buttons', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.1.3'] }
@@ -157,17 +162,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste de boutons de type image (balise input avec l\'attribut type="image") avec un nom accessible.',
-    query: 'input[type="image"]:not([role])',
+    query: 'input[type="image"][data-tanaguruAltLong]',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances ont un nom accessible',
-    filter: function (item) {
-        if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
-            item.setAttribute('data-tanaguruAltLong','true');
-        }
-        else if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length <= 80) {
-            item.setAttribute('data-tanaguruAltLong','false');
-        }
-        return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
-    },
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -180,25 +176,17 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste de zones cliquables d\'une image réactive côté serveur qui ne sont pas doublée d\'un lien dans la page.',
-    query: 'img[ismap]:not([role])',
+    query: 'a[href] img[ismap][data-tng-el-exposed="true"]:not([role])',
     expectedNbElements: 0,
     filter: function (item) {
-        var parentLink = item.closest('a');
-        if (parentLink != null) {
-            var hrefValue = parentLink.getAttribute('href');
-            var linkPage = document.querySelectorAll('a');
-            var cpt = 0;
-            for (var i = 0; i < linkPage.length; i++) {
-                if (linkPage[i].hasAttributes('href')) {
-                    hrefValueBis= linkPage[i].getAttribute('href');
-                    if (hrefValueBis != null) {
-                        if (hrefValueBis.indexOf(hrefValue)>= 0){
-                            cpt = cpt+1;
-                        }
-                    }
-                }
+        if (item.getAttribute('href').trim().length > 0) {
+            var hrefValue = item.getAttribute('href');
+            var linkPage = document.querySelectorAll('a[href='+hrefValue+']');
+            if(linkPage < 2) {
+                return true;
+            } else {
+                item.setAttribute('data-tng-ismap-linked', true);
             }
-            return item.isNotExposedDueTo.length == 0 && cpt < 2;
         }
     },
     tags: ['a11y', 'images', 'accessiblename'],
@@ -208,26 +196,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste de zones cliquables d\'une image réactive côté serveur doublée d\'un lien dans la page.',
-    query: 'img[ismap]:not([role])',
-    filter: function (item) {
-        var parentLink = item.closest('a');
-        if (parentLink != null) {
-            var hrefValue = parentLink.getAttribute('href');
-            var linkPage = document.querySelectorAll('a');
-            var cpt = 0;
-            for (var i = 0; i < linkPage.length; i++) {
-                if (linkPage[i].hasAttributes('href')) {
-                    hrefValueBis= linkPage[i].getAttribute('href');
-                    if (hrefValueBis != null) {
-                        if (hrefValueBis.indexOf(hrefValue)>= 0){
-                            cpt = cpt+1;
-                        }
-                    }
-                }
-            }
-            return item.isNotExposedDueTo.length == 0 && cpt > 1;
-        }
-    },
+    query: '[data-tng-ismap-linked]',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -240,15 +209,18 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images vectorielles (balise svg) restituées ne possédant pas d\'attribut role="img".',
-    query: 'svg',
+    query: 'svg[data-tng-el-exposed="true"]:not([role="presentation"], [data-tng-image-link])',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.isNotExposedDueTo.length == 0) {
-            if(item.hasAttribute('role')) {
-                return item.getAttribute('role') !== 'img' && !item.hasValidRole();
-            }
-            return true;
+        if(item.closest('a')) {
+            item.setAttribute('data-tng-image-link', true);
+            return;
         }
+
+        if(item.hasAttribute('role')) {
+            return item.getAttribute('role') !== 'img' && !item.hasValidRole();
+        }
+        return true;
     },
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.1.5'] }
@@ -257,11 +229,17 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images vectorielles (balise svg) sans nom accessible',
-    query: 'svg[role="img"]',
+    query: 'svg[role="img"][data-tng-el-exposed="true"]:not([data-tng-image-link])',
     expectedNbElements: 0,
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+        if(item.accessibleName == '') {
+            return true;
+        } else if(item.accessibleName.length > 80) {
+            item.setAttribute('data-tanaguruAltLong','true');
+        } else {
+            item.setAttribute('data-tanaguruAltLong','false');
+        }
     },
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.1.5'] }
@@ -270,17 +248,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images vectorielles (balise svg) avec un nom accessible',
-    query: 'svg[role="img"]',
+    query: 'svg[role="img"][data-tanaguruAltLong]',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances ont un nom accessible',
-    filter: function (item) {
-        if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
-            item.setAttribute('data-tanaguruAltLong','true');
-        }
-        else if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length <= 80) {
-            item.setAttribute('data-tanaguruAltLong','false');
-        }
-        return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
-    },
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -293,15 +262,18 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images objet (balise object avec l\'attribut type="image/…") restituées ne possédant pas d\'attribut role="img".',
-    query: 'object[type]',
+    query: 'object[type^="image/"][data-tng-el-exposed="true"]:not([data-tng-image-link])',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.isNotExposedDueTo.length == 0) {
-            if(item.hasAttribute('role')) {
-                return item.getAttribute('role') !== 'img' && !item.hasValidRole();
-            }
-            return true;
+        if(item.closest('a')) {
+            item.setAttribute('data-tng-image-link', true);
+            return;
         }
+
+        if(item.hasAttribute('role')) {
+            return item.getAttribute('role') !== 'img' && !item.hasValidRole();
+        }
+        return true;
     },
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.1.6'] }
@@ -310,12 +282,16 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images objet (balise object avec l\'attribut type="image/…") sans nom accessible',
-    query: 'object[type]',
+    query: 'object[role="img"][type^="image/"][data-tng-el-exposed="true"]:not([data-tng-image-link])',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
-        if (item.getAttribute('type').startsWith("image/") && (item.getAttribute('role') === 'img' || !item.hasAttribute('role'))){
-            return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+        if(item.accessibleName == '') {
+            return true;
+        } else if(item.accessibleName.length > 80) {
+            item.setAttribute('data-tanaguruAltLong','true');
+        } else {
+            item.setAttribute('data-tanaguruAltLong','false');
         }
     },
     tags: ['a11y', 'images', 'accessiblename'],
@@ -325,19 +301,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images objet (balise object avec l\'attribut type="image/…") avec un nom accessible',
-    query: 'object[type]',
+    query: 'object[type^="image/"][data-tanaguruAltLong]',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances ont un nom accessible',
-    filter: function (item) {
-        if (item.getAttribute('type').startsWith("image/") && (item.getAttribute('role') === 'img' || !item.hasAttribute('role'))){
-            if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
-                item.setAttribute('data-tanaguruAltLong','true');
-            }
-            else if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length <= 80) {
-                item.setAttribute('data-tanaguruAltLong','false');
-            }
-            return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
-        }
-    },
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -350,15 +315,13 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images embarquées (balise embed avec l\'attribut type="image/…") restituées ne possédant pas d\'attribut role="img".',
-    query: 'embed[type]',
+    query: 'embed[type^="image/"][data-tng-el-exposed="true"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.isNotExposedDueTo.length == 0) {
-            if(item.hasAttribute('role')) {
-                return item.getAttribute('role') !== 'img' && !item.hasValidRole();
-            }
-            return true;
+        if(item.hasAttribute('role')) {
+            return item.getAttribute('role') !== 'img' && !item.hasValidRole();
         }
+        return true;
     },
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.1.7'] }
@@ -367,13 +330,16 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images embarquées (balise embed avec l\'attribut type="image/…") sans nom accessible',
-    query: 'embed[type]',
+    query: 'embed[type^="image/"][role="img"][data-tng-el-exposed="true"]',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
-        if (item.getAttribute('type').startsWith("image/") && (item.getAttribute('role') === 'img' || !item.hasAttribute('role'))){
-
-            return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+        if(item.accessibleName == '') {
+            return true;
+        } else if(item.accessibleName.length > 80) {
+            item.setAttribute('data-tanaguruAltLong','true');
+        } else {
+            item.setAttribute('data-tanaguruAltLong','false');
         }
     },
     tags: ['a11y', 'images', 'accessiblename'],
@@ -383,19 +349,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images embarquées (balise embed avec l\'attribut type="image/…") avec un nom accessible',
-    query: 'embed[type]',
+    query: 'embed[type^="image/"][data-tanaguruAltLong]',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances ont un nom accessible',
-    filter: function (item) {
-        if (item.getAttribute('type').startsWith("image/") && (item.getAttribute('role') === 'img' || !item.hasAttribute('role'))){
-            if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
-                item.setAttribute('data-tanaguruAltLong','true');
-            }
-            else if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length <= 80) {
-                item.setAttribute('data-tanaguruAltLong','false');
-            }
-            return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
-        }
-    },
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -408,15 +363,18 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images bitmap (balise canvas) restituées ne possédant pas d\'attribut role="img".',
-    query: 'canvas',
+    query: 'canvas[data-tng-el-exposed="true"]:not([data-tng-image-link])',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.isNotExposedDueTo.length == 0) {
-            if(item.hasAttribute('role')) {
-                return item.getAttribute('role') !== 'img' && !item.hasValidRole();
-            }
-            return true;
+        if(item.closest('a')) {
+            item.setAttribute('data-tng-image-link', true);
+            return;
         }
+
+        if(item.hasAttribute('role')) {
+            return item.getAttribute('role') !== 'img' && !item.hasValidRole();
+        }
+        return true;
     },
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.1.8'] }
@@ -425,12 +383,16 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images bitmap (balise canvas) sans nom accessible',
-    query: 'canvas',
+    query: 'canvas[role="img"][data-tng-el-exposed="true"]:not([data-tng-image-link])',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.getAttribute('role') === 'img' || !item.hasAttribute('role')) {
-            return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+        if(item.accessibleName == '') {
+            return true;
+        } else if(item.accessibleName.length > 80) {
+            item.setAttribute('data-tanaguruAltLong','true');
+        } else {
+            item.setAttribute('data-tanaguruAltLong','false');
         }
     },
     tags: ['a11y', 'images', 'accessiblename'],
@@ -440,19 +402,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images bitmap (balise canvas) avec un nom accessible',
-    query: 'canvas',
+    query: 'canvas[data-tanaguruAltLong]',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances ont un nom accessible',
-    filter: function (item) {
-        if(item.getAttribute('role') === 'img' || !item.hasAttribute('role')) {
-            if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length > 80) {
-                item.setAttribute('data-tanaguruAltLong','true');
-            }
-            else if (item.isNotExposedDueTo.length == 0 && item.accessibleName.length <= 80) {
-                item.setAttribute('data-tanaguruAltLong','false');
-            }
-            return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
-        }
-    },
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -466,7 +417,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images (balise img) ignorées par les technologies d\'assistance',
-    query: 'img:not([role]), img[role="presentation"]',
+    query: 'img:not([data-tng-informative-img], [data-tng-image-link])',
     filter: function (item) {
         var parent = item.parentNode;
 
@@ -475,29 +426,32 @@ tanaguruTestsList.push({
 
             if(parentTag === 'figure' && parent.querySelector('figcaption')) {
                 if(parent.querySelector('figcaption').textContent.trim().length > 0) {
+                    item.setAttribute('data-tng-informative-img', true);
                     return false;
                 }
             }
         }
         
-        if (item.hasAttribute('aria-hidden')){
+        if (item.hasAttribute('aria-hidden')) {
             if (item.getAttribute('aria-hidden') == "true") {
+                item.setAttribute('data-tng-img-ignored', true);
                 return true;
             }
         }
 
         if (item.hasAttribute('role')){
-            if (item.getAttribute('role') == "presentation") {
-                return !item.hasAttribute('tabindex') || item.getAttribute('tabindex') < 0;
+            if (item.getAttribute('role') == "presentation" && (!item.hasAttribute('tabindex') || item.getAttribute('tabindex') < 0)) {
+                item.setAttribute('data-tng-img-ignored', true);
+                return true;
             }
         }
 
         if (item.hasAttribute('alt')){
             if(item.getAttribute('alt') == '') {
-                return !item.hasAccessibleName();
+                item.setAttribute('data-tng-img-ignored', true);
+                return true;
             }
         }
-        return false;
     },
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
@@ -510,45 +464,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images (balise img) de décoration non ignorées par les technologies d\'assistance',
-    query: 'img:not([role]), img[role="presentation"], img[role="none"]',
+    query: 'img:not([data-tng-informative-img], [data-tng-img-ignored], [data-tng-image-link])',
     expectedNbElements: 0,
-    filter: function (item) {
-        var parent = item.parentNode;
-
-        if(parent) {
-            var parentTag = parent.tagName.toLowerCase();
-
-            if(parentTag === 'figure' && parent.querySelector('figcaption')) {
-                if(parent.querySelector('figcaption').textContent.trim().length > 0) {
-                    return false;
-                }
-            }
-        }
-        
-        if(item.hasAttribute('aria-hidden')){
-            if(item.getAttribute('aria-hidden') == "true") {
-                return false;
-            }
-        }
-
-        if(item.hasAttribute('role')){
-            if(item.getAttribute('role') == "presentation" || item.getAttribute('role') == "none") {
-                return item.hasAttribute('tabindex') && item.getAttribute('tabindex') >= 0;
-            }
-        }
-
-        if(item.hasAttribute('alt')){
-            if(item.getAttribute('alt') == '') {
-                return item.hasAccessibleName();
-            } else if(item.getAttribute('alt').trim().length == 0) {
-                return true;
-            }
-        } else {
-            return !item.hasAccessibleName();
-        }
-
-        return false;
-    },
     mark: { attrs: ['alt','role', 'tabindex']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.2.1'] }
@@ -558,25 +475,26 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste de zones non cliquables (balise area sans attribut href) ignorées par les technologies d\'assistance',
-    query: 'area:not([role]):not([href]), area[role="presentation"]:not([href])',
+    query: 'area:not([role], [data-tng-informative-img], [href]), area[role="presentation"]:not([href], [data-tng-informative-img])',
     filter: function (item) {
-        if (item.hasAttribute('role')){
-            if ((item.getAttribute('role') == "presentation")) {
-                return !item.hasAttribute('tabindex') || item.getAttribute('tabindex') < 0;
+        if(item.hasAttribute('role')) {
+            if(!item.hasAttribute('tabindex') || item.getAttribute('tabindex') < 0) {
+                item.setAttribute('data-tng-img-ignored', true);
+                return true;
             };
         };
 
         if (item.hasAttribute('aria-hidden')){
             if (item.getAttribute('aria-hidden') == "true") {
+                item.setAttribute('data-tng-img-ignored', true);
                 return true;
             }
         }
 
         if (item.hasAttribute('alt') && item.getAttribute('alt') == ''){
-            return !item.hasAccessibleName();
+            item.setAttribute('data-tng-img-ignored', true);
+            return true;
         }
-        
-        return false;
     },
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
@@ -589,33 +507,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste de zones non cliquables (balise area sans attribut href) de décoration non ignorées par les technologies d\'assistance',
-    query: 'area:not([role]):not([href]), area[role="presentation"]:not([href]), area[role="none"]:not([href])',
+    query: 'area:not([role], [data-tng-informative-img], [href], [data-tng-img-ignored]), area[role="presentation"]:not([href], [data-tng-informative-img], [data-tng-img-ignored])',
     expectedNbElements: 0,
-    filter: function (item) {
-        if (item.hasAttribute('aria-hidden')){
-            if (item.getAttribute('aria-hidden') == "true") {
-                return false;
-            }
-        }
-
-        if (item.hasAttribute('role')){
-            if(item.getAttribute('role') == "presentation" || item.getAttribute('role') == "none") {
-                return item.hasAttribute('tabindex') && item.getAttribute('tabindex') >= 0;
-            }
-        };
-
-        if(item.hasAttribute('alt')){
-            if(item.getAttribute('alt') == '') {
-                return item.hasAccessibleName();
-            } else if(item.getAttribute('alt').trim().length == 0) {
-                return true;
-            }
-        } else {
-            return !item.hasAccessibleName();
-        }
-        
-        return false;
-    },
     mark: { attrs: ['alt','tabindex','role']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.2.2'] }
@@ -625,37 +518,29 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images objets (balise object avec l\'attribut type="image/…") ignorées par les technologies d\'assistance',
-    query: 'object[type]:not([role]), object[type][role="img"]',
+    query: 'object[type^="image/"][data-tng-el-exposed="false"]:not([role], [data-tng-image-link]), object[type^="image/"][role="img"][data-tng-el-exposed="false"]:not([data-tng-image-link])',
     filter: function (item) {
-        if (item.getAttribute('type').startsWith("image/")){
-            var parent = item.parentNode;
+        var parent = item.parentNode;
 
-            if(parent) {
-                var parentTag = parent.tagName.toLowerCase();
+        if(parent) {
+            var parentTag = parent.tagName.toLowerCase();
 
-                if(parentTag === 'figure' && parent.querySelector('figcaption')) {
-                    if(parent.querySelector('figcaption').textContent.trim().length > 0) {
-                        return false;
-                    }
+            if(parentTag === 'figure' && parent.querySelector('figcaption')) {
+                if(parent.querySelector('figcaption').textContent.trim().length > 0) {
+                    item.setAttribute('data-tng-captionned-img', true);
+                    return false;
                 }
             }
-
-            if (item.textContent.trim().length > 0) {
-                return false;
-            }
-
-            if(item.hasAttribute('aria-label') && item.getAttribute('aria-label').length > 0) {
-                return false;
-            }
-
-            if(item.hasAttribute('title') && item.getAttribute('title').length > 0) {
-                return false;
-            }
-
-            return !item.hasAccessibleName();
         }
 
-        return false;
+        if (item.textContent.trim().length === 0) {
+            if(!item.hasAttribute('aria-label') || item.getAttribute('aria-label').length === 0) {
+                if(!item.hasAttribute('title') || item.getAttribute('title').length === 0) {
+                    item.setAttribute('data-tng-img-ignored', true);
+                    return true;
+                }
+            }
+        }
     },
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
@@ -668,35 +553,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images objets (balise object avec l\'attribut type="image/…") de décoration non ignorées par les technologies d\'assistance',
-    query: 'object[type][aria-hidden="true"]:not([role]), object[type][aria-hidden="true"][role="img"]',
+    query: 'object[type^="image/"][data-tng-el-exposed="false"]:not([role], [data-tng-img-ignored], [data-tng-image-link]), object[type^="image/"][role="img"][data-tng-el-exposed="false"]:not([data-tng-img-ignored], [data-tng-image-link])',
     expectedNbElements: 0,
-    filter: function (item) {
-        if (item.getAttribute('type').startsWith("image/")){
-            var parent = item.parentNode;
-
-            if(parent) {
-                var parentTag = parent.tagName.toLowerCase();
-
-                if(parentTag === 'figure' && parent.querySelector('figcaption')) {
-                    if(parent.querySelector('figcaption').textContent.trim().length > 0) {
-                        return false;
-                    }
-                }
-            }
-
-            if (item.textContent.trim().length > 0) {
-                return true;
-            }
-
-            if(item.hasAttribute('aria-label') && item.getAttribute('aria-label').length > 0) {
-                return true;
-            }
-
-            if(item.hasAttribute('title') && item.getAttribute('title').length > 0) {
-                return true;
-            }
-        }
-    },
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.2.3'] }
 });
@@ -1084,10 +942,26 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des images bitmap (balise canvas) porteuse d\'information, ayant un contenu alternatif entre sa balise ouvrante et sa balise fermante correctement restitué par les technologies d\'assistance',
-    query: 'canvas[role="img"]',
+    query: 'canvas[role="img"][data-tng-el-exposed="true"]',
     filter: function (item) {
+        //? doing
+        // let texts = document.createTreeWalker(item, NodeFilter.SHOW_TEXT);
+        // let alt = false;
+        // let altExposed = false;
+        // while(texts.nextNode() && !alt && !altExposed) {
+        //     let cnt = tw.currentNode;
+        //     let parent = cnt.parentNode;
+        //     if(cnt.nodeValue.trim().length > 0) {
+        //         alt = true;
+
+        //         if(parent.getAttribute('data-tng-el-exposed') === 'true') {
+        //             altExposed = true;
+        //         }
+        //     }
+        // }
         if (item.textContent && item.textContent.trim().length > 0) {
-            return item.isNotExposedDueTo.length === 0;
+            
+            return true;
         }
     },
     tags: ['a11y', 'images', 'accessiblename'],
@@ -4278,25 +4152,31 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Elements possédants des attributs aria-* non définis dans WAI-ARIA.',
-	query: '*',
+	query: '[data-tng-ariaAttribute][data-tng-el-exposed="true"]',
     expectedNbElements: 0,
     explanations: {
         'passed': 'Tous les attributs aria-* trouvés sur cette page sont bien définis dans WAI-ARIA.',
         'failed': 'Des attributs aria-* non définis dans WAI-ARIA ont été trouvé sur cette page.'
     },
 	filter: function (item) {
-		if (item.isNotExposedDueTo.length == 0) {
-            if(!item.hasInvalidAriaAttributes) {
-                for (var a = 0; a < item.attributes.length; a++) {
-                    if (item.attributes[a].name.match(/^aria-.*$/)) {
-                        item.setAttribute('data-tng-validAria', true);
-                        return;
-                    }
-                }
-                return true;
-            }
-            
-		}
+		// if (item.isNotExposedDueTo.length == 0) {
+        //     if(!item.hasInvalidAriaAttributes) {
+        //         for (var a = 0; a < item.attributes.length; a++) {
+        //             if (item.attributes[a].name.match(/^aria-.*$/)) {
+        //                 item.setAttribute('data-tng-validAria', true);
+        //                 return;
+        //             }
+        //         }
+        //     } else {
+        //         return true;
+        //     }
+		// }
+        if(item.hasInvalidAriaAttributes()) {
+            return true;
+        } else {
+            item.setAttribute('data-tng-validAria', true);
+            return;
+        }
 	},
 	tags: ['a11y', 'aria', 'code'],
 	ressources: {'rgaa': ['8.2.1']}
@@ -4394,13 +4274,15 @@ tanaguruTestsList.push({
 	ressources: {'rgaa': ['8.2.1']}
 });
 
+//8.3.1 Pour chaque page web, l'indication de langue par défaut vérifie-t-elle une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'La langue de la page est spécifiée.',
-    expectedNbElements: 1,
-    node: document.documentElement,
+    expectedNbElements: {min: 1},
+    query: 'html[lang], html[xml\\:lang], body[lang], body[xml\\:lang]',
     filter: function(item) {
         if(item.hasAttribute('lang') || item.hasAttribute('xml\\:lang')) {
+            item.setAttribute('data-tng-haslang', true);
             return true;
         }
     },
@@ -4413,16 +4295,27 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Page HTML avec un attribut lang vide.',
-	query: 'html[lang], html[xml\\:lang]',
+	query: '[data-tng-haslang]',
 	expectedNbElements: 0,
 	filter: function (item) {
-        if(item.hasAttribute('lang') && !item.hasAttribute('xml:lang')) {
-            return item.getAttribute('lang').length == 0;
-        } else if (item.hasAttribute('xml:lang') && !item.hasAttribute('lang')) {
-            return item.getAttribute('xml:lang').length == 0;
-        } else {
-            return item.getAttribute('lang').length == 0 || item.getAttribute('xml:lang').length == 0;
+        if(item.hasAttribute('lang')) {
+            item.setAttribute('data-tng-lang', 'lang');
+            if(item.getAttribute('lang').length === 0) {
+                item.setAttribute('data-tng-emptylang', 'lang');
+            }
         }
+
+        if (item.hasAttribute('xml:lang')) {
+            item.setAttribute('data-tng-lang', 'xml');
+            if(item.getAttribute('xml:lang').length === 0) {
+                if(item.hasAttribute('data-tng-emptylang')) {
+                    item.setAttribute('data-tng-emptylang', 'both');
+                } else {
+                    item.setAttribute('data-tng-emptylang', 'xml');
+                }
+            }
+        }
+        return item.hasAttribute('data-tng-emptylang');
 	},
     mark: {attrs: ['lang', 'xml\\:lang']},
 	tags: ['a11y', 'languages', 'mandatory'],
@@ -4432,16 +4325,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Page HTML avec un attribut lang non vide.',
-	query: 'html[lang], html[xml\\:lang]',
-	filter: function (item) {
-		if(item.hasAttribute('lang') && !item.hasAttribute('xml:lang')) {
-            return item.getAttribute('lang').length > 0;
-        } else if (item.hasAttribute('xml:lang') && !item.hasAttribute('lang')) {
-            return item.getAttribute('xml:lang').length > 0;
-        } else {
-            return item.getAttribute('lang').length > 0 || item.getAttribute('xml:lang').length > 0;
-        }
-	},
+	query: '[data-tng-lang="lang"]:not([data-tng-emptylang="lang"], [data-tng-emptylang="both"]), [data-tng-lang="xml"]:not([data-tng-emptylang="xml"], [data-tng-emptylang="both"])',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -4453,7 +4337,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Page HTML avec des attributs lang et xml:lang dont les valeurs ne correspondent pas.",
-	query: 'html[lang][xml\\:lang]',
+	query: '[data-tng-lang="lang"][data-tng-lang="xml"]',
 	expectedNbElements: 0,
 	filter: function (item) {
         var lang1 = item.getAttribute('lang');
@@ -4461,7 +4345,11 @@ tanaguruTestsList.push({
         if(lang1.length > 0 || lang2.length > 0) {
             var langA = lang1.includes('-') ? lang1.split('-')[0] : lang1;
             var langB = lang2.includes('-') ? lang2.split('-')[0] : lang2;
-            return langA != langB;
+            if(langA == langB) {
+                item.setAttribute('data-tng-samelangs', 'true');
+                return;
+            }
+            return true;
         }
 	},
     mark: {attrs: ['lang', 'xml\\:lang']},
@@ -4472,16 +4360,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Page HTML avec des attributs lang et xml:lang dont les valeurs correspondent."',
-	query: 'html[lang][xml\\:lang]',
-	filter: function (item) {
-        var lang1 = item.getAttribute('lang');
-        var lang2 = item.getAttribute('xml:lang');
-        if(lang1.length > 0 || lang2.length > 0) {
-            var langA = lang1.includes('-') ? lang1.split('-')[0] : lang1;
-            var langB = lang2.includes('-') ? lang2.split('-')[0] : lang2;
-            return langA == langB;
-        }
-	},
+	query: '[data-tng-samelangs]',
 	analyzeElements: function (collection) {
 		if (collection.length == 1) {
 			collection[0].status = 'passed';
@@ -4495,21 +4374,24 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'La langue de la page HTML est invalide.',
-	query: 'html[lang], html[xml\\:lang]',
+	query: '[data-tng-haslang]',
 	expectedNbElements: 0,
 	filter: function (item) {
-        if(item.hasAttribute('lang') && !item.hasAttribute('xml:lang')) {
-            if(item.getAttribute('lang').length === 0) {
-                return false;
+        if(item.hasAttribute('lang') && item.hasAttribute('xml:lang')) {
+            if(item.hasAttribute('data-tng-emptylang') && item.getAttribute('data-tng-emptylang') === 'both') {
+                return;
             }
-        } else if (item.hasAttribute('xml:lang') && !item.hasAttribute('lang')) {
-            if(item.getAttribute('xml:lang').length === 0) {
-                return false;
+        } else {
+            if(item.hasAttribute('data-tng-emptylang')) {
+                return;
             }
-        } else if(item.getAttribute('lang').length === 0 && item.getAttribute('xml:lang').length === 0) {
-            return false;
         }
-		return !item.hasValidLanguageCode();
+
+        if(item.hasValidLanguageCode()) {
+            item.setAttribute('data-tng-validlang', 'true');
+            return;
+        }
+		return true;
 	},
     mark: {attrs: ['lang', 'xml\\:lang']},
 	tags: ['a11y', 'languages', 'mandatory'],
@@ -4519,10 +4401,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'La langue de la page HTML est valide.',
-	query: 'html[lang], html[xml\\:lang]',
-	filter: function (item) {
-		return item.hasValidLanguageCode();
-	},
+	query: '[data-tng-validlang]',
     analyzeElements: function(collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -4615,9 +4494,16 @@ tanaguruTestsList.push({
             if(item.getAttribute('xml:lang').length === 0) {
                 return true;
             }
-        } else if(item.getAttribute('lang').length === 0 || item.getAttribute('xml:lang').length === 0) {
-            return true;
+        } else {
+            let length1 = item.getAttribute('lang').length;
+            let length2 = item.getAttribute('xml:lang').length;
+            if(length1 === 0 || length2 === 0) {
+                if(length1 + length2 > 0) item.setAttribute('data-tng-el-notemptylang', 'true');
+                return true;
+            }
         }
+
+        item.setAttribute('data-tng-el-notemptylang', 'true');
 	},
     mark: { attrs: ['lang', 'xml:lang']},
     tags: ['a11y', 'languages', 'mandatory'],
@@ -4627,20 +4513,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Elements avec un attribut lang non vide.',
-	query: 'body [lang], body [xml\\:lang]',
-	filter: function (item) {
-        if(item.hasAttribute('lang') && !item.hasAttribute('xml:lang')) {
-            if(item.getAttribute('lang').length > 0) {
-                return true;
-            }
-        } else if (item.hasAttribute('xml:lang') && !item.hasAttribute('lang')) {
-            if(item.getAttribute('xml:lang').length > 0) {
-                return true;
-            }
-        } else if(item.getAttribute('lang').length > 0 || item.getAttribute('xml:lang').length > 0) {
-            return true;
-        }
-	},
+	query: '[data-tng-el-notemptylang]',
     analyzeElements: function(collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -4652,21 +4525,15 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Elements avec un attribut lang invalide.',
-	query: 'body [lang], body [xml\\:lang]',
+	query: '[data-tng-el-notemptylang]',
 	expectedNbElements: 0,
 	filter: function (item) {
-        if(item.hasAttribute('lang') && !item.hasAttribute('xml:lang')) {
-            if(item.getAttribute('lang').length === 0) {
-                return false;
-            }
-        } else if (item.hasAttribute('xml:lang') && !item.hasAttribute('lang')) {
-            if(item.getAttribute('xml:lang').length === 0) {
-                return false;
-            }
-        } else if(item.getAttribute('lang').length === 0 && item.getAttribute('xml:lang').length === 0) {
-            return false;
+        if(item.hasValidLanguageCode()) {
+            item.setAttribute('data-tng-el-validlang', 'true');
+            return;
         }
-		return !item.hasValidLanguageCode();
+
+		return true;
 	},
     mark: { attrs: ['lang', 'xml:lang']},
     tags: ['a11y', 'languages', 'mandatory'],
@@ -4676,10 +4543,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Elements avec un attribut lang valide.',
-	query: 'body [lang], body [xml\\:lang]',
-	filter: function (item) {
-		return item.hasValidLanguageCode();
-	},
+	query: '[data-tng-el-validlang]',
     analyzeElements: function(collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -4794,7 +4658,7 @@ tanaguruTestsList.push({
         }
     },
     mark: {attrs: ['role', 'aria-level']},
-    tags: ['a11y', 'headings'],
+    tags: ['a11y', 'headings', 'structure'],
     ressources: { 'rgaa': ['9.1.1'] }
 });
 
@@ -4839,7 +4703,7 @@ tanaguruTestsList.push({
         collection.map(e => e.status = 'passed');
     },
     mark: {attrs: ['role', 'aria-level']},
-    tags: ['a11y', 'headings'],
+    tags: ['a11y', 'headings', 'structure'],
     ressources: { 'rgaa': ['9.1.1'] }
 });
 
@@ -4852,7 +4716,7 @@ tanaguruTestsList.push({
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
     },
-    tags: ['a11y', 'headings', 'accessiblename'],
+    tags: ['a11y', 'headings', 'accessiblename', 'structure'],
     ressources: { 'rgaa': ['9.1.2'] }
 });
 
@@ -4863,7 +4727,7 @@ tanaguruTestsList.push({
     filter: function (item) {
         return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
     },
-    tags: ['a11y', 'headings', 'accessiblename'],
+    tags: ['a11y', 'headings', 'accessiblename', 'structure'],
     ressources: { 'rgaa': ['9.1.2'] }
 });
 
@@ -4872,7 +4736,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "Chaque passage de texte constituant un titre doit être structuré à l'aide d'une balise <hx> ou d'une balise possédant un attribut WAI-ARIA role='heading' associé à un attribut WAI-ARIA aria-level",
     status: 'untested',
-    tags: ['a11y', 'headings', 'accessiblename'],
+    tags: ['a11y', 'headings', 'accessiblename', 'structure'],
     ressources: { 'rgaa': ['9.1.3'] }
 });
 
@@ -4880,10 +4744,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier que les éléments suivant sont des zones d\'entêtes',
-    query: 'header',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0;
-    },
+    query: 'header[data-tng-el-exposed="true"]',
     tags: ['a11y', 'structure', 'accessiblename'],
     ressources: { 'rgaa': ['9.2.1'] }
 });
@@ -4891,10 +4752,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier que les éléments suivant sont des zones de pied de page',
-    query: 'footer',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0;
-    },
+    query: 'footer[data-tng-el-exposed="true"]',
     tags: ['a11y', 'structure', 'accessiblename'],
     ressources: { 'rgaa': ['9.2.1'] }
 });
@@ -4902,10 +4760,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier que les éléments suivant sont des zones navigation',
-    query: 'nav',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0;
-    },
+    query: 'nav[data-tng-el-exposed="true"]',
     tags: ['a11y', 'structure', 'accessiblename'],
     ressources: { 'rgaa': ['9.2.1'] }
 });
@@ -4913,22 +4768,16 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier que l\'éléments suivant est la zone de contenu principale',
-    query: 'main',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0;
-    },
+    query: 'main[data-tng-el-exposed="true"]',
     tags: ['a11y', 'structure', 'accessiblename'],
     ressources: { 'rgaa': ['9.2.1'] }
 });
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'La structure du document utilise une balise main visible unique',
-    query: 'main',
-    expectedNbElements : { max: 1 },
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && item.isVisible;
-    },
+    name: 'La structure du document utilise une balise main visible et unique',
+    query: 'main[data-tng-el-exposed="true"][data-tng-el-visible="true"]',
+    expectedNbElements : 1,
     tags: ['a11y', 'structure', 'accessiblename'],
     ressources: { 'rgaa': ['9.2.1'] }
 });
@@ -5167,21 +5016,6 @@ tanaguruTestsList.push({
 	tags: ['a11y', 'presentation', 'keyboard', 'contrast'],
     ressources: { 'rgaa': ['10.7.1'] }
 });
-
-//* 10.8 Pour chaque page web, les contenus cachés ont-ils vocation à être ignorés par les technologies d'assistance ?
-// 10.8.1 Dans chaque page web, chaque contenu caché vérifie-t-il une de ces conditions ?
-//! traitement trop long sur firefox
-// tanaguruTestsList.push({
-// 	lang: 'fr',
-// 	name: "Liste des contenus non restitués aux technologies d'assistance.",
-//     description: "Vérifier que ces éléments ont bien vocation à être ignorés par les technologies d'assistance.",
-//     query: 'body *',
-//     filter: function(item) {
-//         return item.isNotExposedDueTo.length > 0;
-//     },
-// 	tags: ['a11y', 'presentation'],
-//     ressources: { 'rgaa': ['10.8.1'] }
-// });
 
 //* 10.9 Dans chaque page web, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle est-elle respectée ?
 //* 10.10 Dans chaque page web, l'information ne doit pas être donnée par la forme, taille ou position uniquement. Cette règle est-elle implémentée de façon pertinente ?

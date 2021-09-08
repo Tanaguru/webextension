@@ -1,5 +1,32 @@
 var statuses = ['failed', 'cantTell', 'passed'];
 
+let startDataTng = new Date().getTime() / 1000;
+let elements = document.body.querySelectorAll('*');
+
+elements.forEach(e => {
+    if(e.isNotExposedDueTo.length > 0) {
+        e.setAttribute('data-tng-el-exposed', false);
+    } else {
+        e.setAttribute('data-tng-el-exposed', true);
+    }
+
+    if(e.isVisible) {
+        e.setAttribute('data-tng-el-visible', true);
+    } else {
+        e.setAttribute('data-tng-el-visible', false);
+    }
+
+    let attributesList = e.attributes;
+    for(let i = 0; i < attributesList.length; i++) {
+        if(attributesList[i].name.match(/^aria-.*$/)) {
+            e.setAttribute('data-tng-ariaAttribute', true);
+        }
+    }
+});
+
+let endDataTng = new Date().getTime() / 1000;
+console.log('data tng : ', endDataTng - startDataTng);
+
 let startTest = new Date().getTime() / 1000;
 let testsLength = tanaguruTestsList.length;
 

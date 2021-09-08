@@ -888,6 +888,10 @@ var getAccessibleName = function () {
                             result += labels[i].accessibleName;
                         }
                     }
+
+                    if(labels.length === 0 && this.hasAttribute('title')) {
+                        result = this.getAttribute('title');
+                    }
                 }
                 else if (this.matches('fieldset, table') && !this.matches('[role="none"], [role="presentation"]')) {
                     var elementname = this.firstElementChild;
