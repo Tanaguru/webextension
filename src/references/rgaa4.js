@@ -7,10 +7,10 @@ var tanaguruTestsList = [];
  ** Cadres (optimisé)
  ** Couleurs (optimisé)
  ** Multimédia (optimisé)
- * Tableaux
- * Liens
- *! Scripts (todo)
- *! Eléments obligatoires (todo)
+ ** Tableaux (optimisé)
+ ** Liens (optimisé)
+ ** Scripts (optimisé)
+ ** Eléments obligatoires (optimisé)
  * Structuration de l'information
  *! Présentation de l'information(todo)
  *! Formulaires (bloqué)
@@ -2143,32 +2143,35 @@ tanaguruTestsList.push({
 // 5.6.1 Pour chaque tableau de données, chaque en-tête de colonnes s'appliquant à la totalité de la colonne vérifie-t-il une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des en-têtes d\'une colonne complète d\'un tableau de données, mal déclarés.',
-    query: 'table:not([role]) *[scope="col"][data-tng-el-exposed="true"], table:not([role]) *[scope="colgroup"][data-tng-el-exposed="true"], table:not([role]) *[id][data-tng-el-exposed="true"]',
-    expectedNbElements: 0,
+    name: 'Liste des en-têtes d\'une colonne complète d\'un tableau de données, correctement déclarés.',
+    query: 'table:not([role], [data-tng-prezTable]) *[scope="col"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[scope="colgroup"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[id][data-tng-el-exposed="true"]',
     filter: function (item) {
         var table = item.closest('table');
 
         //? header with SCOPE
         if(item.hasAttribute('scope')) {
             if(item.getAttribute('scope') === 'col' || item.getAttribute('scope') === 'colgroup') {
+                item.setAttribute('data-tng-table', 'headerColFull');
                 if(item.tagName.toLowerCase() !== 'th') {
-                    return !(item.hasAttribute('role') && item.getAttribute('role') === 'columnheader');
-                } else return;
+                    if(item.hasAttribute('role') && item.getAttribute('role') === 'columnheader') {
+                        return true;
+                    } else {
+                        item.setAttribute('data-tng-tableCol', 'bad');
+                        return;
+                    }
+                } else return true;
             }
         }
 
-        //? if item is TH, columnheader or isn't cell, return
+        //? if item isn't cell return
         if(item.tagName.toLowerCase() !== 'th' && item.tagName.toLowerCase() !== 'td') return;
-        if(item.tagName.toLowerCase() === 'th') return;
-        if(item.hasAttribute('role') && item.getAttribute('role') === 'columnheader') return;
-
 
         //? header with ID
-        //? check if this ID corresponding with headers attribute
+        //? check if this ID corresponding with headers attibute
         var headersList = table.querySelectorAll('*[headers]');
         var headers = [];
         var headersLength = headersList.length;
+
         for(var i = 0; i < headersLength; i++) {
             var list = headersList[i].getAttribute('headers').split(' ');
 
@@ -2248,136 +2251,26 @@ tanaguruTestsList.push({
             }
         });
 
-        return columnHeader;
+        if(columnHeader) {
+            item.setAttribute('data-tng-table', 'headerColFull');
+            if(item.tagName.toLowerCase() !== 'th') {
+                if(item.hasAttribute('role') && item.getAttribute('role') === 'columnheader') {
+                    return true;
+                } else {
+                    item.setAttribute('data-tng-tableCol', 'bad');
+                    return;
+                }
+            } else return true;
+        }
 
         // else if(item.hasAttribute('role') && item.getAttribute('role') === 'table') {
         //     var ch = item.querySelectorAll('*[role="columnheader"]');
         //     if(ch.length === 0) {
-                // verifier que l'on a pas d'en-tête appliqué à toute une colonne mis en place avec aria-labelledby
-            // } else {
-                // c'est ok
+        //         verifier que l'on a pas d'en-tête appliqué à toute une colonne mis en place avec aria-labelledby
+        //     } else {
+        //         c'est ok
         //     }
         // }
-
-    },
-    mark: {attrs: ['scope']},
-    tags: ['a11y', 'tables'],
-    ressources: {'rgaa': ['5.6.1']}
-});
-
-tanaguruTestsList.push({
-    lang: 'fr',
-    name: 'Liste des en-têtes d\'une colonne complète d\'un tableau de données, correctement déclarés.',
-    query: 'table:not([role]) *[scope="col"], table:not([role]) *[scope="colgroup"], table:not([role]) *[id]',
-    filter: function (item) {
-        if(item.isNotExposedDueTo.length > 0) return;
-
-        var table = item.closest('table');
-
-        //? header with SCOPE
-        if(item.hasAttribute('scope')) {
-            if(item.getAttribute('scope') === 'col' || item.getAttribute('scope') === 'colgroup') {
-                item.setAttribute('data-tng-table', 'headerColFull');
-                if(item.tagName.toLowerCase() !== 'th') {
-                    return item.hasAttribute('role') && item.getAttribute('role') === 'columnheader';
-                } else return true;
-            }
-        }
-
-        //? if item isn't cell return
-        if(item.tagName.toLowerCase() !== 'th' && item.tagName.toLowerCase() !== 'td') return;
-
-        //? header with ID
-        //? check if this ID corresponding with headers attibute
-        var headersList = table.querySelectorAll('*[headers]');
-        var headers = [];
-        var headersLength = headersList.length;
-
-        for(var i = 0; i < headersLength; i++) {
-            var list = headersList[i].getAttribute('headers').split(' ');
-
-            list.forEach(h => {
-                if(!headers.includes(h)) {
-                    headers.push(h);
-                }
-            });
-        }
-
-        if(!headers.includes(item.id)) return;
-
-        //? get column's size & position
-        var row = item.closest('tr');
-        if(!row) return;
-
-        var headerIndex = [];
-        var p = 0;
-        var siblings = row.children;
-        var siblingsLength = siblings.length;
-
-        for(var x = 0; x < siblingsLength; x++) {
-            if(siblings[x] != item) {
-                if(siblings[x].hasAttribute('colspan') && siblings[x].getAttribute('colspan') > 0) {
-                    p = p + parseInt(siblings[x].getAttribute('colspan'));
-                } else p++;
-            } else break;
-        }
-
-        if(item.hasAttribute('colspan') && item.getAttribute('colspan') > 0) {
-            var size = parseInt(item.getAttribute('colspan'));
-            var sizeP = size+p;
-
-            for(var x = p; x < sizeP; x++) {
-                headerIndex.push(x+1);
-            }
-        } else {
-            headerIndex.push(p+1);
-        }
-
-        //? check if all cells in the column has headers attribute corresponding to the item(header) ID
-        var cells = table.querySelectorAll('th, td');
-        var columnHeader = true;
-
-        cells.forEach(cell => {
-            var cellIndex = [];
-            var rowC = cell.closest('tr');
-            var pC = 0;
-            var siblingsC = rowC.children;
-            var siblingsCLength = siblingsC.length;
-
-            for(var x = 0; x < siblingsCLength; x++) {
-                if(siblingsC[x] != cell) {
-                    if(siblingsC[x].hasAttribute('colspan') && siblingsC[x].getAttribute('colspan') > 0) {
-                        pC = pC + parseInt(siblingsC[x].getAttribute('colspan'));
-                    } else pC++;
-                } else break;
-            }
-
-            if(cell.hasAttribute('colspan')&& cell.getAttribute('colspan') > 0) {
-                var sizeC = parseInt(cell.getAttribute('colspan'));
-                var sizeCpC = sizeC+pC;
-
-                for(var x = pC; x < sizeCpC; x++) {
-                    cellIndex.push(x+1);
-                }
-            } else {
-                cellIndex.push(pC+1);
-            }
-
-            if(cellIndex.some(n => headerIndex.includes(n)) && cell != item) {
-                if(cell.hasAttribute('headers')) {
-                    columnHeader = cell.getAttribute('headers').match(item.id) ? columnHeader : false;
-                } else if(!cell.hasAttribute('headers')) {
-                    columnHeader = false;
-                }
-            }
-        });
-
-        if(columnHeader) {
-            item.setAttribute('data-tng-table', 'headerColFull');
-            if(item.tagName.toLowerCase() !== 'th') {
-                return item.hasAttribute('role') && item.getAttribute('role') === 'columnheader';
-            } else return true;
-        }
 
         else item.setAttribute('data-tng-table', 'headerColPart');
     },
@@ -2389,97 +2282,22 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['5.6.1']}
 });
 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des en-têtes d\'une colonne complète d\'un tableau de données, mal déclarés.',
+    query: 'table *[data-tng-tableCol="bad"]',
+    expectedNbElements: 0,
+    mark: {attrs: ['scope']},
+    tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.6.1']}
+});
+
 // 5.6.2 Pour chaque tableau de données, chaque en-tête de lignes s'appliquant à la totalité de la ligne vérifie-t-il une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des en-têtes d\'une ligne complète d\'un tableau de données, mal déclarés.',
-    query: 'table:not([role]) *[scope="row"], table:not([role]) *[scope="rowgroup"], table:not([role]) *[id]',
-    expectedNbElements: 0,
-    filter: function (item) {
-        if(item.isNotExposedDueTo.length > 0) return;
-
-        var table = item.closest('table');
-
-        //? header with SCOPE
-        if(item.hasAttribute('scope')) {
-            if(item.getAttribute('scope') === 'row' || item.getAttribute('scope') === 'rowgroup') {
-                if(item.tagName.toLowerCase() !== 'th') {
-                    return !(item.hasAttribute('role') && item.getAttribute('role') === 'rowheader');
-                } else return;
-            }
-        }
-
-        //? if item is TH, rowheader or isn't cell, return
-        if(item.tagName.toLowerCase() !== 'th' && item.tagName.toLowerCase() !== 'td') return;
-        if(item.tagName.toLowerCase() === 'th') return;
-        if(item.hasAttribute('role') && item.getAttribute('role') === 'rowheader') return;
-
-        //? header with ID
-        //? check if this ID corresponding with headers attribute
-        var headersList = table.querySelectorAll('*[headers]');
-        var headers = [];
-        var headersLength = headersList.length;
-
-        for(var i = 0; i < headersLength; i++) {
-            var list = headersList[i].getAttribute('headers').split(' ');
-
-            list.forEach(h => {
-                if(!headers.includes(h)) {
-                    headers.push(h);
-                }
-            });
-        }
-
-        if(!headers.includes(item.id)) return;
-
-        //? get row's size & all its cells
-        var rows = table.querySelectorAll('tr');
-        var cells = [];
-        var currentRow = item.closest('tr');
-        if(!currentRow) return;
-        currentRow.setAttribute('data-row-tng', true);
-
-        if(item.hasAttribute('rowspan') && parseInt(item.getAttribute('rowspan')) > 1) {
-            var size = parseInt(item.getAttribute('rowspan'));
-            var rowsLength = rows.length;
-
-            for(var i = 0; i < rowsLength; i++) {
-                if(rows[i] === currentRow) {
-                    for(var x = 1; x < size; x++) {
-                        rows[i+x].setAttribute('data-row-tng', true);
-                    }
-                }
-            }
-        }
-
-        var cells = table.querySelectorAll('[data-row-tng=true] th, [data-row-tng=true] td');
-        var rowHeader = true;
-        
-        //? check if all cells in the row has headers attribute corresponding to the item(header) ID
-        cells.forEach(cell => {
-            if(cell != item) {
-                rowHeader = cell.hasAttribute('headers') && cell.getAttribute('headers').match(item.id) ? rowHeader : false;
-            }
-        });
-
-        rows.forEach(e => {
-            e.removeAttribute('data-row-tng');
-        });
-
-        return rowHeader;
-    },
-    mark: {attrs: ['scope']},
-    tags: ['a11y', 'tables'],
-    ressources: {'rgaa': ['5.6.2']}
-});
-
-tanaguruTestsList.push({
-    lang: 'fr',
     name: 'Liste des en-têtes d\'une ligne complète d\'un tableau de données, correctement déclarés.',
-    query: 'table:not([role]) *[scope="row"], table:not([role]) *[scope="rowgroup"], table:not([role]) *[id]',
+    query: 'table:not([role], [data-tng-prezTable]) *[scope="row"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[scope="rowgroup"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[id][data-tng-el-exposed="true"]',
     filter: function (item) {
-        if(item.isNotExposedDueTo.length > 0) return;
-
         var table = item.closest('table');
 
         //? header with SCOPE
@@ -2487,7 +2305,11 @@ tanaguruTestsList.push({
             if(item.getAttribute('scope') === 'row' || item.getAttribute('scope') === 'rowgroup') {
                 item.setAttribute('data-tng-table', 'headerRowFull');
                 if(item.tagName.toLowerCase() !== 'th') {
-                    return item.hasAttribute('role') && item.getAttribute('role') === 'rowheader';
+                    if(item.hasAttribute('role') && item.getAttribute('role') === 'rowheader') {
+                        return true;
+                    } else {
+                        item.setAttribute('data-tng-tableRow', 'bad');
+                    }
                 } else return true;
             }
         }
@@ -2550,7 +2372,11 @@ tanaguruTestsList.push({
         if(rowHeader) {
             item.setAttribute('data-tng-table', 'headerRowFull');
             if(item.tagName.toLowerCase() !== 'th') {
-                return item.hasAttribute('role') && item.getAttribute('role') === 'rowheader';
+                if(item.hasAttribute('role') && item.getAttribute('role') === 'rowheader') {
+                    return true;
+                } else {
+                    item.setAttribute('data-tng-tableRow', 'bad');
+                }
             } else return true;
         }
 
@@ -2559,6 +2385,16 @@ tanaguruTestsList.push({
     analyzeElements: function (collection) {
 		collection.map(e => e.status = 'passed');
     },
+    mark: {attrs: ['scope']},
+    tags: ['a11y', 'tables'],
+    ressources: {'rgaa': ['5.6.2']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des en-têtes d\'une ligne complète d\'un tableau de données, mal déclarés.',
+    query: 'table *[data-tng-tableRow="bad"]',
+    expectedNbElements: 0,
     mark: {attrs: ['scope']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.2']}
@@ -2593,13 +2429,10 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Liste des cellules d'un tableau de données associées à plusieurs en-têtes, mal balisées.",
-	query: '*[headers]',
+	query: 'table:not([role], [data-tng-prezTable]) *[headers][data-tng-el-exposed="true"]',
     expectedNbElements: 0,
 	filter: function (item) {
-		if(item.isNotExposedDueTo.length > 0) return;
-
         var table = item.closest('table');
-        if(!table) return;
         var headers = item.getAttribute('headers').split(' ');
         var count = 0;
         var headersLength = headers.length;
@@ -2613,7 +2446,10 @@ tanaguruTestsList.push({
         }
 
         if(count > 1) {
-            return item.tagName.toLowerCase() !== 'td' && item.tagName.toLowerCase() !== 'th';
+            if(item.tagName.toLowerCase() !== 'td' && item.tagName.toLowerCase() !== 'th') {
+                return true;
+            }
+            item.setAttribute('data-tng-tableHeaders', 'true');
         }
 	},
     mark: {attrs: ['headers']},
@@ -2624,28 +2460,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Liste des cellules d'un tableau de données associées à plusieurs en-têtes, correctement balisées.",
-	query: '*[headers]',
-	filter: function (item) {
-		if(item.isNotExposedDueTo.length > 0) return;
-
-        var table = item.closest('table');
-        if(!table) return;
-        var headers = item.getAttribute('headers').split(' ');
-        var count = 0;
-        var headersLength = headers.length;
-
-        for(var i = 0; i < headersLength; i++) {
-            var id = document.getElementById(headers[i]);
-
-            if(id) {
-                count = id.closest('table') == table ? count+1 : count;
-            }
-        }
-
-        if(count > 1) {
-            return item.tagName.toLowerCase() === 'td' || item.tagName.toLowerCase() === 'th';
-        }
-	},
+	query: 'table *[data-tng-tableHeaders="true"]',
     analyzeElements: function (collection) {
 		collection.map(e => e.status = 'passed');
     },
@@ -2659,26 +2474,18 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Liste des en-têtes de tableau s'appliquant à toute une ligne ou colonne mal associés aux cellules.",
-	query: 'th[data-tng-table="headerColFull"], th[data-tng-table="headerRowFull"]',
+	query: 'th[data-tng-table="headerColFull"]:not([scope], [role="columnheader"]), th[data-tng-table="headerRowFull"]:not([scope], [role="rowheader"])',
     expectedNbElements: 0,
 	filter: function (item) {
-		if(item.hasAttribute('scope')) return;
-
-        if(item.hasAttribute('role')) {
-            let role = item.getAttribute('role');
-            if(role === 'rowheader' || role === 'columnheader') {
-                return;
-            }
-        }
-
         if(item.id.trim().length > 0) {
-            let id = item.id;
+            let thID = item.id;
             item.id = "";
-            if(!document.getElementById(id)) {
-                item.id = id;
+            if(!document.getElementById(thID)) {
+                item.id = thID;
+                item.setAttribute('data-tng-tableHeader-uniqueID', 'true');
                 return;
             }
-            item.id = id;
+            item.id = thID;
         }
 
         return true;
@@ -2691,27 +2498,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Liste des en-têtes de tableau s'appliquant à toute une ligne ou colonne correctement associés aux cellules.",
-	query: 'th[data-tng-table="headerColFull"], th[data-tng-table="headerRowFull"]',
-	filter: function (item) {
-		if(item.hasAttribute('scope')) return true;
-
-        if(item.hasAttribute('role')) {
-            let role = item.getAttribute('role');
-            if(role === 'rowheader' || role === 'columnheader') {
-                return true;
-            }
-        }
-
-        if(item.id.trim().length > 0) {
-            let id = item.id;
-            item.id = "";
-            if(!document.getElementById(id)) {
-                item.id = id;
-                return true;
-            }
-            item.id = id;
-        }
-	},
+	query: 'th[data-tng-table="headerColFull"][scope], th[data-tng-table="headerColFull"][role="columnheader"], th[data-tng-table="headerColFull"][data-tng-tableHeader-uniqueID="true"], th[data-tng-table="headerRowFull"][scope], th[data-tng-table="headerRowFull"][role="rowheader"], th[data-tng-table="headerRowFull"][data-tng-tableHeader-uniqueID="true"]',
     analyzeElements: function (collection) {
 		collection.map(e => e.status = 'passed');
     },
@@ -2728,10 +2515,12 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		var row = item.parentNode;
         if(row.querySelectorAll('th').length === 1 && row.querySelectorAll('td').length > 0) {
+            item.setAttribute('data-tng-scope', 'valid');
             return item.getAttribute('scope') === 'row';
         }
 
         if(row.querySelectorAll('td').length === 0) {
+            item.setAttribute('data-tng-scope', 'valid');
             return item.getAttribute('scope') === 'col';
         }
 	},
@@ -2746,12 +2535,17 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "En-têtes de tableau associant les cellules de sa ligne ou colonne avec un attribut scope invalide.",
-	query: 'th[scope]',
+	query: 'th[scope]:not([data-tng-scope="valid"])',
     expectedNbElements: 0,
 	filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') == 'false' && item.getAttribute('data-tng-el-visible') == 'false') return;
+
 		var scope = item.getAttribute('scope');
-        return scope != 'row' && scope != 'col';
+
+        if(scope != 'row' && scope != 'col') {
+            item.setAttribute('data-tng-scope', 'invalid');
+            return true;
+        }
 	},
     mark: {attrs: ['scope']},
 	tags: ['a11y', 'tables'],
@@ -2761,21 +2555,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "En-têtes de tableau associant les cellules de sa ligne ou colonne avec un attribut scope.",
-	query: 'th[scope]',
+	query: 'th[scope]:not([data-tng-scope])',
     description: "Vérifier la pertinence de l'attribut scope.",
-	filter: function (item) {
-		var row = item.parentNode;
-        if(row.querySelectorAll('th').length === 1 && row.querySelectorAll('td').length > 0 && item.getAttribute('scope') === 'row') {
-            return;
-        }
-
-        if(row.querySelectorAll('td').length === 0 && item.getAttribute('scope') === 'col') {
-            return;
-        }
-
-        var scope = item.getAttribute('scope');
-        return scope === 'row' || scope === 'col';
-	},
     mark: {attrs: ['scope']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.2']}
@@ -2784,29 +2565,24 @@ tanaguruTestsList.push({
 // 5.7.3  Pour chaque contenu de balise <th> ne s'appliquant pas à la totalité de la ligne ou de la colonne, la balise <th> vérifie-t-elle ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Liste des en-têtes de tableau ne s'appliquant pas à toute une ligne ou colonne mal associés aux cellules.",
-	query: 'th[data-tng-table="headerColPart"], th[data-tng-table="headerRowPart"]',
-    expectedNbElements: 0,
+	name: "Liste des en-têtes de tableau ne s'appliquant pas à toute une ligne ou colonne correctement associés aux cellules.",
+	query: 'th[data-tng-table="headerColPart"][id]:not([scope="col"], [role="columnheader"]), th[data-tng-table="headerRowPart"][id]:not([scope="row"], [role="rowheader"])',
 	filter: function (item) {
-		if(item.hasAttribute('scope')) return true;
-
-        if(item.hasAttribute('role')) {
-            let role = item.getAttribute('role');
-            if(role === 'rowheader' || role === 'columnheader') {
-                return true;
-            }
-        }
-
         if(item.id.trim().length > 0) {
-            let id = item.id;
+            let thID = item.id;
             item.id = "";
-            if(document.getElementById(id)) {
-                item.id = id;
+            if(!document.getElementById(thID)) {
+                item.id = thID;
+                item.setAttribute('data-tng-partHeader-uniqueID', 'true');
                 return true;
             }
-            item.id = id;
+            item.id = thID;
         }
+        return;
 	},
+    analyzeElements: function (collection) {
+		collection.map(e => e.status = 'passed');
+    },
     mark: {attrs: ['scope', 'id', 'role']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.3']}
@@ -2814,33 +2590,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Liste des en-têtes de tableau ne s'appliquant pas à toute une ligne ou colonne correctement associés aux cellules.",
-	query: 'th[data-tng-table="headerColPart"], th[data-tng-table="headerRowPart"]',
-	filter: function (item) {
-		if(item.hasAttribute('scope')) return;
-
-        if(item.hasAttribute('role')) {
-            let role = item.getAttribute('role');
-            if(role === 'rowheader' || role === 'columnheader') {
-                return;
-            }
-        }
-
-        if(item.id.trim().length > 0) {
-            let id = item.id;
-            item.id = "";
-            if(document.getElementById(id)) {
-                item.id = id;
-                return;
-            }
-            item.id = id;
-        }
-
-        return true;
-	},
-    analyzeElements: function (collection) {
-		collection.map(e => e.status = 'passed');
-    },
+	name: "Liste des en-têtes de tableau ne s'appliquant pas à toute une ligne ou colonne mal associés aux cellules.",
+	query: 'th[data-tng-table="headerColPart"]:not([data-tng-partHeader-uniqueID="true"]), th[data-tng-table="headerRowPart"]:not([data-tng-partHeader-uniqueID="true"])',
+    expectedNbElements: 0,
     mark: {attrs: ['scope', 'id', 'role']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.3']}
@@ -2864,11 +2616,23 @@ tanaguruTestsList.push({
 						break;
 					}
 				}
-				return result;
+
+                if(result) {
+                    return true;
+                } else {
+                    item.setAttribute('data-tng-headerInTable', 'false');
+                    return;
+                }
 			}
 			else {
 				var th = document.getElementById(headers[0]);
-				return th ? th.closest('table') == item.closest('table') : false;
+
+                if(th && th.closest('table') == item.closest('table')) {
+                    return true;
+                } else {
+                    item.setAttribute('data-tng-headerInTable', 'false');
+                    return;
+                }
 			}
 		}
 		else {
@@ -2886,33 +2650,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "L'attribut Headers spécifié sur une cellule ne fait pas référence à des en-têtes du même élément de tableau.",
-	query: 'table td[headers], table th[headers]',
+	query: 'table [data-tng-headerInTable="false"][data-tng-el-exposed="true"], table [data-tng-headerInTable="false"][data-tng-el-visible="true"]',
     expectedNbElements: 0,
-	filter: function (item) {
-        if(item.getAttribute('data-tng-el-exposed') == 'false' && item.getAttribute('data-tng-el-visible') == 'false') return;
-		var headers = item.getAttribute('headers');
-		if (/^.+(\s.+)*$/.test(headers)) {
-			headers = headers.split(' ');
-			if (headers.length > 1) {
-				var result = true;
-				for (var i = 0; i < headers.length; i++) {
-					var th = document.getElementById(headers[i]);
-					result = th ? th.closest('table') == item.closest('table') : false;
-					if (!result) {
-						break;
-					}
-				}
-				return !result;
-			}
-			else {
-				var th = document.getElementById(headers[0]);
-				return th ? th.closest('table') != item.closest('table') : true;
-			}
-		}
-		else {
-			return false;
-		}
-	},
     mark: {attrs: ['headers']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.4']}
@@ -2958,6 +2697,8 @@ tanaguruTestsList.push({
         if(item.querySelectorAll('caption, th, thead, tfoot, colgroup, [role="rowheader"], [role="columnheader"], td[scope], td[headers], td[axis]').length > 0) {
             return true;
         }
+
+        item.setAttribute('data-tng-prezTable-dataEl', 'false');
 	},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.8.1']}
@@ -2966,18 +2707,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Liste des tableaux de mise en forme n\'utilisant aucun élément propre aux tableaux de données.",
-	query: 'table[role="presentation"]',
-	filter: function (item) {
-		if(item.hasAttribute('summary') && getAttribute('summary').length > 0) {
-            return false;
-        }
-
-        if(item.querySelectorAll('caption, th, thead, tfoot, colgroup, [role="rowheader"], [role="columnheader"], td[scope], td[headers], td[axis]').length > 0) {
-            return false;
-        }
-
-        return true;
-	},
+	query: 'table[role="presentation"][data-tng-prezTable-dataEl="false"]',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -2997,27 +2727,22 @@ tanaguruTestsList.push({
     query: 'a[href], [role="link"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.isVisible) {
-            item.setAttribute('data-tng-visibleLink', true);
-        } else {
-            item.setAttribute('data-tng-visibleLink', false);
-        }
-
         if(item.closest('svg')) {
-            item.setAttribute('data-tng-svgLink', true);
+            item.setAttribute('data-tng-svgLink', 'true');
+            return;
         }
 
-        if(item.isNotExposedDueTo.length == 0) {
-            item.setAttribute('data-tng-exposedLink', true);
-            if (item.querySelector('img, [role="img"], svg, object[type="image"], canvas') == null && !item.hasAttribute('data-tng-svgLink')) {
+        if(item.querySelector('img, [role="img"], svg, object, canvas') == null) {
+            item.setAttribute('data-tng-textlink', 'true');
+
+            if(item.getAttribute('data-tng-el-exposed') === 'true') {
                 if(!item.hasAccessibleName()) {
                     return true;
                 } else {
-                    item.setAttribute('data-tng-link-accessiblename', true);
+                    item.setAttribute('data-tng-textlink-accessiblename', 'true');
+                    return;
                 }
             }
-        } else {
-            item.setAttribute('data-tng-exposedLink', false);
         }
     },
     mark: {attrs: ['role']},
@@ -3028,13 +2753,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens texte visibles non restitués',
-    query: '[data-tng-visibleLink="true"][data-tng-exposedLink="false"]:not([data-tng-svgLink])',
+    query: '[data-tng-textlink="true"][data-tng-el-exposed="false"][data-tng-el-visible="true"]',
     expectedNbElements: 0,
-    filter: function (item) {
-        if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas')) {
-            return true;
-        }
-    },
     mark: {attrs: ['role']},
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.1']}
@@ -3043,12 +2763,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens texte non visibles non restitués',
-    query: '[data-tng-visibleLink="false"][data-tng-exposedLink="false"]:not([data-tng-svgLink])',
-    filter: function (item) {
-        if (item.querySelector('img, [role="img"], svg, object[type="image"], embed, canvas')) {
-            return true;
-        }
-    },
+    query: '[data-tng-textlink="true"][data-tng-el-exposed="false"][data-tng-el-visible="false"]',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'inapplicable');
     },
@@ -3060,7 +2775,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens texte avec un nom accessible',
-    query: '[data-tng-link-accessiblename]',
+    query: '[data-tng-textlink-accessiblename]',
     description:'Vérifiez la pertinence des noms accessibles des liens',
     mark: {attrs: ['role']},
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3071,31 +2786,34 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens images sans nom accessible',
-    query: 'a[href]:not([data-tng-svgLink]), [role="link"]:not([data-tng-svgLink])',
+    query: 'a[href]:not([data-tng-svgLink], [data-tng-textlink]), [role="link"]:not([data-tng-svgLink], [data-tng-textlink])',
     expectedNbElements: 0,
     filter: function (item) {
-        if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent == "")) {
-            item.setAttribute('data-tng-imglink', true);
-            var images = item.querySelectorAll('img, [role="img"], svg, object[type="image"], canvas');
-            var linkName = false;
-            var imagesLength = images.length;
-            for(let i = 0; i < imagesLength; i++) {
-                if(images[i].hasAccessibleName()) {
-                    linkName = true;
-                    break;
-                }
+        if(item.textContent.length > 0) {
+            item.setAttribute('data-tng-cplink', 'true');
+            return;
+        }
+        else item.setAttribute('data-tng-imglink', 'true');
+        
+        var images = item.querySelectorAll('img, [role="img"], svg, object[type^="image/"], canvas');
+        var linkName = false;
+        var imagesLength = images.length;
+        for(let i = 0; i < imagesLength; i++) {
+            if(images[i].hasAccessibleName()) {
+                item.setAttribute('data-tng-imglink-hasContent', 'true');
+                linkName = true;
+                break;
             }
+        }
 
-            if(item.getAttribute('data-tng-exposedLink') === 'true') {
-                if(!item.hasAccessibleName()) {
-                    return !linkName;
-                } else {
-                    if(linkName) {
-                        item.setAttribute('data-tng-imglink-accessiblename', true);
-                    }
-                }
-                
+        if(item.getAttribute('data-tng-el-exposed') === 'true') {
+            if(linkName || item.hasAccessibleName()) {
+                item.setAttribute('data-tng-imglink-accessiblename', 'true');
+                return;
+            } else {
+                return true;
             }
+            
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3105,7 +2823,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens images visibles non restitués',
-    query: '[data-tng-imglink][data-tng-visibleLink="true"][data-tng-exposedLink="false"]',
+    query: '[data-tng-imglink][data-tng-el-visible="true"][data-tng-el-exposed="false"]',
     expectedNbElements: 0,
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.2']}
@@ -3114,7 +2832,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens images non visibles non restitués',
-    query: '[data-tng-imglink][data-tng-visibleLink="false"][data-tng-exposedLink="false"]',
+    query: '[data-tng-imglink][data-tng-el-visible="false"][data-tng-el-exposed="false"]',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'inapplicable');
     },
@@ -3135,31 +2853,28 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens composites sans nom accessible',
-    query: 'a[href]:not([data-tng-svgLink]), [role="link"]:not([data-tng-svgLink])',
+    query: '[data-tng-cplink]',
     expectedNbElements: 0,
     filter: function (item) {
-        if ((item.querySelector('img, [role="img"], svg, object[type="image"], canvas') != null) && (item.textContent.length > 0)) {
-            item.setAttribute('data-tng-cplink', true);
-            var children = item.childNodes;
-            var linkName = false;
-            var childrenLength = children.length;
-            for(let i = 0; i < childrenLength; i++) {
-                if(children[i].nodeType === 1 && children[i].hasAccessibleName()) {
-                    linkName = true;
-                    break;
-                }
+        var images = item.querySelectorAll('img, [role="img"], svg, object[type^="image/"], canvas');
+        var linkName = false;
+        var imagesLength = images.length;
+        for(let i = 0; i < imagesLength; i++) {
+            if(images[i].hasAccessibleName()) {
+                item.setAttribute('data-tng-cplink-hasContent', 'true');
+                linkName = true;
+                break;
             }
+        }
 
-            if(item.getAttribute('data-tng-exposedLink') === 'true') {
-                if(!item.hasAccessibleName()) {
-                    return !linkName;
-                } else {
-                    if(linkName) {
-                        item.setAttribute('data-tng-cplink-accessiblename', true);
-                    }
-                }
-                
+        if(item.getAttribute('data-tng-el-exposed') === 'true') {
+            if(linkName || item.hasAccessibleName()) {
+                item.setAttribute('data-tng-cplink-accessiblename', 'true');
+                return;
+            } else {
+                return true;
             }
+            
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3169,7 +2884,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens composites visibles non restitués',
-    query: '[data-tng-cplink][data-tng-visibleLink="true"][data-tng-exposedLink="false"]',
+    query: '[data-tng-cplink][data-tng-el-visible="true"][data-tng-el-exposed="false"]',
     expectedNbElements: 0,
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.3']}
@@ -3178,7 +2893,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens composites non visibles non restitués',
-    query: '[data-tng-cplink][data-tng-visibleLink="false"][data-tng-exposedLink="false"]',
+    query: '[data-tng-cplink][data-tng-el-visible="false"][data-tng-el-exposed="false"]',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'inapplicable');
     },
@@ -3199,13 +2914,14 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens SVG sans nom accessible',
-    query: '[data-tng-svgLink][data-tng-exposedLink="true"]',
+    query: '[data-tng-svgLink][data-tng-el-exposed="true"]',
     expectedNbElements: 0,
     filter: function (item) {
         if(!item.hasAccessibleName()) {
             return true;
         } else {
-            item.setAttribute('data-tng-svglink-accessiblename', true);
+            item.setAttribute('data-tng-svglink-accessiblename', 'true');
+            return;
         }
     },
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3215,7 +2931,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens SVG visibles non restitués',
-    query: '[data-tng-svgLink][data-tng-visibleLink="true"][data-tng-exposedLink="false"]',
+    query: '[data-tng-svgLink][data-tng-el-visible="true"][data-tng-el-exposed="false"]',
     expectedNbElements: 0,
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.4']}
@@ -3224,7 +2940,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens SVG non visibles non restitués',
-    query: '[data-tng-svgLink][data-tng-visibleLink="false"][data-tng-exposedLink="false"]',
+    query: '[data-tng-svgLink][data-tng-el-visible="false"][data-tng-el-exposed="false"]',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'inapplicable');
     },
@@ -3245,7 +2961,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens ayant un intitulé visible non repris dans le nom accessible.',
-    query: '[data-tng-visibleLink="true"][data-tng-exposedLink="true"]',
+    query: '[data-tng-cplink-accessiblename][data-tng-el-visible="true"], [data-tng-textlink-accessiblename][data-tng-el-visible="true"]',
     expectedNbElements: 0,
     filter: function (item) {
         if(item.innerText) {
@@ -3256,7 +2972,8 @@ tanaguruTestsList.push({
             if(!linkAccessibleName.match(regex)) {
                 return true;
             } else {
-                item.setAttribute('data-tng-link-names-match', true);
+                item.setAttribute('data-tng-link-names-match', 'true');
+                return;
             }
         }
     },
@@ -3280,22 +2997,17 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens sans intitulé entre <a> et </a>.',
-    query: '[data-tng-visibleLink="true"], [data-tng-exposedLink="true"]',
+    query: 'a[href][data-tng-el-visible="true"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.innerText && item.innerText.trim().length > 0) {
-            item.setAttribute('data-tng-link-hasname', true);
+        if(item.textContent.length > 0) {
+            item.setAttribute('data-tng-link-hasname', 'true');
             return;
         }
 
-        if(item.hasAttribute('data-tng-visibleLink') && item.getAttribute('data-tng-visibleLink') === 'true') {
-            let content = item.querySelectorAll('[data-tng-image-link]');
-            for(let i = 0; i < content.length; i++) {
-                if(content[i].hasAccessibleName()) {
-                    item.setAttribute('data-tng-link-hasname', true);
-                    return;
-                }
-            }
+        if(item.hasAttribute('data-tng-imglink-hasContent') || item.hasAttribute('data-tng-cplink-hasContent')) {
+            item.setAttribute('data-tng-link-hasname', 'true');
+            return;
         }
 
         return true;
@@ -3333,9 +3045,14 @@ tanaguruTestsList.push({
 		'failed': "Des boutons visibles sans nom accessible sont présents dans la page."
 	},
 	filter: function (item) {
-        if((item.isVisible || item.isNotExposedDueTo.length === 0) && !item.disabled) {
-            if(item.matches('input[type="reset"]:not([value]), input[type="submit"]:not([value])')) return;
-            return !item.hasAccessibleName();
+        if(item.closest('form')) return;
+        if((item.getAttribute('data-tng-el-visible') === 'true' || item.getAttribute('data-tng-el-exposed') === 'true') && !item.disabled) {
+            if(item.matches('input[type="reset"]:not([value]), input[type="submit"]:not([value])') || item.hasAccessibleName()) {
+                item.setAttribute('data-tng-btn-accessiblename', 'true');
+                return;
+            } else {
+                return true;
+            }
         }
 	},
 	tags: ['a11y', 'buttons', 'accessiblename'],
@@ -3345,13 +3062,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Boutons visibles ou restitués avec un nom accessible.',
-	query: 'button:not([role]), button[role="none"], [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role]), input[type="button"]:not([role])',
-	filter: function (item) {
-        if(item.isVisible || item.isNotExposedDueTo.length === 0) {
-            if(item.matches('input[type="reset"]:not([value]), input[type="submit"]:not([value])')) return true;
-            return item.hasAccessibleName();
-        }
-	},
+	query: '[data-tng-btn-accessiblename]',
 	analyzeElements: function (collection) {
 		collection.map(e => e.status = 'passed');
     },
@@ -3388,17 +3099,22 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des boutons ayant un intitulé visible non repris dans le nom accessible.',
-    query: 'button:not([role]), button[role="none"], [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role]), input[type="button"]:not([role])',
+    query: '[data-tng-btn-accessiblename][data-tng-el-visible="true"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.closest('form')) return;
-        if(item.isVisible && (item.innerText || item.value) && !item.disabled) {
+        
+        if(item.innerText || item.value) {
             var visibleName = item.innerText ? item.innerText : item.value;
             var buttonName = visibleName.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
             var buttonAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
             var regex = new RegExp(buttonName, 'mi');
             
-            return item.isNotExposedDueTo.length == 0 && !buttonAccessibleName.match(regex);
+            if(buttonAccessibleName.match(regex)) {
+                item.setAttribute('data-tng-btn-nameMatch', 'true');
+                return;
+            }
+
+            return true;
         }
     },
     tags: ['a11y', 'accessiblename', 'buttons'],
@@ -3408,18 +3124,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des boutons ayant un intitulé visible bien repris dans le nom accessible.',
-    query: 'button:not([role]), button[role="none"], [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role]), input[type="button"]:not([role])',
-    filter: function (item) {
-        if(item.closest('form')) return;
-        if(item.isVisible && (item.innerText || item.value)) {
-            var visibleName = item.innerText ? item.innerText : item.value;
-            var buttonName = visibleName.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-            var buttonAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-            var regex = new RegExp(buttonName, 'mi');
-
-            return item.isNotExposedDueTo.length == 0 && buttonAccessibleName.match(regex);
-        }
-    },
+    query: '[data-tng-btn-nameMatch]',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -3680,22 +3385,10 @@ tanaguruTestsList.push({
         'failed': 'Des attributs aria-* non définis dans WAI-ARIA ont été trouvé sur cette page.'
     },
 	filter: function (item) {
-		// if (item.isNotExposedDueTo.length == 0) {
-        //     if(!item.hasInvalidAriaAttributes) {
-        //         for (var a = 0; a < item.attributes.length; a++) {
-        //             if (item.attributes[a].name.match(/^aria-.*$/)) {
-        //                 item.setAttribute('data-tng-validAria', true);
-        //                 return;
-        //             }
-        //         }
-        //     } else {
-        //         return true;
-        //     }
-		// }
         if(item.hasInvalidAriaAttributes()) {
             return true;
         } else {
-            item.setAttribute('data-tng-validAria', true);
+            item.setAttribute('data-tng-validAria', 'true');
             return;
         }
 	},
@@ -3960,8 +3653,16 @@ tanaguruTestsList.push({
             let defaultTitles = [
                 'document', 'untitled', 'sans titre', 'untitled document', 'document sans titre', 'no title', 'home', 'accueil'
             ];
-            return !defaultTitles.includes(item.textContent.trim().toLowerCase());
+
+            if(defaultTitles.includes(item.textContent.trim().toLowerCase())) {
+                item.setAttribute('data-tng-pageTitle', 'false');
+                return;
+            }
+            else return true;
         }
+
+        item.setAttribute('data-tng-pageTitle', 'false');
+        return;
     },
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.6.1']}
@@ -3970,18 +3671,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Le titre de la page (balise title) n\'est pas pertinent',
-    query: 'head title, body title',
+    query: '[data-tng-pageTitle]',
     expectedNbElements: 0,
-    filter: function (item) {
-        if(item.closest('svg')) return;
-        if(item.textContent.trim().length > 0) {
-            let defaultTitles = [
-                'document', 'untitled', 'sans titre', 'untitled document', 'document sans titre', 'no title', 'home', 'accueil'
-            ];
-            return defaultTitles.includes(item.textContent.trim().toLowerCase());
-        }
-        return true;
-    },
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.6.1']}
 });
@@ -3991,9 +3682,6 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifiez que pour chaque texte écrit dans une langue différente de la langue par défaut le langage est correctement indiqué.',
     query: 'body [lang], body [xml\\:lang]',
-    filter: function (item) {
-        return (item.hasAttribute('lang')||item.hasAttribute('xml:lang'));
-    },
     mark: { attrs: ['lang', 'xml:lang']},
     tags: ['a11y', 'mandatory'],
     ressources: {'rgaa': ['8.7.1']}
@@ -4025,6 +3713,7 @@ tanaguruTestsList.push({
         }
 
         item.setAttribute('data-tng-el-notemptylang', 'true');
+        return;
 	},
     mark: { attrs: ['lang', 'xml:lang']},
     tags: ['a11y', 'languages', 'mandatory'],
@@ -4085,7 +3774,7 @@ tanaguruTestsList.push({
         var textBetween = item.previousSibling.nodeValue;
         textBetween = textBetween ? textBetween.trim().length : textBetween;
         if (!textBetween){
-            return item.isNotExposedDueTo.length == 0;
+            return item.getAttribute('data-tng-el-eposed') === 'true';
         }
     },
     tags: ['a11y','mandatory'],
@@ -4106,11 +3795,16 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Changements du sens de lecture (attribut dir) non conforme.',
-    query: '[dir]',
+    query: '[dir][data-tng-el-exposed="true"]',
     expectedNbElements: 0,
     filter: function (item) {
         var dirAttr = item.getAttribute('dir');
-        return item.isNotExposedDueTo.length == 0 && !(dirAttr == 'ltr' || dirAttr == 'rtl');
+
+        if(dirAttr === 'ltr' || dirAttr === 'rtl') {
+            item.setAttribute('data-tng-dirValid', 'true');
+            return;
+        }
+        else return true;
     },
     mark: { attrs: ['dir']},
     tags: ['a11y','mandatory'],
@@ -4121,11 +3815,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Changements du sens de lecture (attribut dir) conforme.',
     description: "Vérifier la pertinence de la valeur de l'attribut dir.",
-    query: '[dir]',
-    filter: function (item) {
-        var dirAttr = item.getAttribute('dir');
-        return item.isNotExposedDueTo.length == 0 && (dirAttr == 'ltr' || dirAttr == 'rtl');
-    },
+    query: '[data-tng-dirValid]',
     mark: { attrs: ['dir']},
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.10.2']}
@@ -4135,18 +3825,18 @@ tanaguruTestsList.push({
  *? STRUCTURATION DE L'INFORMATION
  ** tous les tests sont répertoriés
  */
+//TODO a revoir
 // 9.1.1 : Dans chaque page web, la hiérarchie entre les titres (balise hx ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) est-elle pertinente ?
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des titres de niveau qui ne respectent pas la hierarchie de titres',
-    query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"]',
+    query: 'h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"]',
     expectedNbElements: 0,
     explanations: {
         'passed': 'La hiérarchie entre les titres de niveau est pertinente sur cette page.',
         'failed': 'Des titres de niveau(n) non précédés d\'un titre de niveau(n-1) ont été trouvés.'
     },
     filter: function (item) {
-        if(item.isNotExposedDueTo.length > 0) return;
         if(item.tagName.toLowerCase().match(/^h\d$/) || item.hasAttribute('aria-level')) {
             var currentlevel = parseInt(item.hasAttribute('aria-level') ? item.getAttribute('aria-level') : item.tagName.substring(1));
             var currentElement = item.hasAttribute('aria-level') ? '[role="heading"][aria-level="'+currentlevel+'"]' : item.tagName;
@@ -4167,7 +3857,7 @@ tanaguruTestsList.push({
                     if(headings[i] === item) {
                         parent = parent.tagName.toLowerCase() != 'body' ? parent.parentNode : null;
                         break;
-                    } else if(item.isNotExposedDueTo.length > 0) {
+                    } else if(headings[i].getAttribute('data-tng-el-exposed') === 'false') {
                         continue;
                     } else {
                         return false;
