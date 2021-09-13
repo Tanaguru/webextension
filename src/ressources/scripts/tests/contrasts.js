@@ -531,7 +531,6 @@ function getResults(element, opacity) {
 	}
 }
 
-let textStart = new Date().getTime() / 1000;
 // get datas for each text node
 while(tw.nextNode()) {
 	var cn = tw.currentNode;
@@ -557,7 +556,6 @@ while(tw.nextNode()) {
 			ratio: results.ratio,
 			xpath: getXPath(element),
 			valid: validContrast(size, weight, results.ratio),
-			// role: {},
 			isVisible: results.visible
 		};
 
@@ -632,9 +630,6 @@ while(tw.nextNode()) {
 		}
 	}
 }
-
-let textEnd = new Date().getTime() / 1000;
-console.log('Parcours des noeuds texte : ', textEnd - textStart);
 
 if(!bgBody) document.body.style.backgroundColor = 'unset';
 

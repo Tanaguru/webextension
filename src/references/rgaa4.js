@@ -2340,7 +2340,7 @@ tanaguruTestsList.push({
         var cells = [];
         var currentRow = item.closest('tr');
         if(!currentRow) return;
-        currentRow.setAttribute('data-row-tng', true);
+        currentRow.setAttribute('data-tng-row', true);
 
         if(item.hasAttribute('rowspan') && parseInt(item.getAttribute('rowspan')) > 1) {
             var size = parseInt(item.getAttribute('rowspan'));
@@ -2349,13 +2349,13 @@ tanaguruTestsList.push({
             for(var i = 0; i < rowsLength; i++) {
                 if(rows[i] === currentRow) {
                     for(var x = 1; x < size; x++) {
-                        rows[i+x].setAttribute('data-row-tng', true);
+                        rows[i+x].setAttribute('data-tng-row', true);
                     }
                 }
             }
         }
 
-        var cells = table.querySelectorAll('[data-row-tng=true] th, [data-row-tng=true] td');
+        var cells = table.querySelectorAll('[data-tng-row=true] th, [data-tng-row=true] td');
         var rowHeader = true;
 
         //? check if all cells in the row has headers attribute corresponding to the item(header) ID
@@ -2366,7 +2366,7 @@ tanaguruTestsList.push({
         });
 
         rows.forEach(e => {
-            e.removeAttribute('data-row-tng');
+            e.removeAttribute('data-tng-row');
         });
 
         if(rowHeader) {
@@ -3341,24 +3341,22 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Attributs role avec une valeur invalide',
-	query: '[role]',
+	query: '[role][data-tng-el-exposed="true"]',
 	expectedNbElements: 0,
     explanations: {
         'passed': "Cette page ne contient pas d'attribut role avec une valeur invalide'.",
 		'failed': "Des attributs role avec une valeur invalide sont présents dans la page."
     },
 	filter: function (item) {
-		if (item.isNotExposedDueTo.length == 0) {
-			if (item.getAttribute('role').trim() == 0) {
-				return false;
-			}
+		if (item.getAttribute('role').trim() == 0) {
+            return false;
+        }
 
-            if(item.hasValidRole()) {
-                item.setAttribute('data-tng-validRole', true);
-            } else {
-                return true;
-            }
-		}
+        if(item.hasValidRole()) {
+            item.setAttribute('data-tng-validRole', true);
+        } else {
+            return true;
+        }
 	},
     tags: ['a11y', 'aria', 'code'],
 	ressources: {'rgaa': ['8.2.1']}
@@ -3830,43 +3828,41 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des titres de niveau qui ne respectent pas la hierarchie de titres',
-    query: 'h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"]',
+    query: 'h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"][aria-level]',
     expectedNbElements: 0,
     explanations: {
         'passed': 'La hiérarchie entre les titres de niveau est pertinente sur cette page.',
         'failed': 'Des titres de niveau(n) non précédés d\'un titre de niveau(n-1) ont été trouvés.'
     },
     filter: function (item) {
-        if(item.tagName.toLowerCase().match(/^h\d$/) || item.hasAttribute('aria-level')) {
-            var currentlevel = parseInt(item.hasAttribute('aria-level') ? item.getAttribute('aria-level') : item.tagName.substring(1));
-            var currentElement = item.hasAttribute('aria-level') ? '[role="heading"][aria-level="'+currentlevel+'"]' : item.tagName;
-            
-            if(currentlevel === 1) {
-                return false;
-            }
-            var parent = item.parentNode;
-            while(parent) {
-                if(currentlevel < 8) {
-                    var headings = parent.querySelectorAll(currentElement+',h'+(currentlevel-1)+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
-                } else {
-                    var headings = parent.querySelectorAll(currentElement+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
-                }
-                
-                let hlength = headings.length;
-                for(var i = 0; i < hlength; i++) {
-                    if(headings[i] === item) {
-                        parent = parent.tagName.toLowerCase() != 'body' ? parent.parentNode : null;
-                        break;
-                    } else if(headings[i].getAttribute('data-tng-el-exposed') === 'false') {
-                        continue;
-                    } else {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
+        var currentlevel = parseInt(item.hasAttribute('aria-level') ? item.getAttribute('aria-level') : item.tagName.substring(1));
+        var currentElement = item.hasAttribute('aria-level') ? '[role="heading"][aria-level="'+currentlevel+'"]' : item.tagName;
+        
+        if(currentlevel === 1) {
+            return false;
         }
+        var parent = item.parentNode;
+        while(parent) {
+            if(currentlevel < 8) {
+                var headings = parent.querySelectorAll(currentElement+',h'+(currentlevel-1)+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
+            } else {
+                var headings = parent.querySelectorAll(currentElement+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
+            }
+            
+            let hlength = headings.length;
+            for(var i = 0; i < hlength; i++) {
+                if(headings[i] === item) {
+                    parent = parent.tagName.toLowerCase() != 'body' ? parent.parentNode : null;
+                    break;
+                } else if(headings[i].getAttribute('data-tng-el-exposed') === 'false') {
+                    continue;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     },
     mark: {attrs: ['role', 'aria-level']},
     tags: ['a11y', 'headings', 'structure'],
@@ -3876,39 +3872,36 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des titres de niveau qui respectent la hierarchie de titres',
-    query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"]',
+    query: 'h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"][aria-level]',
     filter: function (item) {
-        if(item.isNotExposedDueTo.length > 0) return;
-        if(item.tagName.toLowerCase().match(/^h\d$/) || item.hasAttribute('aria-level')) {
-            var currentlevel = parseInt(item.hasAttribute('aria-level') ? item.getAttribute('aria-level') : item.tagName.substring(1));
-            var currentElement = item.hasAttribute('aria-level') ? '[role="heading"][aria-level="'+currentlevel+'"]' : item.tagName;
-            if(currentlevel === 1) {
-                return true;
-            }
-            var parent = item.parentNode;
-            while(parent) {
-                if(currentlevel < 8) {
-                    var headings = parent.querySelectorAll(currentElement+',h'+(currentlevel-1)+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
-                } else {
-                    var headings = parent.querySelectorAll(currentElement+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
-                }
-
-                var headingsLength = headings.length;
-
-                for(var i = 0; i < headingsLength; i++) {
-                    if(headings[i] === item) {
-                        parent = parent.tagName.toLowerCase() != 'body' ? parent.parentNode : null;
-                        break;
-                    } else if(item.isNotExposedDueTo.length > 0) {
-                        continue;
-                    } else {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
+        var currentlevel = parseInt(item.hasAttribute('aria-level') ? item.getAttribute('aria-level') : item.tagName.substring(1));
+        var currentElement = item.hasAttribute('aria-level') ? '[role="heading"][aria-level="'+currentlevel+'"]' : item.tagName;
+        if(currentlevel === 1) {
+            return true;
         }
+        var parent = item.parentNode;
+        while(parent) {
+            if(currentlevel < 8) {
+                var headings = parent.querySelectorAll(currentElement+',h'+(currentlevel-1)+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
+            } else {
+                var headings = parent.querySelectorAll(currentElement+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
+            }
+
+            var headingsLength = headings.length;
+
+            for(var i = 0; i < headingsLength; i++) {
+                if(headings[i] === item) {
+                    parent = parent.tagName.toLowerCase() != 'body' ? parent.parentNode : null;
+                    break;
+                } else if(headings[i].getAttribute('data-tng-el-exposed') === 'false') {
+                    continue;
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     },
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
@@ -3922,10 +3915,15 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des titres (balise <hx> ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) non pertinent',
-    query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"][aria-level]',
+    query: 'h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"][aria-level]',
     expectedNbElements: 0,
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+        if(item.hasAccessibleName()) {
+            item.setAttribute('data-tng-headingAN', 'true');
+            return;
+        } else {
+            return true;
+        }
     },
     tags: ['a11y', 'headings', 'accessiblename', 'structure'],
     ressources: { 'rgaa': ['9.1.2'] }
@@ -3934,10 +3932,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier la pertinence des titres (balise <hx> ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level)',
-    query: 'h1:not([role]), h2:not([role]), h3:not([role]), h4:not([role]), h5:not([role]), h6:not([role]), [role="heading"][aria-level]',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
-    },
+    query: '[data-tng-headingAN="true"]',
     tags: ['a11y', 'headings', 'accessiblename', 'structure'],
     ressources: { 'rgaa': ['9.1.2'] }
 });
@@ -4054,11 +4049,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des balises servant à la présentation de l\'information présentes dans le code source généré de la page.',
-    query: 'basefont, blink, center, font, marquee, s, strike, tt, big',
+    query: 'basefont[data-tng-el-exposed="true"], blink[data-tng-el-exposed="true"], center[data-tng-el-exposed="true"], font[data-tng-el-exposed="true"], marquee[data-tng-el-exposed="true"], s[data-tng-el-exposed="true"], strike[data-tng-el-exposed="true"], tt[data-tng-el-exposed="true"], big[data-tng-el-exposed="true"]',
     expectedNbElements: 0,
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0;
-    },
     tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.1.1'] }
 });
@@ -4067,11 +4059,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des attributs servant à la présentation de l\'information présents dans le code source généré de la page.',
-    query: '[align], [alink], [background], [bgcolor], [border], [cellpadding], [cellspacing], [char], [charoff], [clear], [compact], [color], [frameborder], [hspace], [link], [marginheight], [marginwidth], [text], [valign], [vlink], [vspace], [size], :not(img, object, embed, canvas, svg)[width], :not(img, object, embed, canvas, svg)[height]',
+    query: '[align][data-tng-el-exposed="true"], [alink][data-tng-el-exposed="true"], [background][data-tng-el-exposed="true"], [bgcolor][data-tng-el-exposed="true"], [border][data-tng-el-exposed="true"], [cellpadding][data-tng-el-exposed="true"], [cellspacing][data-tng-el-exposed="true"], [char][data-tng-el-exposed="true"], [charoff][data-tng-el-exposed="true"], [clear][data-tng-el-exposed="true"], [compact][data-tng-el-exposed="true"], [color][data-tng-el-exposed="true"], [frameborder][data-tng-el-exposed="true"], [hspace][data-tng-el-exposed="true"], [link][data-tng-el-exposed="true"], [marginheight][data-tng-el-exposed="true"], [marginwidth][data-tng-el-exposed="true"], [text][data-tng-el-exposed="true"], [valign][data-tng-el-exposed="true"], [vlink][data-tng-el-exposed="true"], [vspace][data-tng-el-exposed="true"], [size][data-tng-el-exposed="true"], [data-tng-el-exposed="true"]:not(img, object, embed, canvas, svg)[width], [data-tng-el-exposed="true"]:not(img, object, embed, canvas, svg)[height]',
     expectedNbElements: 0,
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0;
-    },
     mark: { attrs: ['align','alink','background','bgcolor','border','cellpadding','cellspacing','char','charoff','clear','compact', 'color', 'frameborder', 'hspace', 'link', 'marginheight', 'marginwidth', 'text', 'valign', 'vlink', 'vspace', 'size', 'width', 'height']},
     tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.1.2'] }
@@ -4393,7 +4382,14 @@ tanaguruTestsList.push({
     query: 'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), input[type="file"]:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])',
     expectedNbElements: 0,
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+        if(item.getAttribute('data-tng-el-exposed') === 'true') {
+            if(item.hasAccessibleName()) {
+                item.setAttribute('data-tng-fieldsAN', 'true');
+                return;
+            } else {
+                return true;
+            }
+        }
     },
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.1.1'] }
@@ -4402,10 +4398,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des champs de formulaires avec un nom accessible',
-    query: 'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), input[type="file"]:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
-    },
+    query: '[data-tng-fieldsAN="true"]',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -4417,14 +4410,14 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des intitulés de champs de formulaire non reliés à leur champ.',
-    query: 'label[for]',
+    query: 'label[for][data-tng-el-exposed="true"]',
     expectedNbElements: 0,
     explanations: {
         'passed': 'Aucun intitulés de champs de formulaires non relié à son champs n\'a été trouvé dans la page',
         'failed': 'Des intitulés de champs de formulaire sont mal reliés ou pas reliés à leur champ.'
     },
     filter: function (item) {
-        if(item.isNotExposedDueTo.length == 0 && item.getAttribute('for').trim().length > 0) {
+        if(item.getAttribute('for').trim().length > 0) {
             var startDigit = /^\d/;
             var id = item.getAttribute('for');
 
@@ -4438,6 +4431,12 @@ tanaguruTestsList.push({
 
             if(fields.length === 0 || fields.length > 1) {
                 return true;
+            } else {
+                let elCategory = htmlData.elements[fields[0].tagName.toLowerCase()];
+                if(elCategory && elCategory.category === 'forms') {
+                    item.setAttribute('data-tng-label-related', 'true');
+                }
+                return;
             }
         }
     },
@@ -4449,26 +4448,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des intitulés de champs de formulaire reliés à leur champ.',
-    query: 'label[for]',
-    filter: function (item) {
-        if(item.isNotExposedDueTo.length == 0 && item.getAttribute('for').trim().length > 0) {
-            var startDigit = /^\d/;
-            var id = item.getAttribute('for');
-
-            if(id.match(startDigit)) {
-                id = '\\3'+id.substring(0, 1)+' '+id.substring(1, id.length).replace(/[!"#$%&'()*+,-./:;<=>?@[\]^`{|}~]/g, "\\$&");
-            } else {
-                id = id.replace(/[!"#$%&'()*+,-./:;<=>?@[\]^`{|}~]/g, "\\$&");
-            }
-
-            var fields = document.querySelectorAll('#'+id);
-            if(0 < fields.length && fields.length < 2) {
-                if(htmlData.elements[fields[0].tagName.toLowerCase()]) {
-                    return htmlData.elements[fields[0].tagName.toLowerCase()].category === 'forms';
-                }
-            }
-        }
-    },
+    query: 'label[data-tng-label-related="true"]',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -4484,7 +4464,7 @@ tanaguruTestsList.push({
     query: 'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), input[type="file"]:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])',
     expectedNbElements: 0,
     filter: function (item) {
-        if((item.isNotExposedDueTo.length > 0 && !item.isVisible) || item.disabled) return;
+        if((item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible', 'false')) || item.disabled) return;
 
         let hasLabel = false;
 
@@ -4498,8 +4478,8 @@ tanaguruTestsList.push({
                 if(el) {
                     hasLabel = true;
                     item.setAttribute('data-tng-has-label', 'labelledby');
-                    labelIsVisible = el.isVisible && el.textContent.trim().length > 0 ? true : labelIsVisible;
-                    if(el.isVisible && el.textContent.trim().length > 0) {
+                    labelIsVisible = false;
+                    if(el.getAttribute('data-tng-el-visible') === 'true' && el.textContent.trim().length > 0) {
                         labelIsVisible = true;
                         visibleLabel += el.textContent.trim() + ' ';
                     }
@@ -4522,7 +4502,7 @@ tanaguruTestsList.push({
                 let forAttr = labels[i].getAttribute('for');
                 if(forAttr.match(id)) {
                     if(labels[i].textContent.trim().length > 0) {
-                        if(labels[i].isVisible) {
+                        if(labels[i].getAttribute('data-tng-el-visible') === 'true') {
                             item.setAttribute('data-tng-visible-label', 'label');
                             item.setAttribute('data-tng-text-label', labels[i].textContent.trim());
                             return;
@@ -4557,7 +4537,7 @@ tanaguruTestsList.push({
                 ids.forEach(id => {
                     let el = document.getElementById(id);
                     if(el && el.textContent.trim().length > 0) {
-                        if(el.isVisible) {
+                        if(el.getAttribute('data-tng-el-visible') === 'true') {
                             item.setAttribute('data-tng-has-label', 'describedby');
                             return;
                         } 
@@ -4614,40 +4594,19 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifiez si la balise label permet de connaître la fonction exacte du champ de formulaire auquel elle est associée.',
-    query: 'label',
+    query: 'label[data-tng-el-exposed="true"]',
     filter: function (item) {
-        if(item.isNotExposedDueTo.length == 0) {
-            if(item.hasAttribute('for') && item.getAttribute('for').trim().length > 0) {
-                var startDigit = /^\d/;
-                var id = item.getAttribute('for');
+        if(item.getAttribute('data-tng-label-related' === 'true')) return true;
 
-                if(id.match(startDigit)) {
-                    id = '\\3'+id.substring(0, 1)+' '+id.substring(1, id.length).replace(/[!"#$%&'()*+,-./:;<=>?@[\]^`{|}~]/g, "\\$&");
-                } else {
-                    id = id.replace(/[!"#$%&'()*+,-./:;<=>?@[\]^`{|}~]/g, "\\$&");
-                }
-                var tags = document.querySelectorAll('#'+id);
-                var tagsLength = tags.length;
+        if(item.hasChildNodes()) {
+            var children = item.childNodes;
+            var childrenLength = children.length;
 
-                for(var i = 0; i < tagsLength; i++) {
-                    if(htmlData.elements[tags[i].tagName.toLowerCase()]) {
-                        if(htmlData.elements[tags[i].tagName.toLowerCase()].category === 'forms') {
+            for(var i = 0; i < childrenLength; i++) {
+                if(children[i].tagName) {
+                    if(htmlData.elements[children[i].tagName.toLowerCase()]) {
+                        if(htmlData.elements[children[i].tagName.toLowerCase()].category === 'forms') {
                             return true;
-                        }
-                    }
-                }
-            }
-
-            if(item.hasChildNodes()) {
-                var children = item.childNodes;
-                var childrenLength = children.length;
-
-                for(var i = 0; i < childrenLength; i++) {
-                    if(children[i].tagName) {
-                        if(htmlData.elements[children[i].tagName.toLowerCase()]) {
-                            if(htmlData.elements[children[i].tagName.toLowerCase()].category === 'forms') {
-                                return true;
-                            }
                         }
                     }
                 }
@@ -4663,12 +4622,10 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifiez si l\'attribut title permet de connaître la fonction exacte du champ de formulaire auquel il est associé.',
-    query: '[title]',
+    query: '[title][data-tng-el-exposed="true"]',
     filter: function (item) {
-        if(item.isNotExposedDueTo.length == 0) {
-            if(htmlData.elements[item.tagName.toLowerCase()]) {
-                return htmlData.elements[item.tagName.toLowerCase()].category === 'forms';
-            }
+        if(htmlData.elements[item.tagName.toLowerCase()]) {
+            return htmlData.elements[item.tagName.toLowerCase()].category === 'forms';
         }
     },
     mark: {attrs: ['title']},
@@ -4680,12 +4637,10 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifiez si l\'attribut WAI-ARIA aria-label permet de connaître la fonction exacte du champ de formulaire auquel il est associé.',
-    query: '[aria-label]',
+    query: '[aria-label][data-tng-el-exposed="true"]',
     filter: function (item) {
-        if(item.isNotExposedDueTo.length == 0) {
-            if(htmlData.elements[item.tagName.toLowerCase()]) {
-                return htmlData.elements[item.tagName.toLowerCase()].category === 'forms';
-            }
+        if(htmlData.elements[item.tagName.toLowerCase()]) {
+            return htmlData.elements[item.tagName.toLowerCase()].category === 'forms';
         }
     },
     mark: {attrs: ['aria-label']},
@@ -4697,12 +4652,10 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifiez si le passage de texte associé via l\'attribut WAI-ARIA aria-labelledby permet de connaître la fonction exacte du champ de formulaire auquel il est associé.',
-    query: '[aria-labelledby]',
+    query: '[aria-labelledby][data-tng-el-exposed="true"]',
     filter: function (item) {
-        if(item.isNotExposedDueTo.length == 0) {
-            if(htmlData.elements[item.tagName.toLowerCase()]) {
-                return htmlData.elements[item.tagName.toLowerCase()].category === 'forms';
-            }
+        if(htmlData.elements[item.tagName.toLowerCase()]) {
+            return htmlData.elements[item.tagName.toLowerCase()].category === 'forms';
         }
     },
     mark: {attrs: ['aria-labelledby']},
@@ -4716,7 +4669,12 @@ tanaguruTestsList.push({
     name: 'Liste des champs de formulaire dont le nom accessible contient l\'intitulé visible.',
     query: '[data-tng-visible-label]',
     filter: function (item) {
-        return item.accessibleName.includes(item.getAttribute('data-tng-text-label'));
+        if(item.accessibleName.includes(item.getAttribute('data-tng-text-label'))) {
+            return true;
+        } else {
+            item.setAttribute('data-tng-NAinclude-visibleLabel', 'true');
+            return;
+        }
     },
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
@@ -4728,11 +4686,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des champs de formulaire dont le nom accessible ne reprend pas l\'intitulé visible.',
-    query: '[data-tng-visible-label]',
+    query: '[data-tng-NAinclude-visibleLabel]',
     expectedNbElements: 0,
-    filter: function (item) {
-        return !item.accessibleName.includes(item.getAttribute('data-tng-text-label'));
-    },
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.2.5'] }
 });
@@ -4781,10 +4736,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier que l\'utilisation des balises fieldset et les attributs role group sont bien nécessaire',
-    query: 'fieldset, [role="group"], [role="radiogroup"]',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0;
-    },
+    query: 'fieldset[data-tng-el-exposed="true"], [role="group"][data-tng-el-exposed="true"], [role="radiogroup"][data-tng-el-exposed="true"]',
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.5.1'] }
 });
@@ -4802,14 +4754,19 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des regroupement de champs sans légende.',
-    query: 'fieldset, [role="group"]',
+    query: 'fieldset[data-tng-el-exposed="true"], [role="group"][data-tng-el-exposed="true"]',
     expectedNbElements: 0,
     explanations: {
         'passed': 'Aucun regroupement de champs sans légende n\'a été trouvé sur cette page.',
         'failed': 'Des regroupements de champs sans légendes ont été trouvé sur cette page.'
     },
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && !item.hasAccessibleName();
+        if(item.hasAccessibleName()) {
+            item.setAttribute('data-tng-fieldsgroup-legend', 'true');
+            return;
+        } else {
+            return true;
+        }
     },
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.6.1'] }
@@ -4818,10 +4775,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des regroupement de champs avec légende.',
-    query: 'fieldset, [role="group"]',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
-    },
+    query: '[data-tng-fieldsgroup-legend]',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -4834,10 +4788,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifiez si les légendes associées aux regroupements de champs de formulaires sont pertinentes.',
-    query: 'fieldset, [role="group"]',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && item.hasAccessibleName();
-    },
+    query: '[data-tng-fieldsgroup-legend]',
     mark: {attrs: ['aria-label', 'aria-labelledby']},
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.7.1'] }
@@ -4857,11 +4808,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des éléments optgroup sans attribut label.',
-    query: 'select optgroup:not([label])',
+    query: 'select optgroup[data-tng-el-exposed="true"]:not([label])',
     expectedNbElements: 0,
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0;
-    },
     explanations: {
         'passed': 'Aucun éléments optgroup sans attribut label n\'a été trouvé sur cette page.',
         'failed': 'Des éléments optgroup sans attribut label ont été trouvé sur cette page.'
@@ -4873,10 +4821,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des éléments optgroup avec attribut label.',
-    query: 'select optgroup[label]',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0;
-    },
+    query: 'select optgroup[label][data-tng-el-exposed="true"]',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -4889,10 +4834,15 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "Element <optgroup> avec un attribut label non pertinent.",
-    query: 'select optgroup[label]',
+    query: 'select optgroup[label][data-tng-el-exposed="true"]',
     expectedNbElements: 0,
     filter: function (item) {
-        return item.isNotExposedDueTo.length == 0 && item.getAttribute('label').trim() === 0;
+        if(item.getAttribute('label').trim() > 0) {
+            item.setAttribute('data-tng-optgroup-label', 'true');
+            return;
+        } else {
+            return true;
+        }
     },
     mark: {attrs: ['label']},
     tags: ['a11y', 'forms', 'accessiblename'],
@@ -4902,10 +4852,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifiez la pertinence de l\'attribut label sur l\'élément optgroup.',
-    query: 'select optgroup[label]',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0;
-    },
+    query: '[data-tng-optgroup-label]',
     mark: {attrs: ['label']},
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.8.3'] }
@@ -4916,10 +4863,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifiez la pertinence des intitulés de ces boutons.',
-    query: 'input[type="submit"][value], input[type="reset"][value], input[type="button"][value], button, input[type="image"][alt], input[type="submit"][aria-label], input[type="submit"][aria-labelledby], input[type="submit"][title], input[type="reset"][aria-label], input[type="reset"][aria-labelledby], input[type="reset"][title], input[type="button"][aria-label], input[type="button"][aria-labelledby], input[type="button"][title], [role="button"]',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length == 0;
-    },
+    query: 'input[type="submit"][value][data-tng-el-exposed="true"], input[type="reset"][value][data-tng-el-exposed="true"], input[type="button"][value][data-tng-el-exposed="true"], button, input[type="image"][alt][data-tng-el-exposed="true"], input[type="submit"][aria-label][data-tng-el-exposed="true"], input[type="submit"][aria-labelledby][data-tng-el-exposed="true"], input[type="submit"][title][data-tng-el-exposed="true"], input[type="reset"][aria-label][data-tng-el-exposed="true"], input[type="reset"][aria-labelledby][data-tng-el-exposed="true"], input[type="reset"][title][data-tng-el-exposed="true"], input[type="button"][aria-label][data-tng-el-exposed="true"], input[type="button"][aria-labelledby][data-tng-el-exposed="true"], input[type="button"][title][data-tng-el-exposed="true"], [role="button"][data-tng-el-exposed="true"]',
     mark: {attrs: ['aria-labelledby', 'aria-label', 'alt', 'value', 'title']},
     tags: ['a11y', 'forms', 'accessiblename', 'buttons'],
     ressources: { 'rgaa': ['11.9.1'] }
@@ -4929,16 +4873,21 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des boutons de formulaire ayant un intitulé visible non repris dans le nom accessible.',
-    query: 'form button:not([role]), form button[role="none"], form [role="button"], form input[type="submit"]:not([role]), form input[type="reset"]:not([role]), form input[type="button"]:not([role])',
+    query: 'form button[data-tng-el-exposed="true"][data-tng-el-visible="true"]:not([role]), form button[role="none"][data-tng-el-exposed="true"][data-tng-el-visible="true"], form [role="button"][data-tng-el-exposed="true"][data-tng-el-visible="true"], form input[type="submit"][data-tng-el-exposed="true"][data-tng-el-visible="true"]:not([role]), form input[type="reset"][data-tng-el-exposed="true"][data-tng-el-visible="true"]:not([role]), form input[type="button"][data-tng-el-exposed="true"][data-tng-el-visible="true"]:not([role])',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.isVisible && (item.innerText || item.value) && !item.disabled) {
+        if((item.innerText || item.value) && !item.disabled) {
             var visibleName = item.innerText ? item.innerText : item.value;
             var buttonName = visibleName.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
             var buttonAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
             var regex = new RegExp(buttonName, 'mi');
 
-            return item.isNotExposedDueTo.length == 0 && !buttonAccessibleName.match(regex);
+           if(buttonAccessibleName.match(regex)) {
+               item.setAttribute('data-tng-button-namesMatch', 'true');
+               return;
+           } else {
+               return true;
+           }
         }
     },
     tags: ['a11y', 'accessiblename', 'buttons', 'forms'],
@@ -4948,17 +4897,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des boutons de formulaire ayant un intitulé visible bien repris dans le nom accessible.',
-    query: 'form button:not([role]), form button[role="none"], form [role="button"], form input[type="submit"]:not([role]), form input[type="reset"]:not([role]), form input[type="button"]:not([role])',
-    filter: function (item) {
-        if(item.isVisible && (item.innerText || item.value)) {
-            var visibleName = item.innerText ? item.innerText : item.value;
-            var buttonName = visibleName.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-            var buttonAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-            var regex = new RegExp(buttonName, 'mi');
-
-            return item.isNotExposedDueTo.length == 0 && buttonAccessibleName.match(regex);
-        }
-    },
+    query: '[data-tng-button-namesMatch]',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -4981,10 +4920,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "Les champs obligatoires ayant l'attribut aria-required ou required doivent être doublés d'une indication de champs obligatoire visible.",
     description: "Vérifier qu'une indication de champ obligatoire est visible ET située dans l'étiquette ou le passage de texte associé au champ préalablement à la validation du formulaire.",
-    query: '[aria-required="true"], [required]',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length === 0;
-    },
+    query: '[aria-required="true"][data-tng-el-exposed="true"], [required][data-tng-el-exposed="true"]',
     tags: ['a11y', 'accessiblename', 'forms'],
     ressources: {'rgaa': ['11.10.2']}
 });
@@ -5003,10 +4939,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "Les champs obligatoires ayant l'attribut aria-invalid doivent être associés à un message d'erreur visible.",
     description: "Pour chaque champ obligatoire, vérifier que le message d’erreur indiquant le caractère invalide est visible ET situé dans l'étiquette ou le passage de texte associé au champ.",
-    query: '[aria-invalid="true"]',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length === 0;
-    },
+    query: '[aria-invalid="true"][data-tng-el-exposed="true"]',
     tags: ['a11y', 'accessiblename', 'forms'],
     ressources: {'rgaa': ['11.10.4']}
 });
@@ -5034,10 +4967,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "Les champs ayant l'attribut aria-invalid dont la saisie requiert un type de données et/ou de format obligatoire doivent être doublés d'une indication visible.",
     description: "Pour chaque champ dont la saisie requiert un type de données et/ou de format obligatoire, vérifier qu'une instruction ou une indication du type de données et/ou de format obligatoire est visible ET située dans la balise <label> ou le passage de texte associée au champ.",
-    query: '[aria-invalid="true"]',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length === 0;
-    },
+    query: '[aria-invalid="true"][data-tng-el-exposed="true"]',
     tags: ['a11y', 'accessiblename', 'forms'],
     ressources: {'rgaa': ['11.10.7']}
 });
@@ -5067,10 +4997,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "Pour chaque formulaire qui modifie ou supprime des données, ou qui transmet des réponses à un test ou un examen, ou dont la validation a des conséquences financières ou juridiques, l'utilisateur doit pouvoir valider le formulaire en connaissance de cause.",
     description: "Pour chaque formulaire qui modifie ou supprime des données, ou qui transmet des réponses à un test ou un examen, ou dont la validation a des conséquences financières ou juridiques, vérifier que l'utilisateur peut modifier ses saisies après la validation formulaire (ou avant la validation lors d'un formulaire en plusieurs étapes) ou que le formulaire possède un mécanisme de confirmation explicite.",
-    query: 'form, [role="form"]',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length === 0;
-    },
+    query: 'form[data-tng-el-exposed="true"], [role="form"][data-tng-el-exposed="true"]',
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.12.1']}
 });
@@ -5080,10 +5007,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "Pour chaque formulaire dont la validation modifie ou supprime des données à caractère financier, juridique ou personnel, l'utilisateur doit pouvoir valider le formulaire en connaissance de cause.",
     description: "Pour chaque formulaire dont la validation modifie ou supprime des données à caractère financier, juridique ou personnel, vérifier que le formulaire possède un mécanisme permettant de récupérer les données supprimées ou modifiées ou un mécanisme de confirmation explicite.",
-    query: 'form, [role="form"]',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length === 0;
-    },
+    query: 'form[data-tng-el-exposed="true"], [role="form"][data-tng-el-exposed="true"]',
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.12.2']}
 });
@@ -5093,10 +5017,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "Vérifier que chaque champ de formulaire dont l'objet se rapporte à une information concernant l'utilisateur, possède un attribut autocomplete.",
-    query: 'input[type="text"], input[type="password"], input[type="email"], input[type="tel"], input[type="url"], textarea, input[type="date"], select, input:not([type])',
-    filter: function (item) {
-        return item.isNotExposedDueTo.length === 0;
-    },
+    query: 'input[type="text"][data-tng-el-exposed="true"], input[type="password"][data-tng-el-exposed="true"], input[type="email"][data-tng-el-exposed="true"], input[type="tel"][data-tng-el-exposed="true"], input[type="url"][data-tng-el-exposed="true"], textarea[data-tng-el-exposed="true"], input[type="date"][data-tng-el-exposed="true"], select[data-tng-el-exposed="true"], input[data-tng-el-exposed="true"]:not([type])',
     mark: {attrs: ['autocomplete']},
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.13.1']}
@@ -5105,7 +5026,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "Champs de formulaire possèdant un attribut autocomplete invalide.",
-    query: 'input[autocomplete], textarea[autocomplete], select[autocomplete]',
+    query: 'input[autocomplete][data-tng-el-exposed="true"], textarea[autocomplete][data-tng-el-exposed="true"], select[autocomplete][data-tng-el-exposed="true"]',
     expectedNbElements: 0,
     explanations: {
         'passed': "Aucun attribut autocomplete invalide n'a été trouvé sur cette page;",
@@ -5113,7 +5034,7 @@ tanaguruTestsList.push({
     },
     filter: function (item) {
         //? if na, return
-        if(item.isNotExposedDueTo.length > 0 || item.disabled) return;
+        if(item.disabled) return;
         if(item.hasAttribute('aria-disabled') && item.getAttribute('aria-disabled') === 'true') return;
 
         if(item.getAttribute('autocomplete') === 'on' || item.getAttribute('autocomplete') === 'off' || item.getAttribute('autocomplete').trim() === '') return;
@@ -5452,7 +5373,7 @@ tanaguruTestsList.push({
 		var exposedState = item.isNotExposedDueTo;
 
 		if (exposedState.indexOf('css:display') == -1 && exposedState.indexOf('css:visibility') == -1) {
-			return item.isNotExposedDueTo.length > 0;
+			return exposedState.length > 0;
 		}
 	},
     tags: ['a11y', 'keyboard'],
@@ -5756,3 +5677,4 @@ tanaguruTestsList.push({
     tags: ['a11y'],
     ressources: { 'rgaa': ['13.12.3'] }
 });
+

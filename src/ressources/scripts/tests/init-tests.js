@@ -1,8 +1,6 @@
 var statuses = ['failed', 'cantTell', 'passed'];
 
-let startDataTng = new Date().getTime() / 1000;
 let elements = document.body.querySelectorAll('*');
-
 elements.forEach(e => {
     if(e.isNotExposedDueTo.length > 0) {
         e.setAttribute('data-tng-el-exposed', false);
@@ -24,10 +22,6 @@ elements.forEach(e => {
     }
 });
 
-let endDataTng = new Date().getTime() / 1000;
-console.log('data tng : ', endDataTng - startDataTng);
-
-let startTest = new Date().getTime() / 1000;
 let testsLength = tanaguruTestsList.length;
 
 for (var i = 0; i < testsLength; i++) {
@@ -65,9 +59,21 @@ for (var i = 0; i < testsLength; i++) {
     createTanaguruTest(test);
 }
 
-let endTest = new Date().getTime() / 1000;
-let durationTest = endTest - startTest;
-console.log('tests time : ', durationTest);
+// nettoyer les datas
+elements.forEach(e => {
+    let elAttributes = e.attributes;
+    let dataTNG = [];
+
+    for(let i = 0; i < elAttributes.length; i++) {
+        if(elAttributes[i].name.match(/^data-tng-.*$/)) {
+            dataTNG.push(elAttributes[i].name);
+        }
+    }
+
+    dataTNG.forEach(data => {
+        e.removeAttribute(data);
+    })
+});
 
 // code.
 loadTanaguruTests();

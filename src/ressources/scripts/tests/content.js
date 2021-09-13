@@ -1140,7 +1140,6 @@ function createTanaguruTest(test) {
         // Intégrer chaque résultat dans window.tanaguru.tests.
     }
     else if ((test.hasOwnProperty('query') && test.query.constructor == String) || test.hasOwnProperty('contrast') || test.hasOwnProperty('code') || test.hasOwnProperty('node')) {
-        let start = new Date().getTime() / 1000;
         // Sélection des éléments.
         if(test.hasOwnProperty('contrast')) {
             var elements = textNodeList[test.contrast];
@@ -1313,12 +1312,6 @@ function createTanaguruTest(test) {
             }
             if (failedincollection) {
                 result.failedincollection = failedincollection;
-            }
-
-            let end = new Date().getTime() / 1000;
-            let duration = end - start;
-            if(duration > 0.3) {
-                console.log(test.ressources.rgaa, test.name, duration);
             }
             
             addResultSet("Nouvelle syntaxe d'écriture des tests", result);
