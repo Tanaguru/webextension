@@ -1,7 +1,7 @@
 var statuses = ['failed', 'cantTell', 'passed'];
 
-let elements = document.body.querySelectorAll('*');
-elements.forEach(e => {
+let eList = document.body.querySelectorAll('*');
+eList.forEach(e => {
     if(e.isNotExposedDueTo.length > 0) {
         e.setAttribute('data-tng-el-exposed', false);
     } else {
@@ -23,7 +23,6 @@ elements.forEach(e => {
 });
 
 let testsLength = tanaguruTestsList.length;
-
 for (var i = 0; i < testsLength; i++) {
     /*
         Schéma des clefs :
@@ -60,7 +59,7 @@ for (var i = 0; i < testsLength; i++) {
 }
 
 // nettoyer les datas
-elements.forEach(e => {
+eList.forEach(e => {
     let elAttributes = e.attributes;
     let dataTNG = [];
 

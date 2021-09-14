@@ -11,11 +11,11 @@ var tanaguruTestsList = [];
  ** Liens (optimisé)
  ** Scripts (optimisé)
  ** Eléments obligatoires (optimisé)
- * Structuration de l'information
- *! Présentation de l'information(todo)
- *! Formulaires (bloqué)
- * Navigation
- * Consultation
+ ** Structuration de l'information (optimisé)
+ ** Présentation de l'information (optimisé)
+ ** Formulaires (optimisé)
+ ** Navigation (optimisé)
+ ** Consultation (optimisé)
  */
 
 //* 10.8 Pour chaque page web, les contenus cachés ont-ils vocation à être ignorés par les technologies d'assistance ?
@@ -3857,6 +3857,7 @@ tanaguruTestsList.push({
                 } else if(headings[i].getAttribute('data-tng-el-exposed') === 'false') {
                     continue;
                 } else {
+                    item.setAttribute('data-tng-headingHierarchy', 'true');
                     return false;
                 }
             }
@@ -3872,37 +3873,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des titres de niveau qui respectent la hierarchie de titres',
-    query: 'h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"][aria-level]',
-    filter: function (item) {
-        var currentlevel = parseInt(item.hasAttribute('aria-level') ? item.getAttribute('aria-level') : item.tagName.substring(1));
-        var currentElement = item.hasAttribute('aria-level') ? '[role="heading"][aria-level="'+currentlevel+'"]' : item.tagName;
-        if(currentlevel === 1) {
-            return true;
-        }
-        var parent = item.parentNode;
-        while(parent) {
-            if(currentlevel < 8) {
-                var headings = parent.querySelectorAll(currentElement+',h'+(currentlevel-1)+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
-            } else {
-                var headings = parent.querySelectorAll(currentElement+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
-            }
-
-            var headingsLength = headings.length;
-
-            for(var i = 0; i < headingsLength; i++) {
-                if(headings[i] === item) {
-                    parent = parent.tagName.toLowerCase() != 'body' ? parent.parentNode : null;
-                    break;
-                } else if(headings[i].getAttribute('data-tng-el-exposed') === 'false') {
-                    continue;
-                } else {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    },
+    query: '[data-tng-headingHierarchy]',
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
@@ -4121,9 +4092,11 @@ tanaguruTestsList.push({
 				var propertyName = property[0].trim().toLowerCase();
 				var propertyValue = property[1].trim().toLowerCase();
 				if (propertyName == 'user-scalable' && propertyValue == "no") {
+                    item.setAttribute('data-tng-scalable', 'false');
 					return false;
 				}
 				else if (propertyName == 'maximum-scale' && (parseFloat(propertyValue) < 2 && parseFloat(propertyValue) >= 0)) {
+                    item.setAttribute('data-tng-scalable', 'false');
 					return false;
 				}
 			}
@@ -4142,28 +4115,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'La meta viewport empêche le zoom.',
-	query: 'meta[name="viewport"][content]',
+	query: 'meta[data-tng-scalable]',
     expectedNbElements: 0,
-	filter: function (item) {
-		var content = item.getAttribute('content').trim();
-        if(!content.match(/(user-scalable)|(maximum-scale)/igm)) {
-            return;
-        }
-		if (content.match(/(user-scalable=)|(maximum-scale=)/igm)) {
-			content = content.indexOf(',') > -1 ? content.split(',') : content = [content];
-            for (var j = 0; j < content.length; j++) {
-				var property = content[j].split('=');
-				var propertyName = property[0].trim().toLowerCase();
-				var propertyValue = property[1].trim().toLowerCase();
-				if (propertyName == 'user-scalable' && propertyValue == "no") {
-					return true;
-				}
-				else if (propertyName == 'maximum-scale' && (parseFloat(propertyValue) < 2 && parseFloat(propertyValue) >= 0)) {
-					return true;
-				}
-			}
-		}
-	},
     mark: {attrs: ['content']},
 	tags: ['a11y', 'presentation', 'meta'],
     ressources: { 'rgaa': ['10.4.2'] }
