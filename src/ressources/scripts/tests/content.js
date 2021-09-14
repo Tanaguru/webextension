@@ -145,8 +145,9 @@ if (!HTMLElement.prototype.hasOwnProperty('availableARIASemantics')) {
                         selectors.push('[role="button"]', '[role="checkbox"]', '[role="menuitem"]', '[role="menuitemcheckbox"]', '[role="menuitemradio"]', '[role="option"]', '[role="radio"]', '[role="switch"]', '[role="tab"]', '[role="treeitem"]');
                     }
                     else {
-                        for (var ariarole in ariaroles) {
-                            selectors.push('[role="' + ariarole + '"]');
+
+                        for(let i = 0; i < ariaroles.length; i++) {
+                            selectors.push('[role="' + ariaroles[i] + '"]');
                         }
                     }
                     break;
@@ -193,8 +194,8 @@ if (!HTMLElement.prototype.hasOwnProperty('availableARIASemantics')) {
                 case 'u':
                 case 'var':
                 case 'wbr':
-                    for (var ariarole in ariaroles) {
-                        selectors.push('[role="' + ariarole + '"]');
+                    for(let i = 0; i < ariaroles.length; i++) {
+                        selectors.push('[role="' + ariaroles[i] + '"]');
                     }
                     break;
                 case 'article':
@@ -252,8 +253,8 @@ if (!HTMLElement.prototype.hasOwnProperty('availableARIASemantics')) {
                         selectors.push('[role="none"]', '[role="presentation"]');
                     }
                     else {
-                        for (var ariarole in ariaroles) {
-                            selectors.push('[role="' + ariarole + '"]');
+                        for(let i = 0; i < ariaroles.length; i++) {
+                            selectors.push('[role="' + ariaroles[i] + '"]');
                         }
                     }
                     break;
@@ -887,6 +888,10 @@ var getAccessibleName = function () {
                             result += labels[i].accessibleName;
                         }
                     }
+
+                    if(labels.length === 0 && this.hasAttribute('title')) {
+                        result = this.getAttribute('title');
+                    }
                 }
                 else if (this.matches('fieldset, table') && !this.matches('[role="none"], [role="presentation"]')) {
                     var elementname = this.firstElementChild;
@@ -1005,6 +1010,7 @@ function getXPath(element) {
             }
         }
     }
+
     return (element.parentNode.nodeType == 1 ? getXPath(element.parentNode) : '') + '/' + element.tagName.toLowerCase() + '[' + (position ? position : '1') + ']' + (element.hasAttribute('id') ? '[@id="' + element.getAttribute('id') + '"]' : '') + (element.hasAttribute('class') ? '[@class="' + element.getAttribute('class') + '"]' : '');
 }
 
@@ -1067,9 +1073,9 @@ function loadTanaguruTests() {
 function manageOutput(element) {
     var status = element.status ? element.status : 'cantTell';
     element.status = undefined;
-    var accessibleName = element.accessibleName;
-    var implicitARIASemantic = element.implicitARIASemantic;
-    var explicitARIASemantic = element.explicitARIASemantic;
+    // var accessibleName = element.accessibleName;
+    // var implicitARIASemantic = element.implicitARIASemantic;
+    // var explicitARIASemantic = element.explicitARIASemantic;
     var canBeReachedUsingKeyboardWith = element.canBeReachedUsingKeyboardWith;
     var isVisible = element.isVisible;
     var isNotExposedDueTo = element.isNotExposedDueTo;
@@ -1086,7 +1092,7 @@ function manageOutput(element) {
             fakeelement.innerHTML = '[...]';
         }
     }
-    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, xpath: e ? getXPath(element) : null, role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: e ? canBeReachedUsingKeyboardWith : [], isVisible: e ? isVisible : false, isNotExposedDueTo: e ? isNotExposedDueTo : '' };
+    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, xpath: e ? getXPath(element) : null, /*role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName,*/ canBeReachedUsingKeyboardWith: e ? canBeReachedUsingKeyboardWith : [], isVisible: e ? isVisible : false, isNotExposedDueTo: e ? isNotExposedDueTo : '' };
 }
 
 function createTanaguruTag(tag, status) {
@@ -1148,6 +1154,7 @@ function createTanaguruTest(test) {
         if (elements/* && elements.length > 0*/) {
             // Statut du test par défaut.
             var status = 'cantTell';
+            elements = Array.from(elements);
 
             // Initialisation des tags.
             initTanaguru();
@@ -1169,7 +1176,6 @@ function createTanaguruTest(test) {
             // Filtre additionnel sur la sélection d'éléments.
             if (test.hasOwnProperty('filter')) {
                 if (test.filter.constructor == Function) {
-                    elements = Array.from(elements);
                     elements = elements.filter(test.filter);
                 }
                 else {
@@ -1256,25 +1262,20 @@ function createTanaguruTest(test) {
             // Chargement du résultat.
             var outputelements = [];
             if(!test.hasOwnProperty('contrast')) {
-                for (var i = 0; i < elements.length; i++) {
-                    outputelements.push(manageOutput(elements[i]));
-                }
+                outputelements = elements.map(e => manageOutput(e));
             }
             
             if(test.hasOwnProperty('contrast')) {
-                for (var i = 0; i < elements.length; i++) {
+                let contrastElLength = elements.length;
+                for (var i = 0; i < contrastElLength; i++) {
                     var node = elements[i].node;
-                    var accessibleName = node.accessibleName;
-                    var implicitARIASemantic = node.implicitARIASemantic;
-                    var explicitARIASemantic = node.explicitARIASemantic;
-                    var canBeReachedUsingKeyboardWith = node.canBeReachedUsingKeyboardWith;
-                    var isNotExposedDueTo = node.isNotExposedDueTo;
 
-                    elements[i].role.implicit = implicitARIASemantic;
-                    elements[i].role.explicit = explicitARIASemantic;
-                    elements[i].accessibleName = accessibleName;
-                    elements[i].canBeReachedUsingKeyboardWith = canBeReachedUsingKeyboardWith;
-                    elements[i].isNotExposedDueTo = isNotExposedDueTo;
+                    // elements[i].role.implicit = node.implicitARIASemantic;
+                    // elements[i].role.explicit = node.explicitARIASemantic;
+                    // elements[i].accessibleName = node.accessibleName;
+                    elements[i].canBeReachedUsingKeyboardWith = node.canBeReachedUsingKeyboardWith;
+                    elements[i].isNotExposedDueTo = node.isNotExposedDueTo;
+
                     delete elements[i].node;
                 }
                 
@@ -1312,7 +1313,7 @@ function createTanaguruTest(test) {
             if (failedincollection) {
                 result.failedincollection = failedincollection;
             }
-
+            
             addResultSet("Nouvelle syntaxe d'écriture des tests", result);
             // Intégrer chaque résultat dans window.tanaguru.tests.
         }
@@ -1528,7 +1529,9 @@ var htmlData = {
 var HTML = {
     getFocusableElementsSelector: function () {
         var elements = [];
-        for (var element in htmlData.elements) {
+        let htmlDataElLength = htmlData.elements.length;
+        for(var i = 0; i < htmlDataElLength; i++) {
+            let element = htmlData.elements[i];
             if (htmlData.elements[element].hasOwnProperty('focusable')) {
                 var focusable = htmlData.elements[element].focusable;
                 elements.push((focusable.constructor == String ? focusable : element) + ':not([tabindex="-1"])');

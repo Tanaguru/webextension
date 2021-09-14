@@ -1,5 +1,29 @@
 var statuses = ['failed', 'cantTell', 'passed'];
-for (var i = 0; i < tanaguruTestsList.length; i++) {
+
+let eList = document.body.querySelectorAll('*');
+eList.forEach(e => {
+    if(e.isNotExposedDueTo.length > 0) {
+        e.setAttribute('data-tng-el-exposed', false);
+    } else {
+        e.setAttribute('data-tng-el-exposed', true);
+    }
+
+    if(e.isVisible) {
+        e.setAttribute('data-tng-el-visible', true);
+    } else {
+        e.setAttribute('data-tng-el-visible', false);
+    }
+
+    let attributesList = e.attributes;
+    for(let i = 0; i < attributesList.length; i++) {
+        if(attributesList[i].name.match(/^aria-.*$/)) {
+            e.setAttribute('data-tng-ariaAttribute', true);
+        }
+    }
+});
+
+let testsLength = tanaguruTestsList.length;
+for (var i = 0; i < testsLength; i++) {
     /*
         Schéma des clefs :
         testIdName
@@ -33,6 +57,22 @@ for (var i = 0; i < tanaguruTestsList.length; i++) {
     }
     createTanaguruTest(test);
 }
+
+// nettoyer les datas
+eList.forEach(e => {
+    let elAttributes = e.attributes;
+    let dataTNG = [];
+
+    for(let i = 0; i < elAttributes.length; i++) {
+        if(elAttributes[i].name.match(/^data-tng-.*$/)) {
+            dataTNG.push(elAttributes[i].name);
+        }
+    }
+
+    dataTNG.forEach(data => {
+        e.removeAttribute(data);
+    })
+});
 
 // code.
 loadTanaguruTests();

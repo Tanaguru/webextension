@@ -6,6 +6,7 @@ if(!window.getComputedStyle(document.body, null).getPropertyValue('background-co
 }
 
 var tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+
 var textNodeList = {
 	//? 'invalid', 'valid', 'cantTell' = contrast ratio status
 	//? '45' = minimum contrast ratio : 4.5:1
@@ -531,7 +532,7 @@ function getResults(element, opacity) {
 }
 
 // get datas for each text node
-while (tw.nextNode()) {
+while(tw.nextNode()) {
 	var cn = tw.currentNode;
 	var element = cn.parentNode;
 
@@ -555,12 +556,11 @@ while (tw.nextNode()) {
 			ratio: results.ratio,
 			xpath: getXPath(element),
 			valid: validContrast(size, weight, results.ratio),
-			role: {},
 			isVisible: results.visible
 		};
 
 		if(o.valid.target == 4.5) {
-			if(results.visible && !isDisabled && o.weight < 700) {
+			if(o.isVisible && !isDisabled && o.weight < 700) {
 				if(o.valid.status == 2) {
 					textNodeList.valid_45.push(o);
 				} else if(o.valid.status == 1) {
@@ -568,7 +568,7 @@ while (tw.nextNode()) {
 				} else {
 					textNodeList.cantTell_45.push(o);
 				}
-			} else if(results.visible && !isDisabled) {
+			} else if(o.isVisible && !isDisabled) {
 				if(o.valid.status == 2) {
 					textNodeList.valid_45G.push(o);
 				} else if(o.valid.status == 1) {
@@ -594,7 +594,7 @@ while (tw.nextNode()) {
 				}
 			}
 		} else {
-			if(results.visible && !isDisabled && o.weight < 700) {
+			if(o.isVisible && !isDisabled && o.weight < 700) {
 				if(o.valid.status == 2) {
 					textNodeList.valid_3.push(o);
 				} else if(o.valid.status == 1) {
@@ -602,7 +602,7 @@ while (tw.nextNode()) {
 				} else {
 					textNodeList.cantTell_3.push(o);
 				}
-			} else if(results.visible && !isDisabled) {
+			} else if(o.isVisible && !isDisabled) {
 				if(o.valid.status == 2) {
 					textNodeList.valid_3G.push(o);
 				} else if(o.valid.status == 1) {
