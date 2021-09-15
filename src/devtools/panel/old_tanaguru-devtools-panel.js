@@ -1,6 +1,3 @@
-/**
- *? XPATH
- */
 var sub_regexes = {
 	"tag": "([a-zA-Z0-9-_]*|\\*)",
 	"attribute": "[.a-zA-Z_:][-\\w:.]*(\\(\\))?)",
@@ -113,9 +110,6 @@ function cssify(xpath) {
 	return csses.join(', ');
 }
 
-/**
- *? applied on actions buttons 
- */
 function manageHoveredImageButton(event) {
 	if (['mouseover', 'mouseout'].indexOf(event.type) == -1 || (['mouseover', 'mouseout'].indexOf(event.type) > -1 && this != document.querySelector(':focus'))) {
 		var img = this.firstChild;
@@ -125,9 +119,6 @@ function manageHoveredImageButton(event) {
 	}
 }
 
-/**
- *? Construct panel
- */
 var html = document.querySelector('html');
 html.setAttribute('lang', chrome.i18n.getMessage('extensionLang'));
 var main = document.createElement('main');
@@ -136,38 +127,22 @@ main.setAttribute('class', 'launch-analysis');
 var leftcolumn = document.createElement('div');
 main.appendChild(leftcolumn);
 var rightcolumn = document.createElement('div');
+
 var button = document.createElement('button');
 button.setAttribute('type', 'button');
-button.appendChild(document.createTextNode("Analyser cette page"));
-var p = document.createElement('p');
-p.appendChild(button);
-rightcolumn.appendChild(p);
-main.appendChild(rightcolumn);
-document.body.insertBefore(main, document.body.querySelector('script'));
-
-/**
- *? Click on analize button
- */
 button.addEventListener('click', function () {
-	/**
-	 * ? Display loading
-	 */
-	
 	var loadingtemplate = document.getElementById('loading');
 	loadingtemplate = loadingtemplate.content;
 	var rightcolumn = this.parentNode.parentNode;
 	rightcolumn.replaceChild(document.importNode(loadingtemplate, true), this.parentNode);
 	rightcolumn.querySelector('[tabindex="-1"]').focus();
-	
+
 	chrome.runtime.sendMessage({
 		tabId: chrome.devtools.inspectedWindow.tabId,
 		command: 'executeTests', 
 		timer: new Date().getTime()},
 		
 		function (response) {
-			/**
-			 * ? Set DOM (dashboard's tab & panel)
-			 */
 			var main = document.querySelector('main');
 			main.removeAttribute('class');
 			var nav = document.createElement('div');
@@ -188,38 +163,7 @@ button.addEventListener('click', function () {
 			var ul = document.createElement('ul');
 			ul.setAttribute('role', 'tablist');
 			ul.setAttribute('aria-orientation', 'vertical');
-
-			var dashboard = document.createElement('li');
-			dashboard.setAttribute('id', 'tab0');
-			dashboard.setAttribute('role', 'tab');
-			dashboard.setAttribute('aria-selected', 'true');
-			dashboard.setAttribute('tabindex', '0');
-			dashboard.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboard')));
-			var dashboardpanel = document.createElement('div');
-			dashboardpanel.setAttribute('role', 'tabpanel');
-			dashboardpanel.setAttribute('aria-labelledby', dashboard.getAttribute('id'));
-			dashboardpanel.setAttribute('id', 'tabpanel0');
-			dashboardpanel.setAttribute('aria-hidden', 'false');
-			dashboard.setAttribute('aria-controls', dashboardpanel.getAttribute('id'));
-			var dashboardpanelheading = document.createElement('h2');
-			dashboardpanelheading.setAttribute('class', 'visually-hidden');
-			dashboardpanelheading.appendChild(document.createTextNode(dashboard.textContent));
-			dashboardpanel.appendChild(dashboardpanelheading);
-		
-			// UI. Dashboard.
-			dashboardpanel.setAttribute('style', 'height: 100%; padding: 0; margin: 0; position: relative;');
-			var dashboardpanelp = document.createElement('p'); 
-			dashboardpanelp.setAttribute('style', 'margin: 0; position: absolute; justify-content: center; left: 0; right: 0; top: 0; bottom: 0; font-weight: bolder; display: inline-flex; align-items: center;');
-			dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')));
-			dashboardpanel.appendChild(dashboardpanelp);
-			
-			main.children[1].appendChild(dashboardpanel);
-			ul.appendChild(dashboard);
-
-			/**
-			 * ? keyboard navigation
-			 */
-			 ul.addEventListener('keydown', function(event) {
+			ul.addEventListener('keydown', function(event) {
 				if ([38,40].indexOf(event.keyCode) > -1) {
 					var currenttab = this.querySelector('[role="tab"][aria-selected="true"]');
 					if (event.keyCode == 38) {
@@ -238,10 +182,6 @@ button.addEventListener('click', function () {
 					newcurrenttab.focus();
 				}
 			}, false);
-
-			/**
-			 * ? filters the displayed tests by the selected tab
-			 */
 			ul.addEventListener('click', function(event) {
 				var element = event.target;
 				if (element.getAttribute('role') == 'tab') {
@@ -324,14 +264,52 @@ button.addEventListener('click', function () {
 					}
 				}
 			}, false);
+			var dashboard = document.createElement('li');
+			dashboard.setAttribute('id', 'tab0');
+			dashboard.setAttribute('role', 'tab');
+			dashboard.setAttribute('aria-selected', 'true');
+			dashboard.setAttribute('tabindex', '0');
+			dashboard.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboard')));
+			var dashboardpanel = document.createElement('div');
+			dashboardpanel.setAttribute('role', 'tabpanel');
+			dashboardpanel.setAttribute('aria-labelledby', dashboard.getAttribute('id'));
+			dashboardpanel.setAttribute('id', 'tabpanel0');
+			dashboardpanel.setAttribute('aria-hidden', 'false');
+			dashboard.setAttribute('aria-controls', dashboardpanel.getAttribute('id'));
+			var dashboardpanelheading = document.createElement('h2');
+			dashboardpanelheading.setAttribute('class', 'visually-hidden');
+			dashboardpanelheading.appendChild(document.createTextNode(dashboard.textContent));
+			dashboardpanel.appendChild(dashboardpanelheading);
+		
+			// UI. Dashboard.
+			dashboardpanel.setAttribute('style', 'height: 100%; padding: 0; margin: 0; position: relative;');
+			var dashboardpanelp = document.createElement('p'); 
+			dashboardpanelp.setAttribute('style', 'margin: 0; position: absolute; justify-content: center; left: 0; right: 0; top: 0; bottom: 0; font-weight: bolder; display: inline-flex; align-items: center;');
+			dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')));
+			dashboardpanel.appendChild(dashboardpanelp);
+			
+			main.children[1].appendChild(dashboardpanel);
+			ul.appendChild(dashboard);
+
+			//TODO traiter les tests par tag et les afficher au fur et à mesure en ajoutant un loader comme ci dessous
+			// var tab = document.createElement('li');
+			// tab.setAttribute('id', 'tabTag');
+			// var loadingTab = document.createElement('span');
+			// loadingTab.classList.add('tab-loading');
+			// loadingTab.innerHTML = '<img src="images/loader.png" alt="Analyse en cours" tabindex="-1"></img>';
+			// tab.appendChild(loadingTab);
+			// tab.removeChild(loadingTab);
+			// tab.setAttribute('role', 'tab');
+			// tab.setAttribute('aria-selected', 'false');
+			// tab.setAttribute('tabindex', '-1');
 
 			/**
 			 ** Manage action buttons in right column
-			 * showhide-action
-			 * highlight-action
-			 * inspect-action
-			 * about-action
-			 */
+			* showhide-action
+			* highlight-action
+			* inspect-action
+			* about-action
+			*/
 			main.children[1].addEventListener('click', function(event) {
 				var element = event.target;
 				if (element.tagName.toLowerCase() == 'button') {
@@ -496,9 +474,6 @@ button.addEventListener('click', function () {
 				}
 			}, false);
 
-			/**
-			 * ? Set DOM (alltests's tab & panel)
-			 */
 			var tab = document.createElement('li');
 			tab.setAttribute('role', 'tab');
 			tab.setAttribute('aria-selected', 'false');
@@ -524,9 +499,6 @@ button.addEventListener('click', function () {
 			let t = 1;
 			response = response.response[0];
 
-			/**
-			 * ? set tags name & sort by status & alphabetical
-			 */
 			response.tags.forEach(tag => {
 				tag.name = chrome.i18n.getMessage('tag' + tag.id.charAt(0).toUpperCase() + tag.id.slice(1));
 			});
@@ -547,9 +519,6 @@ button.addEventListener('click', function () {
 				return 0;
 			});
 
-			/**
-			 * ? sort tests by status
-			 */
 			response.tests = response.tests.sort((a,b) => {
 				if (a.type === 'failed' && b.type !== 'failed') return -1;
 				if (a.type !== 'failed' && b.type === 'failed') return 1;
@@ -562,20 +531,23 @@ button.addEventListener('click', function () {
 				return 0;
 			});
 
-			/**
-			 * ? create tests container by status
-			 */
 			// IN PROGRESS
 			var statuses = ['failed', 'cantTell', 'passed', 'inapplicable', 'untested'];
 
 			var statuseslist = document.createElement('ul');
-			statuseslist.setAttribute('style', 'margin: 1em; padding: 0; list-style-type: none; font-size: 0.8em');
+			statuseslist.style.margin = '1em';
+			statuseslist.style.padding = '0';
+			statuseslist.style.listStyleType = 'none';
+			statuseslist.style.fontSize = '0.8em';
 			statuseslist.hidden = true;
 
 			var statusescontents = document.createDocumentFragment();
 			for (var s = 0; s < statuses.length; s++) {
 				var status = document.createElement('li');
-				status.setAttribute('style', 'display: inline-block; border: solid 1px black; margin-right: 0.5em; padding: 0.5em 1em');
+				status.style.display = 'inline-block';
+				status.style.border = 'solid 1px black';
+				status.style.marginRight = '0.5em';
+				status.style.padding = '0.5em 1em';
 
 				status.appendChild(document.createTextNode(chrome.i18n.getMessage('earl' + statuses[s].charAt(0).toUpperCase() + statuses[s].slice(1))));
 				statuseslist.appendChild(status);
@@ -590,13 +562,10 @@ button.addEventListener('click', function () {
 			var reftests = {};
 
 			// IN PROGRESS
-			// var ressourcestests = [];
+			var ressourcestests = [];
 
 			var updatedashboardp = false;
-			console.time('display test');
-			/**
-			 * ? display tests results
-			 */
+			// display tests results
 			response.tests.forEach(test => {
 				// UI. Dashboard.
 				// manage message on dashboard panel
@@ -608,12 +577,12 @@ button.addEventListener('click', function () {
 				var testelement = document.createElement('div');
 				testelement.setAttribute('class', 'testparent ' + test.tags.join(' '));
 
-				// if (test.hasOwnProperty('ressources')) {
-				// 	// var testressources = test.ressources;
-				// 	for (var r = 0; r < test.ressources.length; r++) {
-				// 		testelement.className += ' ' + r;
-				// 	}
-				// }
+				if (test.hasOwnProperty('ressources')) {
+					// var testressources = test.ressources;
+					for (var r = 0; r < test.ressources.length; r++) {
+						testelement.className += ' ' + r;
+					}
+				}
 
 				// create test button
 				var tabpanelsection = document.createElement('h3');
@@ -650,15 +619,14 @@ button.addEventListener('click', function () {
 				tabpanelsectionbutton.appendChild(testref);
 
 				// IN PROGRESS - test ressources
-				// if (test.hasOwnProperty('ressources')) {
-				// 	var ressourcesLength = Object.keys(test.ressources).length;
-
-				// 	for (var r = 0; r < ressourcesLength; r++) {
-				// 		if (ressourcestests.indexOf(test.ressources[r]) == -1) {
-				// 			ressourcestests.push(test.ressources[r]);
-				// 		}
-				// 	}
-				// }
+				if (test.hasOwnProperty('ressources')) {
+					// var testressources = test.ressources;
+					for (var r = 0; r < test.ressources.length; r++) {
+						if (ressourcestests.indexOf(r) == -1) {
+							ressourcestests.push(r);
+						}
+					}
+				}
 				
 				// display test status on the button
 				var status = document.createElement('span');
@@ -667,10 +635,9 @@ button.addEventListener('click', function () {
 				tabpanelsectionbutton.appendChild(status);
 
 				// display the number of elements on test button
-				let dataLength = test.data.length;
-				if (!((test.type == 'failed' && dataLength == 0) || test.type == 'untested')) {
+				if (!((test.type == 'failed' && test.data.length == 0) || test.type == 'untested')) {
 					var strong = document.createElement('strong');
-					var strongcount = test.hasOwnProperty('failedincollection') ? test.failedincollection : dataLength;
+					var strongcount = test.hasOwnProperty('failedincollection') ? test.failedincollection : test.data.length;
 					strong.appendChild(document.createTextNode(strongcount + (test.hasOwnProperty('counter') ? ' / ' +  test.counter : '')));
 					tabpanelsectionbutton.appendChild(strong);
 					tabpanelsectionbutton.appendChild(document.createTextNode(' '));
@@ -773,10 +740,7 @@ button.addEventListener('click', function () {
 					table.appendChild(caption);
 
 					// table headings
-					// let templateH;
 					if(!test.tags.includes('contrast')) {
-						// templateH = document.querySelector('#theadings');
-						
 						var tableheadings = [
 							{ name: 'N°', abbr: 'Numéro' }, 
 							{ name: 'Statut', export: 'required' }, 
@@ -786,7 +750,6 @@ button.addEventListener('click', function () {
 							{ name: 'Actions', export: 'no' }
 						];
 					} else {
-						// templateH = document.querySelector('#theadingsContrast');
 						var tableheadings = [
 							{ name: 'N°', abbr: 'Numéro' }, 
 							{ name: 'Balise', export: 'required' }, 
@@ -801,7 +764,7 @@ button.addEventListener('click', function () {
 							{ name: 'Actions', export: 'no' }
 						];
 					}
-					// let tableheadings = document.importNode(templateH.content, true);
+					
 					var tr = document.createElement('tr');
 					tr.setAttribute('class', 'theadings');
 					for (var k = 0; k < tableheadings.length; k++) {
@@ -826,7 +789,7 @@ button.addEventListener('click', function () {
 						tr.appendChild(th);
 					}
 					table.appendChild(tr);
-					// table.appendChild(tableheadings);
+
 					var codehighlight = test.mark ? test.mark : null;
 
 					// table content
@@ -960,27 +923,24 @@ button.addEventListener('click', function () {
 						
 
 						// atteignable au clavier
-
-						var td = document.createElement('td');
-						td.classList.add('testsection-td-colored');
-						var canbereachedimg = document.createElement('img');
-						if (test.data[h].canBeReachedUsingKeyboardWith.length > 0) {
-							countkeyboardyes += 1;
-							canbereachedimg.setAttribute('class', 'keyboardyes');
-							canbereachedimg.setAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAANpJREFUKBXVkLEOAVEQRddGSGxBQ6dQKJXiD1ZEpVT4ANGLSucvRCtq0YqaUukDVBQKEsI6T3Jls5uXkGhMcnbum7kz72Ud528iCIIGJL5+MEN9uMEQ3I8XYO7CHRT+a5iTC3XbJnoduIJigvAcPkkYgdk6iC6g1oILKGaItG5tqkp+QE8L0D6cQLFAeOqbmzMwVpdsfkgbanAAxQqRew9KUEzBVC7yGY6h8xpdkD+WaZoXzEMDkltEMTYQLWDKwlJT5B2Uoz7rGXMeNrCHitVoazBUgqqt/5P6E3SkJ/cZVE0PAAAAAElFTkSuQmCC');
-							canbereachedimg.setAttribute('alt', 'Oui (' + test.data[h].canBeReachedUsingKeyboardWith.join(' / ') + ')');
-						}
-						else {
-							countkeyboardno += 1;
-							canbereachedimg.setAttribute('class', 'keyboardno');
-							canbereachedimg.setAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAALtJREFUKBWlk2EOgjAMhaeBY+1eAn/0VuLN4M/8XtykW5oZYpPSjvdeu7ESQraUUix5L1Y8FiP+wHd8+SFcMu9OHAOPiFubvQIQZksijxIPDlAVcHDtYPg2cQgT7664orWqsC3QEl9WRe4LSwUIN3xrRFpPhdONEJ+NeO0KCqgO+PnOWWibrnZB7p9ZQEPUDi64orWjAG91z7o3aweB8wC0hT/3DPDXhGm2Nau7OpQP50XwerYLCeD0X/UGVSXGYbh63LAAAAAASUVORK5CYII=');
-							canbereachedimg.setAttribute('alt', 'Non');
-						}
-
-						canbereachedimg.setAttribute('title', canbereachedimg.getAttribute('alt'));
-						td.appendChild(canbereachedimg);
-						tr.appendChild(td);
-
+						// if(!test.tags.includes('contrast')) {
+							var td = document.createElement('td');
+							td.classList.add('testsection-td-colored');
+							var canbereachedimg = document.createElement('img');
+							if (test.data[h].canBeReachedUsingKeyboardWith.length > 0) {
+								countkeyboardyes += 1;
+								canbereachedimg.setAttribute('class', 'keyboardyes');
+							}
+							else {
+								countkeyboardno += 1;
+								canbereachedimg.setAttribute('class', 'keyboardno');
+							}
+							canbereachedimg.setAttribute('src', test.data[h].canBeReachedUsingKeyboardWith.length > 0 ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAANpJREFUKBXVkLEOAVEQRddGSGxBQ6dQKJXiD1ZEpVT4ANGLSucvRCtq0YqaUukDVBQKEsI6T3Jls5uXkGhMcnbum7kz72Ud528iCIIGJL5+MEN9uMEQ3I8XYO7CHRT+a5iTC3XbJnoduIJigvAcPkkYgdk6iC6g1oILKGaItG5tqkp+QE8L0D6cQLFAeOqbmzMwVpdsfkgbanAAxQqRew9KUEzBVC7yGY6h8xpdkD+WaZoXzEMDkltEMTYQLWDKwlJT5B2Uoz7rGXMeNrCHitVoazBUgqqt/5P6E3SkJ/cZVE0PAAAAAElFTkSuQmCC' : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAALtJREFUKBWlk2EOgjAMhaeBY+1eAn/0VuLN4M/8XtykW5oZYpPSjvdeu7ESQraUUix5L1Y8FiP+wHd8+SFcMu9OHAOPiFubvQIQZksijxIPDlAVcHDtYPg2cQgT7664orWqsC3QEl9WRe4LSwUIN3xrRFpPhdONEJ+NeO0KCqgO+PnOWWibrnZB7p9ZQEPUDi64orWjAG91z7o3aweB8wC0hT/3DPDXhGm2Nau7OpQP50XwerYLCeD0X/UGVSXGYbh63LAAAAAASUVORK5CYII=');
+							canbereachedimg.setAttribute('alt', test.data[h].canBeReachedUsingKeyboardWith.length > 0 ? 'Oui (' + test.data[h].canBeReachedUsingKeyboardWith.join(' / ') + ')' : 'Non');
+							canbereachedimg.setAttribute('title', canbereachedimg.getAttribute('alt'));
+							td.appendChild(canbereachedimg);
+							tr.appendChild(td);
+						// }
 
 						// restitué
 						var td = document.createElement('td');
@@ -989,16 +949,13 @@ button.addEventListener('click', function () {
 						if (test.data[h].isNotExposedDueTo.length > 0) {
 							countreaderno += 1;
 							exposedimg.setAttribute('class', 'readerno');
-							exposedimg.setAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAALtJREFUKBWlk2EOgjAMhaeBY+1eAn/0VuLN4M/8XtykW5oZYpPSjvdeu7ESQraUUix5L1Y8FiP+wHd8+SFcMu9OHAOPiFubvQIQZksijxIPDlAVcHDtYPg2cQgT7664orWqsC3QEl9WRe4LSwUIN3xrRFpPhdONEJ+NeO0KCqgO+PnOWWibrnZB7p9ZQEPUDi64orWjAG91z7o3aweB8wC0hT/3DPDXhGm2Nau7OpQP50XwerYLCeD0X/UGVSXGYbh63LAAAAAASUVORK5CYII=');
-							exposedimg.setAttribute('alt', 'Non (' + test.data[h].isNotExposedDueTo.join(' / ') + ')');
 						}
 						else {
 							countreaderyes += 1;
 							exposedimg.setAttribute('class', 'readeryes');
-							exposedimg.setAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAANpJREFUKBXVkLEOAVEQRddGSGxBQ6dQKJXiD1ZEpVT4ANGLSucvRCtq0YqaUukDVBQKEsI6T3Jls5uXkGhMcnbum7kz72Ud528iCIIGJL5+MEN9uMEQ3I8XYO7CHRT+a5iTC3XbJnoduIJigvAcPkkYgdk6iC6g1oILKGaItG5tqkp+QE8L0D6cQLFAeOqbmzMwVpdsfkgbanAAxQqRew9KUEzBVC7yGY6h8xpdkD+WaZoXzEMDkltEMTYQLWDKwlJT5B2Uoz7rGXMeNrCHitVoazBUgqqt/5P6E3SkJ/cZVE0PAAAAAElFTkSuQmCC');
-							exposedimg.setAttribute('alt', 'Oui');
 						}
-
+						exposedimg.setAttribute('src', test.data[h].isNotExposedDueTo.length > 0 ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAALtJREFUKBWlk2EOgjAMhaeBY+1eAn/0VuLN4M/8XtykW5oZYpPSjvdeu7ESQraUUix5L1Y8FiP+wHd8+SFcMu9OHAOPiFubvQIQZksijxIPDlAVcHDtYPg2cQgT7664orWqsC3QEl9WRe4LSwUIN3xrRFpPhdONEJ+NeO0KCqgO+PnOWWibrnZB7p9ZQEPUDi64orWjAG91z7o3aweB8wC0hT/3DPDXhGm2Nau7OpQP50XwerYLCeD0X/UGVSXGYbh63LAAAAAASUVORK5CYII=' : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAANpJREFUKBXVkLEOAVEQRddGSGxBQ6dQKJXiD1ZEpVT4ANGLSucvRCtq0YqaUukDVBQKEsI6T3Jls5uXkGhMcnbum7kz72Ud528iCIIGJL5+MEN9uMEQ3I8XYO7CHRT+a5iTC3XbJnoduIJigvAcPkkYgdk6iC6g1oILKGaItG5tqkp+QE8L0D6cQLFAeOqbmzMwVpdsfkgbanAAxQqRew9KUEzBVC7yGY6h8xpdkD+WaZoXzEMDkltEMTYQLWDKwlJT5B2Uoz7rGXMeNrCHitVoazBUgqqt/5P6E3SkJ/cZVE0PAAAAAElFTkSuQmCC');
+						exposedimg.setAttribute('alt', test.data[h].isNotExposedDueTo.length > 0 ? 'Non (' + test.data[h].isNotExposedDueTo.join(' / ') + ')' : 'Oui');
 						exposedimg.setAttribute('title', exposedimg.getAttribute('alt'));
 						td.appendChild(exposedimg);
 						tr.appendChild(td);
@@ -1018,7 +975,6 @@ button.addEventListener('click', function () {
 							image_hover: 'images/about_hover.png',
 							attrs: { 'data-xpath': test.data[h].xpath }
 						}];
-
 						if (test.data[h].isVisible) {
 							countvisible += 1;
 							var highlightaction = {
@@ -1037,9 +993,7 @@ button.addEventListener('click', function () {
 								attrs: { 'class': 'hidden' }
 							};
 						}
-
 						actions.unshift(highlightaction);
-
 						for (var a = 0; a < actions.length; a++) {
 							var action = document.createElement('li');
 							if (!actions[a].hasOwnProperty('id')) {
@@ -1061,11 +1015,6 @@ button.addEventListener('click', function () {
 								button.classList.add('noaction');
 								var buttontext = actions[a].name;
 							}
-							/**
-							 * ? C'est l'affichage des images d'actions qui fait planter firefox
-							 ** 7/8 du temps d'affichage
-							 ** tps d'affichage entre 1 et 2 fois le temps de traitement des tests
-							 */
 							if (actions[a].image) {
 								var actionimg = document.createElement('img');
 								actionimg.setAttribute('src', actions[a].image);
@@ -1085,7 +1034,6 @@ button.addEventListener('click', function () {
 							else {
 								buttoncontent.appendChild(document.createTextNode(buttontext));
 							}
-
 							button.appendChild(buttoncontent);
 							action.appendChild(button);
 							actionslist.appendChild(action);	
@@ -1542,14 +1490,10 @@ button.addEventListener('click', function () {
 				
 				t++;
 			});
-			console.timeEnd('display test');
 
 			main.children[1].appendChild(alltagspanel);
 
-			/**
-			 * ? generate tab in left column
-			 * * tags & ressources
-			 */
+			// generate tab in left column
 			response.tags.forEach(tag => {
 				var tab = document.createElement('li');
 				tab.setAttribute('role', 'tab');
@@ -1567,24 +1511,34 @@ button.addEventListener('click', function () {
 					tab.appendChild(strong);
 				}
 
+				// IN PROGRESS
+				//if (tag.nbfailures > 0) {
+				// if (ul.querySelector('strong')) {
+				// 	var lastwithfailures = ul.querySelectorAll('strong');
+				// 	lastwithfailures = lastwithfailures[lastwithfailures.length - 1];
+				// 	lastwithfailures = lastwithfailures.parentNode;
+				// 	lastwithfailures.insertAdjacentElement('afterend', tab);
+				// }
+				// else {
+				// 	ul.appendChild(tab);
+				// }
 				ul.appendChild(tab);
 			});
 
-			// ressourcestests.sort();
-			// console.log(ressourcestests);
-			// for (var r = 0; r < ressourcestests.length; r++) {
-			// 	var tab = document.createElement('li');
-			// 	tab.setAttribute('class', 'ressource');
-			// 	tab.setAttribute('role', 'tab');
-			// 	tab.setAttribute('id', ressourcestests[r]);
-			// 	tab.setAttribute('aria-selected', 'false');
-			// 	tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
-			// 	tab.setAttribute('tabindex', '0');
-			// 	var span = document.createElement('span');
-			// 	span.appendChild(document.createTextNode(ressourcestests[r].toUpperCase())); // A prévoir listing des ressources...
-			// 	tab.appendChild(span);
-			// 	ul.appendChild(tab);
-			// }
+			ressourcestests.sort();
+			for (var r = 0; r < ressourcestests.length; r++) {
+				var tab = document.createElement('li');
+				tab.setAttribute('class', 'ressource');
+				tab.setAttribute('role', 'tab');
+				tab.setAttribute('id', ressourcestests[r]);
+				tab.setAttribute('aria-selected', 'false');
+				tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
+				tab.setAttribute('tabindex', '0');
+				var span = document.createElement('span');
+				span.appendChild(document.createTextNode(ressourcestests[r].toUpperCase())); // A prévoir listing des ressources...
+				tab.appendChild(span);
+				ul.appendChild(tab);
+			}
 
 			nav.appendChild(ul);
 			main.children[0].appendChild(nav);
@@ -1592,7 +1546,11 @@ button.addEventListener('click', function () {
 			dashboard.focus();
 		}
 	);
-	
 }, false);
 
-
+button.appendChild(document.createTextNode("Analyser cette page"));
+var p = document.createElement('p');
+p.appendChild(button);
+rightcolumn.appendChild(p);
+main.appendChild(rightcolumn);
+document.body.insertBefore(main, document.body.querySelector('script'));
