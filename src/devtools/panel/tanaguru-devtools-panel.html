@@ -10,40 +10,93 @@
 		</template>
 	</head>
 	<body>
-		<!-- <template id="theadings">
-			<tr class="theadings">
-				<th scope="col" abbr="Numéro">N°</th>
-				<th scope="col" class="required-export">Statut</th>
-				<th scope="col" class="required-export">Item</th>
-				<th scope="col">
-					<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAASCAYAAABB7B6eAAAABGdBTUEAALGPC/xhBQAAAjBJREFUOBGt1M1LVUEYgPF7ND/KLG4qRVibIgJvoIsgcOGuEFdRRC10I5LQP6ArbRUu3dqudkG4cCEGlktNSElF6YPioqGVRmEp+XF6njoH5F69XawXfsw0vTPzzsy5JhL/IcIwrEAvgszlCjIH9vnvc8xLBkEQ7nP+3tOoOokBXN4t68Bug38bYzErdsFq1KGf6p/QZkXWnWVlZAyweDNDLRjCezxn8TTtvweLpzCEZL6r/b4iJlQw4Wgek26TM2JuHpt85WTLAYn1TOjGBxhuuhG127QqisaO0K7j544xv0RtRmO2xkl0u8EEnXtwURPncBHT8GRVGMclvIHvdgajMO8TlpGCeecRF9WZYIM0WrEJ49GfJhymXYj6D6N2klZGPGaOuUY817VcM+11+OP4iDsoxAtMYgwn4FGfYRaeyrBaP8uX8GoXMYynGMEWlhB6JUYxatCANnhN7TiEVXTADRsj9h3z/8pg7gxa4RoXcBChJ/C+fLxbqMQP+FDXYQElaIIL3IDhia+hFD74VTh2E4fxBd7Cto+cpmPVa7Diz1iH3/oKrPA4XuMUjHmcxRK+4xjMtWqLdC37fZ7A+zqNTpjsL9QNH6AWHtdTmht/gnHfE07BaltwH1dgUX6ZWyb6jXuXb+HO83iFBZTDa8gVzjPXOc59B6t3zSKvqIeOCw3CsEofPf5d+GXlCm/AE1qo72HRRiO+uYGPeBc+molGiPgPof1csTMv7nt1j9H1C4W7DIhH/jVRAAAAAElFTkSuQmCC" alt="Atteignable au clavier ?" title="Atteignable au clavier ?">
-				</th>
-				<th scope="col">
-					<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAABGdBTUEAALGPC/xhBQAAAlBJREFUOBGV00tIVUEcx/F7xAfaQ0vCUtQitCgQqoWohI9N0MNFYVKgEiRo9JAgIqhFunAjggs3UYvoIqK0cGFqFPlEoVwYoeIjDHqYgWiu6/r9HWbiei5XOgOfO/+Z+c+cO3PmOAEfJRQKHSW9BJWYRh+GHMfZoPZXWGw/gviJD+hGP75gAdW+VmTCIcyiF3nhk2nvwA2soil8LGpMooPXCNok4rN4hHqkq5+6ABu4bPMiagb3ItZMKCROQiZGoC2/go7hG86ZvNvEc0iMWNAkPGew0Q4Sx2MMnUg1OdrFLeicM6Cj+IoyO09bSIGS4lAKJdvtlRP/QNq/CSagTw+7Yx40QHw/hp8EaKt/cRc1XJF31Iu4CJUcJGOQ3AvqCCvzxFmmvUadHMNPHV6w0G/qFlyDyhsUu1Eg0EFdhDa0sHCS+qk1/xQ+qk05gO8aOIxlHEQePiMWVRh1U80P7WLo3PTiEtGOaeyG7rKO7ISe9MfMcahDnlh9erDOuYGwC63Q2Q4hH5fMLh8Qz2BKExrwkobiOoyb+DGx3nY2JjCD88jCEvQvE0zudeJ1nFRbC2kbelm7sAidsfpHUY8jeAi9KPUP46mJte0nWIH3BbrJexi4Bz3gNJSYqcm20K6EznQn9uE9BnHM5kStSQqi2ZtA3xXUQldRn28P3CPw5ka0SUyDviJ9KbpKWwp9WnwJKVsG/qfBpAp88ubS9xZ62/4LE/VPdfeu2tnEZ7CKXNvnu9aC+IU+6AwV39xuIfdyb5egMRY5TlWLeDzjsk9SRy2bAMhld532BdwAAAAASUVORK5CYII=" alt="Restitué ?" title="Restitué ?">
-				</th>
-				<th scope="col" class="no-export">Actions</th>
+		<template id="item-row">
+			<tr>
+				<td class="item-number"></td>
+				<td class="item-status" style="text-align: center;"></td>
+				<td class="item-code">
+					<div class="code">
+						<code></code>
+					</div>
+				</td>
+				<td class="testsection-td-colored item-keyboard">
+					<span class="keyboardyes"></span>
+					<span class="visually-hidden"></span>
+				</td>
+				<td class="testsection-td-colored item-reader">
+					<span class="readeryes"></span>
+					<span class="visually-hidden"></span>
+				</td>
+				<td class="item-actions">
+					<ul>
+						<li class="item-actions-highlight">
+							<button type="button" data-action="highlight-action" class="visible">
+								<span class="visually-hidden"></span>
+							</button>
+						</li>
+						<li class="item-actions-inspect">
+							<button type="button" data-action="inspect-action">
+								<span class="visually-hidden"></span>
+							</button>
+						</li>
+						<li class="item-actions-about">
+							<button type="button" data-action="about-action">
+								<span class="visually-hidden"></span>
+							</button>
+						</li>
+					</ul>
+				</td>
 			</tr>
 		</template>
 
-		<template id="theadingsContrast">
-			<tr class="theadings">
-				<th scope="col" abbr="Numéro">N°</th>
-				<th scope="col" class="required-export">Balise</th>
-				<th scope="col" class="required-export">Passage de texte</th>
-				<th scope="col" class="required-export">Taille</th>
-				<th scope="col" class="required-export">Graisse</th>
-				<th scope="col" abbr="Couleur de texte">CT</th>
-				<th scope="col" abbr="Couleur de fond">CF</th>
-				<th scope="col" class="required-export">Ratio estimé</th>
-				<th scope="col">
-					<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAASCAYAAABB7B6eAAAABGdBTUEAALGPC/xhBQAAAjBJREFUOBGt1M1LVUEYgPF7ND/KLG4qRVibIgJvoIsgcOGuEFdRRC10I5LQP6ArbRUu3dqudkG4cCEGlktNSElF6YPioqGVRmEp+XF6njoH5F69XawXfsw0vTPzzsy5JhL/IcIwrEAvgszlCjIH9vnvc8xLBkEQ7nP+3tOoOokBXN4t68Bug38bYzErdsFq1KGf6p/QZkXWnWVlZAyweDNDLRjCezxn8TTtvweLpzCEZL6r/b4iJlQw4Wgek26TM2JuHpt85WTLAYn1TOjGBxhuuhG127QqisaO0K7j544xv0RtRmO2xkl0u8EEnXtwURPncBHT8GRVGMclvIHvdgajMO8TlpGCeecRF9WZYIM0WrEJ49GfJhymXYj6D6N2klZGPGaOuUY817VcM+11+OP4iDsoxAtMYgwn4FGfYRaeyrBaP8uX8GoXMYynGMEWlhB6JUYxatCANnhN7TiEVXTADRsj9h3z/8pg7gxa4RoXcBChJ/C+fLxbqMQP+FDXYQElaIIL3IDhia+hFD74VTh2E4fxBd7Cto+cpmPVa7Diz1iH3/oKrPA4XuMUjHmcxRK+4xjMtWqLdC37fZ7A+zqNTpjsL9QNH6AWHtdTmht/gnHfE07BaltwH1dgUX6ZWyb6jXuXb+HO83iFBZTDa8gVzjPXOc59B6t3zSKvqIeOCw3CsEofPf5d+GXlCm/AE1qo72HRRiO+uYGPeBc+molGiPgPof1csTMv7nt1j9H1C4W7DIhH/jVRAAAAAElFTkSuQmCC" alt="Atteignable au clavier ?" title="Atteignable au clavier ?">
-				</th>
-				<th scope="col">
-					<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAABGdBTUEAALGPC/xhBQAAAlBJREFUOBGV00tIVUEcx/F7xAfaQ0vCUtQitCgQqoWohI9N0MNFYVKgEiRo9JAgIqhFunAjggs3UYvoIqK0cGFqFPlEoVwYoeIjDHqYgWiu6/r9HWbiei5XOgOfO/+Z+c+cO3PmOAEfJRQKHSW9BJWYRh+GHMfZoPZXWGw/gviJD+hGP75gAdW+VmTCIcyiF3nhk2nvwA2soil8LGpMooPXCNok4rN4hHqkq5+6ABu4bPMiagb3ItZMKCROQiZGoC2/go7hG86ZvNvEc0iMWNAkPGew0Q4Sx2MMnUg1OdrFLeicM6Cj+IoyO09bSIGS4lAKJdvtlRP/QNq/CSagTw+7Yx40QHw/hp8EaKt/cRc1XJF31Iu4CJUcJGOQ3AvqCCvzxFmmvUadHMNPHV6w0G/qFlyDyhsUu1Eg0EFdhDa0sHCS+qk1/xQ+qk05gO8aOIxlHEQePiMWVRh1U80P7WLo3PTiEtGOaeyG7rKO7ISe9MfMcahDnlh9erDOuYGwC63Q2Q4hH5fMLh8Qz2BKExrwkobiOoyb+DGx3nY2JjCD88jCEvQvE0zudeJ1nFRbC2kbelm7sAidsfpHUY8jeAi9KPUP46mJte0nWIH3BbrJexi4Bz3gNJSYqcm20K6EznQn9uE9BnHM5kStSQqi2ZtA3xXUQldRn28P3CPw5ka0SUyDviJ9KbpKWwp9WnwJKVsG/qfBpAp88ubS9xZ62/4LE/VPdfeu2tnEZ7CKXNvnu9aC+IU+6AwV39xuIfdyb5egMRY5TlWLeDzjsk9SRy2bAMhld532BdwAAAAASUVORK5CYII=" alt="Restitué ?" title="Restitué ?">
-				</th>
-				<th scope="col" class="no-export">Actions</th>
+		<template id="item-row-contrast">
+			<tr>
+				<td class="item-number"></td>
+				<td class="item-tag" style="text-align: center; width: auto;"></td>
+				<td class="item-text" style="text-align: left; width: auto;"></td>
+				<td class="testsection-td-colored item-size" style="text-align: center; width: auto;"></td>
+				<td class="testsection-td-colored item-weight" style="text-align: center; width: auto;"></td>
+				<td class="item-ct" style="width: auto;">
+					<span class="item-ct-content" style="display: block; margin: auto; border: 1px solid #000; height: 18px; width: 18px; background-color: #000;">
+						<span class="visually-hidden"></span>
+					</span>
+				</td>
+				<td class="item-cf" style="width: auto;">
+					<span class="item-cf-content" style="display: block; margin: auto; border: 1px solid #000; height: 18px; width: 18px; background-color: #fff;">
+						<span class="visually-hidden"></span>
+					</span>
+				</td>
+				<td class="item-ratio" style="text-align: center;"></td>
+				<td class="testsection-td-colored item-keyboard">
+					<span class="keyboardyes"></span>
+					<span class="visually-hidden"></span>
+				</td>
+				<td class="testsection-td-colored item-reader">
+					<span class="readeryes"></span>
+					<span class="visually-hidden"></span>
+				</td>
+				<td class="item-actions">
+					<ul>
+						<li class="item-actions-highlight">
+							<button type="button" data-action="highlight-action" class="visible">
+								<span class="visually-hidden"></span>
+							</button>
+						</li>
+						<li class="item-actions-inspect">
+							<button type="button" data-action="inspect-action">
+								<span class="visually-hidden"></span>
+							</button>
+						</li>
+						<li class="item-actions-about">
+							<button type="button" data-action="about-action">
+								<span class="visually-hidden"></span>
+							</button>
+						</li>
+					</ul>
+				</td>
 			</tr>
-		</template> -->
+		</template>
+		
 		<script type="text/javascript" src="tanaguru-devtools-panel.js"></script>
 	</body>
 </html>

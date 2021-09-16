@@ -1,6 +1,6 @@
 var statuses = ['failed', 'cantTell', 'passed'];
 
-let eList = document.body.querySelectorAll('*');
+var eList = document.body.querySelectorAll('*');
 eList.forEach(e => {
     if(e.isNotExposedDueTo.length > 0) {
         e.setAttribute('data-tng-el-exposed', false);

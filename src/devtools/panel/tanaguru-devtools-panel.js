@@ -347,7 +347,8 @@ button.addEventListener('click', function () {
 							}
 							break;
 						case 'highlight-action':
-							var getxpathbutton = element.parentNode.parentNode.parentNode.querySelector('[data-action="about-action"]');
+							var cellParent = element.closest('.item-actions');
+							var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
 							chrome.runtime.sendMessage({
 								tabId: chrome.devtools.inspectedWindow.tabId,
 								command: 'highlight',
@@ -355,7 +356,8 @@ button.addEventListener('click', function () {
 							});
 							break;
 						case 'inspect-action':
-							var getxpathbutton = element.parentNode.parentNode.parentNode.querySelector('[data-action="about-action"]');
+							var cellParent = element.closest('.item-actions');
+							var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
 							var css = cssify(getxpathbutton.getAttribute('data-xpath'));
 							chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('" + css + "'))");
 							break;
@@ -548,21 +550,6 @@ button.addEventListener('click', function () {
 			});
 
 			/**
-			 * ? sort tests by status
-			 */
-			response.tests = response.tests.sort((a,b) => {
-				if (a.type === 'failed' && b.type !== 'failed') return -1;
-				if (a.type !== 'failed' && b.type === 'failed') return 1;
-				if (a.type === 'cantTell' && b.type === 'passed') return -1;
-				if (a.type === 'passed' && b.type === 'cantTell') return 1;
-				if (a.type === 'cantTell' && b.type === 'untested') return -1;
-				if (a.type === 'untested' && b.type === 'cantTell') return 1;
-				if (a.type === 'passed' && b.type === 'untested') return -1;
-				if (a.type === 'untested' && b.type === 'passed') return 1;
-				return 0;
-			});
-
-			/**
 			 * ? create tests container by status
 			 */
 			// IN PROGRESS
@@ -593,7 +580,7 @@ button.addEventListener('click', function () {
 			// var ressourcestests = [];
 
 			var updatedashboardp = false;
-			console.time('display test');
+
 			/**
 			 * ? display tests results
 			 */
@@ -773,10 +760,7 @@ button.addEventListener('click', function () {
 					table.appendChild(caption);
 
 					// table headings
-					// let templateH;
 					if(!test.tags.includes('contrast')) {
-						// templateH = document.querySelector('#theadings');
-						
 						var tableheadings = [
 							{ name: 'N°', abbr: 'Numéro' }, 
 							{ name: 'Statut', export: 'required' }, 
@@ -786,7 +770,6 @@ button.addEventListener('click', function () {
 							{ name: 'Actions', export: 'no' }
 						];
 					} else {
-						// templateH = document.querySelector('#theadingsContrast');
 						var tableheadings = [
 							{ name: 'N°', abbr: 'Numéro' }, 
 							{ name: 'Balise', export: 'required' }, 
@@ -801,7 +784,7 @@ button.addEventListener('click', function () {
 							{ name: 'Actions', export: 'no' }
 						];
 					}
-					// let tableheadings = document.importNode(templateH.content, true);
+
 					var tr = document.createElement('tr');
 					tr.setAttribute('class', 'theadings');
 					for (var k = 0; k < tableheadings.length; k++) {
@@ -826,274 +809,125 @@ button.addEventListener('click', function () {
 						tr.appendChild(th);
 					}
 					table.appendChild(tr);
-					// table.appendChild(tableheadings);
+
 					var codehighlight = test.mark ? test.mark : null;
 
 					// table content
 					for (var h = 0; h < test.data.length; h++) {
-						var tr = document.createElement('tr');
+						let itemNumber = '1A' + (h + 1);
+						let itemKeyboard = test.data[h].canBeReachedUsingKeyboardWith.join(' / ');
+						let itemReader = test.data[h].isNotExposedDueTo;
+						let itemXPath = test.data[h].xpath;
 
-						// numéro
-						var td = document.createElement('td');
-						td.appendChild(document.createTextNode('1A' + (h + 1)));
-						tr.appendChild(td);
+						if(test.tags.includes('contrast')) {
+							var itemTag = test.data[h].tag;
+							var itemText = test.data[h].text;
+							var itemSize = test.data[h].size;
+							var itemWeight = test.data[h].weight;
+							var itemCT = test.data[h].foreground;
+							var itemCF = test.data[h].background;
+							var itemRatio = test.data[h].ratio + ':1';
 
-						
-						if(!test.tags.includes('contrast')) {
-							// statut
-							var td = document.createElement('td');
-							td.style.textAlign = 'center';
-							td.appendChild(document.createTextNode(test.data[h].status));
-							tr.appendChild(td);
+							let template = document.querySelector('#item-row-contrast');
+							var newRow = document.importNode(template.content, true);
+							newRow.querySelector('.item-number').textContent = itemNumber;
+							newRow.querySelector('.item-tag').textContent = itemTag;
+							newRow.querySelector('.item-text').textContent = itemText;
+							newRow.querySelector('.item-size').textContent = itemSize;
+							newRow.querySelector('.item-weight').textContent = itemWeight;
+							newRow.querySelector('.item-ct .item-ct-content').style.backgroundColor = itemCT;
+							newRow.querySelector('.item-ct .visually-hidden').textContent = itemCT;
+							newRow.querySelector('.item-cf .item-cf-content').style.backgroundColor = itemCF;
+							newRow.querySelector('.item-cf .visually-hidden').textContent = itemCF;
+							newRow.querySelector('.item-ratio').textContent = itemRatio;
 
-							// item
-							var td = document.createElement('td');
-							var code = document.createElement('code');
+							
+						} else {
+							var itemStatus = test.data[h].status;
+							var itemCode = test.data[h].outer;
+
+							let template = document.querySelector('#item-row');
+							var newRow = document.importNode(template.content, true);
+							newRow.querySelector('.item-number').textContent = itemNumber;
+							newRow.querySelector('.item-status').textContent = itemStatus;
+							newRow.querySelector('.item-code code').textContent = itemCode;
+
 							if (codehighlight && codehighlight.hasOwnProperty('attrs')) {
-								var outer = test.data[h].outer;
 								var codeattrs = [];
-
+								var code = newRow.querySelector('.item-code code');
+	
 								for (var a = 0; a < codehighlight.attrs.length; a++) {
-									if(outer.match(codehighlight.attrs[a])) {
+									if(itemCode.match(codehighlight.attrs[a])) {
 										let regex  = codehighlight.attrs[a] + '="(?:(?!").)*"';
-										codeattrs.push(outer.match(new RegExp(regex)));
-										outer = outer.replace(new RegExp(' (' + codehighlight.attrs[a] + '="(?:(?!").)*")'), ' &&// '); // / key="([^"]*)"/	
+										codeattrs.push(itemCode.match(new RegExp(regex)));
+										itemCode = itemCode.replace(new RegExp(' (' + codehighlight.attrs[a] + '="(?:(?!").)*")'), ' &&// '); // / key="([^"]*)"/	
 									}
 								}
-
+	
 								if(codeattrs.length > 0) {
-									var codecontent = outer.split(' &&// ');
-
+									var codecontent = itemCode.split(' &&// ');
+	
 									for(let i = 0; i < codecontent.length - 1; i++) {
 										code.appendChild(document.createTextNode(codecontent[i]+' '));
 										var mark = document.createElement('mark');
 										mark.textContent = codeattrs[i];
 										code.appendChild(mark);
 									}
-
+	
 									code.appendChild(document.createTextNode(codecontent[codecontent.length - 1]));
 								} else {
-									code.appendChild(document.createTextNode(outer));
+									code.appendChild(document.createTextNode(itemCode));
 								}
 								
-							}
-							else {
-								code.appendChild(document.createTextNode(test.data[h].outer));
-							}
-							var divcode = document.createElement('div');
-							divcode.setAttribute('class', 'code');
-							divcode.appendChild(code);
-							td.appendChild(divcode);
-							tr.appendChild(td);
-						}
-
-						if(test.tags.includes('contrast')) {
-							// result tag
-							var td = document.createElement('td');
-							td.style.textAlign = 'center';
-							td.style.width = 'auto';
-							td.appendChild(document.createTextNode(test.data[h].tag));
-							tr.appendChild(td);
-
-							// result text node
-							var td = document.createElement('td');
-							td.style.textAlign = 'left';
-							td.style.width = 'auto';
-							td.appendChild(document.createTextNode(test.data[h].text));
-							tr.appendChild(td);
-
-							// text font size
-							var td = document.createElement('td');
-							td.style.textAlign = 'center';
-							td.style.width = 'auto';
-							td.classList.add('testsection-td-colored');
-							td.appendChild(document.createTextNode(test.data[h].size));
-							tr.appendChild(td);
-
-							// text font weight
-							var td = document.createElement('td');
-							td.style.textAlign = 'center';
-							td.style.width = 'auto';
-							td.classList.add('testsection-td-colored');
-							td.appendChild(document.createTextNode(test.data[h].weight));
-							tr.appendChild(td);
-
-							// text color
-							var td = document.createElement('td');
-							td.style.width = 'auto';
-							var rspan = document.createElement('span');
-							rspan.setAttribute('style', 'display: block; margin: auto; border: solid 1px #000; background-color: ' + test.data[h].foreground + '; height: 18px; width: 18px;');
-							var tdspan = document.createElement('span');
-							tdspan.setAttribute('class', 'visually-hidden');
-							tdspan.appendChild(document.createTextNode(test.data[h].foreground));
-							rspan.appendChild(tdspan);
-							td.appendChild(rspan);
-							tr.appendChild(td);
-
-							// text background color
-							var td = document.createElement('td');
-							td.style.width = 'auto';
-							var rspan = document.createElement('span');
-							if(test.data[h].background && test.data[h].background !== 'image') {
-								rspan.setAttribute('style', 'display: block; margin: auto; border: solid 1px #000; background-color: ' + test.data[h].background + '; height: 18px; width: 18px;');
-							} else if(test.data[h].background === 'image') {
-								rspan.setAttribute('aria-describedby', 'contrast-bgImage')
-								rspan.classList.add('contrast-bgImage');
 							} else {
-								rspan.setAttribute('aria-describedby', 'contrast-bgNull')
-								rspan.classList.add('contrast-bgNull');
+								newRow.querySelector('.item-code code').textContent = itemCode;
 							}
-
-							var tdspan = document.createElement('span');
-							tdspan.setAttribute('class', 'visually-hidden');
-							tdspan.appendChild(document.createTextNode(test.data[h].background));
-							rspan.appendChild(tdspan);
-							td.appendChild(rspan);
-							tr.appendChild(td);
-
-							// result contrast ratio
-							var td = document.createElement('td');
-							td.style.textAlign = 'center';
-							test.data[h].ratio ? td.appendChild(document.createTextNode(test.data[h].ratio + ':1')) : td.appendChild(document.createTextNode('?'));
-							tr.appendChild(td);
 						}
-						
 
-						// atteignable au clavier
-
-						var td = document.createElement('td');
-						td.classList.add('testsection-td-colored');
-						var canbereachedimg = document.createElement('img');
-						if (test.data[h].canBeReachedUsingKeyboardWith.length > 0) {
+						if(itemKeyboard.length > 0) {
 							countkeyboardyes += 1;
-							canbereachedimg.setAttribute('class', 'keyboardyes');
-							canbereachedimg.setAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAANpJREFUKBXVkLEOAVEQRddGSGxBQ6dQKJXiD1ZEpVT4ANGLSucvRCtq0YqaUukDVBQKEsI6T3Jls5uXkGhMcnbum7kz72Ud528iCIIGJL5+MEN9uMEQ3I8XYO7CHRT+a5iTC3XbJnoduIJigvAcPkkYgdk6iC6g1oILKGaItG5tqkp+QE8L0D6cQLFAeOqbmzMwVpdsfkgbanAAxQqRew9KUEzBVC7yGY6h8xpdkD+WaZoXzEMDkltEMTYQLWDKwlJT5B2Uoz7rGXMeNrCHitVoazBUgqqt/5P6E3SkJ/cZVE0PAAAAAElFTkSuQmCC');
-							canbereachedimg.setAttribute('alt', 'Oui (' + test.data[h].canBeReachedUsingKeyboardWith.join(' / ') + ')');
-						}
-						else {
+							newRow.querySelector('.item-keyboard .keyboardyes').setAttribute('title', 'Oui ('+ itemKeyboard + ')');
+							newRow.querySelector('.item-keyboard .visually-hidden').textContent = 'Oui ('+ itemKeyboard + ')';
+						} else {
 							countkeyboardno += 1;
-							canbereachedimg.setAttribute('class', 'keyboardno');
-							canbereachedimg.setAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAALtJREFUKBWlk2EOgjAMhaeBY+1eAn/0VuLN4M/8XtykW5oZYpPSjvdeu7ESQraUUix5L1Y8FiP+wHd8+SFcMu9OHAOPiFubvQIQZksijxIPDlAVcHDtYPg2cQgT7664orWqsC3QEl9WRe4LSwUIN3xrRFpPhdONEJ+NeO0KCqgO+PnOWWibrnZB7p9ZQEPUDi64orWjAG91z7o3aweB8wC0hT/3DPDXhGm2Nau7OpQP50XwerYLCeD0X/UGVSXGYbh63LAAAAAASUVORK5CYII=');
-							canbereachedimg.setAttribute('alt', 'Non');
+							newRow.querySelector('.item-keyboard .keyboardyes').setAttribute('title', 'Non');
+							newRow.querySelector('.item-keyboard .keyboardyes').className = 'keyboardno';
+							newRow.querySelector('.item-keyboard .visually-hidden').textContent = 'Non';
 						}
 
-						canbereachedimg.setAttribute('title', canbereachedimg.getAttribute('alt'));
-						td.appendChild(canbereachedimg);
-						tr.appendChild(td);
-
-
-						// restitué
-						var td = document.createElement('td');
-						td.classList.add('testsection-td-colored');
-						var exposedimg = document.createElement('img');
-						if (test.data[h].isNotExposedDueTo.length > 0) {
-							countreaderno += 1;
-							exposedimg.setAttribute('class', 'readerno');
-							exposedimg.setAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAALtJREFUKBWlk2EOgjAMhaeBY+1eAn/0VuLN4M/8XtykW5oZYpPSjvdeu7ESQraUUix5L1Y8FiP+wHd8+SFcMu9OHAOPiFubvQIQZksijxIPDlAVcHDtYPg2cQgT7664orWqsC3QEl9WRe4LSwUIN3xrRFpPhdONEJ+NeO0KCqgO+PnOWWibrnZB7p9ZQEPUDi64orWjAG91z7o3aweB8wC0hT/3DPDXhGm2Nau7OpQP50XwerYLCeD0X/UGVSXGYbh63LAAAAAASUVORK5CYII=');
-							exposedimg.setAttribute('alt', 'Non (' + test.data[h].isNotExposedDueTo.join(' / ') + ')');
-						}
-						else {
+						if(itemReader.length === 0) {
 							countreaderyes += 1;
-							exposedimg.setAttribute('class', 'readeryes');
-							exposedimg.setAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAANpJREFUKBXVkLEOAVEQRddGSGxBQ6dQKJXiD1ZEpVT4ANGLSucvRCtq0YqaUukDVBQKEsI6T3Jls5uXkGhMcnbum7kz72Ud528iCIIGJL5+MEN9uMEQ3I8XYO7CHRT+a5iTC3XbJnoduIJigvAcPkkYgdk6iC6g1oILKGaItG5tqkp+QE8L0D6cQLFAeOqbmzMwVpdsfkgbanAAxQqRew9KUEzBVC7yGY6h8xpdkD+WaZoXzEMDkltEMTYQLWDKwlJT5B2Uoz7rGXMeNrCHitVoazBUgqqt/5P6E3SkJ/cZVE0PAAAAAElFTkSuQmCC');
-							exposedimg.setAttribute('alt', 'Oui');
+							newRow.querySelector('.item-reader .readeryes').setAttribute('title', 'oui');
+							newRow.querySelector('.item-reader .visually-hidden').textContent = 'Oui';
+						} else {
+							countreaderno += 1;
+							newRow.querySelector('.item-reader .readeryes').setAttribute('title', 'Non (' + itemReader + ')');
+							newRow.querySelector('.item-reader .readeryes').className = 'readerno';
+							newRow.querySelector('.item-reader .visually-hidden').textContent = 'Non (' + itemReader + ')';
 						}
 
-						exposedimg.setAttribute('title', exposedimg.getAttribute('alt'));
-						td.appendChild(exposedimg);
-						tr.appendChild(td);
-
-						// actions
-						var td = document.createElement('td');
-						var actionslist = document.createElement('ul');
-						var actions = [{
-							id: 'inspect-action',
-							name: "Révéler dans l'inspecteur",
-							image: 'images/inspect.png',
-							image_hover: 'images/inspect_hover.png'
-						}, {
-							id: 'about-action',
-							name: "A propos de cet élément",
-							image: 'images/about.png',
-							image_hover: 'images/about_hover.png',
-							attrs: { 'data-xpath': test.data[h].xpath }
-						}];
-
-						if (test.data[h].isVisible) {
+						if(test.data[h].isVisible) {
 							countvisible += 1;
-							var highlightaction = {
-								id: 'highlight-action',
-								name: "Mettre en évidence sur la page",
-								image: 'images/see.png',
-								image_hover: 'images/see_hover.png',
-								attrs: { 'class': 'visible' }
-							};
-						}
-						else {
+
+							newRow.querySelector('.item-actions .item-actions-highlight button').setAttribute('title', 'Mettre en évidence sur la page (' + test.name + ', item ' + (h + 1) + ')');
+							newRow.querySelector('.item-actions .item-actions-highlight .visually-hidden').textContent = 'Mettre en évidence sur la page (' + test.name + ', item ' + (h + 1) + ')';
+						} else {
 							countinvisible += 1;
-							var highlightaction = {
-								name: "Cet élément n'est pas visible à l'écran.",
-								image: 'images/see_disabled.png',
-								attrs: { 'class': 'hidden' }
-							};
+
+							newRow.querySelector('.item-actions .item-actions-highlight button').className = 'hidden';
+							newRow.querySelector('.item-actions .item-actions-highlight button').disabled = true;
+							newRow.querySelector('.item-actions .item-actions-highlight button').setAttribute('title', "Cet élément n'est pas visible à l'écran.");
+							newRow.querySelector('.item-actions .item-actions-highlight .visually-hidden').textContent = "Cet élément n'est pas visible à l'écran.";
 						}
 
-						actions.unshift(highlightaction);
+						newRow.querySelector('.item-actions .item-actions-inspect button').setAttribute('title', 'Révéler dans l\'inspecteur (' + test.name + ', item ' + (h + 1) + ')');
+						newRow.querySelector('.item-actions .item-actions-inspect .visually-hidden').textContent = 'Révéler dans l\'inspecteur (' + test.name + ', item ' + (h + 1) + ')';
 
-						for (var a = 0; a < actions.length; a++) {
-							var action = document.createElement('li');
-							if (!actions[a].hasOwnProperty('id')) {
-								var button = document.createElement('span');
-							}
-							else {
-								var button = document.createElement('button');
-								button.setAttribute('type', 'button');
-								button.setAttribute('data-action', actions[a].id);
-							}
-							for (var attr in actions[a].attrs) {
-								button.setAttribute(attr, actions[a].attrs[attr]);	
-							}
-							var buttoncontent = document.createDocumentFragment();
-							if (button.tagName.toLowerCase() == 'button') {
-								var buttontext = actions[a].name + ' (' + tabpanelsection.firstChild.lastChild.textContent + ', item ' + (h + 1) + ')';
-							}
-							else {
-								button.classList.add('noaction');
-								var buttontext = actions[a].name;
-							}
-							/**
-							 * ? C'est l'affichage des images d'actions qui fait planter firefox
-							 ** 7/8 du temps d'affichage
-							 ** tps d'affichage entre 1 et 2 fois le temps de traitement des tests
-							 */
-							if (actions[a].image) {
-								var actionimg = document.createElement('img');
-								actionimg.setAttribute('src', actions[a].image);
-								actionimg.setAttribute('alt', buttontext);
-								if (button.tagName.toLowerCase() == 'span') {
-									actionimg.setAttribute('title', actionimg.getAttribute('alt'));
-								}
-								if (button.tagName.toLowerCase() == 'button' && actions[a].image_hover) {
-									actionimg.setAttribute('data-src', actions[a].image_hover);
-									button.addEventListener('mouseover', manageHoveredImageButton, false);
-									button.addEventListener('mouseout', manageHoveredImageButton, false);
-									button.addEventListener('focus', manageHoveredImageButton, false);
-									button.addEventListener('blur', manageHoveredImageButton, false);
-								}
-								buttoncontent.appendChild(actionimg);
-							}
-							else {
-								buttoncontent.appendChild(document.createTextNode(buttontext));
-							}
-
-							button.appendChild(buttoncontent);
-							action.appendChild(button);
-							actionslist.appendChild(action);	
-						}
-						td.appendChild(actionslist);
-						tr.appendChild(td);
-
-						table.appendChild(tr);
+						newRow.querySelector('.item-actions .item-actions-about button').setAttribute('title', 'A propos de cet élément (' + test.name + ', item ' + (h + 1) + ')');
+						newRow.querySelector('.item-actions .item-actions-about button').setAttribute('data-xpath', itemXPath);
+						newRow.querySelector('.item-actions .item-actions-about .visually-hidden').textContent = 'A propos de cet élément (' + test.name + ', item ' + (h + 1) + ')';
+						
+						table.appendChild(newRow);
 					}
 
 					tabpanelsectiondiv.appendChild(table);
@@ -1542,7 +1376,6 @@ button.addEventListener('click', function () {
 				
 				t++;
 			});
-			console.timeEnd('display test');
 
 			main.children[1].appendChild(alltagspanel);
 
