@@ -2,18 +2,26 @@ var statuses = ['failed', 'cantTell', 'passed'];
 
 var eList = document.body.querySelectorAll('*');
 eList.forEach(e => {
-    if(e.isNotExposedDueTo.length > 0) {
+    let elExposed = e.isNotExposedDueTo;
+    if(elExposed.length > 0) {
         e.setAttribute('data-tng-el-exposed', false);
+        e.setAttribute('data-tng-notExposed', elExposed);
+
+        if(elExposed == 'css:display' || 'css:visibility') {
+            e.setAttribute('data-tng-el-visible', false);
+        }
     } else {
         e.setAttribute('data-tng-el-exposed', true);
     }
 
-    if(e.isVisible) {
-        e.setAttribute('data-tng-el-visible', true);
-    } else {
-        e.setAttribute('data-tng-el-visible', false);
+    if(!e.hasAttribute('data-tng-el-visible')) {
+        if(e.isVisible) {
+            e.setAttribute('data-tng-el-visible', true);
+        } else {
+            e.setAttribute('data-tng-el-visible', false);
+        }
     }
-
+    
     let attributesList = e.attributes;
     for(let i = 0; i < attributesList.length; i++) {
         if(attributesList[i].name.match(/^aria-.*$/)) {
@@ -22,6 +30,7 @@ eList.forEach(e => {
     }
 });
 
+var textNodeList = getTextNodeContrast();
 let testsLength = tanaguruTestsList.length;
 for (var i = 0; i < testsLength; i++) {
     /*
@@ -71,7 +80,7 @@ eList.forEach(e => {
 
     dataTNG.forEach(data => {
         e.removeAttribute(data);
-    })
+    });
 });
 
 // code.

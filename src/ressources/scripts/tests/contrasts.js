@@ -1,50 +1,4 @@
 //? CONTRAST SCRIPT
-var bgBody = true;
-if(!window.getComputedStyle(document.body, null).getPropertyValue('background-color') && !window.getComputedStyle(document.body, null).getPropertyValue('background')) {
-	document.body.style.backgroundColor = '#fff';
-	bgBody = false;
-}
-
-var tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-
-var textNodeList = {
-	//? 'invalid', 'valid', 'cantTell' = contrast ratio status
-	//? '45' = minimum contrast ratio : 4.5:1
-	//? '3' = minimum contrast ratio : 3:1
-	//? 'V' = non visible elements
-	//? 'G' = font weight >= 700
-	// 3.2.1
-	invalid_45: [],
-	invalid_45V: [],
-	valid_45: [],
-	valid_45V: [],
-	cantTell_45: [],
-	cantTell_45V: [],
-
-	// 3.2.2
-	invalid_45G: [],
-	invalid_45GV: [],
-	valid_45G: [],
-	valid_45GV: [],
-	cantTell_45G: [],
-	cantTell_45GV: [],
-
-	// 3.2.3
-	invalid_3: [],
-	invalid_3V: [],
-	valid_3: [],
-	valid_3V: [],
-	cantTell_3: [],
-	cantTell_3V: [],
-
-	// 3.2.4
-	invalid_3G: [],
-	invalid_3GV: [],
-	valid_3G: [],
-	valid_3GV: [],
-	cantTell_3G: [],
-	cantTell_3GV: []
-};
 
 /**
  *TODO
@@ -96,10 +50,12 @@ function getRatio(textColor, bgColor) {
 
 		bgColor.forEach(bg => {
 			textColor.forEach(fg => {
+				let fgLum = getLuminance(fg);
+				let bgLum = getLuminance(bg);
 				// the lighter of the colors
-				var lum1 = Math.max(getLuminance(fg), getLuminance(bg));
+				var lum1 = Math.max(fgLum, bgLum);
 				// the darker of the colors
-				var lum2 = Math.min(getLuminance(fg), getLuminance(bg));
+				var lum2 = Math.min(fgLum, bgLum);
 
 				// current ratio
 				var currentRatio = ((lum1 + 0.05) / (lum2 + 0.05));
@@ -304,24 +260,34 @@ function getBgColor(element, opacity, pbg) {
  * @returns 
  */
 function getOpacity(element) {
+	if(element.hasAttribute('data-tng-opacity')) {
+		return element.getAttribute('data-tng-opacity');
+	}
+	
 	var opacity = 1;
 	var regexFilter = /opacity\( ?\d?.?\d+ ?\)/; // opacity(value)
 
 	// we look for the lowest opacity value on the element & its parents
 	while(element && element.tagName != 'HTML') {
+		if(element.hasAttribute('data-tng-opacity')) {
+			opacity = opacity * element.getAttribute('data-tng-opacity');
+			break;
+		}
+
 		if(window.getComputedStyle(element, null).getPropertyValue('filter').match(regexFilter)) {
 			var filterO = window.getComputedStyle(element, null).getPropertyValue('filter').match(regexFilter)[0];
 			var value = filterO.substr(8, filterO.length - 9).trim();
-			opacity = (value < opacity) ? value : opacity;
+			opacity = opacity * value;
 		}
 
-		if(window.getComputedStyle(element, null).getPropertyValue('opacity') < opacity) {
-			opacity = window.getComputedStyle(element, null).getPropertyValue('opacity');
+		if(window.getComputedStyle(element, null).getPropertyValue('opacity')) {
+			opacity = opacity * window.getComputedStyle(element, null).getPropertyValue('opacity');
 		}
 		
 		element = element.parentNode;
 	}
 
+	element.setAttribute('data-tng-opacity', opacity);
 	return opacity;
 }
 
@@ -330,13 +296,19 @@ function getOpacity(element) {
  * @param {node} element 
  * @returns 
  */
- function getVisibility(element, opacity) {
+ function getVisibility(element) {
+	var opacity = element.hasAttribute('data-tng-opacity') ? element.getAttribute('data-tng-opacity') : getOpacity(element);
+	if(element.hasAttribute('data-tng-el-visible')) {
+		return element.getAttribute('data-tng-el-visible') === 'true' ? true : false;
+	}
+
 	/**
 	 ** checks if the element is hidden with :
 	 * visibility: hidden
 	 * opacity: 0
 	 */
 	if(window.getComputedStyle(element, null).getPropertyValue('visibility') === 'hidden' || opacity == 0) {
+		element.setAttribute('data-tng-el-visible', 'false');
 		return false;
 	}
 
@@ -355,11 +327,13 @@ function getOpacity(element) {
 	 * transform: scale(0)
 	 */
 	if(rect.width === 0 && !(element.scrollWidth > element.offsetWidth)) {
+		element.setAttribute('data-tng-el-visible', 'false');
 		return false;
 	}
 
 	// element positioned offscreen
 	if((pos.top + rect.height <= 0) || (pos.left + rect.width <= 0)) {
+		element.setAttribute('data-tng-el-visible', 'false');
 		return false;
 	}
 
@@ -374,19 +348,32 @@ function getOpacity(element) {
 	 * height: 0 && overflow: hidden
 	 */
 	while(element && element.tagName != 'HTML') {
+		var opacityZero = window.getComputedStyle(element, null).getPropertyValue('opacity').trim() == 0;
 
 		if(
-			window.getComputedStyle(element, null).getPropertyValue('clip-path').match(regexClipP)
-			|| (window.getComputedStyle(element, null).getPropertyValue('clip').replace(/ /g, '').match(regexClip) && window.getComputedStyle(element, null).getPropertyValue('position').trim() === 'absolute')
+			window.getComputedStyle(element, null).getPropertyValue('display').trim() === 'none'
+			|| opacityZero
 			|| (element.offsetWidth === 0 && window.getComputedStyle(element, null).getPropertyValue('overflow').trim() === 'hidden')
 			|| (element.offsetHeight === 0 && window.getComputedStyle(element, null).getPropertyValue('overflow').trim() === 'hidden')
+			|| window.getComputedStyle(element, null).getPropertyValue('clip-path').match(regexClipP)
+			|| (window.getComputedStyle(element, null).getPropertyValue('clip').replace(/ /g, '').match(regexClip) && window.getComputedStyle(element, null).getPropertyValue('position').trim() === 'absolute')
 		) {
+			element.setAttribute('data-tng-el-visible', 'false');
+			if(opacityZero) element.setAttribute('data-tng-opacity', 0);
+
+			let elChildren = element.querySelectorAll('*');
+			elChildren.forEach(e => {
+				e.setAttribute('data-tng-el-visible', 'false');
+				if(opacityZero) e.setAttribute('data-tng-opacity', 0);
+			});
+
 			return false;
 		} else {
 			element = element.parentNode;
 		}
 	}
 	
+	element.setAttribute('data-tng-el-visible', 'true');
 	return true;
 }
 
@@ -458,7 +445,7 @@ function getPosition(element) {
 function getResults(element, opacity) {
 	var bg = getBg(element);
 	var position = bg ? checkStacking(element, bg) : null;
-	var bgOpacity = getOpacity(bg);
+	var bgOpacity = bg.hasAttribute('data-tng-opacity') ? bg.getAttribute('data-tng-opacity') : getOpacity(bg);
 
 	// if the bg isn't opaque
 	if(position && (bgOpacity < 1 || window.getComputedStyle(bg, null).getPropertyValue('background-image').match(/rgba\(/) || window.getComputedStyle(bg, null).getPropertyValue('background-color').match(/rgba\(/))) {
@@ -467,9 +454,10 @@ function getResults(element, opacity) {
 		// get its parent to calculate its RGB color
 		if(parent) {
 			var pPosition = checkStacking(bg, parent);
+			var pOpacity = parent.hasAttribute('data-tng-opacity') ? parent.getAttribute('data-tng-opacity') : getOpacity(parent);
 	
 			// if the parent's bg is opaque, calculate the color
-			if(pPosition && getOpacity(parent) === 1 && !window.getComputedStyle(parent, null).getPropertyValue('background-image').match(/rgba\(/) && !window.getComputedStyle(parent, null).getPropertyValue('background-color').match(/rgba\(/)) {
+			if(pPosition && pOpacity == 1 && !window.getComputedStyle(parent, null).getPropertyValue('background-image').match(/rgba\(/) && !window.getComputedStyle(parent, null).getPropertyValue('background-color').match(/rgba\(/)) {
 				var pbg = getBgColor(parent, 1, null);
 				pbg = (pbg === 'image') ? null : pbg;
 				var bgColors = getBgColor(bg, bgOpacity, pbg);
@@ -512,13 +500,13 @@ function getResults(element, opacity) {
 			return {
 				background: bgColors[0],
 				ratio: ratio,
-				visible: (getVisibility(element, opacity) && ratio > 1) ? true : false
+				visible: (element.getAttribute('data-tng-el-visible') === 'true' ? true : false && ratio > 1) ? true : false
 			}
 		} else {
 			return {
 				background: bgColors[0],
 				ratio: null,
-				visible: getVisibility(element, opacity)
+				visible: element.getAttribute('data-tng-el-visible') === 'true' ? true : false
 			}
 		}
 		
@@ -526,111 +514,160 @@ function getResults(element, opacity) {
 		return {
 			background: bgColors,
 			ratio: null,
-			visible: getVisibility(element, opacity)
+			visible: element.getAttribute('data-tng-el-visible') === 'true' ? true : false
 		}
 	}
 }
 
-// get datas for each text node
-while(tw.nextNode()) {
-	var cn = tw.currentNode;
-	var element = cn.parentNode;
+function getTextNodeContrast() {
+	var bgBody = true;
+	if(!window.getComputedStyle(document.body, null).getPropertyValue('background-color') && !window.getComputedStyle(document.body, null).getPropertyValue('background')) {
+		document.body.style.backgroundColor = '#fff';
+		bgBody = false;
+	}
+	
+	var tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+	
+	var textNodeList = {
+		//? 'invalid', 'valid', 'cantTell' = contrast ratio status
+		//? '45' = minimum contrast ratio : 4.5:1
+		//? '3' = minimum contrast ratio : 3:1
+		//? 'V' = non visible elements
+		//? 'G' = font weight >= 700
+		// 3.2.1
+		invalid_45: [],
+		invalid_45V: [],
+		valid_45: [],
+		valid_45V: [],
+		cantTell_45: [],
+		cantTell_45V: [],
+	
+		// 3.2.2
+		invalid_45G: [],
+		invalid_45GV: [],
+		valid_45G: [],
+		valid_45GV: [],
+		cantTell_45G: [],
+		cantTell_45GV: [],
+	
+		// 3.2.3
+		invalid_3: [],
+		invalid_3V: [],
+		valid_3: [],
+		valid_3V: [],
+		cantTell_3: [],
+		cantTell_3V: [],
+	
+		// 3.2.4
+		invalid_3G: [],
+		invalid_3GV: [],
+		valid_3G: [],
+		valid_3GV: [],
+		cantTell_3G: [],
+		cantTell_3GV: []
+	};
 
-	// we don't process empty strings, nor script/noscript/style tags.
-	if(cn.nodeValue.trim().length > 0 && ['noscript', 'script', 'style'].indexOf(element.tagName.toLowerCase()) == -1) {
-		var disabledElements = ['button', 'fieldset', 'input', 'optgroup', 'option', 'select', 'textarea'];
-		var size = window.getComputedStyle(element, null).getPropertyValue('font-size');
-		var weight = window.getComputedStyle(element, null).getPropertyValue('font-weight');
-		var opacity = getOpacity(element);
-		var results = getResults(element, opacity);
-		var isDisabled = (disabledElements.includes(element.tagName.toLowerCase()) && element.hasAttribute('disabled')) ? true : false;
+	// get datas for each text node
+	while(tw.nextNode()) {
+		var cn = tw.currentNode;
+		var element = cn.parentNode;
 
-		var o = {
-			node: element,
-			tag: element.tagName.toLowerCase(),
-			text: cn.nodeValue,
-			size: size,
-			weight: weight,
-			foreground: window.getComputedStyle(element, null).getPropertyValue('color'),
-			background: results.background,
-			ratio: results.ratio,
-			xpath: getXPath(element),
-			valid: validContrast(size, weight, results.ratio),
-			isVisible: results.visible
-		};
+		// we don't process empty strings, nor script/noscript/style tags.
+		if(cn.nodeValue.trim().length > 0 && ['noscript', 'script', 'style'].indexOf(element.tagName.toLowerCase()) == -1) {
+			var disabledElements = ['button', 'fieldset', 'input', 'optgroup', 'option', 'select', 'textarea'];
+			var size = window.getComputedStyle(element, null).getPropertyValue('font-size');
+			var weight = window.getComputedStyle(element, null).getPropertyValue('font-weight');
+			var opacity = element.hasAttribute('data-tng-opacity') ? element.getAttribute('data-tng-opacity') : getOpacity(element);
+			var results = getResults(element, opacity);
+			var isDisabled = (disabledElements.includes(element.tagName.toLowerCase()) && element.hasAttribute('disabled')) ? true : false;
 
-		if(o.valid.target == 4.5) {
-			if(o.isVisible && !isDisabled && o.weight < 700) {
-				if(o.valid.status == 2) {
-					textNodeList.valid_45.push(o);
-				} else if(o.valid.status == 1) {
-					textNodeList.invalid_45.push(o);
+			var o = {
+				node: element,
+				tag: element.tagName.toLowerCase(),
+				text: cn.nodeValue,
+				size: size,
+				weight: weight,
+				foreground: window.getComputedStyle(element, null).getPropertyValue('color'),
+				background: results.background,
+				ratio: results.ratio,
+				xpath: getXPath(element),
+				valid: validContrast(size, weight, results.ratio),
+				isVisible: results.visible
+			};
+
+			if(o.valid.target == 4.5) {
+				if(o.isVisible && !isDisabled && o.weight < 700) {
+					if(o.valid.status == 2) {
+						textNodeList.valid_45.push(o);
+					} else if(o.valid.status == 1) {
+						textNodeList.invalid_45.push(o);
+					} else {
+						textNodeList.cantTell_45.push(o);
+					}
+				} else if(o.isVisible && !isDisabled) {
+					if(o.valid.status == 2) {
+						textNodeList.valid_45G.push(o);
+					} else if(o.valid.status == 1) {
+						textNodeList.invalid_45G.push(o);
+					} else {
+						textNodeList.cantTell_45G.push(o);
+					}
+				} else if(o.weight < 700) {
+					if(o.valid.status == 2) {
+						textNodeList.valid_45V.push(o);
+					} else if(o.valid.status == 1) {
+						textNodeList.invalid_45V.push(o);
+					} else {
+						textNodeList.cantTell_45V.push(o);
+					}
 				} else {
-					textNodeList.cantTell_45.push(o);
-				}
-			} else if(o.isVisible && !isDisabled) {
-				if(o.valid.status == 2) {
-					textNodeList.valid_45G.push(o);
-				} else if(o.valid.status == 1) {
-					textNodeList.invalid_45G.push(o);
-				} else {
-					textNodeList.cantTell_45G.push(o);
-				}
-			} else if(o.weight < 700) {
-				if(o.valid.status == 2) {
-					textNodeList.valid_45V.push(o);
-				} else if(o.valid.status == 1) {
-					textNodeList.invalid_45V.push(o);
-				} else {
-					textNodeList.cantTell_45V.push(o);
+					if(o.valid.status == 2) {
+						textNodeList.valid_45GV.push(o);
+					} else if(o.valid.status == 1) {
+						textNodeList.invalid_45GV.push(o);
+					} else {
+						textNodeList.cantTell_45GV.push(o);
+					}
 				}
 			} else {
-				if(o.valid.status == 2) {
-					textNodeList.valid_45GV.push(o);
-				} else if(o.valid.status == 1) {
-					textNodeList.invalid_45GV.push(o);
+				if(o.isVisible && !isDisabled && o.weight < 700) {
+					if(o.valid.status == 2) {
+						textNodeList.valid_3.push(o);
+					} else if(o.valid.status == 1) {
+						textNodeList.invalid_3.push(o);
+					} else {
+						textNodeList.cantTell_3.push(o);
+					}
+				} else if(o.isVisible && !isDisabled) {
+					if(o.valid.status == 2) {
+						textNodeList.valid_3G.push(o);
+					} else if(o.valid.status == 1) {
+						textNodeList.invalid_3G.push(o);
+					} else {
+						textNodeList.cantTell_3G.push(o);
+					}
+				} else if(o.weight < 700) {
+					if(o.valid.status == 2) {
+						textNodeList.valid_3V.push(o);
+					} else if(o.valid.status == 1) {
+						textNodeList.invalid_3V.push(o);
+					} else {
+						textNodeList.cantTell_3V.push(o);
+					}
 				} else {
-					textNodeList.cantTell_45GV.push(o);
-				}
-			}
-		} else {
-			if(o.isVisible && !isDisabled && o.weight < 700) {
-				if(o.valid.status == 2) {
-					textNodeList.valid_3.push(o);
-				} else if(o.valid.status == 1) {
-					textNodeList.invalid_3.push(o);
-				} else {
-					textNodeList.cantTell_3.push(o);
-				}
-			} else if(o.isVisible && !isDisabled) {
-				if(o.valid.status == 2) {
-					textNodeList.valid_3G.push(o);
-				} else if(o.valid.status == 1) {
-					textNodeList.invalid_3G.push(o);
-				} else {
-					textNodeList.cantTell_3G.push(o);
-				}
-			} else if(o.weight < 700) {
-				if(o.valid.status == 2) {
-					textNodeList.valid_3V.push(o);
-				} else if(o.valid.status == 1) {
-					textNodeList.invalid_3V.push(o);
-				} else {
-					textNodeList.cantTell_3V.push(o);
-				}
-			} else {
-				if(o.valid.status == 2) {
-					textNodeList.valid_3GV.push(o);
-				} else if(o.valid.status == 1) {
-					textNodeList.invalid_3GV.push(o);
-				} else {
-					textNodeList.cantTell_3GV.push(o);
+					if(o.valid.status == 2) {
+						textNodeList.valid_3GV.push(o);
+					} else if(o.valid.status == 1) {
+						textNodeList.invalid_3GV.push(o);
+					} else {
+						textNodeList.cantTell_3GV.push(o);
+					}
 				}
 			}
 		}
 	}
+
+	if(!bgBody) document.body.style.backgroundColor = 'unset';
+
+	return textNodeList;
 }
-
-if(!bgBody) document.body.style.backgroundColor = 'unset';
-
-textNodeList;
