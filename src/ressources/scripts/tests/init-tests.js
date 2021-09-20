@@ -31,7 +31,7 @@ eList.forEach(e => {
 });
 
 var textNodeList = getTextNodeContrast();
-let testsLength = tanaguruTestsList.length;
+var testsLength = tanaguruTestsList.length;
 for (var i = 0; i < testsLength; i++) {
     /*
         Schéma des clefs :
