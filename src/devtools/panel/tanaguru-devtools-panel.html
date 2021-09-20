@@ -10,6 +10,93 @@
 		</template>
 	</head>
 	<body>
+		<template id="item-row">
+			<tr>
+				<td class="item-number"></td>
+				<td class="item-status" style="text-align: center;"></td>
+				<td class="item-code">
+					<div class="code">
+						<code></code>
+					</div>
+				</td>
+				<td class="testsection-td-colored item-keyboard">
+					<span class="keyboardyes"></span>
+					<span class="visually-hidden"></span>
+				</td>
+				<td class="testsection-td-colored item-reader">
+					<span class="readeryes"></span>
+					<span class="visually-hidden"></span>
+				</td>
+				<td class="item-actions">
+					<ul>
+						<li class="item-actions-highlight">
+							<button type="button" data-action="highlight-action" class="visible">
+								<span class="visually-hidden"></span>
+							</button>
+						</li>
+						<li class="item-actions-inspect">
+							<button type="button" data-action="inspect-action">
+								<span class="visually-hidden"></span>
+							</button>
+						</li>
+						<li class="item-actions-about">
+							<button type="button" data-action="about-action">
+								<span class="visually-hidden"></span>
+							</button>
+						</li>
+					</ul>
+				</td>
+			</tr>
+		</template>
+
+		<template id="item-row-contrast">
+			<tr>
+				<td class="item-number"></td>
+				<td class="item-tag" style="text-align: center; width: auto;"></td>
+				<td class="item-text" style="text-align: left; width: auto;"></td>
+				<td class="testsection-td-colored item-size" style="text-align: center; width: auto;"></td>
+				<td class="testsection-td-colored item-weight" style="text-align: center; width: auto;"></td>
+				<td class="item-ct" style="width: auto;">
+					<span class="item-ct-content" style="display: block; margin: auto; border: 1px solid #000; height: 18px; width: 18px; background-color: #000;">
+						<span class="visually-hidden"></span>
+					</span>
+				</td>
+				<td class="item-cf" style="width: auto;">
+					<span class="item-cf-content" style="display: block; margin: auto; border: 1px solid #000; height: 18px; width: 18px; background-color: #fff;">
+						<span class="visually-hidden"></span>
+					</span>
+				</td>
+				<td class="item-ratio" style="text-align: center;"></td>
+				<td class="testsection-td-colored item-keyboard">
+					<span class="keyboardyes"></span>
+					<span class="visually-hidden"></span>
+				</td>
+				<td class="testsection-td-colored item-reader">
+					<span class="readeryes"></span>
+					<span class="visually-hidden"></span>
+				</td>
+				<td class="item-actions">
+					<ul>
+						<li class="item-actions-highlight">
+							<button type="button" data-action="highlight-action" class="visible">
+								<span class="visually-hidden"></span>
+							</button>
+						</li>
+						<li class="item-actions-inspect">
+							<button type="button" data-action="inspect-action">
+								<span class="visually-hidden"></span>
+							</button>
+						</li>
+						<li class="item-actions-about">
+							<button type="button" data-action="about-action">
+								<span class="visually-hidden"></span>
+							</button>
+						</li>
+					</ul>
+				</td>
+			</tr>
+		</template>
+		
 		<script type="text/javascript" src="tanaguru-devtools-panel.js"></script>
 	</body>
 </html>

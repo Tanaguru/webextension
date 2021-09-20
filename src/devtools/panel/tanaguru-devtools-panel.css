@@ -723,6 +723,91 @@ td code {
 	word-break: break-all;
 }
 
+.keyboardyes {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAANpJREFUKBXVkLEOAVEQRddGSGxBQ6dQKJXiD1ZEpVT4ANGLSucvRCtq0YqaUukDVBQKEsI6T3Jls5uXkGhMcnbum7kz72Ud528iCIIGJL5+MEN9uMEQ3I8XYO7CHRT+a5iTC3XbJnoduIJigvAcPkkYgdk6iC6g1oILKGaItG5tqkp+QE8L0D6cQLFAeOqbmzMwVpdsfkgbanAAxQqRew9KUEzBVC7yGY6h8xpdkD+WaZoXzEMDkltEMTYQLWDKwlJT5B2Uoz7rGXMeNrCHitVoazBUgqqt/5P6E3SkJ/cZVE0PAAAAAElFTkSuQmCC);
+	display: inline-block;
+	background-repeat: no-repeat;
+	width: 15px;
+	height: 15px;
+}
+
+.keyboardno {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAALtJREFUKBWlk2EOgjAMhaeBY+1eAn/0VuLN4M/8XtykW5oZYpPSjvdeu7ESQraUUix5L1Y8FiP+wHd8+SFcMu9OHAOPiFubvQIQZksijxIPDlAVcHDtYPg2cQgT7664orWqsC3QEl9WRe4LSwUIN3xrRFpPhdONEJ+NeO0KCqgO+PnOWWibrnZB7p9ZQEPUDi64orWjAG91z7o3aweB8wC0hT/3DPDXhGm2Nau7OpQP50XwerYLCeD0X/UGVSXGYbh63LAAAAAASUVORK5CYII=);
+	display: inline-block;
+	background-repeat: no-repeat;
+	width: 15px;
+	height: 15px;
+}
+
+.readeryes {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAANpJREFUKBXVkLEOAVEQRddGSGxBQ6dQKJXiD1ZEpVT4ANGLSucvRCtq0YqaUukDVBQKEsI6T3Jls5uXkGhMcnbum7kz72Ud528iCIIGJL5+MEN9uMEQ3I8XYO7CHRT+a5iTC3XbJnoduIJigvAcPkkYgdk6iC6g1oILKGaItG5tqkp+QE8L0D6cQLFAeOqbmzMwVpdsfkgbanAAxQqRew9KUEzBVC7yGY6h8xpdkD+WaZoXzEMDkltEMTYQLWDKwlJT5B2Uoz7rGXMeNrCHitVoazBUgqqt/5P6E3SkJ/cZVE0PAAAAAElFTkSuQmCC);
+	display: inline-block;
+	background-repeat: no-repeat;
+	width: 15px;
+	height: 15px;
+}
+
+.readerno {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAALtJREFUKBWlk2EOgjAMhaeBY+1eAn/0VuLN4M/8XtykW5oZYpPSjvdeu7ESQraUUix5L1Y8FiP+wHd8+SFcMu9OHAOPiFubvQIQZksijxIPDlAVcHDtYPg2cQgT7664orWqsC3QEl9WRe4LSwUIN3xrRFpPhdONEJ+NeO0KCqgO+PnOWWibrnZB7p9ZQEPUDi64orWjAG91z7o3aweB8wC0hT/3DPDXhGm2Nau7OpQP50XwerYLCeD0X/UGVSXGYbh63LAAAAAASUVORK5CYII=);
+	display: inline-block;
+	background-repeat: no-repeat;
+	width: 15px;
+	height: 15px;
+}
+
+.item-actions-highlight .visible {
+	background-image: url("./images/see.png");
+	background-repeat: no-repeat;
+	width: 24px;
+	height: 24px;
+
+}
+
+.item-actions-highlight .visible:hover,
+.item-actions-highlight .visible:focus {
+	background-image: url("./images/see_hover.png");
+	background-repeat: no-repeat;
+	width: 24px;
+	height: 24px;
+}
+
+.item-actions-highlight .hidden {
+	background-image: url("./images/see_disabled.png");
+	background-repeat: no-repeat;
+	width: 24px;
+	height: 24px;
+}
+
+.item-actions-inspect button {
+	background-image: url("./images/inspect.png");
+	background-repeat: no-repeat;
+	width: 24px;
+	height: 24px;
+}
+
+.item-actions-inspect button:hover,
+.item-actions-inspect button:focus {
+	background-image: url("./images/inspect_hover.png");
+	background-repeat: no-repeat;
+	width: 24px;
+	height: 24px;
+}
+
+.item-actions-about button {
+	background-image: url("./images/about.png");
+	background-repeat: no-repeat;
+	width: 24px;
+	height: 24px;
+}
+
+.item-actions-about button:hover,
+.item-actions-about button:focus {
+	background-image: url("./images/about_hover.png");
+	background-repeat: no-repeat;
+	width: 24px;
+	height: 24px;
+}
+
 #export-items div, #export-items ul {
 	display: inline-block;
 	vertical-align: middle;
