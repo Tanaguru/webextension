@@ -521,7 +521,8 @@ function getResults(element, opacity) {
 
 function getTextNodeContrast() {
 	var bgBody = true;
-	if(!window.getComputedStyle(document.body, null).getPropertyValue('background-color') && !window.getComputedStyle(document.body, null).getPropertyValue('background')) {
+
+	if((!window.getComputedStyle(document.body, null).getPropertyValue('background-color') && !window.getComputedStyle(document.body, null).getPropertyValue('background') || window.getComputedStyle(document.body, null).getPropertyValue('background-color').match(/rgba\(0, 0, 0, 0\)/))) {
 		document.body.style.backgroundColor = '#fff';
 		bgBody = false;
 	}
