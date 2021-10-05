@@ -837,7 +837,15 @@ button.addEventListener('click', function () {
 							newRow.querySelector('.item-weight').textContent = itemWeight;
 							newRow.querySelector('.item-ct .item-ct-content').style.backgroundColor = itemCT;
 							newRow.querySelector('.item-ct .visually-hidden').textContent = itemCT;
-							newRow.querySelector('.item-cf .item-cf-content').style.backgroundColor = itemCF;
+							if(itemCF && itemCF !== 'image') {
+								newRow.querySelector('.item-cf .item-cf-content').style.backgroundColor = itemCF;
+							} else if(itemCF === 'image') {
+								newRow.querySelector('.item-cf .item-cf-content').setAttribute('aria-describedby', 'contrast-bgImage');
+								newRow.querySelector('.item-cf .item-cf-content').classList.add('contrast-bgImage');
+							} else {
+								newRow.querySelector('.item-cf .item-cf-content').setAttribute('aria-describedby', 'contrast-bgNull');
+								newRow.querySelector('.item-cf .item-cf-content').classList.add('contrast-bgNull');
+							}
 							newRow.querySelector('.item-cf .visually-hidden').textContent = itemCF;
 							newRow.querySelector('.item-ratio').textContent = itemRatio;
 

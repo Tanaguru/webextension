@@ -2965,8 +2965,8 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if(item.innerText) {
-            var linkName = item.innerText.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-            var linkAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var linkName = item.innerText.trim().replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
+            var linkAccessibleName = item.accessibleName.replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
             var regex = new RegExp(linkName, 'mi');
             
             if(!linkAccessibleName.match(regex)) {
@@ -3105,8 +3105,8 @@ tanaguruTestsList.push({
         
         if(item.innerText || item.value) {
             var visibleName = item.innerText ? item.innerText : item.value;
-            var buttonName = visibleName.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-            var buttonAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var buttonName = visibleName.trim().replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
+            var buttonAccessibleName = item.accessibleName.replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
             var regex = new RegExp(buttonName, 'mi');
             
             if(buttonAccessibleName.match(regex)) {
@@ -4831,8 +4831,8 @@ tanaguruTestsList.push({
     filter: function (item) {
         if((item.innerText || item.value) && !item.disabled) {
             var visibleName = item.innerText ? item.innerText : item.value;
-            var buttonName = visibleName.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-            var buttonAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var buttonName = visibleName.trim().replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
+            var buttonAccessibleName = item.accessibleName.replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
             var regex = new RegExp(buttonName, 'mi');
 
            if(buttonAccessibleName.match(regex)) {
