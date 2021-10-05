@@ -198,7 +198,15 @@ function getBgColor(element, opacity, pbg) {
 		return 'image';
 	}
 
-	if((opacity < 1 && !pbg) || (bgImage.match(/rgba\(/) && !pbg) || (bgColor.match(/rgba\(/) && !pbg)) {
+	if(bgImage.match(/rgba?\(/g) && bgColor.match(/rgba?\(/g)) {
+		if(!pbg && (opacity < 1 || bgColor.match(/rgba\(/))) {
+			return null;
+		}
+
+		pbg = [bgColor];
+	}
+
+	if(!pbg && (opacity < 1 || bgImage.match(/rgba\(/)|| bgColor.match(/rgba\(/))) {
 		return null;
 	} else if(bgImage.match(/rgba?\(/g)) {
 		// if there are colors like linear-gradient, get it
