@@ -853,15 +853,10 @@ var getAccessibleName = function () {
                                         if (!(/^url\(/.test(cssbeforecontent))) {
                                             cssbeforecontent = cssbeforecontent == 'none' ? '' : cssbeforecontent.substring(1, cssbeforecontent.length - 1);
                                         }
-                                        else {
-                                            cssbeforecontent = '';
-                                        }
+
                                         cssaftercontent = window.getComputedStyle(nodes[i], '::after').getPropertyValue('content');
                                         if (!(/^url\(/.test(cssaftercontent))) {
-                                            cssaftercontent += cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1);
-                                        }
-                                        else {
-                                            cssaftercontent = '';
+                                            cssaftercontent = cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1);
                                         }
                                     }
                                     if (this.matches('[data-labelbytraversal="true"]')) {
@@ -1070,6 +1065,19 @@ function loadTanaguruTests() {
     return result;
 }
 
+function removeDataTNG(element) {
+    let attr = element.attributes;
+    let tngAttr = [];
+    for(let i = 0; i < attr.length; i++) {
+        if(attr[i].name.match(/^data-tng-.*$/)) {
+            tngAttr.push(attr[i].name);
+        }
+    }
+    tngAttr.forEach(data => {
+        element.removeAttribute(data);
+    });
+}
+
 function manageOutput(element) {
     var status = element.status ? element.status : 'cantTell';
     element.status = undefined;
@@ -1087,16 +1095,12 @@ function manageOutput(element) {
         var isNotExposedDueTo = element.hasAttribute('data-tng-notExposed') ? element.getAttribute('data-tng-notExposed') : '';
 
         var fakeelement = element.cloneNode(true);
-        let fakeAttr = fakeelement.attributes;
-        let tngAttr = [];
-        for(let i = 0; i < fakeAttr.length; i++) {
-            if(fakeAttr[i].name.match(/^data-tng-.*$/)) {
-                tngAttr.push(fakeAttr[i].name);
-            }
+        removeDataTNG(fakeelement);
+        
+        let fakeChildren = fakeelement.querySelectorAll('*');
+        for(let i = 0; i < fakeChildren.length; i++) {
+            removeDataTNG(fakeChildren[i]);
         }
-        tngAttr.forEach(data => {
-            fakeelement.removeAttribute(data);
-        });
 
         var e = document.createElement(fakeelement.tagName.toLowerCase());
         if (e && e.outerHTML.indexOf("/") != -1) {

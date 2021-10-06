@@ -68,20 +68,7 @@ for (var i = 0; i < testsLength; i++) {
 }
 
 // nettoyer les datas
-eList.forEach(e => {
-    let elAttributes = e.attributes;
-    let dataTNG = [];
-
-    for(let i = 0; i < elAttributes.length; i++) {
-        if(elAttributes[i].name.match(/^data-tng-.*$/)) {
-            dataTNG.push(elAttributes[i].name);
-        }
-    }
-
-    dataTNG.forEach(data => {
-        e.removeAttribute(data);
-    });
-});
+eList.forEach(e => removeDataTNG(e));
 
 // code.
 loadTanaguruTests();

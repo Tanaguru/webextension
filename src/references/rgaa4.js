@@ -2965,9 +2965,24 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if(item.innerText) {
-            var linkName = item.innerText.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-            var linkAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-            var regex = new RegExp(linkName, 'mi');
+            var visibleName = '';
+            item.childNodes.forEach(e => {
+                if(e.nodeType === 3) {
+                    visibleName += e.textContent;
+                }
+
+                if(e.nodeType === 1 && e.getAttribute('data-tng-el-visible') === 'true') {
+                    e.childNodes.forEach(echild => {
+                        if(echild.nodeType === 3 || echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true') {
+                            visibleName += echild.textContent;
+                        }
+                    });
+                }
+            });
+            visibleName = visibleName.trim().replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
+
+            var linkAccessibleName = item.accessibleName.replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
+            var regex = new RegExp(visibleName, 'mi');
             
             if(!linkAccessibleName.match(regex)) {
                 return true;
@@ -3104,16 +3119,33 @@ tanaguruTestsList.push({
     filter: function (item) {
         
         if(item.innerText || item.value) {
-            var visibleName = item.innerText ? item.innerText : item.value;
-            var buttonName = visibleName.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-            var buttonAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var visibleName = '';
+            if(!item.innerText) visibleName = item.value;
+            else {
+                item.childNodes.forEach(e => {
+                    if(e.nodeType === 3) {
+                        visibleName += e.textContent;
+                    }
+
+                    if(e.nodeType === 1 && e.getAttribute('data-tng-el-visible') === 'true') {
+                        e.childNodes.forEach(echild => {
+                            if(echild.nodeType === 3 || echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true') {
+                                visibleName += echild.textContent;
+                            }
+                        });
+                    }
+                });
+            }
+            
+            var buttonName = visibleName.trim().replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
+            var buttonAccessibleName = item.accessibleName.replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
             var regex = new RegExp(buttonName, 'mi');
             
             if(buttonAccessibleName.match(regex)) {
                 item.setAttribute('data-tng-btn-nameMatch', 'true');
                 return;
             }
-
+            
             return true;
         }
     },
@@ -4433,15 +4465,28 @@ tanaguruTestsList.push({
                     item.setAttribute('data-tng-has-label', 'labelledby');
                     labelIsVisible = false;
                     if(el.getAttribute('data-tng-el-visible') === 'true' && el.textContent.trim().length > 0) {
-                        labelIsVisible = true;
-                        visibleLabel += el.textContent.trim() + ' ';
+                        el.childNodes.forEach(e => {
+                            if(e.nodeType === 3) {
+                                labelIsVisible = true;
+                                visibleLabel += e.textContent;
+                            }
+            
+                            if(e.nodeType === 1 && e.getAttribute('data-tng-el-visible') === 'true') {
+                                e.childNodes.forEach(echild => {
+                                    if(echild.nodeType === 3 || echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true') {
+                                        labelIsVisible = true;
+                                        visibleLabel += echild.textContent;
+                                    }
+                                });
+                            }
+                        });
                     }
                 }
             });
 
             if(labelIsVisible) {
                 item.setAttribute('data-tng-visible-label', 'labelledby');
-                item.setAttribute('data-tng-text-label', visibleLabel.trim());
+                item.setAttribute('data-tng-text-label', visibleLabel.trim().replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, ''));
                 return;
             }
         }
@@ -4456,9 +4501,26 @@ tanaguruTestsList.push({
                 if(forAttr.match(id)) {
                     if(labels[i].textContent.trim().length > 0) {
                         if(labels[i].getAttribute('data-tng-el-visible') === 'true') {
-                            item.setAttribute('data-tng-visible-label', 'label');
-                            item.setAttribute('data-tng-text-label', labels[i].textContent.trim());
-                            return;
+                            let visibleText = '';
+                            labels[i].childNodes.forEach(e => {
+                                if(e.nodeType === 3) {
+                                    visibleText += e.textContent;
+                                }
+                
+                                if(e.nodeType === 1 && e.getAttribute('data-tng-el-visible') === 'true') {
+                                    e.childNodes.forEach(echild => {
+                                        if(echild.nodeType === 3 || echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true') {
+                                            visibleText += echild.textContent;
+                                        }
+                                    });
+                                }
+                            });
+
+                            if(visibleText.length > 0) {
+                                item.setAttribute('data-tng-visible-label', 'label');
+                                item.setAttribute('data-tng-text-label', visibleText.trim().replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, ''));
+                                return;
+                            }
                         }
 
                         hasLabel = true;
@@ -4622,7 +4684,7 @@ tanaguruTestsList.push({
     name: 'Liste des champs de formulaire dont le nom accessible contient l\'intitulé visible.',
     query: '[data-tng-visible-label]',
     filter: function (item) {
-        if(item.accessibleName.includes(item.getAttribute('data-tng-text-label'))) {
+        if(item.accessibleName.trim().replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '').includes(item.getAttribute('data-tng-text-label'))) {
             return true;
         } else {
             item.setAttribute('data-tng-NAinclude-visibleLabel', 'true');
@@ -4830,17 +4892,35 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         if((item.innerText || item.value) && !item.disabled) {
-            var visibleName = item.innerText ? item.innerText : item.value;
-            var buttonName = visibleName.trim().replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
-            var buttonAccessibleName = item.accessibleName.replace(/[\s\X!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gm, '');
+            var visibleName = '';
+            if(!item.innerText) visibleName = item.value;
+            else {
+                item.childNodes.forEach(e => {
+                    if(e.nodeType === 3) {
+                        visibleName += e.textContent;
+                    }
+    
+                    if(e.nodeType === 1 && e.getAttribute('data-tng-el-visible') === 'true') {
+                        e.childNodes.forEach(echild => {
+                            if(echild.nodeType === 3 || echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true') {
+                                visibleName += echild.textContent;
+                            }
+                        });
+                    }
+                });
+            }
+
+            var buttonName = visibleName.trim().replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
+            var buttonAccessibleName = item.accessibleName.replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
             var regex = new RegExp(buttonName, 'mi');
 
-           if(buttonAccessibleName.match(regex)) {
-               item.setAttribute('data-tng-button-namesMatch', 'true');
-               return;
-           } else {
-               return true;
-           }
+            if(buttonAccessibleName.match(regex)) {
+                item.setAttribute('data-tng-button-namesMatch', 'true');
+                return;
+            } else {
+                console.log(item, 'visible : '+buttonName+' / accessibleName : '+buttonAccessibleName);
+                return true;
+            }
         }
     },
     tags: ['a11y', 'accessiblename', 'buttons', 'forms'],

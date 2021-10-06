@@ -7,7 +7,8 @@ var sub_regexes = {
 	"value": "\\s*[\\w/:][-/\\w\\s,:;.]*"
 };
 
-var validation_re = "(?P<node>" + "(" + "^id\\([\"\\']?(?P<idvalue>%(value)s)[\"\\']?\\)" + "|" + "(?P<nav>//?(?:following-sibling::)?)(?P<tag>%(tag)s)" + "(\\[(" + "(?P<matched>(?P<mattr>@?%(attribute)s=[\"\\'](?P<mvalue>%(value)s))[\"\\']" + "|" + "(?P<contained>contains\\((?P<cattr>@?%(attribute)s,\\s*[\"\\'](?P<cvalue>%(value)s)[\"\\']\\))" + ")\\])?" + "(\\[\\s*(?P<nth>\\d|last\\(\\s*\\))\\s*\\])?" + ")" + ")";
+var validation_re = "(?P<node>" + "(" + "^id\\([\"\\']?(?P<idvalue>%(value)s)[\"\\']?\\)" + "|" + "(?P<nav>//?(?:following-sibling::)?)(?P<tag>%(tag)s)" + "(\\[(" + "(?P<matched>(?P<mattr>@?%(attribute)s=[\"\\'](?P<mvalue>%(value)s))[\"\\']" + "|" + "(?P<contained>contains\\((?P<cattr>@?%(attribute)s,\\s*[\"\\'](?P<cvalue>%(value)s)[\"\\']\\))" + ")\\])?" + "(\\[\\s*(?P<nth>\\d+|last\\(\\s*\\))\\s*\\])?" + ")" + ")";
+
 for (var prop in sub_regexes) {
     validation_re = validation_re.replace(new RegExp('%\\(' + prop + '\\)s', 'gi'), sub_regexes[prop]);
 }
@@ -837,7 +838,18 @@ button.addEventListener('click', function () {
 							newRow.querySelector('.item-weight').textContent = itemWeight;
 							newRow.querySelector('.item-ct .item-ct-content').style.backgroundColor = itemCT;
 							newRow.querySelector('.item-ct .visually-hidden').textContent = itemCT;
-							newRow.querySelector('.item-cf .item-cf-content').style.backgroundColor = itemCF;
+							newRow.querySelector('.item-ct').setAttribute('title', itemCT);
+							newRow.querySelector('.item-cf').setAttribute('title', itemCF);
+							if(itemCF && itemCF !== 'image') {
+								newRow.querySelector('.item-cf .item-cf-content').style.backgroundColor = itemCF;
+							} else if(itemCF === 'image') {
+								newRow.querySelector('.item-cf .item-cf-content').setAttribute('aria-describedby', 'contrast-bgImage');
+								newRow.querySelector('.item-cf .item-cf-content').classList.add('contrast-bgImage');
+							} else {
+								newRow.querySelector('.item-cf .item-cf-content').setAttribute('aria-describedby', 'contrast-bgNull');
+								newRow.querySelector('.item-cf .item-cf-content').classList.add('contrast-bgNull');
+								newRow.querySelector('.item-cf').setAttribute('title', 'non trouvé');
+							}
 							newRow.querySelector('.item-cf .visually-hidden').textContent = itemCF;
 							newRow.querySelector('.item-ratio').textContent = itemRatio;
 
