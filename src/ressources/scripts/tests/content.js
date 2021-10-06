@@ -853,15 +853,10 @@ var getAccessibleName = function () {
                                         if (!(/^url\(/.test(cssbeforecontent))) {
                                             cssbeforecontent = cssbeforecontent == 'none' ? '' : cssbeforecontent.substring(1, cssbeforecontent.length - 1);
                                         }
-                                        else {
-                                            cssbeforecontent = '';
-                                        }
+
                                         cssaftercontent = window.getComputedStyle(nodes[i], '::after').getPropertyValue('content');
                                         if (!(/^url\(/.test(cssaftercontent))) {
-                                            cssaftercontent += cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1);
-                                        }
-                                        else {
-                                            cssaftercontent = '';
+                                            cssaftercontent = cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1);
                                         }
                                     }
                                     if (this.matches('[data-labelbytraversal="true"]')) {
