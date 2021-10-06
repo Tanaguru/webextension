@@ -10,6 +10,111 @@
 		</template>
 	</head>
 	<body>
+		<template id="rgaaFilter">
+			<fieldset id="rgaaFieldset">
+				<legend>Choisissez les catégories de tests du RGAA à inclure dans l'analyse.</legend>
+				<label for="rgaaAll">
+					<input type="checkbox" id="rgaaAll" checked>
+					Toutes les catégories
+				</label>
+
+				<label for="images">
+					<input type="checkbox" id="images">
+					Images
+				</label>
+
+				<label for="cadres">
+					<input type="checkbox" id="cadres">
+					Cadres
+				</label>
+
+				<label for="couleurs">
+					<input type="checkbox" id="couleurs">
+					Couleurs
+				</label>
+
+				<label for="multimedia">
+					<input type="checkbox" id="multimedia">
+					Multimédia
+				</label>
+
+				<label for="tableaux">
+					<input type="checkbox" id="tableaux">
+					Tableaux
+				</label>
+
+				<label for="liens">
+					<input type="checkbox" id="liens">
+					Liens
+				</label>
+
+				<label for="scripts">
+					<input type="checkbox" id="scripts">
+					Scripts
+				</label>
+
+				<label for="obligatoire">
+					<input type="checkbox" id="obligatoire">
+					Eléments obligatoires
+				</label>
+
+				<label for="structuration">
+					<input type="checkbox" id="structuration">
+					Structuration de l'information
+				</label>
+
+				<label for="presentation">
+					<input type="checkbox" id="presentation">
+					Présentation de l'information
+				</label>
+
+				<label for="formulaires">
+					<input type="checkbox" id="formulaires">
+					Formulaires
+				</label>
+
+				<label for="navigation">
+					<input type="checkbox" id="navigation">
+					Navigation
+				</label>
+
+				<label for="consultation">
+					<input type="checkbox" id="consultation">
+					Consultation
+				</label>
+			</fieldset>
+		</template>
+
+		<template id="statusFilter">
+			<fieldset id="statusFieldset">
+				<legend>Choisissez le type de résultats à afficher.</legend>
+				<label for="statusAll">
+					<input type="checkbox" id="statusAll" checked>
+					Tous les statuts
+				</label>
+
+				<label for="bad">
+					<input type="checkbox" id="bad">
+					Statuts invalides et indéterminés
+				</label>
+
+				<label for="good">
+					<input type="checkbox" id="good">
+					Statuts valides
+				</label>
+
+				<label for="none">
+					<input type="checkbox" id="none">
+					Statuts inapplicables
+				</label>
+
+				<label for="untested">
+					<input type="checkbox" id="untested">
+					Statuts non-testés.
+				</label>
+			</fieldset>
+		</template>
+
 		<template id="item-row">
 			<tr>
 				<td class="item-number"></td>

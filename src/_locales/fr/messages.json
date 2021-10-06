@@ -27,6 +27,7 @@
 		"message": "(nouvelle fenêtre)",
 		"description": "Mention pour les éléments s'ouvrant dans une nouvelle fenêtre."
 	},
+	"homeTitle": {"message": "Personnalisez votre analyse"},
 	"msgNavHeading": { "message": "Résultats de l'analyse" },
 	"msgDashboard": { "message": "Tableau de bord" },
 	"msgDashboardResultFailed": { "message": "Des erreurs ont été détectées dans cette page." }, 

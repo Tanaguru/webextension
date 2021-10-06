@@ -248,7 +248,10 @@ main.launch-analysis > div:first-child + div {
 }
 
 .launch-analysis > div:first-child + div {
-	padding: 7.5em 0;
+	padding: 1em 0;
+}
+
+.launch-analysis > div:first-child + div p {
 	text-align: center;
 }
 
@@ -882,4 +885,20 @@ td code {
 	bottom: 0;
 	text-align: center;
 	font-weight: bold;
+}
+
+/*? home - filters bloc */
+.launch-analysis-filters {
+	background-color: #FFFFFF;
+	width: 80%;
+	margin: auto;
+}
+
+.launch-analysis-filters fieldset {
+	margin-top: 1em;
+}
+
+.launch-analysis-filters fieldset label {
+	display: inline-block;
+	margin-right: 1em;
 }

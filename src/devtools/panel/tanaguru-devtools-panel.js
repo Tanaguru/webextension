@@ -134,15 +134,43 @@ html.setAttribute('lang', chrome.i18n.getMessage('extensionLang'));
 var main = document.createElement('main');
 main.setAttribute('role', 'main');
 main.setAttribute('class', 'launch-analysis');
+
+// left
 var leftcolumn = document.createElement('div');
 main.appendChild(leftcolumn);
+
+// right
 var rightcolumn = document.createElement('div');
+
+// right/title
+var homeTitle = document.createElement('h1');
+homeTitle.textContent = chrome.i18n.getMessage('homeTitle');
+homeTitle.style.textAlign = 'center';
+rightcolumn.appendChild(homeTitle);
+
+// right/filtres
+var filterBloc = document.createElement('div');
+filterBloc.classList.add('launch-analysis-filters');
+
+var isRGAAVersion = chrome.runtime.getManifest().short_name.match(/RGAA/);
+if(isRGAAVersion) {
+	var rgaaFilterTemplate = document.getElementById('rgaaFilter').content;
+	filterBloc.appendChild(rgaaFilterTemplate);
+}
+
+var statusFilterTemplate = document.getElementById('statusFilter').content;
+filterBloc.appendChild(statusFilterTemplate);
+rightcolumn.appendChild(filterBloc);
+
+
+// right/bouton "analyser cette page"
 var button = document.createElement('button');
 button.setAttribute('type', 'button');
 button.appendChild(document.createTextNode("Analyser cette page"));
 var p = document.createElement('p');
 p.appendChild(button);
 rightcolumn.appendChild(p);
+
 main.appendChild(rightcolumn);
 document.body.insertBefore(main, document.body.querySelector('script'));
 
@@ -150,6 +178,25 @@ document.body.insertBefore(main, document.body.querySelector('script'));
  *? Click on analize button
  */
 button.addEventListener('click', function () {
+	/**
+	 * ? Get filters choices
+	 */
+	var filters = {
+		rgaa: [],
+		statuses: []
+	}
+
+	document.querySelectorAll('#rgaaFieldset input:checked').forEach(e => {
+		filters.rgaa.push(e.id);
+	});
+
+	document.querySelectorAll('#statusFieldset input:checked').forEach(e => {
+		filters.statuses.push(e.id);
+	});
+
+	filterBloc.remove();
+	homeTitle.remove();
+
 	/**
 	 * ? Display loading
 	 */
@@ -163,7 +210,8 @@ button.addEventListener('click', function () {
 	chrome.runtime.sendMessage({
 		tabId: chrome.devtools.inspectedWindow.tabId,
 		command: 'executeTests', 
-		timer: new Date().getTime()},
+		timer: new Date().getTime(),
+		filters: filters},
 		
 		function (response) {
 			/**
@@ -209,10 +257,19 @@ button.addEventListener('click', function () {
 		
 			// UI. Dashboard.
 			dashboardpanel.setAttribute('style', 'height: 100%; padding: 0; margin: 0; position: relative;');
+
 			var dashboardpanelp = document.createElement('p'); 
 			dashboardpanelp.setAttribute('style', 'margin: 0; position: absolute; justify-content: center; left: 0; right: 0; top: 0; bottom: 0; font-weight: bolder; display: inline-flex; align-items: center;');
 			dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')));
 			dashboardpanel.appendChild(dashboardpanelp);
+
+			var dashboardpanelbuttonreload = document.createElement('button');
+			dashboardpanelbuttonreload.setAttribute('type', 'button');
+			dashboardpanelbuttonreload.appendChild(document.createTextNode("Quitter et démarrer une nouvelle analyse"));
+			dashboardpanelbuttonreload.addEventListener('click', function(){});
+			var dashboardpanelpreload = document.createElement('p');
+			dashboardpanelpreload.appendChild(dashboardpanelbuttonreload);
+			dashboardpanel.appendChild(dashboardpanelpreload);
 			
 			main.children[1].appendChild(dashboardpanel);
 			ul.appendChild(dashboard);
