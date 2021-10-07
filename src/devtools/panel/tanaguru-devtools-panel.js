@@ -256,20 +256,19 @@ button.addEventListener('click', function () {
 			dashboardpanel.appendChild(dashboardpanelheading);
 		
 			// UI. Dashboard.
-			dashboardpanel.setAttribute('style', 'height: 100%; padding: 0; margin: 0; position: relative;');
+			dashboardpanel.classList.add('dashboard');
 
 			var dashboardpanelp = document.createElement('p'); 
-			dashboardpanelp.setAttribute('style', 'margin: 0; position: absolute; justify-content: center; left: 0; right: 0; top: 0; bottom: 0; font-weight: bolder; display: inline-flex; align-items: center;');
+			dashboardpanelp.classList.add('dashboard-message');
 			dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')));
 			dashboardpanel.appendChild(dashboardpanelp);
 
 			var dashboardpanelbuttonreload = document.createElement('button');
 			dashboardpanelbuttonreload.setAttribute('type', 'button');
+			dashboardpanelbuttonreload.classList.add('dashboard-reload-button');
 			dashboardpanelbuttonreload.appendChild(document.createTextNode("Quitter et démarrer une nouvelle analyse"));
-			dashboardpanelbuttonreload.addEventListener('click', function(){});
-			var dashboardpanelpreload = document.createElement('p');
-			dashboardpanelpreload.appendChild(dashboardpanelbuttonreload);
-			dashboardpanel.appendChild(dashboardpanelpreload);
+			dashboardpanelbuttonreload.addEventListener('click', () => {window.location.reload();});
+			dashboardpanel.appendChild(dashboardpanelbuttonreload);
 			
 			main.children[1].appendChild(dashboardpanel);
 			ul.appendChild(dashboard);

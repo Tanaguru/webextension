@@ -255,7 +255,8 @@ main.launch-analysis > div:first-child + div {
 	text-align: center;
 }
 
-.launch-analysis > div:first-child + div button {
+.launch-analysis > div:first-child + div button,
+.dashboard-reload-button {
 	background: linear-gradient(135deg, #e4420d 0%, #d61119 100%);
 	border: none;
 	border-bottom: 5px solid #A00;
@@ -268,7 +269,8 @@ main.launch-analysis > div:first-child + div {
 	vertical-align: bottom;
 }
 
-.launch-analysis > div:first-child + div button:focus, .launch-analysis > div:first-child + div button:hover {
+.launch-analysis > div:first-child + div button:focus, .launch-analysis > div:first-child + div button:hover,
+.dashboard-reload-button:hover {
 	text-decoration: underline;
 }
 	
@@ -901,4 +903,18 @@ td code {
 .launch-analysis-filters fieldset label {
 	display: inline-block;
 	margin-right: 1em;
+}
+
+/*? dashboard panel */
+.dashboard {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+}
+
+.dashboard p.dashboard-message {
+	font-size: 1em;
+	font-weight: bold;
 }

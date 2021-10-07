@@ -21,11 +21,6 @@ function handleMessage(request, sender, sendResponse) {
 			sendResponse({ command: 'executeTestsResults', response: result, timer: request.timer });
 		});
 	}
-	// else if (request.command === 'getContrasts') {
-	// 	chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/contrasts.js' }, function (result) {
-	// 		sendResponse({ command: 'getContrasts', response: result });
-	// 	});
-	// }
 	else if (request.command == 'downloadTestCsvFile') {
 		chrome.downloads.download({
 			url: request.data.url,
@@ -60,10 +55,6 @@ function handleMessage(request, sender, sendResponse) {
 }
 
 chrome.runtime.onMessage.addListener(handleMessage);
-
-
-
-
 
 
 /* Fires when the active tab in a window changes. Note that the tab's URL may not be set at the time this event fired, but you can listen to tabs.onUpdated events to be notified when a URL is set. */
