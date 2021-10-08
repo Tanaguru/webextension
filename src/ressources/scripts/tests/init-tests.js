@@ -1,5 +1,8 @@
 var statuses = ['failed', 'cantTell', 'passed'];
 
+/**
+ * ? Define for each node of the page, if it is exposed, visible and has a [aria-*] attribute
+ */
 var eList = document.body.querySelectorAll('*');
 eList.forEach(e => {
     let elExposed = e.isNotExposedDueTo;
@@ -30,7 +33,12 @@ eList.forEach(e => {
     }
 });
 
-if(filters[0] != 'rgaaAll') {
+/**
+ * ? Filters tests list by the user's chosen categories , before launching tests
+ */
+var colorTests = true;
+
+if(filters[0].length > 0 && !filters[0].match(/rgaaAll/)) {
     var rgaaFilters = filters[0].split(',');
 
     function matchFilters(test) {
@@ -46,9 +54,32 @@ if(filters[0] != 'rgaaAll') {
     }
     
     tanaguruTestsList = tanaguruTestsList.filter(matchFilters);
+    colorTests = rgaaFilters.includes('colors');
 }
 
-var textNodeList = getTextNodeContrast();
+/**
+ * ? Remove tests defined as "untested" before launching tests, if necessary
+ */
+if(!filters[1].match(/(?:statusAll)|(?:untested)/gm)) {
+    function matchUntested(test) {
+        if(test.status && test.status === 'untested') {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    tanaguruTestsList = tanaguruTestsList.filter(matchUntested);
+}
+
+/**
+ * ? Launch contrast script only if necessary
+ */
+var textNodeList = colorTests ? getTextNodeContrast() : [];
+
+/**
+ * ? Launch tests
+ */
 var testsLength = tanaguruTestsList.length;
 for (var i = 0; i < testsLength; i++) {
     /*
@@ -85,7 +116,14 @@ for (var i = 0; i < testsLength; i++) {
     createTanaguruTest(test);
 }
 
-// nettoyer les datas
+/**
+ * ? Filters the tests by the user's chosen status
+ */
+filterTestsByStatus();
+
+/**
+ * ? remove all [data-tng-*]
+ */
 eList.forEach(e => removeDataTNG(e));
 
 // code.

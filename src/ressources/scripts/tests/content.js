@@ -1053,6 +1053,18 @@ function addResultSet(name, data) {
     window.tanaguru.tests.push(data);
 }
 
+function filterTestsByStatus() {
+    if(filters[1].length > 0 && !filters[1].match(/statusAll/)) {
+        var statusFilters = filters[1].split(',');
+    
+        function matchFilters(test) {
+            return statusFilters.includes(test.type);
+        }
+        
+        window.tanaguru.tests = window.tanaguru.tests.filter(matchFilters);
+    }
+}
+
 function loadTanaguruTests() {
     initTanaguru();
     var tags = [];
