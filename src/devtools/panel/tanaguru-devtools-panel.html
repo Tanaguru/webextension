@@ -11,7 +11,7 @@
 	</head>
 	<body>
 		<template id="rgaaFilter">
-			<fieldset id="rgaaFieldset">
+			<fieldset id="rgaaFieldset" data-filter="rgaaFilter">
 				<legend>Choisissez les catégories de tests du RGAA à inclure dans l'analyse.</legend>
 				<label for="rgaaAll">
 					<input type="checkbox" id="rgaaAll" checked>
@@ -19,74 +19,74 @@
 				</label>
 
 				<label for="images">
-					<input type="checkbox" id="images">
+					<input type="checkbox" name="rgaaFilter" id="images">
 					Images
 				</label>
 
 				<label for="frames">
-					<input type="checkbox" id="frames">
+					<input type="checkbox" name="rgaaFilter" id="frames">
 					Cadres
 				</label>
 
 				<label for="colors">
-					<input type="checkbox" id="colors">
+					<input type="checkbox" name="rgaaFilter" id="colors">
 					Couleurs
 				</label>
 
 				<label for="media">
-					<input type="checkbox" id="media">
+					<input type="checkbox" name="rgaaFilter" id="media">
 					Multimédia
 				</label>
 
 				<label for="table">
-					<input type="checkbox" id="table">
+					<input type="checkbox" name="rgaaFilter" id="table">
 					Tableaux
 				</label>
 
 				<label for="links">
-					<input type="checkbox" id="links">
+					<input type="checkbox" name="rgaaFilter" id="links">
 					Liens
 				</label>
 
 				<label for="scripts">
-					<input type="checkbox" id="scripts">
+					<input type="checkbox" name="rgaaFilter" id="scripts">
 					Scripts
 				</label>
 
 				<label for="mandatory">
-					<input type="checkbox" id="mandatory">
+					<input type="checkbox" name="rgaaFilter" id="mandatory">
 					Eléments obligatoires
 				</label>
 
 				<label for="structure">
-					<input type="checkbox" id="structure">
+					<input type="checkbox" name="rgaaFilter" id="structure">
 					Structuration de l'information
 				</label>
 
 				<label for="presentation">
-					<input type="checkbox" id="presentation">
+					<input type="checkbox" name="rgaaFilter" id="presentation">
 					Présentation de l'information
 				</label>
 
 				<label for="forms">
-					<input type="checkbox" id="forms">
+					<input type="checkbox" name="rgaaFilter" id="forms">
 					Formulaires
 				</label>
 
 				<label for="navigation">
-					<input type="checkbox" id="navigation">
+					<input type="checkbox" name="rgaaFilter" id="navigation">
 					Navigation
 				</label>
 
 				<label for="consultation">
-					<input type="checkbox" id="consultation">
+					<input type="checkbox" name="rgaaFilter" id="consultation">
 					Consultation
 				</label>
 			</fieldset>
 		</template>
 
 		<template id="statusFilter">
-			<fieldset id="statusFieldset">
+			<fieldset id="statusFieldset" data-filter="statusFilter">
 				<legend>Choisissez le type de résultats à afficher.</legend>
 				<label for="statusAll">
 					<input type="checkbox" id="statusAll" checked>
@@ -94,27 +94,27 @@
 				</label>
 
 				<label for="failed">
-					<input type="checkbox" id="failed">
+					<input type="checkbox" name="statusFilter" id="failed">
 					Statuts invalidés
 				</label>
 
 				<label for="cantTell">
-					<input type="checkbox" id="cantTell">
+					<input type="checkbox" name="statusFilter" id="cantTell">
 					Statuts indéterminés
 				</label>
 
 				<label for="passed">
-					<input type="checkbox" id="passed">
+					<input type="checkbox" name="statusFilter" id="passed">
 					Statuts validés
 				</label>
 
 				<label for="inapplicable">
-					<input type="checkbox" id="inapplicable">
+					<input type="checkbox" name="statusFilter" id="inapplicable">
 					Statuts inapplicables
 				</label>
 
 				<label for="untested">
-					<input type="checkbox" id="untested">
+					<input type="checkbox" name="statusFilter" id="untested">
 					Statuts non-testés.
 				</label>
 			</fieldset>

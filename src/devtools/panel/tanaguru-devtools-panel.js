@@ -175,6 +175,33 @@ main.appendChild(rightcolumn);
 document.body.insertBefore(main, document.body.querySelector('script'));
 
 /**
+ * ? filters logic
+ */
+let allfilter = document.querySelectorAll('fieldset[data-filter] input:not([name])');
+let datafilters = document.querySelectorAll('fieldset[data-filter] input[name]');
+
+datafilters.forEach(el => el.addEventListener('click', switchAll));
+allfilter.forEach(el => el.addEventListener('click', toggle));
+
+function switchAll(evt) {
+	let sameState = true;
+	let siblings = evt.currentTarget.parentNode.parentNode.querySelectorAll('input[name]');
+	let master = evt.currentTarget.parentNode.parentNode.querySelector('input:not([name])');
+
+	siblings.forEach(el => {
+		sameState = el.checked != evt.currentTarget.checked ? false : sameState;
+	});
+
+	if(sameState) master.click();
+	else master.checked = false;
+}
+
+function toggle(evt) {
+	let siblings = evt.currentTarget.parentNode.parentNode.querySelectorAll('input[name]');
+	siblings.forEach(el => el.checked = evt.currentTarget.checked);
+}
+
+/**
  *? Click on analize button
  */
 button.addEventListener('click', function () {
