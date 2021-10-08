@@ -611,6 +611,8 @@ button.addEventListener('click', function () {
 			let t = 1;
 			response = response.response[0];
 
+			if(response.tests.length === 0) dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultNone')), dashboardpanelp.firstChild);
+
 			/**
 			 * ? set tags name & sort by status & alphabetical
 			 */

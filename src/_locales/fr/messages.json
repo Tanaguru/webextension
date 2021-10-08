@@ -32,6 +32,7 @@
 	"msgDashboard": { "message": "Tableau de bord" },
 	"msgDashboardResultFailed": { "message": "Des erreurs ont été détectées dans cette page." }, 
 	"msgDashboardResultPassed": { "message": "Aucune erreur n'a été détectée dans cette page." }, 
+	"msgDashboardResultNone": { "message": "Aucun résultat ne correspond à votre demande pour cette page." }, 
 	"earlFailed": { "message": "Invalidé" },
 	"earlPassed": { "message": "Validé" },
 	"earlCantTell": { "message": "Indéterminé" },
