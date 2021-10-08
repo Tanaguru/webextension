@@ -211,7 +211,8 @@ button.addEventListener('click', function () {
 		tabId: chrome.devtools.inspectedWindow.tabId,
 		command: 'executeTests', 
 		timer: new Date().getTime(),
-		filters: filters},
+		rgaaFilters: filters.rgaa.join(),
+		statusFilters: filters.statuses.join()},
 		
 		function (response) {
 			/**

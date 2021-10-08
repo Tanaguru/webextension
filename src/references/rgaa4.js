@@ -3070,7 +3070,7 @@ tanaguruTestsList.push({
             }
         }
 	},
-	tags: ['a11y', 'buttons', 'accessiblename'],
+	tags: ['a11y', 'buttons', 'accessiblename', 'scripts'],
 	ressources: {'rgaa': ['7.1.1']}
 });
 
@@ -3081,7 +3081,7 @@ tanaguruTestsList.push({
 	analyzeElements: function (collection) {
 		collection.map(e => e.status = 'passed');
     },
-	tags: ['a11y', 'buttons', 'accessiblename'],
+	tags: ['a11y', 'buttons', 'accessiblename', 'scripts'],
 	ressources: {'rgaa': ['7.1.1']}
 });
 
@@ -3090,7 +3090,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque script qui génère ou contrôle un composant d'interface doit être correctement restitué par les technologies d'assistance.",
     status: 'untested',
-	tags: ['a11y', 'accessiblename'],
+	tags: ['a11y', 'accessiblename', 'scripts'],
 	ressources: {'rgaa': ['7.1.2']}
 });
 
@@ -3099,7 +3099,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque script qui génère ou contrôle un composant d'interface doit avoir un nom pertinent et accessible.",
     status: 'untested',
-	tags: ['a11y', 'accessiblename'],
+	tags: ['a11y', 'accessiblename', 'scripts'],
 	ressources: {'rgaa': ['7.1.3']}
 });
 
@@ -3107,7 +3107,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque script qui génère ou contrôle un composant d'interface doit avoir un rôle pertinent.",
     status: 'untested',
-	tags: ['a11y', 'accessiblename'],
+	tags: ['a11y', 'accessiblename', 'scripts'],
 	ressources: {'rgaa': ['7.1.3']}
 });
 
@@ -3149,7 +3149,7 @@ tanaguruTestsList.push({
             return true;
         }
     },
-    tags: ['a11y', 'accessiblename', 'buttons'],
+    tags: ['a11y', 'accessiblename', 'buttons', 'scripts'],
     ressources: {'rgaa': ['7.1.3']}
 });
 
@@ -3160,7 +3160,7 @@ tanaguruTestsList.push({
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
-    tags: ['a11y', 'accessiblename', 'buttons'],
+    tags: ['a11y', 'accessiblename', 'buttons', 'scripts'],
     ressources: {'rgaa': ['7.1.3']}
 });
 
@@ -3171,7 +3171,7 @@ tanaguruTestsList.push({
 	name: 'Liste des alternatives de script dans des balises <noscript>.',
     description: 'Vérifier la pertinence de l\'alternative.',
 	query: 'noscript',
-	tags: ['a11y', 'accessiblename'],
+	tags: ['a11y', 'accessiblename', 'scripts'],
 	ressources: {'rgaa': ['7.2.1']}
 });
 
@@ -3180,7 +3180,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque élément non textuel mis à jour par un script (dans la page, ou dans un cadre) et ayant une alternative, l'aternative doit être mise à jour de façon pertinente.",
     status: 'untested',
-	tags: ['a11y', 'accessiblename'],
+	tags: ['a11y', 'accessiblename', 'scripts'],
 	ressources: {'rgaa': ['7.2.2']}
 });
 
@@ -3190,7 +3190,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque élément possédant un gestionnaire d'événement contrôlé par un script, l'élément doit être contrôlable par le clavier et tout dispositif de pointage.",
     status: 'untested',
-	tags: ['a11y', 'keyboard'],
+	tags: ['a11y', 'keyboard', 'scripts'],
 	ressources: {'rgaa': ['7.3.1']}
 });
 
@@ -3199,7 +3199,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Un script ne doit pas supprimer le focus d'un élément qui le reçoit.",
     status: 'untested',
-	tags: ['a11y', 'keyboard'],
+	tags: ['a11y', 'keyboard', 'scripts'],
 	ressources: {'rgaa': ['7.3.2']}
 });
 
@@ -3209,7 +3209,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque script qui initie un changement de contexte, l'utilisateur doit être averti ou en avoir le contrôle.",
     status: 'untested',
-	tags: ['a11y'],
+	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.4.1']}
 });
 
@@ -3219,7 +3219,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Chaque message de statut qui informe de la réussite, du résultat d\'une action ou bien de l\'état d\'une application doit utiliser l\'attribut WAI-ARIA role="status".',
     status: 'untested',
-	tags: ['a11y'],
+	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.5.1']}
 });
 
@@ -3228,7 +3228,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Chaque message de statut qui présente une suggestion, ou avertit de l\'existence d\'une erreur doit utiliser l\'attribut WAI-ARIA role="alert".',
     status: 'untested',
-	tags: ['a11y'],
+	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.5.2']}
 });
 
@@ -3237,7 +3237,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Chaque message de statut qui indique la progression d\'un processus doit utiliser l\'un des attributs WAI-ARIA role="log", role="progressbar" ou role="status".',
     status: 'untested',
-	tags: ['a11y'],
+	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.5.3']}
 });
 
@@ -3260,7 +3260,7 @@ tanaguruTestsList.push({
         'passed': "Cette page possède bien une balise doctype.",
 		'failed': "Cette page n'a pas de balise doctype."
     },
-    tags: ['a11y', 'code'],
+    tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.1.1']}
 });
 
@@ -3330,7 +3330,7 @@ tanaguruTestsList.push({
             else item.status = 'failed';
 		}
     },
-    tags: ['a11y', 'code'],
+    tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.1.2']}
 });
 
@@ -3350,7 +3350,7 @@ tanaguruTestsList.push({
             }
 		}
     },
-    tags: ['a11y', 'code'],
+    tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.1.1']}
 });
 
@@ -3366,7 +3366,7 @@ tanaguruTestsList.push({
 		'failed': "Des attributs ID dupliqués sont présents dans la page."
     },
     mark: { attrs: ['id'] },
-    tags: ['a11y', 'code'],
+    tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3390,7 +3390,7 @@ tanaguruTestsList.push({
             return true;
         }
 	},
-    tags: ['a11y', 'aria', 'code'],
+    tags: ['a11y', 'aria', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3401,7 +3401,7 @@ tanaguruTestsList.push({
 	analyzeElements: function (collection) {
 		collection.map(e => e.status = 'passed');
     },
-	tags: ['a11y', 'aria', 'code'],
+	tags: ['a11y', 'aria', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3422,7 +3422,7 @@ tanaguruTestsList.push({
             return;
         }
 	},
-	tags: ['a11y', 'aria', 'code'],
+	tags: ['a11y', 'aria', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3433,7 +3433,7 @@ tanaguruTestsList.push({
 	analyzeElements: function (collection) {
 		collection.map(e => e.status = 'passed');
 	},
-	tags: ['a11y', 'aria', 'code'],
+	tags: ['a11y', 'aria', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3449,7 +3449,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.hasAriaAttributesWithInvalidValues({ permissive: true });
 	},
-	tags: ['a11y', 'aria', 'code'],
+	tags: ['a11y', 'aria', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3465,7 +3465,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.hasProhibitedAriaAttributes();
 	},
-	tags: ['a11y', 'aria', 'code'],
+	tags: ['a11y', 'aria', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3478,7 +3478,7 @@ tanaguruTestsList.push({
         'passed': "Aucune imbrication de balises HTML non conforme n\'a été trouvé sur cette page.",
 		'failed': "Des imbrications de balises HTML ne sont pas conformes sur cette page."
     },
-	tags: ['a11y', 'code'],
+	tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3490,7 +3490,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		if(item.closest('svg')) return;
 	},
-	tags: ['a11y', 'code'],
+	tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3502,7 +3502,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		if(!item.closest('svg')) return true;
 	},
-	tags: ['a11y', 'code'],
+	tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3514,7 +3514,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		if(!item.closest('svg')) return item.textContent.trim().length === 0;
 	},
-	tags: ['a11y', 'code'],
+	tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -5266,7 +5266,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque ensemble de pages doit disposer d'au moins deux systèmes de navigation différents.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.1.1'] }
 });
 
@@ -5276,7 +5276,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque ensemble de pages le menu et les barres de navigation sont toujours à la même place dans la présentation ET se présentent toujours dans le même ordre relatif dans le code source.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.2.1'] }
 });
 
@@ -5286,7 +5286,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "La page « plan du site » doit être représentative de l'architecture générale du site.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.3.1'] }
 });
 
@@ -5295,7 +5295,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Les liens du plan du site doivent être fonctionnels.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.3.2'] }
 });
 
@@ -5304,7 +5304,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Les liens du plan du site doivent pointer vers les pages indiquées par l'intitulé.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.3.3'] }
 });
 
@@ -5314,7 +5314,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque ensemble de pages, la page « plan du site » doit être accessible à partir d'une fonctionnalité identique.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.4.1'] }
 });
 
@@ -5323,7 +5323,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque ensemble de pages, la fonctionnalité vers la page « plan du site » doit être située à la même place dans la présentation.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.4.2'] }
 });
 
@@ -5332,7 +5332,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque ensemble de pages, la fonctionnalité vers la page « plan du site » doit toujours se présenter dans le même ordre relatif dans le code source.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.4.3'] }
 });
 
@@ -5342,7 +5342,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque ensemble de pages, le moteur de recherche doit être accessible à partir d'une fonctionnalité identique.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.5.1'] }
 });
 
@@ -5351,7 +5351,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque ensemble de pages, la fonctionnalité vers le moteur de recherche doit être située à la même place dans la présentation.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.5.2'] }
 });
 
@@ -5360,7 +5360,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque ensemble de pages, la fonctionnalité vers le moteur de recherche doit toujours se présenter dans le même ordre relatif dans le code source.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.5.3'] }
 });
 
@@ -5370,7 +5370,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Les zones de regroupement de contenus présentes dans plusieurs pages web (zones d'en-tête, de navigation principale, de contenu principal, de pied de page et de moteur de recherche) doivent pouvoir être atteintes ou évitées.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.6.1'] }
 });
 
@@ -5380,7 +5380,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque page web, un lien doit permettre d'éviter la zone de contenu principal ou d'y accéder.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.7.1'] }
 });
 
@@ -5389,7 +5389,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque ensemble de pages, le lien d'évitement ou d'accès rapide à la zone de contenu principal doit être situé à la même place dans la présentation  et se présente toujours dans le même ordre relatif dans le code source. Il doit également être visible ou visible à la prise de focus et fonctionnel.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.7.2'] }
 });
 
@@ -5409,7 +5409,7 @@ tanaguruTestsList.push({
 			return exposedState.length > 0;
 		}
 	},
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.8.1'] }
 });
 
@@ -5433,7 +5433,7 @@ tanaguruTestsList.push({
 // 			return !item.isVisible;
 // 		}
 // 	},
-//     tags: ['a11y', 'keyboard'],
+//     tags: ['a11y', 'keyboard', 'navigation'],
 //     ressources: { 'rgaa': ['12.8.1'] }
 // });
 
@@ -5442,7 +5442,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque script qui met à jour ou insère un contenu, l'ordre de tabulation doit rester cohérent.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.8.2'] }
 });
 
@@ -5452,7 +5452,7 @@ tanaguruTestsList.push({
 	lang: 'en',
 	name: 'Il est possible d\'atteindre l\'élément suivant ou précédent pouvant recevoir le focus avec la touche de tabulation.',
 	query: '[onblur]',
-	tags: ['a11y', 'keyboard'],
+	tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.9.1'] },
 	comments: "peut détecter l'attribut onblur (peut-être aussi l'événement) mais ce n'est pas vraiment une preuve que c'est un piège à clavier"
 });
@@ -5463,7 +5463,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque raccourci clavier n'utilisant qu'une seule touche (lettres minuscule ou majuscule, ponctuation, chiffre ou symbole) un mécanisme permet de désactiver ou configurer le raccourci clavier.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.10.1'] }
 });
 
@@ -5473,7 +5473,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Les contenus additionnels apparaissant au survol, à la prise de focus ou à l'activation d'un composant d'interface doivent, si nécessaire, être atteignables au clavier.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.11.1'] }
 });
 
@@ -5509,7 +5509,7 @@ tanaguruTestsList.push({
         }
     },
     mark: {attrs: ['http-equiv', 'content']},
-    tags: ['a11y', 'meta'],
+    tags: ['a11y', 'meta', 'consultation'],
     ressources: { 'rgaa': ['13.1.1']}
 });
 
@@ -5525,7 +5525,7 @@ tanaguruTestsList.push({
         if(time) return time > 0;
     },
     mark: {attrs: ['http-equiv', 'content']},
-    tags: ['a11y', 'meta'],
+    tags: ['a11y', 'meta', 'consultation'],
     ressources: { 'rgaa': ['13.1.2']}
 });
 
@@ -5534,7 +5534,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque procédé de redirection effectué via un script doit être contrôlable par l'utilisateur ou avoir une limite de temps d'au moins 20heures.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.1.3'] }
 });
 
@@ -5543,7 +5543,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque procédé limitant le temps d'une session doit être contrôlable par l'utilisateur ou avoir une limite de temps d'au moins 20heures.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.1.4'] }
 });
 
@@ -5553,7 +5553,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque page web, l'ouverture d'une nouvelle fenêtre ne doit pas être déclenchée sans action de l'utilisateur.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.2.1'] }
 });
 
@@ -5563,7 +5563,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque fonctionnalité de téléchargement d'un document bureautique, le document doit être accessible ou posséder une alternative accessible.",
     query: '[href][download]',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.3.1'] }
 });
 
@@ -5573,7 +5573,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque document bureautique ayant une version accessible, la version accessible doit offrir la même information.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.4.1'] }
 });
 
@@ -5583,7 +5583,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) doit avoir une alternative.",
     status: 'untested',
-    tags: ['a11y', 'accessiblename'],
+    tags: ['a11y', 'accessiblename', 'consultation'],
     ressources: { 'rgaa': ['13.5.1'] }
 });
 
@@ -5593,7 +5593,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) doit avoir une alternative pertinente.",
     status: 'untested',
-    tags: ['a11y', 'accessiblename'],
+    tags: ['a11y', 'accessiblename', 'consultation'],
     ressources: { 'rgaa': ['13.6.1'] }
 });
 
@@ -5603,7 +5603,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque image ou élément multimédia qui provoque un changement brusque de luminosité ou un effet de flash, l'effet doit avoir une fréquence inférieur à 3secondes ou une surface totale inférieure à 21825pixels.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.7.1'] }
 });
 
@@ -5612,7 +5612,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque script qui provoque un changement brusque de luminosité ou un effet de flash, l'effet doit avoir une fréquence inférieur à 3secondes ou une surface totale inférieure à 21825pixels.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.7.2'] }
 });
 
@@ -5621,7 +5621,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque mise en forme CSS qui provoque un changement brusque de luminosité ou un effet de flash, l'effet doit avoir une fréquence inférieur à 3secondes ou une surface totale inférieure à 21825pixels.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.7.3'] }
 });
 
@@ -5631,7 +5631,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque contenu en mouvement déclenché automatiquement doit durer moins de 6 secondes ou être contrôlable par l'utilisateur.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.8.1'] }
 });
 
@@ -5640,7 +5640,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque contenu clignotant déclenché automatiquement doit durer moins de 6 secondes ou être contrôlable par l'utilisateur.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.8.2'] }
 });
 
@@ -5650,7 +5650,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Le contenu proposé doit être consultable et identique quelle que soit l'orientation de l'écran (portrait ou paysage).",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.9.1'] }
 });
 
@@ -5660,7 +5660,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque fonctionnalité utilisable ou disponible suite à un contact multipoint doit également être utilisable ou disponible suite à un contact en un point unique de l’écran.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.10.1'] }
 });
 
@@ -5669,7 +5669,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque fonctionnalité utilisable ou disponible suite à un geste basé sur le suivi d'une trajectoire sur l'écran doit également être utilisable ou disponible suite à un contact en un point unique de l’écran.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.10.2'] }
 });
 
@@ -5679,7 +5679,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Les actions déclenchées au moyen d'un dispositif de pointage sur un point unique de l'écran doivent pouvoir faire l'objet d'une annulation.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.11.1'] }
 });
 
@@ -5689,7 +5689,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Les fonctionnalités disponibles en bougeant l'appareil doivent pouvoir être accomplies avec des composants d'interface utilisateur.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.12.1'] }
 });
 
@@ -5698,7 +5698,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Les fonctionnalités disponibles en faisant un geste en direction de l'appareil doivent pouvoir être accomplies avec des composants d'interface utilisateur.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.12.2'] }
 });
 
@@ -5707,7 +5707,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "L'utilisateur doit avoir la possibilité de désactiver la détection du mouvement pour éviter un déclenchement accidentel de la fonctionnalité.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.12.3'] }
 });
 

@@ -17,8 +17,12 @@ function handleMessage(request, sender, sendResponse) {
 		);
 	}
 	else if (request.command === 'executeTests') {
-		chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/tests.js' }, function (result) {
-			sendResponse({ command: 'executeTestsResults', response: result, timer: request.timer });
+		chrome.tabs.executeScript(request.tabId, {
+		    code: 'var filters = ["'+request.rgaaFilters+'","'+request.statusFilters+'"];'
+		}, function() {
+		    chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/tests.js' }, function (result) {
+				sendResponse({ command: 'executeTestsResults', response: result, timer: request.timer });
+			});
 		});
 	}
 	else if (request.command == 'downloadTestCsvFile') {

@@ -30,6 +30,24 @@ eList.forEach(e => {
     }
 });
 
+if(filters[0] != 'rgaaAll') {
+    var rgaaFilters = filters[0].split(',');
+
+    function matchFilters(test) {
+        let tags = test.tags;
+        let matched = false;
+
+        tags.forEach(tag => {
+            if(rgaaFilters.includes(tag)) {
+                matched = true;
+            }
+        });
+        return matched;
+    }
+    
+    tanaguruTestsList = tanaguruTestsList.filter(matchFilters);
+}
+
 var textNodeList = getTextNodeContrast();
 var testsLength = tanaguruTestsList.length;
 for (var i = 0; i < testsLength; i++) {
