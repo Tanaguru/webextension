@@ -4160,7 +4160,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque déclaration CSS de couleurs de police (color), d'un élément susceptible de contenir du texte, doit être accompagnée d'une déclaration de couleur de fond (background, background-color), au moins, héritée d'un parent.",
     status: 'untested',
-	tags: ['a11y', 'presentation', 'colors'],
+	tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.5.1'] }
 });
 
@@ -4169,7 +4169,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque déclaration de couleur de fond (background, background-color), d'un élément susceptible de contenir du texte, doit être accompagnée d'une déclaration de couleur de police (color) au moins, héritée d'un parent.",
     status: 'untested',
-	tags: ['a11y', 'presentation', 'colors'],
+	tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.5.2'] }
 });
 
@@ -4178,7 +4178,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque utilisation d'une image pour créer une couleur de fond d'un élément susceptible de contenir du texte, via CSS (background, background-image), doit être accompagnée d'une déclaration de couleur de fond (background, background-color), au moins, héritée d'un parent.",
     status: 'untested',
-	tags: ['a11y', 'presentation', 'colors'],
+	tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.5.3'] }
 });
 
@@ -4188,7 +4188,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque lien texte signalé uniquement par la couleur, et dont la nature n'est pas évidente, doit être visible par rapport au texte environnant.",
     status: 'untested',
-	tags: ['a11y', 'presentation', 'links'],
+	tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.6.1'] }
 });
 
