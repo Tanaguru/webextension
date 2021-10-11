@@ -1219,7 +1219,7 @@ function createTanaguruTest(test) {
             }
 
             // Calcul du statut du test.
-            if (test.hasOwnProperty('expectedNbElements')) {
+            if (test.hasOwnProperty('expectedNbElements') && !test.hasOwnProperty('status')) {
                 if (Number.isInteger(test.expectedNbElements)) {
                     status = elements.length == test.expectedNbElements ? 'passed' : 'failed';
                     for (var i = 0; i < elements.length; i++) {
@@ -1253,7 +1253,7 @@ function createTanaguruTest(test) {
 
             // Traitement par collection.
             var failedincollection = 0;
-            if (test.hasOwnProperty('analyzeElements')) {
+            if (test.hasOwnProperty('analyzeElements') && !test.hasOwnProperty('status')) {
                 if (test.analyzeElements.constructor == Function) {
                     test.analyzeElements(elements);
                     // On modifie le statut du test selon les statuts d'items.

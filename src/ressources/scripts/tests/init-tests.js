@@ -4,6 +4,15 @@ var statuses = ['failed', 'cantTell', 'passed'];
  * ? Define for each node of the page, if it is exposed, visible and has a [aria-*] attribute
  */
 var eList = document.body.querySelectorAll('*');
+var naList = [];
+if(!document.body.querySelector('img, [role="img]')) naList.push('images');
+if(!document.body.querySelector('iframe:not([role="presentation"]), frame:not([role="presentation"])')) naList.push('frames');
+if(!document.body.querySelector('video, audio, object[type^="video/"], object[type^="audio/"], object[type="application/ogg"], embed[type^="video/"], embed[type^="audio/"]')) naList.push('media');
+if(!document.body.querySelector('table, [role="table]')) naList.push('tables');
+if(!document.body.querySelector('a[href], [role="link"]')) naList.push('links');
+if(!document.body.querySelector(
+    'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), input[type="file"]:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])'
+    )) naList.push('forms');
 eList.forEach(e => {
     let elExposed = e.isNotExposedDueTo;
     if(elExposed.length > 0) {
@@ -113,6 +122,10 @@ for (var i = 0; i < testsLength; i++) {
             }
         }
     }
+
+    naList.forEach(na => {
+        if(test.tags.includes(na)) test.status = 'inapplicable';
+    });
     createTanaguruTest(test);
 }
 

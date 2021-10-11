@@ -180,7 +180,7 @@ document.body.insertBefore(main, document.body.querySelector('script'));
 let allfilter = document.querySelectorAll('fieldset[data-filter] input:not([name])');
 let datafilters = document.querySelectorAll('fieldset[data-filter] input[name]');
 
-datafilters.forEach(el => el.addEventListener('click', switchAll));
+datafilters.forEach(el => {el.addEventListener('click', switchAll); el.checked = "true"});
 allfilter.forEach(el => el.addEventListener('click', toggle));
 
 function switchAll(evt) {
@@ -329,6 +329,7 @@ button.addEventListener('click', function () {
 			if(response.tests.length === 0) dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultNone')), dashboardpanelp.firstChild);
 			else {
 				let t = 1;
+				var tagsRgaaCat = ['images', 'frames', 'colors', 'media', 'tables', 'links', 'scripts', 'mandatory', 'structure', 'presentation', 'forms', 'navigation', 'consultation'];
 
 				/**
 				 * ? filters the displayed tests by the selected tab
@@ -398,8 +399,18 @@ button.addEventListener('click', function () {
 								newcurrenttabpanel.parentNode.scrollTop = 0;
 								var tests = newcurrenttabpanel.querySelectorAll('h3');
 								var currentTabSubCat = [];
+								if(document.querySelector('.subTabs')) {
+									newcurrenttabpanel.removeChild(document.querySelector('.subTabs'));
+								}
 								for (var i = 0; i < tests.length; i++) {
 									if (element.getAttribute('id') == 'alltests') {
+										if(filters.rgaa.length > 0) {
+											tests[i].parentNode.classList.forEach(el => {
+												if(!el.match(/(?:testparent)|(?:a11y)/) && el != element.getAttribute('id') && !tagsRgaaCat.includes(el)) {
+													if(!currentTabSubCat.includes(el)) currentTabSubCat.push(el);
+												}
+											});
+										}
 										tests[i].parentNode.removeAttribute('hidden');
 									}
 									else {
@@ -409,7 +420,7 @@ button.addEventListener('click', function () {
 													if(!el.match(/(?:testparent)|(?:a11y)/) && el != element.getAttribute('id')) {
 														if(!currentTabSubCat.includes(el)) currentTabSubCat.push(el);
 													}
-												})
+												});
 											}
 											
 											tests[i].parentNode.removeAttribute('hidden');
@@ -421,9 +432,6 @@ button.addEventListener('click', function () {
 								}
 								
 								if(currentTabSubCat.length > 0) {
-									if(document.querySelector('.subTabs')) {
-										newcurrenttabpanel.removeChild(document.querySelector('.subTabs'));
-									}
 									var subTabsContainer = document.createElement('div');
 									subTabsContainer.classList.add('subTabs');
 									var subTabsList = document.createElement('div');
@@ -459,9 +467,12 @@ button.addEventListener('click', function () {
 									});
 
 									function filterSubTag(evt) {
-										if(evt.currentTarget.id === 'sub-all') {
+										let currentSubTabsSelected = subTabsList.querySelector('button[aria-selected="true"]');
+										currentSubTabsSelected.setAttribute('aria-selected', "false");
+										evt.target.setAttribute('aria-selected', "true");
+										if(evt.target.id === 'sub-all') {
 											for (var i = 0; i < tests.length; i++) {
-												if (tests[i].parentNode.classList.contains(element.getAttribute('id'))) {
+												if (tests[i].parentNode.classList.contains(element.getAttribute('id')) || element.getAttribute('id') == 'alltests') {
 													tests[i].parentNode.removeAttribute('hidden');
 												}
 												else {
@@ -470,7 +481,7 @@ button.addEventListener('click', function () {
 											}
 										} else {
 											for (var i = 0; i < tests.length; i++) {
-												if (tests[i].parentNode.classList.contains(element.getAttribute('id')) && tests[i].parentNode.classList.contains(evt.currentTarget.id.split('-')[1])) {
+												if ((tests[i].parentNode.classList.contains(element.getAttribute('id')) || element.getAttribute('id') == 'alltests') && tests[i].parentNode.classList.contains(evt.target.id.split('-')[1])) {
 													tests[i].parentNode.removeAttribute('hidden');
 												}
 												else {
@@ -740,7 +751,6 @@ button.addEventListener('click', function () {
 
 				var updatedashboardp = false;
 				var tabsWithResult = [];
-				var tagsRgaaCat = ['images', 'frames', 'colors', 'media', 'tables', 'links', 'scripts', 'mandatory', 'structure', 'presentation', 'forms', 'navigation', 'consultation'];
 				var othersTags = [];
 
 				/**
@@ -1576,6 +1586,15 @@ button.addEventListener('click', function () {
 						var strong = document.createElement('strong');
 						strong.appendChild(document.createTextNode(tag.nbfailures));
 						tab.appendChild(strong);
+					}
+
+					if (tag.status === 'inapplicable') {
+						tab.classList.add('cat-inapplicable');
+						tab.appendChild(document.createTextNode(' '));
+						var span = document.createElement('span');
+						span.appendChild(document.createTextNode('NA'));
+						span.setAttribute('aria-label', 'NA: non applicable');
+						tab.appendChild(span);
 					}
 
 					ul.appendChild(tab);
