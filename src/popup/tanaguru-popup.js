@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 			else {
 				var content = chrome.i18n.getMessage(data[1]);
 			}
-			span[i].innerHTML = content;
+			span[i].textContent = content;
 			if (data[0] != 'manifest') {
 				var spannodes = span[i].querySelectorAll('span');
 				for (var j = 0; j < spannodes.length; j++) {
