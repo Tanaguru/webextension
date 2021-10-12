@@ -17,6 +17,7 @@ Outil d'évaluation de l'accessibilité Web (et plus).
 - [Installer la webextension](#installer-la-webextension)
 - [Utiliser la webextension](#utiliser-la-webextension)
 - [Ecrire un test](#écrire-un-test)
+- [Mettre à jour le numéro de version](#mettre-à-jour-le-numéro-de-version)
 
 ## Installer la webextension
 
@@ -167,3 +168,11 @@ createTanaguruTest({
 ---
 
 ![](README/write.png)
+
+## Mettre à jour le numéro de version
+### VERSION.txt
+Le numéro se décompose comme ceci: x.y.z
+Avec x = nouvelle fonctionnalité, y = mise à jour, z = correction
+
+### CHANGELOG.md
+A chaque nouvelle version on liste brièvement ce que change la nouvelle version.
