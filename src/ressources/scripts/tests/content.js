@@ -145,8 +145,9 @@ if (!HTMLElement.prototype.hasOwnProperty('availableARIASemantics')) {
                         selectors.push('[role="button"]', '[role="checkbox"]', '[role="menuitem"]', '[role="menuitemcheckbox"]', '[role="menuitemradio"]', '[role="option"]', '[role="radio"]', '[role="switch"]', '[role="tab"]', '[role="treeitem"]');
                     }
                     else {
-                        for (var ariarole in ariaroles) {
-                            selectors.push('[role="' + ariarole + '"]');
+
+                        for(let i = 0; i < ariaroles.length; i++) {
+                            selectors.push('[role="' + ariaroles[i] + '"]');
                         }
                     }
                     break;
@@ -193,8 +194,8 @@ if (!HTMLElement.prototype.hasOwnProperty('availableARIASemantics')) {
                 case 'u':
                 case 'var':
                 case 'wbr':
-                    for (var ariarole in ariaroles) {
-                        selectors.push('[role="' + ariarole + '"]');
+                    for(let i = 0; i < ariaroles.length; i++) {
+                        selectors.push('[role="' + ariaroles[i] + '"]');
                     }
                     break;
                 case 'article':
@@ -252,8 +253,8 @@ if (!HTMLElement.prototype.hasOwnProperty('availableARIASemantics')) {
                         selectors.push('[role="none"]', '[role="presentation"]');
                     }
                     else {
-                        for (var ariarole in ariaroles) {
-                            selectors.push('[role="' + ariarole + '"]');
+                        for(let i = 0; i < ariaroles.length; i++) {
+                            selectors.push('[role="' + ariaroles[i] + '"]');
                         }
                     }
                     break;
@@ -852,15 +853,10 @@ var getAccessibleName = function () {
                                         if (!(/^url\(/.test(cssbeforecontent))) {
                                             cssbeforecontent = cssbeforecontent == 'none' ? '' : cssbeforecontent.substring(1, cssbeforecontent.length - 1);
                                         }
-                                        else {
-                                            cssbeforecontent = '';
-                                        }
+
                                         cssaftercontent = window.getComputedStyle(nodes[i], '::after').getPropertyValue('content');
                                         if (!(/^url\(/.test(cssaftercontent))) {
-                                            cssaftercontent += cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1);
-                                        }
-                                        else {
-                                            cssaftercontent = '';
+                                            cssaftercontent = cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1);
                                         }
                                     }
                                     if (this.matches('[data-labelbytraversal="true"]')) {
@@ -886,6 +882,10 @@ var getAccessibleName = function () {
                         if (!labels[i].matches('[role="none"], [role="presentation"]')) {
                             result += labels[i].accessibleName;
                         }
+                    }
+
+                    if(labels.length === 0 && this.hasAttribute('title')) {
+                        result = this.getAttribute('title');
                     }
                 }
                 else if (this.matches('fieldset, table') && !this.matches('[role="none"], [role="presentation"]')) {
@@ -1005,6 +1005,7 @@ function getXPath(element) {
             }
         }
     }
+
     return (element.parentNode.nodeType == 1 ? getXPath(element.parentNode) : '') + '/' + element.tagName.toLowerCase() + '[' + (position ? position : '1') + ']' + (element.hasAttribute('id') ? '[@id="' + element.getAttribute('id') + '"]' : '') + (element.hasAttribute('class') ? '[@class="' + element.getAttribute('class') + '"]' : '');
 }
 
@@ -1064,29 +1065,52 @@ function loadTanaguruTests() {
     return result;
 }
 
+function removeDataTNG(element) {
+    let attr = element.attributes;
+    let tngAttr = [];
+    for(let i = 0; i < attr.length; i++) {
+        if(attr[i].name.match(/^data-tng-.*$/)) {
+            tngAttr.push(attr[i].name);
+        }
+    }
+    tngAttr.forEach(data => {
+        element.removeAttribute(data);
+    });
+}
+
 function manageOutput(element) {
     var status = element.status ? element.status : 'cantTell';
     element.status = undefined;
-    var accessibleName = element.accessibleName;
-    var implicitARIASemantic = element.implicitARIASemantic;
-    var explicitARIASemantic = element.explicitARIASemantic;
-    var canBeReachedUsingKeyboardWith = element.canBeReachedUsingKeyboardWith;
-    var isVisible = element.isVisible;
-    var isNotExposedDueTo = element.isNotExposedDueTo;
 
     if(element.nodeType === 10) {
-        var fakeelement = "<!DOCTYPE "+(element.name ? element.name : '')+(element.publicId ? ' PUBLIC "' + element.publicId + '"' : '')+(!element.publicId && element.systemId ? ' SYSTEM' : '')+(element.systemId ? ' "' + element.systemId + '"' : '')+'>';
-    } else {
-        var fakeelement = element.cloneNode(true);
-    }
+        var canBeReachedUsingKeyboardWith = [];
+        var isVisible = false;
+        var isNotExposedDueTo = '';
 
-    var e = element.nodeType !== 10 ? document.createElement(fakeelement.tagName.toLowerCase()) : null;
-    if (e && e.outerHTML.indexOf("/") != -1) {
-        if (fakeelement.innerHTML.length > 512) {
-            fakeelement.innerHTML = '[...]';
+        var fakeelement = "<!DOCTYPE "+(element.name ? element.name : '')+(element.publicId ? ' PUBLIC "' + element.publicId + '"' : '')+(!element.publicId && element.systemId ? ' SYSTEM' : '')+(element.systemId ? ' "' + element.systemId + '"' : '')+'>';
+        var e = null;
+    } else {
+        var canBeReachedUsingKeyboardWith = element.canBeReachedUsingKeyboardWith;
+        var isVisible = element.getAttribute('data-tng-el-visible') === "true";
+        var isNotExposedDueTo = element.hasAttribute('data-tng-notExposed') ? element.getAttribute('data-tng-notExposed') : '';
+
+        var fakeelement = element.cloneNode(true);
+        removeDataTNG(fakeelement);
+        
+        let fakeChildren = fakeelement.querySelectorAll('*');
+        for(let i = 0; i < fakeChildren.length; i++) {
+            removeDataTNG(fakeChildren[i]);
+        }
+
+        var e = document.createElement(fakeelement.tagName.toLowerCase());
+        if (e && e.outerHTML.indexOf("/") != -1) {
+            if (fakeelement.innerHTML.length > 512) {
+                fakeelement.innerHTML = '[...]';
+            }
         }
     }
-    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, xpath: e ? getXPath(element) : null, role: { implicit: implicitARIASemantic, explicit: explicitARIASemantic }, accessibleName: accessibleName, canBeReachedUsingKeyboardWith: e ? canBeReachedUsingKeyboardWith : [], isVisible: e ? isVisible : false, isNotExposedDueTo: e ? isNotExposedDueTo : '' };
+    
+    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, xpath: e ? getXPath(element) : null, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isVisible: isVisible, isNotExposedDueTo: isNotExposedDueTo};
 }
 
 function createTanaguruTag(tag, status) {
@@ -1145,9 +1169,10 @@ function createTanaguruTest(test) {
             var elements = document.querySelectorAll(test.query);
         }
 
-        if (elements/* && elements.length > 0*/) {
+        if (elements) {
             // Statut du test par défaut.
             var status = 'cantTell';
+            elements = Array.from(elements);
 
             // Initialisation des tags.
             initTanaguru();
@@ -1169,7 +1194,6 @@ function createTanaguruTest(test) {
             // Filtre additionnel sur la sélection d'éléments.
             if (test.hasOwnProperty('filter')) {
                 if (test.filter.constructor == Function) {
-                    elements = Array.from(elements);
                     elements = elements.filter(test.filter);
                 }
                 else {
@@ -1216,14 +1240,14 @@ function createTanaguruTest(test) {
             };
 
             // Traitement par collection.
-            var failedincollection = null;
+            var failedincollection = 0;
             if (test.hasOwnProperty('analyzeElements')) {
                 if (test.analyzeElements.constructor == Function) {
                     test.analyzeElements(elements);
                     // On modifie le statut du test selon les statuts d'items.
                     for (var e = 0; e < elements.length; e++) {
                         if (elements[e].status == 'failed') {
-                            failedincollection = failedincollection == null ? 0 : failedincollection;
+                            // failedincollection = failedincollection == null ? 0 : failedincollection;
                             failedincollection += 1;
                         }
                         if (statuspriority[status] < statuspriority[elements[e].status]) {
@@ -1256,25 +1280,17 @@ function createTanaguruTest(test) {
             // Chargement du résultat.
             var outputelements = [];
             if(!test.hasOwnProperty('contrast')) {
-                for (var i = 0; i < elements.length; i++) {
-                    outputelements.push(manageOutput(elements[i]));
-                }
+                outputelements = elements.map(e => manageOutput(e));
             }
             
             if(test.hasOwnProperty('contrast')) {
-                for (var i = 0; i < elements.length; i++) {
+                let contrastElLength = elements.length;
+                for (var i = 0; i < contrastElLength; i++) {
                     var node = elements[i].node;
-                    var accessibleName = node.accessibleName;
-                    var implicitARIASemantic = node.implicitARIASemantic;
-                    var explicitARIASemantic = node.explicitARIASemantic;
-                    var canBeReachedUsingKeyboardWith = node.canBeReachedUsingKeyboardWith;
-                    var isNotExposedDueTo = node.isNotExposedDueTo;
 
-                    elements[i].role.implicit = implicitARIASemantic;
-                    elements[i].role.explicit = explicitARIASemantic;
-                    elements[i].accessibleName = accessibleName;
-                    elements[i].canBeReachedUsingKeyboardWith = canBeReachedUsingKeyboardWith;
-                    elements[i].isNotExposedDueTo = isNotExposedDueTo;
+                    elements[i].canBeReachedUsingKeyboardWith = node.canBeReachedUsingKeyboardWith;
+                    elements[i].isNotExposedDueTo = node.hasAttribute('data-tng-notExposed') ? node.getAttribute('data-tng-notExposed') : '';
+
                     delete elements[i].node;
                 }
                 
@@ -1312,7 +1328,7 @@ function createTanaguruTest(test) {
             if (failedincollection) {
                 result.failedincollection = failedincollection;
             }
-
+            
             addResultSet("Nouvelle syntaxe d'écriture des tests", result);
             // Intégrer chaque résultat dans window.tanaguru.tests.
         }
@@ -1528,7 +1544,9 @@ var htmlData = {
 var HTML = {
     getFocusableElementsSelector: function () {
         var elements = [];
-        for (var element in htmlData.elements) {
+        let htmlDataElLength = htmlData.elements.length;
+        for(var i = 0; i < htmlDataElLength; i++) {
+            let element = htmlData.elements[i];
             if (htmlData.elements[element].hasOwnProperty('focusable')) {
                 var focusable = htmlData.elements[element].focusable;
                 elements.push((focusable.constructor == String ? focusable : element) + ':not([tabindex="-1"])');
@@ -3567,7 +3585,7 @@ if (!HTMLElement.prototype.hasOwnProperty('isNotExposedDueTo')) Object.definePro
 if (!SVGElement.prototype.hasOwnProperty('isNotExposedDueTo')) Object.defineProperty(SVGElement.prototype, 'isNotExposedDueTo', { get: isNotExposedDueTo });
 
 var isVisible = function () {
-    return getVisibility(this, getOpacity(this));
+    return getVisibility(this);
 };
 
 if (!HTMLElement.prototype.hasOwnProperty('isVisible')) Object.defineProperty(HTMLElement.prototype, 'isVisible', { get: isVisible });

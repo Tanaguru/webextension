@@ -17,6 +17,7 @@ Web accessibility evaluation tool (and more).
 - [Install the webextension](#install-the-webextension)
 - [Use the webextension](#use-the-webextension)
 - [Write a test](#write-a-test)
+- [Update the version number](#update-the-version-number)
 
 ## Install the webextension
 
@@ -168,3 +169,11 @@ createTanaguruTest({
 ---
 
 ![](README/write.png)
+
+## Update the version number
+### VERSION.txt
+The number looks like this: x.y.z
+With x = new feature, y = update, z = fix
+
+### CHANGELOG.md
+For each new version, we list shortly what the new version changes.

@@ -1,14 +1,10 @@
-/**
- *? XPATH
- */
 var sub_regexes = {
 	"tag": "([a-zA-Z0-9-_]*|\\*)",
 	"attribute": "[.a-zA-Z_:][-\\w:.]*(\\(\\))?)",
 	"value": "\\s*[\\w/:][-/\\w\\s,:;.]*"
 };
 
-var validation_re = "(?P<node>" + "(" + "^id\\([\"\\']?(?P<idvalue>%(value)s)[\"\\']?\\)" + "|" + "(?P<nav>//?(?:following-sibling::)?)(?P<tag>%(tag)s)" + "(\\[(" + "(?P<matched>(?P<mattr>@?%(attribute)s=[\"\\'](?P<mvalue>%(value)s))[\"\\']" + "|" + "(?P<contained>contains\\((?P<cattr>@?%(attribute)s,\\s*[\"\\'](?P<cvalue>%(value)s)[\"\\']\\))" + ")\\])?" + "(\\[\\s*(?P<nth>\\d+|last\\(\\s*\\))\\s*\\])?" + ")" + ")";
-
+var validation_re = "(?P<node>" + "(" + "^id\\([\"\\']?(?P<idvalue>%(value)s)[\"\\']?\\)" + "|" + "(?P<nav>//?(?:following-sibling::)?)(?P<tag>%(tag)s)" + "(\\[(" + "(?P<matched>(?P<mattr>@?%(attribute)s=[\"\\'](?P<mvalue>%(value)s))[\"\\']" + "|" + "(?P<contained>contains\\((?P<cattr>@?%(attribute)s,\\s*[\"\\'](?P<cvalue>%(value)s)[\"\\']\\))" + ")\\])?" + "(\\[\\s*(?P<nth>\\d|last\\(\\s*\\))\\s*\\])?" + ")" + ")";
 for (var prop in sub_regexes) {
     validation_re = validation_re.replace(new RegExp('%\\(' + prop + '\\)s', 'gi'), sub_regexes[prop]);
 }
@@ -114,9 +110,6 @@ function cssify(xpath) {
 	return csses.join(', ');
 }
 
-/**
- *? applied on actions buttons 
- */
 function manageHoveredImageButton(event) {
 	if (['mouseover', 'mouseout'].indexOf(event.type) == -1 || (['mouseover', 'mouseout'].indexOf(event.type) > -1 && this != document.querySelector(':focus'))) {
 		var img = this.firstChild;
@@ -126,9 +119,6 @@ function manageHoveredImageButton(event) {
 	}
 }
 
-/**
- *? Construct panel
- */
 var html = document.querySelector('html');
 html.setAttribute('lang', chrome.i18n.getMessage('extensionLang'));
 var main = document.createElement('main');
@@ -137,38 +127,22 @@ main.setAttribute('class', 'launch-analysis');
 var leftcolumn = document.createElement('div');
 main.appendChild(leftcolumn);
 var rightcolumn = document.createElement('div');
+
 var button = document.createElement('button');
 button.setAttribute('type', 'button');
-button.appendChild(document.createTextNode("Analyser cette page"));
-var p = document.createElement('p');
-p.appendChild(button);
-rightcolumn.appendChild(p);
-main.appendChild(rightcolumn);
-document.body.insertBefore(main, document.body.querySelector('script'));
-
-/**
- *? Click on analize button
- */
 button.addEventListener('click', function () {
-	/**
-	 * ? Display loading
-	 */
-	
 	var loadingtemplate = document.getElementById('loading');
 	loadingtemplate = loadingtemplate.content;
 	var rightcolumn = this.parentNode.parentNode;
 	rightcolumn.replaceChild(document.importNode(loadingtemplate, true), this.parentNode);
 	rightcolumn.querySelector('[tabindex="-1"]').focus();
-	
+
 	chrome.runtime.sendMessage({
 		tabId: chrome.devtools.inspectedWindow.tabId,
 		command: 'executeTests', 
 		timer: new Date().getTime()},
 		
 		function (response) {
-			/**
-			 * ? Set DOM (dashboard's tab & panel)
-			 */
 			var main = document.querySelector('main');
 			main.removeAttribute('class');
 			var nav = document.createElement('div');
@@ -189,38 +163,7 @@ button.addEventListener('click', function () {
 			var ul = document.createElement('ul');
 			ul.setAttribute('role', 'tablist');
 			ul.setAttribute('aria-orientation', 'vertical');
-
-			var dashboard = document.createElement('li');
-			dashboard.setAttribute('id', 'tab0');
-			dashboard.setAttribute('role', 'tab');
-			dashboard.setAttribute('aria-selected', 'true');
-			dashboard.setAttribute('tabindex', '0');
-			dashboard.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboard')));
-			var dashboardpanel = document.createElement('div');
-			dashboardpanel.setAttribute('role', 'tabpanel');
-			dashboardpanel.setAttribute('aria-labelledby', dashboard.getAttribute('id'));
-			dashboardpanel.setAttribute('id', 'tabpanel0');
-			dashboardpanel.setAttribute('aria-hidden', 'false');
-			dashboard.setAttribute('aria-controls', dashboardpanel.getAttribute('id'));
-			var dashboardpanelheading = document.createElement('h2');
-			dashboardpanelheading.setAttribute('class', 'visually-hidden');
-			dashboardpanelheading.appendChild(document.createTextNode(dashboard.textContent));
-			dashboardpanel.appendChild(dashboardpanelheading);
-		
-			// UI. Dashboard.
-			dashboardpanel.setAttribute('style', 'height: 100%; padding: 0; margin: 0; position: relative;');
-			var dashboardpanelp = document.createElement('p'); 
-			dashboardpanelp.setAttribute('style', 'margin: 0; position: absolute; justify-content: center; left: 0; right: 0; top: 0; bottom: 0; font-weight: bolder; display: inline-flex; align-items: center;');
-			dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')));
-			dashboardpanel.appendChild(dashboardpanelp);
-			
-			main.children[1].appendChild(dashboardpanel);
-			ul.appendChild(dashboard);
-
-			/**
-			 * ? keyboard navigation
-			 */
-			 ul.addEventListener('keydown', function(event) {
+			ul.addEventListener('keydown', function(event) {
 				if ([38,40].indexOf(event.keyCode) > -1) {
 					var currenttab = this.querySelector('[role="tab"][aria-selected="true"]');
 					if (event.keyCode == 38) {
@@ -239,10 +182,6 @@ button.addEventListener('click', function () {
 					newcurrenttab.focus();
 				}
 			}, false);
-
-			/**
-			 * ? filters the displayed tests by the selected tab
-			 */
 			ul.addEventListener('click', function(event) {
 				var element = event.target;
 				if (element.getAttribute('role') == 'tab') {
@@ -325,14 +264,52 @@ button.addEventListener('click', function () {
 					}
 				}
 			}, false);
+			var dashboard = document.createElement('li');
+			dashboard.setAttribute('id', 'tab0');
+			dashboard.setAttribute('role', 'tab');
+			dashboard.setAttribute('aria-selected', 'true');
+			dashboard.setAttribute('tabindex', '0');
+			dashboard.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboard')));
+			var dashboardpanel = document.createElement('div');
+			dashboardpanel.setAttribute('role', 'tabpanel');
+			dashboardpanel.setAttribute('aria-labelledby', dashboard.getAttribute('id'));
+			dashboardpanel.setAttribute('id', 'tabpanel0');
+			dashboardpanel.setAttribute('aria-hidden', 'false');
+			dashboard.setAttribute('aria-controls', dashboardpanel.getAttribute('id'));
+			var dashboardpanelheading = document.createElement('h2');
+			dashboardpanelheading.setAttribute('class', 'visually-hidden');
+			dashboardpanelheading.appendChild(document.createTextNode(dashboard.textContent));
+			dashboardpanel.appendChild(dashboardpanelheading);
+		
+			// UI. Dashboard.
+			dashboardpanel.setAttribute('style', 'height: 100%; padding: 0; margin: 0; position: relative;');
+			var dashboardpanelp = document.createElement('p'); 
+			dashboardpanelp.setAttribute('style', 'margin: 0; position: absolute; justify-content: center; left: 0; right: 0; top: 0; bottom: 0; font-weight: bolder; display: inline-flex; align-items: center;');
+			dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')));
+			dashboardpanel.appendChild(dashboardpanelp);
+			
+			main.children[1].appendChild(dashboardpanel);
+			ul.appendChild(dashboard);
+
+			//TODO traiter les tests par tag et les afficher au fur et à mesure en ajoutant un loader comme ci dessous
+			// var tab = document.createElement('li');
+			// tab.setAttribute('id', 'tabTag');
+			// var loadingTab = document.createElement('span');
+			// loadingTab.classList.add('tab-loading');
+			// loadingTab.innerHTML = '<img src="images/loader.png" alt="Analyse en cours" tabindex="-1"></img>';
+			// tab.appendChild(loadingTab);
+			// tab.removeChild(loadingTab);
+			// tab.setAttribute('role', 'tab');
+			// tab.setAttribute('aria-selected', 'false');
+			// tab.setAttribute('tabindex', '-1');
 
 			/**
 			 ** Manage action buttons in right column
-			 * showhide-action
-			 * highlight-action
-			 * inspect-action
-			 * about-action
-			 */
+			* showhide-action
+			* highlight-action
+			* inspect-action
+			* about-action
+			*/
 			main.children[1].addEventListener('click', function(event) {
 				var element = event.target;
 				if (element.tagName.toLowerCase() == 'button') {
@@ -348,8 +325,7 @@ button.addEventListener('click', function () {
 							}
 							break;
 						case 'highlight-action':
-							var cellParent = element.closest('.item-actions');
-							var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
+							var getxpathbutton = element.parentNode.parentNode.parentNode.querySelector('[data-action="about-action"]');
 							chrome.runtime.sendMessage({
 								tabId: chrome.devtools.inspectedWindow.tabId,
 								command: 'highlight',
@@ -357,8 +333,7 @@ button.addEventListener('click', function () {
 							});
 							break;
 						case 'inspect-action':
-							var cellParent = element.closest('.item-actions');
-							var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
+							var getxpathbutton = element.parentNode.parentNode.parentNode.querySelector('[data-action="about-action"]');
 							var css = cssify(getxpathbutton.getAttribute('data-xpath'));
 							chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('" + css + "'))");
 							break;
@@ -499,9 +474,6 @@ button.addEventListener('click', function () {
 				}
 			}, false);
 
-			/**
-			 * ? Set DOM (alltests's tab & panel)
-			 */
 			var tab = document.createElement('li');
 			tab.setAttribute('role', 'tab');
 			tab.setAttribute('aria-selected', 'false');
@@ -527,9 +499,6 @@ button.addEventListener('click', function () {
 			let t = 1;
 			response = response.response[0];
 
-			/**
-			 * ? set tags name & sort by status & alphabetical
-			 */
 			response.tags.forEach(tag => {
 				tag.name = chrome.i18n.getMessage('tag' + tag.id.charAt(0).toUpperCase() + tag.id.slice(1));
 			});
@@ -550,20 +519,35 @@ button.addEventListener('click', function () {
 				return 0;
 			});
 
-			/**
-			 * ? create tests container by status
-			 */
+			response.tests = response.tests.sort((a,b) => {
+				if (a.type === 'failed' && b.type !== 'failed') return -1;
+				if (a.type !== 'failed' && b.type === 'failed') return 1;
+				if (a.type === 'cantTell' && b.type === 'passed') return -1;
+				if (a.type === 'passed' && b.type === 'cantTell') return 1;
+				if (a.type === 'cantTell' && b.type === 'untested') return -1;
+				if (a.type === 'untested' && b.type === 'cantTell') return 1;
+				if (a.type === 'passed' && b.type === 'untested') return -1;
+				if (a.type === 'untested' && b.type === 'passed') return 1;
+				return 0;
+			});
+
 			// IN PROGRESS
 			var statuses = ['failed', 'cantTell', 'passed', 'inapplicable', 'untested'];
 
 			var statuseslist = document.createElement('ul');
-			statuseslist.setAttribute('style', 'margin: 1em; padding: 0; list-style-type: none; font-size: 0.8em');
+			statuseslist.style.margin = '1em';
+			statuseslist.style.padding = '0';
+			statuseslist.style.listStyleType = 'none';
+			statuseslist.style.fontSize = '0.8em';
 			statuseslist.hidden = true;
 
 			var statusescontents = document.createDocumentFragment();
 			for (var s = 0; s < statuses.length; s++) {
 				var status = document.createElement('li');
-				status.setAttribute('style', 'display: inline-block; border: solid 1px black; margin-right: 0.5em; padding: 0.5em 1em');
+				status.style.display = 'inline-block';
+				status.style.border = 'solid 1px black';
+				status.style.marginRight = '0.5em';
+				status.style.padding = '0.5em 1em';
 
 				status.appendChild(document.createTextNode(chrome.i18n.getMessage('earl' + statuses[s].charAt(0).toUpperCase() + statuses[s].slice(1))));
 				statuseslist.appendChild(status);
@@ -578,13 +562,10 @@ button.addEventListener('click', function () {
 			var reftests = {};
 
 			// IN PROGRESS
-			// var ressourcestests = [];
+			var ressourcestests = [];
 
 			var updatedashboardp = false;
-
-			/**
-			 * ? display tests results
-			 */
+			// display tests results
 			response.tests.forEach(test => {
 				// UI. Dashboard.
 				// manage message on dashboard panel
@@ -596,12 +577,12 @@ button.addEventListener('click', function () {
 				var testelement = document.createElement('div');
 				testelement.setAttribute('class', 'testparent ' + test.tags.join(' '));
 
-				// if (test.hasOwnProperty('ressources')) {
-				// 	// var testressources = test.ressources;
-				// 	for (var r = 0; r < test.ressources.length; r++) {
-				// 		testelement.className += ' ' + r;
-				// 	}
-				// }
+				if (test.hasOwnProperty('ressources')) {
+					// var testressources = test.ressources;
+					for (var r = 0; r < test.ressources.length; r++) {
+						testelement.className += ' ' + r;
+					}
+				}
 
 				// create test button
 				var tabpanelsection = document.createElement('h3');
@@ -638,15 +619,14 @@ button.addEventListener('click', function () {
 				tabpanelsectionbutton.appendChild(testref);
 
 				// IN PROGRESS - test ressources
-				// if (test.hasOwnProperty('ressources')) {
-				// 	var ressourcesLength = Object.keys(test.ressources).length;
-
-				// 	for (var r = 0; r < ressourcesLength; r++) {
-				// 		if (ressourcestests.indexOf(test.ressources[r]) == -1) {
-				// 			ressourcestests.push(test.ressources[r]);
-				// 		}
-				// 	}
-				// }
+				if (test.hasOwnProperty('ressources')) {
+					// var testressources = test.ressources;
+					for (var r = 0; r < test.ressources.length; r++) {
+						if (ressourcestests.indexOf(r) == -1) {
+							ressourcestests.push(r);
+						}
+					}
+				}
 				
 				// display test status on the button
 				var status = document.createElement('span');
@@ -655,10 +635,9 @@ button.addEventListener('click', function () {
 				tabpanelsectionbutton.appendChild(status);
 
 				// display the number of elements on test button
-				let dataLength = test.data.length;
-				if (!((test.type == 'failed' && dataLength == 0) || test.type == 'untested')) {
+				if (!((test.type == 'failed' && test.data.length == 0) || test.type == 'untested')) {
 					var strong = document.createElement('strong');
-					var strongcount = test.hasOwnProperty('failedincollection') ? test.failedincollection : dataLength;
+					var strongcount = test.hasOwnProperty('failedincollection') ? test.failedincollection : test.data.length;
 					strong.appendChild(document.createTextNode(strongcount + (test.hasOwnProperty('counter') ? ' / ' +  test.counter : '')));
 					tabpanelsectionbutton.appendChild(strong);
 					tabpanelsectionbutton.appendChild(document.createTextNode(' '));
@@ -785,7 +764,7 @@ button.addEventListener('click', function () {
 							{ name: 'Actions', export: 'no' }
 						];
 					}
-
+					
 					var tr = document.createElement('tr');
 					tr.setAttribute('class', 'theadings');
 					for (var k = 0; k < tableheadings.length; k++) {
@@ -815,131 +794,254 @@ button.addEventListener('click', function () {
 
 					// table content
 					for (var h = 0; h < test.data.length; h++) {
-						let itemNumber = '1A' + (h + 1);
-						let itemKeyboard = test.data[h].canBeReachedUsingKeyboardWith.join(' / ');
-						let itemReader = test.data[h].isNotExposedDueTo;
-						let itemXPath = test.data[h].xpath;
+						var tr = document.createElement('tr');
 
-						if(test.tags.includes('contrast')) {
-							var itemTag = test.data[h].tag;
-							var itemText = test.data[h].text;
-							var itemSize = test.data[h].size;
-							var itemWeight = test.data[h].weight;
-							var itemCT = test.data[h].foreground;
-							var itemCF = test.data[h].background;
-							var itemRatio = test.data[h].ratio + ':1';
+						// numéro
+						var td = document.createElement('td');
+						td.appendChild(document.createTextNode('1A' + (h + 1)));
+						tr.appendChild(td);
 
-							let template = document.querySelector('#item-row-contrast');
-							var newRow = document.importNode(template.content, true);
-							newRow.querySelector('.item-number').textContent = itemNumber;
-							newRow.querySelector('.item-tag').textContent = itemTag;
-							newRow.querySelector('.item-text').textContent = itemText;
-							newRow.querySelector('.item-size').textContent = itemSize;
-							newRow.querySelector('.item-weight').textContent = itemWeight;
-							newRow.querySelector('.item-ct .item-ct-content').style.backgroundColor = itemCT;
-							newRow.querySelector('.item-ct .visually-hidden').textContent = itemCT;
-							newRow.querySelector('.item-ct').setAttribute('title', itemCT);
-							newRow.querySelector('.item-cf').setAttribute('title', itemCF);
-							if(itemCF && itemCF !== 'image') {
-								newRow.querySelector('.item-cf .item-cf-content').style.backgroundColor = itemCF;
-							} else if(itemCF === 'image') {
-								newRow.querySelector('.item-cf .item-cf-content').setAttribute('aria-describedby', 'contrast-bgImage');
-								newRow.querySelector('.item-cf .item-cf-content').classList.add('contrast-bgImage');
-							} else {
-								newRow.querySelector('.item-cf .item-cf-content').setAttribute('aria-describedby', 'contrast-bgNull');
-								newRow.querySelector('.item-cf .item-cf-content').classList.add('contrast-bgNull');
-								newRow.querySelector('.item-cf').setAttribute('title', 'non trouvé');
-							}
-							newRow.querySelector('.item-cf .visually-hidden').textContent = itemCF;
-							newRow.querySelector('.item-ratio').textContent = itemRatio;
+						
+						if(!test.tags.includes('contrast')) {
+							// statut
+							var td = document.createElement('td');
+							td.style.textAlign = 'center';
+							td.appendChild(document.createTextNode(test.data[h].status));
+							tr.appendChild(td);
 
-							
-						} else {
-							var itemStatus = test.data[h].status;
-							var itemCode = test.data[h].outer;
-
-							let template = document.querySelector('#item-row');
-							var newRow = document.importNode(template.content, true);
-							newRow.querySelector('.item-number').textContent = itemNumber;
-							newRow.querySelector('.item-status').textContent = itemStatus;
-							newRow.querySelector('.item-code code').textContent = itemCode;
-
+							// item
+							var td = document.createElement('td');
+							var code = document.createElement('code');
 							if (codehighlight && codehighlight.hasOwnProperty('attrs')) {
+								var outer = test.data[h].outer;
 								var codeattrs = [];
-								var code = newRow.querySelector('.item-code code');
-	
+
 								for (var a = 0; a < codehighlight.attrs.length; a++) {
-									if(itemCode.match(codehighlight.attrs[a])) {
+									if(outer.match(codehighlight.attrs[a])) {
 										let regex  = codehighlight.attrs[a] + '="(?:(?!").)*"';
-										codeattrs.push(itemCode.match(new RegExp(regex)));
-										itemCode = itemCode.replace(new RegExp(' (' + codehighlight.attrs[a] + '="(?:(?!").)*")'), ' &&// '); // / key="([^"]*)"/	
+										codeattrs.push(outer.match(new RegExp(regex)));
+										outer = outer.replace(new RegExp(' (' + codehighlight.attrs[a] + '="(?:(?!").)*")'), ' &&// '); // / key="([^"]*)"/	
 									}
 								}
-	
+
 								if(codeattrs.length > 0) {
-									var codecontent = itemCode.split(' &&// ');
-	
+									var codecontent = outer.split(' &&// ');
+
 									for(let i = 0; i < codecontent.length - 1; i++) {
 										code.appendChild(document.createTextNode(codecontent[i]+' '));
 										var mark = document.createElement('mark');
 										mark.textContent = codeattrs[i];
 										code.appendChild(mark);
 									}
-	
+
 									code.appendChild(document.createTextNode(codecontent[codecontent.length - 1]));
 								} else {
-									code.appendChild(document.createTextNode(itemCode));
+									code.appendChild(document.createTextNode(outer));
 								}
 								
-							} else {
-								newRow.querySelector('.item-code code').textContent = itemCode;
 							}
+							else {
+								code.appendChild(document.createTextNode(test.data[h].outer));
+							}
+							var divcode = document.createElement('div');
+							divcode.setAttribute('class', 'code');
+							divcode.appendChild(code);
+							td.appendChild(divcode);
+							tr.appendChild(td);
 						}
 
-						if(itemKeyboard.length > 0) {
-							countkeyboardyes += 1;
-							newRow.querySelector('.item-keyboard .keyboardyes').setAttribute('title', 'Oui ('+ itemKeyboard + ')');
-							newRow.querySelector('.item-keyboard .visually-hidden').textContent = 'Oui ('+ itemKeyboard + ')';
-						} else {
-							countkeyboardno += 1;
-							newRow.querySelector('.item-keyboard .keyboardyes').setAttribute('title', 'Non');
-							newRow.querySelector('.item-keyboard .keyboardyes').className = 'keyboardno';
-							newRow.querySelector('.item-keyboard .visually-hidden').textContent = 'Non';
+						if(test.tags.includes('contrast')) {
+							// result tag
+							var td = document.createElement('td');
+							td.style.textAlign = 'center';
+							td.style.width = 'auto';
+							td.appendChild(document.createTextNode(test.data[h].tag));
+							tr.appendChild(td);
+
+							// result text node
+							var td = document.createElement('td');
+							td.style.textAlign = 'left';
+							td.style.width = 'auto';
+							td.appendChild(document.createTextNode(test.data[h].text));
+							tr.appendChild(td);
+
+							// text font size
+							var td = document.createElement('td');
+							td.style.textAlign = 'center';
+							td.style.width = 'auto';
+							td.classList.add('testsection-td-colored');
+							td.appendChild(document.createTextNode(test.data[h].size));
+							tr.appendChild(td);
+
+							// text font weight
+							var td = document.createElement('td');
+							td.style.textAlign = 'center';
+							td.style.width = 'auto';
+							td.classList.add('testsection-td-colored');
+							td.appendChild(document.createTextNode(test.data[h].weight));
+							tr.appendChild(td);
+
+							// text color
+							var td = document.createElement('td');
+							td.style.width = 'auto';
+							var rspan = document.createElement('span');
+							rspan.setAttribute('style', 'display: block; margin: auto; border: solid 1px #000; background-color: ' + test.data[h].foreground + '; height: 18px; width: 18px;');
+							var tdspan = document.createElement('span');
+							tdspan.setAttribute('class', 'visually-hidden');
+							tdspan.appendChild(document.createTextNode(test.data[h].foreground));
+							rspan.appendChild(tdspan);
+							td.appendChild(rspan);
+							tr.appendChild(td);
+
+							// text background color
+							var td = document.createElement('td');
+							td.style.width = 'auto';
+							var rspan = document.createElement('span');
+							if(test.data[h].background && test.data[h].background !== 'image') {
+								rspan.setAttribute('style', 'display: block; margin: auto; border: solid 1px #000; background-color: ' + test.data[h].background + '; height: 18px; width: 18px;');
+							} else if(test.data[h].background === 'image') {
+								rspan.setAttribute('aria-describedby', 'contrast-bgImage')
+								rspan.classList.add('contrast-bgImage');
+							} else {
+								rspan.setAttribute('aria-describedby', 'contrast-bgNull')
+								rspan.classList.add('contrast-bgNull');
+							}
+
+							var tdspan = document.createElement('span');
+							tdspan.setAttribute('class', 'visually-hidden');
+							tdspan.appendChild(document.createTextNode(test.data[h].background));
+							rspan.appendChild(tdspan);
+							td.appendChild(rspan);
+							tr.appendChild(td);
+
+							// result contrast ratio
+							var td = document.createElement('td');
+							td.style.textAlign = 'center';
+							test.data[h].ratio ? td.appendChild(document.createTextNode(test.data[h].ratio + ':1')) : td.appendChild(document.createTextNode('?'));
+							tr.appendChild(td);
 						}
-
-						if(itemReader.length === 0) {
-							countreaderyes += 1;
-							newRow.querySelector('.item-reader .readeryes').setAttribute('title', 'oui');
-							newRow.querySelector('.item-reader .visually-hidden').textContent = 'Oui';
-						} else {
-							countreaderno += 1;
-							newRow.querySelector('.item-reader .readeryes').setAttribute('title', 'Non (' + itemReader + ')');
-							newRow.querySelector('.item-reader .readeryes').className = 'readerno';
-							newRow.querySelector('.item-reader .visually-hidden').textContent = 'Non (' + itemReader + ')';
-						}
-
-						if(test.data[h].isVisible) {
-							countvisible += 1;
-
-							newRow.querySelector('.item-actions .item-actions-highlight button').setAttribute('title', 'Mettre en évidence sur la page (' + test.name + ', item ' + (h + 1) + ')');
-							newRow.querySelector('.item-actions .item-actions-highlight .visually-hidden').textContent = 'Mettre en évidence sur la page (' + test.name + ', item ' + (h + 1) + ')';
-						} else {
-							countinvisible += 1;
-
-							newRow.querySelector('.item-actions .item-actions-highlight button').className = 'hidden';
-							newRow.querySelector('.item-actions .item-actions-highlight button').disabled = true;
-							newRow.querySelector('.item-actions .item-actions-highlight button').setAttribute('title', "Cet élément n'est pas visible à l'écran.");
-							newRow.querySelector('.item-actions .item-actions-highlight .visually-hidden').textContent = "Cet élément n'est pas visible à l'écran.";
-						}
-
-						newRow.querySelector('.item-actions .item-actions-inspect button').setAttribute('title', 'Révéler dans l\'inspecteur (' + test.name + ', item ' + (h + 1) + ')');
-						newRow.querySelector('.item-actions .item-actions-inspect .visually-hidden').textContent = 'Révéler dans l\'inspecteur (' + test.name + ', item ' + (h + 1) + ')';
-
-						newRow.querySelector('.item-actions .item-actions-about button').setAttribute('title', 'A propos de cet élément (' + test.name + ', item ' + (h + 1) + ')');
-						newRow.querySelector('.item-actions .item-actions-about button').setAttribute('data-xpath', itemXPath);
-						newRow.querySelector('.item-actions .item-actions-about .visually-hidden').textContent = 'A propos de cet élément (' + test.name + ', item ' + (h + 1) + ')';
 						
-						table.appendChild(newRow);
+
+						// atteignable au clavier
+						// if(!test.tags.includes('contrast')) {
+							var td = document.createElement('td');
+							td.classList.add('testsection-td-colored');
+							var canbereachedimg = document.createElement('img');
+							if (test.data[h].canBeReachedUsingKeyboardWith.length > 0) {
+								countkeyboardyes += 1;
+								canbereachedimg.setAttribute('class', 'keyboardyes');
+							}
+							else {
+								countkeyboardno += 1;
+								canbereachedimg.setAttribute('class', 'keyboardno');
+							}
+							canbereachedimg.setAttribute('src', test.data[h].canBeReachedUsingKeyboardWith.length > 0 ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAANpJREFUKBXVkLEOAVEQRddGSGxBQ6dQKJXiD1ZEpVT4ANGLSucvRCtq0YqaUukDVBQKEsI6T3Jls5uXkGhMcnbum7kz72Ud528iCIIGJL5+MEN9uMEQ3I8XYO7CHRT+a5iTC3XbJnoduIJigvAcPkkYgdk6iC6g1oILKGaItG5tqkp+QE8L0D6cQLFAeOqbmzMwVpdsfkgbanAAxQqRew9KUEzBVC7yGY6h8xpdkD+WaZoXzEMDkltEMTYQLWDKwlJT5B2Uoz7rGXMeNrCHitVoazBUgqqt/5P6E3SkJ/cZVE0PAAAAAElFTkSuQmCC' : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAALtJREFUKBWlk2EOgjAMhaeBY+1eAn/0VuLN4M/8XtykW5oZYpPSjvdeu7ESQraUUix5L1Y8FiP+wHd8+SFcMu9OHAOPiFubvQIQZksijxIPDlAVcHDtYPg2cQgT7664orWqsC3QEl9WRe4LSwUIN3xrRFpPhdONEJ+NeO0KCqgO+PnOWWibrnZB7p9ZQEPUDi64orWjAG91z7o3aweB8wC0hT/3DPDXhGm2Nau7OpQP50XwerYLCeD0X/UGVSXGYbh63LAAAAAASUVORK5CYII=');
+							canbereachedimg.setAttribute('alt', test.data[h].canBeReachedUsingKeyboardWith.length > 0 ? 'Oui (' + test.data[h].canBeReachedUsingKeyboardWith.join(' / ') + ')' : 'Non');
+							canbereachedimg.setAttribute('title', canbereachedimg.getAttribute('alt'));
+							td.appendChild(canbereachedimg);
+							tr.appendChild(td);
+						// }
+
+						// restitué
+						var td = document.createElement('td');
+						td.classList.add('testsection-td-colored');
+						var exposedimg = document.createElement('img');
+						if (test.data[h].isNotExposedDueTo.length > 0) {
+							countreaderno += 1;
+							exposedimg.setAttribute('class', 'readerno');
+						}
+						else {
+							countreaderyes += 1;
+							exposedimg.setAttribute('class', 'readeryes');
+						}
+						exposedimg.setAttribute('src', test.data[h].isNotExposedDueTo.length > 0 ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAALtJREFUKBWlk2EOgjAMhaeBY+1eAn/0VuLN4M/8XtykW5oZYpPSjvdeu7ESQraUUix5L1Y8FiP+wHd8+SFcMu9OHAOPiFubvQIQZksijxIPDlAVcHDtYPg2cQgT7664orWqsC3QEl9WRe4LSwUIN3xrRFpPhdONEJ+NeO0KCqgO+PnOWWibrnZB7p9ZQEPUDi64orWjAG91z7o3aweB8wC0hT/3DPDXhGm2Nau7OpQP50XwerYLCeD0X/UGVSXGYbh63LAAAAAASUVORK5CYII=' : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAANpJREFUKBXVkLEOAVEQRddGSGxBQ6dQKJXiD1ZEpVT4ANGLSucvRCtq0YqaUukDVBQKEsI6T3Jls5uXkGhMcnbum7kz72Ud528iCIIGJL5+MEN9uMEQ3I8XYO7CHRT+a5iTC3XbJnoduIJigvAcPkkYgdk6iC6g1oILKGaItG5tqkp+QE8L0D6cQLFAeOqbmzMwVpdsfkgbanAAxQqRew9KUEzBVC7yGY6h8xpdkD+WaZoXzEMDkltEMTYQLWDKwlJT5B2Uoz7rGXMeNrCHitVoazBUgqqt/5P6E3SkJ/cZVE0PAAAAAElFTkSuQmCC');
+						exposedimg.setAttribute('alt', test.data[h].isNotExposedDueTo.length > 0 ? 'Non (' + test.data[h].isNotExposedDueTo.join(' / ') + ')' : 'Oui');
+						exposedimg.setAttribute('title', exposedimg.getAttribute('alt'));
+						td.appendChild(exposedimg);
+						tr.appendChild(td);
+
+						// actions
+						var td = document.createElement('td');
+						var actionslist = document.createElement('ul');
+						var actions = [{
+							id: 'inspect-action',
+							name: "Révéler dans l'inspecteur",
+							image: 'images/inspect.png',
+							image_hover: 'images/inspect_hover.png'
+						}, {
+							id: 'about-action',
+							name: "A propos de cet élément",
+							image: 'images/about.png',
+							image_hover: 'images/about_hover.png',
+							attrs: { 'data-xpath': test.data[h].xpath }
+						}];
+						if (test.data[h].isVisible) {
+							countvisible += 1;
+							var highlightaction = {
+								id: 'highlight-action',
+								name: "Mettre en évidence sur la page",
+								image: 'images/see.png',
+								image_hover: 'images/see_hover.png',
+								attrs: { 'class': 'visible' }
+							};
+						}
+						else {
+							countinvisible += 1;
+							var highlightaction = {
+								name: "Cet élément n'est pas visible à l'écran.",
+								image: 'images/see_disabled.png',
+								attrs: { 'class': 'hidden' }
+							};
+						}
+						actions.unshift(highlightaction);
+						for (var a = 0; a < actions.length; a++) {
+							var action = document.createElement('li');
+							if (!actions[a].hasOwnProperty('id')) {
+								var button = document.createElement('span');
+							}
+							else {
+								var button = document.createElement('button');
+								button.setAttribute('type', 'button');
+								button.setAttribute('data-action', actions[a].id);
+							}
+							for (var attr in actions[a].attrs) {
+								button.setAttribute(attr, actions[a].attrs[attr]);	
+							}
+							var buttoncontent = document.createDocumentFragment();
+							if (button.tagName.toLowerCase() == 'button') {
+								var buttontext = actions[a].name + ' (' + tabpanelsection.firstChild.lastChild.textContent + ', item ' + (h + 1) + ')';
+							}
+							else {
+								button.classList.add('noaction');
+								var buttontext = actions[a].name;
+							}
+							if (actions[a].image) {
+								var actionimg = document.createElement('img');
+								actionimg.setAttribute('src', actions[a].image);
+								actionimg.setAttribute('alt', buttontext);
+								if (button.tagName.toLowerCase() == 'span') {
+									actionimg.setAttribute('title', actionimg.getAttribute('alt'));
+								}
+								if (button.tagName.toLowerCase() == 'button' && actions[a].image_hover) {
+									actionimg.setAttribute('data-src', actions[a].image_hover);
+									button.addEventListener('mouseover', manageHoveredImageButton, false);
+									button.addEventListener('mouseout', manageHoveredImageButton, false);
+									button.addEventListener('focus', manageHoveredImageButton, false);
+									button.addEventListener('blur', manageHoveredImageButton, false);
+								}
+								buttoncontent.appendChild(actionimg);
+							}
+							else {
+								buttoncontent.appendChild(document.createTextNode(buttontext));
+							}
+							button.appendChild(buttoncontent);
+							action.appendChild(button);
+							actionslist.appendChild(action);	
+						}
+						td.appendChild(actionslist);
+						tr.appendChild(td);
+
+						table.appendChild(tr);
 					}
 
 					tabpanelsectiondiv.appendChild(table);
@@ -1391,10 +1493,7 @@ button.addEventListener('click', function () {
 
 			main.children[1].appendChild(alltagspanel);
 
-			/**
-			 * ? generate tab in left column
-			 * * tags & ressources
-			 */
+			// generate tab in left column
 			response.tags.forEach(tag => {
 				var tab = document.createElement('li');
 				tab.setAttribute('role', 'tab');
@@ -1412,24 +1511,34 @@ button.addEventListener('click', function () {
 					tab.appendChild(strong);
 				}
 
+				// IN PROGRESS
+				//if (tag.nbfailures > 0) {
+				// if (ul.querySelector('strong')) {
+				// 	var lastwithfailures = ul.querySelectorAll('strong');
+				// 	lastwithfailures = lastwithfailures[lastwithfailures.length - 1];
+				// 	lastwithfailures = lastwithfailures.parentNode;
+				// 	lastwithfailures.insertAdjacentElement('afterend', tab);
+				// }
+				// else {
+				// 	ul.appendChild(tab);
+				// }
 				ul.appendChild(tab);
 			});
 
-			// ressourcestests.sort();
-			// console.log(ressourcestests);
-			// for (var r = 0; r < ressourcestests.length; r++) {
-			// 	var tab = document.createElement('li');
-			// 	tab.setAttribute('class', 'ressource');
-			// 	tab.setAttribute('role', 'tab');
-			// 	tab.setAttribute('id', ressourcestests[r]);
-			// 	tab.setAttribute('aria-selected', 'false');
-			// 	tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
-			// 	tab.setAttribute('tabindex', '0');
-			// 	var span = document.createElement('span');
-			// 	span.appendChild(document.createTextNode(ressourcestests[r].toUpperCase())); // A prévoir listing des ressources...
-			// 	tab.appendChild(span);
-			// 	ul.appendChild(tab);
-			// }
+			ressourcestests.sort();
+			for (var r = 0; r < ressourcestests.length; r++) {
+				var tab = document.createElement('li');
+				tab.setAttribute('class', 'ressource');
+				tab.setAttribute('role', 'tab');
+				tab.setAttribute('id', ressourcestests[r]);
+				tab.setAttribute('aria-selected', 'false');
+				tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
+				tab.setAttribute('tabindex', '0');
+				var span = document.createElement('span');
+				span.appendChild(document.createTextNode(ressourcestests[r].toUpperCase())); // A prévoir listing des ressources...
+				tab.appendChild(span);
+				ul.appendChild(tab);
+			}
 
 			nav.appendChild(ul);
 			main.children[0].appendChild(nav);
@@ -1437,7 +1546,11 @@ button.addEventListener('click', function () {
 			dashboard.focus();
 		}
 	);
-	
 }, false);
 
-
+button.appendChild(document.createTextNode("Analyser cette page"));
+var p = document.createElement('p');
+p.appendChild(button);
+rightcolumn.appendChild(p);
+main.appendChild(rightcolumn);
+document.body.insertBefore(main, document.body.querySelector('script'));
