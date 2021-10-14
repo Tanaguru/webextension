@@ -3525,7 +3525,7 @@ tanaguruTestsList.push({
     expectedNbElements: {min: 1},
     query: 'html[lang], html[xml\\:lang], body[lang], body[xml\\:lang]',
     filter: function(item) {
-        if(item.hasAttribute('lang') || item.hasAttribute('xml\\:lang')) {
+        if(item.hasAttribute('lang') || item.hasAttribute('xml:lang')) {
             item.setAttribute('data-tng-haslang', true);
             return true;
         }
@@ -4918,7 +4918,6 @@ tanaguruTestsList.push({
                 item.setAttribute('data-tng-button-namesMatch', 'true');
                 return;
             } else {
-                console.log(item, 'visible : '+buttonName+' / accessibleName : '+buttonAccessibleName);
                 return true;
             }
         }

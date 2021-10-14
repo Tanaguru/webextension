@@ -1053,14 +1053,11 @@ function addResultSet(name, data) {
     window.tanaguru.tests.push(data);
 }
 
-function filterTestsByStatus() {
-    if(filters[1].length > 0 && !filters[1].match(/statusAll/)) {
-        var statusFilters = filters[1].split(',');
-    
+function filterTestsByStatus(statuses) {
+    if(statuses.length > 0) {
         function matchFilters(test) {
-            return statusFilters.includes(test.type);
+            return statuses.includes(test.type);
         }
-        
         window.tanaguru.tests = window.tanaguru.tests.filter(matchFilters);
     }
 }

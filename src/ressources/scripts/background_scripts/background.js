@@ -18,9 +18,9 @@ function handleMessage(request, sender, sendResponse) {
 	}
 	else if (request.command === 'executeTests') {
 		chrome.tabs.executeScript(request.tabId, {
-		    code: 'var filters = ["'+request.rgaaFilters+'","'+request.statusFilters+'"];'
+		    code: 'var cat = "' + request.cat + '"; var statusUser = "' + request.statusUser + '"; var first = "' + request.first + '"; var last = "' + request.last + '";'
 		}, function() {
-		    chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/tests.js' }, function (result) {
+			chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/tests.js' }, function (result) {
 				sendResponse({ command: 'executeTestsResults', response: result, timer: request.timer });
 			});
 		});

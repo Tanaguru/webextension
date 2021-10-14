@@ -11,7 +11,7 @@
 	</head>
 	<body>
 		<template id="rgaaFilter">
-			<fieldset id="rgaaFieldset" data-filter="rgaaFilter">
+			<fieldset id="rgaaFieldset" data-filter="catFilter">
 				<legend>Choisissez les catégories de tests du RGAA à inclure dans l'analyse.</legend>
 				<label for="rgaaAll">
 					<input type="checkbox" id="rgaaAll" checked>
@@ -19,68 +19,173 @@
 				</label>
 
 				<label for="images">
-					<input type="checkbox" name="rgaaFilter" id="images">
+					<input type="checkbox" name="catFilter" id="images">
 					Images
 				</label>
 
 				<label for="frames">
-					<input type="checkbox" name="rgaaFilter" id="frames">
+					<input type="checkbox" name="catFilter" id="frames">
 					Cadres
 				</label>
 
 				<label for="colors">
-					<input type="checkbox" name="rgaaFilter" id="colors">
+					<input type="checkbox" name="catFilter" id="colors">
 					Couleurs
 				</label>
 
 				<label for="media">
-					<input type="checkbox" name="rgaaFilter" id="media">
+					<input type="checkbox" name="catFilter" id="media">
 					Multimédia
 				</label>
 
 				<label for="table">
-					<input type="checkbox" name="rgaaFilter" id="table">
+					<input type="checkbox" name="catFilter" id="tables">
 					Tableaux
 				</label>
 
 				<label for="links">
-					<input type="checkbox" name="rgaaFilter" id="links">
+					<input type="checkbox" name="catFilter" id="links">
 					Liens
 				</label>
 
 				<label for="scripts">
-					<input type="checkbox" name="rgaaFilter" id="scripts">
+					<input type="checkbox" name="catFilter" id="scripts">
 					Scripts
 				</label>
 
 				<label for="mandatory">
-					<input type="checkbox" name="rgaaFilter" id="mandatory">
+					<input type="checkbox" name="catFilter" id="mandatory">
 					Eléments obligatoires
 				</label>
 
 				<label for="structure">
-					<input type="checkbox" name="rgaaFilter" id="structure">
+					<input type="checkbox" name="catFilter" id="structure">
 					Structuration de l'information
 				</label>
 
 				<label for="presentation">
-					<input type="checkbox" name="rgaaFilter" id="presentation">
+					<input type="checkbox" name="catFilter" id="presentation">
 					Présentation de l'information
 				</label>
 
 				<label for="forms">
-					<input type="checkbox" name="rgaaFilter" id="forms">
+					<input type="checkbox" name="catFilter" id="forms">
 					Formulaires
 				</label>
 
 				<label for="navigation">
-					<input type="checkbox" name="rgaaFilter" id="navigation">
+					<input type="checkbox" name="catFilter" id="navigation">
 					Navigation
 				</label>
 
 				<label for="consultation">
-					<input type="checkbox" name="rgaaFilter" id="consultation">
+					<input type="checkbox" name="catFilter" id="consultation">
 					Consultation
+				</label>
+			</fieldset>
+		</template>
+
+		<template id="wcagFilter">
+			<fieldset id="wcagFieldset" data-filter="catFilter">
+				<legend>Choisissez les catégories de tests WCAG à inclure dans l'analyse.</legend>
+				<label for="wcagAll">
+					<input type="checkbox" id="wcagAll" checked>
+					Toutes les catégories
+				</label>
+
+				<label for="accessiblename">
+					<input type="checkbox" name="catFilter" id="accessiblename">
+					Noms accessibles
+				</label>
+
+				<label for="aria">
+					<input type="checkbox" name="catFilter" id="aria">
+					Aria
+				</label>
+
+				<label for="audio">
+					<input type="checkbox" name="catFilter" id="audio">
+					Audio
+				</label>
+
+				<label for="buttons">
+					<input type="checkbox" name="catFilter" id="buttons">
+					Boutons
+				</label>
+
+				<label for="frames">
+					<input type="checkbox" name="catFilter" id="frames">
+					Cadres
+				</label>
+
+				<label for="code">
+					<input type="checkbox" name="catFilter" id="code">
+					Code (règles d'écriture)
+				</label>
+
+				<label for="forms">
+					<input type="checkbox" name="catFilter" id="forms">
+					Formulaires
+				</label>
+
+				<label for="images">
+					<input type="checkbox" name="catFilter" id="images">
+					Images
+				</label>
+
+				<label for="languages">
+					<input type="checkbox" name="catFilter" id="languages">
+					Langues
+				</label>
+
+				<label for="links">
+					<input type="checkbox" name="catFilter" id="links">
+					Liens
+				</label>
+
+				<label for="meta">
+					<input type="checkbox" name="catFilter" id="meta">
+					Métadonnées
+				</label>
+
+				<label for="keyboard">
+					<input type="checkbox" name="catFilter" id="keyboard">
+					Navigation clavier
+				</label>
+
+				<label for="contrast">
+					<input type="checkbox" name="catFilter" id="contrast">
+					Contrastes
+				</label>
+
+				<label for="colors">
+					<input type="checkbox" name="catFilter" id="colors">
+					Couleurs
+				</label>
+
+				<label for="svg">
+					<input type="checkbox" name="catFilter" id="svg">
+					SVG
+				</label>
+
+				<label for="table">
+					<input type="checkbox" name="catFilter" id="tables">
+					Tableaux
+				</label>
+
+				<label for="pageTitle">
+					<input type="checkbox" name="catFilter" id="pageTitle">
+					Titre de la page
+				</label>
+
+				<label for="headings">
+					<input type="checkbox" name="catFilter" id="headings">
+					Titres de contenus
+				</label>
+
+				<label for="videos">
+					<input type="checkbox" name="catFilter" id="videos">
+					Vidéos
 				</label>
 			</fieldset>
 		</template>

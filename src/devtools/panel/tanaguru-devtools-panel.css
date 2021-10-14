@@ -923,6 +923,19 @@ td code {
 	margin-right: 1em;
 }
 
+/*? left panel (tabs) */
+.cat-loading .loading {
+	float: right;
+	margin-right: 0.5em;
+	position: unset;
+	max-width: 20px;
+	padding: unset;
+}
+
+.cat-loading .loading img {
+	max-width: 100%;
+}
+
 /*? dashboard panel */
 .dashboard {
 	display: flex;

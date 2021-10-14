@@ -156,6 +156,9 @@ var isRGAAVersion = chrome.runtime.getManifest().short_name.match(/RGAA/);
 if(isRGAAVersion) {
 	var rgaaFilterTemplate = document.getElementById('rgaaFilter').content;
 	filterBloc.appendChild(rgaaFilterTemplate);
+} else {
+	var wcagFilterTemplate = document.getElementById('wcagFilter').content;
+	filterBloc.appendChild(wcagFilterTemplate);
 }
 
 var statusFilterTemplate = document.getElementById('statusFilter').content;
@@ -205,553 +208,571 @@ function toggle(evt) {
  *? Click on analize button
  */
 button.addEventListener('click', function () {
+	rightcolumn.querySelector('p').remove();
 	/**
 	 * ? Get filters choices
 	 */
 	var filters = {
-		rgaa: [],
+		categories: [],
 		statuses: []
 	}
 
-	document.querySelectorAll('#rgaaFieldset input:checked').forEach(e => {
-		filters.rgaa.push(e.id);
+	var tagsCat = [];
+
+	document.querySelectorAll('[data-filter="catFilter"] input[name]').forEach(e => {
+		tagsCat.push(e.id);
 	});
 
-	document.querySelectorAll('#statusFieldset input:checked').forEach(e => {
-		filters.statuses.push(e.id);
+	document.querySelectorAll('[data-filter] input:checked').forEach(e => {
+		if(!e.id.match(/all/i)) {
+			if(e.name === 'catFilter') filters.categories.push(e.id)
+			else filters.statuses.push(e.id)
+		}
 	});
 
 	filterBloc.remove();
 	homeTitle.remove();
 
 	/**
-	 * ? Display loading
+	 * ? Display panel
 	 */
-	
-	var loadingtemplate = document.getElementById('loading');
+	 var main = document.querySelector('main');
+	 main.removeAttribute('class');
+	 var nav = document.createElement('div');
+	 nav.setAttribute('class', 'navigation');
+	 var navheading = document.createElement('h1');
+	 navheading.appendChild(document.createTextNode(chrome.i18n.getMessage('msgNavHeading')));
+	 nav.appendChild(navheading);
+	 
+	//  var ptimer = document.createElement('p');
+	//  ptimer.setAttribute('style', 'font-size: 0.8em; margin: 0 0 0.5em 0; padding: 0 0.5em;');
+	//  var tte = new Date().getTime();
+	//  var teststimer = (tte - response.timer) / 1000;
+	//  var ptimersmall = document.createElement('small');
+	//  ptimersmall.appendChild(document.createTextNode('Analyse réalisée en ' + teststimer + ' seconde' + (teststimer > 1 ? 's' : '') + '.'));
+	//  ptimer.appendChild(ptimersmall);
+	//  nav.appendChild(ptimer);
+ 
+	 var ul = document.createElement('ul');
+	 ul.setAttribute('role', 'tablist');
+	 ul.setAttribute('aria-orientation', 'vertical');
+
+	 var dashboard = document.createElement('li');
+	 dashboard.setAttribute('id', 'tab0');
+	 dashboard.setAttribute('role', 'tab');
+	 dashboard.setAttribute('aria-selected', 'true');
+	 dashboard.setAttribute('tabindex', '0');
+	 dashboard.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboard')));
+	 var dashboardpanel = document.createElement('div');
+	 dashboardpanel.setAttribute('role', 'tabpanel');
+	 dashboardpanel.setAttribute('aria-labelledby', dashboard.getAttribute('id'));
+	 dashboardpanel.setAttribute('id', 'tabpanel0');
+	 dashboardpanel.setAttribute('aria-hidden', 'false');
+	 dashboard.setAttribute('aria-controls', dashboardpanel.getAttribute('id'));
+	 var dashboardpanelheading = document.createElement('h2');
+	 dashboardpanelheading.setAttribute('class', 'visually-hidden');
+	 dashboardpanelheading.appendChild(document.createTextNode(dashboard.textContent));
+	 dashboardpanel.appendChild(dashboardpanelheading);
+
+	 // UI. Dashboard.
+	 dashboardpanel.classList.add('dashboard');
+	 var loadingtemplate = document.getElementById('loading');
 	loadingtemplate = loadingtemplate.content;
-	var rightcolumn = this.parentNode.parentNode;
-	rightcolumn.replaceChild(document.importNode(loadingtemplate, true), this.parentNode);
-	rightcolumn.querySelector('[tabindex="-1"]').focus();
-	
-	chrome.runtime.sendMessage({
-		tabId: chrome.devtools.inspectedWindow.tabId,
-		command: 'executeTests', 
-		timer: new Date().getTime(),
-		rgaaFilters: filters.rgaa.join(),
-		statusFilters: filters.statuses.join()},
-		
-		function (response) {
-			/**
-			 * ? Set DOM (dashboard's tab & panel)
-			 */
-			var main = document.querySelector('main');
-			main.removeAttribute('class');
-			var nav = document.createElement('div');
-			nav.setAttribute('class', 'navigation');
-			var navheading = document.createElement('h1');
-			navheading.appendChild(document.createTextNode(chrome.i18n.getMessage('msgNavHeading')));
-			nav.appendChild(navheading);
-			
-			var ptimer = document.createElement('p');
-			ptimer.setAttribute('style', 'font-size: 0.8em; margin: 0 0 0.5em 0; padding: 0 0.5em;');
-			var tte = new Date().getTime();
-			var teststimer = (tte - response.timer) / 1000;
-			var ptimersmall = document.createElement('small');
-			ptimersmall.appendChild(document.createTextNode('Analyse réalisée en ' + teststimer + ' seconde' + (teststimer > 1 ? 's' : '') + '.'));
-			ptimer.appendChild(ptimersmall);
-			nav.appendChild(ptimer);
-		
-			var ul = document.createElement('ul');
-			ul.setAttribute('role', 'tablist');
-			ul.setAttribute('aria-orientation', 'vertical');
+	dashboardpanel.appendChild(document.importNode(loadingtemplate, true));
+	 main.children[1].appendChild(dashboardpanel);
+	 ul.appendChild(dashboard);
+	 dashboard.focus();
 
-			var dashboard = document.createElement('li');
-			dashboard.setAttribute('id', 'tab0');
-			dashboard.setAttribute('role', 'tab');
-			dashboard.setAttribute('aria-selected', 'true');
-			dashboard.setAttribute('tabindex', '0');
-			dashboard.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboard')));
-			var dashboardpanel = document.createElement('div');
-			dashboardpanel.setAttribute('role', 'tabpanel');
-			dashboardpanel.setAttribute('aria-labelledby', dashboard.getAttribute('id'));
-			dashboardpanel.setAttribute('id', 'tabpanel0');
-			dashboardpanel.setAttribute('aria-hidden', 'false');
-			dashboard.setAttribute('aria-controls', dashboardpanel.getAttribute('id'));
-			var dashboardpanelheading = document.createElement('h2');
-			dashboardpanelheading.setAttribute('class', 'visually-hidden');
-			dashboardpanelheading.appendChild(document.createTextNode(dashboard.textContent));
-			dashboardpanel.appendChild(dashboardpanelheading);
-		
-			// UI. Dashboard.
-			dashboardpanel.classList.add('dashboard');
+	 /**
+	 * ? keyboard navigation
+	 */
+	  ul.addEventListener('keydown', function(event) {
+		if ([38,40].indexOf(event.keyCode) > -1) {
+			var currenttab = this.querySelector('[role="tab"][aria-selected="true"]');
+			if (event.keyCode == 38) {
+				var newcurrenttab = currenttab.previousSibling;
+				if (!newcurrenttab) {
+					newcurrenttab = this.querySelectorAll('[role="tab"]');
+					newcurrenttab = newcurrenttab[newcurrenttab.length - 1];
+				}
+			}
+			else if (event.keyCode == 40) {
+				var newcurrenttab = currenttab.nextSibling;
+				newcurrenttab = newcurrenttab ? newcurrenttab : this.querySelector('[role="tab"]');
+			}
+			var e = new Event('click', { 'bubbles': true, 'cancelable': false });
+			newcurrenttab.dispatchEvent(e);
+			newcurrenttab.focus();
+		}
+	}, false);
 
-			var dashboardpanelp = document.createElement('p'); 
-			dashboardpanelp.classList.add('dashboard-message');
-			dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')));
-			dashboardpanel.appendChild(dashboardpanelp);
+	/**
+	 * ? Set DOM (alltests's tab & panel)
+	 */
+	 var allFailures = 0;
+	 var tab = document.createElement('li');
+	 tab.setAttribute('role', 'tab');
+	 tab.setAttribute('aria-selected', 'false');
+	 tab.setAttribute('id', 'alltests');
+	 tab.setAttribute('tabindex', '-1');
 
-			var dashboardpanelbuttonreload = document.createElement('button');
-			dashboardpanelbuttonreload.setAttribute('type', 'button');
-			dashboardpanelbuttonreload.classList.add('dashboard-reload-button');
-			dashboardpanelbuttonreload.appendChild(document.createTextNode("Quitter et démarrer une nouvelle analyse"));
-			dashboardpanelbuttonreload.addEventListener('click', () => {window.location.reload();});
-			dashboardpanel.appendChild(dashboardpanelbuttonreload);
-			
-			main.children[1].appendChild(dashboardpanel);
-			ul.appendChild(dashboard);
+	 var span = document.createElement('span');
+	 span.appendChild(document.createTextNode(chrome.i18n.getMessage('allTags')));
+	 tab.appendChild(span);
+	 ul.appendChild(tab);
 
-			/**
-			 * ? keyboard navigation
-			 */
-			 ul.addEventListener('keydown', function(event) {
-				if ([38,40].indexOf(event.keyCode) > -1) {
-					var currenttab = this.querySelector('[role="tab"][aria-selected="true"]');
-					if (event.keyCode == 38) {
-						var newcurrenttab = currenttab.previousSibling;
-						if (!newcurrenttab) {
-							newcurrenttab = this.querySelectorAll('[role="tab"]');
-							newcurrenttab = newcurrenttab[newcurrenttab.length - 1];
+	 var alltagspanel = document.createElement('div');
+	 alltagspanel.setAttribute('role', 'tabpanel');
+	 alltagspanel.setAttribute('aria-labelledby', tab.getAttribute('id'));
+	 alltagspanel.setAttribute('id', 'tests');
+	 alltagspanel.setAttribute('aria-hidden', 'true');
+	 tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
+
+	 var alltagspanelheading = document.createElement('h2');
+	 alltagspanelheading.appendChild(document.createTextNode(tab.textContent));
+	 alltagspanel.appendChild(alltagspanelheading);
+
+	 /**
+	 * ? create tests container by status
+	 */
+	// IN PROGRESS
+	var statuses = ['failed', 'cantTell', 'passed', 'inapplicable', 'untested'];
+
+	var statuseslist = document.createElement('ul');
+	statuseslist.setAttribute('style', 'margin: 1em; padding: 0; list-style-type: none; font-size: 0.8em');
+	statuseslist.hidden = true;
+
+	var statusescontents = document.createElement('div');
+	statusescontents.id = 'earlAll';
+	for (var s = 0; s < statuses.length; s++) {
+		var status = document.createElement('li');
+		status.setAttribute('style', 'display: inline-block; border: solid 1px black; margin-right: 0.5em; padding: 0.5em 1em');
+
+		status.appendChild(document.createTextNode(chrome.i18n.getMessage('earl' + statuses[s].charAt(0).toUpperCase() + statuses[s].slice(1))));
+		statuseslist.appendChild(status);
+		var statuscontent = document.createElement('div');
+		statuscontent.setAttribute('id', 'earl' + statuses[s].charAt(0).toUpperCase() + statuses[s].slice(1));
+		statusescontents.appendChild(statuscontent);
+	}
+	alltagspanel.appendChild(statuseslist);
+	alltagspanel.appendChild(statusescontents);
+
+	/**
+	 * ? set tags name & sort by status & alphabetical
+	 */
+
+	if(filters.categories.length > 0) {
+		filters.categories = filters.categories.sort((a,b) => {
+			if(a.name < b.name) return -1;
+			if(a.name > b.name) return 1;
+			return 0;
+		});
+	}
+
+	/**
+	 * ? generate tab in left column
+	 * * tags & ressources
+	 */
+	 filters.categories.forEach(tag => {
+		var tab = document.createElement('li');
+		tab.setAttribute('role', 'tab');
+		tab.setAttribute('aria-selected', 'false');
+		tab.setAttribute('id', tag);
+		tab.setAttribute('tabindex', '-1');
+		tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
+		var span = document.createElement('span');
+		span.appendChild(document.createTextNode(chrome.i18n.getMessage('tag' + tag.charAt(0).toUpperCase() + tag.slice(1))));
+		tab.appendChild(span);
+
+		tab.classList.add('cat-loading');
+		tab.appendChild(document.createTextNode(' '));
+		var loadingIcon = document.getElementById('loading');
+		loadingIcon = loadingIcon.content;
+		tab.appendChild(document.importNode(loadingIcon, true));
+
+		ul.appendChild(tab);
+	});
+
+	/**
+	 * ? filters the displayed tests by the selected tab
+	 */
+	ul.addEventListener('click', function(event) {
+		var element = event.target;
+		if (element.getAttribute('role') == 'tab') {
+			var currenttab = ul.querySelector('[role="tab"][aria-selected="true"]');
+			if (element != currenttab) {
+				currenttab.setAttribute('aria-selected', 'false');
+				currenttab.setAttribute('tabindex', '-1');
+				document.getElementById(currenttab.getAttribute('aria-controls')).setAttribute('aria-hidden', 'true');
+				element.setAttribute('aria-selected', 'true');
+				element.setAttribute('tabindex', '0');
+
+				var newcurrenttabpanel = document.getElementById(element.getAttribute('aria-controls'));
+				if (newcurrenttabpanel.getAttribute('id') == 'tests') {
+					newcurrenttabpanel.setAttribute('aria-labelledby', element.getAttribute('id'));
+					
+					// IN PROGRESS
+					var newcurrenttabpanelheadingtext = element.firstChild.firstChild.nodeValue;
+					var currenttabpanelheading = newcurrenttabpanel.querySelector('h2');
+					currenttabpanelheading.replaceChild(document.createTextNode(newcurrenttabpanelheadingtext), currenttabpanelheading.firstChild);
+
+					// contrast panel description
+					if(element.getAttribute('id') === 'colors' && !document.querySelector('.contrast-panel-desc')) {
+						var contrastPanelDesc = document.createElement('div');
+						contrastPanelDesc.classList.add('contrast-panel-desc');
+
+						var contrastDescription1 = document.createElement('p');
+						contrastDescription1.textContent = chrome.i18n.getMessage('contrastDescription1');
+						contrastPanelDesc.appendChild(contrastDescription1);
+
+						var contrastDescription2 = document.createElement('p');
+						contrastDescription2.textContent = chrome.i18n.getMessage('contrastDescription2');
+						contrastPanelDesc.appendChild(contrastDescription2);
+
+						var contrastLegend = document.createElement('p');
+						contrastLegend.classList.add('contrast-legend');
+						contrastLegend.textContent = chrome.i18n.getMessage('contrastLegend1');
+
+						var contrastBgImage1 = document.createElement('span');
+						contrastBgImage1.classList.add('contrast-bgImage');
+						contrastLegend.appendChild(contrastBgImage1);
+
+						var contrastBgImage2 = document.createElement('span');
+						contrastBgImage2.setAttribute('id','contrast-bgImage');
+						contrastBgImage2.textContent = chrome.i18n.getMessage('contrastLegend2');
+						contrastLegend.appendChild(contrastBgImage2);
+
+						var contrastBgNull1 = document.createElement('span');
+						contrastBgNull1.classList.add('contrast-bgNull');
+						contrastLegend.appendChild(contrastBgNull1);
+
+						var contrastBgNull2 = document.createElement('span');
+						contrastBgNull2.setAttribute('id','contrast-bgNull');
+						contrastBgNull2.textContent = chrome.i18n.getMessage('contrastLegend3');
+						contrastLegend.appendChild(contrastBgNull2);
+
+						contrastPanelDesc.appendChild(contrastLegend);
+						newcurrenttabpanel.insertBefore(contrastPanelDesc, currenttabpanelheading.nextSibling);
+					} else {
+						if(document.querySelector('.contrast-panel-desc')) {
+							newcurrenttabpanel.removeChild(document.querySelector('.contrast-panel-desc'));
 						}
 					}
-					else if (event.keyCode == 40) {
-						var newcurrenttab = currenttab.nextSibling;
-						newcurrenttab = newcurrenttab ? newcurrenttab : this.querySelector('[role="tab"]');
+
+					newcurrenttabpanel.parentNode.scrollTop = 0;
+					var tests = newcurrenttabpanel.querySelectorAll('h3');
+					var currentTabSubCat = [];
+					if(document.querySelector('.subTabs')) {
+						newcurrenttabpanel.removeChild(document.querySelector('.subTabs'));
 					}
-					var e = new Event('click', { 'bubbles': true, 'cancelable': false });
-					newcurrenttab.dispatchEvent(e);
-					newcurrenttab.focus();
-				}
-			}, false);
-
-			response = response.response[0];
-
-			if(response.tests.length === 0) dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultNone')), dashboardpanelp.firstChild);
-			else {
-				let t = 1;
-				var tagsRgaaCat = ['images', 'frames', 'colors', 'media', 'tables', 'links', 'scripts', 'mandatory', 'structure', 'presentation', 'forms', 'navigation', 'consultation'];
-
-				/**
-				 * ? filters the displayed tests by the selected tab
-				 */
-				ul.addEventListener('click', function(event) {
-					var element = event.target;
-					if (element.getAttribute('role') == 'tab') {
-						var currenttab = this.querySelector('[role="tab"][aria-selected="true"]');
-						if (element != currenttab) {
-							currenttab.setAttribute('aria-selected', 'false');
-							currenttab.setAttribute('tabindex', '-1');
-							document.getElementById(currenttab.getAttribute('aria-controls')).setAttribute('aria-hidden', 'true');
-							element.setAttribute('aria-selected', 'true');
-							element.setAttribute('tabindex', '0');
-							var newcurrenttabpanel = document.getElementById(element.getAttribute('aria-controls'));
-							if (newcurrenttabpanel.getAttribute('id') == 'tests') {
-								newcurrenttabpanel.setAttribute('aria-labelledby', element.getAttribute('id'));
-								
-								// IN PROGRESS
-								var newcurrenttabpanelheadingtext = element.firstChild.firstChild.nodeValue;
-								var currenttabpanelheading = newcurrenttabpanel.querySelector('h2');
-								currenttabpanelheading.replaceChild(document.createTextNode(newcurrenttabpanelheadingtext), currenttabpanelheading.firstChild);
-
-								// contrast panel description
-								if(element.getAttribute('id') === 'colors' && !document.querySelector('.contrast-panel-desc')) {
-									var contrastPanelDesc = document.createElement('div');
-									contrastPanelDesc.classList.add('contrast-panel-desc');
-
-									var contrastDescription1 = document.createElement('p');
-									contrastDescription1.textContent = chrome.i18n.getMessage('contrastDescription1');
-									contrastPanelDesc.appendChild(contrastDescription1);
-
-									var contrastDescription2 = document.createElement('p');
-									contrastDescription2.textContent = chrome.i18n.getMessage('contrastDescription2');
-									contrastPanelDesc.appendChild(contrastDescription2);
-
-									var contrastLegend = document.createElement('p');
-									contrastLegend.classList.add('contrast-legend');
-									contrastLegend.textContent = chrome.i18n.getMessage('contrastLegend1');
-
-									var contrastBgImage1 = document.createElement('span');
-									contrastBgImage1.classList.add('contrast-bgImage');
-									contrastLegend.appendChild(contrastBgImage1);
-
-									var contrastBgImage2 = document.createElement('span');
-									contrastBgImage2.setAttribute('id','contrast-bgImage');
-									contrastBgImage2.textContent = chrome.i18n.getMessage('contrastLegend2');
-									contrastLegend.appendChild(contrastBgImage2);
-
-									var contrastBgNull1 = document.createElement('span');
-									contrastBgNull1.classList.add('contrast-bgNull');
-									contrastLegend.appendChild(contrastBgNull1);
-
-									var contrastBgNull2 = document.createElement('span');
-									contrastBgNull2.setAttribute('id','contrast-bgNull');
-									contrastBgNull2.textContent = chrome.i18n.getMessage('contrastLegend3');
-									contrastLegend.appendChild(contrastBgNull2);
-
-									contrastPanelDesc.appendChild(contrastLegend);
-									newcurrenttabpanel.insertBefore(contrastPanelDesc, currenttabpanelheading.nextSibling);
-								} else {
-									if(document.querySelector('.contrast-panel-desc')) {
-										newcurrenttabpanel.removeChild(document.querySelector('.contrast-panel-desc'));
+					for (var i = 0; i < tests.length; i++) {
+						if (element.getAttribute('id') == 'alltests') {
+							if(filters.categories.length > 0) {
+								tests[i].parentNode.classList.forEach(el => {
+									if(!el.match(/(?:testparent)|(?:a11y)/) && el != element.getAttribute('id') && !tagsCat.includes(el)) {
+										if(!currentTabSubCat.includes(el)) currentTabSubCat.push(el);
 									}
-								}
-
-								newcurrenttabpanel.parentNode.scrollTop = 0;
-								var tests = newcurrenttabpanel.querySelectorAll('h3');
-								var currentTabSubCat = [];
-								if(document.querySelector('.subTabs')) {
-									newcurrenttabpanel.removeChild(document.querySelector('.subTabs'));
-								}
-								for (var i = 0; i < tests.length; i++) {
-									if (element.getAttribute('id') == 'alltests') {
-										if(filters.rgaa.length > 0) {
-											tests[i].parentNode.classList.forEach(el => {
-												if(!el.match(/(?:testparent)|(?:a11y)/) && el != element.getAttribute('id') && !tagsRgaaCat.includes(el)) {
-													if(!currentTabSubCat.includes(el)) currentTabSubCat.push(el);
-												}
-											});
+								});
+							}
+							tests[i].parentNode.removeAttribute('hidden');
+						}
+						else {
+							if (tests[i].parentNode.classList.contains(element.getAttribute('id'))) {
+								if(filters.categories.length > 0) {
+									tests[i].parentNode.classList.forEach(el => {
+										if(!el.match(/(?:testparent)|(?:a11y)/) && el != element.getAttribute('id')) {
+											if(!currentTabSubCat.includes(el)) currentTabSubCat.push(el);
 										}
+									});
+								}
+								
+								tests[i].parentNode.removeAttribute('hidden');
+							}
+							else {
+								tests[i].parentNode.setAttribute('hidden', 'hidden');
+							}
+						}
+					}
+					
+					if(currentTabSubCat.length > 0) {
+						var subTabsContainer = document.createElement('div');
+						subTabsContainer.classList.add('subTabs');
+						var subTabsList = document.createElement('div');
+						subTabsList.setAttribute('role', 'tablist');
+						subTabsList.setAttribute('aria-label', 'Filtrer les résultats');
+
+						var subTabAll = document.createElement('button');
+						subTabAll.id = 'sub-all';
+						subTabAll.setAttribute('role', 'tab');
+						subTabAll.setAttribute('aria-selected', 'true');
+						subTabAll.setAttribute('aria-controls', 'earlAll');
+						subTabAll.textContent = "Tous";
+						subTabsList.appendChild(subTabAll);
+
+						currentTabSubCat.forEach(st => {
+							var subTab = document.createElement('button');
+							subTab.id = 'sub-'+st;
+							subTab.setAttribute('role', 'tab');
+							subTab.setAttribute('aria-selected', 'false');
+							subTab.setAttribute('aria-controls', 'earlAll');
+							subTab.textContent = chrome.i18n.getMessage('tag'+st);
+							subTabsList.appendChild(subTab);
+						});
+
+						var subPanel = document.getElementById('earlAll');
+						subPanel.setAttribute('aria-labelledby', 'sub-all');
+
+						subTabsContainer.appendChild(subTabsList);
+						currenttabpanelheading.nextSibling.after(subTabsContainer);
+
+						subTabsList.querySelectorAll('button').forEach(button => {
+							button.addEventListener('click', filterSubTag);
+						});
+
+						function filterSubTag(evt) {
+							let currentSubTabsSelected = subTabsList.querySelector('button[aria-selected="true"]');
+							currentSubTabsSelected.setAttribute('aria-selected', "false");
+							evt.target.setAttribute('aria-selected', "true");
+							if(evt.target.id === 'sub-all') {
+								for (var i = 0; i < tests.length; i++) {
+									if (tests[i].parentNode.classList.contains(element.getAttribute('id')) || element.getAttribute('id') == 'alltests') {
 										tests[i].parentNode.removeAttribute('hidden');
 									}
 									else {
-										if (tests[i].parentNode.classList.contains(element.getAttribute('id'))) {
-											if(filters.rgaa.length > 0) {
-												tests[i].parentNode.classList.forEach(el => {
-													if(!el.match(/(?:testparent)|(?:a11y)/) && el != element.getAttribute('id')) {
-														if(!currentTabSubCat.includes(el)) currentTabSubCat.push(el);
-													}
-												});
-											}
-											
-											tests[i].parentNode.removeAttribute('hidden');
-										}
-										else {
-											tests[i].parentNode.setAttribute('hidden', 'hidden');
-										}
+										tests[i].parentNode.setAttribute('hidden', 'hidden');
 									}
 								}
-								
-								if(currentTabSubCat.length > 0) {
-									var subTabsContainer = document.createElement('div');
-									subTabsContainer.classList.add('subTabs');
-									var subTabsList = document.createElement('div');
-									subTabsList.setAttribute('role', 'tablist');
-									subTabsList.setAttribute('aria-label', 'Filtrer les résultats');
-
-									var subTabAll = document.createElement('button');
-									subTabAll.id = 'sub-all';
-									subTabAll.setAttribute('role', 'tab');
-									subTabAll.setAttribute('aria-selected', 'true');
-									subTabAll.setAttribute('aria-controls', 'earlAll');
-									subTabAll.textContent = "Tous";
-									subTabsList.appendChild(subTabAll);
-
-									currentTabSubCat.forEach(st => {
-										var subTab = document.createElement('button');
-										subTab.id = 'sub-'+st;
-										subTab.setAttribute('role', 'tab');
-										subTab.setAttribute('aria-selected', 'false');
-										subTab.setAttribute('aria-controls', 'earlAll');
-										subTab.textContent = chrome.i18n.getMessage('tag'+st);
-										subTabsList.appendChild(subTab);
-									});
-
-									var subPanel = document.getElementById('earlAll');
-									subPanel.setAttribute('aria-labelledby', 'sub-all');
-
-									subTabsContainer.appendChild(subTabsList);
-									currenttabpanelheading.nextSibling.after(subTabsContainer);
-
-									subTabsList.querySelectorAll('button').forEach(button => {
-										button.addEventListener('click', filterSubTag);
-									});
-
-									function filterSubTag(evt) {
-										let currentSubTabsSelected = subTabsList.querySelector('button[aria-selected="true"]');
-										currentSubTabsSelected.setAttribute('aria-selected', "false");
-										evt.target.setAttribute('aria-selected', "true");
-										if(evt.target.id === 'sub-all') {
-											for (var i = 0; i < tests.length; i++) {
-												if (tests[i].parentNode.classList.contains(element.getAttribute('id')) || element.getAttribute('id') == 'alltests') {
-													tests[i].parentNode.removeAttribute('hidden');
-												}
-												else {
-													tests[i].parentNode.setAttribute('hidden', 'hidden');
-												}
-											}
-										} else {
-											for (var i = 0; i < tests.length; i++) {
-												if ((tests[i].parentNode.classList.contains(element.getAttribute('id')) || element.getAttribute('id') == 'alltests') && tests[i].parentNode.classList.contains(evt.target.id.split('-')[1])) {
-													tests[i].parentNode.removeAttribute('hidden');
-												}
-												else {
-													tests[i].parentNode.setAttribute('hidden', 'hidden');
-												}
-											}
-										}
+							} else {
+								for (var i = 0; i < tests.length; i++) {
+									if ((tests[i].parentNode.classList.contains(element.getAttribute('id')) || element.getAttribute('id') == 'alltests') && tests[i].parentNode.classList.contains(evt.target.id.split('-')[1])) {
+										tests[i].parentNode.removeAttribute('hidden');
+									}
+									else {
+										tests[i].parentNode.setAttribute('hidden', 'hidden');
 									}
 								}
 							}
-							newcurrenttabpanel.setAttribute('aria-hidden', 'false');
 						}
 					}
-				}, false);
-
-				/**
-				 ** Manage action buttons in right column
-				* showhide-action
-				* highlight-action
-				* inspect-action
-				* about-action
-				*/
-				main.children[1].addEventListener('click', function(event) {
-					var element = event.target;
-					if (element.tagName.toLowerCase() == 'button') {
-						switch (element.getAttribute('data-action')) {
-							case 'showhide-action':
-								if (element.getAttribute('aria-expanded') == 'false') {
-									document.getElementById(element.getAttribute('aria-controls')).removeAttribute('hidden');
-									element.setAttribute('aria-expanded', 'true');
-								}
-								else {
-									document.getElementById(element.getAttribute('aria-controls')).setAttribute('hidden', 'hidden');
-									element.setAttribute('aria-expanded', 'false');
-								}
-								break;
-							case 'highlight-action':
-								var cellParent = element.closest('.item-actions');
-								var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
-								chrome.runtime.sendMessage({
-									tabId: chrome.devtools.inspectedWindow.tabId,
-									command: 'highlight',
-									element: cssify(getxpathbutton.getAttribute('data-xpath'))
-								});
-								break;
-							case 'inspect-action':
-								var cellParent = element.closest('.item-actions');
-								var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
-								var css = cssify(getxpathbutton.getAttribute('data-xpath'));
-								chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('" + css + "'))");
-								break;
-							case 'about-action':
-								element.setAttribute('data-popinopener', 'true');
-								var id = 'tanaguru-popin';
-								var tanagurupopin = document.getElementById(id);
-								if (!tanagurupopin) {
-									var tanagurupopin = document.createElement('div');
-									tanagurupopin.setAttribute('id', id)
-									tanagurupopin.setAttribute('hidden', 'hidden');
-									tanagurupopin.addEventListener('click', function(event) {
-										var element = event.target;
-										if (element.tagName.toLowerCase() == 'button') {
-											switch (element.getAttribute('data-action')) {
-												case 'copy-action':
-													var input = document.getElementById('clipboarddata');
-													input.value = element.parentNode.parentNode.previousSibling.textContent;
-													input.select();
-													if (document.execCommand("Copy")) {
-														input.value = '';
-														element.focus();
-														chrome.runtime.sendMessage({
-															tabId: chrome.devtools.inspectedWindow.tabId,
-															command: 'copyClipboard',
-															what: element.parentNode.parentNode.previousSibling.previousSibling.textContent
-														});
-													}
-													break;
-											}
-										}
-									}, false);
-									document.body.appendChild(tanagurupopin);
-								}
-								var clipboarddata = document.createElement('input');
-								clipboarddata.setAttribute('id', 'clipboarddata');
-								clipboarddata.setAttribute('type', 'text');
-								clipboarddata.setAttribute('class', 'visually-hidden');
-								clipboarddata.setAttribute('aria-hidden', 'true');
-								clipboarddata.setAttribute('tabindex', '-1');
-								tanagurupopin.appendChild(clipboarddata);
-								var header = document.createElement('div');
-								header.setAttribute('class', 'popin-header');
-								var h1 = document.createElement('h1');
-								h1.appendChild(document.createTextNode('A propos de cet élément'));
-								var closebutton = document.createElement('button');
-								closebutton.setAttribute('type', 'button');
-								closebutton.appendChild(document.createTextNode('Retour aux résultats'));
-								closebutton.addEventListener('click', function(event) {
-									var tanagurupopin = this.parentNode.parentNode.parentNode;
-									tanagurupopin.setAttribute('hidden', 'hidden');
-									tanagurupopin.textContent = '';
-									document.querySelector('main').classList.remove('tanaguru-popin-show');
-									var popinopener = document.querySelector('[data-popinopener="true"]');
-									popinopener.removeAttribute('data-popinopener');
-									popinopener.focus();
-								}, false);
-								var closebuttonparent = document.createElement('p');
-								closebuttonparent.appendChild(closebutton);
-								header.appendChild(closebuttonparent);
-								tanagurupopin.appendChild(header);
-								header.appendChild(h1);
-								var cssselector = document.createElement('div');
-								var h2 = document.createElement('h2');
-								var img = document.createElement('img');
-								img.setAttribute('alt', '');
-								img.setAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAd9JREFUSA3tVD1LW2EUfs57kyoVcXAoSHWpQz5m8QdUBUFK5wp2qCB0MGkjfkQHp4sOVm8GO7SgUPwFomBD/QUdTRTRRcGhFNFB80Xu8cQ0eLgmt0unkru8zznnec7Xe+8Fms9/vwH624Th2dUBMqaPytjKLMfOavzojNPDFkYZ/PPQjqdrfu9pvA5tR5POG2NZaeliHuT26ljZ4jARLRgy38PJtTEd09i3ABO9FvIvlBHJLH3Y18IjO76Xz5VCzLgwoFc6prFvAWI8lQRXejVafPopcU7E1wC1ar/GvgVAHKySFxvxCDLmA0+nruLAYxcQmrM7LbSNiLhf9v8DWHTr8cQnA/IBMQ1G55y3pWJp53hl6rfm1u3MmDYHhjaZuB0uf9ECL3bBX+95wg+0BFe98boFcswJ18V72e0tDMa9Im3LW/QOjBsZZqJQLCZ0rIJ9v4PIfCot4p6sfRlusCaKJlNZSX6esWND3uQVu+4ENaLcYL6KG9+BXDBLn8Waxnv6FhBpXop0vPi40u0VVuze6dRzZuqQCf408pjlXwC8DaJnLa2BTCTpvNTy0Gxq6EkQh/KSdjFoV8c09i0g/5hvKPOwJPnMhdKJFlrMRzLdeiWetSc3dKyJmxv4txu4A7som3rR28JBAAAAAElFTkSuQmCC');
-								h2.appendChild(img);
-								h2.appendChild(document.createTextNode(' Sélecteur CSS'));
-								cssselector.appendChild(h2);
-								var p = document.createElement('p');
-								p.appendChild(document.createTextNode(cssify(element.getAttribute('data-xpath'))));
-								cssselector.appendChild(p);
-								var cssactions = document.createElement('div');
-								var keepcsssimplep = document.createElement('p');
-								var checkbox = document.createElement('input');
-								checkbox.setAttribute('disabled', 'disabled');
-								checkbox.setAttribute('checked', 'checked');
-								checkbox.setAttribute('type', 'checkbox');
-								checkbox.setAttribute('id', 'cbsimplecss');
-								keepcsssimplep.appendChild(checkbox);
-								keepcsssimplep.appendChild(document.createTextNode(' '));
-								var label = document.createElement('label');
-								label.setAttribute('for', checkbox.getAttribute('id'));
-								label.appendChild(document.createTextNode('Conserver les pseudo-classes :first-of-type et :nth-of-type dans le sélecteur CSS.'));
-								keepcsssimplep.appendChild(label);
-								cssactions.appendChild(keepcsssimplep);
-								var copyp = document.createElement('p');
-								var copybutton = document.createElement('button');
-								copybutton.setAttribute('data-action', 'copy-action');
-								copybutton.setAttribute('type', 'button');
-								copybutton.setAttribute('aria-label', 'Copier dans le presse-papier le sélecteur CSS');
-								copybutton.appendChild(document.createTextNode('Copier dans le presse-papier'));
-								copyp.appendChild(copybutton);
-								cssactions.appendChild(copyp);
-								cssselector.appendChild(cssactions);
-								tanagurupopin.appendChild(cssselector);
-								var xpath = document.createElement('div');
-								var h2 = document.createElement('h2');
-								var img = document.createElement('img');
-								img.setAttribute('alt', '');
-								img.setAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAapJREFUSA3tUj0sQ1EUPue+UgxVJrpoYigaEhsJohNjZ5PJ+uL/b2kkfuKnxGCwMjTpJhYLEtHB0IH2dRCRLkIkqoj4eb3HuWkqTwepxCDSL7nnnb/7nfu+ewGKKCrw5xXAXzoheidWfSREFyJcyTc4SCzp54r7VwZ4ptZabCCizKYpUgJ6YBM05vSZggc0Tq+3IVEvIJZIkFEtdb8X3wg8NQ4v16G9pA8R5xT5F5AcKmhAw+RquxDaPjeXWQjOgOiOED2cv2H/mBDaEbD1s4do1qYCd3+grNzl7BQEbhJwTy/mSWJlJJmrCRTdeeSq1MzrlijTa0TSp3AYMF0DgYqq6so2QlGHJJPxhcF99I4u1lCpPcyTO9QuBdbwDgm2+EQODnysrYMHpPjK6rMdWUtEMSOSalXk1rzVtzG5biVXRY6r2ej82wa/ivmMNA+19OMVOZ1+rvm5VisBkxIzwe/IFZcNMhjL3r0K84CwE5/VNy3ZbfbVKhjCuDgKEYB6Ac95uy5N0wzl5X4csrRZNI0HvSi0HhDQIwnC4v11N740dp2rF79FBf6xAh+YyZKoiNAU8AAAAABJRU5ErkJggg==');
-								h2.appendChild(img);
-								h2.appendChild(document.createTextNode(' Chemin de localisation (XPath)'));
-								xpath.appendChild(h2);
-								var p = document.createElement('p');
-								p.appendChild(document.createTextNode(element.getAttribute('data-xpath')));
-								xpath.appendChild(p);
-								var xpathactions = document.createElement('div');
-								var keepxpathsimplep = document.createElement('p');
-								var checkbox = document.createElement('input');
-								checkbox.setAttribute('disabled', 'disabled');
-								checkbox.setAttribute('checked', 'checked');
-								checkbox.setAttribute('type', 'checkbox');
-								checkbox.setAttribute('id', 'cbsimplexpath');
-								keepxpathsimplep.appendChild(checkbox);
-								keepxpathsimplep.appendChild(document.createTextNode(' '));
-								var label = document.createElement('label');
-								label.setAttribute('for', checkbox.getAttribute('id'));
-								label.appendChild(document.createTextNode('Conserver les attributs class et id dans le chemin de localisation (XPath).'));
-								keepxpathsimplep.appendChild(label);
-								xpathactions.appendChild(keepxpathsimplep);
-								var copyp = document.createElement('p');
-								var copybutton = document.createElement('button');
-								copybutton.setAttribute('data-action', 'copy-action');
-								copybutton.setAttribute('type', 'button');
-								copybutton.setAttribute('aria-label', 'Copier dans le presse-papier le chemin de localisation (XPath)');
-								copybutton.appendChild(document.createTextNode('Copier dans le presse-papier'));
-								copyp.appendChild(copybutton);
-								xpathactions.appendChild(copyp);
-								xpath.appendChild(xpathactions);
-								tanagurupopin.appendChild(xpath);
-								document.querySelector('main').classList.add('tanaguru-popin-show');
-								tanagurupopin.removeAttribute('hidden');
-								closebutton.focus();
-								break;
-						}
-					}
-				}, false);
-
-				/**
-				 * ? Set DOM (alltests's tab & panel)
-				 */
-				var tab = document.createElement('li');
-				tab.setAttribute('role', 'tab');
-				tab.setAttribute('aria-selected', 'false');
-				tab.setAttribute('id', 'alltests');
-				tab.setAttribute('tabindex', '-1');
-
-				var span = document.createElement('span');
-				span.appendChild(document.createTextNode(chrome.i18n.getMessage('allTags')));
-				tab.appendChild(span);
-				ul.appendChild(tab);
-
-				var alltagspanel = document.createElement('div');
-				alltagspanel.setAttribute('role', 'tabpanel');
-				alltagspanel.setAttribute('aria-labelledby', tab.getAttribute('id'));
-				alltagspanel.setAttribute('id', 'tests');
-				alltagspanel.setAttribute('aria-hidden', 'true');
-				tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
-
-				var alltagspanelheading = document.createElement('h2');
-				alltagspanelheading.appendChild(document.createTextNode(tab.textContent));
-				alltagspanel.appendChild(alltagspanelheading);
-
-				/**
-				 * ? set tags name & sort by status & alphabetical
-				 */
-				response.tags.forEach(tag => {
-					tag.name = chrome.i18n.getMessage('tag' + tag.id.charAt(0).toUpperCase() + tag.id.slice(1));
-				});
-				response.tags = response.tags.sort((a,b) => {
-					if(a.name < b.name) return -1;
-					if(a.name > b.name) return 1;
-					return 0;
-				});
-				response.tags = response.tags.sort((a,b) => {
-					if (a.status === 'failed' && b.status !== 'failed') return -1;
-					if (a.status !== 'failed' && b.status === 'failed') return 1;
-					if (a.status === 'cantTell' && b.status === 'passed') return -1;
-					if (a.status === 'passed' && b.status === 'cantTell') return 1;
-					if (a.status === 'cantTell' && b.status === 'untested') return -1;
-					if (a.status === 'untested' && b.status === 'cantTell') return 1;
-					if (a.status === 'passed' && b.status === 'untested') return -1;
-					if (a.status === 'untested' && b.status === 'passed') return 1;
-					return 0;
-				});
-
-				/**
-				 * ? create tests container by status
-				 */
-				// IN PROGRESS
-				var statuses = ['failed', 'cantTell', 'passed', 'inapplicable', 'untested'];
-
-				var statuseslist = document.createElement('ul');
-				statuseslist.setAttribute('style', 'margin: 1em; padding: 0; list-style-type: none; font-size: 0.8em');
-				statuseslist.hidden = true;
-
-				var statusescontents = document.createElement('div');
-				statusescontents.id = 'earlAll';
-				for (var s = 0; s < statuses.length; s++) {
-					var status = document.createElement('li');
-					status.setAttribute('style', 'display: inline-block; border: solid 1px black; margin-right: 0.5em; padding: 0.5em 1em');
-
-					status.appendChild(document.createTextNode(chrome.i18n.getMessage('earl' + statuses[s].charAt(0).toUpperCase() + statuses[s].slice(1))));
-					statuseslist.appendChild(status);
-					var statuscontent = document.createElement('div');
-					statuscontent.setAttribute('id', 'earl' + statuses[s].charAt(0).toUpperCase() + statuses[s].slice(1));
-					statusescontents.appendChild(statuscontent);
 				}
-				alltagspanel.appendChild(statuseslist);
-				alltagspanel.appendChild(statusescontents);
+				newcurrenttabpanel.setAttribute('aria-hidden', 'false');
+			}
+		}
+	}, false);
 
+	nav.appendChild(ul);
+	main.children[0].appendChild(nav);
+
+	/**
+	 ** Manage action buttons in right column
+	 * showhide-action
+	 * highlight-action
+	 * inspect-action
+	 * about-action
+	 */
+	main.children[1].addEventListener('click', function(event) {
+		var element = event.target;
+		if (element.tagName.toLowerCase() == 'button') {
+			switch (element.getAttribute('data-action')) {
+				case 'showhide-action':
+					if (element.getAttribute('aria-expanded') == 'false') {
+						document.getElementById(element.getAttribute('aria-controls')).removeAttribute('hidden');
+						element.setAttribute('aria-expanded', 'true');
+					}
+					else {
+						document.getElementById(element.getAttribute('aria-controls')).setAttribute('hidden', 'hidden');
+						element.setAttribute('aria-expanded', 'false');
+					}
+					break;
+				case 'highlight-action':
+					var cellParent = element.closest('.item-actions');
+					var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
+					chrome.runtime.sendMessage({
+						tabId: chrome.devtools.inspectedWindow.tabId,
+						command: 'highlight',
+						element: cssify(getxpathbutton.getAttribute('data-xpath'))
+					});
+					break;
+				case 'inspect-action':
+					var cellParent = element.closest('.item-actions');
+					var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
+					var css = cssify(getxpathbutton.getAttribute('data-xpath'));
+					chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('" + css + "'))");
+					break;
+				case 'about-action':
+					element.setAttribute('data-popinopener', 'true');
+					var id = 'tanaguru-popin';
+					var tanagurupopin = document.getElementById(id);
+					if (!tanagurupopin) {
+						var tanagurupopin = document.createElement('div');
+						tanagurupopin.setAttribute('id', id)
+						tanagurupopin.setAttribute('hidden', 'hidden');
+						tanagurupopin.addEventListener('click', function(event) {
+							var element = event.target;
+							if (element.tagName.toLowerCase() == 'button') {
+								switch (element.getAttribute('data-action')) {
+									case 'copy-action':
+										var input = document.getElementById('clipboarddata');
+										input.value = element.parentNode.parentNode.previousSibling.textContent;
+										input.select();
+										if (document.execCommand("Copy")) {
+											input.value = '';
+											element.focus();
+											chrome.runtime.sendMessage({
+												tabId: chrome.devtools.inspectedWindow.tabId,
+												command: 'copyClipboard',
+												what: element.parentNode.parentNode.previousSibling.previousSibling.textContent
+											});
+										}
+										break;
+								}
+							}
+						}, false);
+						document.body.appendChild(tanagurupopin);
+					}
+					var clipboarddata = document.createElement('input');
+					clipboarddata.setAttribute('id', 'clipboarddata');
+					clipboarddata.setAttribute('type', 'text');
+					clipboarddata.setAttribute('class', 'visually-hidden');
+					clipboarddata.setAttribute('aria-hidden', 'true');
+					clipboarddata.setAttribute('tabindex', '-1');
+					tanagurupopin.appendChild(clipboarddata);
+					var header = document.createElement('div');
+					header.setAttribute('class', 'popin-header');
+					var h1 = document.createElement('h1');
+					h1.appendChild(document.createTextNode('A propos de cet élément'));
+					var closebutton = document.createElement('button');
+					closebutton.setAttribute('type', 'button');
+					closebutton.appendChild(document.createTextNode('Retour aux résultats'));
+					closebutton.addEventListener('click', function(event) {
+						var tanagurupopin = this.parentNode.parentNode.parentNode;
+						tanagurupopin.setAttribute('hidden', 'hidden');
+						tanagurupopin.textContent = '';
+						document.querySelector('main').classList.remove('tanaguru-popin-show');
+						var popinopener = document.querySelector('[data-popinopener="true"]');
+						popinopener.removeAttribute('data-popinopener');
+						popinopener.focus();
+					}, false);
+					var closebuttonparent = document.createElement('p');
+					closebuttonparent.appendChild(closebutton);
+					header.appendChild(closebuttonparent);
+					tanagurupopin.appendChild(header);
+					header.appendChild(h1);
+					var cssselector = document.createElement('div');
+					var h2 = document.createElement('h2');
+					var img = document.createElement('img');
+					img.setAttribute('alt', '');
+					img.setAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAd9JREFUSA3tVD1LW2EUfs57kyoVcXAoSHWpQz5m8QdUBUFK5wp2qCB0MGkjfkQHp4sOVm8GO7SgUPwFomBD/QUdTRTRRcGhFNFB80Xu8cQ0eLgmt0unkru8zznnec7Xe+8Fms9/vwH624Th2dUBMqaPytjKLMfOavzojNPDFkYZ/PPQjqdrfu9pvA5tR5POG2NZaeliHuT26ljZ4jARLRgy38PJtTEd09i3ABO9FvIvlBHJLH3Y18IjO76Xz5VCzLgwoFc6prFvAWI8lQRXejVafPopcU7E1wC1ar/GvgVAHKySFxvxCDLmA0+nruLAYxcQmrM7LbSNiLhf9v8DWHTr8cQnA/IBMQ1G55y3pWJp53hl6rfm1u3MmDYHhjaZuB0uf9ECL3bBX+95wg+0BFe98boFcswJ18V72e0tDMa9Im3LW/QOjBsZZqJQLCZ0rIJ9v4PIfCot4p6sfRlusCaKJlNZSX6esWND3uQVu+4ENaLcYL6KG9+BXDBLn8Waxnv6FhBpXop0vPi40u0VVuze6dRzZuqQCf408pjlXwC8DaJnLa2BTCTpvNTy0Gxq6EkQh/KSdjFoV8c09i0g/5hvKPOwJPnMhdKJFlrMRzLdeiWetSc3dKyJmxv4txu4A7som3rR28JBAAAAAElFTkSuQmCC');
+					h2.appendChild(img);
+					h2.appendChild(document.createTextNode(' Sélecteur CSS'));
+					cssselector.appendChild(h2);
+					var p = document.createElement('p');
+					p.appendChild(document.createTextNode(cssify(element.getAttribute('data-xpath'))));
+					cssselector.appendChild(p);
+					var cssactions = document.createElement('div');
+					var keepcsssimplep = document.createElement('p');
+					var checkbox = document.createElement('input');
+					checkbox.setAttribute('disabled', 'disabled');
+					checkbox.setAttribute('checked', 'checked');
+					checkbox.setAttribute('type', 'checkbox');
+					checkbox.setAttribute('id', 'cbsimplecss');
+					keepcsssimplep.appendChild(checkbox);
+					keepcsssimplep.appendChild(document.createTextNode(' '));
+					var label = document.createElement('label');
+					label.setAttribute('for', checkbox.getAttribute('id'));
+					label.appendChild(document.createTextNode('Conserver les pseudo-classes :first-of-type et :nth-of-type dans le sélecteur CSS.'));
+					keepcsssimplep.appendChild(label);
+					cssactions.appendChild(keepcsssimplep);
+					var copyp = document.createElement('p');
+					var copybutton = document.createElement('button');
+					copybutton.setAttribute('data-action', 'copy-action');
+					copybutton.setAttribute('type', 'button');
+					copybutton.setAttribute('aria-label', 'Copier dans le presse-papier le sélecteur CSS');
+					copybutton.appendChild(document.createTextNode('Copier dans le presse-papier'));
+					copyp.appendChild(copybutton);
+					cssactions.appendChild(copyp);
+					cssselector.appendChild(cssactions);
+					tanagurupopin.appendChild(cssselector);
+					var xpath = document.createElement('div');
+					var h2 = document.createElement('h2');
+					var img = document.createElement('img');
+					img.setAttribute('alt', '');
+					img.setAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAapJREFUSA3tUj0sQ1EUPue+UgxVJrpoYigaEhsJohNjZ5PJ+uL/b2kkfuKnxGCwMjTpJhYLEtHB0IH2dRCRLkIkqoj4eb3HuWkqTwepxCDSL7nnnb/7nfu+ewGKKCrw5xXAXzoheidWfSREFyJcyTc4SCzp54r7VwZ4ptZabCCizKYpUgJ6YBM05vSZggc0Tq+3IVEvIJZIkFEtdb8X3wg8NQ4v16G9pA8R5xT5F5AcKmhAw+RquxDaPjeXWQjOgOiOED2cv2H/mBDaEbD1s4do1qYCd3+grNzl7BQEbhJwTy/mSWJlJJmrCRTdeeSq1MzrlijTa0TSp3AYMF0DgYqq6so2QlGHJJPxhcF99I4u1lCpPcyTO9QuBdbwDgm2+EQODnysrYMHpPjK6rMdWUtEMSOSalXk1rzVtzG5biVXRY6r2ej82wa/ivmMNA+19OMVOZ1+rvm5VisBkxIzwe/IFZcNMhjL3r0K84CwE5/VNy3ZbfbVKhjCuDgKEYB6Ac95uy5N0wzl5X4csrRZNI0HvSi0HhDQIwnC4v11N740dp2rF79FBf6xAh+YyZKoiNAU8AAAAABJRU5ErkJggg==');
+					h2.appendChild(img);
+					h2.appendChild(document.createTextNode(' Chemin de localisation (XPath)'));
+					xpath.appendChild(h2);
+					var p = document.createElement('p');
+					p.appendChild(document.createTextNode(element.getAttribute('data-xpath')));
+					xpath.appendChild(p);
+					var xpathactions = document.createElement('div');
+					var keepxpathsimplep = document.createElement('p');
+					var checkbox = document.createElement('input');
+					checkbox.setAttribute('disabled', 'disabled');
+					checkbox.setAttribute('checked', 'checked');
+					checkbox.setAttribute('type', 'checkbox');
+					checkbox.setAttribute('id', 'cbsimplexpath');
+					keepxpathsimplep.appendChild(checkbox);
+					keepxpathsimplep.appendChild(document.createTextNode(' '));
+					var label = document.createElement('label');
+					label.setAttribute('for', checkbox.getAttribute('id'));
+					label.appendChild(document.createTextNode('Conserver les attributs class et id dans le chemin de localisation (XPath).'));
+					keepxpathsimplep.appendChild(label);
+					xpathactions.appendChild(keepxpathsimplep);
+					var copyp = document.createElement('p');
+					var copybutton = document.createElement('button');
+					copybutton.setAttribute('data-action', 'copy-action');
+					copybutton.setAttribute('type', 'button');
+					copybutton.setAttribute('aria-label', 'Copier dans le presse-papier le chemin de localisation (XPath)');
+					copybutton.appendChild(document.createTextNode('Copier dans le presse-papier'));
+					copyp.appendChild(copybutton);
+					xpathactions.appendChild(copyp);
+					xpath.appendChild(xpathactions);
+					tanagurupopin.appendChild(xpath);
+					document.querySelector('main').classList.add('tanaguru-popin-show');
+					tanagurupopin.removeAttribute('hidden');
+					closebutton.focus();
+					break;
+			}
+		}
+	}, false);
+
+	var catCount = 0;
+	function responseProcess(filters) {
+		let first = (catCount === 0) ? "yes" : "no";
+		let last = (catCount === filters.categories.length-1) ? "yes" : "no";
+		let msgRequest = {
+			tabId: chrome.devtools.inspectedWindow.tabId,
+			command: 'executeTests', 
+			timer: new Date().getTime(),
+			cat: filters.categories[catCount],
+			statusUser: filters.statuses,
+			first: first,
+			last: last
+		}
+
+		const sendMessage = msg => new Promise((resolve, reject) => {
+			const r = chrome.runtime.sendMessage(msg, resolve);
+			if(r?.then) {
+				return resolve(r);
+			}
+			if(chrome.runtime.lastError) {
+				reject(chrome.runtime.lastError);
+			}
+		});
+
+		var sending = sendMessage(msgRequest);
+		sending.then(
+			function (response) {
+				let category = filters.categories[catCount];
+				response = response.response[0];
+				let t = 1;
+	
 				// IN PROGRESS
 				var reftests = {};
-
+	
 				// IN PROGRESS
 				// var ressourcestests = [];
-
 				var updatedashboardp = false;
-				var tabsWithResult = [];
-				var othersTags = [];
 
 				/**
 				 * ? display tests results
@@ -764,20 +785,16 @@ button.addEventListener('click', function () {
 						updatedashboardp = true;
 					}
 					
-					test.tags.forEach(tag => {
-						if(tagsRgaaCat.includes(tag) && !tabsWithResult.includes(tag)) tabsWithResult.push(tag);
-						else if(!tagsRgaaCat.includes(tag) && !othersTags.includes(tag)) othersTags.push(tag);
-					});
 					var testelement = document.createElement('div');
 					testelement.setAttribute('class', 'testparent ' + test.tags.join(' '));
-
+	
 					// if (test.hasOwnProperty('ressources')) {
 					// 	// var testressources = test.ressources;
 					// 	for (var r = 0; r < test.ressources.length; r++) {
 					// 		testelement.className += ' ' + r;
 					// 	}
 					// }
-
+	
 					// create test button
 					var tabpanelsection = document.createElement('h3');
 					tabpanelsection.setAttribute('class', test.type);
@@ -795,27 +812,27 @@ button.addEventListener('click', function () {
 					testref.style.textOverflow = 'ellipsis';
 					testref.style.width = '80px';
 					testref.style.textAlign = 'right';
-
+	
 					if (!reftests.hasOwnProperty(test.tags[0].toUpperCase())) {
 						reftests[test.tags[0].toUpperCase()] = 0;
 					}
-
+	
 					reftests[test.tags[0].toUpperCase()] += 1;
 					var testid = test.tags[0].toUpperCase() + '-' + reftests[test.tags[0].toUpperCase()];
-
+	
 					if (test.hasOwnProperty('id')) {
 						testref.setAttribute('data-autoid', testid);
 						testid = test.id;
 					}
-
+	
 					testref.setAttribute('title', testid);
 					testref.appendChild(document.createTextNode(testid));
 					tabpanelsectionbutton.appendChild(testref);
-
+	
 					// IN PROGRESS - test ressources
 					// if (test.hasOwnProperty('ressources')) {
 					// 	var ressourcesLength = Object.keys(test.ressources).length;
-
+	
 					// 	for (var r = 0; r < ressourcesLength; r++) {
 					// 		if (ressourcestests.indexOf(test.ressources[r]) == -1) {
 					// 			ressourcestests.push(test.ressources[r]);
@@ -828,7 +845,7 @@ button.addEventListener('click', function () {
 					status.setAttribute('class', 'status');
 					status.appendChild(document.createTextNode(chrome.i18n.getMessage('earl' + test.type.charAt(0).toUpperCase() + test.type.slice(1))));
 					tabpanelsectionbutton.appendChild(status);
-
+	
 					// display the number of elements on test button
 					let dataLength = test.data.length;
 					if (!((test.type == 'failed' && dataLength == 0) || test.type == 'untested')) {
@@ -838,27 +855,27 @@ button.addEventListener('click', function () {
 						tabpanelsectionbutton.appendChild(strong);
 						tabpanelsectionbutton.appendChild(document.createTextNode(' '));
 					}
-
+	
 					// display the test name on the button
 					var span = document.createElement('span');
 					span.textContent = test.name.charAt(0).toUpperCase() + test.name.slice(1);
 					tabpanelsectionbutton.appendChild(span);
 					tabpanelsection.appendChild(tabpanelsectionbutton);
-
+	
 					// create results container
 					var tabpanelsectiondiv = document.createElement('div');
 					tabpanelsectiondiv.setAttribute('id', 'testsection' + t);
 					tabpanelsectionbutton.setAttribute('aria-controls', tabpanelsectiondiv.getAttribute('id'));
 					tabpanelsectiondiv.setAttribute('hidden', 'hidden');
 					testelement.appendChild(tabpanelsection);
-
+	
 					// test description
 					if (test.description) {
 						var tabpanelsectionp = document.createElement('p');
 						tabpanelsectionp.textContent = test.description;
 						tabpanelsectiondiv.appendChild(tabpanelsectionp);
 					}
-
+	
 					// test explanation
 					if (test.explanation) {
 						var tabpanelsectionp = document.createElement('p');
@@ -871,7 +888,7 @@ button.addEventListener('click', function () {
 					beforetable.setAttribute('class', 'beforetable');
 					var tagssection = document.createElement('div');
 					tagssection.setAttribute('class', 'tags');
-
+	
 					tagssection.addEventListener('click', function(event) {
 						var element = event.target;
 						if (element.tagName.toLowerCase() == 'button') {
@@ -880,10 +897,10 @@ button.addEventListener('click', function () {
 							tab.focus();
 						}
 					}, false);
-
+	
 					var tabpanelsectionp = document.createElement('p');
 					tabpanelsectionp.appendChild(document.createTextNode('Étiquettes : '));
-
+	
 					if (test.tags.length == 1) {
 						var tagid = 'tag' + test.tags[0].charAt(0).toUpperCase() + test.tags[0].slice(1);
 						var tagbutton = document.createElement('button');
@@ -894,9 +911,9 @@ button.addEventListener('click', function () {
 						tabpanelsectionp.appendChild(tagbutton);
 						tabpanelsectionp.appendChild(document.createTextNode('.'));
 					}
-
+	
 					tagssection.appendChild(tabpanelsectionp);
-
+	
 					if (test.tags.length > 1) {
 						var tagsul = document.createElement('ul');
 						for (var i = 0; i < test.tags.length; i++) {
@@ -912,7 +929,7 @@ button.addEventListener('click', function () {
 						}
 						tagssection.appendChild(tagsul);
 					}
-
+	
 					beforetable.appendChild(tagssection);
 					tabpanelsectiondiv.appendChild(beforetable);
 					
@@ -924,17 +941,17 @@ button.addEventListener('click', function () {
 						var countkeyboardno = 0;
 						var countreaderyes = 0;
 						var countreaderno = 0;
-
+	
 						// table
 						var table = document.createElement('table');
 						table.setAttribute('border', '');
-
+	
 						// table caption
 						var caption = document.createElement('caption');
 						caption.setAttribute('class', 'visually-hidden');
 						caption.appendChild(document.createTextNode(tabpanelsection.textContent));
 						table.appendChild(caption);
-
+	
 						// table headings
 						if(!test.tags.includes('contrast')) {
 							var tableheadings = [
@@ -960,7 +977,7 @@ button.addEventListener('click', function () {
 								{ name: 'Actions', export: 'no' }
 							];
 						}
-
+	
 						var tr = document.createElement('tr');
 						tr.setAttribute('class', 'theadings');
 						for (var k = 0; k < tableheadings.length; k++) {
@@ -985,16 +1002,16 @@ button.addEventListener('click', function () {
 							tr.appendChild(th);
 						}
 						table.appendChild(tr);
-
+	
 						var codehighlight = test.mark ? test.mark : null;
-
+	
 						// table content
 						for (var h = 0; h < test.data.length; h++) {
 							let itemNumber = '1A' + (h + 1);
 							let itemKeyboard = test.data[h].canBeReachedUsingKeyboardWith.join(' / ');
 							let itemReader = test.data[h].isNotExposedDueTo;
 							let itemXPath = test.data[h].xpath;
-
+	
 							if(test.tags.includes('contrast')) {
 								var itemTag = test.data[h].tag;
 								var itemText = test.data[h].text;
@@ -1003,7 +1020,7 @@ button.addEventListener('click', function () {
 								var itemCT = test.data[h].foreground;
 								var itemCF = test.data[h].background;
 								var itemRatio = test.data[h].ratio + ':1';
-
+	
 								let template = document.querySelector('#item-row-contrast');
 								var newRow = document.importNode(template.content, true);
 								newRow.querySelector('.item-number').textContent = itemNumber;
@@ -1027,18 +1044,18 @@ button.addEventListener('click', function () {
 								}
 								newRow.querySelector('.item-cf .visually-hidden').textContent = itemCF;
 								newRow.querySelector('.item-ratio').textContent = itemRatio;
-
+	
 								
 							} else {
 								var itemStatus = test.data[h].status;
 								var itemCode = test.data[h].outer;
-
+	
 								let template = document.querySelector('#item-row');
 								var newRow = document.importNode(template.content, true);
 								newRow.querySelector('.item-number').textContent = itemNumber;
 								newRow.querySelector('.item-status').textContent = itemStatus;
 								newRow.querySelector('.item-code code').textContent = itemCode;
-
+	
 								if (codehighlight && codehighlight.hasOwnProperty('attrs')) {
 									var codeattrs = [];
 									var code = newRow.querySelector('.item-code code');
@@ -1070,7 +1087,7 @@ button.addEventListener('click', function () {
 									newRow.querySelector('.item-code code').textContent = itemCode;
 								}
 							}
-
+	
 							if(itemKeyboard.length > 0) {
 								countkeyboardyes += 1;
 								newRow.querySelector('.item-keyboard .keyboardyes').setAttribute('title', 'Oui ('+ itemKeyboard + ')');
@@ -1081,7 +1098,7 @@ button.addEventListener('click', function () {
 								newRow.querySelector('.item-keyboard .keyboardyes').className = 'keyboardno';
 								newRow.querySelector('.item-keyboard .visually-hidden').textContent = 'Non';
 							}
-
+	
 							if(itemReader.length === 0) {
 								countreaderyes += 1;
 								newRow.querySelector('.item-reader .readeryes').setAttribute('title', 'oui');
@@ -1092,33 +1109,33 @@ button.addEventListener('click', function () {
 								newRow.querySelector('.item-reader .readeryes').className = 'readerno';
 								newRow.querySelector('.item-reader .visually-hidden').textContent = 'Non (' + itemReader + ')';
 							}
-
+	
 							if(test.data[h].isVisible) {
 								countvisible += 1;
-
+	
 								newRow.querySelector('.item-actions .item-actions-highlight button').setAttribute('title', 'Mettre en évidence sur la page (' + test.name + ', item ' + (h + 1) + ')');
 								newRow.querySelector('.item-actions .item-actions-highlight .visually-hidden').textContent = 'Mettre en évidence sur la page (' + test.name + ', item ' + (h + 1) + ')';
 							} else {
 								countinvisible += 1;
-
+	
 								newRow.querySelector('.item-actions .item-actions-highlight button').className = 'hidden';
 								newRow.querySelector('.item-actions .item-actions-highlight button').disabled = true;
 								newRow.querySelector('.item-actions .item-actions-highlight button').setAttribute('title', "Cet élément n'est pas visible à l'écran.");
 								newRow.querySelector('.item-actions .item-actions-highlight .visually-hidden').textContent = "Cet élément n'est pas visible à l'écran.";
 							}
-
+	
 							newRow.querySelector('.item-actions .item-actions-inspect button').setAttribute('title', 'Révéler dans l\'inspecteur (' + test.name + ', item ' + (h + 1) + ')');
 							newRow.querySelector('.item-actions .item-actions-inspect .visually-hidden').textContent = 'Révéler dans l\'inspecteur (' + test.name + ', item ' + (h + 1) + ')';
-
+	
 							newRow.querySelector('.item-actions .item-actions-about button').setAttribute('title', 'A propos de cet élément (' + test.name + ', item ' + (h + 1) + ')');
 							newRow.querySelector('.item-actions .item-actions-about button').setAttribute('data-xpath', itemXPath);
 							newRow.querySelector('.item-actions .item-actions-about .visually-hidden').textContent = 'A propos de cet élément (' + test.name + ', item ' + (h + 1) + ')';
 							
 							table.appendChild(newRow);
 						}
-
+	
 						tabpanelsectiondiv.appendChild(table);
-
+	
 						// filter results
 						var tableactions = document.createElement('div');
 						tableactions.setAttribute('class', 'tableactions');
@@ -1551,78 +1568,76 @@ button.addEventListener('click', function () {
 						}, false);
 						exportparent.appendChild(exportbutton);
 						tableactions.appendChild(exportparent);
-
+	
 						beforetable.appendChild(tableactions);
 					}
-
+	
 					testelement.appendChild(tabpanelsectiondiv);
-
+	
 					// IN PROGRESS
 					alltagspanel.querySelector('#earl' + test.type.charAt(0).toUpperCase() + test.type.slice(1)).appendChild(testelement);
 					//alltagspanel.appendChild(testelement);
 					
 					t++;
 				});
+	
+				let currentTag = response.tags.filter(tag => tag.id === category)[0];
+				let currentTab = document.getElementById(category);
+				currentTab.querySelector('p.loading').remove();
+				currentTab.classList.remove('cat-loading');
 
-				main.children[1].appendChild(alltagspanel);
+				if (currentTag.nbfailures > 0 && allFailures === 0) {
+					tab.classList.add('cat-failed');
+					tab.appendChild(document.createTextNode(' '));
+					var strong = document.createElement('strong');
+					tab.appendChild(strong);
+				}
 
-				/**
-				 * ? generate tab in left column
-				 * * tags & ressources
-				 */
-				response.tags.forEach(tag => {
-					if(!tabsWithResult.includes(tag.id)) return;
-					var tab = document.createElement('li');
-					tab.setAttribute('role', 'tab');
-					tab.setAttribute('aria-selected', 'false');
-					tab.setAttribute('id', tag.id);
-					tab.setAttribute('tabindex', '-1');
-					tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
+				if (currentTag.nbfailures > 0) {
+					let allerrors = tab.querySelector('strong');
+					allFailures += currentTag.nbfailures;
+					currentTab.classList.add('cat-failed');
+					currentTab.appendChild(document.createTextNode(' '));
+					var strong = document.createElement('strong');
+					strong.appendChild(document.createTextNode(currentTag.nbfailures));
+					allerrors.textContent = allFailures;
+					currentTab.appendChild(strong);
+				}
+		
+				if (currentTag.status === 'inapplicable') {
+					currentTab.classList.add('cat-inapplicable');
+					currentTab.appendChild(document.createTextNode(' '));
 					var span = document.createElement('span');
-					span.appendChild(document.createTextNode(tag.name));
-					tab.appendChild(span);
-					if (tag.nbfailures > 0) {
-						tab.appendChild(document.createTextNode(' '));
-						var strong = document.createElement('strong');
-						strong.appendChild(document.createTextNode(tag.nbfailures));
-						tab.appendChild(strong);
-					}
-
-					if (tag.status === 'inapplicable') {
-						tab.classList.add('cat-inapplicable');
-						tab.appendChild(document.createTextNode(' '));
-						var span = document.createElement('span');
-						span.appendChild(document.createTextNode('NA'));
-						span.setAttribute('aria-label', 'NA: non applicable');
-						tab.appendChild(span);
-					}
-
-					ul.appendChild(tab);
-				});
-
-				// ressourcestests.sort();
-				// console.log(ressourcestests);
-				// for (var r = 0; r < ressourcestests.length; r++) {
-				// 	var tab = document.createElement('li');
-				// 	tab.setAttribute('class', 'ressource');
-				// 	tab.setAttribute('role', 'tab');
-				// 	tab.setAttribute('id', ressourcestests[r]);
-				// 	tab.setAttribute('aria-selected', 'false');
-				// 	tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
-				// 	tab.setAttribute('tabindex', '0');
-				// 	var span = document.createElement('span');
-				// 	span.appendChild(document.createTextNode(ressourcestests[r].toUpperCase())); // A prévoir listing des ressources...
-				// 	tab.appendChild(span);
-				// 	ul.appendChild(tab);
-				// }
+					span.appendChild(document.createTextNode('NA'));
+					span.setAttribute('aria-label', 'NA: non applicable');
+					currentTab.appendChild(span);
+				}
 			}
-			nav.appendChild(ul);
-			main.children[0].appendChild(nav);
-			main.children[1].querySelector('p').remove(); // Supprime le loading...
-			dashboard.focus();
-		}
-	);
+		).then(
+			() => {
+				catCount++;
+				if(filters.categories[catCount]) responseProcess(filters);
+			}
+		)
+	}
+
+	responseProcess(filters);
+
+	main.children[1].querySelector('p.loading').remove(); // Supprime le loading...
+	
+	var dashboardpanelp = document.createElement('p'); 
+	dashboardpanelp.classList.add('dashboard-message');
+	dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')));
+	dashboardpanel.appendChild(dashboardpanelp);
+	if(ul.querySelectorAll('li').length < 3) dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultNone')), dashboardpanelp.firstChild);
+
+	var dashboardpanelbuttonreload = document.createElement('button');
+	dashboardpanelbuttonreload.setAttribute('type', 'button');
+	dashboardpanelbuttonreload.classList.add('dashboard-reload-button');
+	dashboardpanelbuttonreload.appendChild(document.createTextNode("Quitter et démarrer une nouvelle analyse"));
+	dashboardpanelbuttonreload.addEventListener('click', () => {window.location.reload();});
+	dashboardpanel.appendChild(dashboardpanelbuttonreload);
+
+	main.children[1].appendChild(alltagspanel);
 	
 }, false);
-
-
