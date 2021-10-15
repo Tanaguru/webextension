@@ -233,7 +233,12 @@ main:not(.launch-analysis) > div:first-child + div {
 }
 
 .loading {
-	font-size: 0.9em; padding: 7.5em 0; position: absolute; top: 0; left: 0; text-align: center; width: 100%; margin: 0;
+	box-sizing: border-box;
+	font-size: 0.9em;
+	padding: 7.5em 0;
+	text-align: center;
+	width: 100%;
+	margin: 0;
 }
 
 .loading img[tabindex="-1"] {
@@ -857,12 +862,6 @@ td code {
 }
 
 /** contrast */
-#tabContrast .contrast-loading {
-	float: right;
-	margin-right: 0.5em;
-	width: 2em;
-}
-
 .contrast-legend .contrast-bgImage,
 .contrast-legend .contrast-bgNull {
 	display: inline-block;
@@ -870,11 +869,6 @@ td code {
 	height: 18px;
 	margin: 0 0.5em 0 1em;
 	vertical-align: middle;
-}
-
-.contrast-loading img {
-	width: 100%;
-	height: auto;
 }
 
 .contrast-bgImage {

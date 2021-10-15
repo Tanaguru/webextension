@@ -30,7 +30,44 @@ document.addEventListener('DOMContentLoaded', function(event) {
 			else {
 				var content = chrome.i18n.getMessage(data[1]);
 			}
-			span[i].innerHTML = content;
+
+			if(content.match(/<\/?\w+>/gm)) {
+				var rgx = new RegExp(/(<\/?.[^>]+>)|(.[^<>(<\/)]+)/g);
+				var contentList = content.match(rgx);
+				var openNode = [];
+				for(let x = 0; x < contentList.length; x++) {
+					if(contentList[x].startsWith('</')) {
+						if(openNode.length === 1) span[i].appendChild(openNode[0]);
+						openNode.pop();
+					}
+					else if(contentList[x].startsWith('<')) {
+						let tag = contentList[x].match(/\w+/)[0];
+						let tgaAttr = contentList[x].match(/[^<\s=]+="[^"]*"/g);
+						let newNode = document.createElement(tag);
+						if(tgaAttr) {
+							tgaAttr.forEach(attr => {
+								let a = attr.match(/[^="]+/g)[0];
+								let v = attr.match(/[^="]+/g)[1];
+								newNode.setAttribute(a, v);
+							});
+						}
+						if(openNode.length > 0) {
+							openNode[openNode.length-1].appendChild(newNode);
+						}
+						openNode.push(newNode);
+					} else {
+						if(openNode.length > 0) {
+							openNode[openNode.length-1].appendChild(document.createTextNode(contentList[x]));
+						}
+						else span[i].appendChild(document.createTextNode(contentList[x]));
+					}
+				}
+			} else {
+				span[i].textContent = content;
+			}
+
+			// span[i].innerHTML = content;
+			
 			if (data[0] != 'manifest') {
 				var spannodes = span[i].querySelectorAll('span');
 				for (var j = 0; j < spannodes.length; j++) {

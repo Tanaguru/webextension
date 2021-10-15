@@ -236,13 +236,13 @@ button.addEventListener('click', function () {
 	/**
 	 * ? Display panel
 	 */
-	 var main = document.querySelector('main');
-	 main.removeAttribute('class');
-	 var nav = document.createElement('div');
-	 nav.setAttribute('class', 'navigation');
-	 var navheading = document.createElement('h1');
-	 navheading.appendChild(document.createTextNode(chrome.i18n.getMessage('msgNavHeading')));
-	 nav.appendChild(navheading);
+	var main = document.querySelector('main');
+	main.removeAttribute('class');
+	var nav = document.createElement('div');
+	nav.setAttribute('class', 'navigation');
+	var navheading = document.createElement('h1');
+	navheading.appendChild(document.createTextNode(chrome.i18n.getMessage('msgNavHeading')));
+	nav.appendChild(navheading);
 	 
 	//  var ptimer = document.createElement('p');
 	//  ptimer.setAttribute('style', 'font-size: 0.8em; margin: 0 0 0.5em 0; padding: 0 0.5em;');
@@ -253,40 +253,40 @@ button.addEventListener('click', function () {
 	//  ptimer.appendChild(ptimersmall);
 	//  nav.appendChild(ptimer);
  
-	 var ul = document.createElement('ul');
-	 ul.setAttribute('role', 'tablist');
-	 ul.setAttribute('aria-orientation', 'vertical');
+	var ul = document.createElement('ul');
+	ul.setAttribute('role', 'tablist');
+	ul.setAttribute('aria-orientation', 'vertical');
 
-	 var dashboard = document.createElement('li');
-	 dashboard.setAttribute('id', 'tab0');
-	 dashboard.setAttribute('role', 'tab');
-	 dashboard.setAttribute('aria-selected', 'true');
-	 dashboard.setAttribute('tabindex', '0');
-	 dashboard.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboard')));
-	 var dashboardpanel = document.createElement('div');
-	 dashboardpanel.setAttribute('role', 'tabpanel');
-	 dashboardpanel.setAttribute('aria-labelledby', dashboard.getAttribute('id'));
-	 dashboardpanel.setAttribute('id', 'tabpanel0');
-	 dashboardpanel.setAttribute('aria-hidden', 'false');
-	 dashboard.setAttribute('aria-controls', dashboardpanel.getAttribute('id'));
-	 var dashboardpanelheading = document.createElement('h2');
-	 dashboardpanelheading.setAttribute('class', 'visually-hidden');
-	 dashboardpanelheading.appendChild(document.createTextNode(dashboard.textContent));
-	 dashboardpanel.appendChild(dashboardpanelheading);
+	var dashboard = document.createElement('li');
+	dashboard.setAttribute('id', 'tab0');
+	dashboard.setAttribute('role', 'tab');
+	dashboard.setAttribute('aria-selected', 'true');
+	dashboard.setAttribute('tabindex', '0');
+	dashboard.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboard')));
+	var dashboardpanel = document.createElement('div');
+	dashboardpanel.setAttribute('role', 'tabpanel');
+	dashboardpanel.setAttribute('aria-labelledby', dashboard.getAttribute('id'));
+	dashboardpanel.setAttribute('id', 'tabpanel0');
+	dashboardpanel.setAttribute('aria-hidden', 'false');
+	dashboard.setAttribute('aria-controls', dashboardpanel.getAttribute('id'));
+	var dashboardpanelheading = document.createElement('h2');
+	dashboardpanelheading.setAttribute('class', 'visually-hidden');
+	dashboardpanelheading.appendChild(document.createTextNode(dashboard.textContent));
+	dashboardpanel.appendChild(dashboardpanelheading);
 
-	 // UI. Dashboard.
-	 dashboardpanel.classList.add('dashboard');
-	 var loadingtemplate = document.getElementById('loading');
+	// UI. Dashboard.
+	dashboardpanel.classList.add('dashboard');
+	var loadingtemplate = document.getElementById('loading');
 	loadingtemplate = loadingtemplate.content;
 	dashboardpanel.appendChild(document.importNode(loadingtemplate, true));
-	 main.children[1].appendChild(dashboardpanel);
-	 ul.appendChild(dashboard);
-	 dashboard.focus();
+	main.children[1].appendChild(dashboardpanel);
+	ul.appendChild(dashboard);
+	dashboard.focus();
 
 	 /**
 	 * ? keyboard navigation
 	 */
-	  ul.addEventListener('keydown', function(event) {
+	ul.addEventListener('keydown', function(event) {
 		if ([38,40].indexOf(event.keyCode) > -1) {
 			var currenttab = this.querySelector('[role="tab"][aria-selected="true"]');
 			if (event.keyCode == 38) {
@@ -309,28 +309,28 @@ button.addEventListener('click', function () {
 	/**
 	 * ? Set DOM (alltests's tab & panel)
 	 */
-	 var allFailures = 0;
-	 var tab = document.createElement('li');
-	 tab.setAttribute('role', 'tab');
-	 tab.setAttribute('aria-selected', 'false');
-	 tab.setAttribute('id', 'alltests');
-	 tab.setAttribute('tabindex', '-1');
+	var allFailures = 0;
+	var tab = document.createElement('li');
+	tab.setAttribute('role', 'tab');
+	tab.setAttribute('aria-selected', 'false');
+	tab.setAttribute('id', 'alltests');
+	tab.setAttribute('tabindex', '-1');
 
-	 var span = document.createElement('span');
-	 span.appendChild(document.createTextNode(chrome.i18n.getMessage('allTags')));
-	 tab.appendChild(span);
-	 ul.appendChild(tab);
+	var span = document.createElement('span');
+	span.appendChild(document.createTextNode(chrome.i18n.getMessage('allTags')));
+	tab.appendChild(span);
+	ul.appendChild(tab);
 
-	 var alltagspanel = document.createElement('div');
-	 alltagspanel.setAttribute('role', 'tabpanel');
-	 alltagspanel.setAttribute('aria-labelledby', tab.getAttribute('id'));
-	 alltagspanel.setAttribute('id', 'tests');
-	 alltagspanel.setAttribute('aria-hidden', 'true');
-	 tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
+	var alltagspanel = document.createElement('div');
+	alltagspanel.setAttribute('role', 'tabpanel');
+	alltagspanel.setAttribute('aria-labelledby', tab.getAttribute('id'));
+	alltagspanel.setAttribute('id', 'tests');
+	alltagspanel.setAttribute('aria-hidden', 'true');
+	tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
 
-	 var alltagspanelheading = document.createElement('h2');
-	 alltagspanelheading.appendChild(document.createTextNode(tab.textContent));
-	 alltagspanel.appendChild(alltagspanelheading);
+	var alltagspanelheading = document.createElement('h2');
+	alltagspanelheading.appendChild(document.createTextNode(tab.textContent));
+	alltagspanel.appendChild(alltagspanelheading);
 
 	 /**
 	 * ? create tests container by status
@@ -344,6 +344,7 @@ button.addEventListener('click', function () {
 
 	var statusescontents = document.createElement('div');
 	statusescontents.id = 'earlAll';
+	statusescontents.style.display = 'none';
 	for (var s = 0; s < statuses.length; s++) {
 		var status = document.createElement('li');
 		status.setAttribute('style', 'display: inline-block; border: solid 1px black; margin-right: 0.5em; padding: 0.5em 1em');
@@ -356,18 +357,6 @@ button.addEventListener('click', function () {
 	}
 	alltagspanel.appendChild(statuseslist);
 	alltagspanel.appendChild(statusescontents);
-
-	/**
-	 * ? set tags name & sort by status & alphabetical
-	 */
-
-	if(filters.categories.length > 0) {
-		filters.categories = filters.categories.sort((a,b) => {
-			if(a.name < b.name) return -1;
-			if(a.name > b.name) return 1;
-			return 0;
-		});
-	}
 
 	/**
 	 * ? generate tab in left column
@@ -388,7 +377,7 @@ button.addEventListener('click', function () {
 		tab.appendChild(document.createTextNode(' '));
 		var loadingIcon = document.getElementById('loading');
 		loadingIcon = loadingIcon.content;
-		tab.appendChild(document.importNode(loadingIcon, true));
+		tab.appendChild(document.importNode(loadingtemplate, true));
 
 		ul.appendChild(tab);
 	});
@@ -396,8 +385,7 @@ button.addEventListener('click', function () {
 	/**
 	 * ? filters the displayed tests by the selected tab
 	 */
-	ul.addEventListener('click', function(event) {
-		var element = event.target;
+	function filterDisplayedTests(element) {
 		if (element.getAttribute('role') == 'tab') {
 			var currenttab = ul.querySelector('[role="tab"][aria-selected="true"]');
 			if (element != currenttab) {
@@ -406,64 +394,75 @@ button.addEventListener('click', function () {
 				document.getElementById(currenttab.getAttribute('aria-controls')).setAttribute('aria-hidden', 'true');
 				element.setAttribute('aria-selected', 'true');
 				element.setAttribute('tabindex', '0');
+			}
+			var newcurrenttabpanel = document.getElementById(element.getAttribute('aria-controls'));
+			if (newcurrenttabpanel.getAttribute('id') == 'tests') {
+				newcurrenttabpanel.setAttribute('aria-labelledby', element.getAttribute('id'));
+				
+				// IN PROGRESS
+				var newcurrenttabpanelheadingtext = element.firstChild.firstChild.nodeValue;
+				var currenttabpanelheading = newcurrenttabpanel.querySelector('h2');
+				currenttabpanelheading.replaceChild(document.createTextNode(newcurrenttabpanelheadingtext), currenttabpanelheading.firstChild);
 
-				var newcurrenttabpanel = document.getElementById(element.getAttribute('aria-controls'));
-				if (newcurrenttabpanel.getAttribute('id') == 'tests') {
-					newcurrenttabpanel.setAttribute('aria-labelledby', element.getAttribute('id'));
-					
-					// IN PROGRESS
-					var newcurrenttabpanelheadingtext = element.firstChild.firstChild.nodeValue;
-					var currenttabpanelheading = newcurrenttabpanel.querySelector('h2');
-					currenttabpanelheading.replaceChild(document.createTextNode(newcurrenttabpanelheadingtext), currenttabpanelheading.firstChild);
+				// contrast panel description
+				if(element.getAttribute('id') === 'colors' && !document.querySelector('.contrast-panel-desc')) {
+					var contrastPanelDesc = document.createElement('div');
+					contrastPanelDesc.classList.add('contrast-panel-desc');
 
-					// contrast panel description
-					if(element.getAttribute('id') === 'colors' && !document.querySelector('.contrast-panel-desc')) {
-						var contrastPanelDesc = document.createElement('div');
-						contrastPanelDesc.classList.add('contrast-panel-desc');
+					var contrastDescription1 = document.createElement('p');
+					contrastDescription1.textContent = chrome.i18n.getMessage('contrastDescription1');
+					contrastPanelDesc.appendChild(contrastDescription1);
 
-						var contrastDescription1 = document.createElement('p');
-						contrastDescription1.textContent = chrome.i18n.getMessage('contrastDescription1');
-						contrastPanelDesc.appendChild(contrastDescription1);
+					var contrastDescription2 = document.createElement('p');
+					contrastDescription2.textContent = chrome.i18n.getMessage('contrastDescription2');
+					contrastPanelDesc.appendChild(contrastDescription2);
 
-						var contrastDescription2 = document.createElement('p');
-						contrastDescription2.textContent = chrome.i18n.getMessage('contrastDescription2');
-						contrastPanelDesc.appendChild(contrastDescription2);
+					var contrastLegend = document.createElement('p');
+					contrastLegend.classList.add('contrast-legend');
+					contrastLegend.textContent = chrome.i18n.getMessage('contrastLegend1');
 
-						var contrastLegend = document.createElement('p');
-						contrastLegend.classList.add('contrast-legend');
-						contrastLegend.textContent = chrome.i18n.getMessage('contrastLegend1');
+					var contrastBgImage1 = document.createElement('span');
+					contrastBgImage1.classList.add('contrast-bgImage');
+					contrastLegend.appendChild(contrastBgImage1);
 
-						var contrastBgImage1 = document.createElement('span');
-						contrastBgImage1.classList.add('contrast-bgImage');
-						contrastLegend.appendChild(contrastBgImage1);
+					var contrastBgImage2 = document.createElement('span');
+					contrastBgImage2.setAttribute('id','contrast-bgImage');
+					contrastBgImage2.textContent = chrome.i18n.getMessage('contrastLegend2');
+					contrastLegend.appendChild(contrastBgImage2);
 
-						var contrastBgImage2 = document.createElement('span');
-						contrastBgImage2.setAttribute('id','contrast-bgImage');
-						contrastBgImage2.textContent = chrome.i18n.getMessage('contrastLegend2');
-						contrastLegend.appendChild(contrastBgImage2);
+					var contrastBgNull1 = document.createElement('span');
+					contrastBgNull1.classList.add('contrast-bgNull');
+					contrastLegend.appendChild(contrastBgNull1);
 
-						var contrastBgNull1 = document.createElement('span');
-						contrastBgNull1.classList.add('contrast-bgNull');
-						contrastLegend.appendChild(contrastBgNull1);
+					var contrastBgNull2 = document.createElement('span');
+					contrastBgNull2.setAttribute('id','contrast-bgNull');
+					contrastBgNull2.textContent = chrome.i18n.getMessage('contrastLegend3');
+					contrastLegend.appendChild(contrastBgNull2);
 
-						var contrastBgNull2 = document.createElement('span');
-						contrastBgNull2.setAttribute('id','contrast-bgNull');
-						contrastBgNull2.textContent = chrome.i18n.getMessage('contrastLegend3');
-						contrastLegend.appendChild(contrastBgNull2);
-
-						contrastPanelDesc.appendChild(contrastLegend);
-						newcurrenttabpanel.insertBefore(contrastPanelDesc, currenttabpanelheading.nextSibling);
-					} else {
-						if(document.querySelector('.contrast-panel-desc')) {
-							newcurrenttabpanel.removeChild(document.querySelector('.contrast-panel-desc'));
-						}
+					contrastPanelDesc.appendChild(contrastLegend);
+					newcurrenttabpanel.insertBefore(contrastPanelDesc, currenttabpanelheading.nextSibling);
+				} else if(element.getAttribute('id') !== 'colors') {
+					if(document.querySelector('.contrast-panel-desc')) {
+						newcurrenttabpanel.removeChild(document.querySelector('.contrast-panel-desc'));
 					}
+				}
 
-					newcurrenttabpanel.parentNode.scrollTop = 0;
+				newcurrenttabpanel.parentNode.scrollTop = 0;
+				console.log(newcurrenttabpanel, element);
+				let subtabsElement = newcurrenttabpanel.querySelector('div.subTabs');
+				let earlAllElement = newcurrenttabpanel.querySelector('#earlAll');
+				if(element.className.match(/cat-loading/)) {
+					if(subtabsElement) subtabsElement.style.display = 'none';
+					earlAllElement.style.display = 'none';
+					if(!newcurrenttabpanel.querySelector('.loading')) newcurrenttabpanel.appendChild(document.importNode(loadingtemplate, true));
+				} else {
+					if(subtabsElement) subtabsElement.style.display = 'block';
+					earlAllElement.style.display = 'block';
+					if(newcurrenttabpanel.querySelector('.loading')) newcurrenttabpanel.querySelector('.loading').remove()
 					var tests = newcurrenttabpanel.querySelectorAll('h3');
 					var currentTabSubCat = [];
-					if(document.querySelector('.subTabs')) {
-						newcurrenttabpanel.removeChild(document.querySelector('.subTabs'));
+					if(newcurrenttabpanel.querySelector('.subTabs')) {
+						newcurrenttabpanel.removeChild(newcurrenttabpanel.querySelector('.subTabs'));
 					}
 					for (var i = 0; i < tests.length; i++) {
 						if (element.getAttribute('id') == 'alltests') {
@@ -555,9 +554,14 @@ button.addEventListener('click', function () {
 						}
 					}
 				}
-				newcurrenttabpanel.setAttribute('aria-hidden', 'false');
+				
 			}
+			newcurrenttabpanel.setAttribute('aria-hidden', 'false');
 		}
+	}
+	ul.addEventListener('click', function(event) {
+		var element = event.target;
+		filterDisplayedTests(element);
 	}, false);
 
 	nav.appendChild(ul);
@@ -737,6 +741,7 @@ button.addEventListener('click', function () {
 	}, false);
 
 	var catCount = 0;
+	var testsCount = 0;
 	function responseProcess(filters) {
 		let first = (catCount === 0) ? "yes" : "no";
 		let last = (catCount === filters.categories.length-1) ? "yes" : "no";
@@ -765,6 +770,7 @@ button.addEventListener('click', function () {
 			function (response) {
 				let category = filters.categories[catCount];
 				response = response.response[0];
+				testsCount += response.tests.length;
 				let t = 1;
 	
 				// IN PROGRESS
@@ -786,6 +792,7 @@ button.addEventListener('click', function () {
 					}
 					
 					var testelement = document.createElement('div');
+					testelement.setAttribute('hidden', 'hidden');
 					testelement.setAttribute('class', 'testparent ' + test.tags.join(' '));
 	
 					// if (test.hasOwnProperty('ressources')) {
@@ -1583,38 +1590,52 @@ button.addEventListener('click', function () {
 	
 				let currentTag = response.tags.filter(tag => tag.id === category)[0];
 				let currentTab = document.getElementById(category);
-				currentTab.querySelector('p.loading').remove();
-				currentTab.classList.remove('cat-loading');
+				if(response.tests.length === 0) {
+					currentTab.remove();
+					if(ul.querySelectorAll('li').length === 1) dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultNone')), dashboardpanelp.firstChild);
+				} else {
+					currentTab.querySelector('p.loading').remove();
+					currentTab.classList.remove('cat-loading');
 
-				if (currentTag.nbfailures > 0 && allFailures === 0) {
-					tab.classList.add('cat-failed');
-					tab.appendChild(document.createTextNode(' '));
-					var strong = document.createElement('strong');
-					tab.appendChild(strong);
-				}
+					if (currentTag.nbfailures > 0 && allFailures === 0) {
+						tab.classList.add('cat-failed');
+						tab.appendChild(document.createTextNode(' '));
+						var strong = document.createElement('strong');
+						tab.appendChild(strong);
+					}
 
-				if (currentTag.nbfailures > 0) {
-					let allerrors = tab.querySelector('strong');
-					allFailures += currentTag.nbfailures;
-					currentTab.classList.add('cat-failed');
-					currentTab.appendChild(document.createTextNode(' '));
-					var strong = document.createElement('strong');
-					strong.appendChild(document.createTextNode(currentTag.nbfailures));
-					allerrors.textContent = allFailures;
-					currentTab.appendChild(strong);
-				}
-		
-				if (currentTag.status === 'inapplicable') {
-					currentTab.classList.add('cat-inapplicable');
-					currentTab.appendChild(document.createTextNode(' '));
-					var span = document.createElement('span');
-					span.appendChild(document.createTextNode('NA'));
-					span.setAttribute('aria-label', 'NA: non applicable');
-					currentTab.appendChild(span);
+					if (currentTag.nbfailures > 0) {
+						let allerrors = tab.querySelector('strong');
+						allFailures += currentTag.nbfailures;
+						currentTab.classList.add('cat-failed');
+						currentTab.appendChild(document.createTextNode(' '));
+						var strong = document.createElement('strong');
+						strong.appendChild(document.createTextNode(currentTag.nbfailures));
+						allerrors.textContent = allFailures;
+						currentTab.appendChild(strong);
+					}
+			
+					if (currentTag.status === 'inapplicable') {
+						currentTab.classList.add('cat-inapplicable');
+						currentTab.appendChild(document.createTextNode(' '));
+						var span = document.createElement('span');
+						span.appendChild(document.createTextNode('NA'));
+						span.setAttribute('aria-label', 'NA: non applicable');
+						currentTab.appendChild(span);
+					}
 				}
 			}
 		).then(
 			() => {
+				let testPanel = document.getElementById('tests');
+				let cTab = ul.querySelector('li#'+testPanel.getAttribute('aria-labelledby'));
+
+				if(testPanel.getAttribute('aria-hidden') === "false" && testPanel.querySelector('p.loading')) {
+					if(!cTab.className.match(/cat-loading/)) {
+						filterDisplayedTests(cTab);
+					}
+				}
+				
 				catCount++;
 				if(filters.categories[catCount]) responseProcess(filters);
 			}
@@ -1624,12 +1645,13 @@ button.addEventListener('click', function () {
 	responseProcess(filters);
 
 	main.children[1].querySelector('p.loading').remove(); // Supprime le loading...
+
+	if(testsCount === 0 && catCount === filters.categories.length) tab.remove();
 	
 	var dashboardpanelp = document.createElement('p'); 
 	dashboardpanelp.classList.add('dashboard-message');
 	dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')));
 	dashboardpanel.appendChild(dashboardpanelp);
-	if(ul.querySelectorAll('li').length < 3) dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultNone')), dashboardpanelp.firstChild);
 
 	var dashboardpanelbuttonreload = document.createElement('button');
 	dashboardpanelbuttonreload.setAttribute('type', 'button');
@@ -1639,5 +1661,4 @@ button.addEventListener('click', function () {
 	dashboardpanel.appendChild(dashboardpanelbuttonreload);
 
 	main.children[1].appendChild(alltagspanel);
-	
 }, false);

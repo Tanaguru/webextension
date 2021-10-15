@@ -4619,6 +4619,9 @@ tanaguruTestsList.push({
 
             for(var i = 0; i < childrenLength; i++) {
                 if(children[i].tagName) {
+                    /**
+                     * todo FIX ENGINE
+                     */
                     if(htmlData.elements[children[i].tagName.toLowerCase()]) {
                         if(htmlData.elements[children[i].tagName.toLowerCase()].category === 'forms') {
                             return true;
