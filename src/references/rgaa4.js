@@ -2979,9 +2979,10 @@ tanaguruTestsList.push({
                     });
                 }
             });
-            visibleName = visibleName.trim().replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
+            let rgx = new RegExp(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/g);
+            visibleName = visibleName.trim().replace(rgx, '');
 
-            var linkAccessibleName = item.accessibleName.replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
+            var linkAccessibleName = item.accessibleName.replace(rgx, '');
             var regex = new RegExp(visibleName, 'mi');
             
             if(!linkAccessibleName.match(regex)) {
@@ -3136,9 +3137,9 @@ tanaguruTestsList.push({
                     }
                 });
             }
-            
-            var buttonName = visibleName.trim().replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
-            var buttonAccessibleName = item.accessibleName.replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
+            let rgx = new RegExp(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/g);
+            var buttonName = visibleName.trim().replace(rgx, '');
+            var buttonAccessibleName = item.accessibleName.replace(rgx, '');
             var regex = new RegExp(buttonName, 'mi');
             
             if(buttonAccessibleName.match(regex)) {
@@ -4417,8 +4418,8 @@ tanaguruTestsList.push({
             if(fields.length === 0 || fields.length > 1) {
                 return true;
             } else {
-                let elCategory = htmlData.elements[fields[0].tagName.toLowerCase()];
-                if(elCategory && elCategory.category === 'forms') {
+                let elCategory = fields[0].getImplicitAriaRoleCategory();
+                if(elCategory && elCategory === 'forms') {
                     item.setAttribute('data-tng-label-related', 'true');
                 }
                 return;
@@ -4452,6 +4453,7 @@ tanaguruTestsList.push({
         if((item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible', 'false')) || item.disabled) return;
 
         let hasLabel = false;
+        var rgx = new RegExp(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/g);
 
         if(item.hasAttribute('aria-labelledby') && item.getAttribute('aria-labelledby').trim().length > 0) {
             let ids = item.getAttribute('aria-labelledby').split(' ');
@@ -4486,7 +4488,7 @@ tanaguruTestsList.push({
 
             if(labelIsVisible) {
                 item.setAttribute('data-tng-visible-label', 'labelledby');
-                item.setAttribute('data-tng-text-label', visibleLabel.trim().replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, ''));
+                item.setAttribute('data-tng-text-label', visibleLabel.trim().replace(rgx, ''));
                 return;
             }
         }
@@ -4518,7 +4520,7 @@ tanaguruTestsList.push({
 
                             if(visibleText.length > 0) {
                                 item.setAttribute('data-tng-visible-label', 'label');
-                                item.setAttribute('data-tng-text-label', visibleText.trim().replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, ''));
+                                item.setAttribute('data-tng-text-label', visibleText.trim().replace(rgx, ''));
                                 return;
                             }
                         }
@@ -4619,11 +4621,8 @@ tanaguruTestsList.push({
 
             for(var i = 0; i < childrenLength; i++) {
                 if(children[i].tagName) {
-                    if(htmlData.elements[children[i].tagName.toLowerCase()]) {
-                        if(htmlData.elements[children[i].tagName.toLowerCase()].category === 'forms') {
-                            return true;
-                        }
-                    }
+                    let cat = children[i].getImplicitAriaRoleCategory();
+                    if(cat && cat === 'forms') return true;
                 }
             }
         }
@@ -4639,9 +4638,8 @@ tanaguruTestsList.push({
     name: 'Vérifiez si l\'attribut title permet de connaître la fonction exacte du champ de formulaire auquel il est associé.',
     query: '[title][data-tng-el-exposed="true"]',
     filter: function (item) {
-        if(htmlData.elements[item.tagName.toLowerCase()]) {
-            return htmlData.elements[item.tagName.toLowerCase()].category === 'forms';
-        }
+        let cat = item.getImplicitAriaRoleCategory();
+        if(cat) return cat === 'forms';
     },
     mark: {attrs: ['title']},
     tags: ['a11y', 'forms', 'accessiblename'],
@@ -4654,9 +4652,8 @@ tanaguruTestsList.push({
     name: 'Vérifiez si l\'attribut WAI-ARIA aria-label permet de connaître la fonction exacte du champ de formulaire auquel il est associé.',
     query: '[aria-label][data-tng-el-exposed="true"]',
     filter: function (item) {
-        if(htmlData.elements[item.tagName.toLowerCase()]) {
-            return htmlData.elements[item.tagName.toLowerCase()].category === 'forms';
-        }
+        let cat = item.getImplicitAriaRoleCategory();
+        if(cat) return cat === 'forms';
     },
     mark: {attrs: ['aria-label']},
     tags: ['a11y', 'forms', 'accessiblename'],
@@ -4669,9 +4666,8 @@ tanaguruTestsList.push({
     name: 'Vérifiez si le passage de texte associé via l\'attribut WAI-ARIA aria-labelledby permet de connaître la fonction exacte du champ de formulaire auquel il est associé.',
     query: '[aria-labelledby][data-tng-el-exposed="true"]',
     filter: function (item) {
-        if(htmlData.elements[item.tagName.toLowerCase()]) {
-            return htmlData.elements[item.tagName.toLowerCase()].category === 'forms';
-        }
+        let cat = item.getImplicitAriaRoleCategory();
+        if(cat) return cat === 'forms';
     },
     mark: {attrs: ['aria-labelledby']},
     tags: ['a11y', 'forms', 'accessiblename'],
@@ -4684,7 +4680,8 @@ tanaguruTestsList.push({
     name: 'Liste des champs de formulaire dont le nom accessible contient l\'intitulé visible.',
     query: '[data-tng-visible-label]',
     filter: function (item) {
-        if(item.accessibleName.trim().replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '').includes(item.getAttribute('data-tng-text-label'))) {
+        var rgx = new RegExp(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/g);
+        if(item.accessibleName.trim().replace(rgx, '').includes(item.getAttribute('data-tng-text-label'))) {
             return true;
         } else {
             item.setAttribute('data-tng-NAinclude-visibleLabel', 'true');
@@ -4909,16 +4906,15 @@ tanaguruTestsList.push({
                     }
                 });
             }
-
-            var buttonName = visibleName.trim().replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
-            var buttonAccessibleName = item.accessibleName.replace(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/gmu, '');
+            let rgx = new RegExp(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/g);
+            var buttonName = visibleName.trim().replace(rgx, '');
+            var buttonAccessibleName = item.accessibleName.replace(rgx, '');
             var regex = new RegExp(buttonName, 'mi');
 
             if(buttonAccessibleName.match(regex)) {
                 item.setAttribute('data-tng-button-namesMatch', 'true');
                 return;
             } else {
-                console.log(item, 'visible : '+buttonName+' / accessibleName : '+buttonAccessibleName);
                 return true;
             }
         }
