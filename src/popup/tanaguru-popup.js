@@ -10,10 +10,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
 	});
 	*/
 	
-	
-	
-	
-	
 	/* Support de template. */
 	if ('content' in document.createElement('template')) {
 		var html = document.querySelector('html');
@@ -32,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 			}
 
 			if(content.match(/<\/?\w+>/gm)) {
+				span[i].removeChild(span[i].childNodes[0]);
 				var rgx = new RegExp(/(<\/?.[^>]+>)|(.[^<>(<\/)]+)/g);
 				var contentList = content.match(rgx);
 				var openNode = [];
@@ -65,8 +62,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
 			} else {
 				span[i].textContent = content;
 			}
-
-			// span[i].innerHTML = content;
 			
 			if (data[0] != 'manifest') {
 				var spannodes = span[i].querySelectorAll('span');
