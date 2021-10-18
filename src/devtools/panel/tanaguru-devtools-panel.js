@@ -590,7 +590,9 @@ button.addEventListener('click', function () {
 		if (element.tagName.toLowerCase() == 'button') {
 			switch (element.getAttribute('data-action')) {
 				case 'showhide-action':
+					console.log(element);
 					if (element.getAttribute('aria-expanded') == 'false') {
+						console.log(document.getElementById(element.getAttribute('aria-controls')));
 						document.getElementById(element.getAttribute('aria-controls')).removeAttribute('hidden');
 						element.setAttribute('aria-expanded', 'true');
 					}
@@ -598,6 +600,7 @@ button.addEventListener('click', function () {
 						document.getElementById(element.getAttribute('aria-controls')).setAttribute('hidden', 'hidden');
 						element.setAttribute('aria-expanded', 'false');
 					}
+					console.log(element, document.getElementById(element.getAttribute('aria-controls')));
 					break;
 				case 'highlight-action':
 					var cellParent = element.closest('.item-actions');
@@ -753,6 +756,7 @@ button.addEventListener('click', function () {
 
 	var catCount = 0;
 	var testsCount = 0;
+	var t = 1;
 	function responseProcess(filters) {
 		let first = (catCount === 0) ? "yes" : "no";
 		let last = (catCount === filters.categories.length-1) ? "yes" : "no";
@@ -782,7 +786,6 @@ button.addEventListener('click', function () {
 				let category = filters.categories[catCount];
 				response = response.response[0];
 				testsCount += response.tests.length;
-				let t = 1;
 	
 				// IN PROGRESS
 				var reftests = {};
@@ -801,6 +804,8 @@ button.addEventListener('click', function () {
 						dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultFailed')), dashboardpanelp.firstChild);
 						updatedashboardp = true;
 					}
+
+					if(isRGAAVersion) test.tags = test.tags.filter(y => {return y != 'a11y'});
 					
 					var testelement = document.createElement('div');
 					testelement.setAttribute('hidden', 'hidden');
@@ -1652,9 +1657,8 @@ button.addEventListener('click', function () {
 			}
 		)
 	}
-
+	
 	responseProcess(filters);
-
 	main.children[1].querySelector('p.loading').remove(); // Supprime le loading...
 
 	if(testsCount === 0 && catCount === filters.categories.length) tab.remove();
