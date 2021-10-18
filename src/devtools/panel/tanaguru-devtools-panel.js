@@ -286,17 +286,21 @@ button.addEventListener('click', function () {
 	 /**
 	 * ? keyboard navigation
 	 */
-	ul.addEventListener('keydown', function(event) {
-		if ([38,40].indexOf(event.keyCode) > -1) {
+	ul.addEventListener('keydown', tabsNavigation, false);
+
+	function tabsNavigation(event) {
+		var orientation = this.getAttribute('aria-orientation');
+		if (orientation && ['ArrowUp','ArrowDown','ArrowRight','ArrowLeft'].indexOf(event.key) > -1) {
 			var currenttab = this.querySelector('[role="tab"][aria-selected="true"]');
-			if (event.keyCode == 38) {
+			
+			if ((orientation === 'vertical' && event.key == 'ArrowUp') || (orientation === 'horizontal' && event.key == 'ArrowLeft')) {
 				var newcurrenttab = currenttab.previousSibling;
 				if (!newcurrenttab) {
 					newcurrenttab = this.querySelectorAll('[role="tab"]');
 					newcurrenttab = newcurrenttab[newcurrenttab.length - 1];
 				}
 			}
-			else if (event.keyCode == 40) {
+			else if ((orientation === 'vertical' && event.key == 'ArrowDown') || (orientation === 'horizontal' && event.key == 'ArrowRight')) {
 				var newcurrenttab = currenttab.nextSibling;
 				newcurrenttab = newcurrenttab ? newcurrenttab : this.querySelector('[role="tab"]');
 			}
@@ -304,7 +308,7 @@ button.addEventListener('click', function () {
 			newcurrenttab.dispatchEvent(e);
 			newcurrenttab.focus();
 		}
-	}, false);
+	}
 
 	/**
 	 * ? Set DOM (alltests's tab & panel)
@@ -448,7 +452,6 @@ button.addEventListener('click', function () {
 				}
 
 				newcurrenttabpanel.parentNode.scrollTop = 0;
-				console.log(newcurrenttabpanel, element);
 				let subtabsElement = newcurrenttabpanel.querySelector('div.subTabs');
 				let earlAllElement = newcurrenttabpanel.querySelector('#earlAll');
 				if(element.className.match(/cat-loading/)) {
@@ -496,23 +499,28 @@ button.addEventListener('click', function () {
 					if(currentTabSubCat.length > 0) {
 						var subTabsContainer = document.createElement('div');
 						subTabsContainer.classList.add('subTabs');
-						var subTabsList = document.createElement('div');
+						var subTabsList = document.createElement('ul');
 						subTabsList.setAttribute('role', 'tablist');
+						subTabsList.setAttribute('aria-orientation', 'horizontal');
 						subTabsList.setAttribute('aria-label', 'Filtrer les résultats');
+						subTabsList.addEventListener('keydown', tabsNavigation, false);
 
-						var subTabAll = document.createElement('button');
+						var subTabAll = document.createElement('li');
 						subTabAll.id = 'sub-all';
 						subTabAll.setAttribute('role', 'tab');
 						subTabAll.setAttribute('aria-selected', 'true');
+						subTabAll.setAttribute('tabindex', '0');
 						subTabAll.setAttribute('aria-controls', 'earlAll');
 						subTabAll.textContent = "Tous";
 						subTabsList.appendChild(subTabAll);
 
+
 						currentTabSubCat.forEach(st => {
-							var subTab = document.createElement('button');
+							var subTab = document.createElement('li');
 							subTab.id = 'sub-'+st;
 							subTab.setAttribute('role', 'tab');
 							subTab.setAttribute('aria-selected', 'false');
+							subTab.setAttribute('tabindex', '-1');
 							subTab.setAttribute('aria-controls', 'earlAll');
 							subTab.textContent = chrome.i18n.getMessage('tag'+st);
 							subTabsList.appendChild(subTab);
@@ -524,14 +532,16 @@ button.addEventListener('click', function () {
 						subTabsContainer.appendChild(subTabsList);
 						currenttabpanelheading.nextSibling.after(subTabsContainer);
 
-						subTabsList.querySelectorAll('button').forEach(button => {
-							button.addEventListener('click', filterSubTag);
+						subTabsList.querySelectorAll('li').forEach(item => {
+							item.addEventListener('click', filterSubTag);
 						});
 
 						function filterSubTag(evt) {
-							let currentSubTabsSelected = subTabsList.querySelector('button[aria-selected="true"]');
+							let currentSubTabsSelected = subTabsList.querySelector('li[aria-selected="true"]');
 							currentSubTabsSelected.setAttribute('aria-selected', "false");
+							currentSubTabsSelected.setAttribute('tabindex', "-1");
 							evt.target.setAttribute('aria-selected', "true");
+							evt.target.setAttribute('tabindex', "0");
 							if(evt.target.id === 'sub-all') {
 								for (var i = 0; i < tests.length; i++) {
 									if (tests[i].parentNode.classList.contains(element.getAttribute('id')) || element.getAttribute('id') == 'alltests') {
@@ -556,6 +566,7 @@ button.addEventListener('click', function () {
 				}
 				
 			}
+
 			newcurrenttabpanel.setAttribute('aria-hidden', 'false');
 		}
 	}

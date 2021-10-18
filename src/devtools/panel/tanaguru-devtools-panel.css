@@ -945,15 +945,28 @@ td code {
 }
 
 /*? sub tabs panel */
-.subTabs div[role="tablist"] button {
-	padding: 0.5rem;
-	background-color: #2B7B92;
-	color: #FFFFFF;
+.subTabs ul[role="tablist"] {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
 }
 
-.subTabs div[role="tablist"] button[aria-selected="true"] {
-	border-bottom: 0;
+.subTabs ul[role="tablist"] li {
+	display: inline-block;
+	padding: 0.5rem;
 	background-color: #FFFFFF;
-	color: #000000;
+	color: #666666;
+	border: 1px solid #666666;
+	cursor: default;
+}
+
+.subTabs ul[role="tablist"] li[aria-selected="true"] {
+	border-bottom: 0;
+	background-color: #F2F9FB;
+	color: #2b7b92;
 	font-weight: bold;
+}
+
+.subTabs ul[role="tablist"] li:hover {
+	background-color: #f5f5f5;
 }
