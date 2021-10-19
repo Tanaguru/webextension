@@ -243,15 +243,6 @@ button.addEventListener('click', function () {
 	var navheading = document.createElement('h1');
 	navheading.appendChild(document.createTextNode(chrome.i18n.getMessage('msgNavHeading')));
 	nav.appendChild(navheading);
-	 
-	//  var ptimer = document.createElement('p');
-	//  ptimer.setAttribute('style', 'font-size: 0.8em; margin: 0 0 0.5em 0; padding: 0 0.5em;');
-	//  var tte = new Date().getTime();
-	//  var teststimer = (tte - response.timer) / 1000;
-	//  var ptimersmall = document.createElement('small');
-	//  ptimersmall.appendChild(document.createTextNode('Analyse réalisée en ' + teststimer + ' seconde' + (teststimer > 1 ? 's' : '') + '.'));
-	//  ptimer.appendChild(ptimersmall);
-	//  nav.appendChild(ptimer);
  
 	var ul = document.createElement('ul');
 	ul.setAttribute('role', 'tablist');
@@ -358,6 +349,9 @@ button.addEventListener('click', function () {
 		var statuscontent = document.createElement('div');
 		statuscontent.setAttribute('id', 'earl' + statuses[s].charAt(0).toUpperCase() + statuses[s].slice(1));
 		statusescontents.appendChild(statuscontent);
+		var ulSeparator = document.createElement('span');
+		ulSeparator.id = statuses[s]+'cat-separator';
+		ul.appendChild(ulSeparator);
 	}
 	alltagspanel.appendChild(statuseslist);
 	alltagspanel.appendChild(statusescontents);
@@ -756,6 +750,7 @@ button.addEventListener('click', function () {
 	var catCount = 0;
 	var testsCount = 0;
 	var t = 1;
+	var startTimer = new Date().getTime();
 	function responseProcess(filters) {
 		let first = (catCount === 0) ? "yes" : "no";
 		let last = (catCount === filters.categories.length-1) ? "yes" : "no";
@@ -1608,6 +1603,7 @@ button.addEventListener('click', function () {
 					currentTab.remove();
 					if(ul.querySelectorAll('li').length === 1) dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultNone')), dashboardpanelp.firstChild);
 				} else {
+					document.getElementById(currentTag.status+'cat-separator').insertAdjacentElement('afterend', document.getElementById(currentTab.id));
 					currentTab.querySelector('p.loading').remove();
 					currentTab.classList.remove('cat-loading');
 
@@ -1652,7 +1648,16 @@ button.addEventListener('click', function () {
 				
 				catCount++;
 				if(filters.categories[catCount]) responseProcess(filters);
-				else console.log(testsCount);
+				else {
+					var ptimer = document.createElement('p');
+					ptimer.setAttribute('style', 'font-size: 0.8em; margin: 0 0 0.5em 0; padding: 0 0.5em;');
+					var tte = new Date().getTime();
+					var teststimer = (tte - startTimer) / 1000;
+					var ptimersmall = document.createElement('small');
+					ptimersmall.appendChild(document.createTextNode('Analyse réalisée en ' + teststimer + ' seconde' + (teststimer > 1 ? 's' : '') + '.'));
+					ptimer.appendChild(ptimersmall);
+					nav.firstChild.insertAdjacentElement('afterend', ptimer);
+				}
 			}
 		)
 	}
