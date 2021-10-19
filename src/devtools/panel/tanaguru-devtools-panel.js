@@ -564,7 +564,6 @@ button.addEventListener('click', function () {
 						}
 					}
 				}
-				
 			}
 
 			newcurrenttabpanel.setAttribute('aria-hidden', 'false');
@@ -1077,7 +1076,6 @@ button.addEventListener('click', function () {
 								var newRow = document.importNode(template.content, true);
 								newRow.querySelector('.item-number').textContent = itemNumber;
 								newRow.querySelector('.item-status').textContent = itemStatus;
-								newRow.querySelector('.item-code code').textContent = itemCode;
 	
 								if (codehighlight && codehighlight.hasOwnProperty('attrs')) {
 									var codeattrs = [];
@@ -1654,6 +1652,7 @@ button.addEventListener('click', function () {
 				
 				catCount++;
 				if(filters.categories[catCount]) responseProcess(filters);
+				else console.log(testsCount);
 			}
 		)
 	}
