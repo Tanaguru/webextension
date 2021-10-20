@@ -21,7 +21,7 @@ function handleMessage(request, sender, sendResponse) {
 		    code: 'var cat = "' + request.cat + '"; var statusUser = "' + request.statusUser + '"; var first = "' + request.first + '"; var last = "' + request.last + '";'
 		}, function() {
 			chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/tests.js' }, function (result) {
-				sendResponse({ command: 'executeTestsResults', response: result, timer: request.timer });
+				sendResponse({ command: 'executeTestsResults', response: result });
 			});
 		});
 	}

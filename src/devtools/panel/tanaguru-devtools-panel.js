@@ -230,6 +230,12 @@ button.addEventListener('click', function () {
 		}
 	});
 
+	function sortCatByProcessTime() {
+		var catOrder = ["navigation", "presentation", "media", "consultation", "scripts", "structure", "frames", "tables", "forms", "mandatory", "links", "images", "colors"];
+		catOrder = catOrder.filter((e) => {return filters.categories.includes(e)})
+		filters.categories = catOrder;
+	}
+	sortCatByProcessTime();
 	filterBloc.remove();
 	homeTitle.remove();
 
@@ -583,9 +589,7 @@ button.addEventListener('click', function () {
 		if (element.tagName.toLowerCase() == 'button') {
 			switch (element.getAttribute('data-action')) {
 				case 'showhide-action':
-					console.log(element);
 					if (element.getAttribute('aria-expanded') == 'false') {
-						console.log(document.getElementById(element.getAttribute('aria-controls')));
 						document.getElementById(element.getAttribute('aria-controls')).removeAttribute('hidden');
 						element.setAttribute('aria-expanded', 'true');
 					}
@@ -593,7 +597,6 @@ button.addEventListener('click', function () {
 						document.getElementById(element.getAttribute('aria-controls')).setAttribute('hidden', 'hidden');
 						element.setAttribute('aria-expanded', 'false');
 					}
-					console.log(element, document.getElementById(element.getAttribute('aria-controls')));
 					break;
 				case 'highlight-action':
 					var cellParent = element.closest('.item-actions');
@@ -751,13 +754,13 @@ button.addEventListener('click', function () {
 	var testsCount = 0;
 	var t = 1;
 	var startTimer = new Date().getTime();
+
 	function responseProcess(filters) {
 		let first = (catCount === 0) ? "yes" : "no";
 		let last = (catCount === filters.categories.length-1) ? "yes" : "no";
 		let msgRequest = {
 			tabId: chrome.devtools.inspectedWindow.tabId,
 			command: 'executeTests', 
-			timer: new Date().getTime(),
 			cat: filters.categories[catCount],
 			statusUser: filters.statuses,
 			first: first,
@@ -1645,8 +1648,9 @@ button.addEventListener('click', function () {
 						filterDisplayedTests(cTab);
 					}
 				}
-				
+
 				catCount++;
+
 				if(filters.categories[catCount]) responseProcess(filters);
 				else {
 					var ptimer = document.createElement('p');
