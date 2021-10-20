@@ -291,14 +291,16 @@ button.addEventListener('click', function () {
 			var currenttab = this.querySelector('[role="tab"][aria-selected="true"]');
 			
 			if ((orientation === 'vertical' && event.key == 'ArrowUp') || (orientation === 'horizontal' && event.key == 'ArrowLeft')) {
-				var newcurrenttab = currenttab.previousSibling;
+				let previousEl = currenttab.previousSibling;
+				var newcurrenttab = (previousEl && previousEl.hasAttribute('hidden')) ? previousEl.previousSibling : previousEl;
 				if (!newcurrenttab) {
 					newcurrenttab = this.querySelectorAll('[role="tab"]');
 					newcurrenttab = newcurrenttab[newcurrenttab.length - 1];
 				}
 			}
 			else if ((orientation === 'vertical' && event.key == 'ArrowDown') || (orientation === 'horizontal' && event.key == 'ArrowRight')) {
-				var newcurrenttab = currenttab.nextSibling;
+				let nextEl = currenttab.nextSibling;
+				var newcurrenttab = (nextEl && nextEl.hasAttribute('hidden')) ? nextEl.nextSibling : nextEl;
 				newcurrenttab = newcurrenttab ? newcurrenttab : this.querySelector('[role="tab"]');
 			}
 			var e = new Event('click', { 'bubbles': true, 'cancelable': false });
@@ -355,7 +357,9 @@ button.addEventListener('click', function () {
 		var statuscontent = document.createElement('div');
 		statuscontent.setAttribute('id', 'earl' + statuses[s].charAt(0).toUpperCase() + statuses[s].slice(1));
 		statusescontents.appendChild(statuscontent);
-		var ulSeparator = document.createElement('span');
+		var ulSeparator = document.createElement('li');
+		ulSeparator.setAttribute('hidden', 'hidden');
+		ulSeparator.style.display = 'none';
 		ulSeparator.id = statuses[s]+'cat-separator';
 		ul.appendChild(ulSeparator);
 	}
@@ -585,8 +589,8 @@ button.addEventListener('click', function () {
 	 * about-action
 	 */
 	main.children[1].addEventListener('click', function(event) {
-		var element = event.target;
-		if (element.tagName.toLowerCase() == 'button') {
+		var element = event.target.closest('button');
+		if (element) {
 			switch (element.getAttribute('data-action')) {
 				case 'showhide-action':
 					if (element.getAttribute('aria-expanded') == 'false') {
@@ -785,7 +789,7 @@ button.addEventListener('click', function () {
 				testsCount += response.tests.length;
 	
 				// IN PROGRESS
-				var reftests = {};
+				// var reftests = {};
 	
 				// IN PROGRESS
 				// var ressourcestests = [];
@@ -832,27 +836,34 @@ button.addEventListener('click', function () {
 					testref.style.textOverflow = 'ellipsis';
 					testref.style.width = '80px';
 					testref.style.textAlign = 'right';
-	
-					if (!reftests.hasOwnProperty(test.tags[0].toUpperCase())) {
-						reftests[test.tags[0].toUpperCase()] = 0;
-					}
-	
-					reftests[test.tags[0].toUpperCase()] += 1;
-					var testid = test.tags[0].toUpperCase() + '-' + reftests[test.tags[0].toUpperCase()];
-	
-					if (test.hasOwnProperty('id')) {
-						testref.setAttribute('data-autoid', testid);
-						testid = test.id;
-					}
-	
+
+					let testRefName = Object.keys(test.ressources)[0];
+					let testRefNumber = test.ressources[testRefName][0];
+					var testid = testRefName.toUpperCase()+' : '+testRefNumber;
 					testref.setAttribute('title', testid);
-					testref.appendChild(document.createTextNode(testid));
+					testref.appendChild(document.createTextNode(testRefNumber));
 					tabpanelsectionbutton.appendChild(testref);
+	
+					// if (!reftests.hasOwnProperty(test.tags[0].toUpperCase())) {
+					// 	reftests[test.tags[0].toUpperCase()] = 0;
+					// }
+	
+					// reftests[test.tags[0].toUpperCase()] += 1;
+					// var testid = test.tags[0].toUpperCase() + '-' + reftests[test.tags[0].toUpperCase()];
+	
+					// if (test.hasOwnProperty('id')) {
+					// 	testref.setAttribute('data-autoid', testid);
+					// 	testid = test.id;
+					// }
+	
+					// testref.setAttribute('title', testid);
+					// testref.appendChild(document.createTextNode(testid));
+					// tabpanelsectionbutton.appendChild(testref);
 	
 					// IN PROGRESS - test ressources
 					// if (test.hasOwnProperty('ressources')) {
 					// 	var ressourcesLength = Object.keys(test.ressources).length;
-	
+
 					// 	for (var r = 0; r < ressourcesLength; r++) {
 					// 		if (ressourcestests.indexOf(test.ressources[r]) == -1) {
 					// 			ressourcestests.push(test.ressources[r]);
@@ -908,48 +919,53 @@ button.addEventListener('click', function () {
 					beforetable.setAttribute('class', 'beforetable');
 					var tagssection = document.createElement('div');
 					tagssection.setAttribute('class', 'tags');
-	
-					tagssection.addEventListener('click', function(event) {
-						var element = event.target;
-						if (element.tagName.toLowerCase() == 'button') {
-							var tab = document.getElementById(element.getAttribute('data-tagid'));
-							tab.click();
-							tab.focus();
-						}
-					}, false);
-	
-					var tabpanelsectionp = document.createElement('p');
-					tabpanelsectionp.appendChild(document.createTextNode('Étiquettes : '));
-	
-					if (test.tags.length == 1) {
-						var tagid = 'tag' + test.tags[0].charAt(0).toUpperCase() + test.tags[0].slice(1);
-						var tagbutton = document.createElement('button');
-						tagbutton.setAttribute('type', 'button');
-						tagbutton.setAttribute('data-tagid', test.tags[0]);
-						tagbutton.setAttribute('title', chrome.i18n.getMessage('uiTagButton').replace(new RegExp('{tagName}'), chrome.i18n.getMessage(tagid)));
-						tagbutton.appendChild(document.createTextNode(chrome.i18n.getMessage(tagid)));
-						tabpanelsectionp.appendChild(tagbutton);
-						tabpanelsectionp.appendChild(document.createTextNode('.'));
-					}
-	
-					tagssection.appendChild(tabpanelsectionp);
-	
-					if (test.tags.length > 1) {
-						var tagsul = document.createElement('ul');
-						for (var i = 0; i < test.tags.length; i++) {
-							var tagli = document.createElement('li');
-							var tagid = 'tag' + test.tags[i].charAt(0).toUpperCase() + test.tags[i].slice(1);
+
+					if(isRGAAVersion) test.tags = test.tags.filter(tag => {return tag != category});
+					if(test.tags.length > 0) {
+						tagssection.addEventListener('click', function(event) {
+							var element = event.target;
+							if (element.tagName.toLowerCase() == 'button') {
+								if(isRGAAVersion) var tab = document.getElementById('sub-'+element.getAttribute('data-tagid'));
+								else var tab = document.getElementById(element.getAttribute('data-tagid'));
+								tab.click();
+								tab.focus();
+							}
+						}, false);
+		
+						var tabpanelsectionp = document.createElement('p');
+						tabpanelsectionp.appendChild(document.createTextNode('Étiquettes : '));
+						
+		
+						if (test.tags.length == 1) {
+							var tagid = 'tag' + test.tags[0].charAt(0).toUpperCase() + test.tags[0].slice(1);
 							var tagbutton = document.createElement('button');
 							tagbutton.setAttribute('type', 'button');
-							tagbutton.setAttribute('data-tagid', test.tags[i]);
+							tagbutton.setAttribute('data-tagid', test.tags[0]);
 							tagbutton.setAttribute('title', chrome.i18n.getMessage('uiTagButton').replace(new RegExp('{tagName}'), chrome.i18n.getMessage(tagid)));
 							tagbutton.appendChild(document.createTextNode(chrome.i18n.getMessage(tagid)));
-							tagli.appendChild(tagbutton);
-							tagsul.appendChild(tagli);
+							tabpanelsectionp.appendChild(tagbutton);
+							tabpanelsectionp.appendChild(document.createTextNode('.'));
 						}
-						tagssection.appendChild(tagsul);
+		
+						tagssection.appendChild(tabpanelsectionp);
+		
+						if (test.tags.length > 1) {
+							var tagsul = document.createElement('ul');
+							for (var i = 0; i < test.tags.length; i++) {
+								var tagli = document.createElement('li');
+								var tagid = 'tag' + test.tags[i].charAt(0).toUpperCase() + test.tags[i].slice(1);
+								var tagbutton = document.createElement('button');
+								tagbutton.setAttribute('type', 'button');
+								tagbutton.setAttribute('data-tagid', test.tags[i]);
+								tagbutton.setAttribute('title', chrome.i18n.getMessage('uiTagButton').replace(new RegExp('{tagName}'), chrome.i18n.getMessage(tagid)));
+								tagbutton.appendChild(document.createTextNode(chrome.i18n.getMessage(tagid)));
+								tagli.appendChild(tagbutton);
+								tagsul.appendChild(tagli);
+							}
+							tagssection.appendChild(tagsul);
+						}
 					}
-	
+
 					beforetable.appendChild(tagssection);
 					tabpanelsectiondiv.appendChild(beforetable);
 					
@@ -1661,6 +1677,7 @@ button.addEventListener('click', function () {
 					ptimersmall.appendChild(document.createTextNode('Analyse réalisée en ' + teststimer + ' seconde' + (teststimer > 1 ? 's' : '') + '.'));
 					ptimer.appendChild(ptimersmall);
 					nav.firstChild.insertAdjacentElement('afterend', ptimer);
+					ul.querySelectorAll('li[hidden]').forEach(li => li.remove());
 				}
 			}
 		)

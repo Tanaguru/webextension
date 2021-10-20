@@ -607,10 +607,6 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 	margin: 0 !important; padding: 0.25em !important;
 }
 
-.tags p, .tags button {
-	font-size: 0.6em;
-}
-
 .tags ul {
 	list-style-type: none; padding: 0 0 0 0.25em;
 }
