@@ -1,6 +1,6 @@
 {
 	"homepage_url": "http://www.tanaguru.com/fr/",
 	"permissions": [
-	    "<all_urls>", "downloads", "management", "notifications", "storage", "tabs"
+	    "<all_urls>", "downloads", "notifications", "tabs"
 	]
 }
