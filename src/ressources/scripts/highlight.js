@@ -1,14 +1,18 @@
-var el = document.querySelector(element);
-if(el) {
-	if(el.offsetHeight < 2 || el.offsetWidth < 2) el = el.parentNode;
-	if(el.hasAttribute('data-tanaguruhighlight')) cleanHighlight();
-	else runHighlight();
-} else {
+var hlResponse;
+if(!element) {
 	let previousHighlight = document.querySelector('[data-tanaguruhighlight]');
 	if(previousHighlight) previousHighlight.removeAttribute('data-tanaguruhighlight');
 	document.querySelectorAll('[data-tng-nohl]').forEach(nohl => {
 		nohl.removeAttribute('data-tng-nohl');
 	});
+	hlResponse = "off";
+}
+
+else {
+	var element = document.querySelector(element);
+	if(element.offsetHeight < 2 || element.offsetWidth < 2) element = element.parentNode;
+	if(element.hasAttribute('data-tanaguruhighlight')) cleanHighlight();
+	else runHighlight();
 }
 
 function runHighlight() {
@@ -18,10 +22,10 @@ function runHighlight() {
 		nohl.removeAttribute('data-tng-nohl');
 	});
 	
-	el.setAttribute('data-tanaguruhighlight', 'true');
-	var rect = el.getBoundingClientRect();
+	element.setAttribute('data-tanaguruhighlight', 'true');
+	var rect = element.getBoundingClientRect();
 	window.scrollTo(0, rect.top);
-	if(el == document.body) return;
+	if(element == document.body) return;
 	var elements = document.body.children;
 	filterParents(elements);
 }
@@ -30,7 +34,7 @@ function filterParents(collectionHTML) {
 	var eureka = false;
 	for(let i = 0; i < collectionHTML.length; i++) {
 		if(['noscript', 'script', 'style'].indexOf(collectionHTML[i].tagName.toLowerCase()) == -1) {
-			if(collectionHTML[i] == el) {
+			if(collectionHTML[i] == element) {
 				eureka = true;
 				continue;
 			}
@@ -45,11 +49,15 @@ function filterParents(collectionHTML) {
 			}
 		}
 	}
+	hlResponse = "on";
 }
 
 function cleanHighlight() {
-	el.removeAttribute('data-tanaguruhighlight');
+	element.removeAttribute('data-tanaguruhighlight');
 	document.querySelectorAll('[data-tng-nohl]').forEach(nohl => {
 		nohl.removeAttribute('data-tng-nohl');
 	});
+	hlResponse = "off";
 }
+
+hlResponse;

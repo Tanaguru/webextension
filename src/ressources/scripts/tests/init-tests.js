@@ -1,7 +1,7 @@
 var statuses = ['failed', 'cantTell', 'passed'];
 var eList;
 var naList = [];
-var textNodeList = (cat !== 'colors') ? null : getTextNodeContrast();
+
 /**
  * ? Define for each node of the page, if it is exposed, visible and has a [aria-*] attribute
  * ! NEED FOR TESTS
@@ -151,6 +151,8 @@ function launchTests() {
 
 
 if(first === "yes") addDataTng();
+var textNodeList = (cat !== 'colors') ? null : getTextNodeContrast();
+
 filterUntested();
 filterCat();
 launchTests();

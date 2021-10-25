@@ -115,7 +115,7 @@ function validContrast(size, weight, ratio) {
 			} else {
 				valid.target = 3;
 				if(ratio) {
-					valid.status = (ratio >= 3.1) ? 2 : 1;
+					valid.status = (ratio >= 3) ? 2 : 1;
 				}
 			}
 		}

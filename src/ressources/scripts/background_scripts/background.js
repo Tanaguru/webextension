@@ -52,11 +52,16 @@ function handleMessage(request, sender, sendResponse) {
 		chrome.tabs.executeScript(request.tabId, {
 		    code: 'var element = "' + request.element + '";'
 		}, function() {
-		    chrome.tabs.executeScript(request.tabId, {file: '/ressources/scripts/highlight.js'});
+		    chrome.tabs.executeScript(request.tabId, {file: '/ressources/scripts/highlight.js'}, (hlResponse)=> {
+				sendResponse({ command: 'executeHighlight', response: hlResponse });
+			});
 		});
 	}
 	else if (request.command == 'resetPanel') {
-		chrome.tabs.executeScript(request.tabId, {file: '/ressources/scripts/highlight.js'});
+		console.log("reset : ", chrome.tabs.Tab);
+		chrome.tabs.removeCSS(request.tabId, {
+			file: '/ressources/styles/highlight.css'
+		});
 	}
 	return true;
 }
@@ -65,29 +70,31 @@ chrome.runtime.onMessage.addListener(handleMessage);
 
 
 /* Fires when the active tab in a window changes. Note that the tab's URL may not be set at the time this event fired, but you can listen to tabs.onUpdated events to be notified when a URL is set. */
-// function handleActivated(activeInfo) {
-// 	console.log("Tab " + activeInfo.tabId + " was activated.");
-// 	var manifest = chrome.runtime.getManifest();
-// 	chrome.browserAction.setBadgeText({ text: '' });
-// 	chrome.browserAction.setTitle({ title: manifest.browser_action.default_title });
+function handleActivated(activeInfo) {
+	console.log("Tab " + activeInfo.tabId + " was activated.");
+	var manifest = chrome.runtime.getManifest();
+	chrome.browserAction.setBadgeText({ text: '' });
+	chrome.browserAction.setTitle({ title: manifest.browser_action.default_title });
 	
-// 	// détecter si le panneau devtools est affiché...
+	// détecter si le panneau devtools est affiché...
 	
-// }
-// chrome.tabs.onActivated.addListener(handleActivated);
+}
+chrome.tabs.onActivated.addListener(handleActivated);
 
-// /* Fired when a tab is updated. */
-// function handleUpdated(tabId, changeInfo, tabInfo) {
+/* Fired when a tab is updated. */
+function handleUpdated(tabId, changeInfo, tabInfo) {
   
-//   //var gettingCurrent = chrome.tabs.getCurrent();
-//   //gettingCurrent.then(onGot, onError);
+  //var gettingCurrent = chrome.tabs.getCurrent();
+  //gettingCurrent.then(onGot, onError);
   
-//   console.log("Tab " + tabId + " was updated.");
-//   console.log("Updated tab: " + tabId);
-//   console.log("Changed attributes: " + changeInfo);
-//   console.log("New tab Info: " + tabInfo);
+  console.log("Tab " + tabId + " was updated.");
+  console.log("Updated tab: " + tabId);
+  console.log("Changed attributes: " + changeInfo);
+  console.log("New tab Info: " + tabInfo);
+  chrome.tabs.removeCSS(tabId, {
+	file: '/ressources/styles/highlight.css'
+});
+  //chrome.devtools.reload();
   
-//   //chrome.devtools.reload();
-  
-// }
-// chrome.tabs.onUpdated.addListener(handleUpdated);
+}
+chrome.tabs.onUpdated.addListener(handleUpdated);

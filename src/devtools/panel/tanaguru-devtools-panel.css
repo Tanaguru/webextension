@@ -966,3 +966,7 @@ td code {
 .subTabs ul[role="tablist"] li:hover {
 	background-color: #f5f5f5;
 }
+
+.highlightON {
+	border-bottom: 2px solid #2A609E;
+}

@@ -1,5 +1,6 @@
 // TODO: début RGAA.
 var tanaguruTestsList = [];
+var webextVersion = "1.4.0";
 
 /**
  *? Thématiques

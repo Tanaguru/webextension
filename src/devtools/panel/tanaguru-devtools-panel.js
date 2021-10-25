@@ -337,7 +337,20 @@ button.addEventListener('click', function () {
 						tabId: chrome.devtools.inspectedWindow.tabId,
 						command: 'highlight',
 						element: cssify(getxpathbutton.getAttribute('data-xpath'))
+					}, (response) => {
+						if(response.response[0] === "off") {
+							element.classList.remove('highlightON');
+							element.setAttribute('aria-selected', "true");
+						} else {
+							let previousHighlight = main.children[1].querySelector('.highlightON');
+							if(previousHighlight) {
+								previousHighlight.classList.remove('highlightON');
+								previousHighlight.removeAttribute('aria-selected');
+							}
+							element.classList.add('highlightON');
+						}
 					});
+					
 					break;
 				case 'inspect-action':
 					var cellParent = element.closest('.item-actions');
