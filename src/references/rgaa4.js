@@ -39,6 +39,8 @@ var webextVersion = "1.4.0";
  ** tous les tests sont répertoriés, mais les critères 1.2/1.4 et 1.5 sont améliorables
  *TODO pas possible de tester si un élément a un aria-hidden="true" ET un nom accessible car hasAccessibleName() renvoie false quand isNotExposedDueTo.length === 0
  *! 1.4/1.5 comment identifier les images test / captcha ?
+ *
+ * datas : data-tng-img-roleImg, data-tng-informative-img, data-tng-altLong, data-tng-image-link, data-tng-ismap-linked, data-tng-img-ignored, data-tng-altnotexposed, data-tng-accessibleCaption
  */
 
 //* 1.1 Chaque image porteuse d'information a-t-elle une alternative textuelle ?
@@ -59,11 +61,9 @@ tanaguruTestsList.push({
         if (IName != 'svg' && IName != 'object' && IName != 'embed' && IName != 'canvas') {
             item.setAttribute('data-tng-img-roleImg', true);
             if (IName == 'img') {
-                if (item.hasAttribute('alt') && !item.hasAttribute('aria-label') && !item.hasAttribute('aria-labelledby')){
-                    if (item.getAttribute('alt') === '') {
-
-                        return false;
-                    }
+                if ((!item.hasAttribute('alt') || item.getAttribute('alt').trim().length === 0) && (!item.hasAttribute('aria-label') || item.getAttribute('aria-label').trim().length === 0) && (!item.hasAttribute('aria-labelledby') || item.getAttribute('aria-labelledby').trim().length === 0)){
+                    if(item.hasAttribute('alt') && item.getAttribute('alt').length === 0) return false;
+                    else return true;
                 }
             }
 
@@ -108,9 +108,7 @@ tanaguruTestsList.push({
                 if(item.getAttribute('aria-hidden') === true) return;
             }
     
-            if(item.hasAttribute('alt')) {
-                if(item.getAttribute('alt').length === 0 && !item.getAttribute('aria-label')) return;
-            }
+            if((!item.hasAttribute('alt') || item.getAttribute('alt').trim().length === 0) && !item.getAttribute('aria-label')) return;
         }
 
         item.setAttribute('data-tng-informative-img', true);
@@ -180,10 +178,13 @@ tanaguruTestsList.push({
     query: 'a[href] img[ismap][data-tng-el-exposed="true"]:not([role])',
     expectedNbElements: 0,
     filter: function (item) {
-        if (item.getAttribute('href').trim().length > 0) {
-            var hrefValue = item.getAttribute('href');
-            var linkPage = document.querySelectorAll('a[href='+hrefValue+']');
-            if(linkPage < 2) {
+        let ismapLink = item.closest('a');
+
+        if (ismapLink.getAttribute('href').trim().length > 0) {
+            var hrefValue = ismapLink.getAttribute('href');
+            var linkPage = document.querySelectorAll('a[href="'+hrefValue+'"]');
+
+            if(linkPage.length < 2) {
                 return true;
             } else {
                 item.setAttribute('data-tng-ismap-linked', true);
@@ -482,7 +483,8 @@ tanaguruTestsList.push({
     name: 'Liste de zones non cliquables (balise area sans attribut href) ignorées par les technologies d\'assistance',
     query: 'area:not([role], [data-tng-informative-img], [href]), area[role="presentation"]:not([href], [data-tng-informative-img])',
     filter: function (item) {
-        if(item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible') === 'false') return;
+        console.log(item);
+        if(item.getAttribute('data-tng-el-exposed') === 'false') return;
 
         if(item.hasAttribute('role')) {
             if(!item.hasAttribute('tabindex') || item.getAttribute('tabindex') < 0) {
@@ -869,9 +871,6 @@ tanaguruTestsList.push({
     name: 'Images avec un nom accessible trop long',
     query: '[data-tng-altLong="true"]',
     expectedNbElements: 0,
-    filter: function (item) {
-        return true;
-    },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.9'] }
@@ -881,9 +880,6 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: ' Le nom accessible de ces images est-il concis ?',
     query: '[data-tng-altLong="false"]',
-    filter: function (item) {
-        return true;
-    },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.9'] }
@@ -894,7 +890,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des images.',
-    query: 'img, area, object, embed, svg, canvas, [role="img"]',
+    query: 'img:not([data-tng-image-link]), area:not([data-tng-image-link]), object:not([data-tng-image-link]), embed:not([data-tng-image-link]), svg:not([data-tng-image-link]), canvas:not([data-tng-image-link]), [role="img"]:not([data-tng-image-link])',
     description: 'Si ces images sont utilisées comme CAPTCHA, vérifier qu\'il existe une alternative non graphique ou une autre solution d\'accès à la fonctionnalité qui est sécurisée par le CAPTCHA',
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.5.1']}
@@ -1285,6 +1281,8 @@ tanaguruTestsList.push({
 
 /**
  *? CADRES (terminé)
+ *
+ * data : data-tng-frameAlt
  */
 
 //* 2.1 Chaque cadre a-t-il un titre de cadre ?
@@ -1726,6 +1724,8 @@ tanaguruTestsList.push({
  *? MULTIMEDIA
  ** tous les tests sont répertoriés
  *TODO voir si l'on peut identifier de façon assez précise les médias non temporels
+ *
+ * data: data-tng-mediaAuto
  */
 
 //* 4.1 Chaque média temporel pré-enregistré a-t-il, si nécessaire, une transcription textuelle ou une audiodescription (hors cas particuliers) ?
@@ -1955,6 +1955,8 @@ tanaguruTestsList.push({
 /**
  *? TABLEAUX
  ** complet
+ *
+ * data : data-tng-tableCaptions, data-tng-prezTable, data-tng-dataTableSummary, data-tng-tableAccessiblename, data-tng-table, data-tng-tableCol, data-tng-tableRow, data-tng-row, data-tng-tableHeaders, data-tng-tableHeader-uniqueID, data-tng-scope, data-tng-partHeader-uniqueID, data-tng-headerInTable, data-tng-prezTable-dataEl
  */
 
 //* 5.1 Chaque tableau de données complexe a-t-il un résumé ?
@@ -2718,6 +2720,8 @@ tanaguruTestsList.push({
 
 /**
  *? LIENS
+ *
+ * data : data-tng-svgLink, data-tng-textlink, data-tng-textlink-accessiblename, data-tng-cplink, data-tng-imglink, data-tng-imglink-hasContent, data-tng-imglink-accessiblename, data-tng-cplink-hasContent, data-tng-cplink-accessiblename, data-tng-svglink-accessiblename, data-tng-link-names-match, data-tng-link-hasname
  */
 
 //* 6.1 Chaque lien est-il explicite (hors cas particuliers) ?
@@ -3048,6 +3052,8 @@ tanaguruTestsList.push({
  ** tous les tests sont répertoriés
  ** 7.1 & 7.2 implémentation partielle
  *TODO implémenter les modèles de conception dans le script content.js
+ *
+ * data : data-tng-btn-accessiblename, data-tng-btn-nameMatch
  */
 // 7.1 Chaque script est-il, si nécessaire, compatible avec les technologies d'assistance ?
 // 7.1.1 Chaque script qui génère ou contrôle un composant d'interface respecte-t-il une de ces conditions ? 
@@ -3248,6 +3254,8 @@ tanaguruTestsList.push({
  ** 8.3 si l'élément <html> n'a pas d'attribut lang, vérifier que la langue est renseignée pour chaque noeud texte et attribut dont le contenu est affiché ou lu par les lecteurs d'écran
  ** 8.9.1 voir si l'on peut étoffer
  *TODO 8.2 implémenter spec HTML dans le script content.js
+ *
+ * data : data-tng-validRole, data-tng-validAria, data-tng-haslang, data-tng-lang, data-tng-emptylang, data-tng-samelangs, data-tng-validlang, data-tng-pageTitle, data-tng-el-notemptylang, data-tng-el-validlang, data-tng-dirValid
  */
 
 //* 8.1 Chaque page web est-elle définie par un type de document ?
@@ -3855,6 +3863,8 @@ tanaguruTestsList.push({
 /**
  *? STRUCTURATION DE L'INFORMATION
  ** tous les tests sont répertoriés
+ *
+ * data : data-tng-headingHierarchy, data-tng-headingAN
  */
 //TODO a revoir
 // 9.1.1 : Dans chaque page web, la hiérarchie entre les titres (balise hx ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) est-elle pertinente ?
@@ -4046,6 +4056,8 @@ tanaguruTestsList.push({
  *TODO traiter le 10.5 dans la boucle qui passe chaque noeud texte dans le script de contrast, car il n'est pas possible de recupérer simplement les propriétés color et background appliquées directement sur les éléments
  *TODO 10.11.1 et 10.11.2 voir si on peut être + performant avec l'api windows
  *TODO 10.12.1 passer chaque noeud texte après avoir défini les propriétés d'espacement du texte sur le document
+ *
+ * data : data-tng-scalable
  */
 
 //* 10.1 Dans le site web, des feuilles de style sont-elles utilisées pour contrôler la présentation de l'information ?
@@ -4358,6 +4370,8 @@ tanaguruTestsList.push({
  ** Tous les tests sont répertoriés
  *TODO voir si l'on peut approfondir les tests 11.10.2 et 11.10.4
  *TODO traiter la proximité d'une étiquette avec son champ ?? (11.1.3, 11.4)
+ *
+ * data : data-tng-fieldsAN, data-tng-label-related, data-tng-has-label, data-tng-visible-label, data-tng-text-label, data-tng-NAinclude-visibleLabel, data-tng-fieldsgroup-legend, data-tng-optgroup-label, data-tng-button-namesMatch, data-tng-autocomplete-group, data-tng-autocomplete
  */
 
 //* 11.1 Chaque champ de formulaire a-t-il une étiquette ?
