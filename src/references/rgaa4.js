@@ -836,7 +836,7 @@ tanaguruTestsList.push({
         let alt = 0;
         let altExposed = 0;
         while(texts.nextNode() && !alt && !altExposed) {
-            let cnt = tw.currentNode;
+            let cnt = texts.currentNode;
             let parent = cnt.parentNode;
             if(cnt.nodeValue.trim().length > 0) {
                 alt++;
@@ -2089,11 +2089,12 @@ tanaguruTestsList.push({
                 if(summary) {
                     item.setAttribute('data-tng-dataTableSummary', 'true');
                     return true;
-                } else {
-                    item.setAttribute('data-tng-dataTableSummary', 'false');
                 }
             }
         }
+
+        item.setAttribute('data-tng-dataTableSummary', 'false');
+        return;
     },
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
@@ -2147,27 +2148,45 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des en-têtes d\'une colonne complète d\'un tableau de données, correctement déclarés.',
-    query: 'table:not([role], [data-tng-prezTable]) *[scope="col"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[scope="colgroup"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[id][data-tng-el-exposed="true"]',
+    query: 'table:not([role], [data-tng-prezTable]) *[scope="col"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[scope="colgroup"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[id][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) th[data-tng-el-exposed="true"]',
     filter: function (item) {
         var table = item.closest('table');
+        var parentRow = item.closest('tr');
+
+        if(item.tagName.toLowerCase() === 'th' && parentRow) {
+            if(parentRow.querySelectorAll('th').length < parentRow.querySelectorAll('td').length) return;
+        }
 
         //? header with SCOPE
         if(item.hasAttribute('scope')) {
             if(item.getAttribute('scope') === 'col' || item.getAttribute('scope') === 'colgroup') {
-                item.setAttribute('data-tng-table', 'headerColFull');
                 if(item.tagName.toLowerCase() !== 'th') {
+                    item.setAttribute('data-tng-table', 'headerColFull');
                     if(item.hasAttribute('role') && item.getAttribute('role') === 'columnheader') {
                         return true;
                     } else {
                         item.setAttribute('data-tng-tableCol', 'bad');
                         return;
                     }
-                } else return true;
+                } 
+                else if(item.tagName.toLowerCase() === 'th' && (item.id.trim().length === 0 || !table.querySelector('[headers*="'+item.id+'"]'))) {
+                    item.setAttribute('data-tng-table', 'headerColFull');
+                    return true;
+                }
             }
         }
 
         //? if item isn't cell return
         if(item.tagName.toLowerCase() !== 'th' && item.tagName.toLowerCase() !== 'td') return;
+
+        if(item.tagName.toLowerCase() === 'th' && !table.querySelector('*[headers]')) {
+            if(parentRow) {
+                item.setAttribute('data-tng-table', 'headerColFull');
+                return true;
+            }
+
+            return;
+        }
 
         //? header with ID
         //? check if this ID corresponding with headers attibute
@@ -2299,26 +2318,45 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des en-têtes d\'une ligne complète d\'un tableau de données, correctement déclarés.',
-    query: 'table:not([role], [data-tng-prezTable]) *[scope="row"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[scope="rowgroup"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[id][data-tng-el-exposed="true"]',
+    query: 'table:not([role], [data-tng-prezTable]) *[scope="row"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[scope="rowgroup"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[id][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) th[data-tng-el-exposed="true"]',
     filter: function (item) {
         var table = item.closest('table');
+        var parentRow = item.closest('tr');
+
+        if(item.tagName.toLowerCase() === 'th' && parentRow) {
+            if(parentRow.querySelectorAll('th').length > parentRow.querySelectorAll('td').length) return;
+        }
 
         //? header with SCOPE
         if(item.hasAttribute('scope')) {
             if(item.getAttribute('scope') === 'row' || item.getAttribute('scope') === 'rowgroup') {
-                item.setAttribute('data-tng-table', 'headerRowFull');
                 if(item.tagName.toLowerCase() !== 'th') {
+                    item.setAttribute('data-tng-table', 'headerRowFull');
                     if(item.hasAttribute('role') && item.getAttribute('role') === 'rowheader') {
                         return true;
                     } else {
                         item.setAttribute('data-tng-tableRow', 'bad');
+                        return
                     }
-                } else return true;
+                }
+                else if(item.tagName.toLowerCase() === 'th' && (item.id.trim().length === 0 || !table.querySelector('[headers*="'+item.id+'"]'))) {
+                    item.setAttribute('data-tng-table', 'headerRowFull');
+                    return true;
+                }
             }
         }
 
         //? if item isn't cell, return
         if(item.tagName.toLowerCase() !== 'th' && item.tagName.toLowerCase() !== 'td') return;
+
+        if(item.tagName.toLowerCase() === 'th' && !table.querySelector('*[headers]')) {
+            if(parentRow) {
+                item.setAttribute('data-tng-table', 'headerRowFull');
+                return true;
+            }
+
+            return;
+        }
 
         //? header with ID
         //? check if this ID corresponding with headers attribute
@@ -2432,7 +2470,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Liste des cellules d'un tableau de données associées à plusieurs en-têtes, mal balisées.",
-	query: 'table:not([role], [data-tng-prezTable]) *[headers][data-tng-el-exposed="true"]',
+	query: 'table:not([role], [data-tng-prezTable]) *[headers][data-tng-el-exposed="true"], [role="table"]:not([data-tng-prezTable]) *[headers][data-tng-el-exposed="true"]',
     expectedNbElements: 0,
 	filter: function (item) {
         var table = item.closest('table');
