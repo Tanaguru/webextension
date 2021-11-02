@@ -23,3 +23,6 @@
 - Update some RGAA tests
 - Update manifest 
 - fixes some bugs
+
+## 2.0.1
+- update webext version
