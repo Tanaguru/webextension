@@ -842,7 +842,7 @@ var getAccessibleName = function () {
                             for (var i = 0; i < nodes.length; i++) {
                                 if (nodes[i].nodeType == Node.TEXT_NODE) {
                                     // 2-G : The current node is a Text node, return its textual contents.
-                                    result += nodes[i].nodeValue;
+                                    result += result.length === 0 ? nodes[i].nodeValue : ' '+nodes[i].nodeValue;
                                 }
                                 else if (nodes[i].nodeType == Node.ELEMENT_NODE && nodes[i].isNotExposedDueTo.length == 0) {
                                     // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
@@ -862,14 +862,14 @@ var getAccessibleName = function () {
                                     if (this.matches('[data-labelbytraversal="true"]')) {
                                         nodes[i].setAttribute('data-labelbytraversal', 'true');
                                     }
-                                    result += cssbeforecontent + nodes[i].accessibleName + cssaftercontent;
+                                    result += result.length === 0 ? cssbeforecontent + nodes[i].accessibleName + cssaftercontent : ' '+cssbeforecontent + nodes[i].accessibleName + cssaftercontent;
                                 }
                             }
                         }
                         else {
-                            result += this.value;
+                            result += result.length === 0 ? this.value : ' '+this.value;
                         }
-                        result += parentcssaftercontent;
+                        result += result.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
                         if (result.trim() == '' && this.hasAttribute('title')) {
                             /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
                             result = this.getAttribute('title');
@@ -880,7 +880,7 @@ var getAccessibleName = function () {
                     var labels = this.labels;
                     for (var i = 0; i < labels.length; i++) {
                         if (!labels[i].matches('[role="none"], [role="presentation"]')) {
-                            result += labels[i].accessibleName;
+                            result += result.length === 0 ? labels[i].accessibleName : ' '+labels[i].accessibleName;
                         }
                     }
 
@@ -932,7 +932,7 @@ var getAccessibleName = function () {
                     for (var i = 0; i < nodes.length; i++) {
                         if (nodes[i].nodeType == Node.TEXT_NODE) {
                             // 2-G : The current node is a Text node, return its textual contents.
-                            result += nodes[i].nodeValue;
+                            result += result.length === 0 ? nodes[i].nodeValue : ' '+nodes[i].nodeValue;
                         }
                         else if (nodes[i].nodeType == Node.ELEMENT_NODE && nodes[i].isNotExposedDueTo.length == 0) {
                             // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
@@ -960,10 +960,10 @@ var getAccessibleName = function () {
                             if (this.matches('[data-labelbytraversal="true"]')) {
                                 nodes[i].setAttribute('data-labelbytraversal', 'true');
                             }
-                            result += cssbeforecontent + nodes[i].accessibleName + cssaftercontent;
+                            result += result.length === 0 ? cssbeforecontent + nodes[i].accessibleName + cssaftercontent : ' '+cssbeforecontent + nodes[i].accessibleName + cssaftercontent;
                         }
                     }
-                    result += parentcssaftercontent;
+                    result += result.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
                     if (result.trim() == '' && this.matches('a[href][title]')) {
                         /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
                         result = this.getAttribute('title');
@@ -3725,7 +3725,6 @@ function getDuplicateID() {
 function listAllEventListeners() {
     var allElements = Array.from(document.body.querySelectorAll('*'));
     allElements.push(document.body);
-    // console.log(window);
     var types = [];
     for(let ev in window) {
       if(/^on/.test(ev)) types[types.length] = ev;
@@ -3746,4 +3745,4 @@ function listAllEventListeners() {
     return elements;
 }
 
-listAllEventListeners();
+// listAllEventListeners();

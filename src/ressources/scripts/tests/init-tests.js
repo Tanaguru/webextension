@@ -12,7 +12,7 @@ function addDataTng() {
         let elExposed = e.isNotExposedDueTo;
         if(elExposed.length > 0) {
             e.setAttribute('data-tng-el-exposed', false);
-            e.setAttribute('data-tng-notExposed', elExposed);
+            e.setAttribute('data-tng-notExposed', elExposed.join());
     
             if(elExposed == 'css:display' || 'css:visibility') {
                 e.setAttribute('data-tng-el-visible', false);

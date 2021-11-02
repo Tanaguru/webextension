@@ -1,8 +1,8 @@
 function handleShown() {
-	chrome.runtime.sendMessage({
-		tabId: chrome.devtools.inspectedWindow.tabId,
-		command: 'tabInfos'
-	});
+	// chrome.runtime.sendMessage({
+	// 	tabId: chrome.devtools.inspectedWindow.tabId,
+	// 	command: 'tabInfos'
+	// });
 }
 
 function handleHidden() {

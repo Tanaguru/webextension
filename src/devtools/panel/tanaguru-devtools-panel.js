@@ -245,7 +245,7 @@ button.addEventListener('click', function () {
 	var main = document.querySelector('main');
 	main.removeAttribute('class');
 	var nav = document.createElement('div');
-	nav.setAttribute('class', 'navigation');
+	nav.setAttribute('class', 'panelNavigation');
 	var navheading = document.createElement('h1');
 	navheading.appendChild(document.createTextNode(chrome.i18n.getMessage('msgNavHeading')));
 	nav.appendChild(navheading);

@@ -19,21 +19,6 @@ var webextVersion = "1.4.0";
  ** Consultation (optimisé)
  */
 
-//* 10.8 Pour chaque page web, les contenus cachés ont-ils vocation à être ignorés par les technologies d'assistance ?
-// 10.8.1 Dans chaque page web, chaque contenu caché vérifie-t-il une de ces conditions ?
-//! traitement trop long sur firefox
-// tanaguruTestsList.push({
-// 	lang: 'fr',
-// 	name: "Liste des contenus non restitués aux technologies d'assistance.",
-//     description: "Vérifier que ces éléments ont bien vocation à être ignorés par les technologies d'assistance.",
-//     query: 'body *',
-//     filter: function(item) {
-//         return item.isNotExposedDueTo.length > 0;
-//     },
-// 	tags: ['a11y', 'presentation'],
-//     ressources: { 'rgaa': ['10.8.1'] }
-// });
-
 /**
  *? IMAGES
  ** tous les tests sont répertoriés, mais les critères 1.2/1.4 et 1.5 sont améliorables
@@ -483,7 +468,6 @@ tanaguruTestsList.push({
     name: 'Liste de zones non cliquables (balise area sans attribut href) ignorées par les technologies d\'assistance',
     query: 'area:not([role], [data-tng-informative-img], [href]), area[role="presentation"]:not([href], [data-tng-informative-img])',
     filter: function (item) {
-        console.log(item);
         if(item.getAttribute('data-tng-el-exposed') === 'false') return;
 
         if(item.hasAttribute('role')) {
@@ -2825,6 +2809,20 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['6.1.1']}
 });
 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens texte avec un nom non pertinent',
+    query: '[data-tng-textlink-accessiblename][title]',
+    expectedNbElements: 0,
+    description:"Ces liens possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
+    filter: function(item) {
+        return !item.getAttribute('title').match(item.accessibleName);
+    },
+    mark: {attrs: ['title']},
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.1']}
+});
+
 // 6.1.2 Pour chaque lien image l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -2892,6 +2890,20 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['6.1.2']}
 });
 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens images avec un nom non pertinent',
+    query: '[data-tng-imglink-accessiblename][title]',
+    expectedNbElements: 0,
+    description:"Ces liens images possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
+    filter: function(item) {
+        return !item.getAttribute('title').match(item.accessibleName);
+    },
+    mark: {attrs: ['title']},
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.2']}
+});
+
 // 6.1.3 Pour chaque lien composite l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -2949,6 +2961,20 @@ tanaguruTestsList.push({
     name: 'Liste des liens composites avec un nom accessible',
     query: '[data-tng-cplink-accessiblename]',
     description:'Vérifiez la pertinence des noms accessibles.',
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.3']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens composites avec un nom non pertinent',
+    query: '[data-tng-cplink-accessiblename][title]',
+    expectedNbElements: 0,
+    description:"Ces liens composites possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
+    filter: function(item) {
+        return !item.getAttribute('title').match(item.accessibleName);
+    },
+    mark: {attrs: ['title']},
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.3']}
 });
@@ -3133,10 +3159,17 @@ tanaguruTestsList.push({
 // 7.1.2 Chaque script qui génère ou contrôle un composant d'interface respecte-t-il une de ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Chaque script qui génère ou contrôle un composant d'interface doit être correctement restitué par les technologies d'assistance.",
-    status: 'untested',
-	tags: ['a11y', 'accessiblename', 'scripts'],
-	ressources: {'rgaa': ['7.1.2']}
+	name: 'Liste des éléments non restitués mais tabulables.',
+	query: '[data-tng-el-exposed="false"]',
+	expectedNbElements: 0,
+	filter: function (item) {
+        if(item.disabled) return;
+        let itemNotExposed = item.getAttribute('data-tng-notExposed').split(',');
+
+		return item.canBeReachedUsingKeyboardWith.length > 0 && !itemNotExposed.includes('css:display') && !itemNotExposed.includes('css:visibility');
+	},
+    tags: ['a11y', 'keyboard', 'scripts'],
+    ressources: { 'rgaa': ['7.1.2'] }
 });
 
 // 7.1.3 Chaque script qui génère ou contrôle un composant d'interface vérifie-t-il ces conditions (hors cas particuliers) ?
@@ -3850,9 +3883,7 @@ tanaguruTestsList.push({
     filter: function (item) {
         var textBetween = item.previousSibling.nodeValue;
         textBetween = textBetween ? textBetween.trim().length : textBetween;
-        if (!textBetween){
-            return item.getAttribute('data-tng-el-eposed') === 'true';
-        }
+        return !textBetween;
     },
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.9.1']}
@@ -4036,7 +4067,7 @@ tanaguruTestsList.push({
     name: 'La structure du document utilise une balise main visible et unique',
     query: 'main[data-tng-el-exposed="true"][data-tng-el-visible="true"]',
     expectedNbElements : 1,
-    tags: ['a11y', 'structure', 'accessiblename'],
+    tags: ['a11y', 'structure'],
     ressources: { 'rgaa': ['9.2.1'] }
 });
 
@@ -4249,8 +4280,28 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque élément recevant le focus, la prise de focus doit être visible.",
     status: 'untested',
-	tags: ['a11y', 'presentation', 'keyboard', 'contrast'],
+	tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.7.1'] }
+});
+
+//* 10.8 Pour chaque page web, les contenus cachés ont-ils vocation à être ignorés par les technologies d'assistance ?
+// 10.8.1 Dans chaque page web, chaque contenu caché vérifie-t-il une de ces conditions ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Liste des éléments non restitués mais visibles.',
+	query: '[data-tng-el-exposed="false"][data-tng-el-visible="true"]',
+	description: "Vérifier que ces éléments on bien vocation à être ignorés par les technologies d'assistance.",
+    tags: ['a11y', 'keyboard', 'presentation'],
+    ressources: { 'rgaa': ['10.8.1'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Liste des éléments restitués non visibles.',
+	query: '[data-tng-el-exposed="true"][data-tng-el-visible="false"]',
+	description: "Vérifier que ces éléments on bien vocation à être restitués par les technologies d'assistance.",
+    tags: ['a11y', 'keyboard', 'presentation'],
+    ressources: { 'rgaa': ['10.8.1'] }
 });
 
 //* 10.9 Dans chaque page web, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle est-elle respectée ?
@@ -4544,14 +4595,13 @@ tanaguruTestsList.push({
             }
         }
 
-        if(item.hasAttribute('id') && item.getAttribute('id').trim().length > 0) {
-            let id = item.getAttribute('id');
+        if(item.id.trim().length > 0) {
             let labels = document.querySelectorAll('label[for]');
             let labelsLength = labels.length;
             
             for(let i = 0; i < labelsLength; i++) {
-                let forAttr = labels[i].getAttribute('for');
-                if(forAttr.match(id)) {
+                let forAttr = labels[i].getAttribute('for').split(' ');
+                if(forAttr.includes(item.id)) {
                     if(labels[i].textContent.trim().length > 0) {
                         if(labels[i].getAttribute('data-tng-el-visible') === 'true') {
                             let visibleText = '';
@@ -4562,7 +4612,7 @@ tanaguruTestsList.push({
                 
                                 if(e.nodeType === 1 && e.getAttribute('data-tng-el-visible') === 'true') {
                                     e.childNodes.forEach(echild => {
-                                        if(echild.nodeType === 3 || echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true') {
+                                        if(echild.nodeType === 3 || (echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true')) {
                                             visibleText += echild.textContent;
                                         }
                                     });
@@ -5452,17 +5502,13 @@ tanaguruTestsList.push({
 // 12.8.1 Dans chaque page web, l'ordre de tabulation dans le contenu est-il cohérent ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Liste des éléments non restitués mais tabulables.',
-	query: HTML.getFocusableElementsSelector(),
-	expectedNbElements: 0,
+	name: 'Liste des éléments non visibles mais tabulables.',
+	query: '[data-tng-el-visible="false"]:not([hidden], [data-tng-notExposed="css:display"], [data-tng-notExposed="css:visibility"])',
+	description: "Vérifier que ces éléments deviennent visibles au focus.",
 	filter: function (item) {
         if(item.disabled) return;
 
-		var exposedState = item.isNotExposedDueTo;
-
-		if (exposedState.indexOf('css:display') == -1 && exposedState.indexOf('css:visibility') == -1) {
-			return exposedState.length > 0;
-		}
+		return item.canBeReachedUsingKeyboardWith.length > 0;
 	},
     tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.8.1'] }

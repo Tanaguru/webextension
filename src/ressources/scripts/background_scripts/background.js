@@ -78,7 +78,14 @@ chrome.runtime.onMessage.addListener(handleMessage);
 /* Fires when the active tab in a window changes. Note that the tab's URL may not be set at the time this event fired, but you can listen to tabs.onUpdated events to be notified when a URL is set. */
 function handleActivated(activeInfo) {
 	console.log("Tab " + activeInfo.tabId + " was activated.");
-	// var language = chrome.tabs.detectLanguage(activeInfo.tabId, (lg) => {console.log("language : ", lg);});
+
+	browser.tabs.query({active: true, currentWindow: true}, tabInfo => {
+		if(tabInfo[0].url) {
+			chrome.tabs.removeCSS(activeInfo.tabId, {
+				file: '/ressources/styles/highlight.css'
+			});
+		}
+	});
 	
 	var manifest = chrome.runtime.getManifest();
 	chrome.browserAction.setBadgeText({ text: '' });
@@ -89,8 +96,6 @@ chrome.tabs.onActivated.addListener(handleActivated);
 /* Fired when a tab is updated. */
 function handleUpdated(tabId, changeInfo, tabInfo) {
   	console.log("Tab " + tabId + " was updated.");
-  	// chrome.tabs.removeCSS(tabId, {
-	// file: '/ressources/styles/highlight.css'
-	// });
+  	
 }
 chrome.tabs.onUpdated.addListener(handleUpdated);

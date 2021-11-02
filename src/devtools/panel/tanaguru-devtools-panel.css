@@ -310,27 +310,27 @@ main > div:first-child h1 {
 	padding: 0.5em;
 }
 
-div.navigation ul {
+div.panelNavigation ul {
 	background-color: rgba(255, 255, 255, 0.925);
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
 
-div.navigation li:first-child {
+div.panelNavigation li:first-child {
 	margin-bottom: 1em;
 }
 
-div.navigation li:first-child + li {
+div.panelNavigation li:first-child + li {
 	border-bottom: solid 1px #e5e5e5;
 	border-top: solid 1px #e5e5e5;
 }
 
-div.navigation li:not(.ressource) + li.ressource {
+div.panelNavigation li:not(.ressource) + li.ressource {
 	border-top: solid 1px #e5e5e5;
 }
 	
-div.navigation li {
+div.panelNavigation li {
 	box-sizing: border-box;
 	color: #666;
 	cursor: default;
@@ -342,20 +342,20 @@ div.navigation li {
 	width: 100%;
 }
 
-div.navigation li:hover {
+div.panelNavigation li:hover {
 	background-color: #f5f5f5;
 }
 
-div.navigation li * {
+div.panelNavigation li * {
 	pointer-events: none;
 }
 
-div.navigation li[aria-selected="true"] {
+div.panelNavigation li[aria-selected="true"] {
 	background-color: #F2F9FB;
 	color: #2b7b92;
 }
 	
-div.navigation li[aria-selected="true"]::before {
+div.panelNavigation li[aria-selected="true"]::before {
 	background-color: #2b7b92;
 	content: '';
 	position: absolute;
@@ -366,11 +366,11 @@ div.navigation li[aria-selected="true"]::before {
 	z-index: 1;
 }
 	
-div.navigation li span {
+div.panelNavigation li span {
 	float: left;
 }
 
-div.navigation li strong {
+div.panelNavigation li strong {
 	background-color: #d90b0b;
 	background: linear-gradient(top, #ef362c, #d90b0b);
 	border-radius: 50%;
@@ -382,7 +382,7 @@ div.navigation li strong {
 	padding: 0 1em;
 }
 
-div.navigation .cat-inapplicable span:last-child {
+div.panelNavigation .cat-inapplicable span:last-child {
 	background-color: #2B7B92;
 	background: linear-gradient(top, #2A609E, #2B7B92);
 	border-radius: 50%;
