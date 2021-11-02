@@ -27,6 +27,7 @@
 		"message": "(new window)",
 		"description": "Text to inform that an element will open a new window."
 	},
+	"homeTitle": {"message": "Customize your analysis"},
 	"msgNavHeading": { "message": "Analysis Results" },
 	"msgDashboard": { "message": "Dashboard" },
 	"earlFailed": { "message": "Failed" },

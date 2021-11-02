@@ -1,17 +1,8 @@
 [data-tanaguruhighlight="true"] {
-	position: relative;
-	transform: scale(1.5);
-	outline: 10000px solid rgba(0, 0, 0, 0.8);
+	border: 5px red solid !important;
 }
 
-[data-tanaguruhighlight="true"]::before {
-	box-shadow: 0 0 4px red inset;
-	content: '';
-	position: absolute;
-	left: 0;
-	top: 0;
-	z-index: 1;
-	height: 100%;
-	width: 100%;
+[data-tng-nohl="true"] {
+	opacity: 0.3 !important;
 }
 

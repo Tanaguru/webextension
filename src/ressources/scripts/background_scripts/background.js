@@ -17,15 +17,14 @@ function handleMessage(request, sender, sendResponse) {
 		);
 	}
 	else if (request.command === 'executeTests') {
-		chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/tests.js' }, function (result) {
-			sendResponse({ command: 'executeTestsResults', response: result, timer: request.timer });
+		chrome.tabs.executeScript(request.tabId, {
+		    code: 'var cat = "' + request.cat + '"; var statusUser = "' + request.statusUser + '"; var first = "' + request.first + '"; var last = "' + request.last + '";'
+		}, function() {
+			chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/tests.js' }, function (result) {
+				sendResponse({ command: 'executeTestsResults', response: result });
+			});
 		});
 	}
-	// else if (request.command === 'getContrasts') {
-	// 	chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/contrasts.js' }, function (result) {
-	// 		sendResponse({ command: 'getContrasts', response: result });
-	// 	});
-	// }
 	else if (request.command == 'downloadTestCsvFile') {
 		chrome.downloads.download({
 			url: request.data.url,
@@ -53,8 +52,22 @@ function handleMessage(request, sender, sendResponse) {
 		chrome.tabs.executeScript(request.tabId, {
 		    code: 'var element = "' + request.element + '";'
 		}, function() {
-		    chrome.tabs.executeScript(request.tabId, {file: '/ressources/scripts/highlight.js'});
+		    chrome.tabs.executeScript(request.tabId, {file: '/ressources/scripts/highlight.js'}, (hlResponse)=> {
+				sendResponse({ command: 'executeHighlight', response: hlResponse });
+			});
 		});
+	}
+	else if (request.command == 'resetPanel') {
+		chrome.tabs.removeCSS(request.tabId, {
+			file: '/ressources/styles/highlight.css'
+		});
+	}
+	else if (request.command == 'tabInfos') {
+		// get principal language page
+		var language = chrome.tabs.detectLanguage(request.tabId, (lg) => {console.log("language : ", lg);});
+
+		// zoom 200%
+		// chrome.tabs.setZoom(request.tabId, 2);
 	}
 	return true;
 }
@@ -62,34 +75,27 @@ function handleMessage(request, sender, sendResponse) {
 chrome.runtime.onMessage.addListener(handleMessage);
 
 
-
-
-
-
 /* Fires when the active tab in a window changes. Note that the tab's URL may not be set at the time this event fired, but you can listen to tabs.onUpdated events to be notified when a URL is set. */
 function handleActivated(activeInfo) {
 	console.log("Tab " + activeInfo.tabId + " was activated.");
+
+	chrome.tabs.query({active: true, currentWindow: true}, tabInfo => {
+		if(tabInfo[0].url) {
+			chrome.tabs.removeCSS(activeInfo.tabId, {
+				file: '/ressources/styles/highlight.css'
+			});
+		}
+	});
+	
 	var manifest = chrome.runtime.getManifest();
 	chrome.browserAction.setBadgeText({ text: '' });
 	chrome.browserAction.setTitle({ title: manifest.browser_action.default_title });
-	
-	// détecter si le panneau devtools est affiché...
-	
 }
 chrome.tabs.onActivated.addListener(handleActivated);
 
 /* Fired when a tab is updated. */
 function handleUpdated(tabId, changeInfo, tabInfo) {
-  
-  //var gettingCurrent = chrome.tabs.getCurrent();
-  //gettingCurrent.then(onGot, onError);
-  
-  console.log("Tab " + tabId + " was updated.");
-  console.log("Updated tab: " + tabId);
-  console.log("Changed attributes: " + changeInfo);
-  console.log("New tab Info: " + tabInfo);
-  
-  //chrome.devtools.reload();
-  
+  	console.log("Tab " + tabId + " was updated.");
+  	
 }
 chrome.tabs.onUpdated.addListener(handleUpdated);
