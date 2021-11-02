@@ -1,5 +1,6 @@
 // TODO: début RGAA.
 var tanaguruTestsList = [];
+var webextVersion = "1.4.0";
 
 /**
  *? Thématiques
@@ -18,26 +19,13 @@ var tanaguruTestsList = [];
  ** Consultation (optimisé)
  */
 
-//* 10.8 Pour chaque page web, les contenus cachés ont-ils vocation à être ignorés par les technologies d'assistance ?
-// 10.8.1 Dans chaque page web, chaque contenu caché vérifie-t-il une de ces conditions ?
-//! traitement trop long sur firefox
-// tanaguruTestsList.push({
-// 	lang: 'fr',
-// 	name: "Liste des contenus non restitués aux technologies d'assistance.",
-//     description: "Vérifier que ces éléments ont bien vocation à être ignorés par les technologies d'assistance.",
-//     query: 'body *',
-//     filter: function(item) {
-//         return item.isNotExposedDueTo.length > 0;
-//     },
-// 	tags: ['a11y', 'presentation'],
-//     ressources: { 'rgaa': ['10.8.1'] }
-// });
-
 /**
  *? IMAGES
  ** tous les tests sont répertoriés, mais les critères 1.2/1.4 et 1.5 sont améliorables
  *TODO pas possible de tester si un élément a un aria-hidden="true" ET un nom accessible car hasAccessibleName() renvoie false quand isNotExposedDueTo.length === 0
  *! 1.4/1.5 comment identifier les images test / captcha ?
+ *
+ * datas : data-tng-img-roleImg, data-tng-informative-img, data-tng-altLong, data-tng-image-link, data-tng-ismap-linked, data-tng-img-ignored, data-tng-altnotexposed, data-tng-accessibleCaption
  */
 
 //* 1.1 Chaque image porteuse d'information a-t-elle une alternative textuelle ?
@@ -58,11 +46,9 @@ tanaguruTestsList.push({
         if (IName != 'svg' && IName != 'object' && IName != 'embed' && IName != 'canvas') {
             item.setAttribute('data-tng-img-roleImg', true);
             if (IName == 'img') {
-                if (item.hasAttribute('alt') && !item.hasAttribute('aria-label') && !item.hasAttribute('aria-labelledby')){
-                    if (item.getAttribute('alt') === '') {
-
-                        return false;
-                    }
+                if ((!item.hasAttribute('alt') || item.getAttribute('alt').trim().length === 0) && (!item.hasAttribute('aria-label') || item.getAttribute('aria-label').trim().length === 0) && (!item.hasAttribute('aria-labelledby') || item.getAttribute('aria-labelledby').trim().length === 0)){
+                    if(item.hasAttribute('alt') && item.getAttribute('alt').length === 0) return false;
+                    else return true;
                 }
             }
 
@@ -107,9 +93,7 @@ tanaguruTestsList.push({
                 if(item.getAttribute('aria-hidden') === true) return;
             }
     
-            if(item.hasAttribute('alt')) {
-                if(item.getAttribute('alt').length === 0 && !item.getAttribute('aria-label')) return;
-            }
+            if((!item.hasAttribute('alt') || item.getAttribute('alt').trim().length === 0) && !item.getAttribute('aria-label')) return;
         }
 
         item.setAttribute('data-tng-informative-img', true);
@@ -179,10 +163,13 @@ tanaguruTestsList.push({
     query: 'a[href] img[ismap][data-tng-el-exposed="true"]:not([role])',
     expectedNbElements: 0,
     filter: function (item) {
-        if (item.getAttribute('href').trim().length > 0) {
-            var hrefValue = item.getAttribute('href');
-            var linkPage = document.querySelectorAll('a[href='+hrefValue+']');
-            if(linkPage < 2) {
+        let ismapLink = item.closest('a');
+
+        if (ismapLink.getAttribute('href').trim().length > 0) {
+            var hrefValue = ismapLink.getAttribute('href');
+            var linkPage = document.querySelectorAll('a[href="'+hrefValue+'"]');
+
+            if(linkPage.length < 2) {
                 return true;
             } else {
                 item.setAttribute('data-tng-ismap-linked', true);
@@ -481,7 +468,7 @@ tanaguruTestsList.push({
     name: 'Liste de zones non cliquables (balise area sans attribut href) ignorées par les technologies d\'assistance',
     query: 'area:not([role], [data-tng-informative-img], [href]), area[role="presentation"]:not([href], [data-tng-informative-img])',
     filter: function (item) {
-        if(item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible') === 'false') return;
+        if(item.getAttribute('data-tng-el-exposed') === 'false') return;
 
         if(item.hasAttribute('role')) {
             if(!item.hasAttribute('tabindex') || item.getAttribute('tabindex') < 0) {
@@ -833,7 +820,7 @@ tanaguruTestsList.push({
         let alt = 0;
         let altExposed = 0;
         while(texts.nextNode() && !alt && !altExposed) {
-            let cnt = tw.currentNode;
+            let cnt = texts.currentNode;
             let parent = cnt.parentNode;
             if(cnt.nodeValue.trim().length > 0) {
                 alt++;
@@ -868,9 +855,6 @@ tanaguruTestsList.push({
     name: 'Images avec un nom accessible trop long',
     query: '[data-tng-altLong="true"]',
     expectedNbElements: 0,
-    filter: function (item) {
-        return true;
-    },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.9'] }
@@ -880,9 +864,6 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: ' Le nom accessible de ces images est-il concis ?',
     query: '[data-tng-altLong="false"]',
-    filter: function (item) {
-        return true;
-    },
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.9'] }
@@ -893,7 +874,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des images.',
-    query: 'img, area, object, embed, svg, canvas, [role="img"]',
+    query: 'img:not([data-tng-image-link]), area:not([data-tng-image-link]), object:not([data-tng-image-link]), embed:not([data-tng-image-link]), svg:not([data-tng-image-link]), canvas:not([data-tng-image-link]), [role="img"]:not([data-tng-image-link])',
     description: 'Si ces images sont utilisées comme CAPTCHA, vérifier qu\'il existe une alternative non graphique ou une autre solution d\'accès à la fonctionnalité qui est sécurisée par le CAPTCHA',
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.5.1']}
@@ -1284,6 +1265,8 @@ tanaguruTestsList.push({
 
 /**
  *? CADRES (terminé)
+ *
+ * data : data-tng-frameAlt
  */
 
 //* 2.1 Chaque cadre a-t-il un titre de cadre ?
@@ -1725,6 +1708,8 @@ tanaguruTestsList.push({
  *? MULTIMEDIA
  ** tous les tests sont répertoriés
  *TODO voir si l'on peut identifier de façon assez précise les médias non temporels
+ *
+ * data: data-tng-mediaAuto
  */
 
 //* 4.1 Chaque média temporel pré-enregistré a-t-il, si nécessaire, une transcription textuelle ou une audiodescription (hors cas particuliers) ?
@@ -1954,6 +1939,8 @@ tanaguruTestsList.push({
 /**
  *? TABLEAUX
  ** complet
+ *
+ * data : data-tng-tableCaptions, data-tng-prezTable, data-tng-dataTableSummary, data-tng-tableAccessiblename, data-tng-table, data-tng-tableCol, data-tng-tableRow, data-tng-row, data-tng-tableHeaders, data-tng-tableHeader-uniqueID, data-tng-scope, data-tng-partHeader-uniqueID, data-tng-headerInTable, data-tng-prezTable-dataEl
  */
 
 //* 5.1 Chaque tableau de données complexe a-t-il un résumé ?
@@ -2086,11 +2073,12 @@ tanaguruTestsList.push({
                 if(summary) {
                     item.setAttribute('data-tng-dataTableSummary', 'true');
                     return true;
-                } else {
-                    item.setAttribute('data-tng-dataTableSummary', 'false');
                 }
             }
         }
+
+        item.setAttribute('data-tng-dataTableSummary', 'false');
+        return;
     },
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
@@ -2144,27 +2132,45 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des en-têtes d\'une colonne complète d\'un tableau de données, correctement déclarés.',
-    query: 'table:not([role], [data-tng-prezTable]) *[scope="col"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[scope="colgroup"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[id][data-tng-el-exposed="true"]',
+    query: 'table:not([role], [data-tng-prezTable]) *[scope="col"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[scope="colgroup"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[id][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) th[data-tng-el-exposed="true"]',
     filter: function (item) {
         var table = item.closest('table');
+        var parentRow = item.closest('tr');
+
+        if(item.tagName.toLowerCase() === 'th' && parentRow) {
+            if(parentRow.querySelectorAll('th').length < parentRow.querySelectorAll('td').length) return;
+        }
 
         //? header with SCOPE
         if(item.hasAttribute('scope')) {
             if(item.getAttribute('scope') === 'col' || item.getAttribute('scope') === 'colgroup') {
-                item.setAttribute('data-tng-table', 'headerColFull');
                 if(item.tagName.toLowerCase() !== 'th') {
+                    item.setAttribute('data-tng-table', 'headerColFull');
                     if(item.hasAttribute('role') && item.getAttribute('role') === 'columnheader') {
                         return true;
                     } else {
                         item.setAttribute('data-tng-tableCol', 'bad');
                         return;
                     }
-                } else return true;
+                } 
+                else if(item.tagName.toLowerCase() === 'th' && (item.id.trim().length === 0 || !table.querySelector('[headers*="'+item.id+'"]'))) {
+                    item.setAttribute('data-tng-table', 'headerColFull');
+                    return true;
+                }
             }
         }
 
         //? if item isn't cell return
         if(item.tagName.toLowerCase() !== 'th' && item.tagName.toLowerCase() !== 'td') return;
+
+        if(item.tagName.toLowerCase() === 'th' && !table.querySelector('*[headers]')) {
+            if(parentRow) {
+                item.setAttribute('data-tng-table', 'headerColFull');
+                return true;
+            }
+
+            return;
+        }
 
         //? header with ID
         //? check if this ID corresponding with headers attibute
@@ -2296,26 +2302,45 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des en-têtes d\'une ligne complète d\'un tableau de données, correctement déclarés.',
-    query: 'table:not([role], [data-tng-prezTable]) *[scope="row"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[scope="rowgroup"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[id][data-tng-el-exposed="true"]',
+    query: 'table:not([role], [data-tng-prezTable]) *[scope="row"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[scope="rowgroup"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[id][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) th[data-tng-el-exposed="true"]',
     filter: function (item) {
         var table = item.closest('table');
+        var parentRow = item.closest('tr');
+
+        if(item.tagName.toLowerCase() === 'th' && parentRow) {
+            if(parentRow.querySelectorAll('th').length > parentRow.querySelectorAll('td').length) return;
+        }
 
         //? header with SCOPE
         if(item.hasAttribute('scope')) {
             if(item.getAttribute('scope') === 'row' || item.getAttribute('scope') === 'rowgroup') {
-                item.setAttribute('data-tng-table', 'headerRowFull');
                 if(item.tagName.toLowerCase() !== 'th') {
+                    item.setAttribute('data-tng-table', 'headerRowFull');
                     if(item.hasAttribute('role') && item.getAttribute('role') === 'rowheader') {
                         return true;
                     } else {
                         item.setAttribute('data-tng-tableRow', 'bad');
+                        return
                     }
-                } else return true;
+                }
+                else if(item.tagName.toLowerCase() === 'th' && (item.id.trim().length === 0 || !table.querySelector('[headers*="'+item.id+'"]'))) {
+                    item.setAttribute('data-tng-table', 'headerRowFull');
+                    return true;
+                }
             }
         }
 
         //? if item isn't cell, return
         if(item.tagName.toLowerCase() !== 'th' && item.tagName.toLowerCase() !== 'td') return;
+
+        if(item.tagName.toLowerCase() === 'th' && !table.querySelector('*[headers]')) {
+            if(parentRow) {
+                item.setAttribute('data-tng-table', 'headerRowFull');
+                return true;
+            }
+
+            return;
+        }
 
         //? header with ID
         //? check if this ID corresponding with headers attribute
@@ -2429,7 +2454,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Liste des cellules d'un tableau de données associées à plusieurs en-têtes, mal balisées.",
-	query: 'table:not([role], [data-tng-prezTable]) *[headers][data-tng-el-exposed="true"]',
+	query: 'table:not([role], [data-tng-prezTable]) *[headers][data-tng-el-exposed="true"], [role="table"]:not([data-tng-prezTable]) *[headers][data-tng-el-exposed="true"]',
     expectedNbElements: 0,
 	filter: function (item) {
         var table = item.closest('table');
@@ -2717,6 +2742,8 @@ tanaguruTestsList.push({
 
 /**
  *? LIENS
+ *
+ * data : data-tng-svgLink, data-tng-textlink, data-tng-textlink-accessiblename, data-tng-cplink, data-tng-imglink, data-tng-imglink-hasContent, data-tng-imglink-accessiblename, data-tng-cplink-hasContent, data-tng-cplink-accessiblename, data-tng-svglink-accessiblename, data-tng-link-names-match, data-tng-link-hasname
  */
 
 //* 6.1 Chaque lien est-il explicite (hors cas particuliers) ?
@@ -2778,6 +2805,20 @@ tanaguruTestsList.push({
     query: '[data-tng-textlink-accessiblename]',
     description:'Vérifiez la pertinence des noms accessibles des liens',
     mark: {attrs: ['role']},
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.1']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens texte avec un nom non pertinent',
+    query: '[data-tng-textlink-accessiblename][title]',
+    expectedNbElements: 0,
+    description:"Ces liens possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
+    filter: function(item) {
+        return !item.getAttribute('title').match(item.accessibleName);
+    },
+    mark: {attrs: ['title']},
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.1']}
 });
@@ -2849,6 +2890,20 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['6.1.2']}
 });
 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens images avec un nom non pertinent',
+    query: '[data-tng-imglink-accessiblename][title]',
+    expectedNbElements: 0,
+    description:"Ces liens images possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
+    filter: function(item) {
+        return !item.getAttribute('title').match(item.accessibleName);
+    },
+    mark: {attrs: ['title']},
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.2']}
+});
+
 // 6.1.3 Pour chaque lien composite l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -2906,6 +2961,20 @@ tanaguruTestsList.push({
     name: 'Liste des liens composites avec un nom accessible',
     query: '[data-tng-cplink-accessiblename]',
     description:'Vérifiez la pertinence des noms accessibles.',
+    tags: ['a11y', 'links', 'accessiblename'],
+    ressources: {'rgaa': ['6.1.3']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des liens composites avec un nom non pertinent',
+    query: '[data-tng-cplink-accessiblename][title]',
+    expectedNbElements: 0,
+    description:"Ces liens composites possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
+    filter: function(item) {
+        return !item.getAttribute('title').match(item.accessibleName);
+    },
+    mark: {attrs: ['title']},
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.3']}
 });
@@ -3048,6 +3117,8 @@ tanaguruTestsList.push({
  ** tous les tests sont répertoriés
  ** 7.1 & 7.2 implémentation partielle
  *TODO implémenter les modèles de conception dans le script content.js
+ *
+ * data : data-tng-btn-accessiblename, data-tng-btn-nameMatch
  */
 // 7.1 Chaque script est-il, si nécessaire, compatible avec les technologies d'assistance ?
 // 7.1.1 Chaque script qui génère ou contrôle un composant d'interface respecte-t-il une de ces conditions ? 
@@ -3071,7 +3142,7 @@ tanaguruTestsList.push({
             }
         }
 	},
-	tags: ['a11y', 'buttons', 'accessiblename'],
+	tags: ['a11y', 'buttons', 'accessiblename', 'scripts'],
 	ressources: {'rgaa': ['7.1.1']}
 });
 
@@ -3082,17 +3153,24 @@ tanaguruTestsList.push({
 	analyzeElements: function (collection) {
 		collection.map(e => e.status = 'passed');
     },
-	tags: ['a11y', 'buttons', 'accessiblename'],
+	tags: ['a11y', 'buttons', 'accessiblename', 'scripts'],
 	ressources: {'rgaa': ['7.1.1']}
 });
 
 // 7.1.2 Chaque script qui génère ou contrôle un composant d'interface respecte-t-il une de ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Chaque script qui génère ou contrôle un composant d'interface doit être correctement restitué par les technologies d'assistance.",
-    status: 'untested',
-	tags: ['a11y', 'accessiblename'],
-	ressources: {'rgaa': ['7.1.2']}
+	name: 'Liste des éléments non restitués mais tabulables.',
+	query: '[data-tng-el-exposed="false"]',
+	expectedNbElements: 0,
+	filter: function (item) {
+        if(item.disabled) return;
+        let itemNotExposed = item.getAttribute('data-tng-notExposed').split(',');
+
+		return item.canBeReachedUsingKeyboardWith.length > 0 && !itemNotExposed.includes('css:display') && !itemNotExposed.includes('css:visibility');
+	},
+    tags: ['a11y', 'keyboard', 'scripts'],
+    ressources: { 'rgaa': ['7.1.2'] }
 });
 
 // 7.1.3 Chaque script qui génère ou contrôle un composant d'interface vérifie-t-il ces conditions (hors cas particuliers) ?
@@ -3100,7 +3178,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque script qui génère ou contrôle un composant d'interface doit avoir un nom pertinent et accessible.",
     status: 'untested',
-	tags: ['a11y', 'accessiblename'],
+	tags: ['a11y', 'accessiblename', 'scripts'],
 	ressources: {'rgaa': ['7.1.3']}
 });
 
@@ -3108,7 +3186,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque script qui génère ou contrôle un composant d'interface doit avoir un rôle pertinent.",
     status: 'untested',
-	tags: ['a11y', 'accessiblename'],
+	tags: ['a11y', 'accessiblename', 'scripts'],
 	ressources: {'rgaa': ['7.1.3']}
 });
 
@@ -3150,7 +3228,7 @@ tanaguruTestsList.push({
             return true;
         }
     },
-    tags: ['a11y', 'accessiblename', 'buttons'],
+    tags: ['a11y', 'accessiblename', 'buttons', 'scripts'],
     ressources: {'rgaa': ['7.1.3']}
 });
 
@@ -3161,7 +3239,7 @@ tanaguruTestsList.push({
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
-    tags: ['a11y', 'accessiblename', 'buttons'],
+    tags: ['a11y', 'accessiblename', 'buttons', 'scripts'],
     ressources: {'rgaa': ['7.1.3']}
 });
 
@@ -3172,7 +3250,7 @@ tanaguruTestsList.push({
 	name: 'Liste des alternatives de script dans des balises <noscript>.',
     description: 'Vérifier la pertinence de l\'alternative.',
 	query: 'noscript',
-	tags: ['a11y', 'accessiblename'],
+	tags: ['a11y', 'accessiblename', 'scripts'],
 	ressources: {'rgaa': ['7.2.1']}
 });
 
@@ -3181,7 +3259,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque élément non textuel mis à jour par un script (dans la page, ou dans un cadre) et ayant une alternative, l'aternative doit être mise à jour de façon pertinente.",
     status: 'untested',
-	tags: ['a11y', 'accessiblename'],
+	tags: ['a11y', 'accessiblename', 'scripts'],
 	ressources: {'rgaa': ['7.2.2']}
 });
 
@@ -3191,7 +3269,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque élément possédant un gestionnaire d'événement contrôlé par un script, l'élément doit être contrôlable par le clavier et tout dispositif de pointage.",
     status: 'untested',
-	tags: ['a11y', 'keyboard'],
+	tags: ['a11y', 'keyboard', 'scripts'],
 	ressources: {'rgaa': ['7.3.1']}
 });
 
@@ -3200,7 +3278,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Un script ne doit pas supprimer le focus d'un élément qui le reçoit.",
     status: 'untested',
-	tags: ['a11y', 'keyboard'],
+	tags: ['a11y', 'keyboard', 'scripts'],
 	ressources: {'rgaa': ['7.3.2']}
 });
 
@@ -3210,7 +3288,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque script qui initie un changement de contexte, l'utilisateur doit être averti ou en avoir le contrôle.",
     status: 'untested',
-	tags: ['a11y'],
+	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.4.1']}
 });
 
@@ -3220,7 +3298,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Chaque message de statut qui informe de la réussite, du résultat d\'une action ou bien de l\'état d\'une application doit utiliser l\'attribut WAI-ARIA role="status".',
     status: 'untested',
-	tags: ['a11y'],
+	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.5.1']}
 });
 
@@ -3229,7 +3307,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Chaque message de statut qui présente une suggestion, ou avertit de l\'existence d\'une erreur doit utiliser l\'attribut WAI-ARIA role="alert".',
     status: 'untested',
-	tags: ['a11y'],
+	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.5.2']}
 });
 
@@ -3238,7 +3316,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Chaque message de statut qui indique la progression d\'un processus doit utiliser l\'un des attributs WAI-ARIA role="log", role="progressbar" ou role="status".',
     status: 'untested',
-	tags: ['a11y'],
+	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.5.3']}
 });
 
@@ -3248,6 +3326,8 @@ tanaguruTestsList.push({
  ** 8.3 si l'élément <html> n'a pas d'attribut lang, vérifier que la langue est renseignée pour chaque noeud texte et attribut dont le contenu est affiché ou lu par les lecteurs d'écran
  ** 8.9.1 voir si l'on peut étoffer
  *TODO 8.2 implémenter spec HTML dans le script content.js
+ *
+ * data : data-tng-validRole, data-tng-validAria, data-tng-haslang, data-tng-lang, data-tng-emptylang, data-tng-samelangs, data-tng-validlang, data-tng-pageTitle, data-tng-el-notemptylang, data-tng-el-validlang, data-tng-dirValid
  */
 
 //* 8.1 Chaque page web est-elle définie par un type de document ?
@@ -3261,7 +3341,7 @@ tanaguruTestsList.push({
         'passed': "Cette page possède bien une balise doctype.",
 		'failed': "Cette page n'a pas de balise doctype."
     },
-    tags: ['a11y', 'code'],
+    tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.1.1']}
 });
 
@@ -3331,7 +3411,7 @@ tanaguruTestsList.push({
             else item.status = 'failed';
 		}
     },
-    tags: ['a11y', 'code'],
+    tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.1.2']}
 });
 
@@ -3351,7 +3431,7 @@ tanaguruTestsList.push({
             }
 		}
     },
-    tags: ['a11y', 'code'],
+    tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.1.1']}
 });
 
@@ -3367,7 +3447,7 @@ tanaguruTestsList.push({
 		'failed': "Des attributs ID dupliqués sont présents dans la page."
     },
     mark: { attrs: ['id'] },
-    tags: ['a11y', 'code'],
+    tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3391,7 +3471,7 @@ tanaguruTestsList.push({
             return true;
         }
 	},
-    tags: ['a11y', 'aria', 'code'],
+    tags: ['a11y', 'aria', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3402,7 +3482,7 @@ tanaguruTestsList.push({
 	analyzeElements: function (collection) {
 		collection.map(e => e.status = 'passed');
     },
-	tags: ['a11y', 'aria', 'code'],
+	tags: ['a11y', 'aria', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3423,7 +3503,7 @@ tanaguruTestsList.push({
             return;
         }
 	},
-	tags: ['a11y', 'aria', 'code'],
+	tags: ['a11y', 'aria', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3434,7 +3514,7 @@ tanaguruTestsList.push({
 	analyzeElements: function (collection) {
 		collection.map(e => e.status = 'passed');
 	},
-	tags: ['a11y', 'aria', 'code'],
+	tags: ['a11y', 'aria', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3450,7 +3530,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.hasAriaAttributesWithInvalidValues({ permissive: true });
 	},
-	tags: ['a11y', 'aria', 'code'],
+	tags: ['a11y', 'aria', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3466,7 +3546,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		return item.hasProhibitedAriaAttributes();
 	},
-	tags: ['a11y', 'aria', 'code'],
+	tags: ['a11y', 'aria', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3479,7 +3559,7 @@ tanaguruTestsList.push({
         'passed': "Aucune imbrication de balises HTML non conforme n\'a été trouvé sur cette page.",
 		'failed': "Des imbrications de balises HTML ne sont pas conformes sur cette page."
     },
-	tags: ['a11y', 'code'],
+	tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3491,7 +3571,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		if(item.closest('svg')) return;
 	},
-	tags: ['a11y', 'code'],
+	tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3503,7 +3583,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		if(!item.closest('svg')) return true;
 	},
-	tags: ['a11y', 'code'],
+	tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3515,7 +3595,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		if(!item.closest('svg')) return item.textContent.trim().length === 0;
 	},
-	tags: ['a11y', 'code'],
+	tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
 
@@ -3526,7 +3606,7 @@ tanaguruTestsList.push({
     expectedNbElements: {min: 1},
     query: 'html[lang], html[xml\\:lang], body[lang], body[xml\\:lang]',
     filter: function(item) {
-        if(item.hasAttribute('lang') || item.hasAttribute('xml\\:lang')) {
+        if(item.hasAttribute('lang') || item.hasAttribute('xml:lang')) {
             item.setAttribute('data-tng-haslang', true);
             return true;
         }
@@ -3804,9 +3884,7 @@ tanaguruTestsList.push({
     filter: function (item) {
         var textBetween = item.previousSibling.nodeValue;
         textBetween = textBetween ? textBetween.trim().length : textBetween;
-        if (!textBetween){
-            return item.getAttribute('data-tng-el-eposed') === 'true';
-        }
+        return !textBetween;
     },
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.9.1']}
@@ -3855,6 +3933,8 @@ tanaguruTestsList.push({
 /**
  *? STRUCTURATION DE L'INFORMATION
  ** tous les tests sont répertoriés
+ *
+ * data : data-tng-headingHierarchy, data-tng-headingAN
  */
 //TODO a revoir
 // 9.1.1 : Dans chaque page web, la hiérarchie entre les titres (balise hx ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) est-elle pertinente ?
@@ -3988,7 +4068,7 @@ tanaguruTestsList.push({
     name: 'La structure du document utilise une balise main visible et unique',
     query: 'main[data-tng-el-exposed="true"][data-tng-el-visible="true"]',
     expectedNbElements : 1,
-    tags: ['a11y', 'structure', 'accessiblename'],
+    tags: ['a11y', 'structure'],
     ressources: { 'rgaa': ['9.2.1'] }
 });
 
@@ -4046,6 +4126,8 @@ tanaguruTestsList.push({
  *TODO traiter le 10.5 dans la boucle qui passe chaque noeud texte dans le script de contrast, car il n'est pas possible de recupérer simplement les propriétés color et background appliquées directement sur les éléments
  *TODO 10.11.1 et 10.11.2 voir si on peut être + performant avec l'api windows
  *TODO 10.12.1 passer chaque noeud texte après avoir défini les propriétés d'espacement du texte sur le document
+ *
+ * data : data-tng-scalable
  */
 
 //* 10.1 Dans le site web, des feuilles de style sont-elles utilisées pour contrôler la présentation de l'information ?
@@ -4161,7 +4243,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque déclaration CSS de couleurs de police (color), d'un élément susceptible de contenir du texte, doit être accompagnée d'une déclaration de couleur de fond (background, background-color), au moins, héritée d'un parent.",
     status: 'untested',
-	tags: ['a11y', 'presentation', 'colors'],
+	tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.5.1'] }
 });
 
@@ -4170,7 +4252,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque déclaration de couleur de fond (background, background-color), d'un élément susceptible de contenir du texte, doit être accompagnée d'une déclaration de couleur de police (color) au moins, héritée d'un parent.",
     status: 'untested',
-	tags: ['a11y', 'presentation', 'colors'],
+	tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.5.2'] }
 });
 
@@ -4179,7 +4261,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque utilisation d'une image pour créer une couleur de fond d'un élément susceptible de contenir du texte, via CSS (background, background-image), doit être accompagnée d'une déclaration de couleur de fond (background, background-color), au moins, héritée d'un parent.",
     status: 'untested',
-	tags: ['a11y', 'presentation', 'colors'],
+	tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.5.3'] }
 });
 
@@ -4189,7 +4271,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque lien texte signalé uniquement par la couleur, et dont la nature n'est pas évidente, doit être visible par rapport au texte environnant.",
     status: 'untested',
-	tags: ['a11y', 'presentation', 'links'],
+	tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.6.1'] }
 });
 
@@ -4199,8 +4281,28 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque élément recevant le focus, la prise de focus doit être visible.",
     status: 'untested',
-	tags: ['a11y', 'presentation', 'keyboard', 'contrast'],
+	tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.7.1'] }
+});
+
+//* 10.8 Pour chaque page web, les contenus cachés ont-ils vocation à être ignorés par les technologies d'assistance ?
+// 10.8.1 Dans chaque page web, chaque contenu caché vérifie-t-il une de ces conditions ? 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Liste des éléments non restitués mais visibles.',
+	query: '[data-tng-el-exposed="false"][data-tng-el-visible="true"]',
+	description: "Vérifier que ces éléments on bien vocation à être ignorés par les technologies d'assistance.",
+    tags: ['a11y', 'keyboard', 'presentation'],
+    ressources: { 'rgaa': ['10.8.1'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'Liste des éléments restitués non visibles.',
+	query: '[data-tng-el-exposed="true"][data-tng-el-visible="false"]',
+	description: "Vérifier que ces éléments on bien vocation à être restitués par les technologies d'assistance.",
+    tags: ['a11y', 'keyboard', 'presentation'],
+    ressources: { 'rgaa': ['10.8.1'] }
 });
 
 //* 10.9 Dans chaque page web, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle est-elle respectée ?
@@ -4358,6 +4460,8 @@ tanaguruTestsList.push({
  ** Tous les tests sont répertoriés
  *TODO voir si l'on peut approfondir les tests 11.10.2 et 11.10.4
  *TODO traiter la proximité d'une étiquette avec son champ ?? (11.1.3, 11.4)
+ *
+ * data : data-tng-fieldsAN, data-tng-label-related, data-tng-has-label, data-tng-visible-label, data-tng-text-label, data-tng-NAinclude-visibleLabel, data-tng-fieldsgroup-legend, data-tng-optgroup-label, data-tng-button-namesMatch, data-tng-autocomplete-group, data-tng-autocomplete
  */
 
 //* 11.1 Chaque champ de formulaire a-t-il une étiquette ?
@@ -4493,14 +4597,13 @@ tanaguruTestsList.push({
             }
         }
 
-        if(item.hasAttribute('id') && item.getAttribute('id').trim().length > 0) {
-            let id = item.getAttribute('id');
+        if(item.id.trim().length > 0) {
             let labels = document.querySelectorAll('label[for]');
             let labelsLength = labels.length;
             
             for(let i = 0; i < labelsLength; i++) {
-                let forAttr = labels[i].getAttribute('for');
-                if(forAttr.match(id)) {
+                let forAttr = labels[i].getAttribute('for').split(' ');
+                if(forAttr.includes(item.id)) {
                     if(labels[i].textContent.trim().length > 0) {
                         if(labels[i].getAttribute('data-tng-el-visible') === 'true') {
                             let visibleText = '';
@@ -4511,7 +4614,7 @@ tanaguruTestsList.push({
                 
                                 if(e.nodeType === 1 && e.getAttribute('data-tng-el-visible') === 'true') {
                                     e.childNodes.forEach(echild => {
-                                        if(echild.nodeType === 3 || echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true') {
+                                        if(echild.nodeType === 3 || (echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true')) {
                                             visibleText += echild.textContent;
                                         }
                                     });
@@ -5262,7 +5365,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque ensemble de pages doit disposer d'au moins deux systèmes de navigation différents.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.1.1'] }
 });
 
@@ -5272,7 +5375,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque ensemble de pages le menu et les barres de navigation sont toujours à la même place dans la présentation ET se présentent toujours dans le même ordre relatif dans le code source.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.2.1'] }
 });
 
@@ -5282,7 +5385,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "La page « plan du site » doit être représentative de l'architecture générale du site.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.3.1'] }
 });
 
@@ -5291,7 +5394,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Les liens du plan du site doivent être fonctionnels.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.3.2'] }
 });
 
@@ -5300,7 +5403,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Les liens du plan du site doivent pointer vers les pages indiquées par l'intitulé.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.3.3'] }
 });
 
@@ -5310,7 +5413,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque ensemble de pages, la page « plan du site » doit être accessible à partir d'une fonctionnalité identique.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.4.1'] }
 });
 
@@ -5319,7 +5422,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque ensemble de pages, la fonctionnalité vers la page « plan du site » doit être située à la même place dans la présentation.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.4.2'] }
 });
 
@@ -5328,7 +5431,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque ensemble de pages, la fonctionnalité vers la page « plan du site » doit toujours se présenter dans le même ordre relatif dans le code source.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.4.3'] }
 });
 
@@ -5338,7 +5441,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque ensemble de pages, le moteur de recherche doit être accessible à partir d'une fonctionnalité identique.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.5.1'] }
 });
 
@@ -5347,7 +5450,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque ensemble de pages, la fonctionnalité vers le moteur de recherche doit être située à la même place dans la présentation.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.5.2'] }
 });
 
@@ -5356,7 +5459,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque ensemble de pages, la fonctionnalité vers le moteur de recherche doit toujours se présenter dans le même ordre relatif dans le code source.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.5.3'] }
 });
 
@@ -5366,7 +5469,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Les zones de regroupement de contenus présentes dans plusieurs pages web (zones d'en-tête, de navigation principale, de contenu principal, de pied de page et de moteur de recherche) doivent pouvoir être atteintes ou évitées.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.6.1'] }
 });
 
@@ -5376,7 +5479,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque page web, un lien doit permettre d'éviter la zone de contenu principal ou d'y accéder.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.7.1'] }
 });
 
@@ -5385,7 +5488,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque ensemble de pages, le lien d'évitement ou d'accès rapide à la zone de contenu principal doit être situé à la même place dans la présentation  et se présente toujours dans le même ordre relatif dans le code source. Il doit également être visible ou visible à la prise de focus et fonctionnel.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.7.2'] }
 });
 
@@ -5393,19 +5496,15 @@ tanaguruTestsList.push({
 // 12.8.1 Dans chaque page web, l'ordre de tabulation dans le contenu est-il cohérent ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Liste des éléments non restitués mais tabulables.',
-	query: HTML.getFocusableElementsSelector(),
-	expectedNbElements: 0,
+	name: 'Liste des éléments non visibles mais tabulables.',
+	query: '[data-tng-el-visible="false"]:not([hidden], [data-tng-notExposed="css:display"], [data-tng-notExposed="css:visibility"])',
+	description: "Vérifier que ces éléments deviennent visibles au focus.",
 	filter: function (item) {
         if(item.disabled) return;
 
-		var exposedState = item.isNotExposedDueTo;
-
-		if (exposedState.indexOf('css:display') == -1 && exposedState.indexOf('css:visibility') == -1) {
-			return exposedState.length > 0;
-		}
+		return item.canBeReachedUsingKeyboardWith.length > 0;
 	},
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.8.1'] }
 });
 
@@ -5429,7 +5528,7 @@ tanaguruTestsList.push({
 // 			return !item.isVisible;
 // 		}
 // 	},
-//     tags: ['a11y', 'keyboard'],
+//     tags: ['a11y', 'keyboard', 'navigation'],
 //     ressources: { 'rgaa': ['12.8.1'] }
 // });
 
@@ -5438,7 +5537,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque script qui met à jour ou insère un contenu, l'ordre de tabulation doit rester cohérent.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.8.2'] }
 });
 
@@ -5448,7 +5547,7 @@ tanaguruTestsList.push({
 	lang: 'en',
 	name: 'Il est possible d\'atteindre l\'élément suivant ou précédent pouvant recevoir le focus avec la touche de tabulation.',
 	query: '[onblur]',
-	tags: ['a11y', 'keyboard'],
+	tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.9.1'] },
 	comments: "peut détecter l'attribut onblur (peut-être aussi l'événement) mais ce n'est pas vraiment une preuve que c'est un piège à clavier"
 });
@@ -5459,7 +5558,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque raccourci clavier n'utilisant qu'une seule touche (lettres minuscule ou majuscule, ponctuation, chiffre ou symbole) un mécanisme permet de désactiver ou configurer le raccourci clavier.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.10.1'] }
 });
 
@@ -5469,7 +5568,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Les contenus additionnels apparaissant au survol, à la prise de focus ou à l'activation d'un composant d'interface doivent, si nécessaire, être atteignables au clavier.",
     status: 'untested',
-    tags: ['a11y', 'keyboard'],
+    tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.11.1'] }
 });
 
@@ -5505,7 +5604,7 @@ tanaguruTestsList.push({
         }
     },
     mark: {attrs: ['http-equiv', 'content']},
-    tags: ['a11y', 'meta'],
+    tags: ['a11y', 'meta', 'consultation'],
     ressources: { 'rgaa': ['13.1.1']}
 });
 
@@ -5521,7 +5620,7 @@ tanaguruTestsList.push({
         if(time) return time > 0;
     },
     mark: {attrs: ['http-equiv', 'content']},
-    tags: ['a11y', 'meta'],
+    tags: ['a11y', 'meta', 'consultation'],
     ressources: { 'rgaa': ['13.1.2']}
 });
 
@@ -5530,7 +5629,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque procédé de redirection effectué via un script doit être contrôlable par l'utilisateur ou avoir une limite de temps d'au moins 20heures.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.1.3'] }
 });
 
@@ -5539,7 +5638,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque procédé limitant le temps d'une session doit être contrôlable par l'utilisateur ou avoir une limite de temps d'au moins 20heures.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.1.4'] }
 });
 
@@ -5549,7 +5648,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Dans chaque page web, l'ouverture d'une nouvelle fenêtre ne doit pas être déclenchée sans action de l'utilisateur.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.2.1'] }
 });
 
@@ -5559,7 +5658,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque fonctionnalité de téléchargement d'un document bureautique, le document doit être accessible ou posséder une alternative accessible.",
     query: '[href][download]',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.3.1'] }
 });
 
@@ -5569,7 +5668,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque document bureautique ayant une version accessible, la version accessible doit offrir la même information.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.4.1'] }
 });
 
@@ -5579,7 +5678,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) doit avoir une alternative.",
     status: 'untested',
-    tags: ['a11y', 'accessiblename'],
+    tags: ['a11y', 'accessiblename', 'consultation'],
     ressources: { 'rgaa': ['13.5.1'] }
 });
 
@@ -5589,7 +5688,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) doit avoir une alternative pertinente.",
     status: 'untested',
-    tags: ['a11y', 'accessiblename'],
+    tags: ['a11y', 'accessiblename', 'consultation'],
     ressources: { 'rgaa': ['13.6.1'] }
 });
 
@@ -5599,7 +5698,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque image ou élément multimédia qui provoque un changement brusque de luminosité ou un effet de flash, l'effet doit avoir une fréquence inférieur à 3secondes ou une surface totale inférieure à 21825pixels.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.7.1'] }
 });
 
@@ -5608,7 +5707,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque script qui provoque un changement brusque de luminosité ou un effet de flash, l'effet doit avoir une fréquence inférieur à 3secondes ou une surface totale inférieure à 21825pixels.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.7.2'] }
 });
 
@@ -5617,7 +5716,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque mise en forme CSS qui provoque un changement brusque de luminosité ou un effet de flash, l'effet doit avoir une fréquence inférieur à 3secondes ou une surface totale inférieure à 21825pixels.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.7.3'] }
 });
 
@@ -5627,7 +5726,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque contenu en mouvement déclenché automatiquement doit durer moins de 6 secondes ou être contrôlable par l'utilisateur.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.8.1'] }
 });
 
@@ -5636,7 +5735,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque contenu clignotant déclenché automatiquement doit durer moins de 6 secondes ou être contrôlable par l'utilisateur.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.8.2'] }
 });
 
@@ -5646,7 +5745,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Le contenu proposé doit être consultable et identique quelle que soit l'orientation de l'écran (portrait ou paysage).",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.9.1'] }
 });
 
@@ -5656,7 +5755,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque fonctionnalité utilisable ou disponible suite à un contact multipoint doit également être utilisable ou disponible suite à un contact en un point unique de l’écran.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.10.1'] }
 });
 
@@ -5665,7 +5764,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque fonctionnalité utilisable ou disponible suite à un geste basé sur le suivi d'une trajectoire sur l'écran doit également être utilisable ou disponible suite à un contact en un point unique de l’écran.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.10.2'] }
 });
 
@@ -5675,7 +5774,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Les actions déclenchées au moyen d'un dispositif de pointage sur un point unique de l'écran doivent pouvoir faire l'objet d'une annulation.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.11.1'] }
 });
 
@@ -5685,7 +5784,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Les fonctionnalités disponibles en bougeant l'appareil doivent pouvoir être accomplies avec des composants d'interface utilisateur.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.12.1'] }
 });
 
@@ -5694,7 +5793,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Les fonctionnalités disponibles en faisant un geste en direction de l'appareil doivent pouvoir être accomplies avec des composants d'interface utilisateur.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.12.2'] }
 });
 
@@ -5703,7 +5802,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "L'utilisateur doit avoir la possibilité de désactiver la détection du mouvement pour éviter un déclenchement accidentel de la fonctionnalité.",
     status: 'untested',
-    tags: ['a11y'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.12.3'] }
 });
 

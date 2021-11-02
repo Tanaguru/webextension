@@ -1,5 +1,6 @@
 // TODO: début ACT.
 var tanaguruTestsList = [];
+var webextVersion = "1.4.0";
 
 /* ACT */
 

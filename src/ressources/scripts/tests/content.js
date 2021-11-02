@@ -842,7 +842,7 @@ var getAccessibleName = function () {
                             for (var i = 0; i < nodes.length; i++) {
                                 if (nodes[i].nodeType == Node.TEXT_NODE) {
                                     // 2-G : The current node is a Text node, return its textual contents.
-                                    result += nodes[i].nodeValue;
+                                    result += result.length === 0 ? nodes[i].nodeValue : ' '+nodes[i].nodeValue;
                                 }
                                 else if (nodes[i].nodeType == Node.ELEMENT_NODE && nodes[i].isNotExposedDueTo.length == 0) {
                                     // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
@@ -862,14 +862,14 @@ var getAccessibleName = function () {
                                     if (this.matches('[data-labelbytraversal="true"]')) {
                                         nodes[i].setAttribute('data-labelbytraversal', 'true');
                                     }
-                                    result += cssbeforecontent + nodes[i].accessibleName + cssaftercontent;
+                                    result += result.length === 0 ? cssbeforecontent + nodes[i].accessibleName + cssaftercontent : ' '+cssbeforecontent + nodes[i].accessibleName + cssaftercontent;
                                 }
                             }
                         }
                         else {
-                            result += this.value;
+                            result += result.length === 0 ? this.value : ' '+this.value;
                         }
-                        result += parentcssaftercontent;
+                        result += result.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
                         if (result.trim() == '' && this.hasAttribute('title')) {
                             /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
                             result = this.getAttribute('title');
@@ -880,7 +880,7 @@ var getAccessibleName = function () {
                     var labels = this.labels;
                     for (var i = 0; i < labels.length; i++) {
                         if (!labels[i].matches('[role="none"], [role="presentation"]')) {
-                            result += labels[i].accessibleName;
+                            result += result.length === 0 ? labels[i].accessibleName : ' '+labels[i].accessibleName;
                         }
                     }
 
@@ -932,7 +932,7 @@ var getAccessibleName = function () {
                     for (var i = 0; i < nodes.length; i++) {
                         if (nodes[i].nodeType == Node.TEXT_NODE) {
                             // 2-G : The current node is a Text node, return its textual contents.
-                            result += nodes[i].nodeValue;
+                            result += result.length === 0 ? nodes[i].nodeValue : ' '+nodes[i].nodeValue;
                         }
                         else if (nodes[i].nodeType == Node.ELEMENT_NODE && nodes[i].isNotExposedDueTo.length == 0) {
                             // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
@@ -960,10 +960,10 @@ var getAccessibleName = function () {
                             if (this.matches('[data-labelbytraversal="true"]')) {
                                 nodes[i].setAttribute('data-labelbytraversal', 'true');
                             }
-                            result += cssbeforecontent + nodes[i].accessibleName + cssaftercontent;
+                            result += result.length === 0 ? cssbeforecontent + nodes[i].accessibleName + cssaftercontent : ' '+cssbeforecontent + nodes[i].accessibleName + cssaftercontent;
                         }
                     }
-                    result += parentcssaftercontent;
+                    result += result.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
                     if (result.trim() == '' && this.matches('a[href][title]')) {
                         /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
                         result = this.getAttribute('title');
@@ -1053,6 +1053,15 @@ function addResultSet(name, data) {
     window.tanaguru.tests.push(data);
 }
 
+function filterTestsByStatus(statuses) {
+    if(statuses.length > 0) {
+        function matchFilters(test) {
+            return statuses.includes(test.type);
+        }
+        window.tanaguru.tests = window.tanaguru.tests.filter(matchFilters);
+    }
+}
+
 function loadTanaguruTests() {
     initTanaguru();
     var tags = [];
@@ -1109,7 +1118,7 @@ function manageOutput(element) {
             }
         }
     }
-    
+
     return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, xpath: e ? getXPath(element) : null, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isVisible: isVisible, isNotExposedDueTo: isNotExposedDueTo};
 }
 
@@ -1207,7 +1216,7 @@ function createTanaguruTest(test) {
             }
 
             // Calcul du statut du test.
-            if (test.hasOwnProperty('expectedNbElements')) {
+            if (test.hasOwnProperty('expectedNbElements') && !test.hasOwnProperty('status')) {
                 if (Number.isInteger(test.expectedNbElements)) {
                     status = elements.length == test.expectedNbElements ? 'passed' : 'failed';
                     for (var i = 0; i < elements.length; i++) {
@@ -1241,7 +1250,7 @@ function createTanaguruTest(test) {
 
             // Traitement par collection.
             var failedincollection = 0;
-            if (test.hasOwnProperty('analyzeElements')) {
+            if (test.hasOwnProperty('analyzeElements') && !test.hasOwnProperty('status')) {
                 if (test.analyzeElements.constructor == Function) {
                     test.analyzeElements(elements);
                     // On modifie le statut du test selon les statuts d'items.
@@ -1600,7 +1609,6 @@ var getImplicitAriaRole = function () {
         return undefined;
     }
 };
-
 var getImplicitAriaRoleCategory = function () {
     if (htmlData.elements.hasOwnProperty(this.tagName.toLowerCase())) {
         var elementData = htmlData.elements[this.tagName.toLowerCase()];
@@ -1619,6 +1627,8 @@ if (!('getImplicitAriaRoleCategory' in HTMLElement.prototype)) HTMLElement.proto
 if (!('getImplicitAriaRoleCategory' in SVGElement.prototype)) SVGElement.prototype.getImplicitAriaRoleCategory = getImplicitAriaRoleCategory;
 if (!('getImplicitAriaRole' in HTMLElement.prototype)) HTMLElement.prototype.getImplicitAriaRole = getImplicitAriaRole;
 if (!('getImplicitAriaRole' in SVGElement.prototype)) SVGElement.prototype.getImplicitAriaRole = getImplicitAriaRole;
+if (!('getImplicitAriaRoleCategory' in HTMLElement.prototype)) HTMLElement.prototype.getImplicitAriaRoleCategory = getImplicitAriaRoleCategory;
+if (!('getImplicitAriaRoleCategory' in SVGElement.prototype)) SVGElement.prototype.getImplicitAriaRoleCategory = getImplicitAriaRoleCategory;
 
 // TODO: fin HTML.
 
@@ -3717,21 +3727,24 @@ function getDuplicateID() {
 function listAllEventListeners() {
     var allElements = Array.from(document.body.querySelectorAll('*'));
     allElements.push(document.body);
-
     var types = [];
-    for (let ev in window) {
-      if (/^on/.test(ev)) types[types.length] = ev;
+    for(let ev in window) {
+      if(/^on/.test(ev)) types[types.length] = ev;
+    //   console.log(ev);
+    //   else if(/^jQuery/.test(ev) && ev.events.length > 0) types[types.length] = ev;
     }
   
     let elements = [];
-    for (let i = 0; i < allElements.length; i++) {
+    for(let i = 0; i < allElements.length; i++) {
       var currentElement = allElements[i];
-      for (let j = 0; j < types.length; j++) {
+      for(let j = 0; j < types.length; j++) {
 
-        if (types[j] != 'onload' && typeof currentElement[types[j]] === 'function') {
+        if(types[j] != 'onload' && typeof currentElement[types[j]] === 'function') {
           elements.push(currentElement);
         }
       }
     }
     return elements;
 }
+
+// listAllEventListeners();
