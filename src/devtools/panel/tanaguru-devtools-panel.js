@@ -183,7 +183,10 @@ document.body.insertBefore(main, document.body.querySelector('script'));
 let allfilter = document.querySelectorAll('fieldset[data-filter] input:not([name])');
 let datafilters = document.querySelectorAll('fieldset[data-filter] input[name]');
 
-datafilters.forEach(el => {el.addEventListener('click', switchAll); el.checked = "true"});
+datafilters.forEach(el => {
+	el.addEventListener('click', switchAll);
+	if(el.name === "catFilter") el.checked = "true";
+});
 allfilter.forEach(el => el.addEventListener('click', toggle));
 
 function switchAll(evt) {
@@ -834,21 +837,21 @@ button.addEventListener('click', function () {
 						tabpanelsectionbutton.setAttribute('aria-expanded', 'false');
 						
 						// IN PROGRESS - test référence
-						var testref = document.createElement('em');
-						testref.style.paddingRight = '1em';
-						testref.style.verticalAlign = 'bottom';
-						testref.style.display = 'inline-block';
-						testref.style.overflow = 'hidden';
-						testref.style.textOverflow = 'ellipsis';
-						testref.style.width = '80px';
-						testref.style.textAlign = 'right';
+						// var testref = document.createElement('em');
+						// testref.style.paddingRight = '1em';
+						// testref.style.verticalAlign = 'bottom';
+						// testref.style.display = 'inline-block';
+						// testref.style.overflow = 'hidden';
+						// testref.style.textOverflow = 'ellipsis';
+						// testref.style.width = '80px';
+						// testref.style.textAlign = 'right';
 
-						let testRefName = Object.keys(test.ressources)[0];
-						let testRefNumber = test.ressources[testRefName][0];
-						var testid = testRefName.toUpperCase()+' : '+testRefNumber;
-						testref.setAttribute('title', testid);
-						testref.appendChild(document.createTextNode(testRefNumber));
-						tabpanelsectionbutton.appendChild(testref);
+						// let testRefName = Object.keys(test.ressources)[0];
+						// let testRefNumber = test.ressources[testRefName][0];
+						// var testid = testRefName.toUpperCase()+' : '+testRefNumber;
+						// testref.setAttribute('title', testid);
+						// testref.appendChild(document.createTextNode(testRefNumber));
+						// tabpanelsectionbutton.appendChild(testref);
 						
 						// display test status on the button
 						var status = document.createElement('span');

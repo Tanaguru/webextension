@@ -79,7 +79,7 @@ chrome.runtime.onMessage.addListener(handleMessage);
 function handleActivated(activeInfo) {
 	console.log("Tab " + activeInfo.tabId + " was activated.");
 
-	browser.tabs.query({active: true, currentWindow: true}, tabInfo => {
+	chrome.tabs.query({active: true, currentWindow: true}, tabInfo => {
 		if(tabInfo[0].url) {
 			chrome.tabs.removeCSS(activeInfo.tabId, {
 				file: '/ressources/styles/highlight.css'
