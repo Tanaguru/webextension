@@ -774,11 +774,16 @@ button.addEventListener('click', function () {
 
 		nav.appendChild(ul);
 		main.children[0].appendChild(nav);
+		var dashboardpanelp = document.createElement('p'); 
+		dashboardpanelp.classList.add('dashboard-message');
+		dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultLoad')));
+		dashboardpanel.appendChild(dashboardpanelp);
 
 		var catCount = 0;
 		var testsCount = 0;
 		var t = 1;
 		var startTimer = new Date().getTime();
+		var updatedashboardp = false;
 
 		function responseProcess() {
 			let first = (catCount === 0) ? "yes" : "no";
@@ -808,8 +813,6 @@ button.addEventListener('click', function () {
 					let category = filters.categories[catCount];
 					response = response.response[0];
 					testsCount += response.tests.length;
-		
-					var updatedashboardp = false;
 
 					/**
 					 * ? display tests results
@@ -817,7 +820,7 @@ button.addEventListener('click', function () {
 					response.tests.forEach(test => {
 						// UI. Dashboard.
 						// manage message on dashboard panel
-						if (updatedashboardp == false && test.type == 'failed') {
+						if (!updatedashboardp && test.type == 'failed') {
 							dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultFailed')), dashboardpanelp.firstChild);
 							updatedashboardp = true;
 						}
@@ -837,21 +840,10 @@ button.addEventListener('click', function () {
 						tabpanelsectionbutton.setAttribute('aria-expanded', 'false');
 						
 						// IN PROGRESS - test référence
-						// var testref = document.createElement('em');
-						// testref.style.paddingRight = '1em';
-						// testref.style.verticalAlign = 'bottom';
-						// testref.style.display = 'inline-block';
-						// testref.style.overflow = 'hidden';
-						// testref.style.textOverflow = 'ellipsis';
-						// testref.style.width = '80px';
-						// testref.style.textAlign = 'right';
-
-						// let testRefName = Object.keys(test.ressources)[0];
-						// let testRefNumber = test.ressources[testRefName][0];
-						// var testid = testRefName.toUpperCase()+' : '+testRefNumber;
-						// testref.setAttribute('title', testid);
-						// testref.appendChild(document.createTextNode(testRefNumber));
-						// tabpanelsectionbutton.appendChild(testref);
+						var testref = document.createElement('em');
+						testref.style.display = 'none';
+						testref.appendChild(document.createTextNode(category+'-'+testsCount));
+						tabpanelsectionbutton.appendChild(testref);
 						
 						// display test status on the button
 						var status = document.createElement('span');
@@ -1067,11 +1059,33 @@ button.addEventListener('click', function () {
 								} else {
 									var itemStatus = test.data[h].status;
 									var itemCode = test.data[h].outer;
-		
+									var tagregex = new RegExp(/<\/?[^>\s]+>?/g);
+									var tagList = itemCode.match(tagregex);
+									var contentList = itemCode.split(tagregex);
 									let template = document.querySelector('#item-row');
 									var newRow = document.importNode(template.content, true);
 									newRow.querySelector('.item-number').textContent = itemNumber;
 									newRow.querySelector('.item-status').textContent = itemStatus;
+									
+									// tagList.forEach(tag => {
+									// 	let span = document.createElement('span');
+									// 	span.classList.add('code-tag');
+									// 	span.textContent = tag;
+									// })
+
+									// contentList.forEach(el => {
+									// 	if(el === "") {
+									// 		let span = document.createElement('span');
+									// 		span.classList.add('code-tag');
+									// 		span.textContent = tagList[0];
+									// 		newRow.querySelector('.item-code code').appendChild(span);
+									// 		tagList.shift();
+									// 	} else {
+									// 		newRow.querySelector('.item-code code').appendChild(document.createTextNode(el));
+									// 	}
+									// });
+		
+									
 		
 									if (codehighlight && codehighlight.hasOwnProperty('attrs')) {
 										var codeattrs = [];
@@ -1598,7 +1612,6 @@ button.addEventListener('click', function () {
 					let currentTab = document.getElementById(category);
 					if(response.tests.length === 0) {
 						currentTab.remove();
-						if(testsCount === 0) dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultNone')), dashboardpanelp.firstChild);
 					} else {
 						document.getElementById(currentTag.status+'cat-separator').insertAdjacentElement('afterend', document.getElementById(currentTab.id));
 						currentTab.querySelector('p.loading').remove();
@@ -1658,6 +1671,11 @@ button.addEventListener('click', function () {
 						ptimer.appendChild(ptimersmall);
 						nav.firstChild.insertAdjacentElement('afterend', ptimer);
 						ul.querySelectorAll('li[hidden]').forEach(li => li.remove());
+
+						if (!updatedashboardp) {
+							if(testsCount === 0) dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultNone')), dashboardpanelp.firstChild);
+							else dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')), dashboardpanelp.firstChild);
+						}
 					}
 				}
 			)
@@ -1678,11 +1696,6 @@ button.addEventListener('click', function () {
 	}
 	
 	main.children[1].querySelector('p.loading').remove();
-	
-	var dashboardpanelp = document.createElement('p'); 
-	dashboardpanelp.classList.add('dashboard-message');
-	dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')));
-	dashboardpanel.appendChild(dashboardpanelp);
 
 	var dashboardpanelbuttonreload = document.createElement('button');
 	dashboardpanelbuttonreload.setAttribute('type', 'button');

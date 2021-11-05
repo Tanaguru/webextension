@@ -54,9 +54,9 @@ tanaguruTestsList.push({
 
             item.setAttribute('data-tng-informative-img', true);
 
-            if(item.accessibleName == '') {
+            if(item.accessibleName() == '') {
                 return true;
-            } else if(item.accessibleName.length > 80) {
+            } else if(item.accessibleName().length > 80) {
                 item.setAttribute('data-tng-altLong','true');
             } else {
                 item.setAttribute('data-tng-altLong','false');
@@ -98,9 +98,9 @@ tanaguruTestsList.push({
 
         item.setAttribute('data-tng-informative-img', true);
 
-        if(item.accessibleName == '') {
+        if(item.accessibleName() == '') {
             return true;
-        } else if(item.accessibleName.length > 80) {
+        } else if(item.accessibleName().length > 80) {
             item.setAttribute('data-tng-altLong','true');
         } else {
             item.setAttribute('data-tng-altLong','false');
@@ -131,9 +131,9 @@ tanaguruTestsList.push({
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.accessibleName == '') {
+        if(item.accessibleName() == '') {
             return true;
-        } else if(item.accessibleName.length > 80) {
+        } else if(item.accessibleName().length > 80) {
             item.setAttribute('data-tng-altLong','true');
         } else {
             item.setAttribute('data-tng-altLong','false');
@@ -176,7 +176,7 @@ tanaguruTestsList.push({
             }
         }
     },
-    tags: ['a11y', 'images', 'accessiblename'],
+    tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.1.4'] }
 });
 
@@ -188,7 +188,7 @@ tanaguruTestsList.push({
         collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['href']},
-    tags: ['a11y', 'images', 'accessiblename'],
+    tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.1.4'] }
 });
 
@@ -220,9 +220,9 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     filter: function (item) {
-        if(item.accessibleName == '') {
+        if(item.accessibleName() == '') {
             return true;
-        } else if(item.accessibleName.length > 80) {
+        } else if(item.accessibleName().length > 80) {
             item.setAttribute('data-tng-altLong','true');
         } else {
             item.setAttribute('data-tng-altLong','false');
@@ -273,9 +273,9 @@ tanaguruTestsList.push({
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.accessibleName == '') {
+        if(item.accessibleName() == '') {
             return true;
-        } else if(item.accessibleName.length > 80) {
+        } else if(item.accessibleName().length > 80) {
             item.setAttribute('data-tng-altLong','true');
         } else {
             item.setAttribute('data-tng-altLong','false');
@@ -321,9 +321,9 @@ tanaguruTestsList.push({
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.accessibleName == '') {
+        if(item.accessibleName() == '') {
             return true;
-        } else if(item.accessibleName.length > 80) {
+        } else if(item.accessibleName().length > 80) {
             item.setAttribute('data-tng-altLong','true');
         } else {
             item.setAttribute('data-tng-altLong','false');
@@ -374,9 +374,9 @@ tanaguruTestsList.push({
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.accessibleName == '') {
+        if(item.accessibleName() == '') {
             return true;
-        } else if(item.accessibleName.length > 80) {
+        } else if(item.accessibleName().length > 80) {
             item.setAttribute('data-tng-altLong','true');
         } else {
             item.setAttribute('data-tng-altLong','false');
@@ -448,7 +448,7 @@ tanaguruTestsList.push({
         collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['alt','aria-hidden','role']},
-    tags: ['a11y', 'images', 'accessiblename'],
+    tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.1'] }
 });
 
@@ -458,7 +458,7 @@ tanaguruTestsList.push({
     query: 'img[data-tng-img-ignored="false"]',
     expectedNbElements: 0,
     mark: { attrs: ['alt','role', 'tabindex']},
-    tags: ['a11y', 'images', 'accessiblename'],
+    tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.1'] }
 });
 
@@ -496,7 +496,7 @@ tanaguruTestsList.push({
         collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['alt','aria-hidden','role']},
-    tags: ['a11y', 'images', 'accessiblename'],
+    tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.2'] }
 });
 
@@ -506,7 +506,7 @@ tanaguruTestsList.push({
     query: 'area[data-tng-img-ignored="false"]',
     expectedNbElements: 0,
     mark: { attrs: ['alt','tabindex','role']},
-    tags: ['a11y', 'images', 'accessiblename'],
+    tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.2'] }
 });
 
@@ -550,7 +550,7 @@ tanaguruTestsList.push({
         collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['aria-hidden']},
-    tags: ['a11y', 'images', 'accessiblename'],
+    tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.3'] }
 });
 
@@ -559,7 +559,7 @@ tanaguruTestsList.push({
     name: 'Liste d\'images objets (balise object avec l\'attribut type="image/…") de décoration non ignorées par les technologies d\'assistance',
     query: 'object[type^="image/"][data-tng-img-ignored="false"]',
     expectedNbElements: 0,
-    tags: ['a11y', 'images', 'accessiblename'],
+    tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.3'] }
 });
 
@@ -607,7 +607,7 @@ tanaguruTestsList.push({
         collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['aria-hidden']},
-    tags: ['a11y', 'images', 'accessiblename'],
+    tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.4'] }
 });
 
@@ -617,7 +617,7 @@ tanaguruTestsList.push({
     query: 'svg[data-tng-img-ignored="false"]',
     expectedNbElements: 0,
     mark: { attrs: ['title']},
-    tags: ['a11y', 'images', 'accessiblename'],
+    tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.4'] }
 });
 
@@ -659,7 +659,7 @@ tanaguruTestsList.push({
         collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['alt','aria-hidden','aria-labelledby','title']},
-    tags: ['a11y', 'images', 'accessiblename'],
+    tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.5'] }
 });
 
@@ -668,7 +668,7 @@ tanaguruTestsList.push({
     name: 'Liste d\'images bitmap (balise canvas) de décoration non ignorées par les technologies d\'assistance',
     query: 'canvas[data-tng-img-ignored="false"]',
     expectedNbElements: 0,
-    tags: ['a11y', 'images', 'accessiblename'],
+    tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.5'] }
 });
 
@@ -710,7 +710,7 @@ tanaguruTestsList.push({
         collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['aria-hidden']},
-    tags: ['a11y', 'images', 'accessiblename'],
+    tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.6'] }
 });
 
@@ -720,7 +720,7 @@ tanaguruTestsList.push({
     query: 'embed[type^="image/"][data-tng-img-ignored="false"]',
     expectedNbElements: 0,
     mark: { attrs: ['aria-hidden']},
-    tags: ['a11y', 'images', 'accessiblename'],
+    tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.6'] }
 });
 
@@ -836,7 +836,7 @@ tanaguruTestsList.push({
             else item.setAttribute('data-tng-altnotexposed', 'true');
         }
     },
-    tags: ['a11y', 'images', 'accessiblename'],
+    tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.3.8'] }
 });
 
@@ -845,7 +845,7 @@ tanaguruTestsList.push({
     name: 'Liste des images bitmap (balise canvas) porteuse d\'information, ayant un contenu alternatif entre sa balise ouvrante et sa balise fermante non restitué par les technologies d\'assistance',
     query: 'canvas[data-tng-altnotexposed]',
     expectedNbElements: 0,
-    tags: ['a11y', 'images', 'accessiblename'],
+    tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.3.8'] }
 });
 
@@ -1060,7 +1060,7 @@ tanaguruTestsList.push({
                 if ((parentRole == 'figure') || (parentRole == 'group')) {
                     if (parentFigure.hasAttribute('aria-label')) {
                         var parentFigureLabel = parentFigure.getAttribute('aria-label').trim().toLowerCase();
-                        var figcaptionValue = figcaption.accessibleName.trim().toLowerCase();
+                        var figcaptionValue = figcaption.accessibleName().trim().toLowerCase();
 
                         if(figcaptionValue == parentFigureLabel) {
                             item.setAttribute('data-tng-accessibleCaption', 'true');
@@ -1104,7 +1104,7 @@ tanaguruTestsList.push({
                 if ((parentRole == 'figure') || (parentRole == 'group')) {
                     if (parentFigure.hasAttribute('aria-label')) {
                         var parentFigureLabel = parentFigure.getAttribute('aria-label').trim().toLowerCase();
-                        var figcaptionValue = figcaption.accessibleName.trim().toLowerCase();
+                        var figcaptionValue = figcaption.accessibleName().trim().toLowerCase();
 
                         if(figcaptionValue == parentFigureLabel) {
                             item.setAttribute('data-tng-accessibleCaption', 'true');
@@ -1148,7 +1148,7 @@ tanaguruTestsList.push({
                 if ((parentRole == 'figure') || (parentRole == 'group')) {
                     if (parentFigure.hasAttribute('aria-label')) {
                         var parentFigureLabel = parentFigure.getAttribute('aria-label').trim().toLowerCase();
-                        var figcaptionValue = figcaption.accessibleName.trim().toLowerCase();
+                        var figcaptionValue = figcaption.accessibleName().trim().toLowerCase();
 
                         if(figcaptionValue == parentFigureLabel) {
                             item.setAttribute('data-tng-accessibleCaption', 'true');
@@ -1192,7 +1192,7 @@ tanaguruTestsList.push({
                 if ((parentRole == 'figure') || (parentRole == 'group')) {
                     if (parentFigure.hasAttribute('aria-label')) {
                         var parentFigureLabel = parentFigure.getAttribute('aria-label').trim().toLowerCase();
-                        var figcaptionValue = figcaption.accessibleName.trim().toLowerCase();
+                        var figcaptionValue = figcaption.accessibleName().trim().toLowerCase();
 
                         if(figcaptionValue == parentFigureLabel) {
                             item.setAttribute('data-tng-accessibleCaption', 'true');
@@ -1236,7 +1236,7 @@ tanaguruTestsList.push({
                 if ((parentRole == 'figure') || (parentRole == 'group')) {
                     if (parentFigure.hasAttribute('aria-label')) {
                         var parentFigureLabel = parentFigure.getAttribute('aria-label').trim().toLowerCase();
-                        var figcaptionValue = figcaption.accessibleName.trim().toLowerCase();
+                        var figcaptionValue = figcaption.accessibleName().trim().toLowerCase();
 
                         if(figcaptionValue == parentFigureLabel) {
                             item.setAttribute('data-tng-accessibleCaption', 'true');
@@ -1276,7 +1276,7 @@ tanaguruTestsList.push({
     name: 'Liste des cadres sans attribut title',
     query: 'iframe[data-tng-el-exposed="true"]:not([role="presentation"], [title]), frame[data-tng-el-exposed="true"]:not([role="presentation"], [title])',
     expectedNbElements: 0,
-    tags: ['a11y', 'frames', 'accessiblename'],
+    tags: ['a11y', 'frames'],
     ressources: {'rgaa': ['2.1.1']}
 });
 
@@ -1288,7 +1288,7 @@ tanaguruTestsList.push({
         collection.map(e => e.status = 'passed');
     },
     mark: { attrs: ['title']},
-    tags: ['a11y', 'frames', 'accessiblename'],
+    tags: ['a11y', 'frames'],
     ressources: {'rgaa': ['2.1.1']}
 });
 
@@ -1307,7 +1307,7 @@ tanaguruTestsList.push({
         return true;
     },
     mark: { attrs: ['title']},
-    tags: ['a11y', 'frames', 'accessiblename'],
+    tags: ['a11y', 'frames'],
     ressources: {'rgaa': ['2.2.1']}
 });
 
@@ -1317,7 +1317,7 @@ tanaguruTestsList.push({
     query: '[data-tng-frameAlt]',
     expectedNbElements: 0,
     mark: { attrs: ['title']},
-    tags: ['a11y', 'frames', 'accessiblename'],
+    tags: ['a11y', 'frames'],
     ressources: {'rgaa': ['2.2.1']}
 });
 
@@ -1922,7 +1922,7 @@ tanaguruTestsList.push({
     name: 'Chaque média doit être compatible avec les technologies d\'assistance.',
     description: 'Vérifier que le nom, le rôle, la valeur, le paramétrage et les changements d\'états des composants d\'interfaces sont accessibles aux technologies ou qu\'une alternative compatible permette d\'accéder aux mêmes fonctionnalités.',
     status: 'untested',
-    tags: ['a11y', 'media', 'accessiblename'],
+    tags: ['a11y', 'media'],
     ressources: {'rgaa': ['4.13.1']}
 });
 
@@ -1932,7 +1932,7 @@ tanaguruTestsList.push({
     name: 'Pour chaque média ayant une alternative compatible avec les technologies d\'assistance, l\'alternative doit être implémentée correctement.',
     description: 'Vérifier que l\'alternative ou le lien/bouton permettant d\'y accéder soit adjacent au média, ou qu\'un mécanisme permette de remplacer le média par son alternative.',
     status: 'untested',
-    tags: ['a11y', 'media', 'accessiblename'],
+    tags: ['a11y', 'media'],
     ressources: {'rgaa': ['4.13.2']}
 });
 
@@ -2113,7 +2113,7 @@ tanaguruTestsList.push({
         item.setAttribute('data-tng-tableAccessiblename', 'false');
     },
     mark: {attrs: ['title', 'aria-label', 'aria-labelledby']},
-    tags: ['a11y', 'tables'],
+    tags: ['a11y', 'tables', 'accessibleName'],
     ressources: {'rgaa': ['5.5.1']}
 });
 
@@ -2783,7 +2783,7 @@ tanaguruTestsList.push({
     query: '[data-tng-textlink="true"][data-tng-el-exposed="false"][data-tng-el-visible="true"]',
     expectedNbElements: 0,
     mark: {attrs: ['role']},
-    tags: ['a11y', 'links', 'accessiblename'],
+    tags: ['a11y', 'links'],
     ressources: {'rgaa': ['6.1.1']}
 });
 
@@ -2795,7 +2795,7 @@ tanaguruTestsList.push({
         collection.map(e => e.status = 'inapplicable');
     },
     mark: {attrs: ['role']},
-    tags: ['a11y', 'links', 'accessiblename'],
+    tags: ['a11y', 'links'],
     ressources: {'rgaa': ['6.1.1']}
 });
 
@@ -2816,7 +2816,7 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     description:"Ces liens possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
     filter: function(item) {
-        return !item.getAttribute('title').match(item.accessibleName);
+        return !item.getAttribute('title').match(item.accessibleName());
     },
     mark: {attrs: ['title']},
     tags: ['a11y', 'links', 'accessiblename'],
@@ -2866,7 +2866,7 @@ tanaguruTestsList.push({
     name: 'Liste des liens images visibles non restitués',
     query: '[data-tng-imglink][data-tng-el-visible="true"][data-tng-el-exposed="false"]',
     expectedNbElements: 0,
-    tags: ['a11y', 'links', 'accessiblename'],
+    tags: ['a11y', 'links'],
     ressources: {'rgaa': ['6.1.2']}
 });
 
@@ -2877,7 +2877,7 @@ tanaguruTestsList.push({
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'inapplicable');
     },
-    tags: ['a11y', 'links', 'accessiblename'],
+    tags: ['a11y', 'links'],
     ressources: {'rgaa': ['6.1.2']}
 });
 
@@ -2897,7 +2897,7 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     description:"Ces liens images possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
     filter: function(item) {
-        return !item.getAttribute('title').match(item.accessibleName);
+        return !item.getAttribute('title').match(item.accessibleName());
     },
     mark: {attrs: ['title']},
     tags: ['a11y', 'links', 'accessiblename'],
@@ -2941,7 +2941,7 @@ tanaguruTestsList.push({
     name: 'Liste des liens composites visibles non restitués',
     query: '[data-tng-cplink][data-tng-el-visible="true"][data-tng-el-exposed="false"]',
     expectedNbElements: 0,
-    tags: ['a11y', 'links', 'accessiblename'],
+    tags: ['a11y', 'links'],
     ressources: {'rgaa': ['6.1.3']}
 });
 
@@ -2952,7 +2952,7 @@ tanaguruTestsList.push({
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'inapplicable');
     },
-    tags: ['a11y', 'links', 'accessiblename'],
+    tags: ['a11y', 'links'],
     ressources: {'rgaa': ['6.1.3']}
 });
 
@@ -2972,7 +2972,7 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     description:"Ces liens composites possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
     filter: function(item) {
-        return !item.getAttribute('title').match(item.accessibleName);
+        return !item.getAttribute('title').match(item.accessibleName());
     },
     mark: {attrs: ['title']},
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3002,7 +3002,7 @@ tanaguruTestsList.push({
     name: 'Liste des liens SVG visibles non restitués',
     query: '[data-tng-svgLink][data-tng-el-visible="true"][data-tng-el-exposed="false"]',
     expectedNbElements: 0,
-    tags: ['a11y', 'links', 'accessiblename'],
+    tags: ['a11y', 'links'],
     ressources: {'rgaa': ['6.1.4']}
 });
 
@@ -3013,7 +3013,7 @@ tanaguruTestsList.push({
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'inapplicable');
     },
-    tags: ['a11y', 'links', 'accessiblename'],
+    tags: ['a11y', 'links'],
     ressources: {'rgaa': ['6.1.4']}
 });
 
@@ -3051,7 +3051,7 @@ tanaguruTestsList.push({
             let rgx = new RegExp(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/g);
             visibleName = visibleName.trim().replace(rgx, '');
 
-            var linkAccessibleName = item.accessibleName.replace(rgx, '');
+            var linkAccessibleName = item.accessibleName().replace(rgx, '');
             var regex = new RegExp(visibleName, 'mi');
             
             if(!linkAccessibleName.match(regex)) {
@@ -3097,7 +3097,7 @@ tanaguruTestsList.push({
 
         return true;
     },
-    tags: ['a11y', 'links', 'accessiblename'],
+    tags: ['a11y', 'links'],
     ressources: {'rgaa': ['6.2.1']}
 });
 
@@ -3108,7 +3108,7 @@ tanaguruTestsList.push({
     analyzeElements: function (collection) {
         collection.map(e => e.status = 'passed');
     },
-    tags: ['a11y', 'links', 'accessiblename'],
+    tags: ['a11y', 'links'],
     ressources: {'rgaa': ['6.2.1']}
 });
 
@@ -3178,7 +3178,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque script qui génère ou contrôle un composant d'interface doit avoir un nom pertinent et accessible.",
     status: 'untested',
-	tags: ['a11y', 'accessiblename', 'scripts'],
+	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.1.3']}
 });
 
@@ -3186,7 +3186,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque script qui génère ou contrôle un composant d'interface doit avoir un rôle pertinent.",
     status: 'untested',
-	tags: ['a11y', 'accessiblename', 'scripts'],
+	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.1.3']}
 });
 
@@ -3217,7 +3217,7 @@ tanaguruTestsList.push({
             }
             let rgx = new RegExp(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/g);
             var buttonName = visibleName.trim().replace(rgx, '');
-            var buttonAccessibleName = item.accessibleName.replace(rgx, '');
+            var buttonAccessibleName = item.accessibleName().replace(rgx, '');
             var regex = new RegExp(buttonName, 'mi');
             
             if(buttonAccessibleName.match(regex)) {
@@ -3250,7 +3250,7 @@ tanaguruTestsList.push({
 	name: 'Liste des alternatives de script dans des balises <noscript>.',
     description: 'Vérifier la pertinence de l\'alternative.',
 	query: 'noscript',
-	tags: ['a11y', 'accessiblename', 'scripts'],
+	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.2.1']}
 });
 
@@ -3259,7 +3259,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Pour chaque élément non textuel mis à jour par un script (dans la page, ou dans un cadre) et ayant une alternative, l'aternative doit être mise à jour de façon pertinente.",
     status: 'untested',
-	tags: ['a11y', 'accessiblename', 'scripts'],
+	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.2.2']}
 });
 
@@ -4026,7 +4026,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "Chaque passage de texte constituant un titre doit être structuré à l'aide d'une balise <hx> ou d'une balise possédant un attribut WAI-ARIA role='heading' associé à un attribut WAI-ARIA aria-level",
     status: 'untested',
-    tags: ['a11y', 'headings', 'accessiblename', 'structure'],
+    tags: ['a11y', 'headings', 'structure'],
     ressources: { 'rgaa': ['9.1.3'] }
 });
 
@@ -4035,7 +4035,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier que les éléments suivant sont des zones d\'entêtes',
     query: 'header[data-tng-el-exposed="true"]',
-    tags: ['a11y', 'structure', 'accessiblename'],
+    tags: ['a11y', 'structure'],
     ressources: { 'rgaa': ['9.2.1'] }
 });
 
@@ -4043,7 +4043,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier que les éléments suivant sont des zones de pied de page',
     query: 'footer[data-tng-el-exposed="true"]',
-    tags: ['a11y', 'structure', 'accessiblename'],
+    tags: ['a11y', 'structure'],
     ressources: { 'rgaa': ['9.2.1'] }
 });
 
@@ -4051,7 +4051,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier que les éléments suivant sont des zones navigation',
     query: 'nav[data-tng-el-exposed="true"]',
-    tags: ['a11y', 'structure', 'accessiblename'],
+    tags: ['a11y', 'structure'],
     ressources: { 'rgaa': ['9.2.1'] }
 });
 
@@ -4059,7 +4059,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier que l\'éléments suivant est la zone de contenu principale',
     query: 'main[data-tng-el-exposed="true"]',
-    tags: ['a11y', 'structure', 'accessiblename'],
+    tags: ['a11y', 'structure'],
     ressources: { 'rgaa': ['9.2.1'] }
 });
 
@@ -4531,7 +4531,7 @@ tanaguruTestsList.push({
         }
     },
     mark: {attrs: ['for']},
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.1.2'] }
 });
 
@@ -4543,7 +4543,7 @@ tanaguruTestsList.push({
         collection.map(e => e.status = 'passed');
     },
     mark: {attrs: ['for']},
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.1.2'] }
 });
 
@@ -4675,7 +4675,7 @@ tanaguruTestsList.push({
             return true;
         }
     },
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.1.3'] }
 });
 
@@ -4685,7 +4685,7 @@ tanaguruTestsList.push({
     description: "Vérifier la pertinence de l'attribut title.",
     query: '[data-tng-has-label="title"]:not([data-tng-visible-label])',
     mark: {attrs: ['title']},
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.1.3'] }
 });
 
@@ -4695,7 +4695,7 @@ tanaguruTestsList.push({
     description: "Vérifier la pertinence du passage de texte ainsi que sa proximité avec le champ associé.",
     query: '[data-tng-has-label="describedby"]:not([data-tng-visible-label])',
     mark: {attrs: ['aria-describedby']},
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.1.3'] }
 });
 
@@ -4731,7 +4731,7 @@ tanaguruTestsList.push({
         }
     },
     mark: {attrs: ['for']},
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.2.1'] }
 });
 
@@ -4745,7 +4745,7 @@ tanaguruTestsList.push({
         if(cat) return cat === 'forms';
     },
     mark: {attrs: ['title']},
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.2.2'] }
 });
 
@@ -4759,7 +4759,7 @@ tanaguruTestsList.push({
         if(cat) return cat === 'forms';
     },
     mark: {attrs: ['aria-label']},
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.2.3'] }
 });
 
@@ -4773,7 +4773,7 @@ tanaguruTestsList.push({
         if(cat) return cat === 'forms';
     },
     mark: {attrs: ['aria-labelledby']},
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.2.4'] }
 });
 
@@ -4784,7 +4784,7 @@ tanaguruTestsList.push({
     query: '[data-tng-visible-label]',
     filter: function (item) {
         var rgx = new RegExp(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/g);
-        if(item.accessibleName.trim().replace(rgx, '').includes(item.getAttribute('data-tng-text-label'))) {
+        if(item.accessibleName().trim().replace(rgx, '').includes(item.getAttribute('data-tng-text-label'))) {
             return true;
         } else {
             item.setAttribute('data-tng-NAinclude-visibleLabel', 'true');
@@ -4811,7 +4811,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Chaque bouton adjacent au champ de formulaire qui fournit une étiquette visible doit permettre de connaître la fonction exacte du champs de formulaire auquel il est associé.',
     status: 'untested',
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.2.6'] }
 });
 
@@ -4821,7 +4821,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Chaque étiquette associée à un champ de formulaire ayant la même fonction et répétée plusieurs fois dans une même page doit être cohérente.',
     status: 'untested',
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.3.1'] }
 });
 
@@ -4830,7 +4830,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Chaque étiquette associée à un champ de formulaire ayant la même fonction et répétée dans un ensemble de pages doit être cohérente.',
     status: 'untested',
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.3.2'] }
 });
 
@@ -4842,7 +4842,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Chaque étiquette de champ et son champ associé doivent être accolés de façon pertinente.',
     status: 'untested',
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.4.1', '11.4.2', '11.4.3'] }
 });
 
@@ -4852,7 +4852,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier que l\'utilisation des balises fieldset et les attributs role group sont bien nécessaire',
     query: 'fieldset[data-tng-el-exposed="true"], [role="group"][data-tng-el-exposed="true"], [role="radiogroup"][data-tng-el-exposed="true"]',
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.5.1'] }
 });
 
@@ -4860,7 +4860,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Les champs de même nature doivent si nécessaire être correctement regroupés.',
     status: 'untested',
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.5.1'] }
 });
 
@@ -4915,7 +4915,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "Pour chaque balise <select>, les items de même nature d'une liste de choix doivent, si nécessaire, être regroupés avec une balise <optgroup>.",
     status: 'untested',
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.8.1'] }
 });
 
@@ -4929,7 +4929,7 @@ tanaguruTestsList.push({
         'passed': 'Aucun éléments optgroup sans attribut label n\'a été trouvé sur cette page.',
         'failed': 'Des éléments optgroup sans attribut label ont été trouvé sur cette page.'
     },
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.8.2'] }
 });
 
@@ -4941,7 +4941,7 @@ tanaguruTestsList.push({
         collection.map(e => e.status = 'passed');
     },
     mark: {attrs: ['label']},
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.8.2'] }
 });
 
@@ -4952,7 +4952,7 @@ tanaguruTestsList.push({
     query: 'select optgroup[label][data-tng-el-exposed="true"]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.getAttribute('label').trim() > 0) {
+        if(item.getAttribute('label').trim().length > 0) {
             item.setAttribute('data-tng-optgroup-label', 'true');
             return;
         } else {
@@ -4960,7 +4960,7 @@ tanaguruTestsList.push({
         }
     },
     mark: {attrs: ['label']},
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.8.3'] }
 });
 
@@ -4969,7 +4969,7 @@ tanaguruTestsList.push({
     name: 'Vérifiez la pertinence de l\'attribut label sur l\'élément optgroup.',
     query: '[data-tng-optgroup-label]',
     mark: {attrs: ['label']},
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.8.3'] }
 });
 
@@ -4980,7 +4980,7 @@ tanaguruTestsList.push({
     name: 'Vérifiez la pertinence des intitulés de ces boutons.',
     query: 'input[type="submit"][value][data-tng-el-exposed="true"], input[type="reset"][value][data-tng-el-exposed="true"], input[type="button"][value][data-tng-el-exposed="true"], button, input[type="image"][alt][data-tng-el-exposed="true"], input[type="submit"][aria-label][data-tng-el-exposed="true"], input[type="submit"][aria-labelledby][data-tng-el-exposed="true"], input[type="submit"][title][data-tng-el-exposed="true"], input[type="reset"][aria-label][data-tng-el-exposed="true"], input[type="reset"][aria-labelledby][data-tng-el-exposed="true"], input[type="reset"][title][data-tng-el-exposed="true"], input[type="button"][aria-label][data-tng-el-exposed="true"], input[type="button"][aria-labelledby][data-tng-el-exposed="true"], input[type="button"][title][data-tng-el-exposed="true"], [role="button"][data-tng-el-exposed="true"]',
     mark: {attrs: ['aria-labelledby', 'aria-label', 'alt', 'value', 'title']},
-    tags: ['a11y', 'forms', 'accessiblename', 'buttons'],
+    tags: ['a11y', 'forms', 'buttons'],
     ressources: { 'rgaa': ['11.9.1'] }
 });
 
@@ -5011,7 +5011,7 @@ tanaguruTestsList.push({
             }
             let rgx = new RegExp(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/g);
             var buttonName = visibleName.trim().replace(rgx, '');
-            var buttonAccessibleName = item.accessibleName.replace(rgx, '');
+            var buttonAccessibleName = item.accessibleName().replace(rgx, '');
             var regex = new RegExp(buttonName, 'mi');
 
             if(buttonAccessibleName.match(regex)) {
@@ -5043,7 +5043,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "Les indications du caractère obligatoire de la saisie des champs doivent être correctement implémentées.",
     status: 'untested',
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.10.1'] }
 });
 
@@ -5053,7 +5053,7 @@ tanaguruTestsList.push({
     name: "Les champs obligatoires ayant l'attribut aria-required ou required doivent être doublés d'une indication de champs obligatoire visible.",
     description: "Vérifier qu'une indication de champ obligatoire est visible ET située dans l'étiquette ou le passage de texte associé au champ préalablement à la validation du formulaire.",
     query: '[aria-required="true"][data-tng-el-exposed="true"], [required][data-tng-el-exposed="true"]',
-    tags: ['a11y', 'accessiblename', 'forms'],
+    tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.10.2']}
 });
 
@@ -5062,7 +5062,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "Les messages d'erreur indiquant l'absence de saisie d'un champ obligatoire doivent être correctement implémentées.",
     status: 'untested',
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.10.3'] }
 });
 
@@ -5072,7 +5072,7 @@ tanaguruTestsList.push({
     name: "Les champs obligatoires ayant l'attribut aria-invalid doivent être associés à un message d'erreur visible.",
     description: "Pour chaque champ obligatoire, vérifier que le message d’erreur indiquant le caractère invalide est visible ET situé dans l'étiquette ou le passage de texte associé au champ.",
     query: '[aria-invalid="true"][data-tng-el-exposed="true"]',
-    tags: ['a11y', 'accessiblename', 'forms'],
+    tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.10.4']}
 });
 
@@ -5081,7 +5081,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "Les instructions et indications du type de données et/ou de format obligatoires doivent être correctement implémentées.",
     status: 'untested',
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.10.5'] }
 });
 
@@ -5090,7 +5090,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "Les messages d'erreurs fournissant une instruction ou une indication du type de données et/ou de format obligatoires doivent être correctement implémentées.",
     status: 'untested',
-    tags: ['a11y', 'forms', 'accessiblename'],
+    tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.10.6'] }
 });
 
@@ -5100,7 +5100,7 @@ tanaguruTestsList.push({
     name: "Les champs ayant l'attribut aria-invalid dont la saisie requiert un type de données et/ou de format obligatoire doivent être doublés d'une indication visible.",
     description: "Pour chaque champ dont la saisie requiert un type de données et/ou de format obligatoire, vérifier qu'une instruction ou une indication du type de données et/ou de format obligatoire est visible ET située dans la balise <label> ou le passage de texte associée au champ.",
     query: '[aria-invalid="true"][data-tng-el-exposed="true"]',
-    tags: ['a11y', 'accessiblename', 'forms'],
+    tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.10.7']}
 });
 
@@ -5616,8 +5616,8 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     filter: function (item) {
         var content = item.getAttribute('content').trim();
-        let time = content.match(/^\d+/)[0];
-        if(time) return time > 0;
+        let time = content.match(/^\d+/);
+        if(time) return time[0] > 0;
     },
     mark: {attrs: ['http-equiv', 'content']},
     tags: ['a11y', 'meta', 'consultation'],
@@ -5678,7 +5678,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) doit avoir une alternative.",
     status: 'untested',
-    tags: ['a11y', 'accessiblename', 'consultation'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.5.1'] }
 });
 
@@ -5688,7 +5688,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) doit avoir une alternative pertinente.",
     status: 'untested',
-    tags: ['a11y', 'accessiblename', 'consultation'],
+    tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.6.1'] }
 });
 
