@@ -1143,7 +1143,7 @@ function removeDataTNG(element) {
     });
 }
 
-function manageOutput(element) {
+function manageOutput(element, an) {
     var status = element.status ? element.status : 'cantTell';
     element.status = undefined;
 
@@ -1175,7 +1175,7 @@ function manageOutput(element) {
         }
     }
 
-    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, xpath: e ? getXPath(element) : null, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isVisible: isVisible, isNotExposedDueTo: isNotExposedDueTo};
+    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, anDetails: an ? element.fullAccessibleName : null, xpath: e ? getXPath(element) : null, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isVisible: isVisible, isNotExposedDueTo: isNotExposedDueTo};
 }
 
 function createTanaguruTag(tag, status) {
@@ -1342,10 +1342,16 @@ function createTanaguruTest(test) {
                 }
             }
 
+            let an = false;
+            if(test.tags && test.tags.includes('accessiblename')) {
+                an = true;
+            }
+
             // Chargement du résultat.
             var outputelements = [];
             if(!test.hasOwnProperty('contrast')) {
-                outputelements = elements.map(e => manageOutput(e));
+                if(!an) outputelements = elements.map(e => manageOutput(e, false));
+                else outputelements = elements.map(e => manageOutput(e, true));
             }
             
             if(test.hasOwnProperty('contrast')) {
@@ -1384,6 +1390,7 @@ function createTanaguruTest(test) {
                 result.mark = test.mark;
             }
             result.tags = test.hasOwnProperty('tags') ? test.tags : ['others'];
+            
             if (test.hasOwnProperty('ressources')) {
                 result.ressources = test.ressources;
             }
