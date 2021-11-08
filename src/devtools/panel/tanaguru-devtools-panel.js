@@ -1126,13 +1126,14 @@ button.addEventListener('click', function () {
 
 									if(test.tags.includes('accessiblename')) {
 										var an = test.data[h].anDetails;
-										newRow.querySelector('.item-accessiblename .an-full').textContent = "Nom accessible calculé: "+an[0];
+										newRow.querySelector('.item-accessiblename .an-full span').appendChild(document.createTextNode("Nom accessible calculé: "));
+										newRow.querySelector('.item-accessiblename .an-full').appendChild(document.createTextNode(an[0]));
 										an.shift();
 
 										function addLIcontent(item, itemAN) {
 											if(!Array.isArray(itemAN)) item.textContent += ': '+itemAN;
 											else {
-												item.textContent += ': '+itemAN[0];
+												// item.textContent += ': '+itemAN[0];
 												itemAN.shift();
 
 												for(let i = 0; i < itemAN.length; i++) {
@@ -1144,36 +1145,35 @@ button.addEventListener('click', function () {
 												}
 
 												if(itemAN.length > 0) {
-													if(!(itemAN.length === 1 && itemAN[0].hasOwnProperty("textual-contents"))) {
-														let ul = document.createElement('ul');
-														itemAN.forEach(n => {
-															for(var subPart in n) {
-																let partName = Array.isArray(n[subPart]) ? n[subPart][0] : n[subPart];
-																if(subPart != 'alt' && (partName === "" || partName === "\n")) continue;
-																let subli = document.createElement('li');
-																subli.textContent = subPart;
-																if(!Array.isArray(n[subPart])) subli.textContent += ': '+n[subPart];
-																else {
-																	for(let i = 0; i < n[subPart].length; i++) {
-																		let empty = false;
-																		for(var y in n[subPart][i]) {
-																			if(n[subPart][i][y].length === 0) empty = true;
-																		}
-																		if(empty) n[subPart].splice(i, 1);
+													let ul = document.createElement('ul');
+													itemAN.forEach(n => {
+														for(var subPart in n) {
+															let partName = Array.isArray(n[subPart]) ? n[subPart][0] : n[subPart];
+															if(subPart != 'alt' && (partName === "" || partName === "\n")) continue;
+															let subli = document.createElement('li');
+															subli.textContent = subPart === "textual-contents" ? "Contenu textuel" : subPart === "child" ? "élément enfant" : subPart;
+
+															if(!Array.isArray(n[subPart])) subli.textContent += ': '+n[subPart];
+															else {
+																for(let i = 0; i < n[subPart].length; i++) {
+																	let empty = false;
+																	for(var y in n[subPart][i]) {
+																		if(n[subPart][i][y].length === 0) empty = true;
 																	}
-	
-																	if(n[subPart].length === 1 && n[subPart][0].hasOwnProperty("textual-contents")) {
-																		subli.textContent += ': '+n[subPart][0]["textual-contents"];
-																	} else {
-																		addLIcontent(subli, n[subPart]);
-																	}
+																	if(empty) n[subPart].splice(i, 1);
 																}
-																ul.appendChild(subli);
+
+																if(n[subPart].length === 1 && n[subPart][0].hasOwnProperty("textual-contents")) {
+																	subli.textContent += ': '+n[subPart][0]["textual-contents"];
+																} else {
+																	addLIcontent(subli, n[subPart]);
+																}
 															}
-														});
-														
-														item.appendChild(ul);
-													}
+															ul.appendChild(subli);
+														}
+													});
+													
+													item.appendChild(ul);
 												}
 											}
 										}

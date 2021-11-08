@@ -975,3 +975,32 @@ td code {
 	font-weight: 900;
 	color: blue;
 }
+
+.item-accessiblename {
+	padding-left: 2rem;
+}
+
+p.an-full {
+	font-size: 0.9rem;
+	border-left: 1px solid black;
+	padding-left: 1rem;
+}
+
+p.an-full span {
+	text-decoration: underline;
+}
+
+ul.an-list {
+	font-size: 0.8rem;
+	list-style: disc inside;
+}
+
+ul.an-list li {
+	font-weight: normal;
+	display: list-item;
+}
+
+.an-list ul {
+	list-style: circle inside;
+	padding-left: 1rem;
+}
