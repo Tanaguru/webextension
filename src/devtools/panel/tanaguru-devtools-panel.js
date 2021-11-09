@@ -790,7 +790,7 @@ button.addEventListener('click', function () {
 			let last = (catCount === filters.categories.length-1) ? "yes" : "no";
 			let msgRequest = {
 				tabId: chrome.devtools.inspectedWindow.tabId,
-				command: 'executeTests', 
+				command: 'executeTests',
 				cat: filters.categories[catCount],
 				statusUser: filters.statuses,
 				first: first,
@@ -1061,79 +1061,107 @@ button.addEventListener('click', function () {
 									
 								} else {
 									var itemStatus = test.data[h].status;
-									var itemCode = test.data[h].outer;
-									var tagregex = new RegExp(/<\/?[^>\s]+>?/g);
-									var tagList = itemCode.match(tagregex);
-									var contentList = itemCode.split(tagregex);
 									let template = document.querySelector('#item-row');
 									var newRow = document.importNode(template.content, true);
 									newRow.querySelector('.item-number').textContent = itemNumber;
 									newRow.querySelector('.item-status').textContent = itemStatus;
-									
-									/**
-									 * TODO
-									 */
-									// tagList.forEach(tag => {
-									// 	let span = document.createElement('span');
-									// 	span.classList.add('code-tag');
-									// 	span.textContent = tag;
-									// })
 
-									// contentList.forEach(el => {
-									// 	if(el === "") {
-									// 		let span = document.createElement('span');
-									// 		span.classList.add('code-tag');
-									// 		span.textContent = tagList[0];
-									// 		newRow.querySelector('.item-code code').appendChild(span);
-									// 		tagList.shift();
-									// 	} else {
-									// 		newRow.querySelector('.item-code code').appendChild(document.createTextNode(el));
-									// 	}
-									// });
-		
-									
-		
-									if (codehighlight && codehighlight.hasOwnProperty('attrs')) {
-										var codeattrs = [];
-										var code = newRow.querySelector('.item-code code');
-			
-										for (var a = 0; a < codehighlight.attrs.length; a++) {
-											if(itemCode.match(codehighlight.attrs[a])) {
-												let regex  = codehighlight.attrs[a] + '="(?:(?!").)*"';
-												codeattrs.push(itemCode.match(new RegExp(regex)));
-												itemCode = itemCode.replace(new RegExp(' (' + codehighlight.attrs[a] + '="(?:(?!").)*")'), ' &&// '); // / key="([^"]*)"/	
-											}
-										}
-			
-										if(codeattrs.length > 0) {
-											var codecontent = itemCode.split(' &&// ');
-			
-											for(let i = 0; i < codecontent.length - 1; i++) {
-												code.appendChild(document.createTextNode(codecontent[i]+' '));
-												var mark = document.createElement('mark');
-												mark.textContent = codeattrs[i];
-												code.appendChild(mark);
-											}
-			
-											code.appendChild(document.createTextNode(codecontent[codecontent.length - 1]));
-										} else {
-											code.appendChild(document.createTextNode(itemCode));
-										}
-										
-									} else {
-										newRow.querySelector('.item-code code').textContent = itemCode;
+									/**
+									 * ? highlight item selected attributes
+									 * ? item code formatting
+									 */
+									var itemCode = test.data[h].outer;
+									var codeContainer = newRow.querySelector('.item-code code');
+									var itemCodeCapture = [];
+									var regitemCode = new RegExp(/(?<open><[^\s\/]+\s*(?:[^\s"=]+="[^"]*"\s*)*>)|(?<close><\/[^\s>]+>)|(?<text>.)/g);
+
+									let execAr;
+									while((execAr = regitemCode.exec(itemCode)) !== null) {
+										itemCodeCapture.push(execAr.groups);
 									}
 
+									for(let x = 0; x < itemCodeCapture.length; x++) {
+										if(itemCodeCapture[x].text) {
+											if(itemCodeCapture[x - 1] && itemCodeCapture[x - 1].text) {
+												itemCodeCapture[x - 1].text += itemCodeCapture[x].text;
+												itemCodeCapture.splice(x, 1);
+												x = x - 1;
+											}
+										}
+									}
+
+									itemCodeCapture.forEach(icc => {
+										if(icc.open) {
+											codeContainer.appendChild(document.createTextNode("<"));
+
+											let openSpan = document.createElement('span');
+											openSpan.classList.add('code-tag');
+											openSpan.appendChild(document.createTextNode(icc.open.match(/[^<\/\s>]+/)));
+											codeContainer.appendChild(openSpan);
+
+											let itemAtt = icc.open.match(/[^="<>\s]+="[^"]*"/g);
+											if(itemAtt) {
+												itemAtt.forEach(att => {
+													let attName = att.match(/[^="<>\s]+/);
+
+													if (codehighlight && codehighlight.hasOwnProperty('attrs') && codehighlight.attrs.includes(attName[0])) {
+														let hlMark = document.createElement('mark');
+														hlMark.appendChild(document.createTextNode(att));
+														codeContainer.appendChild(hlMark);
+													} else {
+														let attNameSpan = document.createElement('span');
+														attNameSpan.classList.add('code-attName');
+														attNameSpan.appendChild(document.createTextNode(' '+attName[0]));
+														codeContainer.appendChild(attNameSpan);
+
+														codeContainer.appendChild(document.createTextNode("="));
+
+														let attValueSpan = document.createElement('span');
+														attValueSpan.classList.add('code-attValue');
+														attValueSpan.appendChild(document.createTextNode(att.match(/"[^"]*"/)[0]));
+														codeContainer.appendChild(attValueSpan);
+													}
+												});
+											}
+											
+											codeContainer.appendChild(document.createTextNode(">"));
+											codeContainer.appendChild(document.createElement("br"));
+										} else if(icc.close) {
+											codeContainer.appendChild(document.createTextNode("</"));
+
+											let closeSpan = document.createElement('span');
+											closeSpan.classList.add('code-tag');
+											closeSpan.appendChild(document.createTextNode(icc.close.match(/[^<\/>]+/)));
+											codeContainer.appendChild(closeSpan);
+
+											codeContainer.appendChild(document.createTextNode(">"));
+											codeContainer.appendChild(document.createElement("br"));
+										} else {
+											codeContainer.appendChild(document.createTextNode(icc.text));
+											codeContainer.appendChild(document.createElement("br"));
+										}
+									});
+
+									/**
+									 * ? Display the detail of accessible name
+									 */
 									if(test.tags.includes('accessiblename')) {
+										newRow.querySelector('.item-code').classList.add("item-code--small");
+
 										var an = test.data[h].anDetails;
 										newRow.querySelector('.item-accessiblename .an-full span').appendChild(document.createTextNode("Nom accessible calculé: "));
 										newRow.querySelector('.item-accessiblename .an-full').appendChild(document.createTextNode(an[0]));
 										an.shift();
 
 										function addLIcontent(item, itemAN) {
-											if(!Array.isArray(itemAN)) item.textContent += ': '+itemAN;
+											if(!Array.isArray(itemAN)) {
+												let itemStrong = document.createElement('strong');
+												itemStrong.textContent = item.textContent;
+												item.textContent = "";
+												item.appendChild(itemStrong);
+												item.appendChild(document.createTextNode(': '+itemAN));
+											}
 											else {
-												// item.textContent += ': '+itemAN[0];
 												itemAN.shift();
 
 												for(let i = 0; i < itemAN.length; i++) {
@@ -1151,9 +1179,15 @@ button.addEventListener('click', function () {
 															let partName = Array.isArray(n[subPart]) ? n[subPart][0] : n[subPart];
 															if(subPart != 'alt' && (partName === "" || partName === "\n")) continue;
 															let subli = document.createElement('li');
-															subli.textContent = subPart === "textual-contents" ? "Contenu textuel" : subPart === "child" ? "élément enfant" : subPart;
+															subli.textContent = subPart === "textual-contents" ? "Contenu textuel" : subPart;
 
-															if(!Array.isArray(n[subPart])) subli.textContent += ': '+n[subPart];
+															if(!Array.isArray(n[subPart])) {
+																let subStrong = document.createElement('strong');
+																subStrong.textContent = subli.textContent;
+																subli.textContent = "";
+																subli.appendChild(subStrong);
+																subli.appendChild(document.createTextNode(': '+n[subPart]));
+															}
 															else {
 																for(let i = 0; i < n[subPart].length; i++) {
 																	let empty = false;
@@ -1178,18 +1212,38 @@ button.addEventListener('click', function () {
 											}
 										}
 
-										let anList = newRow.querySelector('.item-accessiblename .an-list');
-										an.forEach(n => {
-											for(var part in n) {
-												let partName = Array.isArray(n[part]) ? n[part][0] : n[part];
-												if(part != 'alt' && (partName === "" || partName === "\n")) continue;
-												let li = document.createElement('li');
-												li.textContent = part === "textual-contents" ? "Contenu textuel" : part === "child" ? "élément enfant" : part;
-												addLIcontent(li, n[part]);
-												anList.appendChild(li);
-											};
-										});
-										
+										if(an.length > 0) {
+											let anList = newRow.querySelector('.item-accessiblename .an-list');
+											anList.id = itemNumber+'-'+t;
+											an.forEach(n => {
+												for(var part in n) {
+													let partName = Array.isArray(n[part]) ? n[part][0] : n[part];
+													if(part != 'alt' && (partName === "" || partName === "\n")) continue;
+													let li = document.createElement('li');
+													li.textContent = part === "textual-contents" ? "Contenu textuel" : part;
+													addLIcontent(li, n[part]);
+													anList.appendChild(li);
+												};
+											});
+											newRow.querySelector('.item-accessiblename .an-button').setAttribute('aria-expanded', 'false');
+											newRow.querySelector('.item-accessiblename .an-button').setAttribute('aria-controls', anList.id);
+											newRow.querySelector('.item-accessiblename .an-button').textContent = "Afficher le détail du calcul";
+											newRow.querySelector('.item-accessiblename .an-button').addEventListener('click', (e) => {
+												var isOpen = e.target.getAttribute('aria-expanded') === "true";
+												if(isOpen) {
+													e.target.setAttribute('aria-expanded', 'false');
+													document.getElementById(e.target.getAttribute('aria-controls')).style.display = "none";
+													e.target.textContent = "Afficher le détail du calcul";
+												} else {
+													e.target.setAttribute('aria-expanded', 'true');
+													document.getElementById(e.target.getAttribute('aria-controls')).style.display = "block";
+													e.target.textContent = "Cacher le détail du calcul";
+												}
+											});
+										} else {
+											newRow.querySelector('.item-accessiblename .an-button').remove();
+											newRow.querySelector('.item-accessiblename .an-list').remove();
+										}
 									} else {
 										newRow.querySelector('.item-accessiblename').remove();
 									}

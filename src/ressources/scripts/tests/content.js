@@ -887,9 +887,11 @@ var getAccessibleName = function () {
                                         nodes[i].setAttribute('data-labelbytraversal', 'true');
                                     }
 
+                                    let tagName2h = nodes[i].tagName;
+
                                     result.push(
                                         {"cssbeforecontent": cssbeforecontent},
-                                        {"child": nodes[i].fullAccessibleName},
+                                        {[tagName2h]: nodes[i].fullAccessibleName},
                                         {"cssaftercontent": cssaftercontent}
                                     );
                                     
@@ -1001,10 +1003,10 @@ var getAccessibleName = function () {
                             if (this.matches('[data-labelbytraversal="true"]')) {
                                 nodes[i].setAttribute('data-labelbytraversal', 'true');
                             }
-
+                            var tagName2h2 = nodes[i].tagName;
                             result.push(
                                 {"cssbeforecontent": cssbeforecontent},
-                                {"child": nodes[i].fullAccessibleName},
+                                {[tagName2h2]: nodes[i].fullAccessibleName},
                                 {"cssaftercontent": cssaftercontent}
                             );
                             totalAccumulatedText += totalAccumulatedText.length === 0 ? cssbeforecontent + nodes[i].accessibleName() + cssaftercontent : ' '+cssbeforecontent + nodes[i].accessibleName() + cssaftercontent;

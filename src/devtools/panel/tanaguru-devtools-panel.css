@@ -560,7 +560,7 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 }
 
 [role="tabpanel"] h3.failed + div mark {
-	background-color: #d90b0b;
+	background-color: #A42E28;
 	color: #fff;
 }
 
@@ -857,7 +857,7 @@ td code {
 	margin: 0.5em 0;
 }
 
-/** contrast */
+/*? contrast */
 .contrast-legend .contrast-bgImage,
 .contrast-legend .contrast-bgNull {
 	display: inline-block;
@@ -967,23 +967,56 @@ td code {
 	background-color: #f5f5f5;
 }
 
+/*? test rows */
+#tests table tr:not(.theadings) td {
+	vertical-align: top;
+	padding: 1rem;
+}
+
+/*? highlight action button */
 .highlightON {
 	border-bottom: 2px solid #2A609E;
 }
 
-.code-tag {
-	font-weight: 900;
-	color: blue;
+/*? item cell */
+td.item-code--small {
+	width: 40%;
 }
 
-.item-accessiblename {
-	padding-left: 2rem;
+td.item-code .code {
+	display: inline-block;
+	background-color: #303138;
+}
+
+td.item-code .code code {
+	font-size: 0.8rem;
+	color: #e5e5e5;
+	padding: 1rem;
+}
+
+.code-tag {
+	font-size: 0.9rem;
+	font-weight: 900;
+	color: #87C9D6;
+}
+
+.code-attValue {
+	color: rgb(156, 243, 116);
+}
+
+.code-attName {
+	color: rgb(248, 177, 83);
+}
+
+/*? accessiblename cell */
+td.item-accessiblename {
+	width: 30%;
+	color: #333;
 }
 
 p.an-full {
-	font-size: 0.9rem;
-	border-left: 1px solid black;
-	padding-left: 1rem;
+	font-size: 0.8rem;
+	margin-top: 0;
 }
 
 p.an-full span {
@@ -993,6 +1026,8 @@ p.an-full span {
 ul.an-list {
 	font-size: 0.8rem;
 	list-style: disc inside;
+	display: none;
+	color: #555;
 }
 
 ul.an-list li {
