@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
-	"name": "webext dev",
-	"short_name": "webext dev",
+	"name": "__MSG_extensionName__",
+	"short_name": "Tanaguru webext",
 	"version": "2.0",
 	"author": "Tanaguru",
 	"description": "__MSG_extensionDescription__",
