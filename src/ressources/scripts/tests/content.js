@@ -607,7 +607,8 @@ var getAccessibleName = function () {
     };
     var replacedElements = ['audio', 'canvas', 'embed', 'iframe', 'img', 'input', 'object', 'video'];
 // Step 1 : Initialize - Set the total accumulated text to the empty string ("").
-    var result = '';
+    var totalAccumulatedText = '';
+    var result = [];
 // Step 2 : Compute the text alternative for the current node.
     var accessibleNameWithAriaLabelledBy = false;
     if (this.hasAttribute('data-labelbytraversal') || this.isNotExposedDueTo.length == 0) {
@@ -640,14 +641,15 @@ var getAccessibleName = function () {
                             nodes[i].setAttribute('data-controlembeddedinlabel', 'true');
                         }
                         nodes[i].setAttribute('data-labelbytraversal', 'true');
-                        var an = nodes[i].accessibleName;
-                        result += (result != '' && an != '' ? ' ' : '') + an;
+                        var an = nodes[i].fullAccessibleName;
+                        result.push({"aria-labelledby": an});
+                        totalAccumulatedText += (totalAccumulatedText != '' && an != '' ? ' ' : '') + an;
                     }
                 }
             }
         }
     }
-    if ((result == '' || accessibleNameWithAriaLabelledBy == false) && this.isNotExposedDueTo.length == 0 || this.hasAttribute('data-labelbytraversal')) {
+    if ((totalAccumulatedText == '' || accessibleNameWithAriaLabelledBy == false) && this.isNotExposedDueTo.length == 0 || this.hasAttribute('data-labelbytraversal')) {
         var accessibleNameWithAriaLabel = false;
         if (!this.hasAttribute('data-controlembeddedinlabel')) {
             if (this.hasAttribute('aria-label')) {
@@ -659,7 +661,8 @@ var getAccessibleName = function () {
                 var label = this.getAttribute('aria-label');
                 if (label.trim() != '') {
                     accessibleNameWithAriaLabel = true;
-                    result = label;
+                    result.push({"aria-label": label});
+                    totalAccumulatedText = label;
                 }
             }
         }
@@ -678,19 +681,23 @@ var getAccessibleName = function () {
                         for (var i = 0; i < value.length; i++) {
                             resulttmp.push('\u2022');
                         }
-                        result = resulttmp.join('\u00AD');
+                        result.push({"value": resulttmp.join('\u00AD')});
+                        totalAccumulatedText = resulttmp.join('\u00AD');
                     }
                     else {
-                        result = this.value;
+                        result.push({"value": this.value});
+                        totalAccumulatedText = this.value;
                     }
                 }
                 else if (this.matches(controls.customtextboxes)) {
                     // If the embedded control has role textbox, return its value.
-                    result = this.textContent;
+                    result.push({"textContent": this.textContent});
+                    totalAccumulatedText = this.textContent;
                 }
                 else if (this.matches(controls.nativebuttons + ',' + controls.custombuttons)) {
                     // If the embedded control has role menu button, return the text alternative of the button.
-                    result = this.accessibleName;
+                    result.push({"button": this.fullaccessibleName});
+                    totalAccumulatedText = this.accessibleName();
                 }
                 else if (this.matches(controls.customcomboboxes)) {
                     // If the embedded control has role combobox or listbox, return the text alternative of the chosen option.
@@ -701,14 +708,17 @@ var getAccessibleName = function () {
                             for (var i = 0; i < value.length; i++) {
                                 resulttmp.push('\u2022');
                             }
-                            result = resulttmp.join('\u00AD');
+                            result.push({"value": resulttmp.join('\u00AD')});
+                            totalAccumulatedText = resulttmp.join('\u00AD');
                         }
                         else {
-                            result = this.value;
+                            result.push({"value": this.value});
+                            totalAccumulatedText = this.value;
                         }
                     }
                     else {
-                        result = this.textContent;
+                        result.push({"textContent": this.textContent});
+                        totalAccumulatedText = this.textContent;
                     }
                 }
                 else if (this.matches(controls.nativelistboxes)) {
@@ -718,7 +728,8 @@ var getAccessibleName = function () {
                     }
                     else {
                         if (this.selectedIndex > -1) {
-                            result = this.options[this.selectedIndex].accessibleName;
+                            result.push({"chosen-option": this.options[this.selectedIndex].fullAccessibleName});
+                            totalAccumulatedText = this.options[this.selectedIndex].accessibleName();
                         }
                     }
                 }
@@ -756,24 +767,29 @@ var getAccessibleName = function () {
                             }
                         }
                         if (option) {
-                            result = option.accessibleName;
+                            result.push({"chosen-option": option.fullAccessibleName});
+                            totalAccumulatedText = option.accessibleName();
                         }
                     }
                 }
                 else if (this.matches(controls.nativeranges + ',' + controls.customranges)) {
                     // If the embedded control has role range (e.g., a spinbutton or slider).
                     if (this.hasAttribute('aria-valuetext')) {
-                        result = this.getAttribute('aria-valuetext');
+                        result.push({"aria-valuetext": this.getAttribute('aria-valuetext')});
+                        totalAccumulatedText = this.getAttribute('aria-valuetext');
                     }
                     else if (this.hasAttribute('aria-valuenow')) {
-                        result = this.getAttribute('aria-valuenow');
+                        result.push({"aria-valuenow": this.getAttribute('aria-valuenow')});
+                        totalAccumulatedText = this.getAttribute('aria-valuenow');
                     }
                     else if (this.matches(controls.nativeranges)) {
                         if (this.value) {
-                            result = this.value;
+                            result.push({"value": this.value});
+                            totalAccumulatedText = this.value;
                         }
                         else {
-                            result = '';
+                            result = [];
+                            totalAccumulatedText = '';
                         }
                     }
                 }
@@ -788,33 +804,39 @@ var getAccessibleName = function () {
                 if (this.matches('area, img')) {
                     if (!this.matches('[role="none"], [role="presentation"]')) { // COMMENT : Not allowed on area & img with alt="text".
                         if (this.hasAttribute('alt')) {
-                            result = this.getAttribute('alt');
+                            result.push({"alt": this.getAttribute('alt')});
+                            totalAccumulatedText = this.getAttribute('alt');
                         }
                         else if (this.hasAttribute('title')) {
                             /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
-                            result = this.getAttribute('title');
+                            result.push({"title": this.getAttribute('title')});
+                            totalAccumulatedText = this.getAttribute('title');
                         }
                     }
                 }
                 else if (this.matches('svg') && !this.matches('[role="none"], [role="presentation"]')) {
                     var title = this.querySelector('title');
                     if (title && title.parentNode == this) {
-                        result = title.textContent;
+                        result.push({"titleTag-textContent": title.textContent});
+                        totalAccumulatedText = title.textContent;
                     }
                 }
                 else if(this.matches('object[type], embed[type]') && !this.matches('[role="none"], [role="presentation"]')) {
                     if(this.getAttribute('type').startsWith('image/') && this.hasAttribute('title')) {
-                        result = this.getAttribute('title');
+                        result.push({"title": this.getAttribute('title')});
+                        totalAccumulatedText = this.getAttribute('title');
                     }
                 }
                 else if (this.matches(controls.nativebuttons) && !this.matches('[role="none"], [role="presentation"]')) { // COMMENT : Not allowed on button, input[type="button"], input[type="image"], input[type="reset"], input[type="submit"].
                     if (this.matches('input[type="image"]')) {
                         if (this.hasAttribute('alt')) {
-                            result = this.getAttribute('alt');
+                            result.push({"alt": this.getAttribute('alt')});
+                            totalAccumulatedText = this.getAttribute('alt');
                         }
                         else if (this.hasAttribute('title')) {
                             /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
-                            result = this.getAttribute('title');
+                            result.push({"title": this.getAttribute('title')});
+                            totalAccumulatedText = this.getAttribute('title');
                         }
                     }
                     else {
@@ -836,13 +858,15 @@ var getAccessibleName = function () {
                                 parentcssaftercontent = '';
                             }
                         }
-                        result = parentcssbeforecontent;
+                        result.push({"parentcssbeforecontent": parentcssbeforecontent});
+                        totalAccumulatedText = parentcssbeforecontent;
                         if (this.matches('button')) {
                             var nodes = this.childNodes;
                             for (var i = 0; i < nodes.length; i++) {
                                 if (nodes[i].nodeType == Node.TEXT_NODE) {
                                     // 2-G : The current node is a Text node, return its textual contents.
-                                    result += result.length === 0 ? nodes[i].nodeValue : ' '+nodes[i].nodeValue;
+                                    result.push({"textual-contents": nodes[i].nodeValue});
+                                    totalAccumulatedText += totalAccumulatedText.length === 0 ? nodes[i].nodeValue : ' '+nodes[i].nodeValue;
                                 }
                                 else if (nodes[i].nodeType == Node.ELEMENT_NODE && nodes[i].isNotExposedDueTo.length == 0) {
                                     // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
@@ -862,17 +886,29 @@ var getAccessibleName = function () {
                                     if (this.matches('[data-labelbytraversal="true"]')) {
                                         nodes[i].setAttribute('data-labelbytraversal', 'true');
                                     }
-                                    result += result.length === 0 ? cssbeforecontent + nodes[i].accessibleName + cssaftercontent : ' '+cssbeforecontent + nodes[i].accessibleName + cssaftercontent;
+
+                                    let tagName2h = nodes[i].tagName;
+
+                                    result.push(
+                                        {"cssbeforecontent": cssbeforecontent},
+                                        {[tagName2h]: nodes[i].fullAccessibleName},
+                                        {"cssaftercontent": cssaftercontent}
+                                    );
+                                    
+                                    totalAccumulatedText += totalAccumulatedText.length === 0 ? cssbeforecontent + nodes[i].accessibleName() + cssaftercontent : ' '+cssbeforecontent + nodes[i].accessibleName() + cssaftercontent;
                                 }
                             }
                         }
                         else {
-                            result += result.length === 0 ? this.value : ' '+this.value;
+                            result.push({"value": this.value});
+                            totalAccumulatedText += totalAccumulatedText.length === 0 ? this.value : ' '+this.value;
                         }
-                        result += result.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
-                        if (result.trim() == '' && this.hasAttribute('title')) {
+                        result.push({"parentcssaftercontent": parentcssaftercontent});
+                        totalAccumulatedText += totalAccumulatedText.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
+                        if (totalAccumulatedText.trim() == '' && this.hasAttribute('title')) {
                             /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
-                            result = this.getAttribute('title');
+                            result.push({"title": this.getAttribute('title')});
+                            totalAccumulatedText = this.getAttribute('title');
                         }
                     }
                 }
@@ -880,28 +916,33 @@ var getAccessibleName = function () {
                     var labels = this.labels;
                     for (var i = 0; i < labels.length; i++) {
                         if (!labels[i].matches('[role="none"], [role="presentation"]')) {
-                            result += result.length === 0 ? labels[i].accessibleName : ' '+labels[i].accessibleName;
+                            result.push({"label": labels[i].fullAccessibleName});
+                            totalAccumulatedText += totalAccumulatedText.length === 0 ? labels[i].accessibleName() : ' '+labels[i].accessibleName();
                         }
                     }
 
                     if(labels.length === 0 && this.hasAttribute('title')) {
-                        result = this.getAttribute('title');
+                        result.push({"title": this.getAttribute('title')});
+                        totalAccumulatedText = this.getAttribute('title');
                     }
                 }
                 else if (this.matches('fieldset, table') && !this.matches('[role="none"], [role="presentation"]')) {
                     var elementname = this.firstElementChild;
                     if (elementname && !elementname.matches('[role="none"], [role="presentation"]')) {
                         if (elementname.matches('fieldset legend, table caption')) {
-                            result = elementname.accessibleName;
+                            result.push({"firstChild-caption": elementname.fullAccessibleName});
+                            totalAccumulatedText = elementname.accessibleName();
                         }
                     }
-                    if (result.trim() == '' && this.hasAttribute('title')) {
+                    if (totalAccumulatedText.trim() == '' && this.hasAttribute('title')) {
                         /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
-                        result = this.getAttribute('title');
+                        result.push({"title": this.getAttribute('title')});
+                        totalAccumulatedText = this.getAttribute('title');
                     }
                 }
                 else if (this.matches('iframe[title]') && !this.matches('[role="none"], [role="presentation"]')) {
-                    result = this.getAttribute('title');
+                    result.push({"title": this.getAttribute('title')});
+                    totalAccumulatedText = this.getAttribute('title');
                 }
                 else if ((!this.hasAttribute('role') || this.matches('[role="none"], [role="presentation"]')) || this.matches(ARIA.nameFromContentSupported)) { // Name from Content (TODO : implement it in ARIA).
                     var controlsselectors = [];
@@ -928,11 +969,13 @@ var getAccessibleName = function () {
                             parentcssaftercontent = '';
                         }
                     }
-                    result = parentcssbeforecontent;
+                    result.push({"parentcssbeforecontent": parentcssbeforecontent});
+                    totalAccumulatedText = parentcssbeforecontent;
                     for (var i = 0; i < nodes.length; i++) {
                         if (nodes[i].nodeType == Node.TEXT_NODE) {
                             // 2-G : The current node is a Text node, return its textual contents.
-                            result += result.length === 0 ? nodes[i].nodeValue : ' '+nodes[i].nodeValue;
+                            result.push({"textual-contents": nodes[i].nodeValue});
+                            totalAccumulatedText += totalAccumulatedText.length === 0 ? nodes[i].nodeValue : ' '+nodes[i].nodeValue;
                         }
                         else if (nodes[i].nodeType == Node.ELEMENT_NODE && nodes[i].isNotExposedDueTo.length == 0) {
                             // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
@@ -960,13 +1003,21 @@ var getAccessibleName = function () {
                             if (this.matches('[data-labelbytraversal="true"]')) {
                                 nodes[i].setAttribute('data-labelbytraversal', 'true');
                             }
-                            result += result.length === 0 ? cssbeforecontent + nodes[i].accessibleName + cssaftercontent : ' '+cssbeforecontent + nodes[i].accessibleName + cssaftercontent;
+                            var tagName2h2 = nodes[i].tagName;
+                            result.push(
+                                {"cssbeforecontent": cssbeforecontent},
+                                {[tagName2h2]: nodes[i].fullAccessibleName},
+                                {"cssaftercontent": cssaftercontent}
+                            );
+                            totalAccumulatedText += totalAccumulatedText.length === 0 ? cssbeforecontent + nodes[i].accessibleName() + cssaftercontent : ' '+cssbeforecontent + nodes[i].accessibleName() + cssaftercontent;
                         }
                     }
-                    result += result.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
-                    if (result.trim() == '' && this.matches('a[href][title]')) {
+                    result.push({"parentcssaftercontent": parentcssaftercontent});
+                    totalAccumulatedText += totalAccumulatedText.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
+                    if (totalAccumulatedText.trim() == '' && this.matches('a[href][title]')) {
                         /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
-                        result = this.getAttribute('title');
+                        result.push({"title": this.getAttribute('title')});
+                        totalAccumulatedText = this.getAttribute('title');
                     }
                 }
             }
@@ -976,13 +1027,20 @@ var getAccessibleName = function () {
     this.removeAttribute('data-controlembeddedinlabel');
 // 2-A (condition success) : The current node is hidden and is not directly referenced by aria-labelledby.
 // 2-B, 2-C, 2-D, 2-E, 2-F, 2-G, 2-H and 2-I : Otherwise...
-    return result.trim();
+    totalAccumulatedText.trim();
+    result.unshift(totalAccumulatedText);
+    return result;
 };
-if (!SVGElement.prototype.hasOwnProperty('accessibleName')) Object.defineProperty(SVGElement.prototype, 'accessibleName', { get: getAccessibleName });
-if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: getAccessibleName });
+
+if (!SVGElement.prototype.hasOwnProperty('fullAccessibleName')) Object.defineProperty(SVGElement.prototype, 'fullAccessibleName', { get: getAccessibleName });
+if (!HTMLElement.prototype.hasOwnProperty('fullAccessibleName')) Object.defineProperty(HTMLElement.prototype, 'fullAccessibleName', { get: getAccessibleName });
+
+var accessibleName = function () { return this.fullAccessibleName[0]; };
+if (!('accessibleName' in SVGElement.prototype)) SVGElement.prototype.accessibleName = accessibleName;
+if (!('accessibleName' in HTMLElement.prototype)) HTMLElement.prototype.accessibleName = accessibleName;
 
 // hasAccessibleName.
-var hasAccessibleName = function () { return this.accessibleName != ''; };
+var hasAccessibleName = function () { return this.accessibleName().length > 0; };
 if (!('hasAccessibleName' in SVGElement.prototype)) SVGElement.prototype.hasAccessibleName = hasAccessibleName;
 if (!('hasAccessibleName' in HTMLElement.prototype)) HTMLElement.prototype.hasAccessibleName = hasAccessibleName;
 
@@ -1087,7 +1145,7 @@ function removeDataTNG(element) {
     });
 }
 
-function manageOutput(element) {
+function manageOutput(element, an) {
     var status = element.status ? element.status : 'cantTell';
     element.status = undefined;
 
@@ -1113,13 +1171,13 @@ function manageOutput(element) {
 
         var e = document.createElement(fakeelement.tagName.toLowerCase());
         if (e && e.outerHTML.indexOf("/") != -1) {
-            if (fakeelement.innerHTML.length > 512) {
+            if (fakeelement.innerHTML.length > 150) {
                 fakeelement.innerHTML = '[...]';
             }
         }
     }
 
-    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, xpath: e ? getXPath(element) : null, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isVisible: isVisible, isNotExposedDueTo: isNotExposedDueTo};
+    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, anDetails: an ? element.fullAccessibleName : null, xpath: e ? getXPath(element) : null, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isVisible: isVisible, isNotExposedDueTo: isNotExposedDueTo};
 }
 
 function createTanaguruTag(tag, status) {
@@ -1180,7 +1238,7 @@ function createTanaguruTest(test) {
 
         if (elements) {
             // Statut du test par défaut.
-            var status = 'cantTell';
+            var status = 'inapplicable';
             elements = Array.from(elements);
 
             // Initialisation des tags.
@@ -1206,7 +1264,7 @@ function createTanaguruTest(test) {
                     elements = elements.filter(test.filter);
                 }
                 else {
-                    // Erreur : valeur de la propriété filter.
+                    console.error("The value of the filter propertie must be a function.");
                 }
             }
 
@@ -1236,15 +1294,24 @@ function createTanaguruTest(test) {
                 }
             }
             else {
+                if(test.hasOwnProperty('testStatus') && typeof test.testStatus === 'string') {
+                    let statusList = ['passed', 'cantTell', 'inapplicable'];
+                    if(statusList.includes(test.testStatus)) {
+                        status = test.testStatus;
+                        elements.map(e => e.status = status);
+                    }
+                }
+
                 if (elements.length == 0) {
                     status = 'inapplicable'; // Voir si le statut "Non applicable" n'est possible que dans le cas d'un nombre d'éléments à vérifier.
                 }
             }
+
             var statuspriority = {
                 failed: 4,
                 passed: 3,
-                inapplicable: 2,
-                cantTell: 1,
+                cantTell: 2,
+                inapplicable: 1,
                 untested: 0
             };
 
@@ -1286,10 +1353,16 @@ function createTanaguruTest(test) {
                 }
             }
 
+            let an = false;
+            if(test.tags && test.tags.includes('accessiblename')) {
+                an = true;
+            }
+
             // Chargement du résultat.
             var outputelements = [];
             if(!test.hasOwnProperty('contrast')) {
-                outputelements = elements.map(e => manageOutput(e));
+                if(!an) outputelements = elements.map(e => manageOutput(e, false));
+                else outputelements = elements.map(e => manageOutput(e, true));
             }
             
             if(test.hasOwnProperty('contrast')) {
@@ -1328,6 +1401,7 @@ function createTanaguruTest(test) {
                 result.mark = test.mark;
             }
             result.tags = test.hasOwnProperty('tags') ? test.tags : ['others'];
+            
             if (test.hasOwnProperty('ressources')) {
                 result.ressources = test.ressources;
             }
