@@ -26,3 +26,10 @@
 
 ## 2.0.1
 - update webext version
+
+## 3.0.0
+- new feature : display the detail of the accessible name calculation
+- update code cell integration
+- new feature : add testStatus propertie in test object
+- fixes some bugs
+
