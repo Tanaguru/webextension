@@ -506,13 +506,15 @@ function getResults(element, opacity) {
 			var ratio = getRatio(colors, bgColors);
 
 			return {
-				background: bgColors[0],
+				color: colors,
+				background: bgColors,
 				ratio: ratio,
 				visible: (element.getAttribute('data-tng-el-visible') === 'true' ? true : false && ratio > 1) ? true : false
 			}
 		} else {
 			return {
-				background: bgColors[0],
+				color: window.getComputedStyle(element, null).getPropertyValue('text-shadow').match(/rgba?\([^)]+\)/g),
+				background: bgColors,
 				ratio: null,
 				visible: element.getAttribute('data-tng-el-visible') === 'true' ? true : false
 			}
@@ -596,12 +598,12 @@ function getTextNodeContrast() {
 				text: cn.nodeValue,
 				size: size,
 				weight: weight,
-				foreground: window.getComputedStyle(element, null).getPropertyValue('color'),
-				background: results.background,
-				ratio: results.ratio,
+				foreground: (results && results.color) ? results.color : [window.getComputedStyle(element, null).getPropertyValue('color')],
+				background: results ? results.background : null,
+				ratio: results ? results.ratio : null,
 				xpath: getXPath(element),
-				valid: validContrast(size, weight, results.ratio),
-				isVisible: results.visible
+				valid: validContrast(size, weight, results ? results.ratio : null),
+				isVisible: results ? results.visible : null
 			};
 
 			if(o.valid.target == 4.5) {

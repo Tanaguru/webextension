@@ -774,10 +774,15 @@ button.addEventListener('click', function () {
 
 		nav.appendChild(ul);
 		main.children[0].appendChild(nav);
-		var dashboardpanelp = document.createElement('p'); 
-		dashboardpanelp.classList.add('dashboard-message');
-		dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultLoad')));
-		dashboardpanel.appendChild(dashboardpanelp);
+
+		var dashboardpanelp = document.querySelector('.dashboard-message') ? document.querySelector('.dashboard-message') : document.createElement('p');
+		if(document.querySelector('.dashboard-message')) {
+			dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultLoad')), dashboardpanelp.firstChild);
+		} else {
+			dashboardpanelp.classList.add('dashboard-message');
+			dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultLoad')));
+			dashboardpanel.appendChild(dashboardpanelp);
+		}
 
 		var catCount = 0;
 		var testsCount = 0;
@@ -968,7 +973,7 @@ button.addEventListener('click', function () {
 									{ name: 'N°', abbr: 'Numéro' },
 									{ name: 'Statut', export: 'required' },
 									{ name: 'Item', export: 'required' },
-									{ name: 'Nom accessible', export: 'no' },
+									{ name: 'Nom accessible' },
 									{ name: 'Atteignable au clavier ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAASCAYAAABB7B6eAAAABGdBTUEAALGPC/xhBQAAAjBJREFUOBGt1M1LVUEYgPF7ND/KLG4qRVibIgJvoIsgcOGuEFdRRC10I5LQP6ArbRUu3dqudkG4cCEGlktNSElF6YPioqGVRmEp+XF6njoH5F69XawXfsw0vTPzzsy5JhL/IcIwrEAvgszlCjIH9vnvc8xLBkEQ7nP+3tOoOokBXN4t68Bug38bYzErdsFq1KGf6p/QZkXWnWVlZAyweDNDLRjCezxn8TTtvweLpzCEZL6r/b4iJlQw4Wgek26TM2JuHpt85WTLAYn1TOjGBxhuuhG127QqisaO0K7j544xv0RtRmO2xkl0u8EEnXtwURPncBHT8GRVGMclvIHvdgajMO8TlpGCeecRF9WZYIM0WrEJ49GfJhymXYj6D6N2klZGPGaOuUY817VcM+11+OP4iDsoxAtMYgwn4FGfYRaeyrBaP8uX8GoXMYynGMEWlhB6JUYxatCANnhN7TiEVXTADRsj9h3z/8pg7gxa4RoXcBChJ/C+fLxbqMQP+FDXYQElaIIL3IDhia+hFD74VTh2E4fxBd7Cto+cpmPVa7Diz1iH3/oKrPA4XuMUjHmcxRK+4xjMtWqLdC37fZ7A+zqNTpjsL9QNH6AWHtdTmht/gnHfE07BaltwH1dgUX6ZWyb6jXuXb+HO83iFBZTDa8gVzjPXOc59B6t3zSKvqIeOCw3CsEofPf5d+GXlCm/AE1qo72HRRiO+uYGPeBc+molGiPgPof1csTMv7nt1j9H1C4W7DIhH/jVRAAAAAElFTkSuQmCC' },
 									{ name: 'Restitué ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAABGdBTUEAALGPC/xhBQAAAlBJREFUOBGV00tIVUEcx/F7xAfaQ0vCUtQitCgQqoWohI9N0MNFYVKgEiRo9JAgIqhFunAjggs3UYvoIqK0cGFqFPlEoVwYoeIjDHqYgWiu6/r9HWbiei5XOgOfO/+Z+c+cO3PmOAEfJRQKHSW9BJWYRh+GHMfZoPZXWGw/gviJD+hGP75gAdW+VmTCIcyiF3nhk2nvwA2soil8LGpMooPXCNok4rN4hHqkq5+6ABu4bPMiagb3ItZMKCROQiZGoC2/go7hG86ZvNvEc0iMWNAkPGew0Q4Sx2MMnUg1OdrFLeicM6Cj+IoyO09bSIGS4lAKJdvtlRP/QNq/CSagTw+7Yx40QHw/hp8EaKt/cRc1XJF31Iu4CJUcJGOQ3AvqCCvzxFmmvUadHMNPHV6w0G/qFlyDyhsUu1Eg0EFdhDa0sHCS+qk1/xQ+qk05gO8aOIxlHEQePiMWVRh1U80P7WLo3PTiEtGOaeyG7rKO7ISe9MfMcahDnlh9erDOuYGwC63Q2Q4hH5fMLh8Qz2BKExrwkobiOoyb+DGx3nY2JjCD88jCEvQvE0zudeJ1nFRbC2kbelm7sAidsfpHUY8jeAi9KPUP46mJte0nWIH3BbrJexi4Bz3gNJSYqcm20K6EznQn9uE9BnHM5kStSQqi2ZtA3xXUQldRn28P3CPw5ka0SUyDviJ9KbpKWwp9WnwJKVsG/qfBpAp88ubS9xZ62/4LE/VPdfeu2tnEZ7CKXNvnu9aC+IU+6AwV39xuIfdyb5egMRY5TlWLeDzjsk9SRy2bAMhld532BdwAAAAASUVORK5CYII=' },
 									{ name: 'Actions', export: 'no' }
@@ -1032,7 +1037,7 @@ button.addEventListener('click', function () {
 									var itemWeight = test.data[h].weight;
 									var itemCT = test.data[h].foreground;
 									var itemCF = test.data[h].background;
-									var itemRatio = test.data[h].ratio + ':1';
+									var itemRatio = itemRatio ? test.data[h].ratio + ':1' : '';
 		
 									let template = document.querySelector('#item-row-contrast');
 									var newRow = document.importNode(template.content, true);
@@ -1041,13 +1046,30 @@ button.addEventListener('click', function () {
 									newRow.querySelector('.item-text').textContent = itemText;
 									newRow.querySelector('.item-size').textContent = itemSize;
 									newRow.querySelector('.item-weight').textContent = itemWeight;
-									newRow.querySelector('.item-ct .item-ct-content').style.backgroundColor = itemCT;
+									newRow.querySelector('.item-ct .item-ct-content').style.background = itemCT[0];
+									if(itemCT.length > 1) {
+										let itemCTbg = "linear-gradient(90deg, " + itemCT[0].match(/rgba?\([^)]+\)/)[0] + ' 0%, ';
+										for(let n = 1; n < itemCT.length; n++) {
+											itemCTbg += itemCT[n].match(/rgba?\([^)]+\)/)[0] + ' ' + n * (100 / (itemCT.length - 1)) + '%, ';
+										}
+
+										newRow.querySelector('.item-ct .item-ct-content').style.background = itemCTbg.trim().slice(0, -1) + ')';
+									}
 									newRow.querySelector('.item-ct .visually-hidden').textContent = itemCT;
 									newRow.querySelector('.item-ct').setAttribute('title', itemCT);
 									newRow.querySelector('.item-cf').setAttribute('title', itemCF);
 									if(itemCF && itemCF !== 'image') {
-										newRow.querySelector('.item-cf .item-cf-content').style.backgroundColor = itemCF;
-									} else if(itemCF === 'image') {
+										newRow.querySelector('.item-cf .item-cf-content').style.background = itemCF[0];
+
+										if(itemCF.length > 1) {
+											let itemCFbg = "linear-gradient(90deg, " + itemCT[0].match(/rgba?\([^)]+\)/)[0] + ' 0%, ';
+											for(let n = 0; n < itemCF.length; n++) {
+												itemCFbg += itemCF[n].match(/rgba?\([^)]+\)/)[0] + ' ' + n * (100 / (itemCF.length - 1)) + '%, ';
+											}
+
+											newRow.querySelector('.item-cf .item-cf-content').style.background = itemCFbg.trim().slice(0, -1) + ')';
+										}
+									} else if(itemCF && itemCF === 'image') {
 										newRow.querySelector('.item-cf .item-cf-content').setAttribute('aria-describedby', 'contrast-bgImage');
 										newRow.querySelector('.item-cf .item-cf-content').classList.add('contrast-bgImage');
 									} else {
@@ -1056,9 +1078,8 @@ button.addEventListener('click', function () {
 										newRow.querySelector('.item-cf').setAttribute('title', 'non trouvé');
 									}
 									newRow.querySelector('.item-cf .visually-hidden').textContent = itemCF;
+
 									newRow.querySelector('.item-ratio').textContent = itemRatio;
-		
-									
 								} else {
 									var itemStatus = test.data[h].status;
 									let template = document.querySelector('#item-row');
@@ -1092,12 +1113,15 @@ button.addEventListener('click', function () {
 
 									itemCodeCapture.forEach(icc => {
 										if(icc.open) {
-											codeContainer.appendChild(document.createTextNode("<"));
+											let lineContainer = document.createElement('span');
+											lineContainer.classList.add("code-open");
+
+											lineContainer.appendChild(document.createTextNode("<"));
 
 											let openSpan = document.createElement('span');
 											openSpan.classList.add('code-tag');
 											openSpan.appendChild(document.createTextNode(icc.open.match(/[^<\/\s>]+/)));
-											codeContainer.appendChild(openSpan);
+											lineContainer.appendChild(openSpan);
 
 											let itemAtt = icc.open.match(/[^="<>\s]+="[^"]*"/g);
 											if(itemAtt) {
@@ -1107,38 +1131,42 @@ button.addEventListener('click', function () {
 													if (codehighlight && codehighlight.hasOwnProperty('attrs') && codehighlight.attrs.includes(attName[0])) {
 														let hlMark = document.createElement('mark');
 														hlMark.appendChild(document.createTextNode(att));
-														codeContainer.appendChild(hlMark);
+														lineContainer.appendChild(hlMark);
 													} else {
 														let attNameSpan = document.createElement('span');
 														attNameSpan.classList.add('code-attName');
 														attNameSpan.appendChild(document.createTextNode(' '+attName[0]));
-														codeContainer.appendChild(attNameSpan);
+														lineContainer.appendChild(attNameSpan);
 
-														codeContainer.appendChild(document.createTextNode("="));
+														lineContainer.appendChild(document.createTextNode("="));
 
 														let attValueSpan = document.createElement('span');
 														attValueSpan.classList.add('code-attValue');
 														attValueSpan.appendChild(document.createTextNode(att.match(/"[^"]*"/)[0]));
-														codeContainer.appendChild(attValueSpan);
+														lineContainer.appendChild(attValueSpan);
 													}
 												});
 											}
 											
-											codeContainer.appendChild(document.createTextNode(">"));
-											codeContainer.appendChild(document.createElement("br"));
+											lineContainer.appendChild(document.createTextNode(">"));
+											codeContainer.appendChild(lineContainer);
 										} else if(icc.close) {
-											codeContainer.appendChild(document.createTextNode("</"));
+											let lineContainer = document.createElement('span');
+											lineContainer.classList.add("code-close");
+											lineContainer.appendChild(document.createTextNode("</"));
 
 											let closeSpan = document.createElement('span');
 											closeSpan.classList.add('code-tag');
 											closeSpan.appendChild(document.createTextNode(icc.close.match(/[^<\/>]+/)));
-											codeContainer.appendChild(closeSpan);
+											lineContainer.appendChild(closeSpan);
 
-											codeContainer.appendChild(document.createTextNode(">"));
-											codeContainer.appendChild(document.createElement("br"));
+											lineContainer.appendChild(document.createTextNode(">"));
+											codeContainer.appendChild(lineContainer);
 										} else {
-											codeContainer.appendChild(document.createTextNode(icc.text));
-											codeContainer.appendChild(document.createElement("br"));
+											let lineContainer = document.createElement('span');
+											lineContainer.classList.add("code-textContent");
+											lineContainer.appendChild(document.createTextNode(icc.text));
+											codeContainer.appendChild(lineContainer);
 										}
 									});
 

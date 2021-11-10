@@ -1238,7 +1238,7 @@ function createTanaguruTest(test) {
 
         if (elements) {
             // Statut du test par défaut.
-            var status = 'cantTell';
+            var status = 'inapplicable';
             elements = Array.from(elements);
 
             // Initialisation des tags.
@@ -1264,7 +1264,7 @@ function createTanaguruTest(test) {
                     elements = elements.filter(test.filter);
                 }
                 else {
-                    // Erreur : valeur de la propriété filter.
+                    console.error("The value of the filter propertie must be a function.");
                 }
             }
 
@@ -1294,15 +1294,24 @@ function createTanaguruTest(test) {
                 }
             }
             else {
+                if(test.hasOwnProperty('testStatus') && typeof test.testStatus === 'string') {
+                    let statusList = ['passed', 'cantTell', 'inapplicable'];
+                    if(statusList.includes(test.testStatus)) {
+                        status = test.testStatus;
+                        elements.map(e => e.status = status);
+                    }
+                }
+
                 if (elements.length == 0) {
                     status = 'inapplicable'; // Voir si le statut "Non applicable" n'est possible que dans le cas d'un nombre d'éléments à vérifier.
                 }
             }
+
             var statuspriority = {
                 failed: 4,
                 passed: 3,
-                inapplicable: 2,
-                cantTell: 1,
+                cantTell: 2,
+                inapplicable: 1,
                 untested: 0
             };
 
