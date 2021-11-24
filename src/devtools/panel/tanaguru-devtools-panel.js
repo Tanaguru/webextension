@@ -1037,7 +1037,7 @@ button.addEventListener('click', function () {
 									var itemWeight = test.data[h].weight;
 									var itemCT = test.data[h].foreground;
 									var itemCF = test.data[h].background;
-									var itemRatio = itemRatio ? test.data[h].ratio + ':1' : '';
+									var itemRatio = test.data[h].ratio ? test.data[h].ratio + ':1' : '';
 		
 									let template = document.querySelector('#item-row-contrast');
 									var newRow = document.importNode(template.content, true);
@@ -1078,7 +1078,6 @@ button.addEventListener('click', function () {
 										newRow.querySelector('.item-cf').setAttribute('title', 'non trouvé');
 									}
 									newRow.querySelector('.item-cf .visually-hidden').textContent = itemCF;
-
 									newRow.querySelector('.item-ratio').textContent = itemRatio;
 								} else {
 									var itemStatus = test.data[h].status;
@@ -1182,7 +1181,7 @@ button.addEventListener('click', function () {
 										an.shift();
 
 										function addLIcontent(item, itemAN) {
-											if(!Array.isArray(itemAN)) {
+											if(typeof itemAN === "string") {
 												let itemStrong = document.createElement('strong');
 												itemStrong.textContent = item.textContent;
 												item.textContent = "";
@@ -1191,47 +1190,52 @@ button.addEventListener('click', function () {
 											}
 											else {
 												itemAN.shift();
-
-												for(let i = 0; i < itemAN.length; i++) {
+												var indexAN = 0;
+												itemAN.forEach(el => {
 													let empty = false;
-													for(var y in itemAN[i]) {
-														if(itemAN[i][y].length === 0) empty = true;
+													for(var y in el) {
+														if(typeof el[y] === "string") el[y] = el[y].trim();
+														if(!el[y] || el[y].length === 0) empty = true;
 													}
-													if(empty) itemAN.splice(i, 1);
-												}
+													if(empty) itemAN.splice(indexAN, 1);
+													indexAN++;
+												});
 
 												if(itemAN.length > 0) {
 													let ul = document.createElement('ul');
 													itemAN.forEach(n => {
 														for(var subPart in n) {
-															let partName = Array.isArray(n[subPart]) ? n[subPart][0] : n[subPart];
-															if(subPart != 'alt' && (partName === "" || partName === "\n")) continue;
-															let subli = document.createElement('li');
-															subli.textContent = subPart === "textual-contents" ? "Contenu textuel" : subPart;
+															let partName = typeof n[subPart] === "object" ? (n[subPart][0] ? n[subPart][0].trim() : "") : n[subPart].trim();
+															partName = partName.replace(/\s{2,}/g, " ");
 
-															if(!Array.isArray(n[subPart])) {
-																let subStrong = document.createElement('strong');
-																subStrong.textContent = subli.textContent;
-																subli.textContent = "";
-																subli.appendChild(subStrong);
-																subli.appendChild(document.createTextNode(': '+n[subPart]));
-															}
-															else {
-																for(let i = 0; i < n[subPart].length; i++) {
-																	let empty = false;
-																	for(var y in n[subPart][i]) {
-																		if(n[subPart][i][y].length === 0) empty = true;
+															if(!(subPart != 'alt' && partName.length === 0)) {
+																let subli = document.createElement('li');
+																subli.textContent = subPart === "textual-contents" ? "Contenu textuel" : subPart;
+	
+																if(typeof n[subPart] === "string") {
+																	let subStrong = document.createElement('strong');
+																	subStrong.textContent = subli.textContent;
+																	subli.textContent = "";
+																	subli.appendChild(subStrong);
+																	subli.appendChild(document.createTextNode(': '+n[subPart]));
+																}
+																else {
+																	for(let i = 0; i < n[subPart].length; i++) {
+																		let empty = false;
+																		for(var y in n[subPart][i]) {
+																			if(n[subPart][i][y].length === 0) empty = true;
+																		}
+																		if(empty) n[subPart].splice(i, 1);
 																	}
-																	if(empty) n[subPart].splice(i, 1);
+	
+																	if(n[subPart].length === 1 && n[subPart][0].hasOwnProperty("textual-contents")) {
+																		subli.textContent += ': '+n[subPart][0]["textual-contents"];
+																	} else {
+																		addLIcontent(subli, n[subPart]);
+																	}
 																}
-
-																if(n[subPart].length === 1 && n[subPart][0].hasOwnProperty("textual-contents")) {
-																	subli.textContent += ': '+n[subPart][0]["textual-contents"];
-																} else {
-																	addLIcontent(subli, n[subPart]);
-																}
+																ul.appendChild(subli);
 															}
-															ul.appendChild(subli);
 														}
 													});
 													
@@ -1245,8 +1249,9 @@ button.addEventListener('click', function () {
 											anList.id = itemNumber+'-'+t;
 											an.forEach(n => {
 												for(var part in n) {
-													let partName = Array.isArray(n[part]) ? n[part][0] : n[part];
-													if(part != 'alt' && (partName === "" || partName === "\n")) continue;
+													let partName = Array.isArray(n[part]) ? n[part][0].trim() : n[part].trim();
+													partName = partName.replace(/\s{2,}/g, " ");
+													if(part != 'alt' && partName.length === 0) continue;
 													let li = document.createElement('li');
 													li.textContent = part === "textual-contents" ? "Contenu textuel" : part;
 													addLIcontent(li, n[part]);

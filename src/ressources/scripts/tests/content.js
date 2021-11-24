@@ -611,7 +611,8 @@ var getAccessibleName = function () {
     var result = [];
 // Step 2 : Compute the text alternative for the current node.
     var accessibleNameWithAriaLabelledBy = false;
-    if (this.hasAttribute('data-labelbytraversal') || this.isNotExposedDueTo.length == 0) {
+
+    if (this.hasAttribute('data-labelbytraversal') || this.getAttribute('data-tng-el-exposed') === "true") {
         // 2-A (condition failed) : The current node is not hidden or is directly referenced by aria-labelledby.
         if (this.hasAttribute('aria-labelledby') && !this.hasAttribute('data-labelbytraversal') && !this.hasAttribute('data-controlembeddedinlabel')) {
             /*
@@ -649,7 +650,7 @@ var getAccessibleName = function () {
             }
         }
     }
-    if ((totalAccumulatedText == '' || accessibleNameWithAriaLabelledBy == false) && this.isNotExposedDueTo.length == 0 || this.hasAttribute('data-labelbytraversal')) {
+    if ((totalAccumulatedText == '' || accessibleNameWithAriaLabelledBy == false) && this.getAttribute('data-tng-el-exposed') === "true" || this.hasAttribute('data-labelbytraversal')) {
         var accessibleNameWithAriaLabel = false;
         if (!this.hasAttribute('data-controlembeddedinlabel')) {
             if (this.hasAttribute('aria-label')) {
@@ -661,7 +662,7 @@ var getAccessibleName = function () {
                 var label = this.getAttribute('aria-label');
                 if (label.trim() != '') {
                     accessibleNameWithAriaLabel = true;
-                    result.push({"aria-label": label});
+                    result = [{"aria-label": label}];
                     totalAccumulatedText = label;
                 }
             }
@@ -681,22 +682,24 @@ var getAccessibleName = function () {
                         for (var i = 0; i < value.length; i++) {
                             resulttmp.push('\u2022');
                         }
-                        result.push({"value": resulttmp.join('\u00AD')});
+                        result = [{"value": resulttmp.join('\u00AD')}];
                         totalAccumulatedText = resulttmp.join('\u00AD');
                     }
                     else {
-                        result.push({"value": this.value});
+                        result = [{"value": this.value}];
                         totalAccumulatedText = this.value;
                     }
                 }
                 else if (this.matches(controls.customtextboxes)) {
                     // If the embedded control has role textbox, return its value.
-                    result.push({"textContent": this.textContent});
+                    result = [{"textContent": this.textContent}];
                     totalAccumulatedText = this.textContent;
                 }
                 else if (this.matches(controls.nativebuttons + ',' + controls.custombuttons)) {
                     // If the embedded control has role menu button, return the text alternative of the button.
-                    result.push({"button": this.fullaccessibleName});
+                    let anButton = this.fullAccessibleName;
+                    anButton.shift();
+                    result = anButton;
                     totalAccumulatedText = this.accessibleName();
                 }
                 else if (this.matches(controls.customcomboboxes)) {
@@ -708,16 +711,16 @@ var getAccessibleName = function () {
                             for (var i = 0; i < value.length; i++) {
                                 resulttmp.push('\u2022');
                             }
-                            result.push({"value": resulttmp.join('\u00AD')});
+                            result = [{"value": resulttmp.join('\u00AD')}];
                             totalAccumulatedText = resulttmp.join('\u00AD');
                         }
                         else {
-                            result.push({"value": this.value});
+                            result = [{"value": this.value}];
                             totalAccumulatedText = this.value;
                         }
                     }
                     else {
-                        result.push({"textContent": this.textContent});
+                        result = [{"textContent": this.textContent}];
                         totalAccumulatedText = this.textContent;
                     }
                 }
@@ -728,7 +731,7 @@ var getAccessibleName = function () {
                     }
                     else {
                         if (this.selectedIndex > -1) {
-                            result.push({"chosen-option": this.options[this.selectedIndex].fullAccessibleName});
+                            result = [{"chosen-option": this.options[this.selectedIndex].fullAccessibleName}];
                             totalAccumulatedText = this.options[this.selectedIndex].accessibleName();
                         }
                     }
@@ -767,7 +770,7 @@ var getAccessibleName = function () {
                             }
                         }
                         if (option) {
-                            result.push({"chosen-option": option.fullAccessibleName});
+                            result = [{"chosen-option": option.fullAccessibleName}];
                             totalAccumulatedText = option.accessibleName();
                         }
                     }
@@ -775,16 +778,16 @@ var getAccessibleName = function () {
                 else if (this.matches(controls.nativeranges + ',' + controls.customranges)) {
                     // If the embedded control has role range (e.g., a spinbutton or slider).
                     if (this.hasAttribute('aria-valuetext')) {
-                        result.push({"aria-valuetext": this.getAttribute('aria-valuetext')});
+                        result = [{"aria-valuetext": this.getAttribute('aria-valuetext')}];
                         totalAccumulatedText = this.getAttribute('aria-valuetext');
                     }
                     else if (this.hasAttribute('aria-valuenow')) {
-                        result.push({"aria-valuenow": this.getAttribute('aria-valuenow')});
+                        result = [{"aria-valuenow": this.getAttribute('aria-valuenow')}];
                         totalAccumulatedText = this.getAttribute('aria-valuenow');
                     }
                     else if (this.matches(controls.nativeranges)) {
                         if (this.value) {
-                            result.push({"value": this.value});
+                            result = [{"value": this.value}];
                             totalAccumulatedText = this.value;
                         }
                         else {
@@ -804,12 +807,12 @@ var getAccessibleName = function () {
                 if (this.matches('area, img')) {
                     if (!this.matches('[role="none"], [role="presentation"]')) { // COMMENT : Not allowed on area & img with alt="text".
                         if (this.hasAttribute('alt')) {
-                            result.push({"alt": this.getAttribute('alt')});
+                            result = [{"alt": this.getAttribute('alt')}];
                             totalAccumulatedText = this.getAttribute('alt');
                         }
                         else if (this.hasAttribute('title')) {
                             /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
-                            result.push({"title": this.getAttribute('title')});
+                            result = [{"title": this.getAttribute('title')}];
                             totalAccumulatedText = this.getAttribute('title');
                         }
                     }
@@ -817,25 +820,25 @@ var getAccessibleName = function () {
                 else if (this.matches('svg') && !this.matches('[role="none"], [role="presentation"]')) {
                     var title = this.querySelector('title');
                     if (title && title.parentNode == this) {
-                        result.push({"titleTag-textContent": title.textContent});
+                        result = [{"titleTag-textContent": title.textContent}];
                         totalAccumulatedText = title.textContent;
                     }
                 }
                 else if(this.matches('object[type], embed[type]') && !this.matches('[role="none"], [role="presentation"]')) {
                     if(this.getAttribute('type').startsWith('image/') && this.hasAttribute('title')) {
-                        result.push({"title": this.getAttribute('title')});
+                        result = [{"title": this.getAttribute('title')}];
                         totalAccumulatedText = this.getAttribute('title');
                     }
                 }
                 else if (this.matches(controls.nativebuttons) && !this.matches('[role="none"], [role="presentation"]')) { // COMMENT : Not allowed on button, input[type="button"], input[type="image"], input[type="reset"], input[type="submit"].
                     if (this.matches('input[type="image"]')) {
                         if (this.hasAttribute('alt')) {
-                            result.push({"alt": this.getAttribute('alt')});
+                            result = [{"alt": this.getAttribute('alt')}];
                             totalAccumulatedText = this.getAttribute('alt');
                         }
                         else if (this.hasAttribute('title')) {
                             /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
-                            result.push({"title": this.getAttribute('title')});
+                            result = [{"title": this.getAttribute('title')}];
                             totalAccumulatedText = this.getAttribute('title');
                         }
                     }
@@ -858,17 +861,17 @@ var getAccessibleName = function () {
                                 parentcssaftercontent = '';
                             }
                         }
-                        result.push({"parentcssbeforecontent": parentcssbeforecontent});
+                        result = [{"parentcssbeforecontent": parentcssbeforecontent}];
                         totalAccumulatedText = parentcssbeforecontent;
                         if (this.matches('button')) {
                             var nodes = this.childNodes;
                             for (var i = 0; i < nodes.length; i++) {
-                                if (nodes[i].nodeType == Node.TEXT_NODE) {
+                                if (nodes[i].nodeType === 3) {
                                     // 2-G : The current node is a Text node, return its textual contents.
                                     result.push({"textual-contents": nodes[i].nodeValue});
                                     totalAccumulatedText += totalAccumulatedText.length === 0 ? nodes[i].nodeValue : ' '+nodes[i].nodeValue;
                                 }
-                                else if (nodes[i].nodeType == Node.ELEMENT_NODE && nodes[i].isNotExposedDueTo.length == 0) {
+                                else if (nodes[i].nodeType === 1 && nodes[i].getAttribute('data-tng-el-exposed') === "true") {
                                     // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
                                     var cssbeforecontent = '';
                                     var cssaftercontent = '';
@@ -907,7 +910,7 @@ var getAccessibleName = function () {
                         totalAccumulatedText += totalAccumulatedText.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
                         if (totalAccumulatedText.trim() == '' && this.hasAttribute('title')) {
                             /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
-                            result.push({"title": this.getAttribute('title')});
+                            result = [{"title": this.getAttribute('title')}];
                             totalAccumulatedText = this.getAttribute('title');
                         }
                     }
@@ -922,7 +925,7 @@ var getAccessibleName = function () {
                     }
 
                     if(labels.length === 0 && this.hasAttribute('title')) {
-                        result.push({"title": this.getAttribute('title')});
+                        result = [{"title": this.getAttribute('title')}];
                         totalAccumulatedText = this.getAttribute('title');
                     }
                 }
@@ -930,18 +933,18 @@ var getAccessibleName = function () {
                     var elementname = this.firstElementChild;
                     if (elementname && !elementname.matches('[role="none"], [role="presentation"]')) {
                         if (elementname.matches('fieldset legend, table caption')) {
-                            result.push({"firstChild-caption": elementname.fullAccessibleName});
+                            result = [{"firstChild-caption": elementname.fullAccessibleName}];
                             totalAccumulatedText = elementname.accessibleName();
                         }
                     }
                     if (totalAccumulatedText.trim() == '' && this.hasAttribute('title')) {
                         /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
-                        result.push({"title": this.getAttribute('title')});
+                        result = [{"title": this.getAttribute('title')}];
                         totalAccumulatedText = this.getAttribute('title');
                     }
                 }
                 else if (this.matches('iframe[title]') && !this.matches('[role="none"], [role="presentation"]')) {
-                    result.push({"title": this.getAttribute('title')});
+                    result = [{"title": this.getAttribute('title')}];
                     totalAccumulatedText = this.getAttribute('title');
                 }
                 else if ((!this.hasAttribute('role') || this.matches('[role="none"], [role="presentation"]')) || this.matches(ARIA.nameFromContentSupported)) { // Name from Content (TODO : implement it in ARIA).
@@ -969,7 +972,7 @@ var getAccessibleName = function () {
                             parentcssaftercontent = '';
                         }
                     }
-                    result.push({"parentcssbeforecontent": parentcssbeforecontent});
+                    result = [{"parentcssbeforecontent": parentcssbeforecontent}];
                     totalAccumulatedText = parentcssbeforecontent;
                     for (var i = 0; i < nodes.length; i++) {
                         if (nodes[i].nodeType == Node.TEXT_NODE) {
@@ -977,7 +980,7 @@ var getAccessibleName = function () {
                             result.push({"textual-contents": nodes[i].nodeValue});
                             totalAccumulatedText += totalAccumulatedText.length === 0 ? nodes[i].nodeValue : ' '+nodes[i].nodeValue;
                         }
-                        else if (nodes[i].nodeType == Node.ELEMENT_NODE && nodes[i].isNotExposedDueTo.length == 0) {
+                        else if (nodes[i].nodeType == Node.ELEMENT_NODE && nodes[i].getAttribute('data-tng-el-exposed') === "true") {
                             // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
                             var cssbeforecontent = '';
                             var cssaftercontent = '';
@@ -1016,7 +1019,7 @@ var getAccessibleName = function () {
                     totalAccumulatedText += totalAccumulatedText.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
                     if (totalAccumulatedText.trim() == '' && this.matches('a[href][title]')) {
                         /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
-                        result.push({"title": this.getAttribute('title')});
+                        result = [{"title": this.getAttribute('title')}];
                         totalAccumulatedText = this.getAttribute('title');
                     }
                 }
@@ -1045,9 +1048,9 @@ if (!('hasAccessibleName' in SVGElement.prototype)) SVGElement.prototype.hasAcce
 if (!('hasAccessibleName' in HTMLElement.prototype)) HTMLElement.prototype.hasAccessibleName = hasAccessibleName;
 
 // getAccessibleNameImplementation.
-var getAccessibleNameImplementation = function () {};
-if (!('getAccessibleNameImplementation' in SVGElement.prototype)) SVGElement.prototype.getAccessibleNameImplementation = getAccessibleNameImplementation;
-if (!('getAccessibleNameImplementation' in HTMLElement.prototype)) HTMLElement.prototype.getAccessibleNameImplementation = getAccessibleNameImplementation;
+// var getAccessibleNameImplementation = function () {};
+// if (!('getAccessibleNameImplementation' in SVGElement.prototype)) SVGElement.prototype.getAccessibleNameImplementation = getAccessibleNameImplementation;
+// if (!('getAccessibleNameImplementation' in HTMLElement.prototype)) HTMLElement.prototype.getAccessibleNameImplementation = getAccessibleNameImplementation;
 
 /* Gestion des tests. */
 function getXPath(element) {

@@ -2924,7 +2924,16 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     description:"Ces liens possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
     filter: function(item) {
-        return !item.getAttribute('title').toLowerCase().trim().match(item.accessibleName().toLowerCase().trim());
+        let an = item.accessibleName().toLowerCase().trim();
+        let titleLink = item.getAttribute('title').toLowerCase().trim();
+        an = an.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        an = an.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
+        an = an.replace(/\s{2,}/g, " ");
+        titleLink = titleLink.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        titleLink = titleLink.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
+        titleLink = titleLink.replace(/\s{2,}/g, " ");
+
+        return !titleLink.match(an);
     },
     mark: {attrs: ['title']},
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3004,7 +3013,12 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     description:"Ces liens images possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
     filter: function(item) {
-        return !item.getAttribute('title').toLowerCase().trim().match(item.accessibleName().toLowerCase().trim());
+        let an = item.accessibleName().toLowerCase().trim();
+        let titleLink = item.getAttribute('title').toLowerCase().trim();
+        an = an.replace(/\s{2,}/g, " ");
+        titleLink = titleLink.replace(/\s{2,}/g, " ");
+
+        return !titleLink.match(an);
     },
     mark: {attrs: ['title']},
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3078,7 +3092,12 @@ tanaguruTestsList.push({
     expectedNbElements: 0,
     description:"Ces liens composites possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
     filter: function(item) {
-        return !item.getAttribute('title').match(item.accessibleName());
+        let an = item.accessibleName().toLowerCase().trim();
+        let titleLink = item.getAttribute('title').toLowerCase().trim();
+        an = an.replace(/\s{2,}/g, " ");
+        titleLink = titleLink.replace(/\s{2,}/g, " ");
+
+        return !titleLink.match(an);
     },
     mark: {attrs: ['title']},
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3135,10 +3154,10 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens ayant un intitulé visible non repris dans le nom accessible.',
-    query: '[data-tng-cplink-accessiblename][data-tng-el-visible="true"], [data-tng-textlink-accessiblename][data-tng-el-visible="true"]',
+    query: '[data-tng-cplink-accessiblename][data-tng-el-visible="true"][aria-label], [data-tng-textlink-accessiblename][data-tng-el-visible="true"][aria-label]',
     expectedNbElements: 0,
     filter: function (item) {
-        if(item.innerText) {
+        if(item.innerText && item.getAttribute('aria-label').trim().length > 0) {
             var visibleName = '';
             item.childNodes.forEach(e => {
                 if(e.nodeType === 3) {
@@ -3153,6 +3172,7 @@ tanaguruTestsList.push({
                     });
                 }
             });
+            if(visibleName.length < 1) return;
             let rgx = new RegExp(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/g);
             visibleName = visibleName.trim().replace(rgx, '');
 
