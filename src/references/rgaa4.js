@@ -35,11 +35,7 @@ tanaguruTestsList.push({
     name: 'liste des images (balise img ou balise possédant l\'attribut WAI-ARIA role="img") sans nom accessible',
     query: 'img[data-tng-el-exposed="true"]:not([role]), [role="img"][data-tng-el-exposed="true"]',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune image sans non accessible n'a été trouvée.",
-        failed: "Ces images n'ont pas de nom accessible."
-    },
+    testStatus: "failed",
     filter: function (item) {
         if(item.closest('a')) {
             item.setAttribute('data-tng-image-link', true);
@@ -88,11 +84,7 @@ tanaguruTestsList.push({
     name: 'Liste d\'images réactives (balise area) sans nom accessible.',
     query: 'area[data-tng-el-exposed="true"]:not([role])',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune image réactive sans non accessible n'a été trouvée.",
-        failed: "Ces images réactives n'ont pas de nom accessible."
-    },
+    testStatus: "failed",
     filter: function(item) {
         if(!item.hasAttribute('href')) {
             if(item.hasAttribute('aria-hidden')) {
@@ -133,11 +125,7 @@ tanaguruTestsList.push({
     name: 'Liste de boutons de type image (balise input avec l\'attribut type="image") sans nom accessible.',
     query: 'input[type="image"][data-tng-el-exposed="true"]:not([role])',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun bouton de type image sans non accessible n'a été trouvée.",
-        failed: "Ces bouton de type image n'ont pas de nom accessible."
-    },
+    testStatus: "failed",
     filter: function (item) {
         if(item.accessibleName() == '') {
             return true;
@@ -167,11 +155,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste de zones cliquables d\'une image réactive côté serveur qui ne sont pas doublée d\'un lien dans la page.',
     query: 'a[href] img[ismap][data-tng-el-exposed="true"]:not([role])',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune zone cliquable non doublée d'un lien dans la page n'a été trouvée.",
-        failed: "Ces zones cliquable ne sont pas doublée d'un lien dans la page."
-    },
+    testStatus: "failed",
     filter: function (item) {
         let ismapLink = item.closest('a');
 
@@ -205,11 +189,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images vectorielles (balise svg) restituées ne possédant pas d\'attribut role="img".',
     query: 'svg[data-tng-el-exposed="true"]:not([role="presentation"], [data-tng-image-link])',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune image vectorielle restituée sans attribut [role='img'] n'a été trouvée.",
-        failed: "Ces images vectorielle sont restituée mais n'ont pas d'attribut [role='img']."
-    },
+    testStatus: "failed",
     filter: function (item) {
         if(item.closest('a')) {
             item.setAttribute('data-tng-image-link', true);
@@ -229,11 +209,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images vectorielles (balise svg) sans nom accessible',
     query: 'svg[role="img"][data-tng-el-exposed="true"]:not([data-tng-image-link])',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune image vectorielle sans non accessible n'a été trouvée.",
-        failed: "Ces images vectorielle n'ont pas de nom accessible."
-    },
+    testStatus: "failed",
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
     filter: function (item) {
         if(item.accessibleName() == '') {
@@ -264,11 +240,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images objet (balise object avec l\'attribut type="image/…") restituées ne possédant pas d\'attribut role="img".',
     query: 'object[type^="image/"][data-tng-el-exposed="true"]:not([data-tng-image-link])',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune image objet restituée sans attribut [role='img'] n'a été trouvée.",
-        failed: "Ces images objet sont restituée mais n'ont pas d'attribut [role='img']."
-    },
+    testStatus: "failed",
     filter: function (item) {
         if(item.closest('a')) {
             item.setAttribute('data-tng-image-link', true);
@@ -289,11 +261,7 @@ tanaguruTestsList.push({
     name: 'Liste d\'images objet (balise object avec l\'attribut type="image/…") sans nom accessible',
     query: 'object[role="img"][type^="image/"][data-tng-el-exposed="true"]:not([data-tng-image-link])',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune image objet sans non accessible n'a été trouvée.",
-        failed: "Ces images objet n'ont pas de nom accessible."
-    },
+    testStatus: "failed",
     filter: function (item) {
         if(item.accessibleName() == '') {
             return true;
@@ -323,11 +291,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images embarquées (balise embed avec l\'attribut type="image/…") restituées ne possédant pas d\'attribut role="img".',
     query: 'embed[type^="image/"][data-tng-el-exposed="true"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune image embarquée restituée sans attribut [role='img'] n'a été trouvée.",
-        failed: "Ces images embarquées sont restituée mais n'ont pas d'attribut [role='img']."
-    },
+    testStatus: "failed",
     filter: function (item) {
         if(item.hasAttribute('role')) {
             return item.getAttribute('role') !== 'img' && !item.hasValidRole();
@@ -343,11 +307,7 @@ tanaguruTestsList.push({
     name: 'Liste d\'images embarquées (balise embed avec l\'attribut type="image/…") sans nom accessible',
     query: 'embed[type^="image/"][role="img"][data-tng-el-exposed="true"]',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune image embarquée sans non accessible n'a été trouvée.",
-        failed: "Ces images embarquées n'ont pas de nom accessible."
-    },
+    testStatus: "failed",
     filter: function (item) {
         if(item.accessibleName() == '') {
             return true;
@@ -377,11 +337,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images bitmap (balise canvas) restituées ne possédant pas d\'attribut role="img".',
     query: 'canvas[data-tng-el-exposed="true"]:not([data-tng-image-link])',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune image bitmap restituée sans attribut [role='img'] n'a été trouvée.",
-        failed: "Ces images bitmap sont restituée mais n'ont pas d'attribut [role='img']."
-    },
+    testStatus: "failed",
     filter: function (item) {
         if(item.closest('a')) {
             item.setAttribute('data-tng-image-link', true);
@@ -402,11 +358,7 @@ tanaguruTestsList.push({
     name: 'Liste d\'images bitmap (balise canvas) sans nom accessible',
     query: 'canvas[role="img"][data-tng-el-exposed="true"]:not([data-tng-image-link])',
     description: 'ce test vérifie si les images restituées par les technologies d\'assistances n\'ont pas de nom accessible',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune image bitmap sans non accessible n'a été trouvée.",
-        failed: "Ces images bitmap n'ont pas de nom accessible."
-    },
+    testStatus: "failed",
     filter: function (item) {
         if(item.accessibleName() == '') {
             return true;
@@ -486,11 +438,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images (balise img) de décoration non ignorées par les technologies d\'assistance',
     query: 'img[data-tng-img-ignored="false"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune image de décoration non ignorée par les technologies d'assistance n'a été trouvée.",
-        failed: "Ces images de décoration ne sont pas ignorées par les technologies d'assistance."
-    },
+    testStatus: "failed",
     mark: { attrs: ['alt','role', 'tabindex']},
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.1'] }
@@ -536,11 +484,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste de zones non cliquable (balise area sans attribut href) de décoration non ignorées par les technologies d\'assistance',
     query: 'area[data-tng-img-ignored="false"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune zone non cliquable de décoration non ignorée par les technologies d'assistance n'a été trouvée.",
-        failed: "Ces zones non cliquable de décoration ne sont pas ignorées par les technologies d'assistance."
-    },
+    testStatus: "failed",
     mark: { attrs: ['alt','tabindex','role']},
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.2'] }
@@ -592,11 +536,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images objet (balise object avec l\'attribut type="image/…") de décoration non ignorées par les technologies d\'assistance',
     query: 'object[type^="image/"][data-tng-img-ignored="false"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune image objet de décoration non ignorée par les technologies d'assistance n'a été trouvée.",
-        failed: "Ces images objet de décoration ne sont pas ignorées par les technologies d'assistance."
-    },
+    testStatus: "failed",
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.3'] }
 });
@@ -651,11 +591,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'image vectorielle (balise svg) de décoration non ignorées par les technologies d\'assistance',
     query: 'svg[data-tng-img-ignored="false"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune image vectorielle de décoration non ignorée par les technologies d'assistance n'a été trouvée.",
-        failed: "Ces images vectorielle de décoration ne sont pas ignorées par les technologies d'assistance."
-    },
+    testStatus: "failed",
     mark: { attrs: ['title']},
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.4'] }
@@ -705,11 +641,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images bitmap (balise canvas) de décoration non ignorées par les technologies d\'assistance',
     query: 'canvas[data-tng-img-ignored="false"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune image bitmap de décoration non ignorée par les technologies d'assistance n'a été trouvée.",
-        failed: "Ces images bitmap de décoration ne sont pas ignorées par les technologies d'assistance."
-    },
+    testStatus: "failed",
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.5'] }
 });
@@ -758,11 +690,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste d\'images embarquées (balise embed avec l\'attribut type="image/…") de décoration non ignorées par les technologies d\'assistance',
     query: 'embed[type^="image/"][data-tng-img-ignored="false"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune image embarquée de décoration non ignorée par les technologies d'assistance n'a été trouvée.",
-        failed: "Ces images embarquées de décoration ne sont pas ignorées par les technologies d'assistance."
-    },
+    testStatus: "failed",
     mark: { attrs: ['aria-hidden']},
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.6'] }
@@ -896,11 +824,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des images bitmap (balise canvas) porteuse d\'information, ayant un contenu alternatif entre sa balise ouvrante et sa balise fermante non restitué par les technologies d\'assistance',
     query: 'canvas[data-tng-altnotexposed]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun contenu alternatif d'une image bitmap non restitué par les technologies d'assistance n'a été trouvé.",
-        failed: "Ces contenus alternatifs d'une image bitmap ne sont pas restitués par les technologies d'assistance."
-    },
+    testStatus: "failed",
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.3.8'] }
 });
@@ -911,11 +835,7 @@ tanaguruTestsList.push({
     name: 'Images avec un nom accessible trop long',
     description: "Ce test vérifie si le nom accessible des images est inférieur à 80 caractère.",
     query: '[data-tng-altLong="true"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune image avec un nom accessible trop long n'a été trouvée.",
-        failed: "Ces contenus alternatifs d'une image bitmap ne sont pas restitués par les technologies d'assistance."
-    },
+    testStatus: "failed",
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.9'] }
@@ -1126,11 +1046,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des légendes d\'image (balise img, balise input type="image" ou balise role="img") mal reliées à l\'image correspondante',
     query: 'figure [data-tng-img-roleImg], figure input[type="image"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune légende mal reliée à son image n'a été trouvée.",
-        failed: "Ces légendes ne sont pas correctement reliées à leurs images."
-    },
+    testStatus: "failed",
     filter: function (item) {
         var parentFigure = item.closest('figure');
         var figcaption = parentFigure.querySelector('figcaption');
@@ -1172,11 +1088,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des légendes d\'image objet mal reliées à l\'image correspondante',
     query: 'figure object[type^="image/"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune légende mal reliée à son image objet n'a été trouvée.",
-        failed: "Ces légendes ne sont pas correctement reliées à leurs images objets."
-    },
+    testStatus: "failed",
     filter: function (item) {
         var parentFigure = item.closest('figure');
         var figcaption = parentFigure.querySelector('figcaption');
@@ -1218,11 +1130,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des légendes d\'image embarquées (balise embed) mal reliées à l\'image correspondante',
     query: 'figure embed',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune légende mal reliée à son image embarquée n'a été trouvée.",
-        failed: "Ces légendes ne sont pas correctement reliées à leurs images embarquées."
-    },
+    testStatus: "failed",
     filter: function (item) {
         var parentFigure = item.closest('figure');
         var figcaption = parentFigure.querySelector('figcaption');
@@ -1264,11 +1172,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des légendes d\'image vectorielles (balise svg) mal reliées à l\'image correspondante',
     query: 'figure svg',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune légende mal reliée à son image vectorielle n'a été trouvée.",
-        failed: "Ces légendes ne sont pas correctement reliées à leurs images vectorielles."
-    },
+    testStatus: "failed",
     filter: function (item) {
         var parentFigure = item.closest('figure');
         var figcaption = parentFigure.querySelector('figcaption');
@@ -1310,11 +1214,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des légendes d\'image bitmap (balise canvas) mal reliées à l\'image correspondante',
     query: 'figure canvas',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune légende mal reliée à son image bitmap n'a été trouvée.",
-        failed: "Ces légendes ne sont pas correctement reliées à leurs images bitmap."
-    },
+    testStatus: "failed",
     filter: function (item) {
         var parentFigure = item.closest('figure');
         var figcaption = parentFigure.querySelector('figcaption');
@@ -1363,11 +1263,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des cadres sans attribut title',
     query: 'iframe[data-tng-el-exposed="true"]:not([role="presentation"], [title]), frame[data-tng-el-exposed="true"]:not([role="presentation"], [title])',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun cadre sans attribut [title] n'a été trouvé.",
-        failed: "Ces cadres n'ont pas d'attribut [title]."
-    },
+    testStatus: "failed",
     tags: ['a11y', 'frames'],
     ressources: {'rgaa': ['2.1.1']}
 });
@@ -1406,11 +1302,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Les cadres suivants ont un titre non pertinent',
     query: '[data-tng-frameAlt]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun cadre sans titre pertinent n'a été trouvé.",
-        failed: "Ces cadres ont un titre non pertinent."
-    },
+    testStatus: "failed",
     mark: { attrs: ['title']},
     tags: ['a11y', 'frames'],
     ressources: {'rgaa': ['2.2.1']}
@@ -1488,9 +1380,7 @@ tanaguruTestsList.push({
     name: 'Textes visibles sans effet de graisse et d\'une taille restituée inférieure à 24px ayant un contraste inférieur à 4.5:1',
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
     tags: ['a11y', 'contrast', 'colors'],
-    analyzeElements: function (collection) {
-        collection.map(e => e.status = 'failed');
-    },
+    testStatus: "failed",
     ressources: {'rgaa': ['3.2.1']}
 });
 
@@ -1549,9 +1439,7 @@ tanaguruTestsList.push({
     name: 'Textes visibles en gras d\'une taille restituée inférieure à 18.5px ayant un contraste inférieur à 4.5:1',
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
     tags: ['a11y', 'contrast', 'colors'],
-    analyzeElements: function (collection) {
-        collection.map(e => e.status = 'failed');
-    },
+    testStatus: "failed",
     ressources: {'rgaa': ['3.2.2']}
 });
 
@@ -1610,9 +1498,7 @@ tanaguruTestsList.push({
     name: 'Textes visibles sans effet de graisse et d\'une taille restituée supérieure ou égale à 24px ayant un contraste inférieur à 3:1',
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
     tags: ['a11y', 'contrast', 'colors'],
-    analyzeElements: function (collection) {
-        collection.map(e => e.status = 'failed');
-    },
+    testStatus: "failed",
     ressources: {'rgaa': ['3.2.3']}
 });
 
@@ -1671,9 +1557,7 @@ tanaguruTestsList.push({
     name: 'Textes visibles en gras d\'une taille restituée supérieure ou égale à 18.5px ayant un contraste inférieur à 3:1',
     description:'Vérifiez si nécessaire la présence d\'un mécanisme permettant d\'afficher un rapport de contraste conforme',
     tags: ['a11y', 'contrast', 'colors'],
-    analyzeElements: function (collection) {
-        collection.map(e => e.status = 'failed');
-    },
+    testStatus: "failed",
     ressources: {'rgaa': ['3.2.4']}
 });
 
@@ -1904,11 +1788,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Liste des sons durant plus de 3secondes déclenchés automatiquement et non contrôlables par l\'utilisateur.',
 	query: 'audio[autoplay]:not([muted]), video[autoplay]:not([muted])',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun son automatique, non contrôlable et durant plus de 3secondes n'a été trouvé.",
-        failed: "Ces sons ne sont pas contrôlables."
-    },
+    testStatus: "failed",
     filter: function(item) {
         if(item.duration <= 3 && !item.hasAttribute('loop')) {
             item.setAttribute('data-tng-mediaAuto', "true");
@@ -2022,11 +1902,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des tableaux complexes sans résumé.',
     query: 'table[data-tng-el-exposed="true"][data-tng-el-visible="true"]:not([role]), [role="table"][data-tng-el-exposed="true"][data-tng-el-visible="true"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun tableau complexe sans résumé n'a été trouvé.",
-        failed: "Ces tableaux complexe n'ont pas de résumé."
-    },
+    testStatus: "failed",
     explanations: {
         'passed': 'aucun tableau de données complexe sans résumé n\'a été trouvé sur cette page.',
         'failed': 'des tableaux de données complexes sans résumé ont été trouvé sur cette page.'
@@ -2094,11 +1970,7 @@ tanaguruTestsList.push({
     name: 'Liste des tableaux de mise en forme sans role présentation',
     query: 'table',
     description:'Vérifiez que le contenu linéarisé reste compréhensible',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun tableau de mise en forme sans attribut [role='presentation'] n'a été trouvé.",
-        failed: "Ces tableaux de mise en forme n'ont pas d'attribut [role='presentation']."
-    },
+    testStatus: "failed",
     filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') == 'false' && item.getAttribute('data-tng-el-visible') == 'false') return;
 
@@ -2171,11 +2043,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des tableaux de données avec un titre mal associé au tableau.',
     query: '[data-tng-dataTableSummary="false"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun tableau de données avec un titre mal associé n'a été trouvé.",
-        failed: "Ces tableaux de données ont un titre mal associé au tableau."
-    },
+    testStatus: "failed",
     mark: {attrs: ['aria-labelledby']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.4.1']}
@@ -2205,11 +2073,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des tableaux de données avec un titre non pertinent',
     query: '[data-tng-tableAccessiblename="false"][data-tng-el-exposed="true"], [data-tng-tableAccessiblename="false"][data-tng-el-visible="true"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun tableau de données avec un titre non pertinent n'a été trouvé.",
-        failed: "Ces tableaux de données ont un titre non pertinent."
-    },
+    testStatus: "failed",
     mark: {attrs: ['title', 'aria-label', 'aria-labelledby']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.5.1']}
@@ -2378,11 +2242,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des en-têtes d\'une colonne complète d\'un tableau de données, mal déclarés.',
     query: 'table *[data-tng-tableCol="bad"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun en-tête mal déclaré n'a été trouvé.",
-        failed: "Ces en-têtes ne sont pas déclarés correctement."
-    },
+    testStatus: "failed",
     mark: {attrs: ['scope']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.1']}
@@ -2507,11 +2367,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des en-têtes d\'une ligne complète d\'un tableau de données, mal déclarés.',
     query: 'table *[data-tng-tableRow="bad"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun en-tête mal déclaré n'a été trouvé.",
-        failed: "Ces en-têtes ne sont pas déclarés correctement."
-    },
+    testStatus: "failed",
     mark: {attrs: ['scope']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.2']}
@@ -2523,11 +2379,7 @@ tanaguruTestsList.push({
 	name: "Liste des en-têtes ne s'appliquant pas à la totalité de la ligne ou de la colonne mal structurés.",
     description: "Ces en-têtes devraient être structurés au moyen d'une balise th.",
     query: '*[data-tng-table="headerColPart"], *[data-tng-table="headerRowPart"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun en-tête mal structuré n'a été trouvé.",
-        failed: "Ces en-têtes ne sont pas structurés correctement."
-    },
+    testStatus: "failed",
     filter: function(item) {
         return item.tagName.toLowerCase() != 'th';
     },
@@ -2549,11 +2401,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Liste des cellules d'un tableau de données associées à plusieurs en-têtes, mal balisées.",
 	query: 'table:not([role], [data-tng-prezTable]) *[headers][data-tng-el-exposed="true"], [role="table"]:not([data-tng-prezTable]) *[headers][data-tng-el-exposed="true"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucune cellule mal balisée n'a été trouvée.",
-        failed: "Ces cellules ne sont pas balisées correctement."
-    },
+    testStatus: "failed",
 	filter: function (item) {
         var table = item.closest('table');
         var headers = item.getAttribute('headers').split(' ');
@@ -2596,11 +2444,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Liste des en-têtes de tableau s'appliquant à toute une ligne ou colonne mal associés aux cellules.",
 	query: 'th[data-tng-table="headerColFull"]:not([scope], [role="columnheader"]), th[data-tng-table="headerRowFull"]:not([scope], [role="rowheader"])',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun en-tête mal associé aux cellules n'a été trouvé.",
-        failed: "Ces en-têtes ne sont pas associés aux cellules correctement."
-    },
+    testStatus: "failed",
 	filter: function (item) {
         if(item.id.trim().length > 0) {
             let thID = item.id;
@@ -2657,11 +2501,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "En-têtes de tableau associant les cellules de sa ligne ou colonne avec un attribut scope invalide.",
 	query: 'th[scope]:not([data-tng-scope="valid"])',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun attribut scope invalide n'a été trouvé.",
-        failed: "Ces attributs scope sont invalides."
-    },
+    testStatus: "failed",
 	filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') == 'false' && item.getAttribute('data-tng-el-visible') == 'false') return;
 
@@ -2716,11 +2556,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Liste des en-têtes de tableau ne s'appliquant pas à toute une ligne ou colonne mal associés aux cellules.",
 	query: 'th[data-tng-table="headerColPart"]:not([data-tng-partHeader-uniqueID="true"]), th[data-tng-table="headerRowPart"]:not([data-tng-partHeader-uniqueID="true"])',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun attribut scope invalide n'a été trouvé.",
-        failed: "Ces attributs scope sont invalides."
-    },
+    testStatus: "failed",
     mark: {attrs: ['scope', 'id', 'role']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.3']}
@@ -2777,11 +2613,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "L'attribut Headers spécifié sur une cellule ne fait pas référence à des en-têtes du même élément de tableau.",
 	query: 'table [data-tng-headerInTable="false"][data-tng-el-exposed="true"], table [data-tng-headerInTable="false"][data-tng-el-visible="true"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun attribut Headers ne faisant pas référence à des en-têtes du même tableau n'a été trouvé.",
-        failed: "Ces attribut Headers ne font pas référence à des en-têtes du même tableau."
-    },
+    testStatus: "failed",
     mark: {attrs: ['headers']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.4']}
@@ -2792,11 +2624,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Liste des en-têtes ARIA s'appliquant à toute une ligne ou colonne mal renseignés.",
 	query: '[role="rowheader"][data-tng-table="headerColFull"], [role="columnheader"][data-tng-table="headerRowFull"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun en-tête mal renseigné n'a été trouvé.",
-        failed: "Ces en-têtes ne sont pas renseignés correctement."
-    },
+    testStatus: "failed",
     mark: {attrs: ['role']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.5']}
@@ -2818,11 +2646,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Liste des tableaux de mise en forme utilisant des éléments propre aux tableaux de données.",
 	query: 'table[role="presentation"]',
-    expectedNbElements: 0,
-    explanations: {
-        passed: "Aucun tableau de mise en forme utilisant des éléments propre aux tableaux de données n'a été trouvé.",
-        failed: "Ces tableaux de mise en forme utilisent des éléments propre aux tableaux de données."
-    },
+    testStatus: "failed",
 	filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') == 'false' && item.getAttribute('data-tng-el-visible') == 'false') return;
 
@@ -2861,7 +2685,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens texte sans nom accessible',
     query: 'a[href], [role="link"]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function (item) {
         if(item.closest('svg')) {
             item.setAttribute('data-tng-svgLink', 'true');
@@ -2890,7 +2714,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens texte visibles non restitués',
     query: '[data-tng-textlink="true"][data-tng-el-exposed="false"][data-tng-el-visible="true"]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     mark: {attrs: ['role']},
     tags: ['a11y', 'links'],
     ressources: {'rgaa': ['6.1.1']}
@@ -2921,7 +2745,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens texte avec un nom non pertinent',
     query: '[data-tng-textlink-accessiblename][title]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     description:"Ces liens possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
     filter: function(item) {
         let an = item.accessibleName().toLowerCase().trim();
@@ -2945,9 +2769,10 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens images sans nom accessible',
     query: 'a[href]:not([data-tng-svgLink], [data-tng-textlink]), [role="link"]:not([data-tng-svgLink], [data-tng-textlink])',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function (item) {
-        if(item.textContent.length > 0) {
+        let linkTextContent = item.textContent.replace(/\s+/g, "");
+        if(linkTextContent.length > 0) {
             item.setAttribute('data-tng-cplink', 'true');
             return;
         }
@@ -2982,7 +2807,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens images visibles non restitués',
     query: '[data-tng-imglink][data-tng-el-visible="true"][data-tng-el-exposed="false"]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     tags: ['a11y', 'links'],
     ressources: {'rgaa': ['6.1.2']}
 });
@@ -3010,12 +2835,18 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens images avec un nom non pertinent',
     query: '[data-tng-imglink-accessiblename][title]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     description:"Ces liens images possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
     filter: function(item) {
         let an = item.accessibleName().toLowerCase().trim();
         let titleLink = item.getAttribute('title').toLowerCase().trim();
+
+        an = an.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        an = an.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
         an = an.replace(/\s{2,}/g, " ");
+
+        titleLink = titleLink.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        titleLink = titleLink.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
         titleLink = titleLink.replace(/\s{2,}/g, " ");
 
         return !titleLink.match(an);
@@ -3030,7 +2861,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens composites sans nom accessible',
     query: '[data-tng-cplink]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function (item) {
         var images = item.querySelectorAll('img, [role="img"], svg, object[type^="image/"], canvas');
         var linkName = false;
@@ -3061,7 +2892,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens composites visibles non restitués',
     query: '[data-tng-cplink][data-tng-el-visible="true"][data-tng-el-exposed="false"]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     tags: ['a11y', 'links'],
     ressources: {'rgaa': ['6.1.3']}
 });
@@ -3089,12 +2920,18 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens composites avec un nom non pertinent',
     query: '[data-tng-cplink-accessiblename][title]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     description:"Ces liens composites possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
     filter: function(item) {
         let an = item.accessibleName().toLowerCase().trim();
         let titleLink = item.getAttribute('title').toLowerCase().trim();
+        
+        an = an.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        an = an.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
         an = an.replace(/\s{2,}/g, " ");
+        
+        titleLink = titleLink.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        titleLink = titleLink.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
         titleLink = titleLink.replace(/\s{2,}/g, " ");
 
         return !titleLink.match(an);
@@ -3109,7 +2946,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens SVG sans nom accessible',
     query: '[data-tng-svgLink][data-tng-el-exposed="true"]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function (item) {
         if(!item.hasAccessibleName()) {
             return true;
@@ -3126,7 +2963,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens SVG visibles non restitués',
     query: '[data-tng-svgLink][data-tng-el-visible="true"][data-tng-el-exposed="false"]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     tags: ['a11y', 'links'],
     ressources: {'rgaa': ['6.1.4']}
 });
@@ -3155,7 +2992,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens ayant un intitulé visible non repris dans le nom accessible.',
     query: '[data-tng-cplink-accessiblename][data-tng-el-visible="true"][aria-label], [data-tng-textlink-accessiblename][data-tng-el-visible="true"][aria-label]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function (item) {
         if(item.innerText && item.getAttribute('aria-label').trim().length > 0) {
             var visibleName = '';
@@ -3206,7 +3043,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens sans intitulé entre <a> et </a>.',
     query: 'a[href][data-tng-el-visible="true"]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function (item) {
         if(item.textContent.length > 0) {
             item.setAttribute('data-tng-link-hasname', 'true');
@@ -3247,11 +3084,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Boutons visibles ou restitués sans nom accessible.',
 	query: 'button:not([role]), button[role="none"], [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role]), input[type="button"]:not([role])',
-	expectedNbElements: 0,
-    explanations: {
-		'passed': "Cette page ne contient pas de bouton visible sans nom accessible.",
-		'failed': "Des boutons visibles sans nom accessible sont présents dans la page."
-	},
+	testStatus: "failed",
 	filter: function (item) {
         if(item.closest('form')) return;
         if((item.getAttribute('data-tng-el-visible') === 'true' || item.getAttribute('data-tng-el-exposed') === 'true') && !item.disabled) {
@@ -3281,7 +3114,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Liste des éléments non restitués mais tabulables.',
 	query: '[data-tng-el-exposed="false"]',
-	expectedNbElements: 0,
+	testStatus: "failed",
 	filter: function (item) {
         if(item.disabled) return;
         let itemNotExposed = item.getAttribute('data-tng-notExposed').split(',');
@@ -3313,7 +3146,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des boutons ayant un intitulé visible non repris dans le nom accessible.',
     query: '[data-tng-btn-accessiblename][data-tng-el-visible="true"]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function (item) {
         
         if(item.innerText || item.value) {
@@ -3559,11 +3392,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Valeurs d\'attribut id dupliqués dans la page',
     code: 'duplicate_id',
-    expectedNbElements: 0,
-    explanations: {
-        'passed': "Cette page ne contient pas d'attribut ID dupliqué'.",
-		'failed': "Des attributs ID dupliqués sont présents dans la page."
-    },
+    testStatus: "failed",
     mark: { attrs: ['id'] },
     tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
@@ -3573,11 +3402,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Attributs role avec une valeur invalide',
 	query: '[role][data-tng-el-exposed="true"]',
-	expectedNbElements: 0,
-    explanations: {
-        'passed': "Cette page ne contient pas d'attribut role avec une valeur invalide'.",
-		'failed': "Des attributs role avec une valeur invalide sont présents dans la page."
-    },
+	testStatus: "failed",
 	filter: function (item) {
 		if (item.getAttribute('role').trim() == 0) {
             return false;
@@ -3606,11 +3431,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Elements possédants des attributs aria-* non définis dans WAI-ARIA.',
 	query: '[data-tng-ariaAttribute][data-tng-el-exposed="true"]',
-    expectedNbElements: 0,
-    explanations: {
-        'passed': 'Tous les attributs aria-* trouvés sur cette page sont bien définis dans WAI-ARIA.',
-        'failed': 'Des attributs aria-* non définis dans WAI-ARIA ont été trouvé sur cette page.'
-    },
+    testStatus: "failed",
 	filter: function (item) {
         if(item.hasInvalidAriaAttributes()) {
             return true;
@@ -3636,11 +3457,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Propiétés ARIA avec une valeur invalide.',
 	query: '[data-tng-validAria]',
-	expectedNbElements: 0,
-    explanations: {
-        'passed': "Cette page ne contient pas de propriété ARIA avec une valeur invalide'.",
-		'failed': "Des propriétés ARIA avec une valeur invalide sont présentes dans la page."
-    },
+	testStatus: "failed",
 	filter: function (item) {
 		return item.hasAriaAttributesWithInvalidValues({ permissive: true });
 	},
@@ -3652,11 +3469,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Propriétés ARIA non autorisées sur leur élément.',
 	query: '[data-tng-validAria]',
-	expectedNbElements: 0,
-    explanations: {
-        'passed': "Cette page ne contient pas de propriété ARIA non autorisée.",
-		'failed': "Des propriétés ARIA non autorisées sont présentes dans la page."
-    },
+	testStatus: "failed",
 	filter: function (item) {
 		return item.hasProhibitedAriaAttributes();
 	},
@@ -3668,11 +3481,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Imbrications de balises HTML non conformes.',
 	query: 'form form, button a, a button, ul>a, ol>a, ul>h1, ul>h2, ul>h3, ul>h4, ul>h5, ul>h6, ol>h1, ol>h2, ol>h3, ol>h4, ol>h5, ol>h6, ul>p, ol>p, ul>span, ol>span, ul>div, ol>div, section main, header main, footer main',
-	expectedNbElements: 0,
-    explanations: {
-        'passed': "Aucune imbrication de balises HTML non conforme n\'a été trouvé sur cette page.",
-		'failed': "Des imbrications de balises HTML ne sont pas conformes sur cette page."
-    },
+	testStatus: "failed",
 	tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
@@ -3681,7 +3490,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Le titre de la page doit être déclaré dans l'en-tête (balise head).",
 	query: 'body title',
-	expectedNbElements: 0,
+	testStatus: "failed",
 	filter: function (item) {
 		if(item.closest('svg')) return;
 	},
@@ -3694,6 +3503,10 @@ tanaguruTestsList.push({
 	name: "La page web doit contenir un seul titre de page (balise title).",
 	query: 'head title, body title',
 	expectedNbElements: {max: 1},
+    explanations: {
+        passed: "La page web contient ne possède pas plus d'un titre de page (balise title).",
+        failed: "La page web contient plusieurs titres de page (balise title)."
+    },
 	filter: function (item) {
 		if(!item.closest('svg')) return true;
 	},
@@ -3705,7 +3518,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Le titre de page (balise title) ne doit pas être vide.",
 	query: 'head title, body title',
-	expectedNbElements: 0,
+	testStatus: "failed",
 	filter: function (item) {
 		if(!item.closest('svg')) return item.textContent.trim().length === 0;
 	},
@@ -3717,8 +3530,12 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'La langue de la page est spécifiée.',
-    expectedNbElements: {min: 1},
     query: 'html[lang], html[xml\\:lang], body[lang], body[xml\\:lang]',
+    expectedNbElements: {min: 1},
+    explanations: {
+        passed: "La langue de la page est bien spécifiée.",
+        failed: "La langue de la page n'est pas spécifiée."
+    },
     filter: function(item) {
         if(item.hasAttribute('lang') || item.hasAttribute('xml:lang')) {
             item.setAttribute('data-tng-haslang', true);
@@ -3735,7 +3552,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Page HTML avec un attribut lang vide.',
 	query: '[data-tng-haslang]',
-	expectedNbElements: 0,
+	testStatus: "failed",
 	filter: function (item) {
         if(item.hasAttribute('lang')) {
             item.setAttribute('data-tng-lang', 'lang');
@@ -3775,7 +3592,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "Page HTML avec des attributs lang et xml:lang dont les valeurs ne correspondent pas.",
 	query: '[data-tng-lang="lang"][data-tng-lang="xml"]',
-	expectedNbElements: 0,
+	testStatus: "failed",
 	filter: function (item) {
         var lang1 = item.getAttribute('lang');
         var lang2 = item.getAttribute('xml:lang');
@@ -3798,11 +3615,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Page HTML avec des attributs lang et xml:lang dont les valeurs correspondent."',
 	query: '[data-tng-samelangs]',
-	analyzeElements: function (collection) {
-		if (collection.length == 1) {
-			collection[0].status = 'passed';
-		}
-	},
+	testStatus: "passed",
     mark: {attrs: ['lang', 'xml\\:lang']},
 	tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.4.1']}
@@ -3812,7 +3625,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'La langue de la page HTML est invalide.',
 	query: '[data-tng-haslang]',
-	expectedNbElements: 0,
+	testStatus: "failed",
 	filter: function (item) {
         if(item.hasAttribute('lang') && item.hasAttribute('xml:lang')) {
             if(item.hasAttribute('data-tng-emptylang') && item.getAttribute('data-tng-emptylang') === 'both') {
@@ -3894,7 +3707,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Le titre de la page (balise title) n\'est pas pertinent',
     query: '[data-tng-pageTitle]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.6.1']}
 });
@@ -3916,7 +3729,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Elements avec un attribut lang vide.',
 	query: 'body [lang], body [xml\\:lang]',
-	expectedNbElements: 0,
+	testStatus: "failed",
 	filter: function (item) {
         if(item.hasAttribute('lang') && !item.hasAttribute('xml:lang')) {
             if(item.getAttribute('lang').length === 0) {
@@ -3957,7 +3770,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Elements avec un attribut lang invalide.',
 	query: '[data-tng-el-notemptylang]',
-	expectedNbElements: 0,
+	testStatus: "failed",
 	filter: function (item) {
         if(item.hasValidLanguageCode()) {
             item.setAttribute('data-tng-el-validlang', 'true');
@@ -3988,7 +3801,7 @@ tanaguruTestsList.push({
     name: 'Les balises ne doivent pas être utilisées uniquement à des fins de présentation.',
     description: 'ne pas utiliser de double br pour créer des espaces entre les éléments textes',
     query: 'br + br',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function (item) {
         var textBetween = item.previousSibling.nodeValue;
         textBetween = textBetween ? textBetween.trim().length : textBetween;
@@ -4013,7 +3826,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Changements du sens de lecture (attribut dir) non conforme.',
     query: '[dir][data-tng-el-exposed="true"]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function (item) {
         var dirAttr = item.getAttribute('dir');
 
@@ -4051,11 +3864,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des titres de niveau qui ne respectent pas la hierarchie de titres',
     query: 'h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"][aria-level]',
-    expectedNbElements: 0,
-    explanations: {
-        'passed': 'La hiérarchie entre les titres de niveau est pertinente sur cette page.',
-        'failed': 'Des titres de niveau(n) non précédés d\'un titre de niveau(n-1) ont été trouvés.'
-    },
+    testStatus: "failed",
     filter: function (item) {
         var currentlevel = parseInt(item.hasAttribute('aria-level') ? item.getAttribute('aria-level') : item.tagName.substring(1));
         var currentElement = item.hasAttribute('aria-level') ? '[role="heading"][aria-level="'+currentlevel+'"]' : item.tagName;
@@ -4107,7 +3916,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des titres (balise <hx> ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) non pertinent',
     query: 'h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"][aria-level]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function (item) {
         if(item.hasAccessibleName()) {
             item.setAttribute('data-tng-headingAN', 'true');
@@ -4180,6 +3989,10 @@ tanaguruTestsList.push({
     name: 'La structure du document utilise une balise main visible et unique',
     query: 'main[data-tng-el-exposed="true"][data-tng-el-visible="true"]',
     expectedNbElements : 1,
+    explanations: {
+        'passed': 'La structure du document utilise bien une balise main visible et unique.',
+        'failed': "La structure du document n'utilise pas de balise main visible et ou en utilise plusieurs."
+    },
     tags: ['a11y', 'structure'],
     ressources: { 'rgaa': ['9.2.1'] }
 });
@@ -4248,7 +4061,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des balises servant à la présentation de l\'information présentes dans le code source généré de la page.',
     query: 'basefont[data-tng-el-exposed="true"], blink[data-tng-el-exposed="true"], center[data-tng-el-exposed="true"], font[data-tng-el-exposed="true"], marquee[data-tng-el-exposed="true"], s[data-tng-el-exposed="true"], strike[data-tng-el-exposed="true"], tt[data-tng-el-exposed="true"], big[data-tng-el-exposed="true"]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.1.1'] }
 });
@@ -4257,8 +4070,8 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des attributs servant à la présentation de l\'information présents dans le code source généré de la page.',
-    query: '[align][data-tng-el-exposed="true"], [alink][data-tng-el-exposed="true"], [background][data-tng-el-exposed="true"], [bgcolor][data-tng-el-exposed="true"], [border][data-tng-el-exposed="true"], [cellpadding][data-tng-el-exposed="true"], [cellspacing][data-tng-el-exposed="true"], [char][data-tng-el-exposed="true"], [charoff][data-tng-el-exposed="true"], [clear][data-tng-el-exposed="true"], [compact][data-tng-el-exposed="true"], [color][data-tng-el-exposed="true"], [frameborder][data-tng-el-exposed="true"], [hspace][data-tng-el-exposed="true"], [link][data-tng-el-exposed="true"], [marginheight][data-tng-el-exposed="true"], [marginwidth][data-tng-el-exposed="true"], [text][data-tng-el-exposed="true"], [valign][data-tng-el-exposed="true"], [vlink][data-tng-el-exposed="true"], [vspace][data-tng-el-exposed="true"], [size][data-tng-el-exposed="true"], [data-tng-el-exposed="true"]:not(img, object, embed, canvas, svg)[width], [data-tng-el-exposed="true"]:not(img, object, embed, canvas, svg)[height]',
-    expectedNbElements: 0,
+    query: '[align][data-tng-el-exposed="true"], [alink][data-tng-el-exposed="true"], [background][data-tng-el-exposed="true"], [bgcolor][data-tng-el-exposed="true"], [border][data-tng-el-exposed="true"], [cellpadding][data-tng-el-exposed="true"], [cellspacing][data-tng-el-exposed="true"], [char][data-tng-el-exposed="true"], [charoff][data-tng-el-exposed="true"], [clear][data-tng-el-exposed="true"], [compact][data-tng-el-exposed="true"], [color][data-tng-el-exposed="true"], [frameborder][data-tng-el-exposed="true"], [hspace][data-tng-el-exposed="true"], [link][data-tng-el-exposed="true"], [marginheight][data-tng-el-exposed="true"], [marginwidth][data-tng-el-exposed="true"], [text][data-tng-el-exposed="true"], [valign][data-tng-el-exposed="true"], [vlink][data-tng-el-exposed="true"], [vspace][data-tng-el-exposed="true"], [data-tng-el-exposed="true"][size]:not([type="text"], [type="password"]), [data-tng-el-exposed="true"]:not(img, object, embed, canvas, svg)[width], [data-tng-el-exposed="true"]:not(img, object, embed, canvas, svg)[height]',
+    testStatus: "failed",
     mark: { attrs: ['align','alink','background','bgcolor','border','cellpadding','cellspacing','char','charoff','clear','compact', 'color', 'frameborder', 'hspace', 'link', 'marginheight', 'marginwidth', 'text', 'valign', 'vlink', 'vspace', 'size', 'width', 'height']},
     tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.1.2'] }
@@ -4341,7 +4154,7 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'La meta viewport empêche le zoom.',
 	query: 'meta[data-tng-scalable]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     mark: {attrs: ['content']},
 	tags: ['a11y', 'presentation', 'meta'],
     ressources: { 'rgaa': ['10.4.2'] }
@@ -4582,7 +4395,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des champs de formulaires sans nom accessible',
     query: 'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), input[type="file"]:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') === 'true') {
             if(item.hasAccessibleName()) {
@@ -4611,11 +4424,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des intitulés de champs de formulaire non reliés à leur champ.',
     query: 'label[for][data-tng-el-exposed="true"]',
-    expectedNbElements: 0,
-    explanations: {
-        'passed': 'Aucun intitulés de champs de formulaires non relié à son champs n\'a été trouvé dans la page',
-        'failed': 'Des intitulés de champs de formulaire sont mal reliés ou pas reliés à leur champ.'
-    },
+    testStatus: "failed",
     filter: function (item) {
         if(item.getAttribute('for').trim().length > 0) {
             var startDigit = /^\d/;
@@ -4660,7 +4469,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des champs de formulaires avec une étiquette non visible, ne possédant ni attribut title ni passage de texte visible identifié par un id.',
     query: 'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), input[type="file"]:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function (item) {
         if((item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible', 'false')) || item.disabled) return;
 
@@ -4914,7 +4723,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des champs de formulaire dont le nom accessible ne reprend pas l\'intitulé visible.',
     query: '[data-tng-NAinclude-visibleLabel]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.2.5'] }
 });
@@ -4964,6 +4773,10 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifier que l\'utilisation des balises fieldset et les attributs role group sont bien nécessaire',
     query: 'fieldset[data-tng-el-exposed="true"], [role="group"][data-tng-el-exposed="true"], [role="radiogroup"][data-tng-el-exposed="true"]',
+    filter: function(item) {
+        let cat = item.getImplicitAriaRoleCategory();
+        if(cat) return cat === 'forms';
+    },
     testStatus: "cantTell",
     tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.5.1'] }
@@ -4983,17 +4796,16 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des regroupement de champs sans légende.',
     query: 'fieldset[data-tng-el-exposed="true"], [role="group"][data-tng-el-exposed="true"]',
-    expectedNbElements: 0,
-    explanations: {
-        'passed': 'Aucun regroupement de champs sans légende n\'a été trouvé sur cette page.',
-        'failed': 'Des regroupements de champs sans légendes ont été trouvé sur cette page.'
-    },
+    testStatus: "failed",
     filter: function (item) {
-        if(item.hasAccessibleName()) {
-            item.setAttribute('data-tng-fieldsgroup-legend', 'true');
-            return;
-        } else {
-            return true;
+        let cat = item.getImplicitAriaRoleCategory();
+        if(cat && cat === 'forms') {
+            if(item.hasAccessibleName()) {
+                item.setAttribute('data-tng-fieldsgroup-legend', 'true');
+                return;
+            } else {
+                return true;
+            }
         }
     },
     tags: ['a11y', 'forms', 'accessiblename'],
@@ -5036,11 +4848,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des éléments optgroup sans attribut label.',
     query: 'select optgroup[data-tng-el-exposed="true"]:not([label])',
-    expectedNbElements: 0,
-    explanations: {
-        'passed': 'Aucun éléments optgroup sans attribut label n\'a été trouvé sur cette page.',
-        'failed': 'Des éléments optgroup sans attribut label ont été trouvé sur cette page.'
-    },
+    testStatus: "failed",
     tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.8.2'] }
 });
@@ -5060,7 +4868,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "Element <optgroup> avec un attribut label non pertinent.",
     query: 'select optgroup[label][data-tng-el-exposed="true"]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function (item) {
         if(item.getAttribute('label').trim().length > 0) {
             item.setAttribute('data-tng-optgroup-label', 'true');
@@ -5090,6 +4898,10 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifiez la pertinence des intitulés de ces boutons.',
     query: 'input[type="submit"][value][data-tng-el-exposed="true"], input[type="reset"][value][data-tng-el-exposed="true"], input[type="button"][value][data-tng-el-exposed="true"], button, input[type="image"][alt][data-tng-el-exposed="true"], input[type="submit"][aria-label][data-tng-el-exposed="true"], input[type="submit"][aria-labelledby][data-tng-el-exposed="true"], input[type="submit"][title][data-tng-el-exposed="true"], input[type="reset"][aria-label][data-tng-el-exposed="true"], input[type="reset"][aria-labelledby][data-tng-el-exposed="true"], input[type="reset"][title][data-tng-el-exposed="true"], input[type="button"][aria-label][data-tng-el-exposed="true"], input[type="button"][aria-labelledby][data-tng-el-exposed="true"], input[type="button"][title][data-tng-el-exposed="true"], [role="button"][data-tng-el-exposed="true"]',
+    filter: function(item) {
+        let cat = item.getImplicitAriaRoleCategory();
+        if(cat) return cat === 'forms';
+    },
     testStatus: "cantTell",
     mark: {attrs: ['aria-labelledby', 'aria-label', 'alt', 'value', 'title']},
     tags: ['a11y', 'forms', 'buttons'],
@@ -5101,7 +4913,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des boutons de formulaire ayant un intitulé visible non repris dans le nom accessible.',
     query: 'form button[data-tng-el-exposed="true"][data-tng-el-visible="true"]:not([role]), form button[role="none"][data-tng-el-exposed="true"][data-tng-el-visible="true"], form [role="button"][data-tng-el-exposed="true"][data-tng-el-visible="true"], form input[type="submit"][data-tng-el-exposed="true"][data-tng-el-visible="true"]:not([role]), form input[type="reset"][data-tng-el-exposed="true"][data-tng-el-visible="true"]:not([role]), form input[type="button"][data-tng-el-exposed="true"][data-tng-el-visible="true"]:not([role])',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function (item) {
         if((item.innerText || item.value) && !item.disabled) {
             var visibleName = '';
@@ -5274,12 +5086,9 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "Champs de formulaire possèdant un attribut autocomplete invalide.",
+    description: "Les valeurs de l'attribut doivent être référencées dans la spécification HTML5, les tokens 'cible'(home, work...) doivent être utilisés avec un token faisant parti de la catégorie 'contact', les valeurs doivent être renseignées dans un ordre valide. (1.groupe, 2.mode, 3.cible, 4.token principal. Exemple: autocomplete='section-parent shipping home email').",
     query: 'input[autocomplete][data-tng-el-exposed="true"], textarea[autocomplete][data-tng-el-exposed="true"], select[autocomplete][data-tng-el-exposed="true"]',
-    expectedNbElements: 0,
-    explanations: {
-        'passed': "Aucun attribut autocomplete invalide n'a été trouvé sur cette page;",
-        'failed': "Des attributs autocomplete invalides ont été trouvé sur cette page. Soit les valeurs de l'attribut ne sont pas référencés dans la spécification HTML5, soit un token 'cible'(home, work...) est utilisé avec un token ne faisant pas parti de la catégorie 'contact', soit les valeurs sont renseignées dans un ordre non valide. (1.groupe, 2.mode, 3.cible, 4.token principal. Exemple: autocomplete='section-parent shipping home email')."
-    },
+    testStatus: "failed",
     filter: function (item) {
         //? if na, return
         if(item.disabled) return;
@@ -5423,7 +5232,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "Champs de formulaire possèdant un attribut autocomplete valide mais non autorisé sur le type de champ.",
     query: '[data-tng-autocomplete-group]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function(item) {
         if(item.tagName.toLowerCase() === 'textarea' || item.tagName.toLowerCase() === 'select') {
             item.setAttribute('data-tng-autocomplete', true);
@@ -5705,7 +5514,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des balises meta avec un procédé de rafraîchissement inférieur à 20heures.',
     query: 'meta[http-equiv="refresh"][content]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function (item) {
         var content = item.getAttribute('content').trim();
 
@@ -5732,7 +5541,7 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des balises meta avec un procédé de redirection non immédiat.',
     query: '[data-tng-redirect]',
-    expectedNbElements: 0,
+    testStatus: "failed",
     filter: function (item) {
         var content = item.getAttribute('content').trim();
         let time = content.match(/^\d+/);

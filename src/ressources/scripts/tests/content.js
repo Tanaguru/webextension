@@ -1115,11 +1115,15 @@ function addResultSet(name, data) {
 }
 
 function filterTestsByStatus(statuses) {
-    if(statuses.length > 0) {
-        function matchFilters(test) {
-            return statuses.includes(test.type);
+    if(window.tanaguru && window.tanaguru.tests) {
+        if(statuses.length > 0) {
+            function matchFilters(test) {
+                return statuses.match(test.type);
+            }
+            window.tanaguru.tests = window.tanaguru.tests.filter(matchFilters);
+        } else {
+            window.tanaguru.tests = [];
         }
-        window.tanaguru.tests = window.tanaguru.tests.filter(matchFilters);
     }
 }
 
@@ -1298,7 +1302,7 @@ function createTanaguruTest(test) {
             }
             else {
                 if(test.hasOwnProperty('testStatus') && typeof test.testStatus === 'string') {
-                    let statusList = ['passed', 'cantTell', 'inapplicable'];
+                    let statusList = ['passed', 'cantTell', 'inapplicable', 'failed'];
                     if(statusList.includes(test.testStatus)) {
                         status = test.testStatus;
                         elements.map(e => e.status = status);

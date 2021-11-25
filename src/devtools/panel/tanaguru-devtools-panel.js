@@ -1844,7 +1844,26 @@ button.addEventListener('click', function () {
 			)
 		}
 
-		responseProcess();
+		if(filters.categories[0]) responseProcess();
+		else {
+			ul.querySelector('li[id="alltests"]').remove();
+			var ptimer = document.createElement('p');
+			ptimer.classList.add('analyzeTimer');
+			ptimer.setAttribute('style', 'font-size: 0.8em; margin: 0 0 0.5em 0; padding: 0 0.5em;');
+			var tte = new Date().getTime();
+			var teststimer = (tte - startTimer) / 1000;
+			var ptimersmall = document.createElement('small');
+			ptimersmall.appendChild(document.createTextNode('Analyse réalisée en ' + teststimer + ' seconde' + (teststimer > 1 ? 's' : '') + '.'));
+			ptimer.appendChild(ptimersmall);
+			nav.firstChild.insertAdjacentElement('afterend', ptimer);
+			ul.querySelectorAll('li[hidden]').forEach(li => li.remove());
+
+			if (!updatedashboardp) {
+				if(testsCount === 0) dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultNone')), dashboardpanelp.firstChild);
+				else dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')), dashboardpanelp.firstChild);
+			}
+		}
+		// responseProcess();
 		if(testsCount === 0 && catCount === filters.categories.length) tab.remove();
 		main.children[1].appendChild(alltagspanel);
 	}
