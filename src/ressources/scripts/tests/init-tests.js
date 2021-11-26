@@ -1,7 +1,6 @@
 var statuses = ['failed', 'cantTell', 'passed'];
 var eList;
-var naList = [];
-console.log(statusUser);
+
 /**
  * ? Define for each node of the page, if it is exposed, visible and has a [aria-*] attribute
  * ! NEED FOR TESTS
@@ -41,15 +40,32 @@ function addDataTng() {
 /**
  * ? Check if page has images, frames, media, tables, links & form fields
  */
-function getNACat() {
-    if(!document.body.querySelector('img, [role="img"], area, input[type="image"], svg, object[type^="image/"], embed[type^="image/"], canvas')) naList.push('images');
-    if(!document.body.querySelector('iframe:not([role="presentation"]), frame:not([role="presentation"])')) naList.push('frames');
-    if(!document.body.querySelector('video, audio, object[type^="video/"], object[type^="audio/"], object[type="application/ogg"], embed[type^="video/"], embed[type^="audio/"]')) naList.push('media');
-    if(!document.body.querySelector('table, [role="table]')) naList.push('tables');
-    if(!document.body.querySelector('a[href], [role="link"]')) naList.push('links');
-    if(!document.body.querySelector(
-        'form, [role="form"], input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), input[type="file"]:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])'
-        )) naList.push('forms');
+function isNACat(currentCat) {
+    if(currentCat === 'images') {
+        return !document.body.querySelector('img, [role="img"], area, input[type="image"], svg, object[type^="image/"], embed[type^="image/"], canvas');
+    }
+
+    if(currentCat === 'frames') {
+        return !document.body.querySelector('iframe:not([role="presentation"]), frame:not([role="presentation"])');
+    }
+
+    if(currentCat === 'media') {
+        return !document.body.querySelector('video, audio, object[type^="video/"], object[type^="audio/"], object[type="application/ogg"], embed[type^="video/"], embed[type^="audio/"]');
+    }
+
+    if(currentCat === 'tables') {
+        return !document.body.querySelector('table, [role="table]');
+    }
+
+    if(currentCat === 'links') {
+        return !document.body.querySelector('a[href], [role="link"]');
+    }
+
+    if(currentCat === 'forms') {
+        return !document.body.querySelector('form, [role="form"], input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), input[type="file"]:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])');
+    }
+
+    return false;
 }
 
 /**
@@ -76,7 +92,7 @@ function filterCat() {
     /**
      * ? Filters tests according current category request , before launching tests
      */
-     if(cat.length > 0) {
+    if(cat.length > 0) {
         function matchFilters(test) {
             return test.tags && test.tags.includes(cat);
         }
@@ -86,18 +102,16 @@ function filterCat() {
 }
 
 function filterStatus() {
-    // tanaguruTestsList = tanaguruTestsList.map(test => {
-    //     naList.forEach(na => {
-    //         if(test.tags && test.tags.includes(na)) {
-    //             test.status = "inapplicable";
-    //         }
-
-    //         return test;
-    //     });
-    // });
     if(statusUser.length === 0) {
         tanaguruTestsList = [];
         return;
+    }
+
+    if(isNACat(cat)) {
+        tanaguruTestsList = tanaguruTestsList.map(function(test) {
+            test.status = "inapplicable";
+            return test;
+        });
     }
 
     if(!statusUser.match('untested')) {
@@ -178,7 +192,7 @@ function filterStatus() {
  */
 function launchTests() {
     var testsLength = tanaguruTestsList.length;
-    getNACat();
+
     for (var i = 0; i < testsLength; i++) {
         /*
             Schéma des clefs :
@@ -212,9 +226,7 @@ function launchTests() {
                 }
             }
         }
-        naList.forEach(na => {
-            if(test.tags.includes(na)) test.status = 'inapplicable';
-        });
+
         createTanaguruTest(test);
     }
 }

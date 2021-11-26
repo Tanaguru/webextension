@@ -890,6 +890,7 @@ ul.an-list li {
 /** actions cell */
 th:last-child, td:last-child {
 	min-width: 8rem;
+	width: 8rem;
 }
 
 table ul {

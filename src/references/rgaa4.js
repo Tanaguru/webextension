@@ -2065,7 +2065,7 @@ tanaguruTestsList.push({
     },
     testStatus: "cantTell",
     mark: {attrs: ['title', 'aria-label', 'aria-labelledby']},
-    tags: ['a11y', 'tables', 'accessibleName'],
+    tags: ['a11y', 'tables', 'accessiblename'],
     ressources: {'rgaa': ['5.5.1']}
 });
 

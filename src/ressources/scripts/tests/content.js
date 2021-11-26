@@ -590,6 +590,7 @@ Current Imperfect Implementations :
 
 // accessibleName.
 var getAccessibleName = function () {
+    if(this.hasAttribute('data-tng-ANObject')) return JSON.parse(this.getAttribute('data-tng-ANObject'));
 // Data.
     var ARIA = {
         nameFromContentSupported: '[role="button"], [role="cell"], [role="checkbox"], [role="columnheader"], [role="gridcell"], [role="heading"], [role="link"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"], [role="radio"], [role="row"], [role="rowgroup"], [role="rowheader"], [role="switch"], [role="tab"], [role="tooltip"], [role="treeitem"]'
@@ -642,9 +643,9 @@ var getAccessibleName = function () {
                             nodes[i].setAttribute('data-controlembeddedinlabel', 'true');
                         }
                         nodes[i].setAttribute('data-labelbytraversal', 'true');
-                        var an = nodes[i].fullAccessibleName;
+                        let an = nodes[i].fullAccessibleName;
                         result.push({"aria-labelledby": an});
-                        totalAccumulatedText += (totalAccumulatedText != '' && an != '' ? ' ' : '') + an;
+                        totalAccumulatedText += (totalAccumulatedText != '' && an[0] != '' ? ' ' : '') + an[0];
                     }
                 }
             }
@@ -698,9 +699,9 @@ var getAccessibleName = function () {
                 else if (this.matches(controls.nativebuttons + ',' + controls.custombuttons)) {
                     // If the embedded control has role menu button, return the text alternative of the button.
                     let anButton = this.fullAccessibleName;
-                    anButton.shift();
                     result = anButton;
-                    totalAccumulatedText = this.accessibleName();
+                    result.shift();
+                    totalAccumulatedText = anButton[0];
                 }
                 else if (this.matches(controls.customcomboboxes)) {
                     // If the embedded control has role combobox or listbox, return the text alternative of the chosen option.
@@ -731,8 +732,9 @@ var getAccessibleName = function () {
                     }
                     else {
                         if (this.selectedIndex > -1) {
-                            result = [{"chosen-option": this.options[this.selectedIndex].fullAccessibleName}];
-                            totalAccumulatedText = this.options[this.selectedIndex].accessibleName();
+                            let an = this.options[this.selectedIndex].fullAccessibleName;
+                            result = [{"chosen-option": an}];
+                            totalAccumulatedText = an[0];
                         }
                     }
                 }
@@ -770,8 +772,9 @@ var getAccessibleName = function () {
                             }
                         }
                         if (option) {
-                            result = [{"chosen-option": option.fullAccessibleName}];
-                            totalAccumulatedText = option.accessibleName();
+                            let an = option.fullAccessibleName;
+                            result = [{"chosen-option": an}];
+                            totalAccumulatedText = an[0];
                         }
                     }
                 }
@@ -868,8 +871,8 @@ var getAccessibleName = function () {
                             for (var i = 0; i < nodes.length; i++) {
                                 if (nodes[i].nodeType === 3) {
                                     // 2-G : The current node is a Text node, return its textual contents.
-                                    result.push({"textual-contents": nodes[i].nodeValue});
-                                    totalAccumulatedText += totalAccumulatedText.length === 0 ? nodes[i].nodeValue : ' '+nodes[i].nodeValue;
+                                    result.push({"textual-contents": nodes[i].textContent});
+                                    totalAccumulatedText += totalAccumulatedText.length === 0 ? nodes[i].textContent : ' ' + nodes[i].textContent;
                                 }
                                 else if (nodes[i].nodeType === 1 && nodes[i].getAttribute('data-tng-el-exposed') === "true") {
                                     // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
@@ -891,14 +894,15 @@ var getAccessibleName = function () {
                                     }
 
                                     let tagName2h = nodes[i].tagName;
+                                    let tagName2hAN = nodes[i].fullAccessibleName;
 
                                     result.push(
                                         {"cssbeforecontent": cssbeforecontent},
-                                        {[tagName2h]: nodes[i].fullAccessibleName},
+                                        {[tagName2h]: tagName2hAN},
                                         {"cssaftercontent": cssaftercontent}
                                     );
                                     
-                                    totalAccumulatedText += totalAccumulatedText.length === 0 ? cssbeforecontent + nodes[i].accessibleName() + cssaftercontent : ' '+cssbeforecontent + nodes[i].accessibleName() + cssaftercontent;
+                                    totalAccumulatedText += totalAccumulatedText.length === 0 ? cssbeforecontent + tagName2hAN[0] + cssaftercontent : ' '+cssbeforecontent + tagName2hAN[0] + cssaftercontent;
                                 }
                             }
                         }
@@ -919,8 +923,9 @@ var getAccessibleName = function () {
                     var labels = this.labels;
                     for (var i = 0; i < labels.length; i++) {
                         if (!labels[i].matches('[role="none"], [role="presentation"]')) {
-                            result.push({"label": labels[i].fullAccessibleName});
-                            totalAccumulatedText += totalAccumulatedText.length === 0 ? labels[i].accessibleName() : ' '+labels[i].accessibleName();
+                            let an = labels[i].fullAccessibleName;
+                            result.push({"label": an});
+                            totalAccumulatedText += totalAccumulatedText.length === 0 ? an[0] : ' '+an[0];
                         }
                     }
 
@@ -933,8 +938,9 @@ var getAccessibleName = function () {
                     var elementname = this.firstElementChild;
                     if (elementname && !elementname.matches('[role="none"], [role="presentation"]')) {
                         if (elementname.matches('fieldset legend, table caption')) {
-                            result = [{"firstChild-caption": elementname.fullAccessibleName}];
-                            totalAccumulatedText = elementname.accessibleName();
+                            let an = elementname.fullAccessibleName;
+                            result = [{"firstChild-caption": an}];
+                            totalAccumulatedText = an[0];
                         }
                     }
                     if (totalAccumulatedText.trim() == '' && this.hasAttribute('title')) {
@@ -977,8 +983,8 @@ var getAccessibleName = function () {
                     for (var i = 0; i < nodes.length; i++) {
                         if (nodes[i].nodeType == Node.TEXT_NODE) {
                             // 2-G : The current node is a Text node, return its textual contents.
-                            result.push({"textual-contents": nodes[i].nodeValue});
-                            totalAccumulatedText += totalAccumulatedText.length === 0 ? nodes[i].nodeValue : ' '+nodes[i].nodeValue;
+                            result.push({"textual-contents": nodes[i].textContent});
+                            totalAccumulatedText += totalAccumulatedText.length === 0 ? nodes[i].textContent : ' '+ nodes[i].textContent;
                         }
                         else if (nodes[i].nodeType == Node.ELEMENT_NODE && nodes[i].getAttribute('data-tng-el-exposed') === "true") {
                             // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
@@ -1007,12 +1013,13 @@ var getAccessibleName = function () {
                                 nodes[i].setAttribute('data-labelbytraversal', 'true');
                             }
                             var tagName2h2 = nodes[i].tagName;
+                            let tagName2h2AN = nodes[i].fullAccessibleName;
                             result.push(
                                 {"cssbeforecontent": cssbeforecontent},
-                                {[tagName2h2]: nodes[i].fullAccessibleName},
+                                {[tagName2h2]: tagName2h2AN},
                                 {"cssaftercontent": cssaftercontent}
                             );
-                            totalAccumulatedText += totalAccumulatedText.length === 0 ? cssbeforecontent + nodes[i].accessibleName() + cssaftercontent : ' '+cssbeforecontent + nodes[i].accessibleName() + cssaftercontent;
+                            totalAccumulatedText += totalAccumulatedText.length === 0 ? cssbeforecontent + tagName2h2AN[0] + cssaftercontent : ' '+cssbeforecontent + tagName2h2AN[0] + cssaftercontent;
                         }
                     }
                     result.push({"parentcssaftercontent": parentcssaftercontent});
@@ -1032,6 +1039,7 @@ var getAccessibleName = function () {
 // 2-B, 2-C, 2-D, 2-E, 2-F, 2-G, 2-H and 2-I : Otherwise...
     totalAccumulatedText.trim();
     result.unshift(totalAccumulatedText);
+    this.setAttribute('data-tng-ANObject', JSON.stringify(result));
     return result;
 };
 
@@ -1043,14 +1051,9 @@ if (!('accessibleName' in SVGElement.prototype)) SVGElement.prototype.accessible
 if (!('accessibleName' in HTMLElement.prototype)) HTMLElement.prototype.accessibleName = accessibleName;
 
 // hasAccessibleName.
-var hasAccessibleName = function () { return this.accessibleName().length > 0; };
+var hasAccessibleName = function () { return this.fullAccessibleName[0].length > 0; };
 if (!('hasAccessibleName' in SVGElement.prototype)) SVGElement.prototype.hasAccessibleName = hasAccessibleName;
 if (!('hasAccessibleName' in HTMLElement.prototype)) HTMLElement.prototype.hasAccessibleName = hasAccessibleName;
-
-// getAccessibleNameImplementation.
-// var getAccessibleNameImplementation = function () {};
-// if (!('getAccessibleNameImplementation' in SVGElement.prototype)) SVGElement.prototype.getAccessibleNameImplementation = getAccessibleNameImplementation;
-// if (!('getAccessibleNameImplementation' in HTMLElement.prototype)) HTMLElement.prototype.getAccessibleNameImplementation = getAccessibleNameImplementation;
 
 /* Gestion des tests. */
 function getXPath(element) {
@@ -1155,6 +1158,7 @@ function removeDataTNG(element) {
 function manageOutput(element, an) {
     var status = element.status ? element.status : 'cantTell';
     element.status = undefined;
+    an = an ? (element.hasAttribute('data-tng-ANObject') ? JSON.parse(element.getAttribute('data-tng-ANObject')) : element.fullAccessibleName) : null;
 
     if(element.nodeType === 10) {
         var canBeReachedUsingKeyboardWith = [];
@@ -1178,13 +1182,13 @@ function manageOutput(element, an) {
 
         var e = document.createElement(fakeelement.tagName.toLowerCase());
         if (e && e.outerHTML.indexOf("/") != -1) {
-            if (fakeelement.innerHTML.length > 150) {
-                fakeelement.innerHTML = '[...]';
+            if (fakeelement.innerHTML.length > 300) {
+                fakeelement.innerHTML =  '[...]';
             }
         }
     }
 
-    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, anDetails: an ? element.fullAccessibleName : null, xpath: e ? getXPath(element) : null, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isVisible: isVisible, isNotExposedDueTo: isNotExposedDueTo};
+    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, anDetails: an, xpath: e ? getXPath(element) : null, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isVisible: isVisible, isNotExposedDueTo: isNotExposedDueTo};
 }
 
 function createTanaguruTag(tag, status) {
@@ -1194,17 +1198,24 @@ function createTanaguruTag(tag, status) {
 }
 
 function createTanaguruTest(test) {
-    if (test.hasOwnProperty('status') && test.status == 'untested') { // Non testés mais référencés.
+    if (test.hasOwnProperty('status') && (test.status == 'untested' || test.status == 'inapplicable')) { // Non testés mais référencés.
         // Initialisation des tags.
         initTanaguru();
         if (test.hasOwnProperty('tags') && test.tags.constructor == Array) {
             for (var i = 0; i < test.tags.length; i++) {
                 createTanaguruTag(test.tags[i], test.status);
+                if(test.status == 'untested' && window.tanaguru.tags[test.tags[i]].status === 'inapplicable') {
+                    window.tanaguru.tags[test.tags[i]].status = 'untested';
+                }
             }
         }
         else {
             createTanaguruTag('others', test.status);
+            if(test.status == 'untested' && window.tanaguru.tags['others'].status === 'inapplicable') {
+                window.tanaguru.tags['others'].status = 'untested';
+            }
         }
+        
         // Chargement du résultat.
         var result = {
             name: test.name,
@@ -1343,6 +1354,7 @@ function createTanaguruTest(test) {
             // Mises à jour des tags (statut du tag et nombre de résultats en erreur).
             if (test.hasOwnProperty('tags') && test.tags.constructor == Array) {
                 for (var i = 0; i < test.tags.length; i++) {
+                    if(status === 'inapplicable' && window.tanaguru.tags[test.tags[i]].status === 'untested') continue;
                     if (statuspriority[window.tanaguru.tags[test.tags[i]].status] < statuspriority[status]) {
                         window.tanaguru.tags[test.tags[i]].status = status;
                     }
@@ -1352,11 +1364,13 @@ function createTanaguruTest(test) {
                 }
             }
             else {
-                if (statuspriority[window.tanaguru.tags['others'].status] < statuspriority[status]) {
-                    window.tanaguru.tags['others'].status = status;
-                }
-                if (status == 'failed') {
-                    window.tanaguru.tags['others'].nbfailures += failedincollection ? failedincollection : (elements.length > 0 ? elements.length : 1);
+                if(!(status === 'inapplicable' && window.tanaguru.tags['others'].status === 'untested')) {
+                    if (statuspriority[window.tanaguru.tags['others'].status] < statuspriority[status]) {
+                        window.tanaguru.tags['others'].status = status;
+                    }
+                    if (status == 'failed') {
+                        window.tanaguru.tags['others'].nbfailures += failedincollection ? failedincollection : (elements.length > 0 ? elements.length : 1);
+                    }
                 }
             }
 
