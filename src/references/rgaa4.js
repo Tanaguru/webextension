@@ -2700,6 +2700,17 @@ tanaguruTestsList.push({
                     return true;
                 } else {
                     item.setAttribute('data-tng-textlink-accessiblename', 'true');
+
+                    if(item.hasAttribute('data-tng-ANObject')) {
+                        let details = JSON.parse(item.getAttribute('data-tng-ANObject'));
+                        details.shift();
+                        for(let i = 0; i < details.length; i++) {
+                            if(Object.keys(details[i]).includes("aria-labelledby") || Object.keys(details[i]).includes("aria-label")) {
+                                item.setAttribute('data-tng-link-ANaria', "true");
+                                break;
+                            }
+                        }
+                    }
                     return;
                 }
             }
@@ -2792,6 +2803,17 @@ tanaguruTestsList.push({
         if(item.getAttribute('data-tng-el-exposed') === 'true') {
             if(linkName || item.hasAccessibleName()) {
                 item.setAttribute('data-tng-imglink-accessiblename', 'true');
+
+                if(item.hasAttribute('data-tng-ANObject')) {
+                    let details = JSON.parse(item.getAttribute('data-tng-ANObject'));
+                    details.shift();
+                    for(let i = 0; i < details.length; i++) {
+                        if(Object.keys(details[i]).includes("aria-labelledby") || Object.keys(details[i]).includes("aria-label")) {
+                            item.setAttribute('data-tng-link-ANaria', "true");
+                            break;
+                        }
+                    }
+                }
                 return;
             } else {
                 return true;
@@ -2877,6 +2899,17 @@ tanaguruTestsList.push({
         if(item.getAttribute('data-tng-el-exposed') === 'true') {
             if(linkName || item.hasAccessibleName()) {
                 item.setAttribute('data-tng-cplink-accessiblename', 'true');
+
+                if(item.hasAttribute('data-tng-ANObject')) {
+                    let details = JSON.parse(item.getAttribute('data-tng-ANObject'));
+                    details.shift();
+                    for(let i = 0; i < details.length; i++) {
+                        if(Object.keys(details[i]).includes("aria-labelledby") || Object.keys(details[i]).includes("aria-label")) {
+                            item.setAttribute('data-tng-link-ANaria', "true");
+                            break;
+                        }
+                    }
+                }
                 return;
             } else {
                 return true;
@@ -2991,32 +3024,40 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des liens ayant un intitulé visible non repris dans le nom accessible.',
-    query: '[data-tng-cplink-accessiblename][data-tng-el-visible="true"][aria-label], [data-tng-textlink-accessiblename][data-tng-el-visible="true"][aria-label]',
+    query: '[data-tng-link-ANaria][data-tng-el-visible="true"]',
     testStatus: "failed",
     filter: function (item) {
-        if(item.innerText && item.getAttribute('aria-label').trim().length > 0) {
+        if(item.innerText.trim().length > 0 || item.hasAttribute('data-tng-imglink-accessiblename')) {
             var visibleName = '';
             item.childNodes.forEach(e => {
                 if(e.nodeType === 3) {
-                    visibleName += e.textContent;
+                    visibleName += ' '+e.textContent;
                 }
 
                 if(e.nodeType === 1 && e.getAttribute('data-tng-el-visible') === 'true') {
+                    if(e.alt) visibleName += ' '+e.alt;
                     e.childNodes.forEach(echild => {
-                        if(echild.nodeType === 3 || echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true') {
-                            visibleName += echild.textContent;
+                        if(echild.nodeType === 3 || (echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true')) {
+                            visibleName += ' '+echild.textContent;
+                            if(echild.alt) visibleName += ' '+echild.alt;
                         }
                     });
                 }
             });
-            if(visibleName.length < 1) return;
-            let rgx = new RegExp(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/g);
-            visibleName = visibleName.trim().replace(rgx, '');
 
-            var linkAccessibleName = item.accessibleName().replace(rgx, '');
-            var regex = new RegExp(visibleName, 'mi');
+            if(visibleName.length == 0) return;
+            visibleName = visibleName.toLowerCase().trim();
+            visibleName = visibleName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+            visibleName = visibleName.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
+            visibleName = visibleName.replace(/\s{2,}/g, " ");
+
+            if(visibleName.length == 0) return;
+            var linkAccessibleName = item.accessibleName().toLowerCase().trim();
+            linkAccessibleName = linkAccessibleName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+            linkAccessibleName = linkAccessibleName.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
+            linkAccessibleName = linkAccessibleName.replace(/\s{2,}/g, " ");
             
-            if(!linkAccessibleName.match(regex)) {
+            if(!linkAccessibleName.match(visibleName)) {
                 return true;
             } else {
                 item.setAttribute('data-tng-link-names-match', 'true');
@@ -3090,6 +3131,16 @@ tanaguruTestsList.push({
         if((item.getAttribute('data-tng-el-visible') === 'true' || item.getAttribute('data-tng-el-exposed') === 'true') && !item.disabled) {
             if(item.matches('input[type="reset"]:not([value]), input[type="submit"]:not([value])') || item.hasAccessibleName()) {
                 item.setAttribute('data-tng-btn-accessiblename', 'true');
+                if(item.hasAttribute('data-tng-ANObject')) {
+                    let details = JSON.parse(item.getAttribute('data-tng-ANObject'));
+                    details.shift();
+                    for(let i = 0; i < details.length; i++) {
+                        if(Object.keys(details[i]).includes("aria-labelledby") || Object.keys(details[i]).includes("aria-label")) {
+                            item.setAttribute('data-tng-script-ANaria', "true");
+                            break;
+                        }
+                    }
+                }
                 return;
             } else {
                 return true;
@@ -3145,39 +3196,48 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des boutons ayant un intitulé visible non repris dans le nom accessible.',
-    query: '[data-tng-btn-accessiblename][data-tng-el-visible="true"]',
+    query: '[data-tng-script-ANaria][data-tng-el-visible="true"]',
     testStatus: "failed",
     filter: function (item) {
-        
-        if(item.innerText || item.value) {
+        if(item.innerText.trim().length > 0 || (item.value && item.value.trim().length > 0) || item.querySelector('[data-tng-altLong]')) {
             var visibleName = '';
-            if(!item.innerText) visibleName = item.value;
-            else {
-                item.childNodes.forEach(e => {
-                    if(e.nodeType === 3) {
-                        visibleName += e.textContent;
-                    }
+            if(item.alt) visibleName += ' '+item.alt;
+            if(item.value) visibleName += ' '+item.value;
+            item.childNodes.forEach(e => {
+                if(e.nodeType === 3) {
+                    visibleName += ' '+e.textContent;
+                }
 
-                    if(e.nodeType === 1 && e.getAttribute('data-tng-el-visible') === 'true') {
-                        e.childNodes.forEach(echild => {
-                            if(echild.nodeType === 3 || echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true') {
-                                visibleName += echild.textContent;
-                            }
-                        });
-                    }
-                });
-            }
-            let rgx = new RegExp(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/g);
-            var buttonName = visibleName.trim().replace(rgx, '');
-            var buttonAccessibleName = item.accessibleName().replace(rgx, '');
-            var regex = new RegExp(buttonName, 'mi');
+                if(e.nodeType === 1 && e.getAttribute('data-tng-el-visible') === 'true') {
+                    if(e.alt) visibleName += ' '+e.alt;
+
+                    e.childNodes.forEach(echild => {
+                        if(echild.nodeType === 3 || (echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true')) {
+                            visibleName += ' '+echild.textContent;
+                            if(echild.alt) visibleName += ' '+echild.alt;
+                        }
+                    });
+                }
+            });
+
+            if(visibleName.length == 0) return;
+            visibleName = visibleName.toLowerCase().trim();
+            visibleName = visibleName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+            visibleName = visibleName.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
+            visibleName = visibleName.replace(/\s{2,}/g, " ");
+
+            if(visibleName.length == 0) return;
+            var buttonAccessibleName = item.accessibleName().toLowerCase().trim();
+            buttonAccessibleName = buttonAccessibleName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+            buttonAccessibleName = buttonAccessibleName.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
+            buttonAccessibleName = buttonAccessibleName.replace(/\s{2,}/g, " ");
             
-            if(buttonAccessibleName.match(regex)) {
+            if(buttonAccessibleName.match(visibleName)) {
                 item.setAttribute('data-tng-btn-nameMatch', 'true');
                 return;
+            } else {
+                return true;
             }
-            
-            return true;
         }
     },
     tags: ['a11y', 'accessiblename', 'buttons', 'scripts'],
@@ -4071,6 +4131,15 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des attributs servant à la présentation de l\'information présents dans le code source généré de la page.',
     query: '[align][data-tng-el-exposed="true"], [alink][data-tng-el-exposed="true"], [background][data-tng-el-exposed="true"], [bgcolor][data-tng-el-exposed="true"], [border][data-tng-el-exposed="true"], [cellpadding][data-tng-el-exposed="true"], [cellspacing][data-tng-el-exposed="true"], [char][data-tng-el-exposed="true"], [charoff][data-tng-el-exposed="true"], [clear][data-tng-el-exposed="true"], [compact][data-tng-el-exposed="true"], [color][data-tng-el-exposed="true"], [frameborder][data-tng-el-exposed="true"], [hspace][data-tng-el-exposed="true"], [link][data-tng-el-exposed="true"], [marginheight][data-tng-el-exposed="true"], [marginwidth][data-tng-el-exposed="true"], [text][data-tng-el-exposed="true"], [valign][data-tng-el-exposed="true"], [vlink][data-tng-el-exposed="true"], [vspace][data-tng-el-exposed="true"], [data-tng-el-exposed="true"][size]:not([type="text"], [type="password"]), [data-tng-el-exposed="true"]:not(img, object, embed, canvas, svg)[width], [data-tng-el-exposed="true"]:not(img, object, embed, canvas, svg)[height]',
+    filter: function(item) {
+        if(item.tagName.toLowerCase() === 'input' && item.type) {
+            if(item.type.toLowerCase() === 'text' || item.type.toLowerCase() === 'password') {
+                return;
+            }
+        }
+
+        return true;
+    },
     testStatus: "failed",
     mark: { attrs: ['align','alink','background','bgcolor','border','cellpadding','cellspacing','char','charoff','clear','compact', 'color', 'frameborder', 'hspace', 'link', 'marginheight', 'marginwidth', 'text', 'valign', 'vlink', 'vspace', 'size', 'width', 'height']},
     tags: ['a11y', 'presentation'],
@@ -4386,7 +4455,7 @@ tanaguruTestsList.push({
  *TODO voir si l'on peut approfondir les tests 11.10.2 et 11.10.4
  *TODO traiter la proximité d'une étiquette avec son champ ?? (11.1.3, 11.4)
  *
- * data : data-tng-fieldsAN, data-tng-label-related, data-tng-has-label, data-tng-visible-label, data-tng-text-label, data-tng-NAinclude-visibleLabel, data-tng-fieldsgroup-legend, data-tng-optgroup-label, data-tng-button-namesMatch, data-tng-autocomplete-group, data-tng-autocomplete
+ * data : data-tng-fieldsAN, data-tng-label-related, data-tng-has-label, data-tng-visible-label, data-tng-text-label, data-tng-ANinclude-visibleLabel, data-tng-fieldsgroup-legend, data-tng-optgroup-label, data-tng-button-namesMatch, data-tng-autocomplete-group, data-tng-autocomplete
  */
 
 //* 11.1 Chaque champ de formulaire a-t-il une étiquette ?
@@ -4397,6 +4466,7 @@ tanaguruTestsList.push({
     query: 'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), input[type="file"]:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])',
     testStatus: "failed",
     filter: function (item) {
+        item.setAttribute('data-tng-formField', 'true');
         if(item.getAttribute('data-tng-el-exposed') === 'true') {
             if(item.hasAccessibleName()) {
                 item.setAttribute('data-tng-fieldsAN', 'true');
@@ -4468,13 +4538,12 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des champs de formulaires avec une étiquette non visible, ne possédant ni attribut title ni passage de texte visible identifié par un id.',
-    query: 'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), input[type="file"]:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])',
+    query: '[data-tng-fieldsAN]',
     testStatus: "failed",
     filter: function (item) {
         if((item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible', 'false')) || item.disabled) return;
 
         let hasLabel = false;
-        var rgx = new RegExp(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/g);
 
         if(item.hasAttribute('aria-labelledby') && item.getAttribute('aria-labelledby').trim().length > 0) {
             let ids = item.getAttribute('aria-labelledby').split(' ');
@@ -4491,14 +4560,14 @@ tanaguruTestsList.push({
                         el.childNodes.forEach(e => {
                             if(e.nodeType === 3) {
                                 labelIsVisible = true;
-                                visibleLabel += e.textContent;
+                                visibleLabel += ' '+e.textContent;
                             }
             
                             if(e.nodeType === 1 && e.getAttribute('data-tng-el-visible') === 'true') {
                                 e.childNodes.forEach(echild => {
                                     if(echild.nodeType === 3 || echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true') {
                                         labelIsVisible = true;
-                                        visibleLabel += echild.textContent;
+                                        visibleLabel += ' '+echild.textContent;
                                     }
                                 });
                             }
@@ -4509,7 +4578,7 @@ tanaguruTestsList.push({
 
             if(labelIsVisible) {
                 item.setAttribute('data-tng-visible-label', 'labelledby');
-                item.setAttribute('data-tng-text-label', visibleLabel.trim().replace(rgx, ''));
+                item.setAttribute('data-tng-text-label', visibleLabel.trim());
                 return;
             }
         }
@@ -4526,13 +4595,13 @@ tanaguruTestsList.push({
                             let visibleText = '';
                             labels[i].childNodes.forEach(e => {
                                 if(e.nodeType === 3) {
-                                    visibleText += e.textContent;
+                                    visibleText += ' '+e.textContent;
                                 }
                 
                                 if(e.nodeType === 1 && e.getAttribute('data-tng-el-visible') === 'true') {
                                     e.childNodes.forEach(echild => {
                                         if(echild.nodeType === 3 || (echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true')) {
-                                            visibleText += echild.textContent;
+                                            visibleText += ' '+echild.textContent;
                                         }
                                     });
                                 }
@@ -4540,7 +4609,7 @@ tanaguruTestsList.push({
 
                             if(visibleText.length > 0) {
                                 item.setAttribute('data-tng-visible-label', 'label');
-                                item.setAttribute('data-tng-text-label', visibleText.trim().replace(rgx, ''));
+                                item.setAttribute('data-tng-text-label', visibleText.trim());
                                 return;
                             }
                         }
@@ -4659,11 +4728,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifiez si l\'attribut title permet de connaître la fonction exacte du champ de formulaire auquel il est associé.',
-    query: '[title][data-tng-el-exposed="true"]',
-    filter: function (item) {
-        let cat = item.getImplicitAriaRoleCategory();
-        if(cat) return cat === 'forms';
-    },
+    query: '[data-tng-formField][title][data-tng-el-exposed="true"]',
     testStatus: "cantTell",
     mark: {attrs: ['title']},
     tags: ['a11y', 'forms'],
@@ -4674,11 +4739,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifiez si l\'attribut WAI-ARIA aria-label permet de connaître la fonction exacte du champ de formulaire auquel il est associé.',
-    query: '[aria-label][data-tng-el-exposed="true"]',
-    filter: function (item) {
-        let cat = item.getImplicitAriaRoleCategory();
-        if(cat) return cat === 'forms';
-    },
+    query: '[data-tng-formField][aria-label][data-tng-el-exposed="true"]',
     testStatus: "cantTell",
     mark: {attrs: ['aria-label']},
     tags: ['a11y', 'forms'],
@@ -4689,11 +4750,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifiez si le passage de texte associé via l\'attribut WAI-ARIA aria-labelledby permet de connaître la fonction exacte du champ de formulaire auquel il est associé.',
-    query: '[aria-labelledby][data-tng-el-exposed="true"]',
-    filter: function (item) {
-        let cat = item.getImplicitAriaRoleCategory();
-        if(cat) return cat === 'forms';
-    },
+    query: '[data-tng-formField][aria-labelledby][data-tng-el-exposed="true"]',
     testStatus: "cantTell",
     mark: {attrs: ['aria-labelledby']},
     tags: ['a11y', 'forms'],
@@ -4706,11 +4763,19 @@ tanaguruTestsList.push({
     name: 'Liste des champs de formulaire dont le nom accessible contient l\'intitulé visible.',
     query: '[data-tng-visible-label]',
     filter: function (item) {
-        var rgx = new RegExp(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/g);
-        if(item.accessibleName().trim().replace(rgx, '').includes(item.getAttribute('data-tng-text-label'))) {
+        let visibleName = item.getAttribute('data-tng-text-label').toLowerCase().trim();
+        visibleName = visibleName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        visibleName = visibleName.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
+        visibleName = visibleName.replace(/\s{2,}/g, " ");
+
+        let accessibleName = item.accessibleName().toLowerCase().trim();
+        accessibleName = accessibleName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        accessibleName = accessibleName.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
+        accessibleName = accessibleName.replace(/\s{2,}/g, " ");
+        if(accessibleName.match(visibleName)) {
             return true;
         } else {
-            item.setAttribute('data-tng-NAinclude-visibleLabel', 'true');
+            item.setAttribute('data-tng-ANinclude-visibleLabel', 'false');
             return;
         }
     },
@@ -4722,7 +4787,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des champs de formulaire dont le nom accessible ne reprend pas l\'intitulé visible.',
-    query: '[data-tng-NAinclude-visibleLabel]',
+    query: '[data-tng-ANinclude-visibleLabel]',
     testStatus: "failed",
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.2.5'] }
@@ -4897,12 +4962,39 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Vérifiez la pertinence des intitulés de ces boutons.',
-    query: 'input[type="submit"][value][data-tng-el-exposed="true"], input[type="reset"][value][data-tng-el-exposed="true"], input[type="button"][value][data-tng-el-exposed="true"], button, input[type="image"][alt][data-tng-el-exposed="true"], input[type="submit"][aria-label][data-tng-el-exposed="true"], input[type="submit"][aria-labelledby][data-tng-el-exposed="true"], input[type="submit"][title][data-tng-el-exposed="true"], input[type="reset"][aria-label][data-tng-el-exposed="true"], input[type="reset"][aria-labelledby][data-tng-el-exposed="true"], input[type="reset"][title][data-tng-el-exposed="true"], input[type="button"][aria-label][data-tng-el-exposed="true"], input[type="button"][aria-labelledby][data-tng-el-exposed="true"], input[type="button"][title][data-tng-el-exposed="true"], [role="button"][data-tng-el-exposed="true"]',
+    query: 'input[type="submit"][data-tng-el-exposed="true"], input[type="reset"][data-tng-el-exposed="true"], input[type="button"][data-tng-el-exposed="true"], button[data-tng-el-exposed="true"], input[type="image"][data-tng-el-exposed="true"], [role="button"][data-tng-el-exposed="true"]',
     filter: function(item) {
-        let cat = item.getImplicitAriaRoleCategory();
-        if(cat) return cat === 'forms';
+        if(item.closest('form') || item.closest('[role="form"]')) {
+            item.setAttribute('data-tng-formButton', 'true');
+            if(item.hasAccessibleName()) {
+                if(item.hasAttribute('data-tng-ANObject')) {
+                    let details = JSON.parse(item.getAttribute('data-tng-ANObject'));
+                    details.shift();
+                    for(let i = 0; i < details.length; i++) {
+                        if(Object.keys(details[i]).includes("aria-labelledby") || Object.keys(details[i]).includes("aria-label")) {
+                            item.setAttribute('data-tng-formButton-ANaria', "true");
+                            break;
+                        }
+                    }
+                }
+                return true;
+            } else {
+                item.setAttribute('data-tng-formButton-an', 'false');
+                return;
+            }
+        }
     },
     testStatus: "cantTell",
+    mark: {attrs: ['aria-labelledby', 'aria-label', 'alt', 'value', 'title']},
+    tags: ['a11y', 'forms', 'buttons'],
+    ressources: { 'rgaa': ['11.9.1'] }
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des boutons de formulaire sans intitulé.',
+    query: '[data-tng-formButton-an="false"]',
+    testStatus: "failed",
     mark: {attrs: ['aria-labelledby', 'aria-label', 'alt', 'value', 'title']},
     tags: ['a11y', 'forms', 'buttons'],
     ressources: { 'rgaa': ['11.9.1'] }
@@ -4912,33 +5004,43 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'Liste des boutons de formulaire ayant un intitulé visible non repris dans le nom accessible.',
-    query: 'form button[data-tng-el-exposed="true"][data-tng-el-visible="true"]:not([role]), form button[role="none"][data-tng-el-exposed="true"][data-tng-el-visible="true"], form [role="button"][data-tng-el-exposed="true"][data-tng-el-visible="true"], form input[type="submit"][data-tng-el-exposed="true"][data-tng-el-visible="true"]:not([role]), form input[type="reset"][data-tng-el-exposed="true"][data-tng-el-visible="true"]:not([role]), form input[type="button"][data-tng-el-exposed="true"][data-tng-el-visible="true"]:not([role])',
+    query: '[data-tng-formButton-ANaria]',
     testStatus: "failed",
     filter: function (item) {
-        if((item.innerText || item.value) && !item.disabled) {
+        if(item.innerText.trim().length > 0 || (item.value && item.value.trim().length > 0) || item.querySelector('[data-tng-altLong]')) {
             var visibleName = '';
-            if(!item.innerText) visibleName = item.value;
-            else {
-                item.childNodes.forEach(e => {
-                    if(e.nodeType === 3) {
-                        visibleName += e.textContent;
-                    }
-    
-                    if(e.nodeType === 1 && e.getAttribute('data-tng-el-visible') === 'true') {
-                        e.childNodes.forEach(echild => {
-                            if(echild.nodeType === 3 || echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true') {
-                                visibleName += echild.textContent;
-                            }
-                        });
-                    }
-                });
-            }
-            let rgx = new RegExp(/[\s!"#$%&'()*+,\-.\/:;<=>?@[\]^_`{|}~]/g);
-            var buttonName = visibleName.trim().replace(rgx, '');
-            var buttonAccessibleName = item.accessibleName().replace(rgx, '');
-            var regex = new RegExp(buttonName, 'mi');
+            if(item.alt) visibleName += ' '+item.alt;
+            if(item.value) visibleName += ' '+item.value;
+            item.childNodes.forEach(e => {
+                if(e.nodeType === 3) {
+                    visibleName += ' '+e.textContent;
+                }
 
-            if(buttonAccessibleName.match(regex)) {
+                if(e.nodeType === 1 && e.getAttribute('data-tng-el-visible') === 'true') {
+                    if(e.alt) visibleName += ' '+e.alt;
+
+                    e.childNodes.forEach(echild => {
+                        if(echild.nodeType === 3 || (echild.nodeType === 1 && echild.getAttribute('data-tng-el-visible') === 'true')) {
+                            visibleName += ' '+echild.textContent;
+                            if(echild.alt) visibleName += ' '+echild.alt;
+                        }
+                    });
+                }
+            });
+
+            if(visibleName.length == 0) return;
+            visibleName = visibleName.toLowerCase().trim();
+            visibleName = visibleName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+            visibleName = visibleName.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
+            visibleName = visibleName.replace(/\s{2,}/g, " ");
+
+            if(visibleName.length == 0) return;
+            var buttonAccessibleName = item.accessibleName().toLowerCase().trim();
+            buttonAccessibleName = buttonAccessibleName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+            buttonAccessibleName = buttonAccessibleName.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
+            buttonAccessibleName = buttonAccessibleName.replace(/\s{2,}/g, " ");
+            
+            if(buttonAccessibleName.match(visibleName)) {
                 item.setAttribute('data-tng-button-namesMatch', 'true');
                 return;
             } else {
