@@ -1,7 +1,7 @@
 var hlResponse;
 if(!element) {
-	let previousHighlight = document.querySelector('[data-tanaguruhighlight]');
-	if(previousHighlight) previousHighlight.removeAttribute('data-tanaguruhighlight');
+	let previousHighlight = document.querySelector('[data-tng-highlight]');
+	if(previousHighlight) previousHighlight.removeAttribute('data-tng-highlight');
 	document.querySelectorAll('[data-tng-nohl]').forEach(nohl => {
 		nohl.removeAttribute('data-tng-nohl');
 	});
@@ -11,18 +11,18 @@ if(!element) {
 else {
 	var element = document.querySelector(element);
 	if(element.offsetHeight < 2 || element.offsetWidth < 2) element = element.parentNode;
-	if(element.hasAttribute('data-tanaguruhighlight')) cleanHighlight();
+	if(element.hasAttribute('data-tng-highlight')) cleanHighlight();
 	else runHighlight();
 }
 
 function runHighlight() {
-	let previousHighlight = document.querySelector('[data-tanaguruhighlight]');
-	if(previousHighlight) previousHighlight.removeAttribute('data-tanaguruhighlight');
+	let previousHighlight = document.querySelector('[data-tng-highlight]');
+	if(previousHighlight) previousHighlight.removeAttribute('data-tng-highlight');
 	document.querySelectorAll('[data-tng-nohl]').forEach(nohl => {
 		nohl.removeAttribute('data-tng-nohl');
 	});
 	
-	element.setAttribute('data-tanaguruhighlight', 'true');
+	element.setAttribute('data-tng-highlight', 'true');
 	var rect = element.getBoundingClientRect();
 	window.scrollTo(0, rect.top);
 	if(element == document.body) return;
@@ -38,7 +38,7 @@ function filterParents(collectionHTML) {
 				eureka = true;
 				continue;
 			}
-			else if(collectionHTML[i].querySelector('[data-tanaguruhighlight]')) {
+			else if(collectionHTML[i].querySelector('[data-tng-highlight]')) {
 				if(!eureka) {
 					var subElements = collectionHTML[i].children;
 					filterParents(subElements);
@@ -53,7 +53,7 @@ function filterParents(collectionHTML) {
 }
 
 function cleanHighlight() {
-	element.removeAttribute('data-tanaguruhighlight');
+	element.removeAttribute('data-tng-highlight');
 	document.querySelectorAll('[data-tng-nohl]').forEach(nohl => {
 		nohl.removeAttribute('data-tng-nohl');
 	});

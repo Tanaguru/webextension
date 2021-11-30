@@ -590,7 +590,7 @@ Current Imperfect Implementations :
 
 // accessibleName.
 var getAccessibleName = function () {
-    if(this.hasAttribute('data-tng-ANObject')) return JSON.parse(this.getAttribute('data-tng-ANObject'));
+    if(this.hasAttribute('data-tng-anobject')) return JSON.parse(this.getAttribute('data-tng-anobject'));
 // Data.
     var ARIA = {
         nameFromContentSupported: '[role="button"], [role="cell"], [role="checkbox"], [role="columnheader"], [role="gridcell"], [role="heading"], [role="link"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"], [role="radio"], [role="row"], [role="rowgroup"], [role="rowheader"], [role="switch"], [role="tab"], [role="tooltip"], [role="treeitem"]'
@@ -613,9 +613,9 @@ var getAccessibleName = function () {
 // Step 2 : Compute the text alternative for the current node.
     var accessibleNameWithAriaLabelledBy = false;
 
-    if (this.hasAttribute('data-labelbytraversal') || this.getAttribute('data-tng-el-exposed') === "true") {
+    if (this.hasAttribute('data-tng-labelbytraversal') || this.getAttribute('data-tng-el-exposed') === "true") {
         // 2-A (condition failed) : The current node is not hidden or is directly referenced by aria-labelledby.
-        if (this.hasAttribute('aria-labelledby') && !this.hasAttribute('data-labelbytraversal') && !this.hasAttribute('data-controlembeddedinlabel')) {
+        if (this.hasAttribute('aria-labelledby') && !this.hasAttribute('data-tng-labelbytraversal') && !this.hasAttribute('data-tng-controlembeddedinlabel')) {
             /*
 			2-B :
 			* The current node has an aria-labelledby attribute that contains at least one valid IDREF.
@@ -640,9 +640,9 @@ var getAccessibleName = function () {
                     controlsselectors = controlsselectors.join(',');
                     for (var i = 0; i < nodes.length; i++) {
                         if (nodes[i].matches(controlsselectors)) {
-                            nodes[i].setAttribute('data-controlembeddedinlabel', 'true');
+                            nodes[i].setAttribute('data-tng-controlembeddedinlabel', 'true');
                         }
-                        nodes[i].setAttribute('data-labelbytraversal', 'true');
+                        nodes[i].setAttribute('data-tng-labelbytraversal', 'true');
                         let an = nodes[i].fullAccessibleName;
                         result.push({"aria-labelledby": an});
                         totalAccumulatedText += (totalAccumulatedText != '' && an[0] != '' ? ' ' : '') + an[0];
@@ -651,9 +651,9 @@ var getAccessibleName = function () {
             }
         }
     }
-    if ((totalAccumulatedText == '' || accessibleNameWithAriaLabelledBy == false) && this.getAttribute('data-tng-el-exposed') === "true" || this.hasAttribute('data-labelbytraversal')) {
+    if ((totalAccumulatedText == '' || accessibleNameWithAriaLabelledBy == false) && this.getAttribute('data-tng-el-exposed') === "true" || this.hasAttribute('data-tng-labelbytraversal')) {
         var accessibleNameWithAriaLabel = false;
-        if (!this.hasAttribute('data-controlembeddedinlabel')) {
+        if (!this.hasAttribute('data-tng-controlembeddedinlabel')) {
             if (this.hasAttribute('aria-label')) {
                 /*
 				2-C (condition success) :
@@ -669,12 +669,12 @@ var getAccessibleName = function () {
             }
         }
         if (accessibleNameWithAriaLabel == false) {
-            if (this.hasAttribute('data-controlembeddedinlabel')) {
+            if (this.hasAttribute('data-tng-controlembeddedinlabel')) {
                 /*
 				2-C (condition failed) : The traversal of the current node is due to recursion and the current node is an embedded control.
 				2-E : The current node is a control embedded within the label (e.g. the label element in HTML or any element directly referenced by aria-labelledby) for another widget.
 			*/
-                this.removeAttribute('data-controlembeddedinlabel');
+                this.removeAttribute('data-tng-controlembeddedinlabel');
                 if (this.matches(controls.nativetextboxes)) {
                     // If the embedded control has role textbox, return its value.
                     if (this.matches('input[type="password"]')) {
@@ -864,15 +864,17 @@ var getAccessibleName = function () {
                                 parentcssaftercontent = '';
                             }
                         }
+
                         result = [{"parentcssbeforecontent": parentcssbeforecontent}];
                         totalAccumulatedText = parentcssbeforecontent;
                         if (this.matches('button')) {
                             var nodes = this.childNodes;
+
                             for (var i = 0; i < nodes.length; i++) {
                                 if (nodes[i].nodeType === 3) {
                                     // 2-G : The current node is a Text node, return its textual contents.
                                     result.push({"textual-contents": nodes[i].textContent});
-                                    totalAccumulatedText += totalAccumulatedText.length === 0 ? nodes[i].textContent : ' ' + nodes[i].textContent;
+                                    totalAccumulatedText += (totalAccumulatedText.length === 0) ? nodes[i].textContent : (' ' + nodes[i].textContent);
                                 }
                                 else if (nodes[i].nodeType === 1 && nodes[i].getAttribute('data-tng-el-exposed') === "true") {
                                     // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
@@ -889,8 +891,8 @@ var getAccessibleName = function () {
                                             cssaftercontent = cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1);
                                         }
                                     }
-                                    if (this.matches('[data-labelbytraversal="true"]')) {
-                                        nodes[i].setAttribute('data-labelbytraversal', 'true');
+                                    if (this.matches('[data-tng-labelbytraversal="true"]')) {
+                                        nodes[i].setAttribute('data-tng-labelbytraversal', 'true');
                                     }
 
                                     let tagName2h = nodes[i].tagName;
@@ -902,7 +904,7 @@ var getAccessibleName = function () {
                                         {"cssaftercontent": cssaftercontent}
                                     );
                                     
-                                    totalAccumulatedText += totalAccumulatedText.length === 0 ? cssbeforecontent + tagName2hAN[0] + cssaftercontent : ' '+cssbeforecontent + tagName2hAN[0] + cssaftercontent;
+                                    totalAccumulatedText += (totalAccumulatedText.length === 0) ? (cssbeforecontent + tagName2hAN[0] + cssaftercontent) : (' '+cssbeforecontent + tagName2hAN[0] + cssaftercontent);
                                 }
                             }
                         }
@@ -912,6 +914,7 @@ var getAccessibleName = function () {
                         }
                         result.push({"parentcssaftercontent": parentcssaftercontent});
                         totalAccumulatedText += totalAccumulatedText.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
+
                         if (totalAccumulatedText.trim() == '' && this.hasAttribute('title')) {
                             /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
                             result = [{"title": this.getAttribute('title')}];
@@ -943,6 +946,7 @@ var getAccessibleName = function () {
                             totalAccumulatedText = an[0];
                         }
                     }
+
                     if (totalAccumulatedText.trim() == '' && this.hasAttribute('title')) {
                         /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
                         result = [{"title": this.getAttribute('title')}];
@@ -978,6 +982,7 @@ var getAccessibleName = function () {
                             parentcssaftercontent = '';
                         }
                     }
+
                     result = [{"parentcssbeforecontent": parentcssbeforecontent}];
                     totalAccumulatedText = parentcssbeforecontent;
                     for (var i = 0; i < nodes.length; i++) {
@@ -1007,10 +1012,10 @@ var getAccessibleName = function () {
                                 }
                             }
                             if (nodes[i].matches(controlsselectors)) {
-                                nodes[i].setAttribute('data-controlembeddedinlabel', 'true');
+                                nodes[i].setAttribute('data-tng-controlembeddedinlabel', 'true');
                             }
-                            if (this.matches('[data-labelbytraversal="true"]')) {
-                                nodes[i].setAttribute('data-labelbytraversal', 'true');
+                            if (this.matches('[data-tng-labelbytraversal="true"]')) {
+                                nodes[i].setAttribute('data-tng-labelbytraversal', 'true');
                             }
                             var tagName2h2 = nodes[i].tagName;
                             let tagName2h2AN = nodes[i].fullAccessibleName;
@@ -1019,11 +1024,13 @@ var getAccessibleName = function () {
                                 {[tagName2h2]: tagName2h2AN},
                                 {"cssaftercontent": cssaftercontent}
                             );
-                            totalAccumulatedText += totalAccumulatedText.length === 0 ? cssbeforecontent + tagName2h2AN[0] + cssaftercontent : ' '+cssbeforecontent + tagName2h2AN[0] + cssaftercontent;
+                            
+                            totalAccumulatedText += (totalAccumulatedText.length === 0) ? (cssbeforecontent + tagName2h2AN[0] + cssaftercontent) : (' '+cssbeforecontent + tagName2h2AN[0] + cssaftercontent);
                         }
                     }
                     result.push({"parentcssaftercontent": parentcssaftercontent});
                     totalAccumulatedText += totalAccumulatedText.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
+
                     if (totalAccumulatedText.trim() == '' && this.matches('a[href][title]')) {
                         /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
                         result = [{"title": this.getAttribute('title')}];
@@ -1033,13 +1040,13 @@ var getAccessibleName = function () {
             }
         }
     }
-    this.removeAttribute('data-labelbytraversal');
-    this.removeAttribute('data-controlembeddedinlabel');
+    this.removeAttribute('data-tng-labelbytraversal');
+    this.removeAttribute('data-tng-controlembeddedinlabel');
 // 2-A (condition success) : The current node is hidden and is not directly referenced by aria-labelledby.
 // 2-B, 2-C, 2-D, 2-E, 2-F, 2-G, 2-H and 2-I : Otherwise...
     totalAccumulatedText.trim();
     result.unshift(totalAccumulatedText);
-    this.setAttribute('data-tng-ANObject', JSON.stringify(result));
+    this.setAttribute('data-tng-anobject', JSON.stringify(result));
     return result;
 };
 
@@ -1158,7 +1165,7 @@ function removeDataTNG(element) {
 function manageOutput(element, an) {
     var status = element.status ? element.status : 'cantTell';
     element.status = undefined;
-    an = an ? (element.hasAttribute('data-tng-ANObject') ? JSON.parse(element.getAttribute('data-tng-ANObject')) : element.fullAccessibleName) : null;
+    an = an ? element.fullAccessibleName : null;
 
     if(element.nodeType === 10) {
         var canBeReachedUsingKeyboardWith = [];

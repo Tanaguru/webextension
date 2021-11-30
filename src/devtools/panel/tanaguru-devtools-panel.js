@@ -1001,20 +1001,23 @@ button.addEventListener('click', function () {
 							for (var k = 0; k < tableheadings.length; k++) {
 								var th = document.createElement('th');
 								th.setAttribute('scope', 'col');
-								if (tableheadings[k].hasOwnProperty('abbr')) {
-									th.setAttribute('abbr', tableheadings[k].abbr);
-								}
+								
 								if (tableheadings[k].hasOwnProperty('export')) {
 									th.classList.add(tableheadings[k].export + '-export');
 								}
+
 								if (tableheadings[k].hasOwnProperty('img')) {
 									var img = document.createElement('img');
 									img.setAttribute('src', tableheadings[k].img);
 									img.setAttribute('alt', tableheadings[k].name);
 									img.setAttribute('title', img.getAttribute('alt'));
 									th.appendChild(img);
-								}
-								else {
+								} else if(tableheadings[k].hasOwnProperty('abbr')) {
+									let abbrEl = document.createElement('abbr');
+									abbrEl.setAttribute('title', tableheadings[k].abbr);
+									abbrEl.appendChild(document.createTextNode(tableheadings[k].name));
+									th.appendChild(abbrEl);
+								} else {
 									th.appendChild(document.createTextNode(tableheadings[k].name));
 								}
 								tr.appendChild(th);
