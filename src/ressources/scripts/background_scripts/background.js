@@ -77,7 +77,7 @@ chrome.runtime.onMessage.addListener(handleMessage);
 
 /* Fires when the active tab in a window changes. Note that the tab's URL may not be set at the time this event fired, but you can listen to tabs.onUpdated events to be notified when a URL is set. */
 function handleActivated(activeInfo) {
-	console.log("Tab " + activeInfo.tabId + " was activated.");
+	// console.log("Tab " + activeInfo.tabId + " was activated.");
 
 	chrome.tabs.query({active: true, currentWindow: true}, tabInfo => {
 		if(tabInfo[0].url) {
@@ -98,4 +98,4 @@ function handleUpdated(tabId, changeInfo, tabInfo) {
   	console.log("Tab " + tabId + " was updated.");
   	
 }
-chrome.tabs.onUpdated.addListener(handleUpdated);
+// chrome.tabs.onUpdated.addListener(handleUpdated);

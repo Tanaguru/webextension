@@ -590,6 +590,7 @@ Current Imperfect Implementations :
 
 // accessibleName.
 var getAccessibleName = function () {
+    if(this.hasAttribute('data-tng-anobject')) return JSON.parse(this.getAttribute('data-tng-anobject'));
 // Data.
     var ARIA = {
         nameFromContentSupported: '[role="button"], [role="cell"], [role="checkbox"], [role="columnheader"], [role="gridcell"], [role="heading"], [role="link"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"], [role="radio"], [role="row"], [role="rowgroup"], [role="rowheader"], [role="switch"], [role="tab"], [role="tooltip"], [role="treeitem"]'
@@ -607,12 +608,14 @@ var getAccessibleName = function () {
     };
     var replacedElements = ['audio', 'canvas', 'embed', 'iframe', 'img', 'input', 'object', 'video'];
 // Step 1 : Initialize - Set the total accumulated text to the empty string ("").
-    var result = '';
+    var totalAccumulatedText = '';
+    var result = [];
 // Step 2 : Compute the text alternative for the current node.
     var accessibleNameWithAriaLabelledBy = false;
-    if (this.hasAttribute('data-labelbytraversal') || this.isNotExposedDueTo.length == 0) {
+
+    if (this.hasAttribute('data-tng-labelbytraversal') || this.getAttribute('data-tng-el-exposed') === "true") {
         // 2-A (condition failed) : The current node is not hidden or is directly referenced by aria-labelledby.
-        if (this.hasAttribute('aria-labelledby') && !this.hasAttribute('data-labelbytraversal') && !this.hasAttribute('data-controlembeddedinlabel')) {
+        if (this.hasAttribute('aria-labelledby') && !this.hasAttribute('data-tng-labelbytraversal') && !this.hasAttribute('data-tng-controlembeddedinlabel')) {
             /*
 			2-B :
 			* The current node has an aria-labelledby attribute that contains at least one valid IDREF.
@@ -637,19 +640,20 @@ var getAccessibleName = function () {
                     controlsselectors = controlsselectors.join(',');
                     for (var i = 0; i < nodes.length; i++) {
                         if (nodes[i].matches(controlsselectors)) {
-                            nodes[i].setAttribute('data-controlembeddedinlabel', 'true');
+                            nodes[i].setAttribute('data-tng-controlembeddedinlabel', 'true');
                         }
-                        nodes[i].setAttribute('data-labelbytraversal', 'true');
-                        var an = nodes[i].accessibleName;
-                        result += (result != '' && an != '' ? ' ' : '') + an;
+                        nodes[i].setAttribute('data-tng-labelbytraversal', 'true');
+                        let an = nodes[i].fullAccessibleName;
+                        result.push({"aria-labelledby": an});
+                        totalAccumulatedText += (totalAccumulatedText != '' && an[0] != '' ? ' ' : '') + an[0];
                     }
                 }
             }
         }
     }
-    if ((result == '' || accessibleNameWithAriaLabelledBy == false) && this.isNotExposedDueTo.length == 0 || this.hasAttribute('data-labelbytraversal')) {
+    if ((totalAccumulatedText == '' || accessibleNameWithAriaLabelledBy == false) && this.getAttribute('data-tng-el-exposed') === "true" || this.hasAttribute('data-tng-labelbytraversal')) {
         var accessibleNameWithAriaLabel = false;
-        if (!this.hasAttribute('data-controlembeddedinlabel')) {
+        if (!this.hasAttribute('data-tng-controlembeddedinlabel')) {
             if (this.hasAttribute('aria-label')) {
                 /*
 				2-C (condition success) :
@@ -659,17 +663,18 @@ var getAccessibleName = function () {
                 var label = this.getAttribute('aria-label');
                 if (label.trim() != '') {
                     accessibleNameWithAriaLabel = true;
-                    result = label;
+                    result = [{"aria-label": label}];
+                    totalAccumulatedText = label;
                 }
             }
         }
         if (accessibleNameWithAriaLabel == false) {
-            if (this.hasAttribute('data-controlembeddedinlabel')) {
+            if (this.hasAttribute('data-tng-controlembeddedinlabel')) {
                 /*
 				2-C (condition failed) : The traversal of the current node is due to recursion and the current node is an embedded control.
 				2-E : The current node is a control embedded within the label (e.g. the label element in HTML or any element directly referenced by aria-labelledby) for another widget.
 			*/
-                this.removeAttribute('data-controlembeddedinlabel');
+                this.removeAttribute('data-tng-controlembeddedinlabel');
                 if (this.matches(controls.nativetextboxes)) {
                     // If the embedded control has role textbox, return its value.
                     if (this.matches('input[type="password"]')) {
@@ -678,19 +683,25 @@ var getAccessibleName = function () {
                         for (var i = 0; i < value.length; i++) {
                             resulttmp.push('\u2022');
                         }
-                        result = resulttmp.join('\u00AD');
+                        result = [{"value": resulttmp.join('\u00AD')}];
+                        totalAccumulatedText = resulttmp.join('\u00AD');
                     }
                     else {
-                        result = this.value;
+                        result = [{"value": this.value}];
+                        totalAccumulatedText = this.value;
                     }
                 }
                 else if (this.matches(controls.customtextboxes)) {
                     // If the embedded control has role textbox, return its value.
-                    result = this.textContent;
+                    result = [{"textContent": this.textContent}];
+                    totalAccumulatedText = this.textContent;
                 }
                 else if (this.matches(controls.nativebuttons + ',' + controls.custombuttons)) {
                     // If the embedded control has role menu button, return the text alternative of the button.
-                    result = this.accessibleName;
+                    let anButton = this.fullAccessibleName;
+                    result = anButton;
+                    result.shift();
+                    totalAccumulatedText = anButton[0];
                 }
                 else if (this.matches(controls.customcomboboxes)) {
                     // If the embedded control has role combobox or listbox, return the text alternative of the chosen option.
@@ -701,14 +712,17 @@ var getAccessibleName = function () {
                             for (var i = 0; i < value.length; i++) {
                                 resulttmp.push('\u2022');
                             }
-                            result = resulttmp.join('\u00AD');
+                            result = [{"value": resulttmp.join('\u00AD')}];
+                            totalAccumulatedText = resulttmp.join('\u00AD');
                         }
                         else {
-                            result = this.value;
+                            result = [{"value": this.value}];
+                            totalAccumulatedText = this.value;
                         }
                     }
                     else {
-                        result = this.textContent;
+                        result = [{"textContent": this.textContent}];
+                        totalAccumulatedText = this.textContent;
                     }
                 }
                 else if (this.matches(controls.nativelistboxes)) {
@@ -718,7 +732,9 @@ var getAccessibleName = function () {
                     }
                     else {
                         if (this.selectedIndex > -1) {
-                            result = this.options[this.selectedIndex].accessibleName;
+                            let an = this.options[this.selectedIndex].fullAccessibleName;
+                            result = [{"chosen-option": an}];
+                            totalAccumulatedText = an[0];
                         }
                     }
                 }
@@ -756,24 +772,30 @@ var getAccessibleName = function () {
                             }
                         }
                         if (option) {
-                            result = option.accessibleName;
+                            let an = option.fullAccessibleName;
+                            result = [{"chosen-option": an}];
+                            totalAccumulatedText = an[0];
                         }
                     }
                 }
                 else if (this.matches(controls.nativeranges + ',' + controls.customranges)) {
                     // If the embedded control has role range (e.g., a spinbutton or slider).
                     if (this.hasAttribute('aria-valuetext')) {
-                        result = this.getAttribute('aria-valuetext');
+                        result = [{"aria-valuetext": this.getAttribute('aria-valuetext')}];
+                        totalAccumulatedText = this.getAttribute('aria-valuetext');
                     }
                     else if (this.hasAttribute('aria-valuenow')) {
-                        result = this.getAttribute('aria-valuenow');
+                        result = [{"aria-valuenow": this.getAttribute('aria-valuenow')}];
+                        totalAccumulatedText = this.getAttribute('aria-valuenow');
                     }
                     else if (this.matches(controls.nativeranges)) {
                         if (this.value) {
-                            result = this.value;
+                            result = [{"value": this.value}];
+                            totalAccumulatedText = this.value;
                         }
                         else {
-                            result = '';
+                            result = [];
+                            totalAccumulatedText = '';
                         }
                     }
                 }
@@ -788,33 +810,39 @@ var getAccessibleName = function () {
                 if (this.matches('area, img')) {
                     if (!this.matches('[role="none"], [role="presentation"]')) { // COMMENT : Not allowed on area & img with alt="text".
                         if (this.hasAttribute('alt')) {
-                            result = this.getAttribute('alt');
+                            result = [{"alt": this.getAttribute('alt')}];
+                            totalAccumulatedText = this.getAttribute('alt');
                         }
                         else if (this.hasAttribute('title')) {
                             /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
-                            result = this.getAttribute('title');
+                            result = [{"title": this.getAttribute('title')}];
+                            totalAccumulatedText = this.getAttribute('title');
                         }
                     }
                 }
                 else if (this.matches('svg') && !this.matches('[role="none"], [role="presentation"]')) {
                     var title = this.querySelector('title');
                     if (title && title.parentNode == this) {
-                        result = title.textContent;
+                        result = [{"titleTag-textContent": title.textContent}];
+                        totalAccumulatedText = title.textContent;
                     }
                 }
                 else if(this.matches('object[type], embed[type]') && !this.matches('[role="none"], [role="presentation"]')) {
                     if(this.getAttribute('type').startsWith('image/') && this.hasAttribute('title')) {
-                        result = this.getAttribute('title');
+                        result = [{"title": this.getAttribute('title')}];
+                        totalAccumulatedText = this.getAttribute('title');
                     }
                 }
                 else if (this.matches(controls.nativebuttons) && !this.matches('[role="none"], [role="presentation"]')) { // COMMENT : Not allowed on button, input[type="button"], input[type="image"], input[type="reset"], input[type="submit"].
                     if (this.matches('input[type="image"]')) {
                         if (this.hasAttribute('alt')) {
-                            result = this.getAttribute('alt');
+                            result = [{"alt": this.getAttribute('alt')}];
+                            totalAccumulatedText = this.getAttribute('alt');
                         }
                         else if (this.hasAttribute('title')) {
                             /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
-                            result = this.getAttribute('title');
+                            result = [{"title": this.getAttribute('title')}];
+                            totalAccumulatedText = this.getAttribute('title');
                         }
                     }
                     else {
@@ -836,15 +864,19 @@ var getAccessibleName = function () {
                                 parentcssaftercontent = '';
                             }
                         }
-                        result = parentcssbeforecontent;
+
+                        result = [{"parentcssbeforecontent": parentcssbeforecontent}];
+                        totalAccumulatedText = parentcssbeforecontent;
                         if (this.matches('button')) {
                             var nodes = this.childNodes;
+
                             for (var i = 0; i < nodes.length; i++) {
-                                if (nodes[i].nodeType == Node.TEXT_NODE) {
+                                if (nodes[i].nodeType === 3) {
                                     // 2-G : The current node is a Text node, return its textual contents.
-                                    result += result.length === 0 ? nodes[i].nodeValue : ' '+nodes[i].nodeValue;
+                                    result.push({"textual-contents": nodes[i].textContent});
+                                    totalAccumulatedText += (totalAccumulatedText.length === 0) ? nodes[i].textContent : (' ' + nodes[i].textContent);
                                 }
-                                else if (nodes[i].nodeType == Node.ELEMENT_NODE && nodes[i].isNotExposedDueTo.length == 0) {
+                                else if (nodes[i].nodeType === 1 && nodes[i].getAttribute('data-tng-el-exposed') === "true") {
                                     // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
                                     var cssbeforecontent = '';
                                     var cssaftercontent = '';
@@ -859,20 +891,34 @@ var getAccessibleName = function () {
                                             cssaftercontent = cssaftercontent == 'none' ? '' : cssaftercontent.substring(1, cssaftercontent.length - 1);
                                         }
                                     }
-                                    if (this.matches('[data-labelbytraversal="true"]')) {
-                                        nodes[i].setAttribute('data-labelbytraversal', 'true');
+                                    if (this.matches('[data-tng-labelbytraversal="true"]')) {
+                                        nodes[i].setAttribute('data-tng-labelbytraversal', 'true');
                                     }
-                                    result += result.length === 0 ? cssbeforecontent + nodes[i].accessibleName + cssaftercontent : ' '+cssbeforecontent + nodes[i].accessibleName + cssaftercontent;
+
+                                    let tagName2h = nodes[i].tagName;
+                                    let tagName2hAN = nodes[i].fullAccessibleName;
+
+                                    result.push(
+                                        {"cssbeforecontent": cssbeforecontent},
+                                        {[tagName2h]: tagName2hAN},
+                                        {"cssaftercontent": cssaftercontent}
+                                    );
+                                    
+                                    totalAccumulatedText += (totalAccumulatedText.length === 0) ? (cssbeforecontent + tagName2hAN[0] + cssaftercontent) : (' '+cssbeforecontent + tagName2hAN[0] + cssaftercontent);
                                 }
                             }
                         }
                         else {
-                            result += result.length === 0 ? this.value : ' '+this.value;
+                            result.push({"value": this.value});
+                            totalAccumulatedText += totalAccumulatedText.length === 0 ? this.value : ' '+this.value;
                         }
-                        result += result.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
-                        if (result.trim() == '' && this.hasAttribute('title')) {
+                        result.push({"parentcssaftercontent": parentcssaftercontent});
+                        totalAccumulatedText += totalAccumulatedText.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
+
+                        if (totalAccumulatedText.trim() == '' && this.hasAttribute('title')) {
                             /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
-                            result = this.getAttribute('title');
+                            result = [{"title": this.getAttribute('title')}];
+                            totalAccumulatedText = this.getAttribute('title');
                         }
                     }
                 }
@@ -880,28 +926,36 @@ var getAccessibleName = function () {
                     var labels = this.labels;
                     for (var i = 0; i < labels.length; i++) {
                         if (!labels[i].matches('[role="none"], [role="presentation"]')) {
-                            result += result.length === 0 ? labels[i].accessibleName : ' '+labels[i].accessibleName;
+                            let an = labels[i].fullAccessibleName;
+                            result.push({"label": an});
+                            totalAccumulatedText += totalAccumulatedText.length === 0 ? an[0] : ' '+an[0];
                         }
                     }
 
                     if(labels.length === 0 && this.hasAttribute('title')) {
-                        result = this.getAttribute('title');
+                        result = [{"title": this.getAttribute('title')}];
+                        totalAccumulatedText = this.getAttribute('title');
                     }
                 }
                 else if (this.matches('fieldset, table') && !this.matches('[role="none"], [role="presentation"]')) {
                     var elementname = this.firstElementChild;
                     if (elementname && !elementname.matches('[role="none"], [role="presentation"]')) {
                         if (elementname.matches('fieldset legend, table caption')) {
-                            result = elementname.accessibleName;
+                            let an = elementname.fullAccessibleName;
+                            result = [{"firstChild-caption": an}];
+                            totalAccumulatedText = an[0];
                         }
                     }
-                    if (result.trim() == '' && this.hasAttribute('title')) {
+
+                    if (totalAccumulatedText.trim() == '' && this.hasAttribute('title')) {
                         /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
-                        result = this.getAttribute('title');
+                        result = [{"title": this.getAttribute('title')}];
+                        totalAccumulatedText = this.getAttribute('title');
                     }
                 }
                 else if (this.matches('iframe[title]') && !this.matches('[role="none"], [role="presentation"]')) {
-                    result = this.getAttribute('title');
+                    result = [{"title": this.getAttribute('title')}];
+                    totalAccumulatedText = this.getAttribute('title');
                 }
                 else if ((!this.hasAttribute('role') || this.matches('[role="none"], [role="presentation"]')) || this.matches(ARIA.nameFromContentSupported)) { // Name from Content (TODO : implement it in ARIA).
                     var controlsselectors = [];
@@ -928,13 +982,16 @@ var getAccessibleName = function () {
                             parentcssaftercontent = '';
                         }
                     }
-                    result = parentcssbeforecontent;
+
+                    result = [{"parentcssbeforecontent": parentcssbeforecontent}];
+                    totalAccumulatedText = parentcssbeforecontent;
                     for (var i = 0; i < nodes.length; i++) {
                         if (nodes[i].nodeType == Node.TEXT_NODE) {
                             // 2-G : The current node is a Text node, return its textual contents.
-                            result += result.length === 0 ? nodes[i].nodeValue : ' '+nodes[i].nodeValue;
+                            result.push({"textual-contents": nodes[i].textContent});
+                            totalAccumulatedText += totalAccumulatedText.length === 0 ? nodes[i].textContent : ' '+ nodes[i].textContent;
                         }
-                        else if (nodes[i].nodeType == Node.ELEMENT_NODE && nodes[i].isNotExposedDueTo.length == 0) {
+                        else if (nodes[i].nodeType == Node.ELEMENT_NODE && nodes[i].getAttribute('data-tng-el-exposed') === "true") {
                             // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
                             var cssbeforecontent = '';
                             var cssaftercontent = '';
@@ -955,41 +1012,55 @@ var getAccessibleName = function () {
                                 }
                             }
                             if (nodes[i].matches(controlsselectors)) {
-                                nodes[i].setAttribute('data-controlembeddedinlabel', 'true');
+                                nodes[i].setAttribute('data-tng-controlembeddedinlabel', 'true');
                             }
-                            if (this.matches('[data-labelbytraversal="true"]')) {
-                                nodes[i].setAttribute('data-labelbytraversal', 'true');
+                            if (this.matches('[data-tng-labelbytraversal="true"]')) {
+                                nodes[i].setAttribute('data-tng-labelbytraversal', 'true');
                             }
-                            result += result.length === 0 ? cssbeforecontent + nodes[i].accessibleName + cssaftercontent : ' '+cssbeforecontent + nodes[i].accessibleName + cssaftercontent;
+                            var tagName2h2 = nodes[i].tagName;
+                            let tagName2h2AN = nodes[i].fullAccessibleName;
+                            result.push(
+                                {"cssbeforecontent": cssbeforecontent},
+                                {[tagName2h2]: tagName2h2AN},
+                                {"cssaftercontent": cssaftercontent}
+                            );
+                            
+                            totalAccumulatedText += (totalAccumulatedText.length === 0) ? (cssbeforecontent + tagName2h2AN[0] + cssaftercontent) : (' '+cssbeforecontent + tagName2h2AN[0] + cssaftercontent);
                         }
                     }
-                    result += result.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
-                    if (result.trim() == '' && this.matches('a[href][title]')) {
+                    result.push({"parentcssaftercontent": parentcssaftercontent});
+                    totalAccumulatedText += totalAccumulatedText.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
+
+                    if (totalAccumulatedText.trim() == '' && this.matches('a[href][title]')) {
                         /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
-                        result = this.getAttribute('title');
+                        result = [{"title": this.getAttribute('title')}];
+                        totalAccumulatedText = this.getAttribute('title');
                     }
                 }
             }
         }
     }
-    this.removeAttribute('data-labelbytraversal');
-    this.removeAttribute('data-controlembeddedinlabel');
+    this.removeAttribute('data-tng-labelbytraversal');
+    this.removeAttribute('data-tng-controlembeddedinlabel');
 // 2-A (condition success) : The current node is hidden and is not directly referenced by aria-labelledby.
 // 2-B, 2-C, 2-D, 2-E, 2-F, 2-G, 2-H and 2-I : Otherwise...
-    return result.trim();
+    totalAccumulatedText.trim();
+    result.unshift(totalAccumulatedText);
+    this.setAttribute('data-tng-anobject', JSON.stringify(result));
+    return result;
 };
-if (!SVGElement.prototype.hasOwnProperty('accessibleName')) Object.defineProperty(SVGElement.prototype, 'accessibleName', { get: getAccessibleName });
-if (!HTMLElement.prototype.hasOwnProperty('accessibleName')) Object.defineProperty(HTMLElement.prototype, 'accessibleName', { get: getAccessibleName });
+
+if (!SVGElement.prototype.hasOwnProperty('fullAccessibleName')) Object.defineProperty(SVGElement.prototype, 'fullAccessibleName', { get: getAccessibleName });
+if (!HTMLElement.prototype.hasOwnProperty('fullAccessibleName')) Object.defineProperty(HTMLElement.prototype, 'fullAccessibleName', { get: getAccessibleName });
+
+var accessibleName = function () { return this.fullAccessibleName[0]; };
+if (!('accessibleName' in SVGElement.prototype)) SVGElement.prototype.accessibleName = accessibleName;
+if (!('accessibleName' in HTMLElement.prototype)) HTMLElement.prototype.accessibleName = accessibleName;
 
 // hasAccessibleName.
-var hasAccessibleName = function () { return this.accessibleName != ''; };
+var hasAccessibleName = function () { return this.fullAccessibleName[0].length > 0; };
 if (!('hasAccessibleName' in SVGElement.prototype)) SVGElement.prototype.hasAccessibleName = hasAccessibleName;
 if (!('hasAccessibleName' in HTMLElement.prototype)) HTMLElement.prototype.hasAccessibleName = hasAccessibleName;
-
-// getAccessibleNameImplementation.
-var getAccessibleNameImplementation = function () {};
-if (!('getAccessibleNameImplementation' in SVGElement.prototype)) SVGElement.prototype.getAccessibleNameImplementation = getAccessibleNameImplementation;
-if (!('getAccessibleNameImplementation' in HTMLElement.prototype)) HTMLElement.prototype.getAccessibleNameImplementation = getAccessibleNameImplementation;
 
 /* Gestion des tests. */
 function getXPath(element) {
@@ -1054,11 +1125,15 @@ function addResultSet(name, data) {
 }
 
 function filterTestsByStatus(statuses) {
-    if(statuses.length > 0) {
-        function matchFilters(test) {
-            return statuses.includes(test.type);
+    if(window.tanaguru && window.tanaguru.tests) {
+        if(statuses.length > 0) {
+            function matchFilters(test) {
+                return statuses.match(test.type);
+            }
+            window.tanaguru.tests = window.tanaguru.tests.filter(matchFilters);
+        } else {
+            window.tanaguru.tests = [];
         }
-        window.tanaguru.tests = window.tanaguru.tests.filter(matchFilters);
     }
 }
 
@@ -1087,9 +1162,10 @@ function removeDataTNG(element) {
     });
 }
 
-function manageOutput(element) {
+function manageOutput(element, an) {
     var status = element.status ? element.status : 'cantTell';
     element.status = undefined;
+    an = an ? element.fullAccessibleName : null;
 
     if(element.nodeType === 10) {
         var canBeReachedUsingKeyboardWith = [];
@@ -1113,13 +1189,13 @@ function manageOutput(element) {
 
         var e = document.createElement(fakeelement.tagName.toLowerCase());
         if (e && e.outerHTML.indexOf("/") != -1) {
-            if (fakeelement.innerHTML.length > 512) {
-                fakeelement.innerHTML = '[...]';
+            if (fakeelement.innerHTML.length > 300) {
+                fakeelement.innerHTML =  '[...]';
             }
         }
     }
 
-    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, xpath: e ? getXPath(element) : null, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isVisible: isVisible, isNotExposedDueTo: isNotExposedDueTo};
+    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, anDetails: an, xpath: e ? getXPath(element) : null, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isVisible: isVisible, isNotExposedDueTo: isNotExposedDueTo};
 }
 
 function createTanaguruTag(tag, status) {
@@ -1129,17 +1205,24 @@ function createTanaguruTag(tag, status) {
 }
 
 function createTanaguruTest(test) {
-    if (test.hasOwnProperty('status') && test.status == 'untested') { // Non testés mais référencés.
+    if (test.hasOwnProperty('status') && (test.status == 'untested' || test.status == 'inapplicable')) { // Non testés mais référencés.
         // Initialisation des tags.
         initTanaguru();
         if (test.hasOwnProperty('tags') && test.tags.constructor == Array) {
             for (var i = 0; i < test.tags.length; i++) {
                 createTanaguruTag(test.tags[i], test.status);
+                if(test.status == 'untested' && window.tanaguru.tags[test.tags[i]].status === 'inapplicable') {
+                    window.tanaguru.tags[test.tags[i]].status = 'untested';
+                }
             }
         }
         else {
             createTanaguruTag('others', test.status);
+            if(test.status == 'untested' && window.tanaguru.tags['others'].status === 'inapplicable') {
+                window.tanaguru.tags['others'].status = 'untested';
+            }
         }
+        
         // Chargement du résultat.
         var result = {
             name: test.name,
@@ -1180,7 +1263,7 @@ function createTanaguruTest(test) {
 
         if (elements) {
             // Statut du test par défaut.
-            var status = 'cantTell';
+            var status = 'inapplicable';
             elements = Array.from(elements);
 
             // Initialisation des tags.
@@ -1206,7 +1289,7 @@ function createTanaguruTest(test) {
                     elements = elements.filter(test.filter);
                 }
                 else {
-                    // Erreur : valeur de la propriété filter.
+                    console.error("The value of the filter propertie must be a function.");
                 }
             }
 
@@ -1236,15 +1319,24 @@ function createTanaguruTest(test) {
                 }
             }
             else {
+                if(test.hasOwnProperty('testStatus') && typeof test.testStatus === 'string') {
+                    let statusList = ['passed', 'cantTell', 'inapplicable', 'failed'];
+                    if(statusList.includes(test.testStatus)) {
+                        status = test.testStatus;
+                        elements.map(e => e.status = status);
+                    }
+                }
+
                 if (elements.length == 0) {
                     status = 'inapplicable'; // Voir si le statut "Non applicable" n'est possible que dans le cas d'un nombre d'éléments à vérifier.
                 }
             }
+
             var statuspriority = {
                 failed: 4,
                 passed: 3,
-                inapplicable: 2,
-                cantTell: 1,
+                cantTell: 2,
+                inapplicable: 1,
                 untested: 0
             };
 
@@ -1269,6 +1361,7 @@ function createTanaguruTest(test) {
             // Mises à jour des tags (statut du tag et nombre de résultats en erreur).
             if (test.hasOwnProperty('tags') && test.tags.constructor == Array) {
                 for (var i = 0; i < test.tags.length; i++) {
+                    if(status === 'inapplicable' && window.tanaguru.tags[test.tags[i]].status === 'untested') continue;
                     if (statuspriority[window.tanaguru.tags[test.tags[i]].status] < statuspriority[status]) {
                         window.tanaguru.tags[test.tags[i]].status = status;
                     }
@@ -1278,18 +1371,26 @@ function createTanaguruTest(test) {
                 }
             }
             else {
-                if (statuspriority[window.tanaguru.tags['others'].status] < statuspriority[status]) {
-                    window.tanaguru.tags['others'].status = status;
+                if(!(status === 'inapplicable' && window.tanaguru.tags['others'].status === 'untested')) {
+                    if (statuspriority[window.tanaguru.tags['others'].status] < statuspriority[status]) {
+                        window.tanaguru.tags['others'].status = status;
+                    }
+                    if (status == 'failed') {
+                        window.tanaguru.tags['others'].nbfailures += failedincollection ? failedincollection : (elements.length > 0 ? elements.length : 1);
+                    }
                 }
-                if (status == 'failed') {
-                    window.tanaguru.tags['others'].nbfailures += failedincollection ? failedincollection : (elements.length > 0 ? elements.length : 1);
-                }
+            }
+
+            let an = false;
+            if(test.tags && test.tags.includes('accessiblename')) {
+                an = true;
             }
 
             // Chargement du résultat.
             var outputelements = [];
             if(!test.hasOwnProperty('contrast')) {
-                outputelements = elements.map(e => manageOutput(e));
+                if(!an) outputelements = elements.map(e => manageOutput(e, false));
+                else outputelements = elements.map(e => manageOutput(e, true));
             }
             
             if(test.hasOwnProperty('contrast')) {
@@ -1328,6 +1429,7 @@ function createTanaguruTest(test) {
                 result.mark = test.mark;
             }
             result.tags = test.hasOwnProperty('tags') ? test.tags : ['others'];
+            
             if (test.hasOwnProperty('ressources')) {
                 result.ressources = test.ressources;
             }
@@ -3673,6 +3775,25 @@ if (!HTMLElement.prototype.hasOwnProperty('canBeReachedUsingKeyboardWith')) {
 }
 
 // TODO: fin DOM Extension.
+
+var isString1MatchString2 = function(string1, string2) {
+        string1 = string1.toLowerCase().trim();
+        string1 = string1.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        string1 = string1.replace(/[^a-z0-9\-_\s]/g, " ");
+        string1 = string1.replace(/\s{2,}/g, " ").trim();
+
+        string2 = string2.toLowerCase().trim();
+        string2 = string2.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        string2 = string2.replace(/[^a-z0-9\-_\s]/g, " ");
+        string2 = string2.replace(/\s{2,}/g, " ").trim();
+
+        if(string2.length === 0) return null
+        else if(string1.match(string2)) return true
+        else return false
+}
+
+if (!('isString1MatchString2' in HTMLElement.prototype)) HTMLElement.prototype.isString1MatchString2 = isString1MatchString2;
+if (!('isString1MatchString2' in SVGElement.prototype)) SVGElement.prototype.isString1MatchString2 = isString1MatchString2;
 
 var testsRessources = {
     'act': {

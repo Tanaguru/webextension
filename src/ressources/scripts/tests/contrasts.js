@@ -391,20 +391,14 @@ function getOpacity(element) {
  * @returns 
  */
  function checkStacking(element, parent) {
-	var position = window.getComputedStyle(element, null).getPropertyValue('position');
-
-	if(position !== 'static') {
-		if(getPosition(parent).top <= getPosition(element).top 
-		&& getPosition(parent).left <= getPosition(element).left 
-		&& getPosition(parent).bottom >= getPosition(element).bottom 
-		&& getPosition(parent).right >= getPosition(element).right) {
+	if(getPosition(parent).top <= getPosition(element).top 
+	&& getPosition(parent).left <= getPosition(element).left 
+	&& getPosition(parent).bottom >= getPosition(element).bottom 
+	&& getPosition(parent).right >= getPosition(element).right) {
 			return true;
-		}
-
-		return false;
 	}
 
-	return true;
+	return false;
 }
 
 /**
@@ -413,7 +407,6 @@ function getOpacity(element) {
  * @returns 
  */
 function getBg(element) {
-
 	while(element && element.tagName != 'HTML') {
 		if(window.getComputedStyle(element, null).getPropertyValue('background-image') !== 'none' 
 		|| window.getComputedStyle(element, null).getPropertyValue('background-color') !== 'rgba(0, 0, 0, 0)') {
@@ -445,6 +438,21 @@ function getPosition(element) {
 	};
 }
 
+function isPositioned(element) {
+	let elPos = window.getComputedStyle(element, null).getPropertyValue('position');
+	if(elPos != 'static' && elPos != 'relative') return true;
+	else {
+		var parent = element.parentNode;
+		var positionned = false;
+		while(parent && parent.tagName != 'HTML' && !positionned) {
+			let parentPos = window.getComputedStyle(parent, null).getPropertyValue('position');
+			if(parentPos != 'static' && parentPos != 'relative') positionned = true
+			else parent = parent.parentNode;
+		}
+		return positionned;
+	}
+}
+
 /**
  ** Get final results (foreground, background, ratio, visibility)
  * @param {node} element 
@@ -453,8 +461,15 @@ function getPosition(element) {
 function getResults(element, opacity) {
 	var bg = getBg(element);
 	var position = bg ? checkStacking(element, bg) : null;
-	var bgOpacity = bg.hasAttribute('data-tng-opacity') ? bg.getAttribute('data-tng-opacity') : getOpacity(bg);
+	var bgOpacity = bg ? (bg.hasAttribute('data-tng-opacity') ? bg.getAttribute('data-tng-opacity') : getOpacity(bg)) : null;
 
+	if(isPositioned(element)) {
+		return {
+			background: null,
+			ratio: null,
+			visible: element.getAttribute('data-tng-el-visible') === 'true' ? true : false
+		}
+	}
 	// if the bg isn't opaque
 	if(position && (bgOpacity < 1 || window.getComputedStyle(bg, null).getPropertyValue('background-image').match(/rgba\(/) || window.getComputedStyle(bg, null).getPropertyValue('background-color').match(/rgba\(/))) {
 		var parent = getBg(bg.parentNode);
@@ -480,47 +495,63 @@ function getResults(element, opacity) {
 		var bgColors = getBgColor(bg, bgOpacity, null);
 	}
 
-	if(bgColors && bgColors !== 'image') {
-		var textColor = window.getComputedStyle(element, null).getPropertyValue('color');
-		var colors = null;
-
-		if(window.getComputedStyle(element, null).getPropertyValue('text-shadow') === 'none') {
-			// get RGB text color
-			if(textColor.match(/rgb\(/)) {
-				if(opacity < 1) {
-					var colorValues = textColor.substr(4, textColor.length - 1).split(',');
-					var R = parseInt(colorValues[0].trim());
-					var G = parseInt(colorValues[1].trim());
-					var B = parseInt(colorValues[2].trim());
-					textColor = 'rgba('+R+','+G+','+B+','+1+')';
+	if(bgColors) {
+		if(bgColors !== 'image') {
+			var textColor = window.getComputedStyle(element, null).getPropertyValue('color');
+			if(window.getComputedStyle(element, null).getPropertyValue('-webkit-text-stroke-width') !== '0px') {
+				if(window.getComputedStyle(element, null).getPropertyValue('-webkit-text-stroke-color') !== 'rgba(0, 0, 0, 0)') {
+					textColor = window.getComputedStyle(element, null).getPropertyValue('-webkit-text-stroke-color');
+				}
+			}
+			var colors = null;
+	
+			if(window.getComputedStyle(element, null).getPropertyValue('text-shadow') === 'none') {
+				// get RGB text color
+				if(textColor.match(/rgb\(/)) {
+					if(opacity < 1) {
+						var colorValues = textColor.substr(4, textColor.length - 1).split(',');
+						var R = parseInt(colorValues[0].trim());
+						var G = parseInt(colorValues[1].trim());
+						var B = parseInt(colorValues[2].trim());
+						textColor = 'rgba('+R+','+G+','+B+','+1+')';
+						colors = getRGBA(textColor, bgColors, opacity);
+					} else {
+						colors = getRGB(textColor);
+					}
+				} else if(textColor.match(/rgba\(/)) {
 					colors = getRGBA(textColor, bgColors, opacity);
 				} else {
-					colors = getRGB(textColor);
+					return null;
 				}
-			} else if(textColor.match(/rgba\(/)) {
-				colors = getRGBA(textColor, bgColors, opacity);
+	
+				var ratio = getRatio(colors, bgColors);
+	
+				return {
+					color: colors,
+					background: bgColors,
+					ratio: ratio,
+					visible: (element.getAttribute('data-tng-el-visible') === 'true' ? true : false && ratio > 1) ? true : false
+				}
 			} else {
-				return null;
-			}
-
-			var ratio = getRatio(colors, bgColors);
-
-			return {
-				background: bgColors[0],
-				ratio: ratio,
-				visible: (element.getAttribute('data-tng-el-visible') === 'true' ? true : false && ratio > 1) ? true : false
+				return {
+					color: window.getComputedStyle(element, null).getPropertyValue('text-shadow').match(/rgba?\([^)]+\)/g),
+					background: bgColors,
+					ratio: null,
+					visible: element.getAttribute('data-tng-el-visible') === 'true' ? true : false
+				}
 			}
 		} else {
 			return {
-				background: bgColors[0],
+				background: bgColors,
 				ratio: null,
 				visible: element.getAttribute('data-tng-el-visible') === 'true' ? true : false
 			}
 		}
 		
+		
 	} else {
 		return {
-			background: bgColors,
+			background: null,
 			ratio: null,
 			visible: element.getAttribute('data-tng-el-visible') === 'true' ? true : false
 		}
@@ -596,19 +627,19 @@ function getTextNodeContrast() {
 				text: cn.nodeValue,
 				size: size,
 				weight: weight,
-				foreground: window.getComputedStyle(element, null).getPropertyValue('color'),
-				background: results.background,
-				ratio: results.ratio,
+				foreground: (results && results.color) ? results.color : [window.getComputedStyle(element, null).getPropertyValue('color')],
+				background: results ? results.background : null,
+				ratio: results ? results.ratio : null,
 				xpath: getXPath(element),
-				valid: validContrast(size, weight, results.ratio),
-				isVisible: results.visible
+				valid: validContrast(size, weight, results ? results.ratio : null),
+				isVisible: results ? results.visible : null
 			};
 
 			if(o.valid.target == 4.5) {
 				if(o.isVisible && !isDisabled && o.weight < 700) {
 					if(o.valid.status == 2) {
 						textNodeList.valid_45.push(o);
-					} else if(o.valid.status == 1) {
+					} else if(o.valid.status == 1 && o.ratio != 1) {
 						textNodeList.invalid_45.push(o);
 					} else {
 						textNodeList.cantTell_45.push(o);
@@ -616,7 +647,7 @@ function getTextNodeContrast() {
 				} else if(o.isVisible && !isDisabled) {
 					if(o.valid.status == 2) {
 						textNodeList.valid_45G.push(o);
-					} else if(o.valid.status == 1) {
+					} else if(o.valid.status == 1 && o.ratio != 1) {
 						textNodeList.invalid_45G.push(o);
 					} else {
 						textNodeList.cantTell_45G.push(o);
@@ -624,7 +655,7 @@ function getTextNodeContrast() {
 				} else if(o.weight < 700) {
 					if(o.valid.status == 2) {
 						textNodeList.valid_45V.push(o);
-					} else if(o.valid.status == 1) {
+					} else if(o.valid.status == 1 && o.ratio != 1) {
 						textNodeList.invalid_45V.push(o);
 					} else {
 						textNodeList.cantTell_45V.push(o);
@@ -632,7 +663,7 @@ function getTextNodeContrast() {
 				} else {
 					if(o.valid.status == 2) {
 						textNodeList.valid_45GV.push(o);
-					} else if(o.valid.status == 1) {
+					} else if(o.valid.status == 1 && o.ratio != 1) {
 						textNodeList.invalid_45GV.push(o);
 					} else {
 						textNodeList.cantTell_45GV.push(o);
@@ -642,7 +673,7 @@ function getTextNodeContrast() {
 				if(o.isVisible && !isDisabled && o.weight < 700) {
 					if(o.valid.status == 2) {
 						textNodeList.valid_3.push(o);
-					} else if(o.valid.status == 1) {
+					} else if(o.valid.status == 1 && o.ratio != 1) {
 						textNodeList.invalid_3.push(o);
 					} else {
 						textNodeList.cantTell_3.push(o);
@@ -650,7 +681,7 @@ function getTextNodeContrast() {
 				} else if(o.isVisible && !isDisabled) {
 					if(o.valid.status == 2) {
 						textNodeList.valid_3G.push(o);
-					} else if(o.valid.status == 1) {
+					} else if(o.valid.status == 1 && o.ratio != 1) {
 						textNodeList.invalid_3G.push(o);
 					} else {
 						textNodeList.cantTell_3G.push(o);
@@ -658,7 +689,7 @@ function getTextNodeContrast() {
 				} else if(o.weight < 700) {
 					if(o.valid.status == 2) {
 						textNodeList.valid_3V.push(o);
-					} else if(o.valid.status == 1) {
+					} else if(o.valid.status == 1 && o.ratio != 1) {
 						textNodeList.invalid_3V.push(o);
 					} else {
 						textNodeList.cantTell_3V.push(o);
@@ -666,7 +697,7 @@ function getTextNodeContrast() {
 				} else {
 					if(o.valid.status == 2) {
 						textNodeList.valid_3GV.push(o);
-					} else if(o.valid.status == 1) {
+					} else if(o.valid.status == 1 && o.ratio != 1) {
 						textNodeList.invalid_3GV.push(o);
 					} else {
 						textNodeList.cantTell_3GV.push(o);
