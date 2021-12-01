@@ -2759,16 +2759,9 @@ tanaguruTestsList.push({
     testStatus: "failed",
     description:"Ces liens possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
     filter: function(item) {
-        let an = item.accessibleName().toLowerCase().trim();
-        let titleLink = item.getAttribute('title').toLowerCase().trim();
-        an = an.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-        an = an.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
-        an = an.replace(/\s{2,}/g, " ");
-        titleLink = titleLink.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-        titleLink = titleLink.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
-        titleLink = titleLink.replace(/\s{2,}/g, " ");
-
-        return !titleLink.match(an);
+        let anMatch = isString1MatchString2(item.getAttribute('title'), item.accessibleName());
+        if(anMatch === null) return;
+        return !anMatch;
     },
     mark: {attrs: ['title']},
     tags: ['a11y', 'links', 'accessiblename'],
@@ -2860,18 +2853,9 @@ tanaguruTestsList.push({
     testStatus: "failed",
     description:"Ces liens images possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
     filter: function(item) {
-        let an = item.accessibleName().toLowerCase().trim();
-        let titleLink = item.getAttribute('title').toLowerCase().trim();
-
-        an = an.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-        an = an.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
-        an = an.replace(/\s{2,}/g, " ");
-
-        titleLink = titleLink.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-        titleLink = titleLink.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
-        titleLink = titleLink.replace(/\s{2,}/g, " ");
-
-        return !titleLink.match(an);
+        let anMatch = isString1MatchString2(item.getAttribute('title'), item.accessibleName());
+        if(anMatch === null) return;
+        return !anMatch;
     },
     mark: {attrs: ['title']},
     tags: ['a11y', 'links', 'accessiblename'],
@@ -2956,18 +2940,9 @@ tanaguruTestsList.push({
     testStatus: "failed",
     description:"Ces liens composites possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
     filter: function(item) {
-        let an = item.accessibleName().toLowerCase().trim();
-        let titleLink = item.getAttribute('title').toLowerCase().trim();
-        
-        an = an.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-        an = an.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
-        an = an.replace(/\s{2,}/g, " ");
-        
-        titleLink = titleLink.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-        titleLink = titleLink.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
-        titleLink = titleLink.replace(/\s{2,}/g, " ");
-
-        return !titleLink.match(an);
+        let anMatch = isString1MatchString2(item.getAttribute('title'), item.accessibleName());
+        if(anMatch === null) return;
+        return !anMatch;
     },
     mark: {attrs: ['title']},
     tags: ['a11y', 'links', 'accessiblename'],
@@ -3046,20 +3021,11 @@ tanaguruTestsList.push({
             });
 
             if(visibleName.length == 0) return;
-            visibleName = visibleName.toLowerCase().trim();
-            visibleName = visibleName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-            visibleName = visibleName.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
-            visibleName = visibleName.replace(/\s{2,}/g, " ");
 
-            if(visibleName.length == 0) return;
-            var linkAccessibleName = item.accessibleName().toLowerCase().trim();
-            linkAccessibleName = linkAccessibleName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-            linkAccessibleName = linkAccessibleName.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
-            linkAccessibleName = linkAccessibleName.replace(/\s{2,}/g, " ");
-            
-            if(!linkAccessibleName.match(visibleName)) {
-                return true;
-            } else {
+            let anMatch = isString1MatchString2(item.accessibleName(), visibleName);
+            if(anMatch === null) return
+            else if(!anMatch) return true
+            else {
                 item.setAttribute('data-tng-link-names-match', 'true');
                 return;
             }
@@ -3221,22 +3187,13 @@ tanaguruTestsList.push({
             });
 
             if(visibleName.length == 0) return;
-            visibleName = visibleName.toLowerCase().trim();
-            visibleName = visibleName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-            visibleName = visibleName.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
-            visibleName = visibleName.replace(/\s{2,}/g, " ");
 
-            if(visibleName.length == 0) return;
-            var buttonAccessibleName = item.accessibleName().toLowerCase().trim();
-            buttonAccessibleName = buttonAccessibleName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-            buttonAccessibleName = buttonAccessibleName.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
-            buttonAccessibleName = buttonAccessibleName.replace(/\s{2,}/g, " ");
-            
-            if(buttonAccessibleName.match(visibleName)) {
+            let anMatch = isString1MatchString2(item.accessibleName(), visibleName);
+            if(anMatch === null) return
+            else if(!anMatch) return true
+            else {
                 item.setAttribute('data-tng-btn-nameMatch', 'true');
                 return;
-            } else {
-                return true;
             }
         }
     },
@@ -4763,18 +4720,10 @@ tanaguruTestsList.push({
     name: 'Liste des champs de formulaire dont le nom accessible contient l\'intitulé visible.',
     query: '[data-tng-visible-label]',
     filter: function (item) {
-        let visibleName = item.getAttribute('data-tng-text-label').toLowerCase().trim();
-        visibleName = visibleName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-        visibleName = visibleName.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
-        visibleName = visibleName.replace(/\s{2,}/g, " ");
-
-        let accessibleName = item.accessibleName().toLowerCase().trim();
-        accessibleName = accessibleName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-        accessibleName = accessibleName.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
-        accessibleName = accessibleName.replace(/\s{2,}/g, " ");
-        if(accessibleName.match(visibleName)) {
-            return true;
-        } else {
+        let anMatch = isString1MatchString2(item.accessibleName(), item.getAttribute('data-tng-text-label'));
+        if(anMatch === null) return
+        else if(anMatch) return true
+        else {
             item.setAttribute('data-tng-ANinclude-visibleLabel', 'false');
             return;
         }
@@ -5029,22 +4978,13 @@ tanaguruTestsList.push({
             });
 
             if(visibleName.length == 0) return;
-            visibleName = visibleName.toLowerCase().trim();
-            visibleName = visibleName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-            visibleName = visibleName.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
-            visibleName = visibleName.replace(/\s{2,}/g, " ");
 
-            if(visibleName.length == 0) return;
-            var buttonAccessibleName = item.accessibleName().toLowerCase().trim();
-            buttonAccessibleName = buttonAccessibleName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-            buttonAccessibleName = buttonAccessibleName.replace(/[^a-zA-Z0-9\-_\s]/g, " ");
-            buttonAccessibleName = buttonAccessibleName.replace(/\s{2,}/g, " ");
-            
-            if(buttonAccessibleName.match(visibleName)) {
+            let anMatch = isString1MatchString2(item.accessibleName(), visibleName);
+            if(anMatch === null) return
+            else if(!anMatch) return true
+            else {
                 item.setAttribute('data-tng-button-namesMatch', 'true');
                 return;
-            } else {
-                return true;
             }
         }
     },

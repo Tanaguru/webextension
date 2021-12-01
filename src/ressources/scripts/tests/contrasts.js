@@ -391,20 +391,14 @@ function getOpacity(element) {
  * @returns 
  */
  function checkStacking(element, parent) {
-	var position = window.getComputedStyle(element, null).getPropertyValue('position');
-
-	if(position !== 'static') {
-		if(getPosition(parent).top <= getPosition(element).top 
-		&& getPosition(parent).left <= getPosition(element).left 
-		&& getPosition(parent).bottom >= getPosition(element).bottom 
-		&& getPosition(parent).right >= getPosition(element).right) {
+	if(getPosition(parent).top <= getPosition(element).top 
+	&& getPosition(parent).left <= getPosition(element).left 
+	&& getPosition(parent).bottom >= getPosition(element).bottom 
+	&& getPosition(parent).right >= getPosition(element).right) {
 			return true;
-		}
-
-		return false;
 	}
 
-	return true;
+	return false;
 }
 
 /**
@@ -413,7 +407,6 @@ function getOpacity(element) {
  * @returns 
  */
 function getBg(element) {
-
 	while(element && element.tagName != 'HTML') {
 		if(window.getComputedStyle(element, null).getPropertyValue('background-image') !== 'none' 
 		|| window.getComputedStyle(element, null).getPropertyValue('background-color') !== 'rgba(0, 0, 0, 0)') {
@@ -445,6 +438,21 @@ function getPosition(element) {
 	};
 }
 
+function isPositioned(element) {
+	let elPos = window.getComputedStyle(element, null).getPropertyValue('position');
+	if(elPos != 'static' && elPos != 'relative') return true;
+	else {
+		var parent = element.parentNode;
+		var positionned = false;
+		while(parent && parent.tagName != 'HTML' && !positionned) {
+			let parentPos = window.getComputedStyle(parent, null).getPropertyValue('position');
+			if(parentPos != 'static' && parentPos != 'relative') positionned = true
+			else parent = parent.parentNode;
+		}
+		return positionned;
+	}
+}
+
 /**
  ** Get final results (foreground, background, ratio, visibility)
  * @param {node} element 
@@ -455,6 +463,13 @@ function getResults(element, opacity) {
 	var position = bg ? checkStacking(element, bg) : null;
 	var bgOpacity = bg ? (bg.hasAttribute('data-tng-opacity') ? bg.getAttribute('data-tng-opacity') : getOpacity(bg)) : null;
 
+	if(isPositioned(element)) {
+		return {
+			background: null,
+			ratio: null,
+			visible: element.getAttribute('data-tng-el-visible') === 'true' ? true : false
+		}
+	}
 	// if the bg isn't opaque
 	if(position && (bgOpacity < 1 || window.getComputedStyle(bg, null).getPropertyValue('background-image').match(/rgba\(/) || window.getComputedStyle(bg, null).getPropertyValue('background-color').match(/rgba\(/))) {
 		var parent = getBg(bg.parentNode);
