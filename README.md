@@ -14,13 +14,18 @@ Outil d'évaluation de l'accessibilité Web (et plus).
 * Date de mise à jour du document : 30/07/2021
 
 ## Sommaire
-- [Installer la webextension](#installer-la-webextension)
+- [Installer la webextension sur votre navigateur](#installer-la-webextension-sur-votre-navigateur)
+- [Installer la webextension en local](#installer-la-webextension-en-local)
 - [Utiliser la webextension](#utiliser-la-webextension)
 - [Ecrire un test](#écrire-un-test)
 - [Mettre à jour le numéro de version](#mettre-à-jour-le-numéro-de-version)
 
-## Installer la webextension
+## Installer la webextension sur votre navigateur
+La webextension est disponible sur les stores de Mozilla Firefox et Google Chrome.
+- [webextension Tanaguru pour Firefox](https://addons.mozilla.org/fr/firefox/addon/tanaguru-webext)
+- [webextension Tanaguru pour Chrome](https://chrome.google.com/webstore/detail/tanaguru-webext/hhopdkekcmkdfpdjbpajmmfbheglcaac)
 
+## Installer la webextension en local
 1. **Télécharger ou cloner le projet** ici : [répertoire du projet](https://github.com/Tanaguru/webextension)
 2. Pour installer la webextension, vous aurez besoin de **télécharger et installer Node.js**. [Page de téléchargement de Node.js](https://nodejs.org/fr/download/)
 3. **Installer les dépendances du projet et effectuer le "build"** : 
@@ -40,7 +45,7 @@ Sur cette page, activez le lien **« Ce Firefox »**.
 
 ![](README/install1-2.png)
 
-Sur cette page, activez le bouton **« Charger un module temporaire »**. Une boîte de dialogue de fichier s’affiche alors. Depuis cette boîte, sélectionnez sur votre disque local, le fichier **« manifest.json »** dans le dossier "/webextension/dist/firefox/tanaguru-rgaa4-firefox-1.3.0" pour la version RGAA ou "/webextension/dist/firefox/tanaguru-wcag-firefox-1.3.0" pour la version WCAG. Cette sélection termine l’installation de la webextension.
+Sur cette page, activez le bouton **« Charger un module temporaire »**. Une boîte de dialogue de fichier s’affiche alors. Depuis cette boîte, sélectionnez sur votre disque local, le fichier **« manifest.json »** dans le dossier "/webextension/dist/tanaguru-rgaa4-x.x.x" pour la version RGAA ou "/webextension/dist/tanaguru-wcag-x.x.x" pour la version WCAG. Cette sélection termine l’installation de la webextension.
 
 ![](README/install2.png)
 
@@ -57,7 +62,7 @@ Sur cette page activez le **mode développeur** puis cliquez sur le bouton **"ch
 Une boite de dialogue de fichier s'affiche. 
 ![boite de dialogue de fichier](README/installChrome-2.png)
 
-Depuis cette boîte, sélectionnez sur votre disque local, le dossier "/webextension/dist/chrome/tanaguru-rgaa4-chrome-1.3.0" pour la version RGAA ou "/webextension/dist/chrome/tanaguru-wcag-chrome-1.3.0" pour la version WCAG. Cette sélection termine l’installation de la webextension.
+Depuis cette boîte, sélectionnez sur votre disque local, le dossier "/webextension/dist/tanaguru-rgaa4-x.x.x" pour la version RGAA ou "/webextension/dist/tanaguru-wcag-x.x.x" pour la version WCAG. Cette sélection termine l’installation de la webextension.
 
 ## Utiliser la webextension
 
@@ -73,11 +78,13 @@ Accès à l'outil de développement sur Firefox : **« Menu > Outils supplément
 
 Accès à l'outil de développement sur Chrome : **« Menu > Plus d'outils > Outils de développement»** 
 
-Puis dans l'outil de développement activez l’onglet **« Tanaguru »**.
+Puis dans l'outil de développement activez l’onglet **« Tanaguru Webext RGAA/WCAG»**.
 
 ![](README/use2.png)
+Nous sommes ici sur la page d'accueil de la webextension, d'ici vous pouvez personnaliser votre analyse puis démarrer l'analyse de la page dans l'onglet actif.
+Activez le bouton **« Analyser cette page »**, vous arriver sur le tableau de bord. Selon la « complexité » du DOM de la page à analyser, les premiers résultats peuvent mettre un peu de temps avant de s'afficher.
 
-Activez le bouton **« Analyser cette page »**. Selon la « complexité » du DOM de la page à analyser, un message peut vous demander si vous souhaitez « Arrêter le script » ou **« Patienter »** (choisissez cette option pour continuer). Les résultats s’affichent enfin en lieu et place du bouton « Analyser cette page ».
+Depuis le tableau de bord vous pouvez relancer la même analyse (avec les mêmes filtres activés) ou revenir sur la page d'accueil pour configurer une nouvelle analyse.
 
 ![](README/use3.png)
 
@@ -93,15 +100,17 @@ Chaque résultat est accompagné de trois boutons :
 
 *Mise à jour de la syntaxe d'écriture d'un test (30/07/2021).*
 
-L’écriture d’un test RGAA s’effectue depuis le fichier Javascript **« /src/references/rgaa4.js »**.
+L’écriture d’un test RGAA s’effectue depuis le fichier Javascript **« /src/references/rgaa4/{thématique}.js »**.
 
-L’écriture d’un test WCAG s’effectue depuis le fichier Javascript **« /src/references/wcag.js »**.
+L’écriture d’un test WCAG s’effectue depuis le fichier Javascript **« /src/references/wcag/wcag.js »**.
 
 ### Fonction `createTanaguruTest`
 
 La fonction `createTanaguruTest` vous permet de créer un nouveau test.
 
 Cette fonction prend en paramètre un objet JSON permettant de définir les différentes caractéristiques du test.
+
+Un test ne peut avoir que l'une des propriétés ("status" OU "testStatus" OU "expectedNbElements).
 
 ```
 createTanaguruTest({});
@@ -112,11 +121,14 @@ createTanaguruTest({});
 | :-- | :-- | :-- |
 | lang | Langue de rédaction du test. | String. |
 | name | Intitulé du test. | String. |
+| status | Permet de définir le test comme "non testé" | String (untested) |
 | query | Sélecteurs CSS permettant de définir l'échantillon. | String. |
 | contrast | Récupérer une liste de noeuds texte, traitée dans le script contrast.js | String (nom de l'index du tableau). |
 | code | Récupérer la liste des noeuds avec un ID dupliqué | String ("id"). |
 | node | Récupérer un noeud non accessible via la propriété query | Node (ex: document.doctype). |
+| testStatus | Définir le statut des éléments de l'échantillon | String (passed/failed/cantTell/inapplicable) |
 | filter | Fonction de filtrage permettant de restreindre l'échantillon. | Function. |
+| analyzeElements | Fonction permettant d'agir sur l'ensemble de l'échantillon (après la fonction de filtre) | Function. |
 | expectedNbElements | Nombre d'éléments attendus dans l'échantillon (précis ou compris entre deux bornes) permettant de valider ou d'invalider le test. | Integer ou Object (avec propriétés min (Integer), max (Integer) ou les deux). |
 | explanations | Explications associées aux statuts du test. | Object (avec propriétés passed (String) et failed (String)). |
 | mark | Application de mises en surbrillance d'attributs dans les passages de code dans l'interface des résultats. | Object (avec propriété attrs (Array)). |
