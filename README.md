@@ -11,7 +11,7 @@ Outil d'évaluation de l'accessibilité Web (et plus).
 * Auteur : Tanaguru
 * Projet : Tanaguru Webextension (Firefox et Chrome)
 * Date de rédaction du document : 26/02/2018
-* Date de mise à jour du document : 30/07/2021
+* Date de mise à jour du document : 03/12/2021
 
 ## Sommaire
 - [Installer la webextension sur votre navigateur](#installer-la-webextension-sur-votre-navigateur)
@@ -82,7 +82,7 @@ Puis dans l'outil de développement activez l’onglet **« Tanaguru Webext RGAA
 
 ![](README/use2.png)
 Nous sommes ici sur la page d'accueil de la webextension, d'ici vous pouvez personnaliser votre analyse puis démarrer l'analyse de la page dans l'onglet actif.
-Activez le bouton **« Analyser cette page »**, vous arriver sur le tableau de bord. Selon la « complexité » du DOM de la page à analyser, les premiers résultats peuvent mettre un peu de temps avant de s'afficher.
+Activez le bouton **« Analyser cette page »**, le tableau de bord s'affiche. Selon la « complexité » du DOM de la page à analyser, les premiers résultats peuvent mettre un peu de temps avant de s'afficher.
 
 Depuis le tableau de bord vous pouvez relancer la même analyse (avec les mêmes filtres activés) ou revenir sur la page d'accueil pour configurer une nouvelle analyse.
 
@@ -98,7 +98,7 @@ Chaque résultat est accompagné de trois boutons :
 
 ## Écrire un test
 
-*Mise à jour de la syntaxe d'écriture d'un test (30/07/2021).*
+*Mise à jour de la syntaxe d'écriture d'un test (03/12/2021).*
 
 L’écriture d’un test RGAA s’effectue depuis le fichier Javascript **« /src/references/rgaa4/{thématique}.js »**.
 
@@ -128,7 +128,7 @@ createTanaguruTest({});
 | node | Récupérer un noeud non accessible via la propriété query | Node (ex: document.doctype). |
 | testStatus | Définir le statut des éléments de l'échantillon | String (passed/failed/cantTell/inapplicable) |
 | filter | Fonction de filtrage permettant de restreindre l'échantillon. | Function. |
-| analyzeElements | Fonction permettant d'agir sur l'ensemble de l'échantillon (après la fonction de filtre) | Function. |
+| analyzeElements | Fonction permettant de traiter l'ensemble de l'échantillon (exécuté après la fonction de filtre) | Function. |
 | expectedNbElements | Nombre d'éléments attendus dans l'échantillon (précis ou compris entre deux bornes) permettant de valider ou d'invalider le test. | Integer ou Object (avec propriétés min (Integer), max (Integer) ou les deux). |
 | explanations | Explications associées aux statuts du test. | Object (avec propriétés passed (String) et failed (String)). |
 | mark | Application de mises en surbrillance d'attributs dans les passages de code dans l'interface des résultats. | Object (avec propriété attrs (Array)). |
@@ -146,13 +146,14 @@ createTanaguruTest({
 	lang: 'fr',
 	name: "Liens s'ouvrant dans des nouvelles fenêtres.",
 	query: 'a[href][target="_blank"]:not([role])',
+	testStatus: "cantTell",
 	mark: { attrs: ['target'] },
 	tags: ['a11y', 'links'],
 	ressources: { 'rgaa': ['13.2.1'] }
 });
 ````
 
-Note : l'absence des propriétés ``expectedNbElements`` et ``explanations`` fait que le test sera indiqué comme à expertiser.
+Note : La propriété ``testStatus: "cantTell"`` fait que le test sera indiqué comme à expertiser.
 
 #### Liens avec attributs ``title`` vides
 
@@ -175,11 +176,9 @@ createTanaguruTest({
 	tags: ['a11y', 'links'],
 	ressources: { 'rgaa': ['6.2.1', '6.2.2', '6.2.3'] }
 });
-`````
+````
 
 ---
-
-![](README/write.png)
 
 ## Mettre à jour le numéro de version
 ### VERSION.txt
