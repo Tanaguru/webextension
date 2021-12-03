@@ -33,3 +33,7 @@
 - new feature : add testStatus propertie in test object
 - fixes some bugs
 
+## 3.1.0
+- update the project structure
+- update Readme files
+

@@ -2,7 +2,7 @@
 
 ![](README/tanaguru.png)
 
-[Clique ici pour lire la version en français](/README.md)
+[Cliquer ici pour lire la version en français](/README.md)
 
 Web accessibility evaluation tool (and more).
 
@@ -11,17 +11,22 @@ Web accessibility evaluation tool (and more).
 * Author : Tanaguru
 * Project : Tanaguru Webextension (Firefox and Chrome)
 * Date the document was written : 26/02/2018
-* Document update date : 30/07/2021
+* Document update date : 03/12/2021
 
 ## Summary
-- [Install the webextension](#install-the-webextension)
+- [Install the webextension on your browser](#install-the-webextension-on-your-browser)
+- [Install the webextension locally](#install-the-webextension-locally)
 - [Use the webextension](#use-the-webextension)
 - [Write a test](#write-a-test)
 - [Update the version number](#update-the-version-number)
 
-## Install the webextension
+## Install the webextension on your browser
+The webextension is available on the Mozilla Firefox and Google Chrome stores.
+- [Tanaguru webextension for Firefox](https://addons.mozilla.org/en-US/firefox/addon/tanaguru-webext)
+- [Tanaguru webextension for Chrome](https://chrome.google.com/webstore/detail/tanaguru-webext/hhopdkekcmkdfpdjbpajmmfbheglcaac)
 
-1. **Download or clone the project** ihereci : [project directory](https://github.com/Tanaguru/webextension)
+## Install the webextension locally
+1. **Download or clone the project** here : [project directory](https://github.com/Tanaguru/webextension)
 2. To install the webextension, you will need to **download and install Node.js**. [Download page of Node.js](https://nodejs.org/en/download/)
 3. **Install the project dependencies and do the "build"** : 
    - access the root folder of the project with a terminal (powershell, git bash...) or open the project with your code editor and lauch the terminal.
@@ -62,7 +67,7 @@ From this box, select on your local disk, the folder "/webextension/dist/chrome/
 
 ## Use the webextension
 
-Once the installation is done, a button **"Tanaguru "** appears in the browser toolbar. This button allows the user to know the version of the webextension, the procedure to start the tests and the access to the link allowing to consult the Tanaguru website for more information.
+Once the installation is done, a button **"Tanaguru"** appears in the browser toolbar. This button allows the user to know the version of the webextension, the procedure to start the tests and the access to the link allowing to consult the Tanaguru website for more information.
 
 ![webextension popin](README/use1-en.png)
 
@@ -70,21 +75,24 @@ To start the tests, **go to the page to be analyzed**.
 
 Open the development tool. (keyboard shortcut: **ctrl+shift+i**)
 
-Access to the development tool on Firefox : **« Menu > More tools > Web Developer Tools»** 
+Access to the development tool on Firefox : **« Menu > More tools > Web Developer Tools »** 
 
-Access to the development tool on Chrome : **« Menu > More tools > Developer tools»** 
+Access to the development tool on Chrome : **« Menu > More tools > Developer tools »** 
 
-Then in the development tool activate the tab **« Tanaguru »**.
+Then in the development tool activate the tab **« Tanaguru webext RGAA/WCAG »**.
 
 ![tanaguru tab in developer tools](README/use2-en.png)
 
-Activate the button **« Analyser cette page »**. Depending on the « complexity » of the DOM of the page to be analyzed, a message may ask you if you want to « Arrêter le script » ou **« Patienter »** (choose "Patientez" to continue). The results are finally displayed instead of the « Analyser cette page » button.
+We are here on the homepage of the webextension, from here you can customize your analysis and then start the analysis of the page in the active tab.
+Activate the button **« Analyser cette page »**, the dashboard is displayed. Depending on the "complexity" of the DOM of the page to be analyzed, the first results may take some time to appear.
+
+From the dashboard you can restart the same analysis (with the same filters activated) or return to the home page to configure a new analysis.
 
 ![webextension analysis results](README/use3-en.png)
 
 Each result has three buttons :
 
-![](README/use4.png)
+![](README/use4-en.png)
 
 * **« Highlight on page »** allows you to apply a particular presentation to visually highlight the element on the page.
 * **« Reveal in Inspector »** allows you to identify and select the corresponding HTML node in the page's inspector.
@@ -92,7 +100,7 @@ Each result has three buttons :
 
 ## Write a test
 
-*Update of the syntax for writing a test (30/07/2021).*
+*Update of the syntax for writing a test (03/12/2021).*
 
 The writing of a RGAA test is done from the Javascript file **« /src/references/rgaa4.js »**.
 
@@ -113,11 +121,14 @@ createTanaguruTest({});
 | :-- | :-- | :-- |
 | lang | Language of the test | String. |
 | name | Test name | String. |
+| status | Allows you to define the test as "untested" | String (untested) |
 | query | CSS selectors to define the sample | String. |
 | contrast | Get a list of text nodes, processed in the contrast.js script | String (name of the array index). |
 | code | Get the list of nodes with a duplicate ID | String ("id"). |
 | node | Get a node not accessible via the query property. | Node (ex: document.doctype). |
+| testStatus | Define the status of the sample items | String (passed/failed/cantTell/inapplicable) |
 | filter | Filter function to restrict the sample | Function. |
+| analyzeElements | Function to process the whole sample (executed after the filter function) | Function. |
 | expectedNbElements | Number of expected elements in the sample (exact or between two limits) allowing to validate or invalidate the test | Integer ou Object (with properties min (Integer), max (Integer) or both). |
 | explanations | Explanations associated with the test statuses. | Object (with properties passed (String) and failed (String)). |
 | mark | Application of attribute highlights in code passages in the results interface | Object (with property attrs (Array)). |
@@ -135,13 +146,14 @@ createTanaguruTest({
 	lang: 'en',
 	name: "Links opening in new windows.",
 	query: 'a[href][target="_blank"]:not([role])',
+	testStatus: "cantTell",
 	mark: { attrs: ['target'] },
 	tags: ['a11y', 'links'],
 	ressources: { 'wcag': ['2.4.4'] }
 });
 ````
 
-Note : the absence of the properties ``expectedNbElements`` and ``explanations`` means that the test will be indicated as to be tested.
+Note : The property ``testStatus: "cantTell"`` will result in the test being marked as to be tested.
 
 #### Links with empty ``title`` attribute
 
@@ -164,13 +176,12 @@ createTanaguruTest({
 	tags: ['a11y', 'links'],
 	ressources: { 'wcag': ['1.1.1', '2.4.4'] }
 });
-`````
+````
 
 ---
 
-![](README/write.png)
-
 ## Update the version number
+
 ### VERSION.txt
 The number looks like this: x.y.z
 With x = new feature, y = update, z = fix
