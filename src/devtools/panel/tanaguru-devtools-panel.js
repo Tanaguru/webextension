@@ -269,16 +269,16 @@ button.addEventListener('click', function () {
 	dashboardpanel.setAttribute('id', 'tabpanel0');
 	dashboardpanel.setAttribute('aria-hidden', 'false');
 	dashboard.setAttribute('aria-controls', dashboardpanel.getAttribute('id'));
-	var dashboardpanelheading = document.createElement('h2');
-	dashboardpanelheading.setAttribute('class', 'visually-hidden');
-	dashboardpanelheading.appendChild(document.createTextNode(dashboard.textContent));
-	dashboardpanel.appendChild(dashboardpanelheading);
+	var dashboardtemplate = document.querySelector('#dashboard');
+	var dashboardpanelContent = document.importNode(dashboardtemplate.content, true);
+	dashboardpanel.appendChild(dashboardpanelContent);
+	dashboardpanel.querySelector('h2').textContent = chrome.i18n.getMessage('msgDashboard');
+	var dashboardpanelp = dashboardpanel.querySelector('.dashboard-message');
+	dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultLoad');
 
 	// UI. Dashboard.
 	dashboardpanel.classList.add('dashboard');
-	var loadingtemplate = document.getElementById('loading');
-	loadingtemplate = loadingtemplate.content;
-	dashboardpanel.appendChild(document.importNode(loadingtemplate, true));
+	var loadingtemplate = document.getElementById('loading').content;
 	main.children[1].appendChild(dashboardpanel);
 	ul.appendChild(dashboard);
 	dashboard.focus();
@@ -775,14 +775,18 @@ button.addEventListener('click', function () {
 		nav.appendChild(ul);
 		main.children[0].appendChild(nav);
 
-		var dashboardpanelp = document.querySelector('.dashboard-message') ? document.querySelector('.dashboard-message') : document.createElement('p');
-		if(document.querySelector('.dashboard-message')) {
-			dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultLoad')), dashboardpanelp.firstChild);
-		} else {
-			dashboardpanelp.classList.add('dashboard-message');
-			dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultLoad')));
-			dashboardpanel.appendChild(dashboardpanelp);
-		}
+		// var dashboardtemplate = document.querySelector('#dashboard');
+		// var dashboardpanelContent = document.importNode(dashboardtemplate.content, true);
+		// dashboardpanel.appendChild(dashboardpanelContent);
+		// var dashboardpanelp = dashboardpanel.querySelector('.dashboard-message');
+		// dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultLoad');
+		// if(document.querySelector('.dashboard-message')) {
+		// 	dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultLoad')), dashboardpanelp.firstChild);
+		// } else {
+		// 	dashboardpanelp.classList.add('dashboard-message');
+		// 	dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultLoad')));
+		// 	dashboardpanel.appendChild(dashboardpanelp);
+		// }
 
 		var catCount = 0;
 		var testsCount = 0;
@@ -826,7 +830,7 @@ button.addEventListener('click', function () {
 						// UI. Dashboard.
 						// manage message on dashboard panel
 						if (!updatedashboardp && test.type == 'failed') {
-							dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultFailed')), dashboardpanelp.firstChild);
+							dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultFailed');
 							updatedashboardp = true;
 						}
 
@@ -1839,8 +1843,8 @@ button.addEventListener('click', function () {
 						ul.querySelectorAll('li[hidden]').forEach(li => li.remove());
 
 						if (!updatedashboardp) {
-							if(testsCount === 0) dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultNone')), dashboardpanelp.firstChild);
-							else dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')), dashboardpanelp.firstChild);
+							if(testsCount === 0) dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultNone');
+							else dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultPassed');
 						}
 					}
 				}
@@ -1862,8 +1866,8 @@ button.addEventListener('click', function () {
 			ul.querySelectorAll('li[hidden]').forEach(li => li.remove());
 
 			if (!updatedashboardp) {
-				if(testsCount === 0) dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultNone')), dashboardpanelp.firstChild);
-				else dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')), dashboardpanelp.firstChild);
+				if(testsCount === 0) dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultNone');
+				else dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultPassed');
 			}
 		}
 		// responseProcess();
@@ -1877,24 +1881,43 @@ button.addEventListener('click', function () {
 		ul.querySelectorAll('li:not([id="tab0"])').forEach(li => {li.remove()});
 		document.getElementById('tests').remove();
 		document.querySelector('.analyzeTimer').remove();
+		dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultLoad');
 		displayResults();
 	}
-	
-	main.children[1].querySelector('p.loading').remove();
 
-	var dashboardpanelbuttonreload = document.createElement('button');
-	dashboardpanelbuttonreload.setAttribute('type', 'button');
-	dashboardpanelbuttonreload.style.marginBottom = '1rem';
-	dashboardpanelbuttonreload.classList.add('dashboard-reload-button');
-	dashboardpanelbuttonreload.appendChild(document.createTextNode("Relancer l'analyse"));
+	function listenDOMchange(e) {
+		let listenDOM = e.target.id === 'listenON' ? e.target.checked : !e.target.checked;
+		if(listenDOM) {
+			chrome.runtime.sendMessage({
+				tabId: chrome.devtools.inspectedWindow.tabId,
+				command: 'obsDOM',
+				obs: 'ON',
+			}, (response) => {
+				console.log(response.response[0]);
+			});
+		}
+		else {
+			chrome.runtime.sendMessage({
+				tabId: chrome.devtools.inspectedWindow.tabId,
+				command: 'obsDOM',
+				obs: 'OFF',
+			}, (response) => {
+				console.log(response.response[0]);
+			});
+		}
+	}
+
+	var dashboardpanelbuttonreload = dashboardpanel.querySelector('#reloadTests');
+	var dashboardpanelbuttonrestart = dashboardpanel.querySelector('#restartTests');
+
 	dashboardpanelbuttonreload.addEventListener('click', restartAnalyze);
-	dashboardpanel.appendChild(dashboardpanelbuttonreload);
-
-	var dashboardpanelbuttonrestart = document.createElement('button');
-	dashboardpanelbuttonrestart.setAttribute('type', 'button');
-	dashboardpanelbuttonrestart.classList.add('dashboard-reload-button');
-	dashboardpanelbuttonrestart.appendChild(document.createTextNode("Quitter et démarrer une nouvelle analyse"));
 	dashboardpanelbuttonrestart.addEventListener('click', () => {window.location.reload();});
-	dashboardpanel.appendChild(dashboardpanelbuttonrestart);
+	dashboardpanel.querySelector('#listenOFF').addEventListener('change', listenDOMchange);
+	dashboardpanel.querySelector('#listenON').addEventListener('change', listenDOMchange);
+	dashboardpanelbuttonreload.textContent = chrome.i18n.getMessage('dashboardButtonReload');
+	dashboardpanelbuttonrestart.textContent = chrome.i18n.getMessage('dashboardButtonRestart');
 
+	dashboardpanel.querySelector('#listenDOM legend').textContent = chrome.i18n.getMessage('dashboardListenDOMlegend');
+	dashboardpanel.querySelector('label[for="listenOFF"]').textContent = chrome.i18n.getMessage('dashboardListenOFF');
+	dashboardpanel.querySelector('label[for="listenON"]').textContent = chrome.i18n.getMessage('dashboardListenON');
 }, false);

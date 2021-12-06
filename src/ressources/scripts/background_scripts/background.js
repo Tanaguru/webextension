@@ -57,6 +57,15 @@ function handleMessage(request, sender, sendResponse) {
 			});
 		});
 	}
+	else if (request.command == 'obsDOM') {
+		chrome.tabs.executeScript(request.tabId, {
+		    code: 'var obs = "' + request.obs + '";'
+		}, function() {
+			chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/obsDOM.js' }, function (result) {
+				sendResponse({ command: 'executeDOMobserver', response: result });
+			});
+		});
+	}
 	else if (request.command == 'resetPanel') {
 		chrome.tabs.removeCSS(request.tabId, {
 			file: '/ressources/styles/highlight.css'

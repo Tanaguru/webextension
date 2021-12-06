@@ -8,8 +8,6 @@
 		<template id="loading">
 			<p class="loading"><img src="images/loader.png" alt="Analyse en cours" tabindex="-1" /></p>
 		</template>
-	</head>
-	<body>
 		<template id="rgaaFilter">
 			<fieldset id="rgaaFieldset" data-filter="catFilter">
 				<legend>Choisissez les catégories de tests du RGAA à inclure dans l'analyse.</legend>
@@ -320,7 +318,28 @@
 				</td>
 			</tr>
 		</template>
-		
+
+		<template id="dashboard">
+			<h2></h2>
+			<p class="dashboard-message"></p>
+			<fieldset id="listenDOM">
+				<legend></legend>
+				<div>
+					<input type="radio" id="listenOFF" name="listenDOM" checked>
+					<label for="listenOFF"></label>
+				</div>
+				<div>
+					<input type="radio" id="listenON" name="listenDOM">
+					<label for="listenON"></label>
+				</div>
+			</fieldset>
+			<div>
+				<button id="reloadTests" class="dashboard-reload-button"></button>
+				<button id="restartTests" class="dashboard-reload-button"></button>
+			</div>
+		</template>
+	</head>
+	<body>
 		<script type="text/javascript" src="tanaguru-devtools-panel.js"></script>
 	</body>
 </html>

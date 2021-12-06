@@ -26,6 +26,7 @@ html, body {
 	height: 100%;
 	background-color: #fff;
 	font-family: Montserrat, Helvetica, sans-serif;
+	font-size: 1rem;
 	line-height: 1.5em;
 	margin: 0;
 }
@@ -807,7 +808,7 @@ td.item-code .code code {
 	padding: 1rem;
 	font-size: 0.8rem;
 	color: #e5e5e5;
-	word-break: normal;
+	word-break: break-word;
 }
 
 .code-textContent {
