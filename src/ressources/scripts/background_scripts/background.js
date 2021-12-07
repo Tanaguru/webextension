@@ -66,6 +66,12 @@ function handleMessage(request, sender, sendResponse) {
 			});
 		});
 	}
+	else if (request.command == 'newMigration') {
+		chrome.runtime.sendMessage({
+			command: 'DOMedit',
+			migList: request.migList
+		});
+	}
 	else if (request.command == 'resetPanel') {
 		chrome.tabs.removeCSS(request.tabId, {
 			file: '/ressources/styles/highlight.css'

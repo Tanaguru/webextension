@@ -427,6 +427,10 @@ div.panelNavigation .cat-inapplicable span:last-child {
 	padding: 0 1em;
 }
 
+div.panelNavigation #DOMobserver strong {
+	background-color: black;
+}
+
 /*? Panel right (display tests results) */
 main:not(.launch-analysis) > div:first-child + div {
 	margin: 0;

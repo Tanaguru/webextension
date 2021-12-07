@@ -257,6 +257,13 @@ button.addEventListener('click', function () {
 	ul.setAttribute('role', 'tablist');
 	ul.setAttribute('aria-orientation', 'vertical');
 
+	/**
+	 * TODO
+	 * blabla
+	 * jkljdf
+	 * jioj
+	 * jkiloj
+	 */
 	var dashboard = document.createElement('li');
 	dashboard.setAttribute('id', 'tab0');
 	dashboard.setAttribute('role', 'tab');
@@ -774,19 +781,6 @@ button.addEventListener('click', function () {
 
 		nav.appendChild(ul);
 		main.children[0].appendChild(nav);
-
-		// var dashboardtemplate = document.querySelector('#dashboard');
-		// var dashboardpanelContent = document.importNode(dashboardtemplate.content, true);
-		// dashboardpanel.appendChild(dashboardpanelContent);
-		// var dashboardpanelp = dashboardpanel.querySelector('.dashboard-message');
-		// dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultLoad');
-		// if(document.querySelector('.dashboard-message')) {
-		// 	dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultLoad')), dashboardpanelp.firstChild);
-		// } else {
-		// 	dashboardpanelp.classList.add('dashboard-message');
-		// 	dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultLoad')));
-		// 	dashboardpanel.appendChild(dashboardpanelp);
-		// }
 
 		var catCount = 0;
 		var testsCount = 0;
@@ -1885,6 +1879,97 @@ button.addEventListener('click', function () {
 		displayResults();
 	}
 
+	var obsInterface = false;
+	var obsCount = 0;
+
+	function addObsInterface() {
+		// add new button on left panel
+		var DOMtab = document.createElement('li');
+		DOMtab.setAttribute('role', 'tab');
+		DOMtab.setAttribute('aria-selected', 'false');
+		DOMtab.setAttribute('id', "DOMobserver");
+		DOMtab.setAttribute('tabindex', '-1');
+
+		var span = document.createElement('span');
+		span.appendChild(document.createTextNode(chrome.i18n.getMessage("DOMchanges")));
+		DOMtab.appendChild(span);
+		ul.insertBefore(DOMtab, ul.querySelector('#alltests'));
+
+		// create DOM migrations panel right
+		var domPanel = document.createElement('div');
+		domPanel.setAttribute('role', 'tabpanel');
+		domPanel.setAttribute('aria-labelledby', DOMtab.getAttribute('id'));
+		domPanel.setAttribute('id', 'tabpanel1');
+		domPanel.setAttribute('aria-hidden', 'true');
+
+		DOMtab.setAttribute('aria-controls', domPanel.getAttribute('id'));
+
+		var DOMobservertemplate = document.querySelector('#DOMobserverPanel');
+		var domPanelContent = document.importNode(DOMobservertemplate.content, true);
+		domPanel.appendChild(domPanelContent);
+		domPanel.querySelector('h2').textContent = chrome.i18n.getMessage('DOMchanges');
+		var domPanelp = domPanel.querySelector('.DOMobserver-message');
+		domPanelp.textContent = chrome.i18n.getMessage('DOMpanelNoChange');
+		domPanel.classList.add('domObserver');
+
+		main.children[1].appendChild(domPanel);
+		obsInterface = true;
+	}
+
+	function delObsInterface() {
+		document.getElementById("DOMobserver").remove();
+		document.getElementById("tabpanel1").remove();
+		document.getElementById("DOMdashboardMessage").remove();
+	}
+
+	function obsMessage(request, sender, sendResponse) {
+		
+		if (request.command == 'DOMedit') {
+			let migObj = JSON.parse(request.migList);
+			if(migObj.length > 0) {
+				obsCount += migObj.length;
+				if(!obsInterface) addObsInterface(migObj);
+
+				let domChangeList = document.querySelector("#tabpanel1 ul") ? document.querySelector("#tabpanel1 ul") : document.createElement('ul');
+				migObj.forEach(obj => {
+					let li = document.createElement('li');
+					li.textContent = obj.type;
+					domChangeList.appendChild(li);
+				});
+
+				document.getElementById('tabpanel1').appendChild(domChangeList);
+				document.querySelector("#tabpanel1 .DOMobserver-message").textContent = chrome.i18n.getMessage('DOMpanelMessage');
+
+				let obsTab = document.getElementById("DOMobserver");
+				if(obsTab.querySelector('strong')) {
+					let counter = obsTab.querySelector('strong');
+					counter.textContent = obsCount;
+				} else {
+					obsTab.appendChild(document.createTextNode(' '));
+					var strong = document.createElement('strong');
+					strong.textContent = obsCount;
+					obsTab.appendChild(strong);
+				}
+
+				if(!document.getElementById("DOMdashboardMessage")) {
+					let domMessageDashboard = document.createElement('p');
+					domMessageDashboard.textContent = chrome.i18n.getMessage('DOMdashboardMessage');
+					domMessageDashboard.id = "DOMdashboardMessage";
+					let domButtonDashboard = document.createElement('button');
+					domButtonDashboard.textContent = chrome.i18n.getMessage('DOMdashboardButton');
+					domButtonDashboard.addEventListener('click', function(e) {
+						obsTab.focus();
+					});
+					domMessageDashboard.appendChild(domButtonDashboard);
+	
+					dashboardpanel.insertBefore(domMessageDashboard, dashboardpanelp);
+				}
+			}
+		}
+		
+		return true;
+	}
+
 	function listenDOMchange(e) {
 		let listenDOM = e.target.id === 'listenON' ? e.target.checked : !e.target.checked;
 		if(listenDOM) {
@@ -1894,6 +1979,7 @@ button.addEventListener('click', function () {
 				obs: 'ON',
 			}, (response) => {
 				console.log(response.response[0]);
+				addObsInterface();
 			});
 		}
 		else {
@@ -1903,6 +1989,7 @@ button.addEventListener('click', function () {
 				obs: 'OFF',
 			}, (response) => {
 				console.log(response.response[0]);
+				delObsInterface();
 			});
 		}
 	}
@@ -1920,4 +2007,6 @@ button.addEventListener('click', function () {
 	dashboardpanel.querySelector('#listenDOM legend').textContent = chrome.i18n.getMessage('dashboardListenDOMlegend');
 	dashboardpanel.querySelector('label[for="listenOFF"]').textContent = chrome.i18n.getMessage('dashboardListenOFF');
 	dashboardpanel.querySelector('label[for="listenON"]').textContent = chrome.i18n.getMessage('dashboardListenON');
+	
+	chrome.runtime.onMessage.addListener(obsMessage);
 }, false);

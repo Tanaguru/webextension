@@ -9,53 +9,90 @@ function callback(mutationsList) {
 
             if(mutation.removedNodes.length > 0 || mutation.addedNodes.length > 0) {
                 if(mutation.removedNodes.length > 0 && mutation.addedNodes.length > 0) {
-                    /**
-                     * TODO
-                     */
-                    console.log(mutation);
-                } else {
-                    if(mutation.addedNodes.length > 0) {
-                        if(mutation.addedNodes.length == 1) {
-                            let mutationDetails = {
-                                el: parentMutationNode,
-                                type: "Un noeud enfant a été ajouté.",
-                                before: '',
-                                after: mutation.addedNodes[0]
-                            }
-                            newMutations.push(mutationDetails);
-                        } else {
-                            mutation.addedNodes.forEach(el => {
+                    function extractOnlyNode(e) {
+                        if(e.nodeType === 3) return e.data
+                        else if(e.nodeType === 1) {
+                            let r = e.cloneNode(false);
+                            return r.outerHTML;
+                        }
+                        else return e;
+                    }
+
+                    let findMutation = false;
+                    let newList = Array.from(mutation.addedNodes).map(extractOnlyNode);
+                    let oldList = Array.from(mutation.removedNodes).map(extractOnlyNode);
+
+                    for(let y = 0; y < newList.length; y++) {
+                        if(mutation.addedNodes[y].nodeType === 1 || mutation.addedNodes[y].nodeType === 3) {
+                            if(!oldList.includes(newList[y])) {
                                 let mutationDetails = {
                                     el: parentMutationNode,
                                     type: "Un noeud enfant a été ajouté.",
                                     before: '',
-                                    after: el
+                                    after: mutation.addedNodes[y]
                                 }
                                 newMutations.push(mutationDetails);
-                            });
+                                findMutation = true;
+                            }
                         }
                     }
-        
-                    if(mutation.removedNodes.length > 0) {
-                        if(mutation.removedNodes.length == 1) {
-                            let mutationDetails = {
-                                el: parentMutationNode,
-                                type: "Un noeud enfant a été supprimé.",
-                                before: '',
-                                after: mutation.removedNodes[0]
-                            }
-                            newMutations.push(mutationDetails);
-                        } else {
-                            mutation.removedNodes.forEach(el => {
+
+                    for(let y = 0; y < oldList.length; y++) {
+                        if(mutation.removedNodes[y].nodeType === 1 || mutation.removedNodes[y].nodeType === 3) {
+                            if(!oldList.includes(oldList[y])) {
                                 let mutationDetails = {
                                     el: parentMutationNode,
                                     type: "Un noeud enfant a été supprimé.",
-                                    before: '',
-                                    after: el
+                                    before: mutation.removedNodes[y],
+                                    after: ''
                                 }
                                 newMutations.push(mutationDetails);
-                            });
+                            }
                         }
+                    }
+
+                    if(!findMutation) {
+                        if(mutation.removedNodes.length === 1 && mutation.addedNodes.length === 1) {
+                            let mutationDetails = {
+                                el: parentMutationNode,
+                                type: "Le contenu de cet élément a été modifié.",
+                                before: mutation.removedNodes[0],
+                                after: mutation.addedNodes[0]
+                            }
+                            newMutations.push(mutationDetails);
+                        } else {
+                            let mutationDetails = {
+                                el: parentMutationNode,
+                                type: "Le contenu de cet élément a été modifié.",
+                                before: '',
+                                after: parentMutationNode
+                            }
+                            newMutations.push(mutationDetails);
+                        }  
+                    }
+                } else {
+                    if(mutation.addedNodes.length > 0) {
+                        mutation.addedNodes.forEach(el => {
+                            let mutationDetails = {
+                                el: parentMutationNode,
+                                type: "Un noeud enfant a été ajouté.",
+                                before: '',
+                                after: el
+                            }
+                            newMutations.push(mutationDetails);
+                        });
+                    }
+        
+                    else if(mutation.removedNodes.length > 0) {
+                        mutation.removedNodes.forEach(el => {
+                            let mutationDetails = {
+                                el: parentMutationNode,
+                                type: "Un noeud enfant a été supprimé.",
+                                before: el,
+                                after: ''
+                            }
+                            newMutations.push(mutationDetails);
+                        });
                     }
                 }
             }
@@ -83,14 +120,17 @@ function callback(mutationsList) {
         }
     }
 
-    console.log(newMutations);
+    chrome.runtime.sendMessage({
+        command: 'newMigration',
+        migList: JSON.stringify(newMutations)
+    });
 };
 
 // Créé une instance de l'observateur lié à la fonction de callback
 if(typeof observer == 'undefined') var observer = new MutationObserver(callback);
 
 if(obs === 'ON') {
-    observer.observe(document.body, { attributes: true, attributeOldValue: true, childList: true, subtree: true, characterData: true, characterDataOldValue: true });
+    observer.observe(document.body, { attributeOldValue: true, childList: true, subtree: true, characterDataOldValue: true });
     result = "observer is starting....";
 } else {
     observer.disconnect();
