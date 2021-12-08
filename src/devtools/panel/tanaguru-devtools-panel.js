@@ -165,10 +165,65 @@ var statusFilterTemplate = document.getElementById('statusFilter').content;
 filterBloc.appendChild(statusFilterTemplate);
 rightcolumn.appendChild(filterBloc);
 
+function toggleDisclosure(e) {
+	let disclosureControl = e.target.closest('button');
+
+	if(disclosureControl.getAttribute("aria-expanded") === "false") {
+		disclosureControl.setAttribute("aria-expanded", "true");
+		disclosureControl.classList.add("dropdownButton--active");
+		let container = document.getElementById(disclosureControl.getAttribute("aria-controls"));
+		container.style.display = "block";
+	} else {
+		disclosureControl.setAttribute("aria-expanded", "false");
+		disclosureControl.classList.remove("dropdownButton--active");
+		let container = document.getElementById(disclosureControl.getAttribute("aria-controls"));
+		container.style.display = "none";
+	}
+}
+
+filterBloc.querySelectorAll("fieldset legend button").forEach(b => {
+	b.addEventListener('click', toggleDisclosure);
+});
+
+var listenDOMFieldset = document.createElement('fieldset');
+listenDOMFieldset.classList.add("radioGroup");
+var listenDOMLegend = document.createElement('legend');
+listenDOMLegend.textContent = chrome.i18n.getMessage('dashboardListenDOMlegend');
+listenDOMFieldset.appendChild(listenDOMLegend);
+
+var listenDOMcontainer1 = document.createElement('span');
+var listenDOMinputOFF = document.createElement('input');
+listenDOMinputOFF.setAttribute('type', 'radio');
+listenDOMinputOFF.setAttribute('name', 'listenDOM');
+listenDOMinputOFF.setAttribute('checked', 'true');
+listenDOMinputOFF.id = "listenOFF";
+var listenDOMlabelOFF = document.createElement('label');
+listenDOMlabelOFF.setAttribute('for', 'listenOFF');
+listenDOMlabelOFF.textContent = chrome.i18n.getMessage('dashboardListenOFF');
+
+listenDOMcontainer1.appendChild(listenDOMinputOFF);
+listenDOMcontainer1.appendChild(listenDOMlabelOFF);
+listenDOMFieldset.appendChild(listenDOMcontainer1);
+
+var listenDOMcontainer2 = document.createElement('span');
+var listenDOMinputON = document.createElement('input');
+listenDOMinputON.setAttribute('type', 'radio');
+listenDOMinputON.setAttribute('name', 'listenDOM');
+listenDOMinputON.id = "listenON";
+var listenDOMlabelON = document.createElement('label');
+listenDOMlabelON.setAttribute('for', 'listenON');
+listenDOMlabelON.textContent = chrome.i18n.getMessage('dashboardListenON');
+
+listenDOMcontainer2.appendChild(listenDOMinputON);
+listenDOMcontainer2.appendChild(listenDOMlabelON);
+listenDOMFieldset.appendChild(listenDOMcontainer2);
+rightcolumn.appendChild(listenDOMFieldset);
+
 
 // right/bouton "analyser cette page"
 var button = document.createElement('button');
 button.setAttribute('type', 'button');
+button.classList.add("launchAnalysisButton");
 button.appendChild(document.createTextNode("Analyser cette page"));
 var p = document.createElement('p');
 p.appendChild(button);
@@ -212,6 +267,8 @@ function toggle(evt) {
  */
 button.addEventListener('click', function () {
 	rightcolumn.querySelector('p').remove();
+	listenDOMFieldset.remove();
+
 	/**
 	 * ? Get filters choices
 	 */
@@ -257,13 +314,6 @@ button.addEventListener('click', function () {
 	ul.setAttribute('role', 'tablist');
 	ul.setAttribute('aria-orientation', 'vertical');
 
-	/**
-	 * TODO
-	 * blabla
-	 * jkljdf
-	 * jioj
-	 * jkiloj
-	 */
 	var dashboard = document.createElement('li');
 	dashboard.setAttribute('id', 'tab0');
 	dashboard.setAttribute('role', 'tab');

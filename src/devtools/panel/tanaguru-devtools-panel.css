@@ -22,17 +22,42 @@
     font-style: normal
 }
 
+html {
+	font-size: 62.5%;
+	font-size: calc(1em * 0.625);
+}
+
 html, body {
 	height: 100%;
 	background-color: #fff;
-	font-family: Montserrat, Helvetica, sans-serif;
-	font-size: 1rem;
-	line-height: 1.5em;
 	margin: 0;
 }
 
 body {
-	overflow: hidden;
+	font-family: Montserrat, Helvetica, sans-serif;
+	font-size: 1.3rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #000;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+h1, h2 {
+	color: #2b7b92;
+	font-size: 1.6rem;
+	font-weight: 700;
+	margin: 0;
+	padding: 0.9rem;
+	text-decoration: underline;
+}
+
+h3, h4 {
+	font-size: 1.3rem;
+	font-weight: 400;
+	margin: 0;
 }
 
 a {
@@ -95,7 +120,7 @@ main.tanaguru-popin-show > div {
 #tanaguru-popin .popin-header {
 	/* background-color: purple; */
 	border-bottom: solid 1px #e5e5e5;
-	margin-bottom: 1em;
+	margin-bottom: 1.8rem;
 	position: relative;
 }
 
@@ -114,12 +139,10 @@ main.tanaguru-popin-show > div {
 }
 
 #tanaguru-popin .popin-header h1 {
-	color: #2b7b92;
 	display: inline-block;
-	font-size: 1em;
-	font-weight: bolder;
-	padding: 0.20em 0 0.5em 0;
 	position: relative;
+	padding: 0.4rem 0 0.9rem 0;
+	margin: unset;
 }
 	
 #tanaguru-popin .popin-header button {
@@ -130,19 +153,19 @@ main.tanaguru-popin-show > div {
 	background-color: transparent;
 	display: inline-block;
 	color: #666;
-	margin-top: 0.2em;
-	padding: 0.25em 1em 0.25em 1.45em;
+	margin-top: 0.35rem;
+	padding: 0.45rem 1.8rem 0.45rem 2.5rem;
 }
 	
 #tanaguru-popin h2 {
 	color: #4c4c4c;
-	font-size: 0.85em;
+	font-size: 1.5rem;
 	margin: 0;
 }
 
 #tanaguru-popin h2 img {
 	display: inline-block;
-	margin-right: 0.25em;
+	margin-right: 0.45rem;
 	vertical-align: bottom;
 }
 
@@ -150,17 +173,17 @@ main.tanaguru-popin-show > div {
 	background-color: #F3F9FB;
 	border-left: solid 4px #2b7b92;
 	box-shadow: 0 0 4px #AFDDEB inset;
-	font-size: 0.75em;
-	line-height: 1.5em;
-	padding: 0.75em;
+	font-size: 1.35rem;
+	line-height: 1.5;
+	padding: 1.35rem;
 }
 
 #tanaguru-popin h2 + p.input {
 	background-color: transparent;
 	border-left: none;
 	box-shadow: none;
-	font-size: 0.75em;
-	line-height: 1.5em;
+	font-size: 1.35rem;
+	line-height: 1.5;
 	padding: 0;
 }
 
@@ -171,15 +194,15 @@ main.tanaguru-popin-show > div {
 	box-shadow: 0 0 4px #AFDDEB inset;
 	box-sizing: border-box;
 	display: block;
-	font-size: 1em;
-	padding: 0.75em;
+	font-size: 1.8rem;
+	padding: 1.35rem;
 	width: 100%;
 }
 
 #tanaguru-popin h2 ~ div {
 	overflow: hidden;
-	padding: 0 0 1em 0;
-	font-size: 0.8em;
+	padding: 0 0 1.8rem 0;
+	font-size: 1.5rem;
 }
 
 #tanaguru-popin h2 ~ div p {
@@ -196,16 +219,16 @@ main.tanaguru-popin-show > div {
 
 #tanaguru-popin > div {
 	background-color: #fff;
-	padding-left: 1.25em;
-	padding-right: 1.25em;
+	padding-left: 2.25rem;
+	padding-right: 2.25rem;
 }
 
 #tanaguru-popin div:not(.popin-header) button {
 	background-color: #2b7b92;
 	color: #fff;
 	border: none;
-	font-size: 1em;
-	padding: 0.5em 0.75em;
+	font-size: 1.8rem;
+	padding: 0.9rem 1.35rem;
 }
 /*? END Popin */
 
@@ -223,19 +246,11 @@ main > div:first-child + div {
 	margin: 0;
 }
 
-main:not(.launch-analysis) > div:first-child {
-	width: 20%;
-}
-
-main:not(.launch-analysis) > div:first-child + div {
-	width: 80%;
-}
-
 /*? Loading template */
 .loading {
 	box-sizing: border-box;
-	font-size: 0.9em;
-	padding: 7.5em 0;
+	font-size: 1.6rem;
+	padding: 13.5rem 0;
 	text-align: center;
 	width: 100%;
 	margin: 0;
@@ -248,9 +263,9 @@ main:not(.launch-analysis) > div:first-child + div {
 /** left panel(tabs) */
 .cat-loading .loading {
 	float: right;
-	margin-right: 0.5em;
+	margin-right: 0.9rem;
 	position: unset;
-	max-width: 20px;
+	max-width: 2rem;
 	padding: unset;
 }
 
@@ -267,14 +282,14 @@ main.launch-analysis > div:first-child + div {
 }
 
 .launch-analysis > div:first-child + div {
-	padding: 1em 0;
+	padding: 1.8rem 0;
 }
 
 .launch-analysis > div:first-child + div p {
 	text-align: center;
 }
 
-.launch-analysis > div:first-child + div button,
+.launchAnalysisButton,
 .dashboard-reload-button {
 	background: linear-gradient(135deg, #e4420d 0%, #d61119 100%);
 	border: none;
@@ -282,13 +297,13 @@ main.launch-analysis > div:first-child + div {
 	border-radius: 4px;
 	color: #fff;
 	font-family: Montserrat, Helvetica, sans-serif;
-	font-size: 1em;
+	font-size: 1.4rem;
 	font-weight: bold;
-	padding: 10px 20px 6px;
+	padding: 1rem 2rem 0.6rem;
 	vertical-align: bottom;
 }
 
-.launch-analysis > div:first-child + div button:focus, .launch-analysis > div:first-child + div button:hover,
+.launchAnalysisButton:focus, .launchAnalysisButton:hover,
 .dashboard-reload-button:hover {
 	text-decoration: underline;
 }
@@ -297,16 +312,78 @@ main.launch-analysis > div:first-child + div {
 .launch-analysis-filters {
 	background-color: #FFFFFF;
 	width: 80%;
+	max-width: 100rem;
 	margin: auto;
 }
 
 .launch-analysis-filters fieldset {
-	margin-top: 1em;
+	margin-top: 1.8rem;
+	border: 0;
+	padding: 0;
+}
+
+.launch-analysis-filters fieldset legend {
+	width: 100%;
 }
 
 .launch-analysis-filters fieldset label {
 	display: inline-block;
-	margin-right: 1em;
+	margin-right: 1.8rem;
+}
+
+.dropdownButton {
+	position: relative;
+	width: 100%;
+	padding: 1rem;
+	border: 1px solid #2F788F;
+	border-radius: 1rem;
+	background-color: #fff;
+	text-align: left;
+	transition: backgroundColor 0.3s;
+}
+
+.dropdownButton:focus,
+.dropdownButton:hover,
+.dropdownButton--active {
+	background-color: #E9F5FB;
+}
+
+.dropdownButton:focus .disclosureIcon,
+.dropdownButton:hover .disclosureIcon,
+.dropdownButton--active .disclosureIcon {
+	transform: rotate(0.25turn);
+}
+
+.disclosureIcon {
+	position: absolute;
+	right: 1rem;
+	bottom: 1rem;
+	width: 1.3rem;
+	margin-left: 1rem;
+	transition: transform 0.3s;
+}
+
+.filterContainer {
+	display: none;
+}
+
+fieldset.radioGroup {
+	width: 100%;
+	max-width: 100rem;
+	border: 1px solid #2F788F;
+	border-radius: 1rem;
+	margin: 1rem auto;
+	background-color: #fff;
+}
+
+.dashboard fieldset.radioGroup {
+	width: auto;
+}
+
+fieldset.radioGroup legend {
+	background-color: #fff;
+	border-radius: 1rem;
+	padding: 1rem;
 }
 
 /** dashboard panel */
@@ -317,16 +394,9 @@ main:not(.launch-analysis) > div:first-child {
 	background-size: 150%;
 	padding-right: 1px;
 	position: relative;
-	min-width: 279px;
+	min-width: 28rem;
+	width: 28rem;
 	border-right: solid 1px #e5e5e5; 
-}
-
-main > div:first-child h1 {
-	color: #2b7b92;
-	font-size: 0.95em;
-	font-weight: bolder;
-	margin: 0;
-	padding: 0.5em;
 }
 
 .dashboard {
@@ -338,11 +408,14 @@ main > div:first-child h1 {
 }
 
 .dashboard p.dashboard-message {
-	font-size: 1em;
 	font-weight: bold;
 }
 
 /*? Panel navigation */
+p.analyzeTimer {
+	font-size: 1rem;
+}
+
 div.panelNavigation ul {
 	background-color: rgba(255, 255, 255, 0.925);
 	list-style-type: none;
@@ -351,10 +424,11 @@ div.panelNavigation ul {
 }
 
 div.panelNavigation li:first-child {
-	margin-bottom: 1em;
+	margin-bottom: 0.6rem;
 }
 
-div.panelNavigation li:first-child + li {
+div.panelNavigation li#alltests {
+	margin-top: 0.6rem;
 	border-bottom: solid 1px #e5e5e5;
 	border-top: solid 1px #e5e5e5;
 }
@@ -368,9 +442,10 @@ div.panelNavigation li {
 	color: #666;
 	cursor: default;
 	display: inline-block;
-	font-size: 0.75em;
+	font-size: 1.1rem;
+	line-height: 1.75;
 	position: relative;
-	padding: 0.25em 0.5em;
+	padding: 0.45rem 0.9rem;
 	padding-right: 3px;
 	width: 100%;
 }
@@ -405,69 +480,60 @@ div.panelNavigation li span {
 
 div.panelNavigation li strong {
 	background-color: #d90b0b;
-	background: linear-gradient(top, #ef362c, #d90b0b);
+	background: linear-gradient(to top, #ef362c, #d90b0b);
 	border-radius: 50%;
 	color: white;
 	display: inline-block;
 	float: right;
-	font-size: 0.8em;
-	margin-right: 0.5em;
-	padding: 0 1em;
+	font-size: 1.1rem;
+	line-height: 1;
+	margin-right: 0.9rem;
+	padding: 0.4rem 0.7rem;
 }
 
 div.panelNavigation .cat-inapplicable span:last-child {
 	background-color: #2B7B92;
-	background: linear-gradient(top, #2A609E, #2B7B92);
+	background: linear-gradient(to top, #2A609E, #2B7B92);
 	border-radius: 50%;
 	color: white;
 	display: inline-block;
 	float: right;
-	font-size: 0.8em;
-	margin-right: 0.5em;
-	padding: 0 1em;
+	font-size: 1.5rem;
+	margin-right: 0.9rem;
+	padding: 0 1.8rem;
 }
 
 div.panelNavigation #DOMobserver strong {
 	background-color: black;
+	background: linear-gradient(to top, rgb(39, 35, 35), #000);
 }
 
 /*? Panel right (display tests results) */
 main:not(.launch-analysis) > div:first-child + div {
 	margin: 0;
-}
-
-main:not(.launch-analysis) > div:first-child + div h2 {
-	color: #2b7b92;
-	font-size: 1em;
-	font-weight: bolder;
-	margin: 0;
-	padding: 0.5em;
+	min-width: 85rem;
 }
 
 [role="tabpanel"] {
-	margin-bottom: 1.25em;
+	margin-bottom: 2.25rem;
 }
 
 [role="tabpanel"][aria-hidden="true"] {
 	display: none;
 }
 
-[role="tabpanel"] p {
-	font-size: 0.8em;
-}
-
 [role="tabpanel"] > p {
-	padding-left: 0.5em;
-	padding-right: 0.5em;
+	padding-left: 0.9rem;
+	padding-right: 0.9rem;
 }
 
 [role="tabpanel"] > div {
-	margin-left: 0.65em;
-	margin-right: 0.65em;
+	margin-left: 1.2rem;
+	margin-right: 1.2rem;
 }
 
 [role="tabpanel"] div {
-	margin-bottom: 1.25em;
+	margin-bottom: 2.25rem;
 }
 
 /** sub tabs panel */
@@ -479,18 +545,19 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 
 .subTabs ul[role="tablist"] li {
 	display: inline-block;
-	padding: 0.5rem;
+	padding: 1rem;
 	background-color: #FFFFFF;
 	color: #666666;
 	border: 1px solid #666666;
 	cursor: default;
+	font-size: 1.4rem;
 }
 
 .subTabs ul[role="tablist"] li[aria-selected="true"] {
 	border-bottom: 0;
 	background-color: #F2F9FB;
 	color: #2b7b92;
-	font-weight: bold;
+	font-weight: 700;
 }
 
 .subTabs ul[role="tablist"] li:hover {
@@ -498,22 +565,15 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 }
 
 /** tests button */
-[role="tabpanel"] h3 {
-	margin: 0;
-	font-size: 0.85em;
-	font-weight: normal;
-}
-
 [role="tabpanel"] h3 strong {
 	border-radius: 50%;
 	display: inline-block;
-	margin-right: 0.25em;
-	padding-left: 0.5em;
-	padding-right: 0.5em;
+	margin-right: 0.45rem;
+	padding-left: 0.9rem;
+	padding-right: 0.9rem;
 }
 
 [role="tabpanel"] h3 button {
-	box-sizing: border-box;
 	-moz-user-select: none;
 	background: none;
     border: none;
@@ -523,8 +583,7 @@ main:not(.launch-analysis) > div:first-child + div h2 {
     overflow: visible;
     color: #4c4c4c;
 	display: flex;
-	font-size: 1em;
-	padding: 0 0.75em 0 2.75em;
+	padding: 0 1.35rem 0 5rem;
 	position: relative;
 	text-align: left;
 	width: 100%;
@@ -552,9 +611,9 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 	position: absolute;
 	top: 50%;
 	left: 0;
-	margin-top: -15px;
-	width: 30px;
-	height: 30px;
+	margin-top: -1.5rem;
+	width: 3rem;
+	height: 3rem;
 	border-radius: 50%;
 	background-color: #fff;
 	-webkit-transition: background-color .3s ease-in-out;
@@ -562,12 +621,11 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 }
 
 [role="tabpanel"] h3 button::after {
-	top: 50%;
-	margin-top: -0.6em;
-	left: 0.025em;
-	width: 30px;
+	top: 0;
+	left: 0.05rem;
+	width: 3rem;
 	text-align: center;
-	font: normal normal normal 1.8rem/1.15 FontAwesome;
+	font: normal normal normal 3.6rem/1.15 FontAwesome;
 	content: "\f105";
 	position: absolute;
 	-webkit-transition: color .3s ease-in-out;
@@ -579,30 +637,30 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 }
 
 [role="tabpanel"] h3 button * {
-	padding-bottom: 0.75em;
-	padding-top: 0.75em;
+	padding-bottom: 1.35rem;
+	padding-top: 1.35rem;
 }
 
 [role="tabpanel"] h3 button strong {
 	display: inline-block;
-	min-width: 60px;
+	min-width: 6rem;
 	text-align: right;
 }
 
 [role="tabpanel"] h3 button span + span {
 	display: inline-block;
-	padding-left: 1.6em;
-	margin-left: 60px;
+	padding-left: 2.9rem;
+	margin-left: 6rem;
 }
 
 [role="tabpanel"] h3 .status {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-right: 1em;
-	min-width: 180px;
-	padding-left: 1em;
-	padding-right: 1em;
+	margin-right: 1.8rem;
+	min-width: 18rem;
+	padding-left: 1.8rem;
+	padding-right: 1.8rem;
 	text-align: center;
 }
 
@@ -662,16 +720,16 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 	color: #fff;
 	content: "\f107";
 	left: 0;
-	margin-top: -0.55em;
+	margin-top: 0.5rem;
 }
 
 /*? contrast panel */
 .contrast-legend .contrast-bgImage,
 .contrast-legend .contrast-bgNull {
 	display: inline-block;
-	width: 18px;
-	height: 18px;
-	margin: 0 0.5em 0 1em;
+	width: 1.8rem;
+	height: 1.8rem;
+	margin: 0 0.9rem 0 1.8em;
 	vertical-align: middle;
 }
 
@@ -680,8 +738,8 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 	display: block;
 	margin: auto;
 	border: solid 1px #000;
-	width: 18px;
-	height: 18px;
+	width: 1.8rem;
+	height: 1.8rem;
 }
 
 .contrast-bgNull {
@@ -690,8 +748,8 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 	margin: auto;
 	border: solid 1px #000;
 	color: red;
-	width: 18px;
-	height: 18px;
+	width: 1.8rem;
+	height: 1.8rem;
 }
 
 .contrast-bgNull::after {
@@ -708,7 +766,7 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 /*? test tags (in .beforetable) */
 .tags {
 	margin: 0 !important;
-	padding: 0.25em !important;
+	padding: 0.45rem !important;
 }
 
 .tags p, .tags ul, .tags li {
@@ -718,23 +776,23 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 
 .tags ul {
 	list-style-type: none;
-	padding: 0 0 0 0.25em;
+	padding: 0 0 0 0.45rem;
 }
 
 /*? filter & export buttons (in .beforetable) */
 .tableactions {
-	padding: 0.25em;
+	padding: 0.45rem;
 }
 
 .tableactions > * {
 	display: inline-block;
 	margin: 0;
-	padding-left: 0.25em;
+	padding-left: 0.45rem;
 }
 
 .tableactions p + p {
-	margin-left: 0.75em;
-	padding-left: 0.25em;
+	margin-left: 1.35rem;
+	padding-left: 0.45rem;
 	border-left: dotted 1px #111;
 }
 
@@ -742,7 +800,6 @@ main:not(.launch-analysis) > div:first-child + div h2 {
 table {
 	border: none;
 	border-collapse: collapse;
-	font-size: 0.85em;
 	width: 100%;
 	text-align: center;
 }
@@ -754,7 +811,7 @@ tr:nth-child(odd) {
 /** test rows */
 #tests table tr:not(.theadings) td {
 	vertical-align: top;
-	padding: 1rem;
+	padding: 1.8rem;
 }
 
 th, td {
@@ -788,11 +845,12 @@ th:first-child,
 td:first-child,
 th:nth-child(2),
 td:nth-child(2) {
-	width: 4rem;
+	width: 7.2rem;
 }
 
 /** item cell (code) */
 td.item-code {
+	min-width: 30rem;
 	text-align: left;
 }
 
@@ -809,19 +867,17 @@ td.item-code .code {
 td.item-code .code code {
 	display: flex;
 	flex-direction: column;
-	padding: 1rem;
-	font-size: 0.8rem;
+	padding: 1.8rem;
 	color: #e5e5e5;
 	word-break: break-word;
 }
 
 .code-textContent {
-	text-indent: 2rem;
+	text-indent: 3.6rem;
 }
 
 .code-tag {
-	font-size: 0.9rem;
-	font-weight: 900;
+	font-weight: 700;
 	color: #87C9D6;
 }
 
@@ -841,7 +897,6 @@ td.item-accessiblename {
 }
 
 p.an-full {
-	font-size: 0.8rem;
 	margin-top: 0;
 }
 
@@ -850,7 +905,6 @@ p.an-full span {
 }
 
 ul.an-list {
-	font-size: 0.8rem;
 	list-style: disc inside;
 	display: none;
 	color: #555;
@@ -863,14 +917,14 @@ ul.an-list li {
 
 .an-list ul {
 	list-style: circle inside;
-	padding-left: 1rem;
+	padding-left: 1.8rem;
 }
 
 /** cells : size(colors cat), weight(colors cat), keyboard, exposed */
 .testsection-td-colored {
 	background-color: rgba(43, 123, 146, .75);
 	color: #fff;
-	width: 30px;
+	width: 3rem;
 	vertical-align: middle;
 }
 
@@ -878,8 +932,8 @@ ul.an-list li {
 .item-reader span:first-child {
 	display: inline-block;
 	background-repeat: no-repeat;
-	width: 15px;
-	height: 15px;
+	width: 1.5rem;
+	height: 1.5rem;
 }
 
 .keyboardyes,
@@ -894,8 +948,8 @@ ul.an-list li {
 
 /** actions cell */
 th:last-child, td:last-child {
-	min-width: 8rem;
-	width: 8rem;
+	min-width: 15rem;
+	width: 15rem;
 }
 
 table ul {
@@ -911,7 +965,7 @@ table li {
 table li button, table li span.noaction {
 	background-color: transparent;
 	border: none;
-	margin-left: 9px;
+	margin-left: 0.9rem;
 	padding: 3px; display: inline-block; vertical-align: middle;
 }
 
@@ -925,8 +979,8 @@ table li img {
 
 .item-actions-highlight button {
 	background-repeat: no-repeat;
-	width: 24px;
-	height: 24px;
+	width: 2.4rem;
+	height: 2.4rem;
 }
 
 .item-actions-highlight .visible {
@@ -951,8 +1005,8 @@ table li img {
 .item-actions-inspect button {
 	background-image: url("./images/inspect.png");
 	background-repeat: no-repeat;
-	width: 24px;
-	height: 24px;
+	width: 2.4rem;
+	height: 2.4rem;
 }
 
 .item-actions-inspect button:hover,
@@ -963,8 +1017,8 @@ table li img {
 .item-actions-about button {
 	background-image: url("./images/about.png");
 	background-repeat: no-repeat;
-	width: 24px;
-	height: 24px;
+	width: 2.4rem;
+	height: 2.4rem;
 }
 
 .item-actions-about button:hover,
@@ -978,7 +1032,7 @@ table li img {
 	vertical-align: middle;
 }
 #export-items div {
-	width: 280px;
+	width: 28rem;
 }
 #export-items div *:not(small):not(span) {
 	display: block;
@@ -990,10 +1044,10 @@ table li img {
 }
 #export-items ul {
 	list-style-type: none;
-	margin: 1em 1em 0 1em;
+	margin: 1.8rem 1.8rem 0 1.8rem;
 	padding: 0;
 }
 
 #export-items li {
-	margin: 0.5em 0;
+	margin: 0.9rem 0;
 }
