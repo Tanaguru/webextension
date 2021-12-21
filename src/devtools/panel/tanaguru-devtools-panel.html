@@ -342,18 +342,17 @@
 
 		<template id="dashboard">
 			<h2></h2>
+			
 			<p class="dashboard-message"></p>
-			<fieldset id="listenDOM" class="radioGroup">
-				<legend></legend>
-				<span>
-					<input type="radio" id="listenOFF" name="listenDOM" checked>
-					<label for="listenOFF"></label>
+
+			<label for="listenDOM">
+				<span class="listenDOM-label"></span>
+				<span class="switch">
+					<input type="checkbox" id="listenDOM">
+					<span class="slider"></span>
 				</span>
-				<span>
-					<input type="radio" id="listenON" name="listenDOM">
-					<label for="listenON"></label>
-				</span>
-			</fieldset>
+			</label>
+
 			<div>
 				<button id="reloadTests" class="dashboard-reload-button"></button>
 				<button id="restartTests" class="dashboard-reload-button"></button>

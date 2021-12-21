@@ -185,39 +185,37 @@ filterBloc.querySelectorAll("fieldset legend button").forEach(b => {
 	b.addEventListener('click', toggleDisclosure);
 });
 
-var listenDOMFieldset = document.createElement('fieldset');
-listenDOMFieldset.classList.add("radioGroup");
-var listenDOMLegend = document.createElement('legend');
-listenDOMLegend.textContent = chrome.i18n.getMessage('dashboardListenDOMlegend');
-listenDOMFieldset.appendChild(listenDOMLegend);
+var listenDOMBloc = document.createElement('label');
+listenDOMBloc.setAttribute('for', 'listenDOM');
+var listenDOMLabel = document.createElement('span');
+listenDOMLabel.classList.add('listenDOM-label');
+listenDOMLabel.textContent = chrome.i18n.getMessage('dashboardListenDOMlegend');
+listenDOMBloc.appendChild(listenDOMLabel);
 
-var listenDOMcontainer1 = document.createElement('span');
-var listenDOMinputOFF = document.createElement('input');
-listenDOMinputOFF.setAttribute('type', 'radio');
-listenDOMinputOFF.setAttribute('name', 'listenDOM');
-listenDOMinputOFF.setAttribute('checked', 'true');
-listenDOMinputOFF.id = "listenOFF";
-var listenDOMlabelOFF = document.createElement('label');
-listenDOMlabelOFF.setAttribute('for', 'listenOFF');
-listenDOMlabelOFF.textContent = chrome.i18n.getMessage('dashboardListenOFF');
+var listenDOMSwitch = document.createElement('span');
+listenDOMSwitch.classList.add('switch');
+var listenDOMinput = document.createElement('input');
+listenDOMinput.setAttribute('type', 'checkbox');
+listenDOMinput.id = "listenDOM";
 
-listenDOMcontainer1.appendChild(listenDOMinputOFF);
-listenDOMcontainer1.appendChild(listenDOMlabelOFF);
-listenDOMFieldset.appendChild(listenDOMcontainer1);
+var listenDOMSlider = document.createElement('span');
+listenDOMSlider.classList.add('slider');
+listenDOMSlider.textContent = chrome.i18n.getMessage('dashboardListenOFF');
 
-var listenDOMcontainer2 = document.createElement('span');
-var listenDOMinputON = document.createElement('input');
-listenDOMinputON.setAttribute('type', 'radio');
-listenDOMinputON.setAttribute('name', 'listenDOM');
-listenDOMinputON.id = "listenON";
-var listenDOMlabelON = document.createElement('label');
-listenDOMlabelON.setAttribute('for', 'listenON');
-listenDOMlabelON.textContent = chrome.i18n.getMessage('dashboardListenON');
+listenDOMinput.addEventListener('change', function(e) {	
+	if(e.target.checked) {
+		listenDOMSlider.textContent = chrome.i18n.getMessage('dashboardListenON');
+	}
+	else {
+		listenDOMSlider.textContent = chrome.i18n.getMessage('dashboardListenOFF');
+	}
+});
 
-listenDOMcontainer2.appendChild(listenDOMinputON);
-listenDOMcontainer2.appendChild(listenDOMlabelON);
-listenDOMFieldset.appendChild(listenDOMcontainer2);
-rightcolumn.appendChild(listenDOMFieldset);
+listenDOMSwitch.appendChild(listenDOMinput);
+listenDOMSwitch.appendChild(listenDOMSlider);
+listenDOMBloc.appendChild(listenDOMSwitch);
+
+filterBloc.appendChild(listenDOMBloc);
 
 
 // right/bouton "analyser cette page"
@@ -267,7 +265,7 @@ function toggle(evt) {
  */
 button.addEventListener('click', function () {
 	rightcolumn.querySelector('p').remove();
-	listenDOMFieldset.remove();
+	listenDOMBloc.remove();
 
 	/**
 	 * ? Get filters choices
@@ -1370,6 +1368,7 @@ button.addEventListener('click', function () {
 								}
 		
 								newRow.querySelector('.item-actions .item-actions-inspect button').setAttribute('title', 'Révéler dans l\'inspecteur (' + test.name + ', item ' + (h + 1) + ')');
+								newRow.querySelector('.item-actions .item-actions-inspect button').className = "visible";
 								newRow.querySelector('.item-actions .item-actions-inspect .visually-hidden').textContent = 'Révéler dans l\'inspecteur (' + test.name + ', item ' + (h + 1) + ')';
 		
 								newRow.querySelector('.item-actions .item-actions-about button').setAttribute('title', 'A propos de cet élément (' + test.name + ', item ' + (h + 1) + ')');
@@ -1831,14 +1830,14 @@ button.addEventListener('click', function () {
 						currentTab.querySelector('p.loading').remove();
 						currentTab.classList.remove('cat-loading');
 
-						if (currentTag.nbfailures > 0 && allFailures === 0) {
+						if(currentTag.nbfailures > 0 && allFailures === 0) {
 							tab.classList.add('cat-failed');
 							tab.appendChild(document.createTextNode(' '));
 							var strong = document.createElement('strong');
 							tab.appendChild(strong);
 						}
 
-						if (currentTag.nbfailures > 0) {
+						if(currentTag.nbfailures > 0) {
 							let allerrors = tab.querySelector('strong');
 							allFailures += currentTag.nbfailures;
 							currentTab.classList.add('cat-failed');
@@ -1848,8 +1847,8 @@ button.addEventListener('click', function () {
 							allerrors.textContent = allFailures;
 							currentTab.appendChild(strong);
 						}
-				
-						if (currentTag.status === 'inapplicable') {
+
+						if(currentTag.isNA) {
 							currentTab.classList.add('cat-inapplicable');
 							currentTab.appendChild(document.createTextNode(' '));
 							var span = document.createElement('span');
@@ -2007,7 +2006,9 @@ button.addEventListener('click', function () {
 					domMessageDashboard.id = "DOMdashboardMessage";
 					let domButtonDashboard = document.createElement('button');
 					domButtonDashboard.textContent = chrome.i18n.getMessage('DOMdashboardButton');
+					domButtonDashboard.classList.add('dashboard-reload-button');
 					domButtonDashboard.addEventListener('click', function(e) {
+						obsTab.click();
 						obsTab.focus();
 					});
 					domMessageDashboard.appendChild(domButtonDashboard);
@@ -2016,13 +2017,29 @@ button.addEventListener('click', function () {
 				}
 			}
 		}
+
+		if(request.command == "pageChanged") {
+			if(dashboardpanel.querySelector('#listenDOM').checked) dashboardpanel.querySelector('#listenDOM').click();
+			dashboardpanel.querySelector('#listenDOM').disabled = true;
+
+			let allButtonDomAction = document.querySelectorAll('button[data-action]');
+			allButtonDomAction.forEach(btn => {
+				if(btn.getAttribute('data-action') === "highlight-action" || btn.getAttribute('data-action') === "inspect-action") {
+					btn.disabled = true;
+					btn.className = "hidden";
+				}
+			});
+
+			dashboardpanel.querySelector('.dashboard-message').textContent = chrome.i18n.getMessage('msgDashboardWarning');
+		}
 		
 		return true;
 	}
 
 	function listenDOMchange(e) {
-		let listenDOM = e.target.id === 'listenON' ? e.target.checked : !e.target.checked;
-		if(listenDOM) {
+		if(e.target.checked) {
+			document.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenON');
+
 			chrome.runtime.sendMessage({
 				tabId: chrome.devtools.inspectedWindow.tabId,
 				command: 'obsDOM',
@@ -2033,6 +2050,8 @@ button.addEventListener('click', function () {
 			});
 		}
 		else {
+			document.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenOFF');
+			
 			chrome.runtime.sendMessage({
 				tabId: chrome.devtools.inspectedWindow.tabId,
 				command: 'obsDOM',
@@ -2048,15 +2067,16 @@ button.addEventListener('click', function () {
 	var dashboardpanelbuttonrestart = dashboardpanel.querySelector('#restartTests');
 
 	dashboardpanelbuttonreload.addEventListener('click', restartAnalyze);
-	dashboardpanelbuttonrestart.addEventListener('click', () => {window.location.reload();});
-	dashboardpanel.querySelector('#listenOFF').addEventListener('change', listenDOMchange);
-	dashboardpanel.querySelector('#listenON').addEventListener('change', listenDOMchange);
+	dashboardpanelbuttonrestart.addEventListener('click', () => {
+		if(dashboardpanel.querySelector('#listenDOM').checked) dashboardpanel.querySelector('#listenDOM').click();
+		window.location.reload();
+	});
+	dashboardpanel.querySelector('#listenDOM').addEventListener('change', listenDOMchange);
 	dashboardpanelbuttonreload.textContent = chrome.i18n.getMessage('dashboardButtonReload');
 	dashboardpanelbuttonrestart.textContent = chrome.i18n.getMessage('dashboardButtonRestart');
 
-	dashboardpanel.querySelector('#listenDOM legend').textContent = chrome.i18n.getMessage('dashboardListenDOMlegend');
-	dashboardpanel.querySelector('label[for="listenOFF"]').textContent = chrome.i18n.getMessage('dashboardListenOFF');
-	dashboardpanel.querySelector('label[for="listenON"]').textContent = chrome.i18n.getMessage('dashboardListenON');
+	dashboardpanel.querySelector('.listenDOM-label').textContent = chrome.i18n.getMessage('dashboardListenDOMlegend');
+	dashboardpanel.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenOFF');
 	
 	chrome.runtime.onMessage.addListener(obsMessage);
 }, false);

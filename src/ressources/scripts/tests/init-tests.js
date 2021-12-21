@@ -110,6 +110,7 @@ function filterStatus() {
     if(isNACat(cat)) {
         tanaguruTestsList = tanaguruTestsList.map(function(test) {
             test.status = "inapplicable";
+            test.na = cat;
             return test;
         });
     }

@@ -110,7 +110,21 @@ chrome.tabs.onActivated.addListener(handleActivated);
 
 /* Fired when a tab is updated. */
 function handleUpdated(tabId, changeInfo, tabInfo) {
-  	console.log("Tab " + tabId + " was updated.");
-  	
+	console.log("Tab " + tabId + " was updated.", changeInfo, tabInfo);
+	if(changeInfo.hasOwnProperty('url')) {
+		chrome.tabs.executeScript(tabId, {
+		    code: 'var obs = "OFF";'
+		}, function() {
+			chrome.tabs.executeScript(tabId, { file: '/ressources/scripts/obsDOM.js' });
+		});
+
+		chrome.runtime.sendMessage({
+			command: 'pageChanged'
+		});
+
+		chrome.tabs.removeCSS(tabId, {
+			file: '/ressources/styles/highlight.css'
+		});
+	}
 }
-// chrome.tabs.onUpdated.addListener(handleUpdated);
+chrome.tabs.onUpdated.addListener(handleUpdated);

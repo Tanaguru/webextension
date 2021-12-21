@@ -1200,7 +1200,7 @@ function manageOutput(element, an) {
 
 function createTanaguruTag(tag, status) {
     if (!window.tanaguru.tags[tag]) {
-        window.tanaguru.tags[tag] = { id: tag, status: status, nbfailures: 0 };
+        window.tanaguru.tags[tag] = { id: tag, status: status, nbfailures: 0, isNA: 0 };
     }
 }
 
@@ -1213,6 +1213,10 @@ function createTanaguruTest(test) {
                 createTanaguruTag(test.tags[i], test.status);
                 if(test.status == 'untested' && window.tanaguru.tags[test.tags[i]].status === 'inapplicable') {
                     window.tanaguru.tags[test.tags[i]].status = 'untested';
+                }
+
+                if(test.hasOwnProperty('na') && test.na === test.tags[i]) {
+                    window.tanaguru.tags[test.na].isNA = 1;
                 }
             }
         }
