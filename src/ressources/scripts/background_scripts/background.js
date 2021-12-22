@@ -110,7 +110,7 @@ chrome.tabs.onActivated.addListener(handleActivated);
 
 /* Fired when a tab is updated. */
 function handleUpdated(tabId, changeInfo, tabInfo) {
-	console.log("Tab " + tabId + " was updated.", changeInfo, tabInfo);
+	// console.log("Tab " + tabId + " was updated.", changeInfo, tabInfo);
 	if(changeInfo.hasOwnProperty('url')) {
 		chrome.tabs.executeScript(tabId, {
 		    code: 'var obs = "OFF";'

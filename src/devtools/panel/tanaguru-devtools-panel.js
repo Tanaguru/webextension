@@ -185,6 +185,7 @@ filterBloc.querySelectorAll("fieldset legend button").forEach(b => {
 	b.addEventListener('click', toggleDisclosure);
 });
 
+var listenDomModif = false;
 var listenDOMBloc = document.createElement('label');
 listenDOMBloc.setAttribute('for', 'listenDOM');
 var listenDOMLabel = document.createElement('span');
@@ -205,9 +206,11 @@ listenDOMSlider.textContent = chrome.i18n.getMessage('dashboardListenOFF');
 listenDOMinput.addEventListener('change', function(e) {	
 	if(e.target.checked) {
 		listenDOMSlider.textContent = chrome.i18n.getMessage('dashboardListenON');
+		listenDomModif = true;
 	}
 	else {
 		listenDOMSlider.textContent = chrome.i18n.getMessage('dashboardListenOFF');
+		listenDomModif = false;
 	}
 });
 
@@ -374,7 +377,9 @@ button.addEventListener('click', function () {
 	 * inspect-action
 	 * about-action
 	 */
-	 main.children[1].addEventListener('click', function(event) {
+	 main.children[1].addEventListener('click', manageActions, false);
+	
+	function manageActions(event) {
 		var element = event.target.closest('button');
 		if (element) {
 			switch (element.getAttribute('data-action')) {
@@ -551,7 +556,7 @@ button.addEventListener('click', function () {
 					break;
 			}
 		}
-	}, false);
+	}
 
 	/**
 	 * Add tabs and right panel
@@ -1889,6 +1894,23 @@ button.addEventListener('click', function () {
 							if(testsCount === 0) dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultNone');
 							else dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultPassed');
 						}
+
+						dashboardpanel.querySelector('#listenDOM').disabled = false;
+						dashboardpanel.querySelector('label[for="listenDOM"]').removeAttribute('style');
+						document.getElementById('reloadTests').removeAttribute('hidden');
+						if(listenDomModif) {
+							chrome.runtime.sendMessage({
+								tabId: chrome.devtools.inspectedWindow.tabId,
+								command: 'obsDOM',
+								obs: 'ON',
+							}, (response) => {
+								addObsInterface();
+								if(!dashboardpanel.querySelector('#listenDOM').checked) {
+									dashboardpanel.querySelector('#listenDOM').checked = true;
+									dashboardpanel.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenON');
+								}
+							});
+						}
 					}
 				}
 			)
@@ -1913,7 +1935,7 @@ button.addEventListener('click', function () {
 				else dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultPassed');
 			}
 		}
-		// responseProcess();
+
 		if(testsCount === 0 && catCount === filters.categories.length) tab.remove();
 		main.children[1].appendChild(alltagspanel);
 	}
@@ -1921,10 +1943,14 @@ button.addEventListener('click', function () {
 	displayResults();
 
 	function restartAnalyze() {
+		if(listenDomModif) dashboardpanel.querySelector('#listenDOM').click();
 		ul.querySelectorAll('li:not([id="tab0"])').forEach(li => {li.remove()});
 		document.getElementById('tests').remove();
 		document.querySelector('.analyzeTimer').remove();
 		dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultLoad');
+		dashboardpanel.querySelector('#listenDOM').disabled = true;
+		dashboardpanel.querySelector('label[for="listenDOM"]').style.display = "none";
+		document.getElementById('reloadTests').setAttribute('hidden', "true");
 		displayResults();
 	}
 
@@ -1966,10 +1992,14 @@ button.addEventListener('click', function () {
 	}
 
 	function delObsInterface() {
-		document.getElementById("DOMobserver").remove();
+		if(document.getElementById("DOMobserver")) document.getElementById("DOMobserver").remove();
 		document.getElementById("tabpanel1").remove();
 		document.getElementById("DOMdashboardMessage").remove();
+		obsInterface = false;
+		obsCount = 0;
 	}
+
+	var domChangeTime = null;
 
 	function obsMessage(request, sender, sendResponse) {
 		
@@ -1979,14 +2009,90 @@ button.addEventListener('click', function () {
 				obsCount += migObj.length;
 				if(!obsInterface) addObsInterface(migObj);
 
-				let domChangeList = document.querySelector("#tabpanel1 ul") ? document.querySelector("#tabpanel1 ul") : document.createElement('ul');
-				migObj.forEach(obj => {
-					let li = document.createElement('li');
-					li.textContent = obj.type;
-					domChangeList.appendChild(li);
-				});
+				let now = new Date();
+				let midID = now.getFullYear()+'.'+now.getMonth()+'.'+now.getDate()+'.'+now.getHours()+'.'+now.getMinutes();
 
-				document.getElementById('tabpanel1').appendChild(domChangeList);
+				if(domChangeTime != midID) {
+					domChangeTime = midID;
+					let newtitle = document.createElement('h3');
+					let newBtn = document.createElement('button');
+
+					let btnStatus = document.createElement('span');
+					btnStatus.className = "status";
+					let hour = now.getHours() < 10 ? '0'+now.getHours() : now.getHours();
+					let minutes = now.getMinutes() < 10 ? '0'+now.getMinutes() : now.getMinutes();
+					btnStatus.textContent = hour+"H"+minutes;
+					newBtn.appendChild(btnStatus);
+
+					let strong = document.createElement('strong');
+					strong.textContent = migObj.length;
+					newBtn.appendChild(strong);
+
+					let span = document.createElement('span');
+					span.textContent = "modifications observées";
+					newBtn.appendChild(span);
+
+					newBtn.setAttribute('aria-expanded', 'false');
+					newBtn.setAttribute('aria-controls', midID);
+					newBtn.setAttribute('data-action', 'showhide-action');
+					newtitle.appendChild(newBtn);
+	
+					let domChangeList = document.createElement('ul');
+					domChangeList.id = midID;
+					domChangeList.className = 'domChangeList';
+					domChangeList.setAttribute('hidden', 'hidden');
+					migObj.forEach(obj => {
+						let li = document.createElement('li');
+						li.className = "item-actions item-actions-inspect";
+						li.textContent = obj.type+" - Avant : "+obj.before+" - Après : "+obj.after;
+
+						let inspectObj = document.createElement('button');
+						inspectObj.className = "visible";
+						inspectObj.setAttribute('data-action', 'inspect-action');
+						inspectObj.addEventListener('click', manageActions);
+						li.appendChild(inspectObj);
+
+						let dataSpan = document.createElement('span');
+						dataSpan.className = "item-actions-about";
+						let dataBtn = document.createElement('button');
+						dataBtn.setAttribute('hidden', 'hidden');
+						dataBtn.setAttribute('data-xpath', obj.parent);
+						dataSpan.appendChild(dataBtn);
+						li.appendChild(dataSpan);
+
+						domChangeList.appendChild(li);
+					});
+	
+					document.getElementById('tabpanel1').appendChild(newtitle);
+					document.getElementById('tabpanel1').appendChild(domChangeList);
+				} else {
+					let currentList = document.getElementById(midID);
+					migObj.forEach(obj => {
+						// console.log(obj.html, obj.el);
+						let li = document.createElement('li');
+						li.className = "item-actions item-actions-inspect";
+						li.textContent = obj.type+" - Avant : "+obj.before+" - Après : "+obj.after;
+
+						let inspectObj = document.createElement('button');
+						inspectObj.className = "visible";
+						inspectObj.setAttribute('data-action', 'inspect-action');
+						inspectObj.addEventListener('click', manageActions);
+						li.appendChild(inspectObj);
+
+						let dataBtn = document.createElement('button');
+						dataBtn.disabled = true;
+						dataBtn.setAttribute('hidden', 'hidden');
+						dataBtn.className = "item-actions-about";
+						dataBtn.setAttribute('data-xpath', obj.parent);
+						li.appendChild(dataBtn);
+
+						currentList.appendChild(li);
+					});
+
+					let counterList = document.querySelector('button[aria-controls="'+midID+'"] strong');
+					counterList.textContent = currentList.querySelectorAll('li').length;
+				}
+				
 				document.querySelector("#tabpanel1 .DOMobserver-message").textContent = chrome.i18n.getMessage('DOMpanelMessage');
 
 				let obsTab = document.getElementById("DOMobserver");
@@ -2037,6 +2143,7 @@ button.addEventListener('click', function () {
 	}
 
 	function listenDOMchange(e) {
+		if(e.target.disabled) return;
 		if(e.target.checked) {
 			document.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenON');
 
@@ -2045,7 +2152,6 @@ button.addEventListener('click', function () {
 				command: 'obsDOM',
 				obs: 'ON',
 			}, (response) => {
-				console.log(response.response[0]);
 				addObsInterface();
 			});
 		}
@@ -2057,7 +2163,6 @@ button.addEventListener('click', function () {
 				command: 'obsDOM',
 				obs: 'OFF',
 			}, (response) => {
-				console.log(response.response[0]);
 				delObsInterface();
 			});
 		}
@@ -2076,7 +2181,14 @@ button.addEventListener('click', function () {
 	dashboardpanelbuttonrestart.textContent = chrome.i18n.getMessage('dashboardButtonRestart');
 
 	dashboardpanel.querySelector('.listenDOM-label').textContent = chrome.i18n.getMessage('dashboardListenDOMlegend');
-	dashboardpanel.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenOFF');
+	if(listenDomModif) {
+		dashboardpanel.querySelector('#listenDOM').checked = true;
+		dashboardpanel.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenON');
+	} else {
+		dashboardpanel.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenOFF');
+	}
+
+	dashboardpanel.querySelector('#listenDOM').disabled = true;
 	
 	chrome.runtime.onMessage.addListener(obsMessage);
 }, false);
