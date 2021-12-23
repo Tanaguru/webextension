@@ -2036,62 +2036,51 @@ button.addEventListener('click', function () {
 					newBtn.setAttribute('aria-controls', midID);
 					newBtn.setAttribute('data-action', 'showhide-action');
 					newtitle.appendChild(newBtn);
+					document.getElementById('tabpanel1').appendChild(newtitle);
 	
-					let domChangeList = document.createElement('ul');
+					var domChangeList = document.createElement('ul');
 					domChangeList.id = midID;
 					domChangeList.className = 'domChangeList';
 					domChangeList.setAttribute('hidden', 'hidden');
-					migObj.forEach(obj => {
-						let li = document.createElement('li');
-						li.className = "item-actions item-actions-inspect";
-						li.textContent = obj.type+" - Avant : "+obj.before+" - Après : "+obj.after;
-
-						let inspectObj = document.createElement('button');
-						inspectObj.className = "visible";
-						inspectObj.setAttribute('data-action', 'inspect-action');
-						inspectObj.addEventListener('click', manageActions);
-						li.appendChild(inspectObj);
-
-						let dataSpan = document.createElement('span');
-						dataSpan.className = "item-actions-about";
-						let dataBtn = document.createElement('button');
-						dataBtn.setAttribute('hidden', 'hidden');
-						dataBtn.setAttribute('data-xpath', obj.parent);
-						dataSpan.appendChild(dataBtn);
-						li.appendChild(dataSpan);
-
-						domChangeList.appendChild(li);
-					});
-	
-					document.getElementById('tabpanel1').appendChild(newtitle);
-					document.getElementById('tabpanel1').appendChild(domChangeList);
 				} else {
-					let currentList = document.getElementById(midID);
-					migObj.forEach(obj => {
-						// console.log(obj.html, obj.el);
-						let li = document.createElement('li');
-						li.className = "item-actions item-actions-inspect";
-						li.textContent = obj.type+" - Avant : "+obj.before+" - Après : "+obj.after;
-
-						let inspectObj = document.createElement('button');
-						inspectObj.className = "visible";
-						inspectObj.setAttribute('data-action', 'inspect-action');
-						inspectObj.addEventListener('click', manageActions);
-						li.appendChild(inspectObj);
-
-						let dataBtn = document.createElement('button');
-						dataBtn.disabled = true;
-						dataBtn.setAttribute('hidden', 'hidden');
-						dataBtn.className = "item-actions-about";
-						dataBtn.setAttribute('data-xpath', obj.parent);
-						li.appendChild(dataBtn);
-
-						currentList.appendChild(li);
-					});
-
-					let counterList = document.querySelector('button[aria-controls="'+midID+'"] strong');
-					counterList.textContent = currentList.querySelectorAll('li').length;
+					var domChangeList = document.getElementById(midID);
 				}
+
+				migObj.forEach(obj => {
+					let li = document.createElement('li');
+					li.className = "item-actions-inspect";
+					li.textContent = obj.desc;
+
+					let before = obj.before ? " - Avant : "+obj.before : null;
+					let after = obj.after ? " - Après : "+obj.after : null;
+					if(before) {
+						li.appendChild(document.createElement('br'));
+						li.appendChild(document.createTextNode(before));
+					}
+					if(after) {
+						li.appendChild(document.createElement('br'));
+						li.appendChild(document.createTextNode(after));
+					}
+
+					li.appendChild(document.createElement('br'));
+
+					let textInspect = (obj.type != 2) ? "Afficher l'élément dans l'inspecteur de code : " : "Afficher l'élément parent dans l'inspecteur de code : ";
+					li.appendChild(document.createTextNode(textInspect));
+
+					let inspectObj = document.createElement('button');
+					inspectObj.className = "visible obsDOM";
+					inspectObj.addEventListener('click', function() {
+						chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('" + obj.el + "'))");
+					}, true);
+					li.appendChild(inspectObj);
+
+					domChangeList.appendChild(li);
+				});
+				
+				document.getElementById('tabpanel1').appendChild(domChangeList);
+
+				let counterList = document.querySelector('button[aria-controls="'+midID+'"] strong');
+				counterList.textContent = domChangeList.querySelectorAll('li').length;
 				
 				document.querySelector("#tabpanel1 .DOMobserver-message").textContent = chrome.i18n.getMessage('DOMpanelMessage');
 

@@ -4,21 +4,53 @@ var result;
 function callback(mutationsList) {
     var newMutations = [];
 
+    function extractOnlyNode(e) {
+        if(e.nodeType === 3) return e.data
+        else if(e.nodeType === 1) {
+            let r = e.cloneNode(false);
+            return r.outerHTML;
+        }
+        else return e;
+    }
+
+    function getCSSselector(node, attName = null, attValue = null) {
+        let p0 = node.parentNode;
+        let p1 = p0 ? p0.parentNode : null;
+        let s0 = node.previousElementSibling;
+
+        let selector = "";
+
+        if(p1) {
+            let att = Array.from(p1.attributes, ({name, value}) => (name+'="'+value+'"'));
+            selector = p1.tagName.toLowerCase()+'['+att.join('][')+']';
+        }
+
+        if(p0) {
+            let att = Array.from(p0.attributes, ({name, value}) => (name+'="'+value+'"'));
+            if(selector.length > 0) selector += ">";
+            selector += p0.tagName.toLowerCase()+'['+att.join('][')+']';
+        }
+
+        if(s0) {
+            let s0att = Array.from(s0.attributes, ({name, value}) => (name+'="'+value+'"'));
+            let att = Array.from(node.attributes, ({name, value}) => ((attName && attName == name) ? (attValue ? (attName+'="'+attValue+'"') : (attName)) : (name+'="'+value+'"')));
+            if(selector.length > 0) selector += ">";
+            selector += s0.tagName.toLowerCase()+'['+s0att.join('][')+']+'+node.tagName.toLowerCase()+'['+att.join('][')+']';
+        } else {
+            let att = Array.from(node.attributes, ({name, value}) => ((attName && attName == name) ? (attValue ? (attName+'="'+attValue+'"') : (attName)) : (name+'="'+value+'"')));
+            if(selector.length > 0) selector += ">";
+            selector += node.tagName.toLowerCase()+'['+att.join('][')+']';
+        }
+
+        return selector;
+    }
+
     for(var mutation of mutationsList) {
         if(mutation.type == 'childList') {
             var parentMutationNode = mutation.target;
 
             if(mutation.removedNodes.length > 0 || mutation.addedNodes.length > 0) {
                 if(mutation.removedNodes.length > 0 && mutation.addedNodes.length > 0) {
-                    function extractOnlyNode(e) {
-                        if(e.nodeType === 3) return e.data
-                        else if(e.nodeType === 1) {
-                            let r = e.cloneNode(false);
-                            return r.outerHTML;
-                        }
-                        else return e;
-                    }
-
                     let findMutation = false;
                     let newList = Array.from(mutation.addedNodes).map(extractOnlyNode);
                     let oldList = Array.from(mutation.removedNodes).map(extractOnlyNode);
@@ -27,12 +59,11 @@ function callback(mutationsList) {
                         if(mutation.addedNodes[y].nodeType === 1 || mutation.addedNodes[y].nodeType === 3) {
                             if(!oldList.includes(newList[y])) {
                                 let mutationDetails = {
-                                    el: getXPath(mutation.addedNodes[y]),
-                                    type: "Un noeud enfant a été ajouté.",
+                                    el: getCSSselector(mutation.addedNodes[y]),
+                                    type: 1,
+                                    desc: "Un noeud enfant a été ajouté.",
                                     before: '',
-                                    after: mutation.addedNodes[y],
-                                    html: mutation.addedNodes[y].outerHTML,
-                                    parent: getXPath(mutation.addedNodes[y].parentNode),
+                                    after: mutation.addedNodes[y].outerHTML
                                 }
                                 newMutations.push(mutationDetails);
                                 findMutation = true;
@@ -43,14 +74,12 @@ function callback(mutationsList) {
                     for(let y = 0; y < oldList.length; y++) {
                         if(mutation.removedNodes[y].nodeType === 1 || mutation.removedNodes[y].nodeType === 3) {
                             if(!oldList.includes(oldList[y])) {
-                                console.log(parentMutationNode, mutation.removedNodes[y]);
                                 let mutationDetails = {
-                                    el: getXPath(parentMutationNode),
-                                    type: "Un noeud enfant a été supprimé.",
-                                    before: mutation.removedNodes[y],
-                                    after: '',
-                                    html: parentMutationNode.outerHTML,
-                                    parent: getXPath(parentMutationNode.parentNode),
+                                    el: getCSSselector(parentMutationNode),
+                                    type: 2,
+                                    desc: "Un noeud enfant a été supprimé.",
+                                    before: mutation.removedNodes[y].outerHTML,
+                                    after: ''
                                 }
                                 newMutations.push(mutationDetails);
                             }
@@ -60,22 +89,20 @@ function callback(mutationsList) {
                     if(!findMutation) {
                         if(mutation.removedNodes.length === 1 && mutation.addedNodes.length === 1) {
                             let mutationDetails = {
-                                el: getXPath(parentMutationNode),
-                                type: "Le contenu de cet élément a été modifié.",
-                                before: mutation.removedNodes[0],
-                                after: mutation.addedNodes[0],
-                                html: parentMutationNode.outerHTML,
-                                parent: getXPath(parentMutationNode.parentNode),
+                                el: getCSSselector(mutation.addedNodes[0]),
+                                type: 3,
+                                desc: "Le contenu de cet élément a été modifié.",
+                                before: mutation.removedNodes[0].outerHTML,
+                                after: mutation.addedNodes[0].outerHTML
                             }
                             newMutations.push(mutationDetails);
                         } else {
                             let mutationDetails = {
-                                el: getXPath(parentMutationNode),
-                                type: "Le contenu de cet élément a été modifié.",
+                                el: getCSSselector(parentMutationNode),
+                                type: 3,
+                                desc: "Le contenu de cet élément a été modifié.",
                                 before: '',
-                                after: parentMutationNode,
-                                html: parentMutationNode.outerHTML,
-                                parent: getXPath(parentMutationNode.parentNode),
+                                after: parentMutationNode.outerHTML
                             }
                             newMutations.push(mutationDetails);
                         }  
@@ -84,12 +111,11 @@ function callback(mutationsList) {
                     if(mutation.addedNodes.length > 0) {
                         mutation.addedNodes.forEach(el => {
                             let mutationDetails = {
-                                el: getXPath(parentMutationNode),
-                                type: "Un noeud enfant a été ajouté.",
+                                el: getCSSselector(el),
+                                type: 1,
+                                desc: "Un noeud enfant a été ajouté.",
                                 before: '',
-                                after: el,
-                                html: el.outerHTML,
-                                parent: getXPath(el.parentNode),
+                                after: el.outerHTML
                             }
                             newMutations.push(mutationDetails);
                         });
@@ -97,14 +123,12 @@ function callback(mutationsList) {
         
                     else if(mutation.removedNodes.length > 0) {
                         mutation.removedNodes.forEach(el => {
-                            console.log(parentMutationNode, el);
                             let mutationDetails = {
-                                el: getXPath(parentMutationNode),
-                                type: "Un noeud enfant a été supprimé.",
-                                before: el,
-                                after: '',
-                                html: el.outerHTML,
-                                parent: getXPath(el.parentNode),
+                                el: getCSSselector(parentMutationNode),
+                                type: 2,
+                                desc: "Un noeud enfant a été supprimé.",
+                                before: el.outerHTML,
+                                after: ''
                             }
                             newMutations.push(mutationDetails);
                         });
@@ -114,14 +138,15 @@ function callback(mutationsList) {
         }
         else if(mutation.type == 'attributes') {
             let currentNode = mutation.target;
+            let attMatch = mutation.oldValue.split().filter(e => currentNode.getAttribute(mutation.attributeName).includes(e));
+            attMatch = attMatch.length > 0 ? attMatch.join(' ') : null;
 
             let mutationDetails = {
-                el: getXPath(currentNode),
-                type: "L'attribut "+mutation.attributeName+" a été modifié.",
+                el: getCSSselector(currentNode, mutation.attributeName, attMatch),
+                type: 4,
+                desc: "L'attribut "+mutation.attributeName+" a été modifié.",
                 before: mutation.oldValue,
-                after: currentNode.getAttribute(mutation.attributeName),
-                html: currentNode.outerHTML,
-                parent: getXPath(currentNode.parentNode),
+                after: currentNode.getAttribute(mutation.attributeName)
             }
             newMutations.push(mutationDetails);
         }
@@ -129,12 +154,11 @@ function callback(mutationsList) {
         if(mutation.type == 'characterData') {
             let parentNode = mutation.target.parentNode;
             let mutationDetails = {
-                el: getXPath(parentNode),
-                type: "Le contenu textuel a été modifié.",
+                el: getCSSselector(parentNode),
+                type: 5,
+                desc: "Le contenu textuel a été modifié.",
                 before: mutation.oldValue,
-                after: mutation.target.nodeValue,
-                html: parentNode.outerHTML,
-                parent: getXPath(parentNode.parentNode)
+                after: mutation.target.nodeValue
             }
             newMutations.push(mutationDetails);
         }
