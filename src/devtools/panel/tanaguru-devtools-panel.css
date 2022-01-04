@@ -69,6 +69,23 @@ a:focus, a:hover {
 	text-decoration: underline;
 }
 
+button {
+	display: inline-block;
+	margin: 0.4rem;
+}
+
+button:focus:not([disabled]),
+button:hover:not([disabled]) {
+	outline: 2px dashed #2A609E;
+	outline-offset: 0.5rem;
+}
+
+.switch input:focus+.slider,
+.switch .slider:hover {
+	outline: 2px solid #000;
+	outline-offset: 0.5rem;
+}
+
 .beforetable {
 	overflow: hidden;
 }
@@ -301,6 +318,10 @@ main.launch-analysis > div:first-child + div {
 	font-weight: bold;
 	padding: 1rem 2rem 0.6rem;
 	vertical-align: bottom;
+}
+
+button#reloadTests {
+    margin-right: 1rem;
 }
 
 .launchAnalysisButton:focus, .launchAnalysisButton:hover,
@@ -675,10 +696,6 @@ main:not(.launch-analysis) > div:first-child + div {
     padding: 0;
 }
 
-[role="tabpanel"] h3 button:focus {
-	outline: dotted 1px gray;
-}
-
 [role="tabpanel"] h3 button[aria-expanded="true"] {
 	border-bottom-color: #fff;
 }
@@ -911,7 +928,7 @@ td:nth-child(2) {
 	width: 7.2rem;
 }
 
-/** item cell (code) */
+/** item cell (code) && domChangeList (code) */
 td.item-code {
 	min-width: 30rem;
 	text-align: left;
@@ -921,18 +938,30 @@ td.item-code--small {
 	width: 45%;
 }
 
-td.item-code .code {
+.item-code .code {
 	display: inline-block;
 	margin: 0;
 	background-color: #303138;
 }
 
-td.item-code .code code {
+.item-code .code code {
 	display: flex;
 	flex-direction: column;
 	padding: 1.8rem;
 	color: #e5e5e5;
 	word-break: break-word;
+}
+
+.domChangeList .code code {
+	padding: 0.5rem;
+}
+
+.domChangeList .code {
+	border-radius: 1rem;
+}
+
+.domChangeList li {
+	margin: 1rem 0;
 }
 
 .code-textContent {
@@ -1028,8 +1057,10 @@ table li {
 table li button, table li span.noaction {
 	background-color: transparent;
 	border: none;
-	margin-left: 0.9rem;
-	padding: 3px; display: inline-block; vertical-align: middle;
+	margin: 0 0 0 0.9rem;
+	padding: 3px; 
+	display: inline-block; 
+	vertical-align: middle;
 }
 
 table li button img {

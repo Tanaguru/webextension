@@ -127,6 +127,96 @@ function manageHoveredImageButton(event) {
 }
 
 /**
+ * ? highlight item selected attributes
+ * ? item code formatting
+ */
+
+/**
+ * 
+ * @param {string} itemCode OuterHTML's element
+ * @param {HTMLElement} codeContainer <code> to contain formatted code
+ * @param {?Array} [codehighlight] Array of attributes to highlight
+ */
+function formattingCode(itemCode, codeContainer, codehighlight = null) {
+	var itemCodeCapture = [];
+	var regitemCode = new RegExp(/(?<open><[^\s\/]+\s*(?:[^\s"=]+="[^"]*"\s*)*>)|(?<close><\/[^\s>]+>)|(?<text>.)/g);
+
+	let execAr;
+	while((execAr = regitemCode.exec(itemCode)) !== null) {
+		itemCodeCapture.push(execAr.groups);
+	}
+
+	for(let x = 0; x < itemCodeCapture.length; x++) {
+		if(itemCodeCapture[x].text) {
+			if(itemCodeCapture[x - 1] && itemCodeCapture[x - 1].text) {
+				itemCodeCapture[x - 1].text += itemCodeCapture[x].text;
+				itemCodeCapture.splice(x, 1);
+				x = x - 1;
+			}
+		}
+	}
+
+	itemCodeCapture.forEach(icc => {
+		if(icc.open) {
+			let lineContainer = document.createElement('span');
+			lineContainer.classList.add("code-open");
+
+			lineContainer.appendChild(document.createTextNode("<"));
+
+			let openSpan = document.createElement('span');
+			openSpan.classList.add('code-tag');
+			openSpan.appendChild(document.createTextNode(icc.open.match(/[^<\/\s>]+/)));
+			lineContainer.appendChild(openSpan);
+
+			let itemAtt = icc.open.match(/[^="<>\s]+="[^"]*"/g);
+			if(itemAtt) {
+				itemAtt.forEach(att => {
+					let attName = att.match(/[^="<>\s]+/);
+
+					if (codehighlight && codehighlight.hasOwnProperty('attrs') && codehighlight.attrs.includes(attName[0])) {
+						let hlMark = document.createElement('mark');
+						hlMark.appendChild(document.createTextNode(' '+att));
+						lineContainer.appendChild(hlMark);
+					} else {
+						let attNameSpan = document.createElement('span');
+						attNameSpan.classList.add('code-attName');
+						attNameSpan.appendChild(document.createTextNode(' '+attName[0]));
+						lineContainer.appendChild(attNameSpan);
+
+						lineContainer.appendChild(document.createTextNode("="));
+
+						let attValueSpan = document.createElement('span');
+						attValueSpan.classList.add('code-attValue');
+						attValueSpan.appendChild(document.createTextNode(att.match(/"[^"]*"/)[0]));
+						lineContainer.appendChild(attValueSpan);
+					}
+				});
+			}
+			
+			lineContainer.appendChild(document.createTextNode(">"));
+			codeContainer.appendChild(lineContainer);
+		} else if(icc.close) {
+			let lineContainer = document.createElement('span');
+			lineContainer.classList.add("code-close");
+			lineContainer.appendChild(document.createTextNode("</"));
+
+			let closeSpan = document.createElement('span');
+			closeSpan.classList.add('code-tag');
+			closeSpan.appendChild(document.createTextNode(icc.close.match(/[^<\/>]+/)));
+			lineContainer.appendChild(closeSpan);
+
+			lineContainer.appendChild(document.createTextNode(">"));
+			codeContainer.appendChild(lineContainer);
+		} else {
+			let lineContainer = document.createElement('span');
+			lineContainer.classList.add("code-textContent");
+			lineContainer.appendChild(document.createTextNode(icc.text));
+			codeContainer.appendChild(lineContainer);
+		}
+	});
+}
+
+/**
  *? Construct panel
  */
 var html = document.querySelector('html');
@@ -1140,88 +1230,7 @@ button.addEventListener('click', function () {
 									newRow.querySelector('.item-number').textContent = itemNumber;
 									newRow.querySelector('.item-status').textContent = itemStatus;
 
-									/**
-									 * ? highlight item selected attributes
-									 * ? item code formatting
-									 */
-									var itemCode = test.data[h].outer;
-									var codeContainer = newRow.querySelector('.item-code code');
-									var itemCodeCapture = [];
-									var regitemCode = new RegExp(/(?<open><[^\s\/]+\s*(?:[^\s"=]+="[^"]*"\s*)*>)|(?<close><\/[^\s>]+>)|(?<text>.)/g);
-
-									let execAr;
-									while((execAr = regitemCode.exec(itemCode)) !== null) {
-										itemCodeCapture.push(execAr.groups);
-									}
-
-									for(let x = 0; x < itemCodeCapture.length; x++) {
-										if(itemCodeCapture[x].text) {
-											if(itemCodeCapture[x - 1] && itemCodeCapture[x - 1].text) {
-												itemCodeCapture[x - 1].text += itemCodeCapture[x].text;
-												itemCodeCapture.splice(x, 1);
-												x = x - 1;
-											}
-										}
-									}
-
-									itemCodeCapture.forEach(icc => {
-										if(icc.open) {
-											let lineContainer = document.createElement('span');
-											lineContainer.classList.add("code-open");
-
-											lineContainer.appendChild(document.createTextNode("<"));
-
-											let openSpan = document.createElement('span');
-											openSpan.classList.add('code-tag');
-											openSpan.appendChild(document.createTextNode(icc.open.match(/[^<\/\s>]+/)));
-											lineContainer.appendChild(openSpan);
-
-											let itemAtt = icc.open.match(/[^="<>\s]+="[^"]*"/g);
-											if(itemAtt) {
-												itemAtt.forEach(att => {
-													let attName = att.match(/[^="<>\s]+/);
-
-													if (codehighlight && codehighlight.hasOwnProperty('attrs') && codehighlight.attrs.includes(attName[0])) {
-														let hlMark = document.createElement('mark');
-														hlMark.appendChild(document.createTextNode(att));
-														lineContainer.appendChild(hlMark);
-													} else {
-														let attNameSpan = document.createElement('span');
-														attNameSpan.classList.add('code-attName');
-														attNameSpan.appendChild(document.createTextNode(' '+attName[0]));
-														lineContainer.appendChild(attNameSpan);
-
-														lineContainer.appendChild(document.createTextNode("="));
-
-														let attValueSpan = document.createElement('span');
-														attValueSpan.classList.add('code-attValue');
-														attValueSpan.appendChild(document.createTextNode(att.match(/"[^"]*"/)[0]));
-														lineContainer.appendChild(attValueSpan);
-													}
-												});
-											}
-											
-											lineContainer.appendChild(document.createTextNode(">"));
-											codeContainer.appendChild(lineContainer);
-										} else if(icc.close) {
-											let lineContainer = document.createElement('span');
-											lineContainer.classList.add("code-close");
-											lineContainer.appendChild(document.createTextNode("</"));
-
-											let closeSpan = document.createElement('span');
-											closeSpan.classList.add('code-tag');
-											closeSpan.appendChild(document.createTextNode(icc.close.match(/[^<\/>]+/)));
-											lineContainer.appendChild(closeSpan);
-
-											lineContainer.appendChild(document.createTextNode(">"));
-											codeContainer.appendChild(lineContainer);
-										} else {
-											let lineContainer = document.createElement('span');
-											lineContainer.classList.add("code-textContent");
-											lineContainer.appendChild(document.createTextNode(icc.text));
-											codeContainer.appendChild(lineContainer);
-										}
-									});
+									formattingCode(test.data[h].outer, newRow.querySelector('.item-code code'), codehighlight);
 
 									/**
 									 * ? Display the detail of accessible name
@@ -1956,6 +1965,7 @@ button.addEventListener('click', function () {
 
 	var obsInterface = false;
 	var obsCount = 0;
+	var domChangeTime = null;
 
 	function addObsInterface() {
 		// add new button on left panel
@@ -1992,21 +2002,23 @@ button.addEventListener('click', function () {
 	}
 
 	function delObsInterface() {
+		if(document.getElementById("DOMobserver").getAttribute('aria-selected') === "true") document.getElementById("tab0").click();
 		if(document.getElementById("DOMobserver")) document.getElementById("DOMobserver").remove();
 		document.getElementById("tabpanel1").remove();
 		document.getElementById("DOMdashboardMessage").remove();
 		obsInterface = false;
 		obsCount = 0;
+		domChangeTime = null;
 	}
-
-	var domChangeTime = null;
 
 	function obsMessage(request, sender, sendResponse) {
 		
 		if (request.command == 'DOMedit') {
 			let migObj = JSON.parse(request.migList);
-			if(migObj.length > 0) {
-				obsCount += migObj.length;
+			var migSize = Object.keys(migObj).length;
+			
+			if(migSize > 0) {
+				// obsCount += migSize;
 				if(!obsInterface) addObsInterface(migObj);
 
 				let now = new Date();
@@ -2025,11 +2037,11 @@ button.addEventListener('click', function () {
 					newBtn.appendChild(btnStatus);
 
 					let strong = document.createElement('strong');
-					strong.textContent = migObj.length;
+					strong.textContent = migSize;
 					newBtn.appendChild(strong);
 
 					let span = document.createElement('span');
-					span.textContent = "modifications observées";
+					span.textContent = migSize > 1 ? "éléments modifiés" : "élément modifié";
 					newBtn.appendChild(span);
 
 					newBtn.setAttribute('aria-expanded', 'false');
@@ -2038,7 +2050,7 @@ button.addEventListener('click', function () {
 					newtitle.appendChild(newBtn);
 					document.getElementById('tabpanel1').appendChild(newtitle);
 	
-					var domChangeList = document.createElement('ul');
+					var domChangeList = document.createElement('ol');
 					domChangeList.id = midID;
 					domChangeList.className = 'domChangeList';
 					domChangeList.setAttribute('hidden', 'hidden');
@@ -2046,41 +2058,142 @@ button.addEventListener('click', function () {
 					var domChangeList = document.getElementById(midID);
 				}
 
-				migObj.forEach(obj => {
-					let li = document.createElement('li');
-					li.className = "item-actions-inspect";
-					li.textContent = obj.desc;
-
-					let before = obj.before ? " - Avant : "+obj.before : null;
-					let after = obj.after ? " - Après : "+obj.after : null;
-					if(before) {
-						li.appendChild(document.createElement('br'));
-						li.appendChild(document.createTextNode(before));
+				for( var prop in migObj) {
+					if(migObj[prop].length === 0) continue;
+					obsCount++;
+					let newElMigrations;
+					if(domChangeList.querySelector('.'+prop)) {
+						newElMigrations = domChangeList.querySelector('.'+prop+' div ol');
 					}
-					if(after) {
-						li.appendChild(document.createElement('br'));
-						li.appendChild(document.createTextNode(after));
+					else {
+						var newEl = document.createElement('li');
+						newEl.classList.add(prop);
+						newEl.classList.add('item-code');
+
+						let liButton = document.createElement('button');
+						liButton.setAttribute('aria-expanded', 'false');
+						liButton.setAttribute('data-action', 'showhide-action');
+						liButton.classList.add('code');
+						let liButtonCode = document.createElement('code');
+						liButtonCode.textContent = migObj[prop][0] ? migObj[prop][0].el : prop;
+						liButton.appendChild(liButtonCode);
+
+						var newElContainer = document.createElement('div');
+						newElContainer.id = prop+'-'+(document.querySelectorAll('#tabpanel1 li').length + 1);
+						newElContainer.setAttribute('hidden', 'hidden');
+
+						liButton.setAttribute('aria-controls', newElContainer.id);
+						newEl.appendChild(liButton);
+
+						const domNb = prop;
+	
+						let inspectParagraph = document.createElement('p');
+						inspectParagraph.className = "item-actions-inspect";
+						inspectParagraph.textContent = "Sélectionner l'élément dans l'inspecteur de code : ";
+
+						let inspectObj = document.createElement('button');
+						inspectObj.className = "visible obsDOM";
+						const currentSelector = '[data-tng-dom="'+domNb+'"]';
+
+						inspectObj.addEventListener('click', function() {
+							chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('"+currentSelector+"'))");
+						}, true);
+						inspectParagraph.appendChild(inspectObj);
+						newElContainer.appendChild(inspectParagraph);
+
+						newElMigrations = document.createElement('ol');
 					}
 
-					li.appendChild(document.createElement('br'));
+					migObj[prop].forEach(obj => {
+						let li = document.createElement('li');
+						li.textContent = obj.desc;
+	
+						if(obj.type > 3) {
+							let before = obj.before ? " - Avant : "+obj.before : null;
+							let after = obj.after ? " - Après : "+obj.after : null;
 
-					let textInspect = (obj.type != 2) ? "Afficher l'élément dans l'inspecteur de code : " : "Afficher l'élément parent dans l'inspecteur de code : ";
-					li.appendChild(document.createTextNode(textInspect));
+							if(before) {
+								li.appendChild(document.createElement('br'));
+								li.appendChild(document.createTextNode(before));
+							}
+							if(after) {
+								li.appendChild(document.createElement('br'));
+								li.appendChild(document.createTextNode(after));
+							}
 
-					let inspectObj = document.createElement('button');
-					inspectObj.className = "visible obsDOM";
-					inspectObj.addEventListener('click', function() {
-						chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('" + obj.el + "'))");
-					}, true);
-					li.appendChild(inspectObj);
+						} else {
+							li.classList.add('item-code');
+							if(obj.type == 1) {
+								let br = document.createElement('br');
+								li.appendChild(br);
 
-					domChangeList.appendChild(li);
-				});
+								let container = document.createElement('div');
+								container.className = "code";
+
+								let codeContainer = document.createElement('code');
+								formattingCode(obj.after, codeContainer);
+								container.appendChild(codeContainer);
+
+								li.appendChild(container);
+							}
+							else if(obj.type == 2) {
+								let br = document.createElement('br');
+								li.appendChild(br);
+
+								let container = document.createElement('div');
+								container.className = "code";
+
+								let codeContainer = document.createElement('code');
+								formattingCode(obj.before, codeContainer);
+								container.appendChild(codeContainer);
+
+								li.appendChild(container);
+							}
+							else {
+								//* Before element
+								let beforeParagraph = document.createElement('p');
+								beforeParagraph.textContent = "Avant:";
+								li.appendChild(beforeParagraph);
+
+								let beforeContainer = document.createElement('div');
+								beforeContainer.className = "code";
+
+								let codeBeforeContainer = document.createElement('code');
+								formattingCode(obj.before, codeBeforeContainer);
+								beforeContainer.appendChild(codeBeforeContainer);
+								li.appendChild(beforeContainer);
+
+								//* After element
+								let afterParagraph = document.createElement('p');
+								afterParagraph.textContent = "Après:";
+								li.appendChild(afterParagraph);
+
+								let afterContainer = document.createElement('div');
+								afterContainer.className = "code";
+
+								let codeAfterContainer = document.createElement('code');
+								formattingCode(obj.after, codeAfterContainer);
+								afterContainer.appendChild(codeAfterContainer);
+								li.appendChild(afterContainer);
+							}
+						}
+
+						newElMigrations.appendChild(li);
+					});
+
+					if(!domChangeList.querySelector('.'+prop)) {
+						newElContainer.appendChild(newElMigrations);
+						newEl.appendChild(newElContainer);
+						domChangeList.appendChild(newEl);
+					}
+				}
 				
 				document.getElementById('tabpanel1').appendChild(domChangeList);
 
 				let counterList = document.querySelector('button[aria-controls="'+midID+'"] strong');
-				counterList.textContent = domChangeList.querySelectorAll('li').length;
+				let elCount = domChangeList.querySelectorAll(':scope>li').length;
+				counterList.textContent = elCount;
+				document.querySelector('button[aria-controls="'+midID+'"] strong+span').textContent = elCount > 1 ? "éléments modifiés" : "élément modifié";
 				
 				document.querySelector("#tabpanel1 .DOMobserver-message").textContent = chrome.i18n.getMessage('DOMpanelMessage');
 

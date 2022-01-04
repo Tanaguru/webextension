@@ -36,7 +36,7 @@
 	"msgDashboardResultPassed": { "message": "Aucune erreur n'a été détectée dans cette page." }, 
 	"msgDashboardResultNone": { "message": "Aucun résultat ne correspond à votre demande pour cette page." },
 	"msgDashboardResultLoad": { "message": "Analyse en cours..." },
-	"msgDashboardWarning": { "message": "Attention, l'url de la page a changé, les résultats d'analyse actuels ne correspondent plus au contenu de l'onglet actif." },
+	"msgDashboardWarning": { "message": "Attention, la page de l'onglet actif a été modifiée ou rafraîchie, les résultats d'analyse actuels ne correspondent plus au contenu de l'onglet actif." },
 	"dashboardButtonReload": { "message": "Relancer l'analyse" },
 	"dashboardButtonRestart": { "message": "Quitter et démarrer une nouvelle analyse" },
 	"dashboardListenDOMlegend": { "message": "Surveiller les modifications du DOM de la page analysée" },
