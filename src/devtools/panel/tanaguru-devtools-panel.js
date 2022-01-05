@@ -129,10 +129,6 @@ function manageHoveredImageButton(event) {
 /**
  * ? highlight item selected attributes
  * ? item code formatting
- */
-
-/**
- * 
  * @param {string} itemCode OuterHTML's element
  * @param {HTMLElement} codeContainer <code> to contain formatted code
  * @param {?Array} [codehighlight] Array of attributes to highlight
@@ -214,6 +210,10 @@ function formattingCode(itemCode, codeContainer, codehighlight = null) {
 			codeContainer.appendChild(lineContainer);
 		}
 	});
+}
+
+var obsMessage = function(request) {
+	console.log("aucune analyze en cours", request);
 }
 
 /**
@@ -477,10 +477,15 @@ button.addEventListener('click', function () {
 					if (element.getAttribute('aria-expanded') == 'false') {
 						document.getElementById(element.getAttribute('aria-controls')).removeAttribute('hidden');
 						element.setAttribute('aria-expanded', 'true');
+						if(element.classList.contains('domDropdownButton')) {
+							element.classList.add('domDropdownButton--active');
+						}
+						
 					}
 					else {
 						document.getElementById(element.getAttribute('aria-controls')).setAttribute('hidden', 'hidden');
 						element.setAttribute('aria-expanded', 'false');
+						element.classList.remove('domDropdownButton--active');
 					}
 					break;
 				case 'highlight-action':
@@ -2011,8 +2016,7 @@ button.addEventListener('click', function () {
 		domChangeTime = null;
 	}
 
-	function obsMessage(request, sender, sendResponse) {
-		
+	obsMessage = function (request) {
 		if (request.command == 'DOMedit') {
 			let migObj = JSON.parse(request.migList);
 			var migSize = Object.keys(migObj).length;
@@ -2073,9 +2077,47 @@ button.addEventListener('click', function () {
 						let liButton = document.createElement('button');
 						liButton.setAttribute('aria-expanded', 'false');
 						liButton.setAttribute('data-action', 'showhide-action');
-						liButton.classList.add('code');
+						liButton.classList.add('code', 'domDropdownButton');
+
+						let iconButton = document.createElement('img');
+						iconButton.className = "domDisclosureIcon";
+						iconButton.alt = "";
+						iconButton.src = "./images/arrow.png";
+						liButton.appendChild(iconButton);
+
 						let liButtonCode = document.createElement('code');
-						liButtonCode.textContent = migObj[prop][0] ? migObj[prop][0].el : prop;
+						let elName = migObj[prop][0] ? migObj[prop][0].el : prop;
+
+						if(migObj[prop][0]) {
+							let closeTag = /<\/[^>]+>/g;
+							let atts = [/[" ]style="[^"]*"/g, /[" ]on[^=]+="[^"]*"/g, /[" ]rel="[^"]*"/g];
+							elName = elName.match(closeTag) ? elName.split(closeTag)[0] : elName;
+
+							atts.forEach(att => {
+								if(elName.match(att)) {
+									elName = elName.split(att);
+									elName = elName.filter(part => !part.match(att));
+									elName = elName.join("");
+								}
+							});
+
+							elName.replace(/"[^"]*"/g, (match, offset, string) => {
+								if(match.length > 30) {
+									match = match.slice(0, 29)+'[...]"';
+								}
+								return match;
+							});
+
+							elName = elName.split(" ");
+							if(elName.length > 4) {
+								let shortElName = [];
+								shortElName.push(elName[0], elName[1], elName[2], elName[elName.length-1]);
+								elName = shortElName;
+							}
+							elName = elName.join(" ");
+							formattingCode(elName, liButtonCode);
+						}
+						else liButtonCode.textContent = elName;
 						liButton.appendChild(liButtonCode);
 
 						var newElContainer = document.createElement('div');
@@ -2240,8 +2282,6 @@ button.addEventListener('click', function () {
 
 			dashboardpanel.querySelector('.dashboard-message').textContent = chrome.i18n.getMessage('msgDashboardWarning');
 		}
-		
-		return true;
 	}
 
 	function listenDOMchange(e) {
@@ -2253,9 +2293,7 @@ button.addEventListener('click', function () {
 				tabId: chrome.devtools.inspectedWindow.tabId,
 				command: 'obsDOM',
 				obs: 'ON',
-			}, (response) => {
-				addObsInterface();
-			});
+			}, addObsInterface);
 		}
 		else {
 			document.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenOFF');
@@ -2264,9 +2302,7 @@ button.addEventListener('click', function () {
 				tabId: chrome.devtools.inspectedWindow.tabId,
 				command: 'obsDOM',
 				obs: 'OFF',
-			}, (response) => {
-				delObsInterface();
-			});
+			}, delObsInterface);
 		}
 	}
 
@@ -2291,6 +2327,4 @@ button.addEventListener('click', function () {
 	}
 
 	dashboardpanel.querySelector('#listenDOM').disabled = true;
-	
-	chrome.runtime.onMessage.addListener(obsMessage);
 }, false);

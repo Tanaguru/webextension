@@ -1,11 +1,25 @@
+var ports = [];
+function handleConnect(port) {
+	if (port.name !== "devtools") return;
+	ports.push(port);
+	port.onDisconnect.addListener(() => {
+		var i = ports.indexOf(port);
+		if (i !== -1) ports.splice(i, 1);
+	});
+}
+chrome.runtime.onConnect.addListener(handleConnect);
+
+/**
+ * ? Send message to devtools_page
+ */
+function notifyDevtools(msg) {
+    ports.forEach(function(port) {
+        port.postMessage(msg);
+    });
+}
+
 function handleMessage(request, sender, sendResponse) {
-	if (request.command === 'initPopup') {
-		
-	}
-	else if (request.command === 'resetPopup') {
-		
-	}
-	else if (request.command === 'copyClipboard') {
+	if (request.command === 'copyClipboard') {
 		chrome.notifications.create(
 			'', 
 			{
@@ -59,7 +73,7 @@ function handleMessage(request, sender, sendResponse) {
 	}
 	else if (request.command == 'obsDOM') {
 		chrome.tabs.executeScript(request.tabId, {
-		    code: 'var obs = "' + request.obs + '";'
+		    code: 'var obs = "' + request.obs + '"; var panelId = "' + request.tabId + '";',
 		}, function() {
 			chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/obsDOM.js' }, function (result) {
 				sendResponse({ command: 'executeDOMobserver', response: result });
@@ -67,10 +81,12 @@ function handleMessage(request, sender, sendResponse) {
 		});
 	}
 	else if (request.command == 'newMigration') {
-		chrome.runtime.sendMessage({
+		let r = {
 			command: 'DOMedit',
 			migList: request.migList
-		});
+		}
+
+		notifyDevtools(r);
 	}
 	else if (request.command == 'resetPanel') {
 		chrome.tabs.removeCSS(request.tabId, {
@@ -84,16 +100,14 @@ function handleMessage(request, sender, sendResponse) {
 		// zoom 200%
 		// chrome.tabs.setZoom(request.tabId, 2);
 	}
-	return true;
-}
 
+	if(request.command != 'newMigration') return true;
+}
 chrome.runtime.onMessage.addListener(handleMessage);
 
 
 /* Fires when the active tab in a window changes. Note that the tab's URL may not be set at the time this event fired, but you can listen to tabs.onUpdated events to be notified when a URL is set. */
 function handleActivated(activeInfo) {
-	// console.log("Tab " + activeInfo.tabId + " was activated.");
-
 	chrome.tabs.query({active: true, currentWindow: true}, tabInfo => {
 		if(tabInfo[0].url) {
 			chrome.tabs.removeCSS(activeInfo.tabId, {
@@ -110,7 +124,6 @@ chrome.tabs.onActivated.addListener(handleActivated);
 
 /* Fired when a tab is updated. */
 function handleUpdated(tabId, changeInfo, tabInfo) {
-	// console.log("Tab " + tabId + " was updated.", changeInfo, tabInfo);
 	if(changeInfo.hasOwnProperty('url')) {
 		chrome.tabs.executeScript(tabId, {
 		    code: 'var obs = "OFF";'
@@ -118,9 +131,7 @@ function handleUpdated(tabId, changeInfo, tabInfo) {
 			chrome.tabs.executeScript(tabId, { file: '/ressources/scripts/obsDOM.js' });
 		});
 
-		chrome.runtime.sendMessage({
-			command: 'pageChanged'
-		});
+		notifyDevtools({command: "pageChanged"});
 
 		chrome.tabs.removeCSS(tabId, {
 			file: '/ressources/styles/highlight.css'

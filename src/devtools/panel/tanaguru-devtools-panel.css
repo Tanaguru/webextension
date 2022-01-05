@@ -961,7 +961,28 @@ td.item-code--small {
 }
 
 .domChangeList li {
+	position: relative;
 	margin: 1rem 0;
+}
+
+.domChangeList li .domDropdownButton {
+	margin-left: 3rem;
+	border: 0;
+}
+
+.domDropdownButton:focus .domDisclosureIcon,
+.domDropdownButton:hover .domDisclosureIcon,
+.domDropdownButton--active .domDisclosureIcon {
+	transform: rotate(0.25turn);
+}
+
+.domDisclosureIcon {
+	position: absolute;
+	left: 1rem;
+	top: 1rem;
+	margin-right: 1rem;
+	width: 1.3rem;
+	transition: transform 0.3s;
 }
 
 .code-textContent {
