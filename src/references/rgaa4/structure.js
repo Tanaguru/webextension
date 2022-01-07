@@ -12,35 +12,46 @@ tanaguruTestsList.push({
     query: 'h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"][aria-level]',
     testStatus: "failed",
     filter: function (item) {
-        var currentlevel = parseInt(item.hasAttribute('aria-level') ? item.getAttribute('aria-level') : item.tagName.substring(1));
-        var currentElement = item.hasAttribute('aria-level') ? '[role="heading"][aria-level="'+currentlevel+'"]' : item.tagName;
-        
-        if(currentlevel === 1) {
-            return false;
-        }
-        var parent = item.parentNode;
-        while(parent) {
-            if(currentlevel < 8) {
-                var headings = parent.querySelectorAll(currentElement+',h'+(currentlevel-1)+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
-            } else {
-                var headings = parent.querySelectorAll(currentElement+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
-            }
-            
-            let hlength = headings.length;
-            for(var i = 0; i < hlength; i++) {
-                if(headings[i] === item) {
-                    parent = parent.tagName.toLowerCase() != 'body' ? parent.parentNode : null;
-                    break;
-                } else if(headings[i].getAttribute('data-tng-el-exposed') === 'false') {
-                    continue;
-                } else {
-                    item.setAttribute('data-tng-headingHierarchy', 'true');
-                    return false;
-                }
-            }
-        }
+        return false;
+        // var currentlevel = parseInt(item.hasAttribute('aria-level') ? item.getAttribute('aria-level') : item.tagName.substring(1));
+        // if(currentlevel > 5) return false;
+        // var badHierarchy = false;
 
-        return true;
+        // for(let i = currentlevel+1; i < 7; i++) {
+        //     var lessLvl = document.body.querySelectorAll(`h${i}[data-tng-el-exposed="true"], [role="heading"][aria-level="${i}"][data-tng-el-exposed="true"]`);
+
+        //     for(let y = 0; y < lessLvl.length; y++) {
+        //         var less = lessLvl[y];
+        //         if(less.parentNode != item.parentNode) {
+        //             var parent = less.parentNode;
+        //             while(parent) {
+        //                 if(parent.contains(item)) {
+        //                     let elList = parent.querySelectorAll(`${less.tagName.toLowerCase()}, ${item.tagName.toLowerCase()}`);
+                            
+        //                     for(let x = 0; x < elList.length; x++) {
+        //                         let el = elList[x];
+        //                         if(el == less) {
+        //                             badHierarchy = true;
+        //                             break;
+        //                         }
+        //                         else if(el == item) {
+        //                             break;
+        //                         }
+        //                     }
+        //                     break;
+        //                 }
+        //                 else parent = parent.parentNode;
+        //             }
+        //         }
+        //         if(badHierarchy) break;
+        //     }
+        // }
+
+        // if(badHierarchy) return true;
+        // else {
+        //     item.setAttribute('data-tng-headingHierarchy', 'true');
+        //     return false;
+        // }
     },
     mark: {attrs: ['role', 'aria-level']},
     tags: ['a11y', 'headings', 'structure'],

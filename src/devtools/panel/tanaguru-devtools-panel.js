@@ -212,9 +212,8 @@ function formattingCode(itemCode, codeContainer, codehighlight = null) {
 	});
 }
 
-var obsMessage = function(request) {
-	console.log("aucune analyze en cours", request);
-}
+//? use in ../tanaguru-devtools.js
+var obsMessage;
 
 /**
  *? Construct panel
@@ -1957,6 +1956,8 @@ button.addEventListener('click', function () {
 	displayResults();
 
 	function restartAnalyze() {
+		let hlElement = main.children[1].querySelector('.highlightON');
+		if(hlElement) hlElement.click();
 		if(listenDomModif) dashboardpanel.querySelector('#listenDOM').click();
 		ul.querySelectorAll('li:not([id="tab0"])').forEach(li => {li.remove()});
 		document.getElementById('tests').remove();
@@ -2282,6 +2283,11 @@ button.addEventListener('click', function () {
 
 			dashboardpanel.querySelector('.dashboard-message').textContent = chrome.i18n.getMessage('msgDashboardWarning');
 		}
+
+		if(request.command == 'resetHighlight') {
+			let hlElement = main.children[1].querySelector('.highlightON');
+			if(hlElement) hlElement.click();
+		}
 	}
 
 	function listenDOMchange(e) {
@@ -2312,6 +2318,8 @@ button.addEventListener('click', function () {
 	dashboardpanelbuttonreload.addEventListener('click', restartAnalyze);
 	dashboardpanelbuttonrestart.addEventListener('click', () => {
 		if(dashboardpanel.querySelector('#listenDOM').checked) dashboardpanel.querySelector('#listenDOM').click();
+		let hlElement = main.children[1].querySelector('.highlightON');
+		if(hlElement) hlElement.click();
 		window.location.reload();
 	});
 	dashboardpanel.querySelector('#listenDOM').addEventListener('change', listenDOMchange);

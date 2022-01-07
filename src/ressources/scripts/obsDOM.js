@@ -1,5 +1,3 @@
-var result;
-
 /**
  * ? processes the mutations and sends them as an object array to the background.js
  * @param {Object} mutationsList 
@@ -192,7 +190,7 @@ function callback(mutationsList) {
 
     chrome.runtime.sendMessage({
         command: 'newMigration',
-        tabId: panelId,
+        tabId: requestTabId,
         migList: JSON.stringify(elementsList)
     });
 };
@@ -201,12 +199,8 @@ if(typeof observer == 'undefined') var observer = new MutationObserver(callback)
 
 if(obs === 'ON') {
     observer.observe(document.body, { attributeOldValue: true, childList: true, subtree: true, characterDataOldValue: true });
-    result = "observer is starting....";
 } else {
     observer.disconnect();
     let dataTng = document.querySelectorAll('.data-tng-dom');
     dataTng.forEach(n => n.removeAttribute('data-tng-dom'));
-    result = "observer is stopping...";
 }
-
-result;

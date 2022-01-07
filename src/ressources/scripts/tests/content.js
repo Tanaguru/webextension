@@ -2791,7 +2791,7 @@ var ariaData = {
             category: 'widget attributes',
             description: 'Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by an element.',
             relatedConcepts: 'aria-controls',
-            usedInRoles: ['application', 'button', 'combobox', 'gridcell', 'menuitem', 'slider', 'tab', 'textbox', 'treeitem'],
+            usedInRoles: ['application', 'button', 'combobox', 'gridcell', 'link', 'menuitem', 'slider', 'tab', 'textbox', 'treeitem'],
             inheritsIntoRoles: ['columnheader', 'menuitemcheckbox', 'menuitemradio', 'rowheader', 'searchbox'],
             defaultValue: 'false',
             value: ['true', 'false', 'menu', 'listbox', 'tree', 'grid', 'dialog']

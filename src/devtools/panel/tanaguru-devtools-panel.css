@@ -706,9 +706,10 @@ main:not(.launch-analysis) > div:first-child + div {
 	top: 0;
 	left: 0;
 	width: 4rem;
-	border-radius: 50%;
-	font: normal normal normal 3.6rem/1.15 FontAwesome;
+	border-radius: 25%;
+	font: normal normal normal 3.4rem/1.2 FontAwesome;
 	text-align: center;
+	padding-left: 0.2rem;
 	background-color: #fff;
 	-webkit-transition: transform 0.3s;
 	transition: transform 0.3s;
@@ -882,6 +883,7 @@ table {
 	border-collapse: collapse;
 	width: 100%;
 	text-align: center;
+	font-size: 1.3rem;
 }
 
 tr:nth-child(odd) {
