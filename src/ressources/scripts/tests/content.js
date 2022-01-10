@@ -1143,7 +1143,6 @@ function loadTanaguruTests() {
     for (var tag in window.tanaguru.tags) {
         tags.push(window.tanaguru.tags[tag]);
     }
-    
     var result = { tags: tags, tests: window.tanaguru.tests };
     window.tanaguru = undefined;
     return result;
@@ -3847,6 +3846,55 @@ function getDuplicateID() {
     query = query === null ? query : query.slice(0, -1);
     return document.querySelectorAll(query);
 }
+
+/**
+ * get array of headings hierarchy
+ * TODO a intégrer en front via une option
+ * @returns {Object}
+ */
+function getHeadingsMap() {
+    var collection = document.body.querySelectorAll('h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"][aria-level]');
+    collection = Array.from(collection).sort((a,b) => {
+        return a.getAttribute('data-tng-pos') - b.getAttribute('data-tng-pos');
+    });
+
+    var structure = [];
+    var lastPost = null;
+    var lastLvl = [];
+    for(let i = 0; i < collection.length; i++) {
+        let previousLevel = collection[i-1] ? (!collection[i-1].hasAttribute['role'] ? collection[i-1].tagName.toLowerCase().split('h')[1] : collection[i-1].getAttribute('aria-level')) : null;
+        let currentlevel = !collection[i].hasAttribute['role'] ? collection[i].tagName.toLowerCase().split('h')[1] : collection[i].getAttribute('aria-level');
+        let nextLevel = collection[i+1] ? (!collection[i+1].hasAttribute['role'] ? collection[i+1].tagName.toLowerCase().split('h')[1] : collection[i+1].getAttribute('aria-level')) : null;
+        
+        if(previousLevel) {
+            if(previousLevel == currentlevel) {
+                lastPost.push(collection[i]);
+            } else if(previousLevel < currentlevel) {
+                lastPost.push([collection[i]]);
+                lastLvl.push(lastPost.length-1);
+                lastPost = lastPost[lastPost.length-1];
+            } else {
+                if(lastLvl.length > 1) {
+                    lastLvl.pop();
+                    let key = "["+lastLvl.join('][')+"]";
+                    lastPost = eval("structure"+key);
+                    lastPost.push(collection[i]);
+                }
+                else {
+                    structure.push([collection[i]]);
+                    lastPost = structure[structure.length-1];
+                    lastLvl = [structure.length-1];
+                }
+            }
+        } else {
+            structure.push([collection[i]]);
+            lastPost = structure[0];
+            lastLvl.push(0);
+        }
+    }
+
+    return structure;
+};
 
 //TODO recupérer les events appliqué via api
 function listAllEventListeners() {

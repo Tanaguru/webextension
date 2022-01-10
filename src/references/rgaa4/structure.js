@@ -2,71 +2,10 @@
  *? STRUCTURATION DE L'INFORMATION
  ** tous les tests sont répertoriés
  *
- * data : data-tng-headingHierarchy, data-tng-headingAN
+ * data : data-tng-headingAN
  */
-//TODO a revoir
-// 9.1.1 : Dans chaque page web, la hiérarchie entre les titres (balise hx ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) est-elle pertinente ?
-tanaguruTestsList.push({
-    lang: 'fr',
-    name: 'Liste des titres de niveau qui ne respectent pas la hierarchie de titres',
-    query: 'h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"][aria-level]',
-    testStatus: "failed",
-    filter: function (item) {
-        return false;
-        // var currentlevel = parseInt(item.hasAttribute('aria-level') ? item.getAttribute('aria-level') : item.tagName.substring(1));
-        // if(currentlevel > 5) return false;
-        // var badHierarchy = false;
+//! 9.1.1 : voir content.js getHeadingsMap()
 
-        // for(let i = currentlevel+1; i < 7; i++) {
-        //     var lessLvl = document.body.querySelectorAll(`h${i}[data-tng-el-exposed="true"], [role="heading"][aria-level="${i}"][data-tng-el-exposed="true"]`);
-
-        //     for(let y = 0; y < lessLvl.length; y++) {
-        //         var less = lessLvl[y];
-        //         if(less.parentNode != item.parentNode) {
-        //             var parent = less.parentNode;
-        //             while(parent) {
-        //                 if(parent.contains(item)) {
-        //                     let elList = parent.querySelectorAll(`${less.tagName.toLowerCase()}, ${item.tagName.toLowerCase()}`);
-                            
-        //                     for(let x = 0; x < elList.length; x++) {
-        //                         let el = elList[x];
-        //                         if(el == less) {
-        //                             badHierarchy = true;
-        //                             break;
-        //                         }
-        //                         else if(el == item) {
-        //                             break;
-        //                         }
-        //                     }
-        //                     break;
-        //                 }
-        //                 else parent = parent.parentNode;
-        //             }
-        //         }
-        //         if(badHierarchy) break;
-        //     }
-        // }
-
-        // if(badHierarchy) return true;
-        // else {
-        //     item.setAttribute('data-tng-headingHierarchy', 'true');
-        //     return false;
-        // }
-    },
-    mark: {attrs: ['role', 'aria-level']},
-    tags: ['a11y', 'headings', 'structure'],
-    ressources: { 'rgaa': ['9.1.1'] }
-});
-
-tanaguruTestsList.push({
-    lang: 'fr',
-    name: 'Liste des titres de niveau qui respectent la hierarchie de titres',
-    query: '[data-tng-headingHierarchy]',
-    testStatus: "passed",
-    mark: {attrs: ['role', 'aria-level']},
-    tags: ['a11y', 'headings', 'structure'],
-    ressources: { 'rgaa': ['9.1.1'] }
-});
 
 // 9.1.2 : Dans chaque page web, le contenu de chaque titre (balise <hx> ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) est-il pertinent ?
 tanaguruTestsList.push({
