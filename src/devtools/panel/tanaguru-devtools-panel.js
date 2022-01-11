@@ -963,7 +963,102 @@ button.addEventListener('click', function () {
 					let category = filters.categories[catCount];
 					response = response.response[0];
 					testsCount += response.tests.length;
+					if(response.headings.length > 0) {
+						var headings = document.createElement('li');
+						headings.setAttribute('id', 'headingsHierarchy');
+						headings.setAttribute('role', 'tab');
+						headings.setAttribute('aria-selected', 'false');
+						headings.setAttribute('tabindex', '-1');
+						headings.appendChild(document.createTextNode(chrome.i18n.getMessage('msgHeadingsHierarchy')));
 
+						var headingsPanel = document.createElement('div');
+						headingsPanel.setAttribute('role', 'tabpanel');
+						headingsPanel.setAttribute('aria-labelledby', headings.getAttribute('id'));
+						headingsPanel.setAttribute('id', 'headingsPanel');
+						headingsPanel.setAttribute('aria-hidden', 'true');
+
+						headings.setAttribute('aria-controls', headingsPanel.getAttribute('id'));
+						ul.insertBefore(headings, ul.querySelector('#alltests'));
+
+						var headingsTemplate = document.querySelector('#headings');
+						var headingsPanelContent = document.importNode(headingsTemplate.content, true);
+						headingsPanel.appendChild(headingsPanelContent);
+						headingsPanel.querySelector('h2').textContent = chrome.i18n.getMessage('msgHeadingsHierarchy');
+						var headingsPanelp = headingsPanel.querySelector('.headings-message');
+						headingsPanelp.textContent = "Hiérarchie des titres de la page, représentée sous forme de listes.";
+
+						var container = headingsPanel.querySelector('.headings-container');
+						function arrayToList(ar, currentList) {
+							ar.forEach(heading => {
+								if(Array.isArray(heading)) {
+									let headingsList = document.createElement('ul');
+									if(!currentList.classList.contains('blue-item-list')) headingsList.classList.add('blue-item-list');
+									arrayToList(heading, headingsList);
+									currentList.lastChild.appendChild(headingsList);
+								}
+								else {
+									let headingItem = document.createElement('li');
+									let headingSpan = document.createElement('span');
+									headingSpan.textContent = heading.level+" - "+heading.an;
+
+									let buttonShowContainer = document.createElement('span');
+									buttonShowContainer.className = "item-actions-highlight"
+									let buttonShow = document.createElement('button');
+									buttonShow.className = "visible";
+									let buttonShowLabel = document.createElement('span');
+									buttonShowLabel.className = "visually-hidden";
+									buttonShowLabel.textContent = "mettre le titre en évidence sur la page";
+
+									buttonShow.addEventListener('click', function(evt) {
+										let element = evt.target.closest('button');
+										chrome.runtime.sendMessage({
+											tabId: chrome.devtools.inspectedWindow.tabId,
+											command: 'highlight',
+											element: cssify(heading.xpath)
+										}, (response) => {
+											if(response.response[0] === "off") {
+												element.classList.remove('highlightON');
+												element.setAttribute('aria-selected', "true");
+											} else {
+												let previousHighlight = main.children[1].querySelector('.highlightON');
+												if(previousHighlight) {
+													previousHighlight.classList.remove('highlightON');
+													previousHighlight.removeAttribute('aria-selected');
+												}
+												element.classList.add('highlightON');
+											}
+										});
+									}, true);
+
+									buttonShow.appendChild(buttonShowLabel);
+									buttonShowContainer.appendChild(buttonShow);
+									headingSpan.appendChild(buttonShowContainer);
+
+									let buttonInspectContainer = document.createElement('span');
+									buttonInspectContainer.className = "item-actions-inspect"
+									let buttonInspect = document.createElement('button');
+									buttonInspect.className = "visible";
+									let buttonInspectLabel = document.createElement('span');
+									buttonInspectLabel.className = "visually-hidden";
+									buttonInspectLabel.textContent = "sélectionner le titre dans l'onglet inspecteur";
+
+									buttonInspect.addEventListener('click', function() {
+										chrome.devtools.inspectedWindow.eval(`inspect(document.querySelector('[sdata-tng-hindex="${heading.index}"]'))`);
+									}, true);
+
+									buttonInspect.appendChild(buttonInspectLabel);
+									buttonInspectContainer.appendChild(buttonInspect);
+									headingSpan.appendChild(buttonInspectContainer);
+
+									headingItem.appendChild(headingSpan);
+									currentList.appendChild(headingItem);
+								}
+							});
+						}
+
+						arrayToList(response.headings[0], container);
+						rightcolumn.appendChild(headingsPanel);
+					}
 					/**
 					 * ? display tests results
 					 */
@@ -2136,6 +2231,10 @@ button.addEventListener('click', function () {
 
 						let inspectObj = document.createElement('button');
 						inspectObj.className = "visible obsDOM";
+						let inspectLabel = document.createElement('span');
+						inspectLabel.className = "visually-hidden";
+						inspectLabel.textContent = "inspecter";
+						inspectObj.appendChild(inspectLabel);
 						const currentSelector = '[data-tng-dom="'+domNb+'"]';
 
 						inspectObj.addEventListener('click', function() {

@@ -236,8 +236,10 @@ function launchTests() {
     }
 }
 
-if(first === "yes") addDataTng();
-if(last === 'yes') console.log(getHeadingsMap());
+if(first === "yes") {
+    addDataTng();
+    getHeadingsMap();
+}
 var textNodeList = (cat !== 'colors') ? null : getTextNodeContrast();
 
 filterCat();

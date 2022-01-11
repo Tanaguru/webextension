@@ -1080,47 +1080,17 @@ function getXPath(element) {
     return (element.parentNode.nodeType == 1 ? getXPath(element.parentNode) : '') + '/' + element.tagName.toLowerCase() + '[' + (position ? position : '1') + ']' + (element.hasAttribute('id') ? '[@id="' + element.getAttribute('id') + '"]' : '') + (element.hasAttribute('class') ? '[@class="' + element.getAttribute('class') + '"]' : '');
 }
 
-function addBooleanResult(name, data) {
-    /*
-		addBooleanResult(browser.i18n.getMessage("msgHeadings"), {
-			name: { 'passed': 'Intitulé si C', 'failed': 'Intitulé si NC' },
-			data: document.querySelectorAll('h1').length > 1
-		});
-	*/
-}
-
 function initTanaguru() {
     if (!window.tanaguru) {
         window.tanaguru = {};
         window.tanaguru.tags = new Array();
         window.tanaguru.tests = new Array();
+        window.tanaguru.headings = new Array();
     }
 }
 
 function addResultSet(name, data) {
     initTanaguru();
-    /*
-	*** OLD VERSION ***
-	if (data.type == 'failed') {
-		var datacount = data.data.length;
-	}
-	else {
-		var datacount = 0; // 'passed', 'cantTell', 'inapplicable', 'untested'
-	}
-	if (window.tanaguru.tests[name]) {
-		window.tanaguru.tests[name].datacount += datacount;
-	}
-	else {
-		window.tanaguru.tests[name] = {
-			data: [],
-			datacount: datacount
-		}
-	}
-	//if (data.data.length > 0) {
-		window.tanaguru.tests[name].data.push(data);
-	//}
-	*/
-    /* Nouvelle version */
     window.tanaguru.tests.push(data);
 }
 
@@ -1143,7 +1113,9 @@ function loadTanaguruTests() {
     for (var tag in window.tanaguru.tags) {
         tags.push(window.tanaguru.tags[tag]);
     }
-    var result = { tags: tags, tests: window.tanaguru.tests };
+
+    var result = { tags: tags, tests: window.tanaguru.tests, headings: window.tanaguru.headings };
+
     window.tanaguru = undefined;
     return result;
 }
@@ -1728,8 +1700,7 @@ var getImplicitAriaRoleCategory = function () {
         return undefined;
     }
 };
-if (!('getImplicitAriaRoleCategory' in HTMLElement.prototype)) HTMLElement.prototype.getImplicitAriaRoleCategory = getImplicitAriaRoleCategory;
-if (!('getImplicitAriaRoleCategory' in SVGElement.prototype)) SVGElement.prototype.getImplicitAriaRoleCategory = getImplicitAriaRoleCategory;
+
 if (!('getImplicitAriaRole' in HTMLElement.prototype)) HTMLElement.prototype.getImplicitAriaRole = getImplicitAriaRole;
 if (!('getImplicitAriaRole' in SVGElement.prototype)) SVGElement.prototype.getImplicitAriaRole = getImplicitAriaRole;
 if (!('getImplicitAriaRoleCategory' in HTMLElement.prototype)) HTMLElement.prototype.getImplicitAriaRoleCategory = getImplicitAriaRoleCategory;
@@ -3849,28 +3820,47 @@ function getDuplicateID() {
 
 /**
  * get array of headings hierarchy
- * TODO a intégrer en front via une option
- * @returns {Object}
  */
 function getHeadingsMap() {
+    initTanaguru();
     var collection = document.body.querySelectorAll('h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"][aria-level]');
     collection = Array.from(collection).sort((a,b) => {
         return a.getAttribute('data-tng-pos') - b.getAttribute('data-tng-pos');
     });
 
-    var structure = [];
+    // var structure = [];
+    var structure = window.tanaguru.headings;
     var lastPost = null;
     var lastLvl = [];
+    var index = 1;
+
+    function getHeadingInfos(el, currentlevel) {
+        el.setAttribute('sdata-tng-hindex', index);
+
+        let result = {
+            index: index,
+            tag: el.tagName.toLowerCase(),
+            level: currentlevel,
+            an: el.accessibleName(),
+            xpath: getXPath(el)
+        };
+        
+        index++;
+        return result;
+    }
+
     for(let i = 0; i < collection.length; i++) {
         let previousLevel = collection[i-1] ? (!collection[i-1].hasAttribute['role'] ? collection[i-1].tagName.toLowerCase().split('h')[1] : collection[i-1].getAttribute('aria-level')) : null;
         let currentlevel = !collection[i].hasAttribute['role'] ? collection[i].tagName.toLowerCase().split('h')[1] : collection[i].getAttribute('aria-level');
         let nextLevel = collection[i+1] ? (!collection[i+1].hasAttribute['role'] ? collection[i+1].tagName.toLowerCase().split('h')[1] : collection[i+1].getAttribute('aria-level')) : null;
+
+        let element = getHeadingInfos(collection[i], currentlevel);
         
         if(previousLevel) {
             if(previousLevel == currentlevel) {
-                lastPost.push(collection[i]);
+                lastPost.push(element);
             } else if(previousLevel < currentlevel) {
-                lastPost.push([collection[i]]);
+                lastPost.push([element]);
                 lastLvl.push(lastPost.length-1);
                 lastPost = lastPost[lastPost.length-1];
             } else {
@@ -3878,23 +3868,21 @@ function getHeadingsMap() {
                     lastLvl.pop();
                     let key = "["+lastLvl.join('][')+"]";
                     lastPost = eval("structure"+key);
-                    lastPost.push(collection[i]);
+                    lastPost.push(element);
                 }
                 else {
-                    structure.push([collection[i]]);
+                    structure.push([element]);
                     lastPost = structure[structure.length-1];
                     lastLvl = [structure.length-1];
                 }
             }
         } else {
-            structure.push([collection[i]]);
+            structure.push([element]);
             lastPost = structure[0];
             lastLvl.push(0);
         }
     }
-
-    return structure;
-};
+}
 
 //TODO recupérer les events appliqué via api
 function listAllEventListeners() {

@@ -42,6 +42,7 @@
 	"dashboardListenDOMlegend": { "message": "Monitor the DOM changes of the analyzed page" },
 	"dashboardListenOFF": { "message": "No" },
 	"dashboardListenON": { "message": "Yes" },
+	"msgHeadingsHierarchy": { "message": "Headings hierarchy" },
 	"earlFailed": { "message": "Failed" },
 	"earlPassed": { "message": "Passed" },
 	"earlCantTell": { "message": "Undefined" },

@@ -1061,7 +1061,7 @@ ul.an-list li {
 	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAALtJREFUKBWlk2EOgjAMhaeBY+1eAn/0VuLN4M/8XtykW5oZYpPSjvdeu7ESQraUUix5L1Y8FiP+wHd8+SFcMu9OHAOPiFubvQIQZksijxIPDlAVcHDtYPg2cQgT7664orWqsC3QEl9WRe4LSwUIN3xrRFpPhdONEJ+NeO0KCqgO+PnOWWibrnZB7p9ZQEPUDi64orWjAG91z7o3aweB8wC0hT/3DPDXhGm2Nau7OpQP50XwerYLCeD0X/UGVSXGYbh63LAAAAAASUVORK5CYII=);
 }
 
-/** actions cell */
+/** actions button */
 th:last-child, td:last-child {
 	min-width: 15rem;
 	width: 15rem;
@@ -1094,6 +1094,27 @@ table li img {
 	vertical-align: bottom;
 }
 
+ul.headings-container li>span {
+	display: flex;
+	align-items: center;
+}
+
+ul.headings-container .blue-item-list {
+	color: #11355e;
+}
+
+ul.headings-container ul:not(.blue-item-list) {
+	color: #000;
+}
+
+.headings-container .visible {
+	display: flex;
+	align-items: center;
+	border: 0;
+	background-color: white;
+	background-position: center center;
+}
+
 .item-actions-highlight button {
 	background-repeat: no-repeat;
 	width: 2.4rem;
@@ -1114,7 +1135,7 @@ table li img {
 }
 
 /** button activated */
-.highlightON {
+.item-actions-highlight button.highlightON {
 	border-bottom: 2px solid #2A609E;
 	background-image: url("./images/see_hover.png");
 }
