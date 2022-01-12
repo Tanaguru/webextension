@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
@@ -339,19 +340,21 @@
 		</template>
 
 		<template id="dashboard">
-			<h2></h2>
+			<div class="dashboard-content">
+				<h2></h2>
 			
-			<p class="dashboard-message"></p>
+				<p class="dashboard-message"></p>
+	
+				<label for="listenDOM" style="display: none;">
+					<span class="listenDOM-label"></span>
+					<span class="switch">
+						<input type="checkbox" id="listenDOM">
+						<span class="slider"></span>
+					</span>
+				</label>
+			</div>
 
-			<label for="listenDOM" style="display: none;">
-				<span class="listenDOM-label"></span>
-				<span class="switch">
-					<input type="checkbox" id="listenDOM">
-					<span class="slider"></span>
-				</span>
-			</label>
-
-			<div>
+			<div class="dashboard-tests">
 				<button id="reloadTests" class="dashboard-reload-button" hidden></button>
 				<button id="restartTests" class="dashboard-reload-button"></button>
 			</div>

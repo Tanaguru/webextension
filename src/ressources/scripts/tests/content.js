@@ -3855,7 +3855,7 @@ function getHeadingsMap() {
         let nextLevel = collection[i+1] ? (!collection[i+1].hasAttribute['role'] ? collection[i+1].tagName.toLowerCase().split('h')[1] : collection[i+1].getAttribute('aria-level')) : null;
 
         let element = getHeadingInfos(collection[i], currentlevel);
-        
+
         if(previousLevel) {
             if(previousLevel == currentlevel) {
                 lastPost.push(element);
@@ -3881,6 +3881,14 @@ function getHeadingsMap() {
             lastPost = structure[0];
             lastLvl.push(0);
         }
+    }
+}
+
+function cleanSDATA() {
+    let datas = document.querySelectorAll('[sdata-tng-hindex]');
+    datas.forEach(el => el.removeAttribute('sdata-tng-hindex'));
+    if(window.tanaguru && window.tanaguru.headings) {
+        delete window.tanaguru.headings;
     }
 }
 

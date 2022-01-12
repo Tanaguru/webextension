@@ -6,6 +6,7 @@ var DOM_archi = {level1: []};
  * ! NEED FOR TESTS
  */
 function addDataTng() {
+    if(document.querySelector('[sdata-tng-hindex]')) cleanSDATA();
     var eList = document.body.querySelectorAll('*');
     var pos = 1;
 

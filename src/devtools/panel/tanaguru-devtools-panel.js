@@ -1056,7 +1056,7 @@ button.addEventListener('click', function () {
 							});
 						}
 
-						arrayToList(response.headings[0], container);
+						response.headings.forEach(ar => arrayToList(ar, container));
 						rightcolumn.appendChild(headingsPanel);
 					}
 					/**
@@ -2055,6 +2055,7 @@ button.addEventListener('click', function () {
 		if(hlElement) hlElement.click();
 		if(listenDomModif) dashboardpanel.querySelector('#listenDOM').click();
 		ul.querySelectorAll('li:not([id="tab0"])').forEach(li => {li.remove()});
+		document.getElementById('headingsPanel').remove();
 		document.getElementById('tests').remove();
 		document.querySelector('.analyzeTimer').remove();
 		dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultLoad');
@@ -2356,14 +2357,14 @@ button.addEventListener('click', function () {
 					domMessageDashboard.id = "DOMdashboardMessage";
 					let domButtonDashboard = document.createElement('button');
 					domButtonDashboard.textContent = chrome.i18n.getMessage('DOMdashboardButton');
-					domButtonDashboard.classList.add('dashboard-reload-button');
+					domButtonDashboard.classList.add('dashboard-dom-button');
 					domButtonDashboard.addEventListener('click', function(e) {
 						obsTab.click();
 						obsTab.focus();
 					});
 					domMessageDashboard.appendChild(domButtonDashboard);
 	
-					dashboardpanel.insertBefore(domMessageDashboard, dashboardpanelp);
+					dashboardpanel.querySelector('.dashboard-content').appendChild(domMessageDashboard);
 				}
 			}
 		}
