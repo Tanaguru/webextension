@@ -1044,6 +1044,18 @@ var getAccessibleName = function () {
     this.removeAttribute('data-tng-controlembeddedinlabel');
 // 2-A (condition success) : The current node is hidden and is not directly referenced by aria-labelledby.
 // 2-B, 2-C, 2-D, 2-E, 2-F, 2-G, 2-H and 2-I : Otherwise...
+    /**
+     * ! Réparation temporaire
+     * quelque part dans la fonction l'objet {"parentcssbeforecontent": ""} est poussé dans la variable totalAccumulatedText
+     *TODO prendre le temps de débuguer pour trouver ou
+     */
+    if(typeof totalAccumulatedText !== "string") {
+        let string = '';
+        for(let n = 0; n < totalAccumulatedText.length; n++) {
+            string += ' '+totalAccumulatedText[n].trim();
+        }
+        totalAccumulatedText = string;
+    }
     totalAccumulatedText.trim();
     result.unshift(totalAccumulatedText);
     this.setAttribute('data-tng-anobject', JSON.stringify(result));
@@ -3844,7 +3856,6 @@ function getHeadingsMap() {
             an: el.accessibleName(),
             xpath: getXPath(el)
         };
-        
         index++;
         return result;
     }
@@ -3864,8 +3875,8 @@ function getHeadingsMap() {
                 lastLvl.push(lastPost.length-1);
                 lastPost = lastPost[lastPost.length-1];
             } else {
-                if(lastLvl.length > 1) {
-                    lastLvl.pop();
+                if(lastLvl.length > 1 && (previousLevel - currentlevel) < (lastLvl.length + 1)) {
+                    for(let x = 0; x < previousLevel - currentlevel; x++) lastLvl.pop();
                     let key = "["+lastLvl.join('][')+"]";
                     lastPost = eval("structure"+key);
                     lastPost.push(element);

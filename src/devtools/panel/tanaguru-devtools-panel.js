@@ -476,15 +476,15 @@ button.addEventListener('click', function () {
 					if (element.getAttribute('aria-expanded') == 'false') {
 						document.getElementById(element.getAttribute('aria-controls')).removeAttribute('hidden');
 						element.setAttribute('aria-expanded', 'true');
-						if(element.classList.contains('domDropdownButton')) {
-							element.classList.add('domDropdownButton--active');
+						if(element.classList.contains('dropdownButton')) {
+							element.classList.add('dropdownButton--active');
 						}
 						
 					}
 					else {
 						document.getElementById(element.getAttribute('aria-controls')).setAttribute('hidden', 'hidden');
 						element.setAttribute('aria-expanded', 'false');
-						element.classList.remove('domDropdownButton--active');
+						element.classList.remove('dropdownButton--active');
 					}
 					break;
 				case 'highlight-action':
@@ -988,13 +988,48 @@ button.addEventListener('click', function () {
 						headingsPanelp.textContent = "Hiérarchie des titres de la page, représentée sous forme de listes.";
 
 						var container = headingsPanel.querySelector('.headings-container');
+
+						let hideBtn = document.createElement('button');
+						hideBtn.className = 'small-btn headings-showhideAll';
+						hideBtn.textContent = chrome.i18n.getMessage('msgCollapseBtn');
+						hideBtn.addEventListener('click', () => {
+							container.querySelectorAll('button[data-action="showhide-action"][aria-expanded="true"]').forEach(btn => {
+								btn.click();
+							});
+						});
+
+						let showBtn = document.createElement('button');
+						showBtn.className = 'small-btn headings-showhideAll';
+						showBtn.textContent = chrome.i18n.getMessage('msgExpandBtn');
+						headingsPanel.insertBefore(hideBtn, container);
+						headingsPanel.insertBefore(showBtn, container);
+						showBtn.addEventListener('click', () => {
+							container.querySelectorAll('button[data-action="showhide-action"][aria-expanded="false"]').forEach(btn => {
+								btn.click();
+							});
+						});
+
 						function arrayToList(ar, currentList) {
 							ar.forEach(heading => {
 								if(Array.isArray(heading)) {
 									let headingsList = document.createElement('ul');
+									headingsList.id = 'heading_n'+(heading[0].index - 1);
 									if(!currentList.classList.contains('blue-item-list')) headingsList.classList.add('blue-item-list');
 									arrayToList(heading, headingsList);
-									currentList.lastChild.appendChild(headingsList);
+									currentList.lastElementChild.appendChild(headingsList);
+
+									let disclosure = document.createElement('button');
+									disclosure.setAttribute('aria-expanded', 'true');
+									disclosure.setAttribute('aria-controls', 'heading_n'+(heading[0].index - 1));
+									disclosure.setAttribute('data-action', 'showhide-action');
+									disclosure.classList.add('dropdownButton', 'headingDropdownButton');
+
+									let iconButton = document.createElement('img');
+									iconButton.className = "headingDisclosureIcon";
+									iconButton.alt = "Affichier les titres enfants";
+									iconButton.src = "./images/arrow.png";
+									disclosure.appendChild(iconButton);
+									currentList.lastElementChild.firstElementChild.prepend(disclosure);
 								}
 								else {
 									let headingItem = document.createElement('li');
@@ -1160,6 +1195,7 @@ button.addEventListener('click', function () {
 								var tagbutton = document.createElement('button');
 								tagbutton.setAttribute('type', 'button');
 								tagbutton.setAttribute('data-tagid', test.tags[0]);
+								tagbutton.className = 'small-btn';
 								tagbutton.setAttribute('title', chrome.i18n.getMessage('uiTagButton').replace(new RegExp('{tagName}'), chrome.i18n.getMessage(tagid)));
 								tagbutton.appendChild(document.createTextNode(chrome.i18n.getMessage(tagid)));
 								tabpanelsectionp.appendChild(tagbutton);
@@ -1176,6 +1212,7 @@ button.addEventListener('click', function () {
 									var tagbutton = document.createElement('button');
 									tagbutton.setAttribute('type', 'button');
 									tagbutton.setAttribute('data-tagid', test.tags[i]);
+									tagbutton.className = 'small-btn';
 									tagbutton.setAttribute('title', chrome.i18n.getMessage('uiTagButton').replace(new RegExp('{tagName}'), chrome.i18n.getMessage(tagid)));
 									tagbutton.appendChild(document.createTextNode(chrome.i18n.getMessage(tagid)));
 									tagli.appendChild(tagbutton);
@@ -2174,7 +2211,7 @@ button.addEventListener('click', function () {
 						let liButton = document.createElement('button');
 						liButton.setAttribute('aria-expanded', 'false');
 						liButton.setAttribute('data-action', 'showhide-action');
-						liButton.classList.add('code', 'domDropdownButton');
+						liButton.classList.add('code', 'dropdownButton', 'domDropdownButton');
 
 						let iconButton = document.createElement('img');
 						iconButton.className = "domDisclosureIcon";

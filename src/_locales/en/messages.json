@@ -43,6 +43,8 @@
 	"dashboardListenOFF": { "message": "No" },
 	"dashboardListenON": { "message": "Yes" },
 	"msgHeadingsHierarchy": { "message": "Headings hierarchy" },
+	"msgCollapseBtn": { "message": "Collapse all" },
+	"msgExpandBtn": { "message": "Expand all" },
 	"earlFailed": { "message": "Failed" },
 	"earlPassed": { "message": "Passed" },
 	"earlCantTell": { "message": "Undefined" },

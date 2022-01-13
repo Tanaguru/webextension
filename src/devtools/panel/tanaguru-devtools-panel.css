@@ -45,6 +45,10 @@ body {
 	box-sizing: border-box;
 }
 
+*[hidden] {
+	display: none;
+}
+
 h1, h2 {
 	color: #2b7b92;
 	font-size: 1.6rem;
@@ -72,6 +76,15 @@ a:focus, a:hover {
 button {
 	display: inline-block;
 	margin: 0.4rem;
+}
+
+.small-btn {
+	background-color: #12343e;
+	color: white;
+	margin: 0.9rem;
+	border: 2px solid #3593ae;
+	border-radius: 1rem;
+	padding: 0.4rem 1rem;
 }
 
 button:focus:not([disabled]),
@@ -357,7 +370,7 @@ button#reloadTests {
 	margin-right: 1.8rem;
 }
 
-.dropdownButton {
+.filterDropdownButton {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -367,19 +380,7 @@ button#reloadTests {
 	border-radius: 1rem;
 	background-color: #fff;
 	text-align: left;
-	transition: backgroundColor 0.3s;
-}
-
-.dropdownButton:focus,
-.dropdownButton:hover,
-.dropdownButton--active {
-	background-color: #E9F5FB;
-}
-
-.dropdownButton:focus .disclosureIcon,
-.dropdownButton:hover .disclosureIcon,
-.dropdownButton--active .disclosureIcon {
-	transform: rotate(0.25turn);
+	transition: backgroundColor 1s;
 }
 
 .disclosureIcon {
@@ -387,6 +388,18 @@ button#reloadTests {
 	min-width: 1.3rem;
 	margin-left: 1rem;
 	transition: transform 0.3s;
+}
+
+.filterDropdownButton:focus,
+.filterDropdownButton:hover,
+.filterDropdownButton--active {
+	background-color: #E9F5FB;
+}
+
+.dropdownButton:focus img,
+.dropdownButton:hover img,
+.dropdownButton--active img {
+	transform: rotate(0.25turn);
 }
 
 .filterContainer {
@@ -985,12 +998,6 @@ td.item-code--small {
 	border: 0;
 }
 
-.domDropdownButton:focus .domDisclosureIcon,
-.domDropdownButton:hover .domDisclosureIcon,
-.domDropdownButton--active .domDisclosureIcon {
-	transform: rotate(0.25turn);
-}
-
 .domDisclosureIcon {
 	position: absolute;
 	left: 1rem;
@@ -1110,6 +1117,32 @@ table li img {
 ul.headings-container ul,
 ul.headings-container li {
 	position: relative;
+}
+
+ul.headings-container .item-actions-highlight {
+	margin-left: 1rem;
+}
+
+.headingDropdownButton {
+	width: 1.3rem;
+	padding: 0;
+	margin-right: 1rem;
+	border: 0;
+	background-color: transparent;
+}
+
+.headingDisclosureIcon {
+	width: 1.3rem;
+}
+
+#headingsPanel ul>li:last-of-type>ul::after {
+	position: absolute;
+	top: -2rem;
+	bottom: 0;
+	left: -5.2rem;
+	width: 6px;
+	content: "";
+	background-color: #fff;
 }
 
 ul.headings-container ul::before {

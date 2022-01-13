@@ -43,6 +43,8 @@
 	"dashboardListenOFF": { "message": "Non" },
 	"dashboardListenON": { "message": "Oui" },
 	"msgHeadingsHierarchy": { "message": "Hierarchie des titres" },
+	"msgCollapseBtn": { "message": "Tout plier" },
+	"msgExpandBtn": { "message": "Tout déplier" },
 	"earlFailed": { "message": "Invalidé" },
 	"earlPassed": { "message": "Validé" },
 	"earlCantTell": { "message": "Indéterminé" },

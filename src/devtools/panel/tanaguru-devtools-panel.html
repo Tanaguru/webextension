@@ -10,7 +10,7 @@
 		<template id="rgaaFilter">
 			<fieldset id="rgaaFieldset" data-filter="catFilter">
 				<legend>
-					<button aria-expanded="false" aria-controls="rgaaFilterContainer" class="dropdownButton">
+					<button aria-expanded="false" aria-controls="rgaaFilterContainer" class="dropdownButton filterDropdownButton">
 						<span>Sélectionnez les catégories de tests du RGAA à inclure dans l'analyse.</span>
 						<img class="disclosureIcon" alt="" src="./images/arrow.png">
 					</button>
@@ -92,7 +92,7 @@
 		<template id="wcagFilter">
 			<fieldset id="wcagFieldset" data-filter="catFilter">
 				<legend>
-					<button aria-expanded="false" aria-controls="wcagFilterContainer" class="dropdownButton">
+					<button aria-expanded="false" aria-controls="wcagFilterContainer" class="dropdownButton filterDropdownButton">
 						<span>Sélectionnez les catégories de tests WCAG à inclure dans l'analyse.</span>
 						<img class="disclosureIcon" alt="" src="./images/arrow.png">
 					</button>
@@ -204,7 +204,7 @@
 		<template id="statusFilter">
 			<fieldset id="statusFieldset" data-filter="statusFilter">
 				<legend>
-					<button aria-expanded="false" aria-controls="statusFilterContainer" class="dropdownButton">
+					<button aria-expanded="false" aria-controls="statusFilterContainer" class="dropdownButton filterDropdownButton">
 						<span>Sélectionnez le type de résultats à afficher.</span>
 						<img class="disclosureIcon" alt="" src="./images/arrow.png">
 					</button>
@@ -256,10 +256,8 @@
 					<p class="an-full">
 						<span></span>
 					</p>
-					<button class="an-button"></button>
-					<ul class="an-list">
-
-					</ul>
+					<button class="small-btn an-button"></button>
+					<ul class="an-list"></ul>
 				</td>
 				<td class="testsection-td-colored item-keyboard">
 					<span class="keyboardyes"></span>
@@ -355,7 +353,7 @@
 			</div>
 
 			<div class="dashboard-tests">
-				<button id="reloadTests" class="dashboard-reload-button" hidden></button>
+				<button id="reloadTests" class="dashboard-reload-button" hidden="hidden"></button>
 				<button id="restartTests" class="dashboard-reload-button"></button>
 			</div>
 		</template>
