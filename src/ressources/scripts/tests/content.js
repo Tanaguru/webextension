@@ -3848,12 +3848,12 @@ function getHeadingsMap() {
 
     function getHeadingInfos(el, currentlevel) {
         el.setAttribute('sdata-tng-hindex', index);
-
+        
         let result = {
             index: index,
             tag: el.tagName.toLowerCase(),
             level: currentlevel,
-            an: el.accessibleName(),
+            an: el.innerText.trim(),
             xpath: getXPath(el)
         };
         index++;

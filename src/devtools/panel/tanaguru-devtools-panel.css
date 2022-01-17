@@ -1027,6 +1027,7 @@ td.item-code--small {
 /** accessiblename cell */
 td.item-accessiblename {
 	width: 25%;
+	min-width: 18rem;
 	text-align: left;
 	color: #333;
 }

@@ -17,6 +17,24 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['2.1.1']}
 });
 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Liste des cadres sans attribut title',
+    query: 'iframe[data-tng-el-exposed="true"]:not([role="presentation"], [title]), frame[data-tng-el-exposed="true"]:not([role="presentation"], [title])',
+    testStatus: "failed",
+    tags: ['a11y', 'frames'],
+    ressources: {'rgaa': ['2.1.1']}
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Liste des cadres non exposés aux technologies d'assistance.",
+    query: 'iframe[data-tng-el-exposed="false"]:not([role="presentation"]), frame[data-tng-el-exposed="false"]:not([role="presentation"])',
+    testStatus: "inapplicable",
+    tags: ['a11y', 'frames'],
+    ressources: {'rgaa': ['2.1.1']}
+});
+
 //* 2.2 Pour chaque cadre ayant un titre de cadre, ce titre de cadre est-il pertinent ?
 // 2.2.1 Pour chaque cadre (balise <iframe> ou <frame>) ayant un attribut title, le contenu de cet attribut est-il pertinent ?
 tanaguruTestsList.push({

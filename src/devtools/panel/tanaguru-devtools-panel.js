@@ -1250,7 +1250,7 @@ button.addEventListener('click', function () {
 									{ name: 'N°', abbr: 'Numéro' },
 									{ name: 'Statut', export: 'required' },
 									{ name: 'Item', export: 'required' },
-									{ name: 'Nom accessible' },
+									{ name: 'Nom accessible calculé' },
 									{ name: 'Atteignable au clavier ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAASCAYAAABB7B6eAAAABGdBTUEAALGPC/xhBQAAAjBJREFUOBGt1M1LVUEYgPF7ND/KLG4qRVibIgJvoIsgcOGuEFdRRC10I5LQP6ArbRUu3dqudkG4cCEGlktNSElF6YPioqGVRmEp+XF6njoH5F69XawXfsw0vTPzzsy5JhL/IcIwrEAvgszlCjIH9vnvc8xLBkEQ7nP+3tOoOokBXN4t68Bug38bYzErdsFq1KGf6p/QZkXWnWVlZAyweDNDLRjCezxn8TTtvweLpzCEZL6r/b4iJlQw4Wgek26TM2JuHpt85WTLAYn1TOjGBxhuuhG127QqisaO0K7j544xv0RtRmO2xkl0u8EEnXtwURPncBHT8GRVGMclvIHvdgajMO8TlpGCeecRF9WZYIM0WrEJ49GfJhymXYj6D6N2klZGPGaOuUY817VcM+11+OP4iDsoxAtMYgwn4FGfYRaeyrBaP8uX8GoXMYynGMEWlhB6JUYxatCANnhN7TiEVXTADRsj9h3z/8pg7gxa4RoXcBChJ/C+fLxbqMQP+FDXYQElaIIL3IDhia+hFD74VTh2E4fxBd7Cto+cpmPVa7Diz1iH3/oKrPA4XuMUjHmcxRK+4xjMtWqLdC37fZ7A+zqNTpjsL9QNH6AWHtdTmht/gnHfE07BaltwH1dgUX6ZWyb6jXuXb+HO83iFBZTDa8gVzjPXOc59B6t3zSKvqIeOCw3CsEofPf5d+GXlCm/AE1qo72HRRiO+uYGPeBc+molGiPgPof1csTMv7nt1j9H1C4W7DIhH/jVRAAAAAElFTkSuQmCC' },
 									{ name: 'Restitué ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAABGdBTUEAALGPC/xhBQAAAlBJREFUOBGV00tIVUEcx/F7xAfaQ0vCUtQitCgQqoWohI9N0MNFYVKgEiRo9JAgIqhFunAjggs3UYvoIqK0cGFqFPlEoVwYoeIjDHqYgWiu6/r9HWbiei5XOgOfO/+Z+c+cO3PmOAEfJRQKHSW9BJWYRh+GHMfZoPZXWGw/gviJD+hGP75gAdW+VmTCIcyiF3nhk2nvwA2soil8LGpMooPXCNok4rN4hHqkq5+6ABu4bPMiagb3ItZMKCROQiZGoC2/go7hG86ZvNvEc0iMWNAkPGew0Q4Sx2MMnUg1OdrFLeicM6Cj+IoyO09bSIGS4lAKJdvtlRP/QNq/CSagTw+7Yx40QHw/hp8EaKt/cRc1XJF31Iu4CJUcJGOQ3AvqCCvzxFmmvUadHMNPHV6w0G/qFlyDyhsUu1Eg0EFdhDa0sHCS+qk1/xQ+qk05gO8aOIxlHEQePiMWVRh1U80P7WLo3PTiEtGOaeyG7rKO7ISe9MfMcahDnlh9erDOuYGwC63Q2Q4hH5fMLh8Qz2BKExrwkobiOoyb+DGx3nY2JjCD88jCEvQvE0zudeJ1nFRbC2kbelm7sAidsfpHUY8jeAi9KPUP46mJte0nWIH3BbrJexi4Bz3gNJSYqcm20K6EznQn9uE9BnHM5kStSQqi2ZtA3xXUQldRn28P3CPw5ka0SUyDviJ9KbpKWwp9WnwJKVsG/qfBpAp88ubS9xZ62/4LE/VPdfeu2tnEZ7CKXNvnu9aC+IU+6AwV39xuIfdyb5egMRY5TlWLeDzjsk9SRy2bAMhld532BdwAAAAASUVORK5CYII=' },
 									{ name: 'Actions', export: 'no' }
@@ -1375,7 +1375,6 @@ button.addEventListener('click', function () {
 										newRow.querySelector('.item-code').classList.add("item-code--small");
 
 										var an = test.data[h].anDetails;
-										newRow.querySelector('.item-accessiblename .an-full span').appendChild(document.createTextNode("Nom accessible calculé: "));
 										newRow.querySelector('.item-accessiblename .an-full').appendChild(document.createTextNode(an[0]));
 										an.shift();
 
@@ -2237,18 +2236,23 @@ button.addEventListener('click', function () {
 
 							elName.replace(/"[^"]*"/g, (match, offset, string) => {
 								if(match.length > 30) {
-									match = match.slice(0, 29)+'[...]"';
+									match = match.slice(0, 29)+'…"';
 								}
 								return match;
 							});
 
-							elName = elName.split(" ");
+							let rgxatt = /[^= ]+="[^"]*"/g;
+							let rgxtag = /<[^ ]+/;
+							let startTag = elName.match(rgxtag)[0];
+							elName = elName.match(rgxatt);
+
 							if(elName.length > 4) {
 								let shortElName = [];
 								shortElName.push(elName[0], elName[1], elName[2], elName[elName.length-1]);
 								elName = shortElName;
 							}
-							elName = elName.join(" ");
+
+							elName = startTag+" "+elName.join(" ")+">";
 							formattingCode(elName, liButtonCode);
 						}
 						else liButtonCode.textContent = elName;
