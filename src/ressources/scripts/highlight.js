@@ -23,8 +23,9 @@ function runHighlight() {
 	});
 	
 	element.setAttribute('data-tng-highlight', 'true');
-	var rect = element.getBoundingClientRect();
-	window.scrollTo(0, rect.top);
+	element.scrollIntoView();
+	// var rect = element.getBoundingClientRect();
+	// window.scrollTo(0, rect.top);
 	if(element == document.body) return;
 	var elements = document.body.children;
 	filterParents(elements);

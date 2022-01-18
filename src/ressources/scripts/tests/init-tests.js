@@ -1,13 +1,18 @@
 var statuses = ['failed', 'cantTell', 'passed'];
-var eList;
+var DOM_archi = {level1: []};
 
 /**
  * ? Define for each node of the page, if it is exposed, visible and has a [aria-*] attribute
  * ! NEED FOR TESTS
  */
 function addDataTng() {
-    eList = document.body.querySelectorAll('*');
+    if(document.querySelector('[sdata-tng-hindex]')) cleanSDATA();
+    var eList = document.body.querySelectorAll('*');
+    var pos = 1;
+
     eList.forEach(e => {
+        e.setAttribute('data-tng-pos', pos);
+        pos++;
         let elExposed = e.isNotExposedDueTo;
         if(elExposed.length > 0) {
             e.setAttribute('data-tng-el-exposed', false);
@@ -81,7 +86,7 @@ function filterAllTestsByStatus() {
 function removeAllDataTNG() {
     if(last === "yes") {
         removeDataTNG(document.querySelector('html'));
-        eList.forEach(e => removeDataTNG(e));
+        document.querySelectorAll('*').forEach(e => removeDataTNG(e));
     }
 };
 
@@ -110,6 +115,7 @@ function filterStatus() {
     if(isNACat(cat)) {
         tanaguruTestsList = tanaguruTestsList.map(function(test) {
             test.status = "inapplicable";
+            test.na = cat;
             return test;
         });
     }
@@ -231,7 +237,10 @@ function launchTests() {
     }
 }
 
-if(first === "yes") addDataTng();
+if(first === "yes") {
+    addDataTng();
+    getHeadingsMap();
+}
 var textNodeList = (cat !== 'colors') ? null : getTextNodeContrast();
 
 filterCat();

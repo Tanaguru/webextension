@@ -39,9 +39,9 @@ function getLuminance(color) {
 /**
  ** Get the contrast ratio
  * https://www.w3.org/TR/WCAG20/#contrast-ratiodef
- * @param {array} textColor 
- * @param {array} bgColor 
- * @returns 
+ * @param {array} textColor
+ * @param {array} bgColor
+ * @returns
  */
 function getRatio(textColor, bgColor) {
 
@@ -74,10 +74,10 @@ function getRatio(textColor, bgColor) {
 
 /**
  ** Get ratio target and check if contrast is valid
- * @param {string} size 
- * @param {number} weight 
- * @param {number} ratio 
- * @returns 
+ * @param {string} size
+ * @param {number} weight
+ * @param {number} ratio
+ * @returns
  */
 function validContrast(size, weight, ratio) {
 	var valid = {
@@ -126,7 +126,7 @@ function validContrast(size, weight, ratio) {
 
 /**
  ** Get RGB values
- * @param {string} value 
+ * @param {string} value
  * @returns 
  */
 function getRGB(value) {

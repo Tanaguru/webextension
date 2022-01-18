@@ -1044,6 +1044,18 @@ var getAccessibleName = function () {
     this.removeAttribute('data-tng-controlembeddedinlabel');
 // 2-A (condition success) : The current node is hidden and is not directly referenced by aria-labelledby.
 // 2-B, 2-C, 2-D, 2-E, 2-F, 2-G, 2-H and 2-I : Otherwise...
+    /**
+     * ! Réparation temporaire
+     * quelque part dans la fonction l'objet {"parentcssbeforecontent": ""} est poussé dans la variable totalAccumulatedText
+     *TODO prendre le temps de débuguer pour trouver ou
+     */
+    if(typeof totalAccumulatedText !== "string") {
+        let string = '';
+        for(let n = 0; n < totalAccumulatedText.length; n++) {
+            string += ' '+totalAccumulatedText[n].trim();
+        }
+        totalAccumulatedText = string;
+    }
     totalAccumulatedText.trim();
     result.unshift(totalAccumulatedText);
     this.setAttribute('data-tng-anobject', JSON.stringify(result));
@@ -1080,47 +1092,17 @@ function getXPath(element) {
     return (element.parentNode.nodeType == 1 ? getXPath(element.parentNode) : '') + '/' + element.tagName.toLowerCase() + '[' + (position ? position : '1') + ']' + (element.hasAttribute('id') ? '[@id="' + element.getAttribute('id') + '"]' : '') + (element.hasAttribute('class') ? '[@class="' + element.getAttribute('class') + '"]' : '');
 }
 
-function addBooleanResult(name, data) {
-    /*
-		addBooleanResult(browser.i18n.getMessage("msgHeadings"), {
-			name: { 'passed': 'Intitulé si C', 'failed': 'Intitulé si NC' },
-			data: document.querySelectorAll('h1').length > 1
-		});
-	*/
-}
-
 function initTanaguru() {
     if (!window.tanaguru) {
         window.tanaguru = {};
         window.tanaguru.tags = new Array();
         window.tanaguru.tests = new Array();
+        window.tanaguru.headings = new Array();
     }
 }
 
 function addResultSet(name, data) {
     initTanaguru();
-    /*
-	*** OLD VERSION ***
-	if (data.type == 'failed') {
-		var datacount = data.data.length;
-	}
-	else {
-		var datacount = 0; // 'passed', 'cantTell', 'inapplicable', 'untested'
-	}
-	if (window.tanaguru.tests[name]) {
-		window.tanaguru.tests[name].datacount += datacount;
-	}
-	else {
-		window.tanaguru.tests[name] = {
-			data: [],
-			datacount: datacount
-		}
-	}
-	//if (data.data.length > 0) {
-		window.tanaguru.tests[name].data.push(data);
-	//}
-	*/
-    /* Nouvelle version */
     window.tanaguru.tests.push(data);
 }
 
@@ -1143,8 +1125,9 @@ function loadTanaguruTests() {
     for (var tag in window.tanaguru.tags) {
         tags.push(window.tanaguru.tags[tag]);
     }
-    
-    var result = { tags: tags, tests: window.tanaguru.tests };
+
+    var result = { tags: tags, tests: window.tanaguru.tests, headings: window.tanaguru.headings };
+
     window.tanaguru = undefined;
     return result;
 }
@@ -1200,7 +1183,7 @@ function manageOutput(element, an) {
 
 function createTanaguruTag(tag, status) {
     if (!window.tanaguru.tags[tag]) {
-        window.tanaguru.tags[tag] = { id: tag, status: status, nbfailures: 0 };
+        window.tanaguru.tags[tag] = { id: tag, status: status, nbfailures: 0, isNA: 0 };
     }
 }
 
@@ -1213,6 +1196,10 @@ function createTanaguruTest(test) {
                 createTanaguruTag(test.tags[i], test.status);
                 if(test.status == 'untested' && window.tanaguru.tags[test.tags[i]].status === 'inapplicable') {
                     window.tanaguru.tags[test.tags[i]].status = 'untested';
+                }
+
+                if(test.hasOwnProperty('na') && test.na === test.tags[i]) {
+                    window.tanaguru.tags[test.na].isNA = 1;
                 }
             }
         }
@@ -1725,8 +1712,7 @@ var getImplicitAriaRoleCategory = function () {
         return undefined;
     }
 };
-if (!('getImplicitAriaRoleCategory' in HTMLElement.prototype)) HTMLElement.prototype.getImplicitAriaRoleCategory = getImplicitAriaRoleCategory;
-if (!('getImplicitAriaRoleCategory' in SVGElement.prototype)) SVGElement.prototype.getImplicitAriaRoleCategory = getImplicitAriaRoleCategory;
+
 if (!('getImplicitAriaRole' in HTMLElement.prototype)) HTMLElement.prototype.getImplicitAriaRole = getImplicitAriaRole;
 if (!('getImplicitAriaRole' in SVGElement.prototype)) SVGElement.prototype.getImplicitAriaRole = getImplicitAriaRole;
 if (!('getImplicitAriaRoleCategory' in HTMLElement.prototype)) HTMLElement.prototype.getImplicitAriaRoleCategory = getImplicitAriaRoleCategory;
@@ -2787,7 +2773,7 @@ var ariaData = {
             category: 'widget attributes',
             description: 'Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by an element.',
             relatedConcepts: 'aria-controls',
-            usedInRoles: ['application', 'button', 'combobox', 'gridcell', 'menuitem', 'slider', 'tab', 'textbox', 'treeitem'],
+            usedInRoles: ['application', 'button', 'combobox', 'gridcell', 'link', 'menuitem', 'slider', 'tab', 'textbox', 'treeitem'],
             inheritsIntoRoles: ['columnheader', 'menuitemcheckbox', 'menuitemradio', 'rowheader', 'searchbox'],
             defaultValue: 'false',
             value: ['true', 'false', 'menu', 'listbox', 'tree', 'grid', 'dialog']
@@ -3842,6 +3828,79 @@ function getDuplicateID() {
 
     query = query === null ? query : query.slice(0, -1);
     return document.querySelectorAll(query);
+}
+
+/**
+ * get array of headings hierarchy
+ */
+function getHeadingsMap() {
+    initTanaguru();
+    var collection = document.body.querySelectorAll('h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"][aria-level]');
+    collection = Array.from(collection).sort((a,b) => {
+        return a.getAttribute('data-tng-pos') - b.getAttribute('data-tng-pos');
+    });
+
+    // var structure = [];
+    var structure = window.tanaguru.headings;
+    var lastPost = null;
+    var lastLvl = [];
+    var index = 1;
+
+    function getHeadingInfos(el, currentlevel) {
+        el.setAttribute('sdata-tng-hindex', index);
+        
+        let result = {
+            index: index,
+            tag: el.tagName.toLowerCase(),
+            level: currentlevel,
+            an: el.innerText.trim(),
+            xpath: getXPath(el)
+        };
+        index++;
+        return result;
+    }
+
+    for(let i = 0; i < collection.length; i++) {
+        let previousLevel = collection[i-1] ? (!collection[i-1].hasAttribute('role') ? collection[i-1].tagName.toLowerCase().split('h')[1] : collection[i-1].getAttribute('aria-level')) : null;
+        let currentlevel = !collection[i].hasAttribute('role') ? collection[i].tagName.toLowerCase().split('h')[1] : collection[i].getAttribute('aria-level');
+        let nextLevel = collection[i+1] ? (!collection[i+1].hasAttribute('role') ? collection[i+1].tagName.toLowerCase().split('h')[1] : collection[i+1].getAttribute('aria-level')) : null;
+
+        let element = getHeadingInfos(collection[i], currentlevel);
+
+        if(previousLevel) {
+            if(previousLevel == currentlevel) {
+                lastPost.push(element);
+            } else if(previousLevel < currentlevel) {
+                lastPost.push([element]);
+                lastLvl.push(lastPost.length-1);
+                lastPost = lastPost[lastPost.length-1];
+            } else {
+                if(lastLvl.length > 1 && (previousLevel - currentlevel) < lastLvl.length) {
+                    for(let x = 0; x < previousLevel - currentlevel; x++) lastLvl.pop();
+                    let key = "["+lastLvl.join('][')+"]";
+                    lastPost = eval("structure"+key);
+                    lastPost.push(element);
+                }
+                else {
+                    structure.push([element]);
+                    lastPost = structure[structure.length-1];
+                    lastLvl = [structure.length-1];
+                }
+            }
+        } else {
+            structure.push([element]);
+            lastPost = structure[0];
+            lastLvl.push(0);
+        }
+    }
+}
+
+function cleanSDATA() {
+    let datas = document.querySelectorAll('[sdata-tng-hindex]');
+    datas.forEach(el => el.removeAttribute('sdata-tng-hindex'));
+    if(window.tanaguru && window.tanaguru.headings) {
+        delete window.tanaguru.headings;
+    }
 }
 
 //TODO recupérer les events appliqué via api

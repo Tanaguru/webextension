@@ -188,6 +188,19 @@ tanaguruTestsList.push({
 	name: 'Liste des éléments restitués non visibles.',
 	query: '[data-tng-el-exposed="true"][data-tng-el-visible="false"]',
 	description: "Vérifier que ces éléments on bien vocation à être restitués par les technologies d'assistance.",
+    filter: function(item) {
+        let an = item.fullAccessibleName;
+        if(an[0].length === 0) return;
+        an.shift();
+        
+        let anwithoutchild = "";
+        an.forEach(part => {
+            for(content in part) {
+                if(typeof part[content] === "string") anwithoutchild += part[content].trim();
+            }
+        });
+        return anwithoutchild.length > 0;
+    },
     testStatus: "cantTell",
     tags: ['a11y', 'keyboard', 'presentation'],
     ressources: { 'rgaa': ['10.8.1'] }
