@@ -396,8 +396,6 @@ button#reloadTests {
 	background-color: #E9F5FB;
 }
 
-.dropdownButton:focus img,
-.dropdownButton:hover img,
 .dropdownButton--active img {
 	transform: rotate(0.25turn);
 }

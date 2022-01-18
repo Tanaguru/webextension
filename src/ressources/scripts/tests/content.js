@@ -698,10 +698,8 @@ var getAccessibleName = function () {
                 }
                 else if (this.matches(controls.nativebuttons + ',' + controls.custombuttons)) {
                     // If the embedded control has role menu button, return the text alternative of the button.
-                    let anButton = this.fullAccessibleName;
-                    result = anButton;
-                    result.shift();
-                    totalAccumulatedText = anButton[0];
+                    result = this.fullAccessibleName;
+                    totalAccumulatedText = result.shift();
                 }
                 else if (this.matches(controls.customcomboboxes)) {
                     // If the embedded control has role combobox or listbox, return the text alternative of the chosen option.
@@ -1042,20 +1040,9 @@ var getAccessibleName = function () {
     }
     this.removeAttribute('data-tng-labelbytraversal');
     this.removeAttribute('data-tng-controlembeddedinlabel');
-// 2-A (condition success) : The current node is hidden and is not directly referenced by aria-labelledby.
-// 2-B, 2-C, 2-D, 2-E, 2-F, 2-G, 2-H and 2-I : Otherwise...
-    /**
-     * ! Réparation temporaire
-     * quelque part dans la fonction l'objet {"parentcssbeforecontent": ""} est poussé dans la variable totalAccumulatedText
-     *TODO prendre le temps de débuguer pour trouver ou
-     */
-    if(typeof totalAccumulatedText !== "string") {
-        let string = '';
-        for(let n = 0; n < totalAccumulatedText.length; n++) {
-            string += ' '+totalAccumulatedText[n].trim();
-        }
-        totalAccumulatedText = string;
-    }
+    // 2-A (condition success) : The current node is hidden and is not directly referenced by aria-labelledby.
+    // 2-B, 2-C, 2-D, 2-E, 2-F, 2-G, 2-H and 2-I : Otherwise...
+    
     totalAccumulatedText.trim();
     result.unshift(totalAccumulatedText);
     this.setAttribute('data-tng-anobject', JSON.stringify(result));
