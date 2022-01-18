@@ -1022,7 +1022,7 @@ button.addEventListener('click', function () {
 									disclosure.setAttribute('aria-expanded', 'true');
 									disclosure.setAttribute('aria-controls', 'heading_n'+(heading[0].index - 1));
 									disclosure.setAttribute('data-action', 'showhide-action');
-									disclosure.classList.add('dropdownButton', 'headingDropdownButton');
+									disclosure.classList.add('dropdownButton', 'dropdownButton--active', 'headingDropdownButton');
 
 									let iconButton = document.createElement('img');
 									iconButton.className = "headingDisclosureIcon";

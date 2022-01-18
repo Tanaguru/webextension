@@ -3861,9 +3861,9 @@ function getHeadingsMap() {
     }
 
     for(let i = 0; i < collection.length; i++) {
-        let previousLevel = collection[i-1] ? (!collection[i-1].hasAttribute['role'] ? collection[i-1].tagName.toLowerCase().split('h')[1] : collection[i-1].getAttribute('aria-level')) : null;
-        let currentlevel = !collection[i].hasAttribute['role'] ? collection[i].tagName.toLowerCase().split('h')[1] : collection[i].getAttribute('aria-level');
-        let nextLevel = collection[i+1] ? (!collection[i+1].hasAttribute['role'] ? collection[i+1].tagName.toLowerCase().split('h')[1] : collection[i+1].getAttribute('aria-level')) : null;
+        let previousLevel = collection[i-1] ? (!collection[i-1].hasAttribute('role') ? collection[i-1].tagName.toLowerCase().split('h')[1] : collection[i-1].getAttribute('aria-level')) : null;
+        let currentlevel = !collection[i].hasAttribute('role') ? collection[i].tagName.toLowerCase().split('h')[1] : collection[i].getAttribute('aria-level');
+        let nextLevel = collection[i+1] ? (!collection[i+1].hasAttribute('role') ? collection[i+1].tagName.toLowerCase().split('h')[1] : collection[i+1].getAttribute('aria-level')) : null;
 
         let element = getHeadingInfos(collection[i], currentlevel);
 
@@ -3875,7 +3875,7 @@ function getHeadingsMap() {
                 lastLvl.push(lastPost.length-1);
                 lastPost = lastPost[lastPost.length-1];
             } else {
-                if(lastLvl.length > 1 && (previousLevel - currentlevel) < (lastLvl.length + 1)) {
+                if(lastLvl.length > 1 && (previousLevel - currentlevel) < lastLvl.length) {
                     for(let x = 0; x < previousLevel - currentlevel; x++) lastLvl.pop();
                     let key = "["+lastLvl.join('][')+"]";
                     lastPost = eval("structure"+key);

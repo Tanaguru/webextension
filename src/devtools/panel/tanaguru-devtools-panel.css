@@ -429,7 +429,7 @@ fieldset.radioGroup legend {
 label[for="listenDOM"] {
 	display: flex;
 	align-items: center;
-	padding: 1rem;
+	padding: 0.9rem;
 }
 
 .switch {
@@ -517,14 +517,29 @@ main:not(.launch-analysis) > div:first-child {
 	min-height: 100vh;
 }
 
+.dashboard .dashboard-content p {
+	padding-left: 0.9rem;
+}
+
 .dashboard p.dashboard-message {
 	font-weight: bold;
 }
 
-.dashboard .dashboard-tests {
+.dashboard .dashboard-bottom {
 	margin: 2rem 0 0 0;
 	padding: 1rem;
-	background-color: #AFDDEB;
+	background-color: #E2F0F5;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.dashboard .dashboard-tests {
+	margin: 0;
+}
+
+#readmeTNG {
+	margin-left: 0.4rem;
 }
 
 .dashboard .dashboard-reload-button {
