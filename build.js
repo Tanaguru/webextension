@@ -44,10 +44,20 @@ function copySources(dir){
 
 function buildScripts(refName){
     let testFolder = fs.readdirSync(path.join(REFERENCES_DIR, refName));
+    let functionsFolder = fs.readdirSync(path.join(TEST_DIR, 'functions'));
+    let datasFolder = fs.readdirSync(path.join(TEST_DIR, 'datas'));
     let script = ""
     if(fs.existsSync(path.join(REFERENCES_DIR, refName))){
         script = fs.readFileSync(path.join(TEST_DIR, 'contrasts.js'));
         script += '\n';
+        datasFolder.forEach(datasFile => {
+            script+= fs.readFileSync(path.join(TEST_DIR, 'datas', datasFile));
+            script += '\n';
+        });
+        functionsFolder.forEach(functionFile => {
+            script+= fs.readFileSync(path.join(TEST_DIR, 'functions', functionFile));
+            script += '\n';
+        });
         script += fs.readFileSync(path.join(TEST_DIR, 'content.js'));
         script += '\n';
         script+= fs.readFileSync(path.join(REFERENCES_DIR, refName, refName+'-init.js'));

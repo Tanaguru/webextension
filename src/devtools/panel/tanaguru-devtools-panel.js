@@ -1442,7 +1442,7 @@ button.addEventListener('click', function () {
 											}
 										}
 
-										if(an.length > 0) {
+										if(an.length > 0 && newRow.querySelector('.item-accessiblename .an-full').textContent.trim().length > 0) {
 											let anList = newRow.querySelector('.item-accessiblename .an-list');
 											anList.id = itemNumber+'-'+t;
 											an.forEach(n => {
