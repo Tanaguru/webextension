@@ -65,6 +65,7 @@
 	"contrastThBackgroundColor": { "message": "Background color" }, 
 	"contrastThColor": { "message": "Text color" }, 
 	"contrastThRatio": { "message": "Contrast ratio" },
+	"contrastFinder": { "message": "Find a valid contrast with Contrast-Finder" },
 	"DOMpanelMessage": { "message": "The following changes were observed in the DOM." },
 	"DOMpanelNoChange": { "message": "No change was observed." },
 	"DOMchanges": { "message": "DOM modifications" },

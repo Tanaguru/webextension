@@ -213,14 +213,15 @@ function launchTests() {
         var test = tanaguruTestsList[i];
 
         if (!test.hasOwnProperty('name')) {
-            test.name = browser.i18n.getMessage('test' + test.id + 'Name');
+            if (!test.hasOwnProperty('id')) continue;
+            test.name = chrome.i18n.getMessage('test' + test.id + 'Name');
         }
         if (!test.hasOwnProperty('explanations') && test.hasOwnProperty('id')) {
             var explanations = [];
             for (var j = 0; j < statuses.length; j++) {
                 var statusname = statuses[j];
                 statusname = statusname[0].toUpperCase() + statusname.substring(1);
-                var message = browser.i18n.getMessage('test' + test.id + 'Explanations' + statusname);
+                var message = chrome.i18n.getMessage('test' + test.id + 'Explanations' + statusname);
                 if (message) {
                     explanations.push({ id: statuses[j], text: message });
                 }

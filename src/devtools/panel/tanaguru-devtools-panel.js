@@ -114,6 +114,12 @@ function cssify(xpath) {
 	return csses.join(', ');
 }
 
+function translateRGBToHex(rgb) {
+	rgb = rgb.match(/\d+/g);
+	if(rgb.length !== 3) console.error("Wrong RGB format in function parameter. (format: rgb(255, 255, 255))");
+	else return hex = ((1 << 24) + (parseInt(rgb[0]) << 16) + (parseInt(rgb[1]) << 8) + parseInt(rgb[2])).toString(16).slice(1);
+}
+
 /**
  *? applied on actions buttons 
  */
@@ -1321,6 +1327,23 @@ button.addEventListener('click', function () {
 		
 									let template = document.querySelector('#item-row-contrast');
 									var newRow = document.importNode(template.content, true);
+
+									if(test.type === "failed") {
+										let contrastFinderLink = document.createElement('a');
+										contrastFinderLink.textContent = "Contrast-Finder";
+										contrastFinderLink.setAttribute('title', chrome.i18n.getMessage('contrastFinder'));
+										contrastFinderLink.setAttribute('target', '_blank');
+
+										let fg = "https://contrast-finder.tanaguru.com/result.html?foreground=%23"+translateRGBToHex(itemCT[0]);
+										let bg = "&background=%23"+translateRGBToHex(itemCF[0]);
+										let ratio = "&ratio="+(test.data[h].valid.target);
+										let lang = (chrome.i18n.getMessage('extensionLang') === "en") ? "&lang=en" : "&lang=fr";
+										let contrastFinder = fg+bg+ratio+lang;
+
+										contrastFinderLink.setAttribute('href', contrastFinder);
+										newRow.querySelector('.item-actions').appendChild(contrastFinderLink);
+									}
+
 									newRow.querySelector('.item-number').textContent = itemNumber;
 									newRow.querySelector('.item-tag').textContent = itemTag;
 									newRow.querySelector('.item-text').textContent = itemText;

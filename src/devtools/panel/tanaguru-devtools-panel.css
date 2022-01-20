@@ -1101,6 +1101,11 @@ th:last-child, td:last-child {
 	width: 15rem;
 }
 
+.item-actions a {
+	display: inline-block;
+	margin-top: 1rem;
+}
+
 table ul {
 	margin: 0;
 	padding: 0;

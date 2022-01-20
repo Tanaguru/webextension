@@ -1,15 +1,4 @@
 document.addEventListener('DOMContentLoaded', function(event) {
-	/*
-	var gettingBadgeText = browser.browserAction.getBadgeText({});
-	gettingBadgeText.then(function (text) {
-		var span = document.querySelectorAll('span');
-		if (text.length > 0) {
-			span[0].replaceChild(document.createTextNode("consulter les résultats d'analyse de cette page"), span[0].firstChild);
-			span[2].replaceChild(document.createTextNode("expertisez"), span[2].firstChild);
-		}
-	});
-	*/
-	
 	/* Support de template. */
 	if ('content' in document.createElement('template')) {
 		var html = document.querySelector('html');
