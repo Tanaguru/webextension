@@ -607,6 +607,8 @@ function getTextNodeContrast() {
 		cantTell_3GV: []
 	};
 
+	var colorsList = ["bleu", "bleus", "bleue", "bleues", "gris", "grise", "grises", "marron", "marrons", "orange", "oranges", "rouge", "rouges", "violet", "violets", "violette", "violettes", "blanc", "blancs", "blanche", "blanches", "jaune", "jaunes", "noir", "noirs", "noire", "noires", "rose", "roses", "vert", "verts", "verte", "vertes"];
+
 	// get datas for each text node
 	while(tw.nextNode()) {
 		var cn = tw.currentNode;
@@ -614,6 +616,20 @@ function getTextNodeContrast() {
 
 		// we don't process empty strings, nor script/noscript/style tags.
 		if(cn.nodeValue.trim().length > 0 && ['noscript', 'script', 'style'].indexOf(element.tagName.toLowerCase()) == -1) {
+			var computedTextColor = window.getComputedStyle(element, null).getPropertyValue('color');
+			if(computedTextColor != window.getComputedStyle(element.parentElement, null).getPropertyValue('color')) {
+				//to colors test 3.1.1
+				element.setAttribute('data-tng-colorization', 'true');
+			}
+
+			//to colors test 3.1.2
+			for(let i = 0; i < colorsList.length; i++) {
+				if(cn.nodeValue.trim().split(" ").includes(colorsList[i])) {
+					element.setAttribute('data-tng-colorindication', 'true');
+					break;
+				}
+			}
+
 			var disabledElements = ['button', 'fieldset', 'input', 'optgroup', 'option', 'select', 'textarea'];
 			var size = window.getComputedStyle(element, null).getPropertyValue('font-size');
 			var weight = window.getComputedStyle(element, null).getPropertyValue('font-weight');

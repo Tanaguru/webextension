@@ -1,3 +1,6 @@
+/**
+ ** use [htmlDatas.js]
+ */
 var getImplicitAriaRole = function () {
     if (htmlData.elements.hasOwnProperty(this.tagName.toLowerCase())) {
         var elementData = htmlData.elements[this.tagName.toLowerCase()];

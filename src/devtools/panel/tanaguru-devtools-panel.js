@@ -117,19 +117,7 @@ function cssify(xpath) {
 function translateRGBToHex(rgb) {
 	rgb = rgb.match(/\d+/g);
 	if(rgb.length !== 3) console.error("Wrong RGB format in function parameter. (format: rgb(255, 255, 255))");
-	else return hex = ((1 << 24) + (parseInt(rgb[0]) << 16) + (parseInt(rgb[1]) << 8) + parseInt(rgb[2])).toString(16).slice(1);
-}
-
-/**
- *? applied on actions buttons 
- */
-function manageHoveredImageButton(event) {
-	if (['mouseover', 'mouseout'].indexOf(event.type) == -1 || (['mouseover', 'mouseout'].indexOf(event.type) > -1 && this != document.querySelector(':focus'))) {
-		var img = this.firstChild;
-		var newsrc = img.getAttribute('data-src');
-		img.setAttribute('data-src', img.getAttribute('src'));
-		img.setAttribute('src', newsrc);	
-	}
+	else return ((1 << 24) + (parseInt(rgb[0]) << 16) + (parseInt(rgb[1]) << 8) + parseInt(rgb[2])).toString(16).slice(1);
 }
 
 /**

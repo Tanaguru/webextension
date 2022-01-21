@@ -995,6 +995,7 @@ td.item-code--small {
 
 .domChangeList .code code {
 	padding: 0.5rem;
+	text-align: left;
 }
 
 .domChangeList .code {
@@ -1004,6 +1005,11 @@ td.item-code--small {
 .domChangeList li {
 	position: relative;
 	margin: 1rem 0;
+	max-width: 80rem;
+}
+
+.domChangeList li div {
+	padding-left: 3rem;
 }
 
 .domChangeList li .domDropdownButton {

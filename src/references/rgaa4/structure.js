@@ -37,8 +37,16 @@ tanaguruTestsList.push({
 // 9.1.3 Dans chaque page web, chaque passage de texte constituant un titre est-il structuré à l'aide d'une balise <hx> ou d'une balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: "Chaque passage de texte constituant un titre doit être structuré à l'aide d'une balise <hx> ou d'une balise possédant un attribut WAI-ARIA role='heading' associé à un attribut WAI-ARIA aria-level",
-    status: 'untested',
+    name: "Liste d'éléments non structurés en titre mais ayant un role ou une classe indiquant un titre.",
+    description: "Vérifier si ces éléments devraient être structurés en titre.",
+    query: '[role="heading"][data-tng-el-exposed="true"]:not([aria-level]), [class*="heading"][data-tng-el-exposed="true"]:not([role="heading"]), [class*="titre"][data-tng-el-exposed="true"]:not([role="heading"])',
+    filter: function(item) {
+        if(item.textContent.trim().length === 0) return;
+        if(item.tagName.toLowerCase().match(/^h\d$/g)) return;
+        return true;
+    },
+    testStatus: 'cantTell',
+    mark: { attrs: ['role', 'class']},
     tags: ['a11y', 'headings', 'structure'],
     ressources: { 'rgaa': ['9.1.3'] }
 });

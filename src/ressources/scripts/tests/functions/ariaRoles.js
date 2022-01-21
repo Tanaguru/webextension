@@ -1,3 +1,6 @@
+/**
+ ** use [htmlDatas.js, ariaDatas.js, implicitAriaRoles.js]
+ */
 var getComputedAriaRole = function () {
     if (this.hasAttribute('role')) {
         var role = this.getAttribute('role');

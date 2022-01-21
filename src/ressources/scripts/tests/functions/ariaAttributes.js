@@ -1,3 +1,6 @@
+/**
+ ** use [ariaDatas.js, ariaRoles.js]
+ */
 var hasInvalidAriaAttributes = function () {
     var result = false;
     for (var i = 0; i < this.attributes.length; i++) {

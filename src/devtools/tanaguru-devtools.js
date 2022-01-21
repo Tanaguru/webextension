@@ -17,13 +17,11 @@ function initTab(newPanel, tabId) {
 	newPanel.onShown.addListener(tmp);
 
 	function sendStoreMsg(msg) {
-		if(msg['command'] == 'DOMedit') {
-			if (_window && tabId == msg['tabId']) {
-				_window.obsMessage(msg);
-			} else {
-				if(!data[tabId]) data[tabId] = [];
-				data[tabId].push(msg);
-			}
+		if (_window && tabId == msg['tabId']) {
+			_window.obsMessage(msg);
+		} else if(msg['command'] == 'DOMedit') {
+			if(!data[tabId]) data[tabId] = [];
+			data[tabId].push(msg);
 		}
 	}
 	port.onMessage.addListener(sendStoreMsg);

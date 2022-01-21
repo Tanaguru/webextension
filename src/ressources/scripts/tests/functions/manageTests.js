@@ -1,4 +1,6 @@
-/* Gestion des tests. */
+/**
+ *? Gestion des tests
+ */
 function getXPath(element) {
     var position = 0;
     if (element.parentNode && element.parentNode.nodeType == 1) {
@@ -13,7 +15,7 @@ function getXPath(element) {
         }
     }
 
-    return (element.parentNode.nodeType == 1 ? getXPath(element.parentNode) : '') + '/' + element.tagName.toLowerCase() + '[' + (position ? position : '1') + ']' + (element.hasAttribute('id') && !element.id.includes('/') ? '[@id="' + element.getAttribute('id') + '"]' : '') + (element.hasAttribute('class') && !element.className.includes('/') ? '[@class="' + element.getAttribute('class') + '"]' : '');
+    return (element.parentNode.nodeType == 1 ? getXPath(element.parentNode) : '') + '/' + element.tagName.toLowerCase() + '[' + (position ? position : '1') + ']' + (element.hasAttribute('id') && !element.id.includes('/') ? '[@id="' + element.getAttribute('id') + '"]' : '') + (element.hasAttribute('class') && !element.getAttribute('class').includes('/') ? '[@class="' + element.getAttribute('class') + '"]' : '');
 }
 
 function initTanaguru() {

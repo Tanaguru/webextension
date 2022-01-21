@@ -1,5 +1,6 @@
 /**
  * get array of headings hierarchy
+ * * use [manageTests.js]
  */
  function getHeadingsMap() {
     initTanaguru();
