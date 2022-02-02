@@ -8,7 +8,7 @@
 // 6.1.1 Pour chaque lien texte l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_245',
+    name: 'Liste des liens texte sans nom accessible',
     query: 'a[href], [role="link"]',
     testStatus: "failed",
     filter: function (item) {
@@ -48,7 +48,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_246',
+    name: 'Liste des liens texte visibles non restitués',
     query: '[data-tng-textlink="true"][data-tng-el-exposed="false"][data-tng-el-visible="true"]',
     testStatus: "failed",
     mark: {attrs: ['role']},
@@ -58,7 +58,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_247',
+    name: 'Liste des liens texte non visibles non restitués',
     query: '[data-tng-textlink="true"][data-tng-el-exposed="false"][data-tng-el-visible="false"]',
     testStatus: "inapplicable",
     mark: {attrs: ['role']},
@@ -68,9 +68,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_248',
+    name: 'Liste des liens texte avec un nom accessible',
     query: '[data-tng-textlink-accessiblename]',
-    description: 'locale__links_description_249',
+    description:'Vérifiez la pertinence des noms accessibles des liens',
     testStatus: "cantTell",
     mark: {attrs: ['role']},
     tags: ['a11y', 'links', 'accessiblename'],
@@ -79,10 +79,10 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_250',
+    name: 'Liste des liens texte avec un nom non pertinent',
     query: '[data-tng-textlink-accessiblename][title]',
     testStatus: "failed",
-    description: 'locale__links_description_251',
+    description:"Ces liens possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
     filter: function(item) {
         let anMatch = isString1MatchString2(item.getAttribute('title'), item.accessibleName());
         if(anMatch === null) return;
@@ -96,7 +96,7 @@ tanaguruTestsList.push({
 // 6.1.2 Pour chaque lien image l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_252',
+    name: 'Liste des liens images sans nom accessible',
     query: 'a[href]:not([data-tng-svgLink], [data-tng-textlink]), [role="link"]:not([data-tng-svgLink], [data-tng-textlink])',
     testStatus: "failed",
     filter: function (item) {
@@ -145,7 +145,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_253',
+    name: 'Liste des liens images visibles non restitués',
     query: '[data-tng-imglink][data-tng-el-visible="true"][data-tng-el-exposed="false"]',
     testStatus: "failed",
     tags: ['a11y', 'links'],
@@ -154,7 +154,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_254',
+    name: 'Liste des liens images non visibles non restitués',
     query: '[data-tng-imglink][data-tng-el-visible="false"][data-tng-el-exposed="false"]',
     testStatus: "inapplicable",
     tags: ['a11y', 'links'],
@@ -163,9 +163,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_255',
+    name: 'Liste des liens images avec un nom accessible',
     query: '[data-tng-imglink-accessiblename]',
-    description: 'locale__links_description_256',
+    description:'Vérifiez la pertinence des noms accessibles des images',
     testStatus: "cantTell",
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.2']}
@@ -173,10 +173,10 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_257',
+    name: 'Liste des liens images avec un nom non pertinent',
     query: '[data-tng-imglink-accessiblename][title]',
     testStatus: "failed",
-    description: 'locale__links_description_258',
+    description:"Ces liens images possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
     filter: function(item) {
         let anMatch = isString1MatchString2(item.getAttribute('title'), item.accessibleName());
         if(anMatch === null) return;
@@ -190,7 +190,7 @@ tanaguruTestsList.push({
 // 6.1.3 Pour chaque lien composite l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_259',
+    name: 'Liste des liens composites sans nom accessible',
     query: '[data-tng-cplink]',
     testStatus: "failed",
     filter: function (item) {
@@ -232,7 +232,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_260',
+    name: 'Liste des liens composites visibles non restitués',
     query: '[data-tng-cplink][data-tng-el-visible="true"][data-tng-el-exposed="false"]',
     testStatus: "failed",
     tags: ['a11y', 'links'],
@@ -241,7 +241,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_261',
+    name: 'Liste des liens composites non visibles non restitués',
     query: '[data-tng-cplink][data-tng-el-visible="false"][data-tng-el-exposed="false"]',
     testStatus: "inapplicable",
     tags: ['a11y', 'links'],
@@ -250,9 +250,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_262',
+    name: 'Liste des liens composites avec un nom accessible',
     query: '[data-tng-cplink-accessiblename]',
-    description: 'locale__links_description_263',
+    description:'Vérifiez la pertinence des noms accessibles.',
     testStatus: "cantTell",
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.3']}
@@ -260,10 +260,10 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_264',
+    name: 'Liste des liens composites avec un nom non pertinent',
     query: '[data-tng-cplink-accessiblename][title]',
     testStatus: "failed",
-    description: 'locale__links_description_265',
+    description:"Ces liens composites possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien",
     filter: function(item) {
         let anMatch = isString1MatchString2(item.getAttribute('title'), item.accessibleName());
         if(anMatch === null) return;
@@ -277,7 +277,7 @@ tanaguruTestsList.push({
 // 6.1.4 Pour chaque lien SVG l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_266',
+    name: 'Liste des liens SVG sans nom accessible',
     query: '[data-tng-svgLink][data-tng-el-exposed="true"]',
     testStatus: "failed",
     filter: function (item) {
@@ -294,7 +294,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_267',
+    name: 'Liste des liens SVG visibles non restitués',
     query: '[data-tng-svgLink][data-tng-el-visible="true"][data-tng-el-exposed="false"]',
     testStatus: "failed",
     tags: ['a11y', 'links'],
@@ -303,7 +303,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_268',
+    name: 'Liste des liens SVG non visibles non restitués',
     query: '[data-tng-svgLink][data-tng-el-visible="false"][data-tng-el-exposed="false"]',
     testStatus: "inapplicable",
     tags: ['a11y', 'links'],
@@ -312,9 +312,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_269',
+    name: 'Liste des liens SVG avec un nom accessible',
     query: '[data-tng-svglink-accessiblename]',
-    description: 'locale__links_description_263',
+    description:'Vérifiez la pertinence des noms accessibles.',
     testStatus: "cantTell",
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.4']}
@@ -323,7 +323,7 @@ tanaguruTestsList.push({
 // 6.1.5 Pour chaque lien ayant un intitulé visible, le nom accessible du lien contient-il au moins l'intitulé visible (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_271',
+    name: 'Liste des liens ayant un intitulé visible non repris dans le nom accessible.',
     query: '[data-tng-link-ANaria][data-tng-el-visible="true"]',
     testStatus: "failed",
     filter: function (item) {
@@ -362,7 +362,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_272',
+    name: 'Liste des liens ayant un intitulé visible bien repris dans le nom accessible.',
     query: '[data-tng-link-names-match]',
     testStatus: "passed",
     tags: ['a11y', 'links', 'accessiblename'],
@@ -373,7 +373,7 @@ tanaguruTestsList.push({
 // 6.2.1 Dans chaque page web, chaque lien a-t-il un intitulé entre <a> et </a> ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_273',
+    name: 'Liste des liens sans intitulé entre <a> et </a>.',
     query: 'a[href][data-tng-el-visible="true"]',
     testStatus: "failed",
     filter: function (item) {
@@ -395,7 +395,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_274',
+    name: 'Liste des liens avec un intitulé entre <a> et </a>.',
     query: '[data-tng-link-hasname]',
     testStatus: "passed",
     tags: ['a11y', 'links'],

@@ -1,89 +1,489 @@
 {
 	"extensionLang": {
 		"message": "en",
-		"description": "Language of the extension."
+		"description": "Langue de l'extension.",
+		"hash": "52edca5481659e9a7c275574889b3c0d"
 	},
 	"extensionName": {
 		"message": "Tanaguru webext",
-		"description": "Name of the extension."
-	},	
+		"description": "Nom de l'extension.",
+		"hash": "1143b4d9ceabf5b8ad1b556bb7d496bd"
+	},
 	"extensionDescription": {
 		"message": "Webpage Evaluation Tool.",
-		"description": "Description of the extension."
+		"description": "Description de l'extension.",
+		"hash": "b73e688dc7ac4306d6631c070542e97b"
 	},
 	"extensionHomepageUrl": {
 		"message": "http://www.tanaguru.com/en/",
-		"description": "URL of the Tanaguru.com english version."
+		"description": "URL de la version française du site web consacré à l'extension.",
+		"hash": "e24909dc7757852a3dbcda6b6ed1bc35"
 	},
 	"extensionHowTo": {
-		"message": "To start testing, go to Web Developer Tools, activate the tab <strong>{manifest.name}</strong> and launch the assessment of the page.",
-		"description": "How to use the extension."
+		"message": "To start testing, go to the Web Developer Tools, activate the tab <strong><span>manifest.name</span></strong> and launch the assessment of the page.",
+		"description": "Instructions pour utiliser l'extension.",
+		"hash": "1dd72aacf5a1dc8b9e49fe136f35d157"
 	},
 	"extensionWebsite": {
 		"message": "To learn more, visit the site <span data-role=\"link\" data-text=\"Tanaguru.com\" data-newwindow=\"true\">manifest.homepage_url</span>.",
-		"description": "More information on the Tanaguru.com website."
+		"description": "Plus d'informations sur le site web consacré à l'extension.",
+		"hash": "83eb33a342ec3b884b4dbfe934474fc9"
 	},
 	"extensionNewWindow": {
 		"message": "(new window)",
-		"description": "Text to inform that an element will open a new window."
+		"description": "Mention pour les éléments s'ouvrant dans une nouvelle fenêtre.",
+		"hash": "6b3e134f1aa6a3cf3414c05e194ef35a"
 	},
-	"homeTitle": {"message": "Customize your analysis"},
-	"msgNavHeading": { "message": "Analysis Results" },
-	"msgDashboard": { "message": "Dashboard" },
-	"DOMdashboardMessage": { "message": "Changes have been observed in the DOM." },
-	"DOMdashboardButton": { "message": "View the list of changes" },
-	"msgDashboardResultFailed": { "message": "Errors have been detected on this page." }, 
-	"msgDashboardResultPassed": { "message": "No errors were detected on this page." }, 
-	"msgDashboardResultNone": { "message": "There are no results matching your request for this page." },
-	"msgDashboardResultLoad": { "message": "Analysis in progress..." },
-	"msgDashboardWarning": { "message": "Warning, the url of the page has changed, the current analysis results no more match the content of the active tab." },
-	"dashboardButtonReload": { "message": "Relaunch the analysis" },
-	"dashboardButtonRestart": { "message": "Exit and start a new analysis" },
-	"dashboardListenDOMlegend": { "message": "Monitor the DOM changes of the analyzed page" },
-	"word_no": { "message": "No" },
-	"word_yes": { "message": "Yes" },
-	"msgHeadingsHierarchy": { "message": "Headings hierarchy" },
-	"msgCollapseBtn": { "message": "Collapse all" },
-	"msgExpandBtn": { "message": "Expand all" },
-	"earlFailed": { "message": "Failed" },
-	"earlPassed": { "message": "Passed" },
-	"earlCantTell": { "message": "Undefined" },
-	"earlInapplicable": { "message": "Not applicable" },
-	"earlUntested": { "message": "Not tested" },
-	"uiTagButton": { "message": "All tests with the \"{tagName}\" tag." },
-	"contrastHeading": { "message": "Contrastes" },
-	"contrastDescription1": { "message": "Text smaller than 24px, and text smaller than 18.5px with a fat effect of at least 700: minimum contrast ratio 4.5:1" },
-	"contrastDescription2": { "message": "Text larger than 24px, and text larger than 18.5px with a fat effect of at least 700: minimum contrast ratio 3:1" },
-	"contrastLegend1": { "message": "Legend : " },
-	"contrastLegend2": { "message": "image" },
-	"contrastLegend3": { "message": "not found" },
-	"contrastWarning": { "message": "A manual analysis is still required to confirm or deny the announced statuses (e.g. overlapping cases are not taken into account)." }, 
-	"contrastThNumber": { "message": "N°" }, 
-	"contrastThStatus": { "message": "Status" }, 
-	"contrastThText": { "message": "Text" }, 
-	"contrastThSize": { "message": "Text size" }, 
-	"contrastThBackgroundColor": { "message": "Background color" }, 
-	"contrastThColor": { "message": "Text color" }, 
-	"contrastThRatio": { "message": "Contrast ratio" },
-	"contrastFinder": { "message": "Find a valid contrast with Contrast-Finder" },
-	"DOMpanelMessage": { "message": "The following changes were observed in the DOM." },
-	"DOMpanelNoChange": { "message": "No change was observed." },
-	"DOMchanges": { "message": "DOM modifications" },
-	"allTags": { "message": "All tests" },
-	"tagAct": { "message": "ACT"},
-	"tagA11y": { "message": "Accessibility" },
-	"tagButtons": { "message": "Buttons" },
-	"tagColors": { "message": "Colors" }, 
-	"tagContrast": { "message": "Contrast" }, 
-	"tagHeadings": { "message": "Headings" },
-	"tagImages": { "message": "Images" },
-	"tagLinks": { "message": "Links" },
-	"tagFrames": { "message": "Frames" },
-	"tagForms": { "message": "Forms" },
-	"tagAria": {"message" : "Aria"},
-	"tagAccessibleName": {"message" : "Accessible Name"},
-	"tagSvg": {"message" : "Svg"},
-	"tagMandatory": {"message" : "Mandatory Elements"},
-	"tagStructure": {"message" : "Information Structure"},
-	"tagPresentation": {"message" : "Information Presentation"}
+	"homeTitle": {
+		"message": "Customize your analysis",
+		"hash": "8a0dc3850c13f5e39ce29650fa4a2b6d"
+	},
+	"homeLaunchAnalyze": {
+		"message": "Analyze this page",
+		"hash": "d3c35ddddbf101bfc396bb4ac5576178"
+	},
+	"msgNavHeading": {
+		"message": "Analysis Results",
+		"hash": "dc31f1d41840b32b46709382693a05a0"
+	},
+	"msgDashboard": {
+		"message": "Dashboard",
+		"hash": "7da0dba363aa5ac853ac601deeefcec4"
+	},
+	"msgDashboardAnalyzeTimer": {
+		"message": "Analysis done in",
+		"hash": "d622ee2bb2c9dad09a8d9f0e47d1f340"
+	},
+	"DOMdashboardMessage": {
+		"message": "Changes have been observed in the DOM.",
+		"hash": "b1f8ee2026ed8a1b44a02b82667cb9b2"
+	},
+	"DOMdashboardButton": {
+		"message": "View the list of changes",
+		"hash": "19f7e6d4fc449f37c800e594f3dbfd8c"
+	},
+	"msgDashboardResultFailed": {
+		"message": "Errors were detected on this page.",
+		"hash": "c7019ee7e320d8484d2316f56fe210f3"
+	},
+	"msgDashboardResultPassed": {
+		"message": "No error was detected on this page.",
+		"hash": "999af68b8dd89502a3892843084af95f"
+	},
+	"msgDashboardResultNone": {
+		"message": "There is no result matching your request for this page.",
+		"hash": "90e2ecdfa3302b3e762a1110a7b712ab"
+	},
+	"msgDashboardResultLoad": {
+		"message": "Analysis in progress...",
+		"hash": "928ba92be167a3f2f66e6f1bbaec0dc2"
+	},
+	"msgDashboardWarning": {
+		"message": "Be careful, the active tab page has been changed or refreshed, the current analysis results do not match the content of the active tab anymore.",
+		"hash": "4810f7f8596250d622b46ed1dd583414"
+	},
+	"dashboardButtonReload": {
+		"message": "Restart the analysis",
+		"hash": "ac4ea0eceec44281ef19e9c6a42b1c35"
+	},
+	"dashboardButtonRestart": {
+		"message": "Exit and start a new analysis",
+		"hash": "3bba5b56912d3d3c3f7fb7166091d2a2"
+	},
+	"dashboardListenDOMlegend": {
+		"message": "Monitor the DOM changes of the analyzed page",
+		"hash": "4696a9d621bba2552fa51e8914011108"
+	},
+	"word_no": {
+		"message": "No",
+		"hash": "df7642678cd373ea77f9dee792d11ecb"
+	},
+	"word_yes": {
+		"message": "Yes",
+		"hash": "94d0e62d597b025ff60da581f93d6359"
+	},
+	"word_all": {
+		"message": "All",
+		"hash": "58353300c3362a038d91f091b1f9e8fc"
+	},
+	"word_inspect": {
+		"message": "Inspect",
+		"hash": "ded387557aec651a27373c9b77a75da5"
+	},
+	"word_before": {
+		"message": "Before",
+		"hash": "4e376635705c9b79f9f5d3c5a159ddcc"
+	},
+	"word_after": {
+		"message": "After",
+		"hash": "e240d524ac1f77a9fabbb69ef1167aab"
+	},
+	"word_selector": {
+		"message": "Selector",
+		"hash": "1d7b199e6b55a54471bd32a508f9cdaa"
+	},
+	"word_label": {
+		"message": "Label",
+		"hash": "cdb2de4c4b014797f63ce5f17e8852cd"
+	},
+	"word_label_plural": {
+		"message": "Labels",
+		"hash": "a5566254414f5b27dd737419df1f1082"
+	},
+	"word_second": {
+		"message": "second",
+		"hash": "c84fb62776b4bf199aa205b7e4470738"
+	},
+	"msgHeadingsHierarchy": {
+		"message": "Headings hierarchy",
+		"hash": "0b3f624c02dae462bc42a8ea9d90f71e"
+	},
+	"msgCollapseBtn": {
+		"message": "Collapse all",
+		"hash": "50e2b3400bfa6426f4e058af9709af36"
+	},
+	"msgExpandBtn": {
+		"message": "Expand all",
+		"hash": "70b9f9e875111d1f7a91fc182933684b"
+	},
+	"earlFailed": {
+		"message": "Failed",
+		"hash": "791b19d9c722beca164525aa13221fed"
+	},
+	"earlPassed": {
+		"message": "Passed",
+		"hash": "7ea7090212817f22e4fcef53ec487f36"
+	},
+	"earlCantTell": {
+		"message": "Undefined",
+		"hash": "c46b9fb86103a4dcfc3b2da2119923ab"
+	},
+	"earlInapplicable": {
+		"message": "Not applicable",
+		"hash": "bfbc9590c3103196b05ed212c2537430"
+	},
+	"earlUntested": {
+		"message": "Not tested",
+		"hash": "5d0900e32b501c461290f1ef176b5b34"
+	},
+	"uiTagButton": {
+		"message": "All tests with the \"{tagName}\" tag.",
+		"hash": "4d9c3722ad8e5b07e66f98ac781d59fc"
+	},
+	"contrastHeading": {
+		"message": "Contrastes",
+		"hash": "6ad475dd47a4cff41779f799ece9fc0f"
+	},
+	"contrastDescription1": {
+		"message": "Text smaller than 24px, and text smaller than 18.5px with a bold effect of at least 700: minimum contrast ratio 4.5:1",
+		"hash": "14a8b1ff34d0402d87f55f800741e29e"
+	},
+	"contrastDescription2": {
+		"message": "Text larger than 24px, and text larger than 18.5px with a bold effect of at least 700: minimum contrast ratio 3:1",
+		"hash": "fb41075b1e16a32e124cccc561a50b92"
+	},
+	"contrastLegend1": {
+		"message": "Legend: ",
+		"hash": "32d189d5ba72daba3c37967952e402c8"
+	},
+	"contrastLegend2": {
+		"message": "image",
+		"hash": "a28d2f0a18381cf7b4a4b1a523070bcb"
+	},
+	"contrastLegend3": {
+		"message": "not found",
+		"hash": "c6d1fcd4b6b5177ed05747213a1b8416"
+	},
+	"contrastWarning": {
+		"message": "A manual analysis is still required to confirm or deny the announced statuses (e.g. overlapping cases are not taken into account).",
+		"hash": "45166d679e600939db645b46a2ea702b"
+	},
+	"contrastThNumber": {
+		"message": "N°",
+		"hash": "51a237ca4cb02c406bd422f1bf6eb994"
+	},
+	"contrastThStatus": {
+		"message": "Status",
+		"hash": "e124ed46d9135bcdbae990b2ce77f1b0"
+	},
+	"contrastThText": {
+		"message": "Text",
+		"hash": "4fd0e1ae8b6defa9c1b072d3dcf046d2"
+	},
+	"contrastThSize": {
+		"message": "Text size",
+		"hash": "2568f0585d23d881c8968d8966972038"
+	},
+	"contrastThBackgroundColor": {
+		"message": "Background color",
+		"hash": "a4e9ed4a70912346d3c96729649abb6b"
+	},
+	"contrastThColor": {
+		"message": "Text color",
+		"hash": "d46859c23078aa6c738a2044776b7c6d"
+	},
+	"contrastThRatio": {
+		"message": "Contrast ratio",
+		"hash": "50cdec72719bd25413d19e1a7ee859c5"
+	},
+	"contrastFinder": {
+		"message": "Find a valid contrast with Contrast-Finder",
+		"hash": "d78848c7a27bc992712f5c2fac7d94e1"
+	},
+	"DOMpanelMessage": {
+		"message": "The following changes were observed in the DOM.",
+		"hash": "e1992beb2faaa95a095b3332d12bb7e8"
+	},
+	"DOMpanelNoChange": {
+		"message": "No change was observed.",
+		"hash": "08f2d85c025c35094c1a1cdbce5cbd36"
+	},
+	"DOMchanges": {
+		"message": "DOM modifications",
+		"hash": "6653a8e4ad273a6caadd153ef4b2d964"
+	},
+	"allTags": {
+		"message": "All tests",
+		"hash": "4e04f490db3616f3f7f3316792101ded"
+	},
+	"tagA11y": {
+		"message": "Accessibility",
+		"hash": "82ff9fd892eb852e9d1c37713718792b"
+	},
+	"tagAccessibleName": {
+		"message": "Accessible Names",
+		"hash": "1a4697b506bb6c984875eed109102e60"
+	},
+	"tagAct": {
+		"message": "ACT",
+		"hash": "b7041ff95c971a1377fa8f240ad1ef50"
+	},
+	"tagAria": {
+		"message": "Aria",
+		"hash": "9dfb3d7aa90729067aa94e3872b9289f"
+	},
+	"tagAudio": {
+		"message": "Audio",
+		"hash": "993de5473db87680614943424519bacd"
+	},
+	"tagButtons": {
+		"message": "Buttons",
+		"hash": "672da44f07872ec734f079ca8ed5b530"
+	},
+	"tagCode": {
+		"message": "Code (writing rules)",
+		"hash": "e3aa9909bfa193c626bf971bb688f69e"
+	},
+	"tagColors": {
+		"message": "Colors",
+		"hash": "e398ced0aed4703220c76a4507fc5595"
+	},
+	"tagConsultation": {
+		"message": "Consultation",
+		"hash": "bb2c278036f23a7d0e328f3f5aba59f8"
+	},
+	"tagContrast": {
+		"message": "Contrast",
+		"hash": "6ad475dd47a4cff41779f799ece9fc0f"
+	},
+	"tagForms": {
+		"message": "Forms",
+		"hash": "925d4fc791c25ead464c1a5bd6787ccc"
+	},
+	"tagFrames": {
+		"message": "Frames",
+		"hash": "5e70e45d90be2bcf8dac241b4988c72e"
+	},
+	"tagHeadings": {
+		"message": "Headings",
+		"hash": "e7a03c04ff498c2269babb49158f4074"
+	},
+	"tagImages": {
+		"message": "Images",
+		"hash": "08d27491a6346d3f963377498c0f235b"
+	},
+	"tagKeyboard": {
+		"message": "Keyboard navigation",
+		"hash": "c7560ad9a27d99780cf66d9f5e6c265e"
+	},
+	"tagLanguages": {
+		"message": "Langages",
+		"hash": "78faca255c5f681d88435229e2e18a07"
+	},
+	"tagLinks": {
+		"message": "Links",
+		"hash": "d9216a2960f68ca1a63f21e7da5268d8"
+	},
+	"tagMandatory": {
+		"message": "Mandatory Elements",
+		"hash": "a470afbd0f42e065013a57a89e8764c1"
+	},
+	"tagMedia": {
+		"message": "Multimedia",
+		"hash": "ad6b7c349d0de056c1afd00ae9b516f5"
+	},
+	"tagMeta": {
+		"message": "Metadata",
+		"hash": "3982241376ee2b07fafe80f584489480"
+	},
+	"tagNavigation": {
+		"message": "Navigation",
+		"hash": "e94c29a34ef2defbb8a15403ce8053ac"
+	},
+	"tagPageTitle": {
+		"message": "Page title",
+		"hash": "038d1e1e46a3a14394b095f391cd5bcc"
+	},
+	"tagPresentation": {
+		"message": "Information Presentation",
+		"hash": "9ab461bd4426912a138e1737e51e8490"
+	},
+	"tagRgaa": {
+		"message": "RGAA",
+		"hash": "4b71a1bbb0486549538619eddb4b9fa9"
+	},
+	"tagScripts": {
+		"message": "Scripts",
+		"hash": "c8950e7d1fecad6c12044790bd214f5a"
+	},
+	"tagStructure": {
+		"message": "Information Structure",
+		"hash": "8a16345f9a1396a91fe1a1e5f285a82a"
+	},
+	"tagSvg": {
+		"message": "Svg",
+		"hash": "73765445a2ffe6ef74df1f9b50dab017"
+	},
+	"tagTables": {
+		"message": "Tables",
+		"hash": "75ffd61b1b3ef1f06b110d201635ee40"
+	},
+	"tagVideos": {
+		"message": "Videos",
+		"hash": "af93cc73b88df926ca13e173c2c61317"
+	},
+	"tagWcag": {
+		"message": "WCAG",
+		"hash": "049dc739bb0826b3c637fff22c980c2f"
+	},
+	"panelAllHeadingsDesc": {
+		"message": "Hierarchy of page titles, represented as lists",
+		"hash": "9d0c92877352815ab303f2cc741bacd4"
+	},
+	"panelHighlightHeading": {
+		"message": "Hightlight the title in the page",
+		"hash": "7e41766209994cfebf06732520aefa67"
+	},
+	"panelInspectHeading": {
+		"message": "Select the title in the inspector tab",
+		"hash": "c2d386fffbf1a20daf16a9cd6b261e1d"
+	},
+	"panelTextualContents": {
+		"message": "Textual content",
+		"hash": "e40aa0ad9e360bc889060f8c264cea83"
+	},
+	"panelShowAnDetails": {
+		"message": "Show calcul detail",
+		"hash": "3dd2f138570e55a4571a2d2c54331ba7"
+	},
+	"panelHideAnDetails": {
+		"message": "Hide calcul detail",
+		"hash": "a2b85ebaace09ffb62795cf65b5dc24d"
+	},
+	"panelActionHighlight": {
+		"message": "Highlight in the page",
+		"hash": "240153d8c9af8cb2253aefdcbefa4617"
+	},
+	"panelActionInspect": {
+		"message": "Reveal in inspector tab",
+		"hash": "bd737b7d681d80ce04e327257cdb1d58"
+	},
+	"panelHiddenElement": {
+		"message": "This element is hidden on screen",
+		"hash": "e43babe123d0838a88d9197cbef01428"
+	},
+	"panelAboutElement": {
+		"message": "About this element",
+		"hash": "deced73d76cbc190a3ea13c0ae36640a"
+	},
+	"panelUpdatedElement": {
+		"message": "modified element",
+		"hash": "11d275202ba2365d1e7d27eb8c6d9d89"
+	},
+	"panelUpdatedElementPlural": {
+		"message": "modified elements",
+		"hash": "9c2600c0cd66da7daf9682ece8700c02"
+	},
+	"optionBackresults": {
+		"message": "Back to results",
+		"hash": "2998f04ab99bacdea0869f673b715bbe"
+	},
+	"optionSavePseudoClasses": {
+		"message": "Save pseudo-classes :first-of-type and :nth-of-type in the CSS Selector",
+		"hash": "fb32d3225db4ae3ca5b5cafa1c140664"
+	},
+	"optionCopyCssSelector": {
+		"message": "Copy the CSS selector in the clipboard",
+		"hash": "04ca83b8060cbe80113718df5113a321"
+	},
+	"optionCopyLocalisation": {
+		"message": "Copy the localisation path (XPath) in the clipboard",
+		"hash": "bb9e308fafac336bd3914c3927f06d2c"
+	},
+	"optionCopyBtn": {
+		"message": "Copy on the clipboard",
+		"hash": "55250aa5f5597951904265959e41fae7"
+	},
+	"optionLocalisation": {
+		"message": "Localisation path",
+		"hash": "86a8e4dd5666b0efd63a2e750918dbb3"
+	},
+	"optionAttLocalisation": {
+		"message": "Keep id and class attributes in the localisation path (XPath)",
+		"hash": "d8e1405bdc783348139eed82e313708f"
+	},
+	"optionExportTestData": {
+		"message": "Export test data",
+		"hash": "2cde13c4307301a80a6addb5be4a167e"
+	},
+	"optionExportFileName": {
+		"message": "Export file name",
+		"hash": "b3c4e2c082cc7d7f5129ef43ed5dce8c"
+	},
+	"optionNoExportData": {
+		"message": "Data to not export",
+		"hash": "db6036916fb5d86676c969f694740325"
+	},
+	"optionExportData": {
+		"message": "Data to export",
+		"hash": "ee8e17042ff98a4e68efa1c743ea2b0e"
+	},
+	"optionExportMoveup": {
+		"message": "Move the selected data to export upward",
+		"hash": "33bca8d034560078b8b270d20a52c940"
+	},
+	"optionExportMovedown": {
+		"message": "Move the selected data to export downward",
+		"hash": "f920ff6290caaabc5ef4d4b6f7d51b54"
+	},
+	"optionExportCsv": {
+		"message": "Export keyboard reachable elements to CSV format",
+		"hash": "19a4a72e2579f5dd75765dda6caa46ba"
+	},
+	"msgKeyboardyes": {
+		"message": "Keyboard reachable elements only",
+		"hash": "25e5973d3f6217962df1e635ff58960f"
+	},
+	"msgKeyboardno": {
+		"message": "Keyboard non reachable elements only",
+		"hash": "f747336ece665aed8a1d2d79bdc26bdc"
+	},
+	"msgVisible": {
+		"message": "Visible elements only",
+		"hash": "cb5382caccb834a0b60c025e85f3dc51"
+	},
+	"msgHidden": {
+		"message": "Hidden elements only",
+		"hash": "ce78424987f682f767c9dd409df0aa82"
+	}
 }
