@@ -114,17 +114,100 @@ function cssify(xpath) {
 	return csses.join(', ');
 }
 
-/**
- *? applied on actions buttons 
- */
-function manageHoveredImageButton(event) {
-	if (['mouseover', 'mouseout'].indexOf(event.type) == -1 || (['mouseover', 'mouseout'].indexOf(event.type) > -1 && this != document.querySelector(':focus'))) {
-		var img = this.firstChild;
-		var newsrc = img.getAttribute('data-src');
-		img.setAttribute('data-src', img.getAttribute('src'));
-		img.setAttribute('src', newsrc);	
-	}
+function translateRGBToHex(rgb) {
+	rgb = rgb.match(/\d+/g);
+	if(rgb.length !== 3) console.error("Wrong RGB format in function parameter. (format: rgb(255, 255, 255))");
+	else return ((1 << 24) + (parseInt(rgb[0]) << 16) + (parseInt(rgb[1]) << 8) + parseInt(rgb[2])).toString(16).slice(1);
 }
+
+/**
+ * ? highlight item selected attributes
+ * ? item code formatting
+ * @param {string} itemCode OuterHTML's element
+ * @param {HTMLElement} codeContainer <code> to contain formatted code
+ * @param {?Array} [codehighlight] Array of attributes to highlight
+ */
+function formattingCode(itemCode, codeContainer, codehighlight = null) {
+	var itemCodeCapture = [];
+	var regitemCode = new RegExp(/(?<open><[^\s\/]+\s*(?:[^\s"=]+="[^"]*"\s*)*>)|(?<close><\/[^\s>]+>)|(?<text>.)/g);
+
+	let execAr;
+	while((execAr = regitemCode.exec(itemCode)) !== null) {
+		itemCodeCapture.push(execAr.groups);
+	}
+
+	for(let x = 0; x < itemCodeCapture.length; x++) {
+		if(itemCodeCapture[x].text) {
+			if(itemCodeCapture[x - 1] && itemCodeCapture[x - 1].text) {
+				itemCodeCapture[x - 1].text += itemCodeCapture[x].text;
+				itemCodeCapture.splice(x, 1);
+				x = x - 1;
+			}
+		}
+	}
+
+	itemCodeCapture.forEach(icc => {
+		if(icc.open) {
+			let lineContainer = document.createElement('span');
+			lineContainer.classList.add("code-open");
+
+			lineContainer.appendChild(document.createTextNode("<"));
+
+			let openSpan = document.createElement('span');
+			openSpan.classList.add('code-tag');
+			openSpan.appendChild(document.createTextNode(icc.open.match(/[^<\/\s>]+/)));
+			lineContainer.appendChild(openSpan);
+
+			let itemAtt = icc.open.match(/[^="<>\s]+="[^"]*"/g);
+			if(itemAtt) {
+				itemAtt.forEach(att => {
+					let attName = att.match(/[^="<>\s]+/);
+
+					if (codehighlight && codehighlight.hasOwnProperty('attrs') && codehighlight.attrs.includes(attName[0])) {
+						let hlMark = document.createElement('mark');
+						hlMark.appendChild(document.createTextNode(' '+att));
+						lineContainer.appendChild(hlMark);
+					} else {
+						let attNameSpan = document.createElement('span');
+						attNameSpan.classList.add('code-attName');
+						attNameSpan.appendChild(document.createTextNode(' '+attName[0]));
+						lineContainer.appendChild(attNameSpan);
+
+						lineContainer.appendChild(document.createTextNode("="));
+
+						let attValueSpan = document.createElement('span');
+						attValueSpan.classList.add('code-attValue');
+						attValueSpan.appendChild(document.createTextNode(att.match(/"[^"]*"/)[0]));
+						lineContainer.appendChild(attValueSpan);
+					}
+				});
+			}
+			
+			lineContainer.appendChild(document.createTextNode(">"));
+			codeContainer.appendChild(lineContainer);
+		} else if(icc.close) {
+			let lineContainer = document.createElement('span');
+			lineContainer.classList.add("code-close");
+			lineContainer.appendChild(document.createTextNode("</"));
+
+			let closeSpan = document.createElement('span');
+			closeSpan.classList.add('code-tag');
+			closeSpan.appendChild(document.createTextNode(icc.close.match(/[^<\/>]+/)));
+			lineContainer.appendChild(closeSpan);
+
+			lineContainer.appendChild(document.createTextNode(">"));
+			codeContainer.appendChild(lineContainer);
+		} else {
+			let lineContainer = document.createElement('span');
+			lineContainer.classList.add("code-textContent");
+			lineContainer.appendChild(document.createTextNode(icc.text));
+			codeContainer.appendChild(lineContainer);
+		}
+	});
+}
+
+//? use in ../tanaguru-devtools.js
+var obsMessage;
 
 /**
  *? Construct panel
@@ -165,10 +248,66 @@ var statusFilterTemplate = document.getElementById('statusFilter').content;
 filterBloc.appendChild(statusFilterTemplate);
 rightcolumn.appendChild(filterBloc);
 
+function toggleDisclosure(e) {
+	let disclosureControl = e.target.closest('button');
+
+	if(disclosureControl.getAttribute("aria-expanded") === "false") {
+		disclosureControl.setAttribute("aria-expanded", "true");
+		disclosureControl.classList.add("dropdownButton--active");
+		let container = document.getElementById(disclosureControl.getAttribute("aria-controls"));
+		container.style.display = "block";
+	} else {
+		disclosureControl.setAttribute("aria-expanded", "false");
+		disclosureControl.classList.remove("dropdownButton--active");
+		let container = document.getElementById(disclosureControl.getAttribute("aria-controls"));
+		container.style.display = "none";
+	}
+}
+
+filterBloc.querySelectorAll("fieldset legend button").forEach(b => {
+	b.addEventListener('click', toggleDisclosure);
+});
+
+var listenDomModif = false;
+var listenDOMBloc = document.createElement('label');
+listenDOMBloc.setAttribute('for', 'listenDOM');
+var listenDOMLabel = document.createElement('span');
+listenDOMLabel.classList.add('listenDOM-label');
+listenDOMLabel.textContent = chrome.i18n.getMessage('dashboardListenDOMlegend');
+listenDOMBloc.appendChild(listenDOMLabel);
+
+var listenDOMSwitch = document.createElement('span');
+listenDOMSwitch.classList.add('switch');
+var listenDOMinput = document.createElement('input');
+listenDOMinput.setAttribute('type', 'checkbox');
+listenDOMinput.id = "listenDOM";
+
+var listenDOMSlider = document.createElement('span');
+listenDOMSlider.classList.add('slider');
+listenDOMSlider.textContent = chrome.i18n.getMessage('dashboardListenOFF');
+
+listenDOMinput.addEventListener('change', function(e) {	
+	if(e.target.checked) {
+		listenDOMSlider.textContent = chrome.i18n.getMessage('dashboardListenON');
+		listenDomModif = true;
+	}
+	else {
+		listenDOMSlider.textContent = chrome.i18n.getMessage('dashboardListenOFF');
+		listenDomModif = false;
+	}
+});
+
+listenDOMSwitch.appendChild(listenDOMinput);
+listenDOMSwitch.appendChild(listenDOMSlider);
+listenDOMBloc.appendChild(listenDOMSwitch);
+
+filterBloc.appendChild(listenDOMBloc);
+
 
 // right/bouton "analyser cette page"
 var button = document.createElement('button');
 button.setAttribute('type', 'button');
+button.classList.add("launchAnalysisButton");
 button.appendChild(document.createTextNode("Analyser cette page"));
 var p = document.createElement('p');
 p.appendChild(button);
@@ -212,6 +351,8 @@ function toggle(evt) {
  */
 button.addEventListener('click', function () {
 	rightcolumn.querySelector('p').remove();
+	listenDOMBloc.remove();
+
 	/**
 	 * ? Get filters choices
 	 */
@@ -269,16 +410,16 @@ button.addEventListener('click', function () {
 	dashboardpanel.setAttribute('id', 'tabpanel0');
 	dashboardpanel.setAttribute('aria-hidden', 'false');
 	dashboard.setAttribute('aria-controls', dashboardpanel.getAttribute('id'));
-	var dashboardpanelheading = document.createElement('h2');
-	dashboardpanelheading.setAttribute('class', 'visually-hidden');
-	dashboardpanelheading.appendChild(document.createTextNode(dashboard.textContent));
-	dashboardpanel.appendChild(dashboardpanelheading);
+	var dashboardtemplate = document.querySelector('#dashboard');
+	var dashboardpanelContent = document.importNode(dashboardtemplate.content, true);
+	dashboardpanel.appendChild(dashboardpanelContent);
+	dashboardpanel.querySelector('h2').textContent = chrome.i18n.getMessage('msgDashboard');
+	var dashboardpanelp = dashboardpanel.querySelector('.dashboard-message');
+	dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultLoad');
 
 	// UI. Dashboard.
 	dashboardpanel.classList.add('dashboard');
-	var loadingtemplate = document.getElementById('loading');
-	loadingtemplate = loadingtemplate.content;
-	dashboardpanel.appendChild(document.importNode(loadingtemplate, true));
+	var loadingtemplate = document.getElementById('loading').content;
 	main.children[1].appendChild(dashboardpanel);
 	ul.appendChild(dashboard);
 	dashboard.focus();
@@ -319,7 +460,9 @@ button.addEventListener('click', function () {
 	 * inspect-action
 	 * about-action
 	 */
-	 main.children[1].addEventListener('click', function(event) {
+	 main.children[1].addEventListener('click', manageActions, false);
+	
+	function manageActions(event) {
 		var element = event.target.closest('button');
 		if (element) {
 			switch (element.getAttribute('data-action')) {
@@ -327,10 +470,15 @@ button.addEventListener('click', function () {
 					if (element.getAttribute('aria-expanded') == 'false') {
 						document.getElementById(element.getAttribute('aria-controls')).removeAttribute('hidden');
 						element.setAttribute('aria-expanded', 'true');
+						if(element.classList.contains('dropdownButton')) {
+							element.classList.add('dropdownButton--active');
+						}
+						
 					}
 					else {
 						document.getElementById(element.getAttribute('aria-controls')).setAttribute('hidden', 'hidden');
 						element.setAttribute('aria-expanded', 'false');
+						element.classList.remove('dropdownButton--active');
 					}
 					break;
 				case 'highlight-action':
@@ -496,7 +644,7 @@ button.addEventListener('click', function () {
 					break;
 			}
 		}
-	}, false);
+	}
 
 	/**
 	 * Add tabs and right panel
@@ -775,15 +923,6 @@ button.addEventListener('click', function () {
 		nav.appendChild(ul);
 		main.children[0].appendChild(nav);
 
-		var dashboardpanelp = document.querySelector('.dashboard-message') ? document.querySelector('.dashboard-message') : document.createElement('p');
-		if(document.querySelector('.dashboard-message')) {
-			dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultLoad')), dashboardpanelp.firstChild);
-		} else {
-			dashboardpanelp.classList.add('dashboard-message');
-			dashboardpanelp.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultLoad')));
-			dashboardpanel.appendChild(dashboardpanelp);
-		}
-
 		var catCount = 0;
 		var testsCount = 0;
 		var t = 1;
@@ -818,7 +957,137 @@ button.addEventListener('click', function () {
 					let category = filters.categories[catCount];
 					response = response.response[0];
 					testsCount += response.tests.length;
+					if(response.headings.length > 0) {
+						var headings = document.createElement('li');
+						headings.setAttribute('id', 'headingsHierarchy');
+						headings.setAttribute('role', 'tab');
+						headings.setAttribute('aria-selected', 'false');
+						headings.setAttribute('tabindex', '-1');
+						headings.appendChild(document.createTextNode(chrome.i18n.getMessage('msgHeadingsHierarchy')));
 
+						var headingsPanel = document.createElement('div');
+						headingsPanel.setAttribute('role', 'tabpanel');
+						headingsPanel.setAttribute('aria-labelledby', headings.getAttribute('id'));
+						headingsPanel.setAttribute('id', 'headingsPanel');
+						headingsPanel.setAttribute('aria-hidden', 'true');
+
+						headings.setAttribute('aria-controls', headingsPanel.getAttribute('id'));
+						ul.insertBefore(headings, ul.querySelector('#alltests'));
+
+						var headingsTemplate = document.querySelector('#headings');
+						var headingsPanelContent = document.importNode(headingsTemplate.content, true);
+						headingsPanel.appendChild(headingsPanelContent);
+						headingsPanel.querySelector('h2').textContent = chrome.i18n.getMessage('msgHeadingsHierarchy');
+						var headingsPanelp = headingsPanel.querySelector('.headings-message');
+						headingsPanelp.textContent = "Hiérarchie des titres de la page, représentée sous forme de listes.";
+
+						var container = headingsPanel.querySelector('.headings-container');
+
+						let hideBtn = document.createElement('button');
+						hideBtn.className = 'small-btn headings-showhideAll';
+						hideBtn.textContent = chrome.i18n.getMessage('msgCollapseBtn');
+						hideBtn.addEventListener('click', () => {
+							container.querySelectorAll('button[data-action="showhide-action"][aria-expanded="true"]').forEach(btn => {
+								btn.click();
+							});
+						});
+
+						let showBtn = document.createElement('button');
+						showBtn.className = 'small-btn headings-showhideAll';
+						showBtn.textContent = chrome.i18n.getMessage('msgExpandBtn');
+						headingsPanel.insertBefore(hideBtn, container);
+						headingsPanel.insertBefore(showBtn, container);
+						showBtn.addEventListener('click', () => {
+							container.querySelectorAll('button[data-action="showhide-action"][aria-expanded="false"]').forEach(btn => {
+								btn.click();
+							});
+						});
+
+						function arrayToList(ar, currentList) {
+							ar.forEach(heading => {
+								if(Array.isArray(heading)) {
+									let headingsList = document.createElement('ul');
+									headingsList.id = 'heading_n'+(heading[0].index - 1);
+									if(!currentList.classList.contains('blue-item-list')) headingsList.classList.add('blue-item-list');
+									arrayToList(heading, headingsList);
+									currentList.lastElementChild.appendChild(headingsList);
+
+									let disclosure = document.createElement('button');
+									disclosure.setAttribute('aria-expanded', 'true');
+									disclosure.setAttribute('aria-controls', 'heading_n'+(heading[0].index - 1));
+									disclosure.setAttribute('data-action', 'showhide-action');
+									disclosure.classList.add('dropdownButton', 'dropdownButton--active', 'headingDropdownButton');
+
+									let iconButton = document.createElement('img');
+									iconButton.className = "headingDisclosureIcon";
+									iconButton.alt = "Affichier les titres enfants";
+									iconButton.src = "./images/arrow.png";
+									disclosure.appendChild(iconButton);
+									currentList.lastElementChild.firstElementChild.prepend(disclosure);
+								}
+								else {
+									let headingItem = document.createElement('li');
+									let headingSpan = document.createElement('span');
+									headingSpan.textContent = heading.level+" - "+heading.an;
+
+									let buttonShowContainer = document.createElement('span');
+									buttonShowContainer.className = "item-actions-highlight"
+									let buttonShow = document.createElement('button');
+									buttonShow.className = "visible";
+									let buttonShowLabel = document.createElement('span');
+									buttonShowLabel.className = "visually-hidden";
+									buttonShowLabel.textContent = "mettre le titre en évidence sur la page";
+
+									buttonShow.addEventListener('click', function(evt) {
+										let element = evt.target.closest('button');
+										chrome.runtime.sendMessage({
+											tabId: chrome.devtools.inspectedWindow.tabId,
+											command: 'highlight',
+											element: cssify(heading.xpath)
+										}, (response) => {
+											if(response.response[0] === "off") {
+												element.classList.remove('highlightON');
+												element.setAttribute('aria-selected', "true");
+											} else {
+												let previousHighlight = main.children[1].querySelector('.highlightON');
+												if(previousHighlight) {
+													previousHighlight.classList.remove('highlightON');
+													previousHighlight.removeAttribute('aria-selected');
+												}
+												element.classList.add('highlightON');
+											}
+										});
+									}, true);
+
+									buttonShow.appendChild(buttonShowLabel);
+									buttonShowContainer.appendChild(buttonShow);
+									headingSpan.appendChild(buttonShowContainer);
+
+									let buttonInspectContainer = document.createElement('span');
+									buttonInspectContainer.className = "item-actions-inspect"
+									let buttonInspect = document.createElement('button');
+									buttonInspect.className = "visible";
+									let buttonInspectLabel = document.createElement('span');
+									buttonInspectLabel.className = "visually-hidden";
+									buttonInspectLabel.textContent = "sélectionner le titre dans l'onglet inspecteur";
+
+									buttonInspect.addEventListener('click', function() {
+										chrome.devtools.inspectedWindow.eval(`inspect(document.querySelector('[sdata-tng-hindex="${heading.index}"]'))`);
+									}, true);
+
+									buttonInspect.appendChild(buttonInspectLabel);
+									buttonInspectContainer.appendChild(buttonInspect);
+									headingSpan.appendChild(buttonInspectContainer);
+
+									headingItem.appendChild(headingSpan);
+									currentList.appendChild(headingItem);
+								}
+							});
+						}
+
+						response.headings.forEach(ar => arrayToList(ar, container));
+						rightcolumn.appendChild(headingsPanel);
+					}
 					/**
 					 * ? display tests results
 					 */
@@ -826,7 +1095,7 @@ button.addEventListener('click', function () {
 						// UI. Dashboard.
 						// manage message on dashboard panel
 						if (!updatedashboardp && test.type == 'failed') {
-							dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultFailed')), dashboardpanelp.firstChild);
+							dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultFailed');
 							updatedashboardp = true;
 						}
 
@@ -920,6 +1189,7 @@ button.addEventListener('click', function () {
 								var tagbutton = document.createElement('button');
 								tagbutton.setAttribute('type', 'button');
 								tagbutton.setAttribute('data-tagid', test.tags[0]);
+								tagbutton.className = 'small-btn';
 								tagbutton.setAttribute('title', chrome.i18n.getMessage('uiTagButton').replace(new RegExp('{tagName}'), chrome.i18n.getMessage(tagid)));
 								tagbutton.appendChild(document.createTextNode(chrome.i18n.getMessage(tagid)));
 								tabpanelsectionp.appendChild(tagbutton);
@@ -936,6 +1206,7 @@ button.addEventListener('click', function () {
 									var tagbutton = document.createElement('button');
 									tagbutton.setAttribute('type', 'button');
 									tagbutton.setAttribute('data-tagid', test.tags[i]);
+									tagbutton.className = 'small-btn';
 									tagbutton.setAttribute('title', chrome.i18n.getMessage('uiTagButton').replace(new RegExp('{tagName}'), chrome.i18n.getMessage(tagid)));
 									tagbutton.appendChild(document.createTextNode(chrome.i18n.getMessage(tagid)));
 									tagli.appendChild(tagbutton);
@@ -973,7 +1244,7 @@ button.addEventListener('click', function () {
 									{ name: 'N°', abbr: 'Numéro' },
 									{ name: 'Statut', export: 'required' },
 									{ name: 'Item', export: 'required' },
-									{ name: 'Nom accessible' },
+									{ name: 'Nom accessible calculé' },
 									{ name: 'Atteignable au clavier ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAASCAYAAABB7B6eAAAABGdBTUEAALGPC/xhBQAAAjBJREFUOBGt1M1LVUEYgPF7ND/KLG4qRVibIgJvoIsgcOGuEFdRRC10I5LQP6ArbRUu3dqudkG4cCEGlktNSElF6YPioqGVRmEp+XF6njoH5F69XawXfsw0vTPzzsy5JhL/IcIwrEAvgszlCjIH9vnvc8xLBkEQ7nP+3tOoOokBXN4t68Bug38bYzErdsFq1KGf6p/QZkXWnWVlZAyweDNDLRjCezxn8TTtvweLpzCEZL6r/b4iJlQw4Wgek26TM2JuHpt85WTLAYn1TOjGBxhuuhG127QqisaO0K7j544xv0RtRmO2xkl0u8EEnXtwURPncBHT8GRVGMclvIHvdgajMO8TlpGCeecRF9WZYIM0WrEJ49GfJhymXYj6D6N2klZGPGaOuUY817VcM+11+OP4iDsoxAtMYgwn4FGfYRaeyrBaP8uX8GoXMYynGMEWlhB6JUYxatCANnhN7TiEVXTADRsj9h3z/8pg7gxa4RoXcBChJ/C+fLxbqMQP+FDXYQElaIIL3IDhia+hFD74VTh2E4fxBd7Cto+cpmPVa7Diz1iH3/oKrPA4XuMUjHmcxRK+4xjMtWqLdC37fZ7A+zqNTpjsL9QNH6AWHtdTmht/gnHfE07BaltwH1dgUX6ZWyb6jXuXb+HO83iFBZTDa8gVzjPXOc59B6t3zSKvqIeOCw3CsEofPf5d+GXlCm/AE1qo72HRRiO+uYGPeBc+molGiPgPof1csTMv7nt1j9H1C4W7DIhH/jVRAAAAAElFTkSuQmCC' },
 									{ name: 'Restitué ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAABGdBTUEAALGPC/xhBQAAAlBJREFUOBGV00tIVUEcx/F7xAfaQ0vCUtQitCgQqoWohI9N0MNFYVKgEiRo9JAgIqhFunAjggs3UYvoIqK0cGFqFPlEoVwYoeIjDHqYgWiu6/r9HWbiei5XOgOfO/+Z+c+cO3PmOAEfJRQKHSW9BJWYRh+GHMfZoPZXWGw/gviJD+hGP75gAdW+VmTCIcyiF3nhk2nvwA2soil8LGpMooPXCNok4rN4hHqkq5+6ABu4bPMiagb3ItZMKCROQiZGoC2/go7hG86ZvNvEc0iMWNAkPGew0Q4Sx2MMnUg1OdrFLeicM6Cj+IoyO09bSIGS4lAKJdvtlRP/QNq/CSagTw+7Yx40QHw/hp8EaKt/cRc1XJF31Iu4CJUcJGOQ3AvqCCvzxFmmvUadHMNPHV6w0G/qFlyDyhsUu1Eg0EFdhDa0sHCS+qk1/xQ+qk05gO8aOIxlHEQePiMWVRh1U80P7WLo3PTiEtGOaeyG7rKO7ISe9MfMcahDnlh9erDOuYGwC63Q2Q4hH5fMLh8Qz2BKExrwkobiOoyb+DGx3nY2JjCD88jCEvQvE0zudeJ1nFRbC2kbelm7sAidsfpHUY8jeAi9KPUP46mJte0nWIH3BbrJexi4Bz3gNJSYqcm20K6EznQn9uE9BnHM5kStSQqi2ZtA3xXUQldRn28P3CPw5ka0SUyDviJ9KbpKWwp9WnwJKVsG/qfBpAp88ubS9xZ62/4LE/VPdfeu2tnEZ7CKXNvnu9aC+IU+6AwV39xuIfdyb5egMRY5TlWLeDzjsk9SRy2bAMhld532BdwAAAAASUVORK5CYII=' },
 									{ name: 'Actions', export: 'no' }
@@ -1044,6 +1315,23 @@ button.addEventListener('click', function () {
 		
 									let template = document.querySelector('#item-row-contrast');
 									var newRow = document.importNode(template.content, true);
+
+									if(test.type === "failed") {
+										let contrastFinderLink = document.createElement('a');
+										contrastFinderLink.textContent = "Contrast-Finder";
+										contrastFinderLink.setAttribute('title', chrome.i18n.getMessage('contrastFinder'));
+										contrastFinderLink.setAttribute('target', '_blank');
+
+										let fg = "https://contrast-finder.tanaguru.com/result.html?foreground=%23"+translateRGBToHex(itemCT[0]);
+										let bg = "&background=%23"+translateRGBToHex(itemCF[0]);
+										let ratio = "&ratio="+(test.data[h].valid.target);
+										let lang = (chrome.i18n.getMessage('extensionLang') === "en") ? "&lang=en" : "&lang=fr";
+										let contrastFinder = fg+bg+ratio+lang;
+
+										contrastFinderLink.setAttribute('href', contrastFinder);
+										newRow.querySelector('.item-actions').appendChild(contrastFinderLink);
+									}
+
 									newRow.querySelector('.item-number').textContent = itemNumber;
 									newRow.querySelector('.item-tag').textContent = itemTag;
 									newRow.querySelector('.item-text').textContent = itemText;
@@ -1089,88 +1377,7 @@ button.addEventListener('click', function () {
 									newRow.querySelector('.item-number').textContent = itemNumber;
 									newRow.querySelector('.item-status').textContent = itemStatus;
 
-									/**
-									 * ? highlight item selected attributes
-									 * ? item code formatting
-									 */
-									var itemCode = test.data[h].outer;
-									var codeContainer = newRow.querySelector('.item-code code');
-									var itemCodeCapture = [];
-									var regitemCode = new RegExp(/(?<open><[^\s\/]+\s*(?:[^\s"=]+="[^"]*"\s*)*>)|(?<close><\/[^\s>]+>)|(?<text>.)/g);
-
-									let execAr;
-									while((execAr = regitemCode.exec(itemCode)) !== null) {
-										itemCodeCapture.push(execAr.groups);
-									}
-
-									for(let x = 0; x < itemCodeCapture.length; x++) {
-										if(itemCodeCapture[x].text) {
-											if(itemCodeCapture[x - 1] && itemCodeCapture[x - 1].text) {
-												itemCodeCapture[x - 1].text += itemCodeCapture[x].text;
-												itemCodeCapture.splice(x, 1);
-												x = x - 1;
-											}
-										}
-									}
-
-									itemCodeCapture.forEach(icc => {
-										if(icc.open) {
-											let lineContainer = document.createElement('span');
-											lineContainer.classList.add("code-open");
-
-											lineContainer.appendChild(document.createTextNode("<"));
-
-											let openSpan = document.createElement('span');
-											openSpan.classList.add('code-tag');
-											openSpan.appendChild(document.createTextNode(icc.open.match(/[^<\/\s>]+/)));
-											lineContainer.appendChild(openSpan);
-
-											let itemAtt = icc.open.match(/[^="<>\s]+="[^"]*"/g);
-											if(itemAtt) {
-												itemAtt.forEach(att => {
-													let attName = att.match(/[^="<>\s]+/);
-
-													if (codehighlight && codehighlight.hasOwnProperty('attrs') && codehighlight.attrs.includes(attName[0])) {
-														let hlMark = document.createElement('mark');
-														hlMark.appendChild(document.createTextNode(att));
-														lineContainer.appendChild(hlMark);
-													} else {
-														let attNameSpan = document.createElement('span');
-														attNameSpan.classList.add('code-attName');
-														attNameSpan.appendChild(document.createTextNode(' '+attName[0]));
-														lineContainer.appendChild(attNameSpan);
-
-														lineContainer.appendChild(document.createTextNode("="));
-
-														let attValueSpan = document.createElement('span');
-														attValueSpan.classList.add('code-attValue');
-														attValueSpan.appendChild(document.createTextNode(att.match(/"[^"]*"/)[0]));
-														lineContainer.appendChild(attValueSpan);
-													}
-												});
-											}
-											
-											lineContainer.appendChild(document.createTextNode(">"));
-											codeContainer.appendChild(lineContainer);
-										} else if(icc.close) {
-											let lineContainer = document.createElement('span');
-											lineContainer.classList.add("code-close");
-											lineContainer.appendChild(document.createTextNode("</"));
-
-											let closeSpan = document.createElement('span');
-											closeSpan.classList.add('code-tag');
-											closeSpan.appendChild(document.createTextNode(icc.close.match(/[^<\/>]+/)));
-											lineContainer.appendChild(closeSpan);
-
-											lineContainer.appendChild(document.createTextNode(">"));
-											codeContainer.appendChild(lineContainer);
-										} else {
-											let lineContainer = document.createElement('span');
-											lineContainer.classList.add("code-textContent");
-											lineContainer.appendChild(document.createTextNode(icc.text));
-											codeContainer.appendChild(lineContainer);
-										}
-									});
+									formattingCode(test.data[h].outer, newRow.querySelector('.item-code code'), codehighlight);
 
 									/**
 									 * ? Display the detail of accessible name
@@ -1179,7 +1386,6 @@ button.addEventListener('click', function () {
 										newRow.querySelector('.item-code').classList.add("item-code--small");
 
 										var an = test.data[h].anDetails;
-										newRow.querySelector('.item-accessiblename .an-full span').appendChild(document.createTextNode("Nom accessible calculé: "));
 										newRow.querySelector('.item-accessiblename .an-full').appendChild(document.createTextNode(an[0]));
 										an.shift();
 
@@ -1247,7 +1453,7 @@ button.addEventListener('click', function () {
 											}
 										}
 
-										if(an.length > 0) {
+										if(an.length > 0 && newRow.querySelector('.item-accessiblename .an-full').textContent.trim().length > 0) {
 											let anList = newRow.querySelector('.item-accessiblename .an-list');
 											anList.id = itemNumber+'-'+t;
 											an.forEach(n => {
@@ -1322,6 +1528,7 @@ button.addEventListener('click', function () {
 								}
 		
 								newRow.querySelector('.item-actions .item-actions-inspect button').setAttribute('title', 'Révéler dans l\'inspecteur (' + test.name + ', item ' + (h + 1) + ')');
+								newRow.querySelector('.item-actions .item-actions-inspect button').className = "visible";
 								newRow.querySelector('.item-actions .item-actions-inspect .visually-hidden').textContent = 'Révéler dans l\'inspecteur (' + test.name + ', item ' + (h + 1) + ')';
 		
 								newRow.querySelector('.item-actions .item-actions-about button').setAttribute('title', 'A propos de cet élément (' + test.name + ', item ' + (h + 1) + ')');
@@ -1783,14 +1990,14 @@ button.addEventListener('click', function () {
 						currentTab.querySelector('p.loading').remove();
 						currentTab.classList.remove('cat-loading');
 
-						if (currentTag.nbfailures > 0 && allFailures === 0) {
+						if(currentTag.nbfailures > 0 && allFailures === 0) {
 							tab.classList.add('cat-failed');
 							tab.appendChild(document.createTextNode(' '));
 							var strong = document.createElement('strong');
 							tab.appendChild(strong);
 						}
 
-						if (currentTag.nbfailures > 0) {
+						if(currentTag.nbfailures > 0) {
 							let allerrors = tab.querySelector('strong');
 							allFailures += currentTag.nbfailures;
 							currentTab.classList.add('cat-failed');
@@ -1800,8 +2007,8 @@ button.addEventListener('click', function () {
 							allerrors.textContent = allFailures;
 							currentTab.appendChild(strong);
 						}
-				
-						if (currentTag.status === 'inapplicable') {
+
+						if(currentTag.isNA) {
 							currentTab.classList.add('cat-inapplicable');
 							currentTab.appendChild(document.createTextNode(' '));
 							var span = document.createElement('span');
@@ -1839,8 +2046,25 @@ button.addEventListener('click', function () {
 						ul.querySelectorAll('li[hidden]').forEach(li => li.remove());
 
 						if (!updatedashboardp) {
-							if(testsCount === 0) dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultNone')), dashboardpanelp.firstChild);
-							else dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')), dashboardpanelp.firstChild);
+							if(testsCount === 0) dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultNone');
+							else dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultPassed');
+						}
+
+						dashboardpanel.querySelector('#listenDOM').disabled = false;
+						dashboardpanel.querySelector('label[for="listenDOM"]').removeAttribute('style');
+						document.getElementById('reloadTests').removeAttribute('hidden');
+						if(listenDomModif) {
+							chrome.runtime.sendMessage({
+								tabId: chrome.devtools.inspectedWindow.tabId,
+								command: 'obsDOM',
+								obs: 'ON',
+							}, (response) => {
+								addObsInterface();
+								if(!dashboardpanel.querySelector('#listenDOM').checked) {
+									dashboardpanel.querySelector('#listenDOM').checked = true;
+									dashboardpanel.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenON');
+								}
+							});
 						}
 					}
 				}
@@ -1862,11 +2086,11 @@ button.addEventListener('click', function () {
 			ul.querySelectorAll('li[hidden]').forEach(li => li.remove());
 
 			if (!updatedashboardp) {
-				if(testsCount === 0) dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultNone')), dashboardpanelp.firstChild);
-				else dashboardpanelp.replaceChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardResultPassed')), dashboardpanelp.firstChild);
+				if(testsCount === 0) dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultNone');
+				else dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultPassed');
 			}
 		}
-		// responseProcess();
+
 		if(testsCount === 0 && catCount === filters.categories.length) tab.remove();
 		main.children[1].appendChild(alltagspanel);
 	}
@@ -1874,27 +2098,393 @@ button.addEventListener('click', function () {
 	displayResults();
 
 	function restartAnalyze() {
+		let hlElement = main.children[1].querySelector('.highlightON');
+		if(hlElement) hlElement.click();
+		if(listenDomModif) dashboardpanel.querySelector('#listenDOM').click();
 		ul.querySelectorAll('li:not([id="tab0"])').forEach(li => {li.remove()});
+		document.getElementById('headingsPanel').remove();
 		document.getElementById('tests').remove();
 		document.querySelector('.analyzeTimer').remove();
+		dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultLoad');
+		dashboardpanel.querySelector('#listenDOM').disabled = true;
+		dashboardpanel.querySelector('label[for="listenDOM"]').style.display = "none";
+		document.getElementById('reloadTests').setAttribute('hidden', "true");
 		displayResults();
 	}
+
+	var obsInterface = false;
+	var obsCount = 0;
+	var domChangeTime = null;
+
+	function addObsInterface() {
+		// add new button on left panel
+		var DOMtab = document.createElement('li');
+		DOMtab.setAttribute('role', 'tab');
+		DOMtab.setAttribute('aria-selected', 'false');
+		DOMtab.setAttribute('id', "DOMobserver");
+		DOMtab.setAttribute('tabindex', '-1');
+
+		var span = document.createElement('span');
+		span.appendChild(document.createTextNode(chrome.i18n.getMessage("DOMchanges")));
+		DOMtab.appendChild(span);
+		ul.insertBefore(DOMtab, ul.querySelector('#alltests'));
+
+		// create DOM migrations panel right
+		var domPanel = document.createElement('div');
+		domPanel.setAttribute('role', 'tabpanel');
+		domPanel.setAttribute('aria-labelledby', DOMtab.getAttribute('id'));
+		domPanel.setAttribute('id', 'tabpanel1');
+		domPanel.setAttribute('aria-hidden', 'true');
+
+		DOMtab.setAttribute('aria-controls', domPanel.getAttribute('id'));
+
+		var DOMobservertemplate = document.querySelector('#DOMobserverPanel');
+		var domPanelContent = document.importNode(DOMobservertemplate.content, true);
+		domPanel.appendChild(domPanelContent);
+		domPanel.querySelector('h2').textContent = chrome.i18n.getMessage('DOMchanges');
+		var domPanelp = domPanel.querySelector('.DOMobserver-message');
+		domPanelp.textContent = chrome.i18n.getMessage('DOMpanelNoChange');
+		domPanel.classList.add('domObserver');
+
+		main.children[1].appendChild(domPanel);
+		obsInterface = true;
+	}
+
+	function delObsInterface() {
+		if(document.getElementById("DOMobserver").getAttribute('aria-selected') === "true") document.getElementById("tab0").click();
+		if(document.getElementById("DOMobserver")) document.getElementById("DOMobserver").remove();
+		document.getElementById("tabpanel1").remove();
+		document.getElementById("DOMdashboardMessage").remove();
+		obsInterface = false;
+		obsCount = 0;
+		domChangeTime = null;
+	}
+
+	obsMessage = function (request) {
+		if (request.command == 'DOMedit') {
+			let migObj = JSON.parse(request.migList);
+			var migSize = Object.keys(migObj).length;
+			
+			if(migSize > 0) {
+				// obsCount += migSize;
+				if(!obsInterface) addObsInterface(migObj);
+
+				let now = new Date();
+				let midID = now.getFullYear()+'.'+now.getMonth()+'.'+now.getDate()+'.'+now.getHours()+'.'+now.getMinutes();
+
+				if(domChangeTime != midID) {
+					domChangeTime = midID;
+					let newtitle = document.createElement('h3');
+					let newBtn = document.createElement('button');
+
+					let btnStatus = document.createElement('span');
+					btnStatus.className = "status";
+					let hour = now.getHours() < 10 ? '0'+now.getHours() : now.getHours();
+					let minutes = now.getMinutes() < 10 ? '0'+now.getMinutes() : now.getMinutes();
+					btnStatus.textContent = hour+"H"+minutes;
+					newBtn.appendChild(btnStatus);
+
+					let strong = document.createElement('strong');
+					strong.textContent = migSize;
+					newBtn.appendChild(strong);
+
+					let span = document.createElement('span');
+					span.textContent = migSize > 1 ? "éléments modifiés" : "élément modifié";
+					newBtn.appendChild(span);
+
+					newBtn.setAttribute('aria-expanded', 'false');
+					newBtn.setAttribute('aria-controls', midID);
+					newBtn.setAttribute('data-action', 'showhide-action');
+					newtitle.appendChild(newBtn);
+					document.getElementById('tabpanel1').appendChild(newtitle);
 	
-	main.children[1].querySelector('p.loading').remove();
+					var domChangeList = document.createElement('ol');
+					domChangeList.id = midID;
+					domChangeList.className = 'domChangeList';
+					domChangeList.setAttribute('hidden', 'hidden');
+				} else {
+					var domChangeList = document.getElementById(midID);
+				}
 
-	var dashboardpanelbuttonreload = document.createElement('button');
-	dashboardpanelbuttonreload.setAttribute('type', 'button');
-	dashboardpanelbuttonreload.style.marginBottom = '1rem';
-	dashboardpanelbuttonreload.classList.add('dashboard-reload-button');
-	dashboardpanelbuttonreload.appendChild(document.createTextNode("Relancer l'analyse"));
+				for( var prop in migObj) {
+					if(migObj[prop].length === 0) continue;
+					obsCount++;
+					let newElMigrations;
+					if(domChangeList.querySelector('.'+prop)) {
+						newElMigrations = domChangeList.querySelector('.'+prop+' div ol');
+					}
+					else {
+						var newEl = document.createElement('li');
+						newEl.classList.add(prop);
+						newEl.classList.add('item-code');
+
+						let liButton = document.createElement('button');
+						liButton.setAttribute('aria-expanded', 'false');
+						liButton.setAttribute('data-action', 'showhide-action');
+						liButton.classList.add('code', 'dropdownButton', 'domDropdownButton');
+
+						let iconButton = document.createElement('img');
+						iconButton.className = "domDisclosureIcon";
+						iconButton.alt = "";
+						iconButton.src = "./images/arrow.png";
+						liButton.appendChild(iconButton);
+
+						let liButtonCode = document.createElement('code');
+						let elName = migObj[prop][0] ? migObj[prop][0].el : prop;
+
+						if(migObj[prop][0]) {
+							let closeTag = /<\/[^>]+>/g;
+							let atts = [/[" ]style="[^"]*"/g, /[" ]on[^=]+="[^"]*"/g, /[" ]rel="[^"]*"/g];
+							elName = elName.match(closeTag) ? elName.split(closeTag)[0] : elName;
+
+							atts.forEach(att => {
+								if(elName.match(att)) {
+									elName = elName.split(att);
+									elName = elName.filter(part => !part.match(att));
+									elName = elName.join("");
+								}
+							});
+
+							elName.replace(/"[^"]*"/g, (match, offset, string) => {
+								if(match.length > 30) {
+									match = match.slice(0, 29)+'…"';
+								}
+								return match;
+							});
+
+							let rgxatt = /[^= ]+="[^"]*"/g;
+							let rgxtag = /<[^ ]+/;
+							let startTag = elName.match(rgxtag)[0];
+							elName = elName.match(rgxatt);
+
+							if(elName.length > 4) {
+								let shortElName = [];
+								shortElName.push(elName[0], elName[1], elName[2], elName[elName.length-1]);
+								elName = shortElName;
+							}
+
+							elName = startTag+" "+elName.join(" ")+">";
+							formattingCode(elName, liButtonCode);
+						}
+						else liButtonCode.textContent = elName;
+						liButton.appendChild(liButtonCode);
+
+						var newElContainer = document.createElement('div');
+						newElContainer.id = prop+'-'+(document.querySelectorAll('#tabpanel1 li').length + 1);
+						newElContainer.setAttribute('hidden', 'hidden');
+
+						liButton.setAttribute('aria-controls', newElContainer.id);
+						newEl.appendChild(liButton);
+
+						const domNb = prop;
+	
+						let inspectParagraph = document.createElement('p');
+						inspectParagraph.className = "item-actions-inspect";
+						inspectParagraph.textContent = "Sélectionner l'élément dans l'inspecteur de code : ";
+
+						let inspectObj = document.createElement('button');
+						inspectObj.className = "visible obsDOM";
+						let inspectLabel = document.createElement('span');
+						inspectLabel.className = "visually-hidden";
+						inspectLabel.textContent = "inspecter";
+						inspectObj.appendChild(inspectLabel);
+						const currentSelector = '[data-tng-dom="'+domNb+'"]';
+
+						inspectObj.addEventListener('click', function() {
+							chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('"+currentSelector+"'))");
+						}, true);
+						inspectParagraph.appendChild(inspectObj);
+						newElContainer.appendChild(inspectParagraph);
+
+						newElMigrations = document.createElement('ol');
+					}
+
+					migObj[prop].forEach(obj => {
+						let li = document.createElement('li');
+						li.textContent = obj.desc;
+	
+						if(obj.type > 3) {
+							let before = obj.before ? " - Avant : "+obj.before : null;
+							let after = obj.after ? " - Après : "+obj.after : null;
+
+							if(before) {
+								li.appendChild(document.createElement('br'));
+								li.appendChild(document.createTextNode(before));
+							}
+							if(after) {
+								li.appendChild(document.createElement('br'));
+								li.appendChild(document.createTextNode(after));
+							}
+
+						} else {
+							li.classList.add('item-code');
+							if(obj.type == 1) {
+								let br = document.createElement('br');
+								li.appendChild(br);
+
+								let container = document.createElement('div');
+								container.className = "code";
+
+								let codeContainer = document.createElement('code');
+								formattingCode(obj.after, codeContainer);
+								container.appendChild(codeContainer);
+
+								li.appendChild(container);
+							}
+							else if(obj.type == 2) {
+								let br = document.createElement('br');
+								li.appendChild(br);
+
+								let container = document.createElement('div');
+								container.className = "code";
+
+								let codeContainer = document.createElement('code');
+								formattingCode(obj.before, codeContainer);
+								container.appendChild(codeContainer);
+
+								li.appendChild(container);
+							}
+							else {
+								//* Before element
+								let beforeParagraph = document.createElement('p');
+								beforeParagraph.textContent = "Avant:";
+								li.appendChild(beforeParagraph);
+
+								let beforeContainer = document.createElement('div');
+								beforeContainer.className = "code";
+
+								let codeBeforeContainer = document.createElement('code');
+								formattingCode(obj.before, codeBeforeContainer);
+								beforeContainer.appendChild(codeBeforeContainer);
+								li.appendChild(beforeContainer);
+
+								//* After element
+								let afterParagraph = document.createElement('p');
+								afterParagraph.textContent = "Après:";
+								li.appendChild(afterParagraph);
+
+								let afterContainer = document.createElement('div');
+								afterContainer.className = "code";
+
+								let codeAfterContainer = document.createElement('code');
+								formattingCode(obj.after, codeAfterContainer);
+								afterContainer.appendChild(codeAfterContainer);
+								li.appendChild(afterContainer);
+							}
+						}
+
+						newElMigrations.appendChild(li);
+					});
+
+					if(!domChangeList.querySelector('.'+prop)) {
+						newElContainer.appendChild(newElMigrations);
+						newEl.appendChild(newElContainer);
+						domChangeList.appendChild(newEl);
+					}
+				}
+				
+				document.getElementById('tabpanel1').appendChild(domChangeList);
+
+				let counterList = document.querySelector('button[aria-controls="'+midID+'"] strong');
+				let elCount = domChangeList.querySelectorAll(':scope>li').length;
+				counterList.textContent = elCount;
+				document.querySelector('button[aria-controls="'+midID+'"] strong+span').textContent = elCount > 1 ? "éléments modifiés" : "élément modifié";
+				
+				document.querySelector("#tabpanel1 .DOMobserver-message").textContent = chrome.i18n.getMessage('DOMpanelMessage');
+
+				let obsTab = document.getElementById("DOMobserver");
+				if(obsTab.querySelector('strong')) {
+					let counter = obsTab.querySelector('strong');
+					counter.textContent = obsCount;
+				} else {
+					obsTab.appendChild(document.createTextNode(' '));
+					var strong = document.createElement('strong');
+					strong.textContent = obsCount;
+					obsTab.appendChild(strong);
+				}
+
+				if(!document.getElementById("DOMdashboardMessage")) {
+					let domMessageDashboard = document.createElement('p');
+					domMessageDashboard.textContent = chrome.i18n.getMessage('DOMdashboardMessage');
+					domMessageDashboard.id = "DOMdashboardMessage";
+					let domButtonDashboard = document.createElement('button');
+					domButtonDashboard.textContent = chrome.i18n.getMessage('DOMdashboardButton');
+					domButtonDashboard.classList.add('dashboard-dom-button');
+					domButtonDashboard.addEventListener('click', function(e) {
+						obsTab.click();
+						obsTab.focus();
+					});
+					domMessageDashboard.appendChild(domButtonDashboard);
+	
+					dashboardpanel.querySelector('.dashboard-content').appendChild(domMessageDashboard);
+				}
+			}
+		}
+
+		if(request.command == "pageChanged") {
+			if(dashboardpanel.querySelector('#listenDOM').checked) dashboardpanel.querySelector('#listenDOM').click();
+			dashboardpanel.querySelector('#listenDOM').disabled = true;
+
+			let allButtonDomAction = document.querySelectorAll('button[data-action]');
+			allButtonDomAction.forEach(btn => {
+				if(btn.getAttribute('data-action') === "highlight-action" || btn.getAttribute('data-action') === "inspect-action") {
+					btn.disabled = true;
+					btn.className = "hidden";
+				}
+			});
+
+			dashboardpanel.querySelector('.dashboard-message').textContent = chrome.i18n.getMessage('msgDashboardWarning');
+		}
+
+		if(request.command == 'resetHighlight') {
+			let hlElement = main.children[1].querySelector('.highlightON');
+			if(hlElement) hlElement.click();
+		}
+	}
+
+	function listenDOMchange(e) {
+		if(e.target.disabled) return;
+		if(e.target.checked) {
+			document.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenON');
+
+			chrome.runtime.sendMessage({
+				tabId: chrome.devtools.inspectedWindow.tabId,
+				command: 'obsDOM',
+				obs: 'ON',
+			}, addObsInterface);
+		}
+		else {
+			document.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenOFF');
+			
+			chrome.runtime.sendMessage({
+				tabId: chrome.devtools.inspectedWindow.tabId,
+				command: 'obsDOM',
+				obs: 'OFF',
+			}, delObsInterface);
+		}
+	}
+
+	var dashboardpanelbuttonreload = dashboardpanel.querySelector('#reloadTests');
+	var dashboardpanelbuttonrestart = dashboardpanel.querySelector('#restartTests');
+
 	dashboardpanelbuttonreload.addEventListener('click', restartAnalyze);
-	dashboardpanel.appendChild(dashboardpanelbuttonreload);
+	dashboardpanelbuttonrestart.addEventListener('click', () => {
+		if(dashboardpanel.querySelector('#listenDOM').checked) dashboardpanel.querySelector('#listenDOM').click();
+		let hlElement = main.children[1].querySelector('.highlightON');
+		if(hlElement) hlElement.click();
+		window.location.reload();
+	});
+	dashboardpanel.querySelector('#listenDOM').addEventListener('change', listenDOMchange);
+	dashboardpanelbuttonreload.textContent = chrome.i18n.getMessage('dashboardButtonReload');
+	dashboardpanelbuttonrestart.textContent = chrome.i18n.getMessage('dashboardButtonRestart');
 
-	var dashboardpanelbuttonrestart = document.createElement('button');
-	dashboardpanelbuttonrestart.setAttribute('type', 'button');
-	dashboardpanelbuttonrestart.classList.add('dashboard-reload-button');
-	dashboardpanelbuttonrestart.appendChild(document.createTextNode("Quitter et démarrer une nouvelle analyse"));
-	dashboardpanelbuttonrestart.addEventListener('click', () => {window.location.reload();});
-	dashboardpanel.appendChild(dashboardpanelbuttonrestart);
+	dashboardpanel.querySelector('.listenDOM-label').textContent = chrome.i18n.getMessage('dashboardListenDOMlegend');
+	if(listenDomModif) {
+		dashboardpanel.querySelector('#listenDOM').checked = true;
+		dashboardpanel.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenON');
+	} else {
+		dashboardpanel.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenOFF');
+	}
 
+	dashboardpanel.querySelector('#listenDOM').disabled = true;
 }, false);

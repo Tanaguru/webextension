@@ -690,6 +690,20 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['1.3.1', '1.4.1'] }
 });
 
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Ces images (balise img ou balises possédant l\'attribut WAI-ARIA role="img") ont un nom accessible non pertinent.',
+    query: 'img[data-tng-altLong][src]',
+    testStatus: "failed",
+    filter: function (item) {
+        let an = item.getAttribute('data-tng-anobject');
+        if(an && an[0] && item.src.length > 0) return an.includes(item.src);;
+    },
+    mark: { attrs: ['alt','aria-label','aria-labelledby','title', 'src']},
+    tags: ['a11y', 'images', 'accessiblename'],
+    ressources: { 'rgaa': ['1.3.1'] }
+});
+
 // 1.3.2 - Pour chaque zone (balise <area>) d'une image réactive porteuse d'information, ayant une alternative textuelle, cette alternative est-elle pertinente (hors cas particuliers) ?
 // 1.4.2 Pour chaque zone (balise <area>) d'une image réactive utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle, cette alternative est-elle pertinente ? 
 tanaguruTestsList.push({
@@ -714,6 +728,20 @@ tanaguruTestsList.push({
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
     ressources: { 'rgaa': ['1.3.3', '1.4.3'] }
+});
+
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'Ces boutons de type image (balise input avec l\'attribut type="image") ont un nom accessible non pertinent.',
+    query: 'input[type="image"][data-tng-altLong][src]',
+    testStatus: "failed",
+    filter: function (item) {
+        let an = item.getAttribute('data-tng-anobject');
+        if(an && an[0] && item.src.length > 0) return an.includes(item.src);;
+    },
+    mark: { attrs: ['alt','aria-label','aria-labelledby','title', 'src']},
+    tags: ['a11y', 'images', 'accessiblename'],
+    ressources: { 'rgaa': ['1.3.3'] }
 });
 
 // 1.3.4 Pour chaque image objet (balise <object> avec l'attribut type="image/…") porteuse d'information, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente (hors cas particuliers) ?

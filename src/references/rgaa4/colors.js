@@ -11,8 +11,10 @@
 // 3.1.1 Pour chaque mot ou ensemble de mots dont la mise en couleur est porteuse d'information, l'information ne doit pas être donnée uniquement par la couleur. Cette règle est-elle respectée ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Pour chaque mot ou ensemble de mots dont la mise en couleur est porteuse d\'information, l\'information ne doit pas être donnée uniquement par la couleur.',
-    status: 'untested',
+    name: 'Liste des noeuds texte mis en couleur.',
+    description: 'Vérifier si la mise en couleur est porteuse d\'information, que l\'information ne soit pas donnée uniquement par la couleur.',
+    query: '[data-tng-colorization][data-tng-el-visible="true"]',
+    testStatus: 'cantTell',
     tags: ['a11y', 'colors'],
     ressources: {'rgaa': ['3.1.1']}
 });
@@ -20,8 +22,10 @@ tanaguruTestsList.push({
 // 3.1.2 Pour chaque indication de couleur donnée par un texte, l'information ne doit pas être donnée uniquement par la couleur. Cette règle est-elle respectée ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Pour chaque indication de couleur donnée par un texte, l\'information ne doit pas être donnée uniquement par la couleur.',
-    status: 'untested',
+    name: 'Liste des noeuds texte contenant un mot correspondant à une couleur.',
+    description: 'Vérifier que pour chaque indication de couleur donnée par un texte, l\'information n\'est pas donnée uniquement par la couleur.',
+    query: '[data-tng-colorindication][data-tng-el-visible="true"], [data-tng-colorindication][data-tng-el-exposed="true"]',
+    testStatus: 'cantTell',
     tags: ['a11y', 'colors'],
     ressources: {'rgaa': ['3.1.2']}
 });

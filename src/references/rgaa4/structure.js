@@ -2,60 +2,10 @@
  *? STRUCTURATION DE L'INFORMATION
  ** tous les tests sont répertoriés
  *
- * data : data-tng-headingHierarchy, data-tng-headingAN
+ * data : data-tng-headingAN
  */
-//TODO a revoir
-// 9.1.1 : Dans chaque page web, la hiérarchie entre les titres (balise hx ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) est-elle pertinente ?
-tanaguruTestsList.push({
-    lang: 'fr',
-    name: 'Liste des titres de niveau qui ne respectent pas la hierarchie de titres',
-    query: 'h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"][aria-level]',
-    testStatus: "failed",
-    filter: function (item) {
-        var currentlevel = parseInt(item.hasAttribute('aria-level') ? item.getAttribute('aria-level') : item.tagName.substring(1));
-        var currentElement = item.hasAttribute('aria-level') ? '[role="heading"][aria-level="'+currentlevel+'"]' : item.tagName;
-        
-        if(currentlevel === 1) {
-            return false;
-        }
-        var parent = item.parentNode;
-        while(parent) {
-            if(currentlevel < 8) {
-                var headings = parent.querySelectorAll(currentElement+',h'+(currentlevel-1)+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
-            } else {
-                var headings = parent.querySelectorAll(currentElement+', [role="heading"][aria-level="'+(currentlevel-1)+'"]');
-            }
-            
-            let hlength = headings.length;
-            for(var i = 0; i < hlength; i++) {
-                if(headings[i] === item) {
-                    parent = parent.tagName.toLowerCase() != 'body' ? parent.parentNode : null;
-                    break;
-                } else if(headings[i].getAttribute('data-tng-el-exposed') === 'false') {
-                    continue;
-                } else {
-                    item.setAttribute('data-tng-headingHierarchy', 'true');
-                    return false;
-                }
-            }
-        }
+//! 9.1.1 : voir content.js getHeadingsMap()
 
-        return true;
-    },
-    mark: {attrs: ['role', 'aria-level']},
-    tags: ['a11y', 'headings', 'structure'],
-    ressources: { 'rgaa': ['9.1.1'] }
-});
-
-tanaguruTestsList.push({
-    lang: 'fr',
-    name: 'Liste des titres de niveau qui respectent la hierarchie de titres',
-    query: '[data-tng-headingHierarchy]',
-    testStatus: "passed",
-    mark: {attrs: ['role', 'aria-level']},
-    tags: ['a11y', 'headings', 'structure'],
-    ressources: { 'rgaa': ['9.1.1'] }
-});
 
 // 9.1.2 : Dans chaque page web, le contenu de chaque titre (balise <hx> ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) est-il pertinent ?
 tanaguruTestsList.push({
@@ -87,8 +37,16 @@ tanaguruTestsList.push({
 // 9.1.3 Dans chaque page web, chaque passage de texte constituant un titre est-il structuré à l'aide d'une balise <hx> ou d'une balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: "Chaque passage de texte constituant un titre doit être structuré à l'aide d'une balise <hx> ou d'une balise possédant un attribut WAI-ARIA role='heading' associé à un attribut WAI-ARIA aria-level",
-    status: 'untested',
+    name: "Liste d'éléments non structurés en titre mais ayant un role ou une classe indiquant un titre.",
+    description: "Vérifier si ces éléments devraient être structurés en titre.",
+    query: '[role="heading"][data-tng-el-exposed="true"]:not([aria-level]), [class*="heading"][data-tng-el-exposed="true"]:not([role="heading"]), [class*="titre"][data-tng-el-exposed="true"]:not([role="heading"])',
+    filter: function(item) {
+        if(item.textContent.trim().length === 0) return;
+        if(item.tagName.toLowerCase().match(/^h\d$/g)) return;
+        return true;
+    },
+    testStatus: 'cantTell',
+    mark: { attrs: ['role', 'class']},
     tags: ['a11y', 'headings', 'structure'],
     ressources: { 'rgaa': ['9.1.3'] }
 });

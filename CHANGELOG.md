@@ -37,3 +37,8 @@
 - update the project structure
 - update Readme files
 
+## 4.0.0
+- new features : monitoring DOM and tab's url changes, display headings hierarchy
+- update interface integration and some tests
+- fixes aria pattern and accessibleName bugs
+

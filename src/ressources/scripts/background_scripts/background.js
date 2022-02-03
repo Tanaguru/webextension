@@ -1,11 +1,64 @@
+var ports = [];
+function handleConnect(port) {
+	if (port.name !== "devtools") return;
+	ports.push(port);
+	port.onDisconnect.addListener(() => {
+		var i = ports.indexOf(port);
+		if (i !== -1) ports.splice(i, 1);
+	});
+}
+chrome.runtime.onConnect.addListener(handleConnect);
+
+/**
+ * ? Send message to devtools_page
+ */
+function notifyDevtools(msg) {
+    ports.forEach(function(port) {
+        port.postMessage(msg);
+    });
+}
+
+/* Fires when the active tab in a window changes. */
+function handleActivated(activeInfo) {
+	chrome.tabs.query({active: true, currentWindow: true}, tabInfo => {
+		if(tabInfo[0].url) {
+			notifyDevtools({
+				command: 'resetHighlight',
+				tabId: activeInfo.tabId
+			});
+		}
+	});
+	
+	var manifest = chrome.runtime.getManifest();
+	chrome.browserAction.setBadgeText({ text: '' });
+	chrome.browserAction.setTitle({ title: manifest.browser_action.default_title });
+}
+chrome.tabs.onActivated.addListener(handleActivated);
+
+/* Fired when a tab is updated. */
+function handleUpdated(tabId, changeInfo, tabInfo) {
+	if(changeInfo.hasOwnProperty('url')) {
+		chrome.tabs.executeScript(tabId, {
+		    code: 'var obs = "OFF";'
+		}, function() {
+			chrome.tabs.executeScript(tabId, { file: '/ressources/scripts/obsDOM.js' });
+		});
+
+		notifyDevtools({
+			command: 'pageChanged',
+			tabId: tabId
+		});
+
+		notifyDevtools({
+			command: 'resetHighlight',
+			tabId: tabId
+		});
+	}
+}
+chrome.tabs.onUpdated.addListener(handleUpdated);
+
 function handleMessage(request, sender, sendResponse) {
-	if (request.command === 'initPopup') {
-		
-	}
-	else if (request.command === 'resetPopup') {
-		
-	}
-	else if (request.command === 'copyClipboard') {
+	if (request.command === 'copyClipboard') {
 		chrome.notifications.create(
 			'', 
 			{
@@ -57,45 +110,43 @@ function handleMessage(request, sender, sendResponse) {
 			});
 		});
 	}
+	else if (request.command == 'obsDOM') {
+		chrome.tabs.executeScript(request.tabId, {
+		    code: 'var obs = "' + request.obs + '"; var requestTabId = "' + request.tabId + '";',
+		}, function() {
+			chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/obsDOM.js' }, function (result) {
+				sendResponse({ command: 'executeDOMobserver', response: result });
+			});
+		});
+	}
+	else if (request.command == 'newMigration') {
+		notifyDevtools({
+			command: 'DOMedit',
+			tabId: request.tabId,
+			migList: request.migList
+		});
+	}
 	else if (request.command == 'resetPanel') {
-		chrome.tabs.removeCSS(request.tabId, {
-			file: '/ressources/styles/highlight.css'
+		notifyDevtools({
+			command: 'resetHighlight',
+			tabId: request.tabId
 		});
 	}
 	else if (request.command == 'tabInfos') {
-		// get principal language page
-		var language = chrome.tabs.detectLanguage(request.tabId, (lg) => {console.log("language : ", lg);});
+		var tabInfo = [{tabId: request.tabId}];
+
+		chrome.tabs.detectLanguage(request.tabId, (lg) => {
+			tabInfo.push({lang: lg});
+			chrome.tabs.get(request.tabId, tab => {
+				tabInfo.push({url: tab.url});
+				sendResponse({ command: 'executeTabInfos', response: tabInfo });
+			});
+		});
 
 		// zoom 200%
 		// chrome.tabs.setZoom(request.tabId, 2);
 	}
-	return true;
-}
 
+	if(request.command != 'newMigration') return true;
+}
 chrome.runtime.onMessage.addListener(handleMessage);
-
-
-/* Fires when the active tab in a window changes. Note that the tab's URL may not be set at the time this event fired, but you can listen to tabs.onUpdated events to be notified when a URL is set. */
-function handleActivated(activeInfo) {
-	// console.log("Tab " + activeInfo.tabId + " was activated.");
-
-	chrome.tabs.query({active: true, currentWindow: true}, tabInfo => {
-		if(tabInfo[0].url) {
-			chrome.tabs.removeCSS(activeInfo.tabId, {
-				file: '/ressources/styles/highlight.css'
-			});
-		}
-	});
-	
-	var manifest = chrome.runtime.getManifest();
-	chrome.browserAction.setBadgeText({ text: '' });
-	chrome.browserAction.setTitle({ title: manifest.browser_action.default_title });
-}
-chrome.tabs.onActivated.addListener(handleActivated);
-
-/* Fired when a tab is updated. */
-function handleUpdated(tabId, changeInfo, tabInfo) {
-  	console.log("Tab " + tabId + " was updated.");
-  	
-}
-// chrome.tabs.onUpdated.addListener(handleUpdated);

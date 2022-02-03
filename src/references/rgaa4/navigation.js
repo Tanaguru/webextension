@@ -143,7 +143,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'Liste des éléments non visibles mais tabulables.',
-	query: '[data-tng-el-visible="false"]:not([hidden], [data-tng-notExposed="css:display"], [data-tng-notExposed="css:visibility"])',
+	query: '[data-tng-el-visible="false"]:not([hidden], [data-tng-notExposed*="css:display"], [data-tng-notExposed*="css:visibility"])',
 	description: "Vérifier que ces éléments deviennent visibles au focus.",
 	filter: function (item) {
         if(item.disabled) return;
