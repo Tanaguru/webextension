@@ -458,6 +458,14 @@
 		"message": "Data to export",
 		"hash": "ee8e17042ff98a4e68efa1c743ea2b0e"
 	},
+	"optionExportDesc": {
+		"message": "To export, select one or more datas then hereafter the list, activate the button: Include these datas in the export.",
+		"hash": "8f7e94a55e6e70b587c27517e1eddd13"
+	},
+	"optionNoExportDesc": {
+		"message": "To not export, select one or more datas then hereafter the list, activate the button: Exclude these datas from the export. To re-organize the order of the datas to export, select a data and hereafter the list, activate one of the following buttons 'move the data to export upward' or 'move the data to export downward'.",
+		"hash": "89b4b375a45d0718fb2a9be145a05ee5"
+	},
 	"optionExportMoveup": {
 		"message": "Move the selected data to export upward",
 		"hash": "33bca8d034560078b8b270d20a52c940"
@@ -478,6 +486,14 @@
 		"message": "Keyboard non reachable elements only",
 		"hash": "f747336ece665aed8a1d2d79bdc26bdc"
 	},
+	"msgReaderyes": {
+		"message": "Rendered elements only",
+		"hash": "f8deb7cad16e8096a5ca021cb29e8808"
+	},
+	"msgReaderno": {
+		"message": "Non rendered elements only",
+		"hash": "b5dc28314eff43e8e1df8214df8b6d16"
+	},
 	"msgVisible": {
 		"message": "Visible elements only",
 		"hash": "cb5382caccb834a0b60c025e85f3dc51"
@@ -485,5 +501,194 @@
 	"msgHidden": {
 		"message": "Hidden elements only",
 		"hash": "ce78424987f682f767c9dd409df0aa82"
-	}
+	},
+	"colors_name_0": {
+		"message": "List of colored text nodes.",
+		"hash": "3b6a1e85bf3fd27a8536906274a838e5"
+	},
+	"colors_description_1": {
+		"message": "Check if the colorization is carrying information, that the information is not only given by color.",
+		"hash": "d6803006c2fac17a5b5850e0cb2b27b7"
+	},
+	"colors_name_2": {
+		"message": "list of text nodes including a color related word.",
+		"hash": "7dbedd74282b894d1624a99bd818a98d"
+	},
+	"colors_description_3": {
+		"message": "Check for each color indication given by word, the information is not only given by color.",
+		"hash": "55fd42b8d8fcc17b4e864b5ad6da1428"
+	},
+	"colors_name_4": {
+		"message": "For each image carrying information, the information must not be given by the color only.",
+		"hash": "dfed3dd96739b1cfa88876e8a900b707"
+	},
+	"colors_name_5": {
+		"message": "For each CSS property determining a color and carrying information, the information must not be given by the color only.",
+		"hash": "1815349f0c819451a5425318b373baf8"
+	},
+	"colors_name_6": {
+		"message": "For each time-based media carrying information, the information must not be given by the color only.",
+		"hash": "190a7c20e90affca4f952f2eb9b48988"
+	},
+	"colors_name_7": {
+		"message": "For each non time-based media carrying information, the information must not be given by the color only.",
+		"hash": "c18cd913785b3da7b9455b09d411dec6"
+	},
+	"colors_name_8": {
+		"message": "Visible texts without bold effect and a rendered size lesser than 24px having a contrast lesser than 4.5:1",
+		"hash": "17d508248ea6dfe4b47f299f2d3a9c51"
+	},
+	"colors_description_9": {
+		"message": "Check if necessary the existence of a mechanism that can display a compliant contrast ratio",
+		"hash": "bd6000b0d184e076a1e955fda2b6c46c"
+	},
+	"colors_name_10": {
+		"message": "Visible texts without bold effect and a rendered size lesser than 24px having a sufficient contrast of 4.5:1",
+		"hash": "9b2e016f107cd65a44313db4421d0956"
+	},
+	"colors_name_11": {
+		"message": "Check the text elements without bold effect with a rendered size lesser than 24px respect a contrast of at leat 4.5:1",
+		"hash": "6e7f3a51ce77bbdf19773c2cc472bc26"
+	},
+	"colors_name_13": {
+		"message": "Hidden of deactivated texts without bold effect with a rendered size lesser than 24px having a contrast lesser than 4.5:1",
+		"hash": "615f87f928e9bbc396c28407bc83c514"
+	},
+	"colors_description_14": {
+		"message": "If these text elements can be made visible, they should respect a contrast of at least 4.5:1.",
+		"hash": "c29adfaa0d0a32ee339c5de97374f027"
+	},
+	"colors_name_15": {
+		"message": "Hidden of deactivated texts without bold effect with a rendered size lesser than 24px",
+		"hash": "cbd1c7007ed913252bce45a3fe5bc224"
+	},
+	"colors_description_16": {
+		"message": "If these text elements can be made visible, check if they respect a contrast of at least 4.5:1.",
+		"hash": "67b286af464fb9aa592bcd11c947039f"
+	},
+	"colors_name_17": {
+		"message": "Hidden of deactivated texts without bold effect with a rendered size lesser than 24px having a sufficient contrast of 4.5:1",
+		"hash": "77014ef98c2b0159156788c189cae348"
+	},
+	"colors_name_18": {
+		"message": "Visible text with a bold effect and a rendered size lesser than 18.5px having a contrast inferir to 4.5:1",
+		"hash": "322d9bb3232a41dd011a593513ef2450"
+	},
+	"colors_name_20": {
+		"message": "Visible text with a bold effect and a rendered size lesser than 18.5px having a sufficient contrast of 4.5:1",
+		"hash": "f22e5824fd65f63c7b1ab60314898b5b"
+	},
+	"colors_name_21": {
+		"message": "Check the text elements with bold effect and a rendered size lesser than 18.5px respect a contrast of at leat 4.5:1",
+		"hash": "24a453f8255b5910b601ac6c5e3fa8c3"
+	},
+	"colors_name_23": {
+		"message": "Hidden of deactivated texts with bold effect with a rendered size lesser than 18.5px having a contrast lesser than 4.5:1",
+		"hash": "5d1809cb7af7e070ca78b98427036db8"
+	},
+	"colors_name_25": {
+		"message": "Hidden of deactivated texts with bold effect with a rendered size lesser than 18.5px",
+		"hash": "59979708ded0dfc2253668e87e93a036"
+	},
+	"colors_name_27": {
+		"message": "Hidden of deactivated texts with bold effect with a rendered size lesser than 18.5px having a sufficient contrast of 4.5:1",
+		"hash": "a2291ec3d69735616bce782e19e97909"
+	},
+	"colors_name_28": {
+		"message": "Visible texts without bold effect and a rendered size greater than or equal to 24px having a contrast lesser than 3:1",
+		"hash": "bb1ca6e37ec7244056a242b04edfb0ff"
+	},
+	"colors_name_30": {
+		"message": "Visible texts without bold effect and a rendered size greater than or equal to 24px having a sufficient contrast of 3:1",
+		"hash": "f3b88f2c9895d40fe506c1a7aa322a68"
+	},
+	"colors_name_31": {
+		"message": "Check these text elements without bold effect and a rendered size greater than or equal to 24px respect a contrast of at least 3:1",
+		"hash": "489d8ae406e95e4184f5518b9d2bdc52"
+	},
+	"colors_name_33": {
+		"message": "Hidden of deactivated texts without bold effect with a rendered size greater than or equal to 24px having contrast lesser than 4.5:1",
+		"hash": "c44ae842b4ba2ef27950c4bdcc522420"
+	},
+	"colors_description_34": {
+		"message": "If these text elements can be made visible, they should respect a contrast of at least 3:1.",
+		"hash": "045811c765211783d98489be5f8bd24c"
+	},
+	"colors_name_35": {
+		"message": "Hidden of deactivated texts without bold effect with a rendered size greater than or equal to 24px",
+		"hash": "d5e48e89fe1a76c22809334082cce9d7"
+	},
+	"colors_description_36": {
+		"message": "If these text elements can be made visible, check if they respect a contrast of at least 3:1.",
+		"hash": "260c70e0da14603079228265e742d100"
+	},
+	"colors_name_37": {
+		"message": "Hidden of deactivated texts without bold effect and with a rendered size greater than or equal to 24px having a sufficien contrast of 3:1",
+		"hash": "a2565dfe730fc69ed2f6d779b5930959"
+	},
+	"colors_name_38": {
+		"message": "Visible texts with a bold effect with a rendered size greater than or equal to 18.5px with a contrast lesser than 3:1",
+		"hash": "20d65f6513a369ad2eb36263692ea17e"
+	},
+	"colors_name_40": {
+		"message": "Visible texts with a bold effect with a rendered size greater than or equal to 18.5px with a sufficient contrast of 3:1",
+		"hash": "4386f8568f88c0939eb2b0ca5b78f8d9"
+	},
+	"colors_name_41": {
+		"message": "Check these text elements with bold effect with a rendered size greater than or aqual to 18.5px respect a contrast of at least 3:1",
+		"hash": "e8dbead8ff9f3e5de2e7ed2e4b7d812a"
+	},
+	"colors_name_43": {
+		"message": "Hidden or deactivated texts with bold effect and a rendered size greater than or equal to 18.5px having a contrast lesser than 3:1",
+		"hash": "f232cea451ec349dafe4b4651a3555af"
+	},
+	"colors_name_45": {
+		"message": "Hidden or deactivated texts with bold effect and a rendered size greater than or equal to 18.5px",
+		"hash": "e62a25c90d271232d1bf2cdadb362cec"
+	},
+	"colors_name_47": {
+		"message": "Hidden or deactivated texts with bold effect and a rendered size greater than or equal to 18.5px having a sufficient contrast of 3:1",
+		"hash": "7235e4902f805ca9f84efdd6fa9b1c97"
+	},
+	"colors_name_48": {
+		"message": "A mechanism can display a sufficient contrast ratio between a text and its background color.",
+		"hash": "e8af2b26c52ed279a30d1e7cdb82bc20"
+	},
+	"colors_name_49": {
+		"message": "The contrast ratio between the colors of an interface component in its various states and its background contiguous color is at least 3:1.",
+		"hash": "071bf85ac0eb009fd6be617e1c1b6257"
+	},
+	"colors_name_50": {
+		"message": "The contrast ratio between the various colors of a grapic component, when mandatory for its comprehension, and the background color is at least 3:1.",
+		"hash": "54ebbb10eba94ad494666935761800a5"
+	},
+	"colors_name_51": {
+		"message": "The contrast ratio between the various colors contiguous to each other of a graphic component, when mandatory for its comprehension, is at least 3:1.",
+		"hash": "9e5b34d0282560b01e7ab2751b5f8f95"
+	},
+	"colors_name_52": {
+		"message": "A mechanism can display a sufficient contrast ratio for interface components and graphic components carrying information.",
+		"hash": "8830cb9902e1a7492748ea393ede13b7"
+	},
+	"consultation_name_53": {
+		"message": "List of meta tags with a refresh process inferior to 20 hours.",
+		"hash": "40e0b4f9387c68eb9240b8c65e82dab1"
+	},
+	"consultation_name_54": {
+		"message": "List of meta tags with a non-immediate redirection process.",
+		"hash": "4d72634f82d2c0b68c11812ed9481d1d"
+	},
+	"consultation_name_55": {
+		"message": "Each redirection process performed by a script must be controllable by the user or have a time limit of at least 20 hours.",
+		"hash": "9d62be42a65728356da12808bbed4539"
+	},
+	"consultation_name_56": {
+		"message": "Each process limiting the time of a session must be controllable by the user or have a time limit of at least 20 hours.",
+		"hash": "7cc62ee04cef73b34149e7e18f515da6"
+	},
+	"consultation_name_57": {
+		"message": "For each web page, the opening of a new window should not be triggered without user action.",
+		"hash": "7380596a97c5fbdd630fde4803cf7ec1"
+	},
+	"__WET_LOCALE__": { "message": "en" }
 }
