@@ -690,5 +690,1505 @@
 		"message": "For each web page, the opening of a new window should not be triggered without user action.",
 		"hash": "7380596a97c5fbdd630fde4803cf7ec1"
 	},
+	"consultation_name_58": {
+		"message": "For each download functionality for a office document, the document must be accessible or have an accessible alternative.",
+		"hash": "e8c7c18bdf82742d75bb7699666006dc"
+	},
+	"consultation_name_59": {
+		"message": "For each document having an accessible alternative, the accessible version must carry the same information.",
+		"hash": "eeb346b7b98f4e3211b56109ec7ca445"
+	},
+	"consultation_name_60": {
+		"message": "Each cryptic content (ASCII art, smiley, cryptic syntax) must have an alternative.",
+		"hash": "99ef9ae0daeda588ae63d6f0fb6a9809"
+	},
+	"consultation_name_61": {
+		"message": "Each cryptic content (ASCII art, smiley, cryptic syntax) must have a relevant alternative.",
+		"hash": "28e201a8e41238435ace26d68a55ea71"
+	},
+	"consultation_name_62": {
+		"message": "For each image or multimedia content causing a sudden change of brightness or a flash effect, the effect must have a frequency inferior to 3 seconds or a total area inferior to 21825 pixels.",
+		"hash": "754bcac1e40d3ad2892894e7bc14b5eb"
+	},
+	"consultation_name_63": {
+		"message": "For each script causing a sudden change of brightness or a flash effect, the effect must have a frequency inferior to 3 seconds or a total area inferior to 21825 pixels.",
+		"hash": "1cf2280f731b1f66e57203b85b7f087e"
+	},
+	"consultation_name_64": {
+		"message": "For each CSS formatting layouts causing a sudden change of brightness or a flash effect, the effect must have a frequency inferior to 3 seconds or a total area inferior to 21825 pixels.",
+		"hash": "896b434026a42d6831b5e42d4afda2de"
+	},
+	"consultation_name_65": {
+		"message": "Each moving content automatically triggered must last less than 6 secondes or be controllable by the user.",
+		"hash": "8061b0599b78686cd2884eef66da25b2"
+	},
+	"consultation_name_66": {
+		"message": "Each flashing content automatically triggered must last less than 6 secondes or be controllable by the user.",
+		"hash": "77a15d28e6e3934c78d76365dd5417ea"
+	},
+	"consultation_name_67": {
+		"message": "The proposed content must be retrievable and identical regardless of the screen's orientation (portrait or landscape)",
+		"hash": "02907c191b435e60faeb662e689ba4cb"
+	},
+	"consultation_name_68": {
+		"message": "Each functionality usable or  avalaible following a multipoint contact must also be usable and available with a unique point contact on the screen.",
+		"hash": "062cb8175d00e4a2a99830b5c72f52fe"
+	},
+	"consultation_name_69": {
+		"message": "Each functionality usable or  avalaible following a move based on a trajectory must also be usable and available with a unique point contact on the screen.",
+		"hash": "3a0b32b48136be9022d8d1609114e9aa"
+	},
+	"consultation_name_70": {
+		"message": "The actions triggered by a pointing process on a unique point on the screen must be subject to cancellation.",
+		"hash": "032a7776702abc2288d201d904c245e4"
+	},
+	"consultation_name_71": {
+		"message": "The features available by moving the device must also be available with user interface components.",
+		"hash": "d25d19be8e449c3e6b1e8738a5db8ff3"
+	},
+	"consultation_name_72": {
+		"message": "The features available by making a gesture towards the device must also be available with user interface components.",
+		"hash": "8abf80c23269eed1a0ca13155aa9f701"
+	},
+	"consultation_name_73": {
+		"message": "The user must be allowed to deactivate the gesture detection to prevent accidental trigger of the feature.",
+		"hash": "f0218c36ae9f1aefff0c8ffc8f88766e"
+	},
+	"forms_name_74": {
+		"message": "list of form fields with no accessible name.",
+		"hash": "63f896aedb157eaab194fb01a5b84f8d"
+	},
+	"forms_name_75": {
+		"message": "list of form fields with accessible name.",
+		"hash": "0df8c828c8abb756b15a20af4df69821"
+	},
+	"forms_name_76": {
+		"message": "List of field tags not associated with their field.",
+		"hash": "a4059a6d06bbc1f678682514e8ce9bf3"
+	},
+	"forms_name_77": {
+		"message": "List of field tags associated with their field.",
+		"hash": "992a6c2b13aeb1b5c087a1714dfe4a3f"
+	},
+	"forms_name_78": {
+		"message": "list of form fields with no visible tag, having neither title attribut nor visible text part identified by an id.",
+		"hash": "7561a974af7e054e63f02bd9bf3b113b"
+	},
+	"forms_name_79": {
+		"message": "list of form fields with no visible tag, having a title attribut.",
+		"hash": "c8805944bae66fa50106bfda6d1d2ad7"
+	},
+	"forms_description_80": {
+		"message": "Check the relevance of the title attribut.",
+		"hash": "3bae121d6c7da8eda6a37cd595b9030c"
+	},
+	"forms_name_81": {
+		"message": "List of form fields with no visible tag, having a visible text part identified by an id.",
+		"hash": "f97f8d64beb6e862c6836f67d1396ebb"
+	},
+	"forms_description_82": {
+		"message": "Check the relevance of the text part and its closeness to the associated field.",
+		"hash": "73cf7511497430155ca1fbb63d1c80af"
+	},
+	"forms_name_83": {
+		"message": "List of form fields with no visible taf, having a text part visible on focus identified by an id.",
+		"hash": "c055889a2c439a16586103b47b7669ce"
+	},
+	"forms_name_85": {
+		"message": "Check if the label tag allows the user to know the exact function of the field it's associated with.",
+		"hash": "4de3433dbe981353cf90700a246443a5"
+	},
+	"forms_name_86": {
+		"message": "Check if the title attribute allows the user to know the exact function of the field it's associated with.",
+		"hash": "3048f0e1d3ee9b25287f4e7e76d807cf"
+	},
+	"forms_name_87": {
+		"message": "Check if the arial-label WAI-ARIA attribute allows the user to know the exact function of the field it's associated with.",
+		"hash": "b4b03e738331a60feb71299fec2343f7"
+	},
+	"forms_name_88": {
+		"message": "Check if the text part associated via the arial-labelledby WAI-ARIA attribute allows the user to know the exact function of the field it's associated with.",
+		"hash": "ececbead7bff88be586faf7d9696fb1c"
+	},
+	"forms_name_89": {
+		"message": "List of form fields whose accessible name contains the visible title.",
+		"hash": "217db18340a9e70b01cceb709d5de218"
+	},
+	"forms_name_90": {
+		"message": "List of form fields whose accessible name does not contain the visible title.",
+		"hash": "608a0f443d4dcad89366a83ddc2bc10f"
+	},
+	"forms_name_91": {
+		"message": "Each button contiguous to the form field providing a visible tag must allow the user to know the exact function of the form field it's associated with.",
+		"hash": "daa840c8ba7ccbd5a4a11d7db3cd1e3c"
+	},
+	"forms_name_92": {
+		"message": "Each tag associated to a form field having the same function and repeted several times on a same page must be consistent.",
+		"hash": "69be08cb286051a581d8adb1771d6a5c"
+	},
+	"forms_name_93": {
+		"message": "Each tag associated to a form field having the same function and repeted on a sample of pages must be consistent.",
+		"hash": "85d40a3ba32e9bbc50396edee3de909a"
+	},
+	"forms_name_94": {
+		"message": "Each tag and its associated field must be appropriately joined.",
+		"hash": "1e2e145ef3d88a10e4091dd3600f3f96"
+	},
+	"forms_name_95": {
+		"message": "Check the use of the fieldset tags and the role group attributes is necessary. ",
+		"hash": "e6f1190d2fb99c8d371c763d2ec9270a"
+	},
+	"forms_name_96": {
+		"message": "Fields of same nature must, if necessary, be correctly grouped.",
+		"hash": "e92cadf6542a7b3ad346e471ce3837ca"
+	},
+	"forms_name_97": {
+		"message": "List of fields grouping with no legend.",
+		"hash": "f2e6de08d6aecb41734a510d418e72e4"
+	},
+	"forms_name_98": {
+		"message": "List of fields groups with legend.",
+		"hash": "1cee96c6bf9bc4664e86f9f1fed8fe8f"
+	},
+	"forms_name_99": {
+		"message": "Check the legends associated to form fields groups are relevant.",
+		"hash": "38d26538f1bb3a35fb97dd8de24b221d"
+	},
+	"forms_name_100": {
+		"message": "For each <select> tag, the items of same nature muste, if nessecary, be grouped with a <optgroup> tag.",
+		"hash": "071dfc8f8a593600187d0e7a04a3ceff"
+	},
+	"forms_name_101": {
+		"message": "List of optgroup items with no label attribute.",
+		"hash": "8df344a0b95a8b80e0e332f3b3e73328"
+	},
+	"forms_name_102": {
+		"message": "List of optgroup items with label attribute.",
+		"hash": "3c0e82124608dfacd56451dd9c10129f"
+	},
+	"forms_name_103": {
+		"message": "<optgroup> item with a non relevant label attribuute.",
+		"hash": "c9693416f01b13661f5a5c08b8eefc6f"
+	},
+	"forms_name_104": {
+		"message": "Check the relevance of the label attribute on the optgroup element.",
+		"hash": "a19b803b2ba47da3890faa9602fa4b80"
+	},
+	"forms_name_105": {
+		"message": "Check the relevance of these buttons titles.",
+		"hash": "1cc87e9ef577ec212df5aa43f8ada1e2"
+	},
+	"forms_name_106": {
+		"message": "List of form buttons with no title.",
+		"hash": "001ab29c3a5b6301fb68994959389639"
+	},
+	"forms_name_107": {
+		"message": "List of form buttons with a visible title not contained in the accessible name.",
+		"hash": "ca3916ccccd544c17a4326a5c63e292c"
+	},
+	"forms_name_108": {
+		"message": "List of form buttons with a visible title contained in the accessible name.",
+		"hash": "e514b5f62c94f84743533281fb9fdd6f"
+	},
+	"forms_name_109": {
+		"message": "The indication for the required nature of fields must be correctly implemented.",
+		"hash": "7e8cc00281b15f5ed5f40d5748ee54d9"
+	},
+	"forms_name_110": {
+		"message": "The required fields having the aria-required or the required attribute must be doubled with a visible indication of the required nature.",
+		"hash": "e276051c93d3351a2fd05bfaae0573ce"
+	},
+	"forms_description_111": {
+		"message": "Check the required nature of a field is visible AND placed in the label or in the text part associated to the field before the submission of the form.",
+		"hash": "bd56fa1848a7bfd2762010a17e2fdd73"
+	},
+	"forms_name_112": {
+		"message": "The error messages indicating a required field has not been filled must be correctly implemented.",
+		"hash": "cd5db606436b823bb21d8ee2fbbb2b0b"
+	},
+	"forms_name_113": {
+		"message": "The required field having the aria-invalid attribute must be associated to a visible error message.",
+		"hash": "18bb4ca28a05b49018e948b4f59740d8"
+	},
+	"forms_description_114": {
+		"message": "For each required field, check the error message informing about the invalid naturee is visible AND located in the tag or the text part associated to the field.",
+		"hash": "25bfa011a3530f5a54a1b8b08285dd85"
+	},
+	"forms_name_115": {
+		"message": "Instructions and indication of mandatory type / format of data must be correctly implemented.",
+		"hash": "bd7678830872de7d98104a18964ddc32"
+	},
+	"forms_name_116": {
+		"message": "Error messages provinding instructions and indication of mandatory type / format of data must be correctly implemented.",
+		"hash": "d93c6dd7aaeb68afd19c881cdd96983c"
+	},
+	"forms_name_117": {
+		"message": "Fields with the aria-invalid attribute requiring a mandatory type / format of data must be double by a visual indication.",
+		"hash": "b19f69b3a73e18ef5e0a7e6209d5a6ac"
+	},
+	"forms_description_118": {
+		"message": "For each field that require a mandatory data type and/or format to enter, check a statement or indication of the mandatory data type and/or format is visible AND located in the <label> tag of text passage associated with the field.",
+		"hash": "e7dce51043ae76be6ffb3a424a9fc05a"
+	},
+	"forms_name_119": {
+		"message": "For each input error, data type and format must be suggested if necessary.",
+		"hash": "1be4e528dd31eeb1a9f30d4ddae5f252"
+	},
+	"forms_name_120": {
+		"message": "For each input error, expected values exemples must be suggested if necessary.",
+		"hash": "74bc71d35687d67cd1af78c8c14fa739"
+	},
+	"forms_name_121": {
+		"message": "For each form modifying or deleting datas, or forwarding answers for a test or an exam, or whose validity has financial or legal consequences, the user must be able to submit the form fully aware of the facts.\n",
+		"hash": "63b19e088a698da4a2bc8afca96363b9"
+	},
+	"forms_description_122": {
+		"message": "For each form modifying or deleting datas, or forwarding answers for a test or an exam, or whose validity has financial or legal consequences, check the user can modify his entries after sumitting the form (or before the submission in a multistep form) or that the form has an explicit confirmation mechanism.",
+		"hash": "43e25a68371d83119aa86151fda495a4"
+	},
+	"forms_name_123": {
+		"message": "For each form whose submission modify or delete financial, legal or personal datas, the user must be able to submit the form fully aware of the facts.",
+		"hash": "f0fe9a7bd360ae869c440c9ebe296566"
+	},
+	"forms_description_124": {
+		"message": "For each form whose submission modify or delete financial, legal or personal datas, check the form has a mechanism for recovering deleted or modified data or an explicit confirmation mechanism.",
+		"hash": "edd2fcf9041c00a25b06b9fb5f8cca25"
+	},
+	"forms_name_125": {
+		"message": "Check that each form field whose subject relates to user's information has an autocomplete attribute. ",
+		"hash": "b64303ce363b45cd698e12007f2c4a70"
+	},
+	"forms_name_126": {
+		"message": "Form fields having an invalid autocomplete attribute.",
+		"hash": "36112f71868afd8e50c7fed8549c8f76"
+	},
+	"forms_description_127": {
+		"message": "Attribute values must be referenced in HTML5 specifications, the 'target' tokens (home, work…) must be used with a token belonging to the 'contact' category, values must be filled in a valid order (1.group, 2.mode, 3.target, 4.main target. Exemple: autocomplete='section-parent shipping home email')",
+		"hash": "26e2d3c30e12d65f0234d8b3e0553f22"
+	},
+	"forms_name_128": {
+		"message": "Form fields having a valid but non allowed autocomplete attribute on the field.",
+		"hash": "4dfbc143f0748dae97844c54327e3626"
+	},
+	"forms_name_129": {
+		"message": "Form fields having a valid autocomplete attribute.",
+		"hash": "3a0fcf3d0a8772d20a9bd5b354f9f334"
+	},
+	"forms_description_130": {
+		"message": "Check the autocomplete attribute is relevant regarding the expected data type.",
+		"hash": "33d0541158ba9cb2e14bd5439f409491"
+	},
+	"frames_name_131": {
+		"message": "Frames list with a title attribute.",
+		"hash": "666df630462f65b89114c6498d9bff92"
+	},
+	"frames_name_132": {
+		"message": "Frames list without a title attribute.",
+		"hash": "817a1606388869ee9e38f681935d1a9b"
+	},
+	"frames_name_133": {
+		"message": "Frames list non exposed to assistive technologies.",
+		"hash": "95c823ddb33fc9aa1961d0cf4ae78a77"
+	},
+	"frames_name_134": {
+		"message": "Check the relevance of the following titles frames",
+		"hash": "2d43fd2357640c4e30b5ff4eb20f6b3c"
+	},
+	"frames_name_135": {
+		"message": "The following frames have a non relevant title",
+		"hash": "5ab5139c1df08b2e00e477352c170be1"
+	},
+	"images_name_136": {
+		"message": "List of images (img tag or tag having the attribute WAI-ARIA role=\"img\") without accessible name",
+		"hash": "7ddb2e0681a173262d2969eaa29c0ab0"
+	},
+	"images_description_137": {
+		"message": "This test checks if the images rendered by the assistive technologies has no accessible name",
+		"hash": "302e87b5d9f499d3a543de856294209e"
+	},
+	"images_name_138": {
+		"message": "List of images (img tag or tag having the attribute WAI-ARIA role=\"img\") with accessible name",
+		"hash": "a135d32cdf1895f28a64f4caf4089022"
+	},
+	"images_description_139": {
+		"message": "This test checks if the images rendered by the assistive technologies has an accessible name",
+		"hash": "9baf6b3ce6ff406b06c5aee115337c44"
+	},
+	"images_name_140": {
+		"message": "List of responsive images (tag area) without accessible name.",
+		"hash": "a2235816eb32ade1b8b0413f92e0b72e"
+	},
+	"images_name_142": {
+		"message": "List of responsive images (tag area) with accessible name.",
+		"hash": "8d29d288750b94b1b77ac0f40a276706"
+	},
+	"images_name_144": {
+		"message": "List of image type buttons (input tag with the attribute type=\"image\") without accessible name.",
+		"hash": "f105cde278472838fa2cb84d9e9f64a3"
+	},
+	"images_name_146": {
+		"message": "List of image type buttons (input tag with the attribute type=\"image\") with accessible name.",
+		"hash": "8b0793ecac2120b1a31b8726836560a7"
+	},
+	"images_name_148": {
+		"message": "List of clickables areas of a server-side responsive image that is not doubled by a link in the page.",
+		"hash": "45f7a7625f6eb60d59d74ba2a436c1e3"
+	},
+	"images_name_149": {
+		"message": "List of clickables areas of a server-side responsive image that is doubled by a link in the page.",
+		"hash": "24bc0c80578ef0abd25dc057a6c1b14f"
+	},
+	"images_name_150": {
+		"message": "List of vector images (svg tag) rendered with no attribute role=\"img\".",
+		"hash": "dfa0e931213aae082ec8db64c19b44dd"
+	},
+	"images_name_151": {
+		"message": "List of vector images (svg tag) without an accessible name.",
+		"hash": "6650ec3dd626fabd4080afdce94d6dfd"
+	},
+	"images_name_153": {
+		"message": "List of vector images (svg tag) with an accessible name.",
+		"hash": "d1e975d5488b15c14e54d8d32110877c"
+	},
+	"images_name_155": {
+		"message": "List of object images (object tag with the attribute role=\"image/…\") rendered with no attribute role=\"img\".",
+		"hash": "a21b79a099376e5bb036e19803cff1bc"
+	},
+	"images_name_156": {
+		"message": "List of object images (object tag with the attribute role=\"image/…\") with no accessible name.",
+		"hash": "b6fa4c03728765e805bc5fb416ac11ba"
+	},
+	"images_name_158": {
+		"message": "List of object images (object tag with the attribute role=\"image/…\") with an accessible name.",
+		"hash": "75356e24237a7cec0e9bd2fd253a16e6"
+	},
+	"images_name_160": {
+		"message": "List of embedded images (embed tag with the attribute role=\"image/…\") rendered with no attribute role=\"img\"\n",
+		"hash": "8b7f5662292c698ffd303ad22a5e8182"
+	},
+	"images_name_161": {
+		"message": "List of embedded images (embed tag with the attribute role=\"image/…\") with no accessible name.",
+		"hash": "ebf3bbaf8d719bb0b64e5935c28761b2"
+	},
+	"images_name_163": {
+		"message": "List of embedded images (embed tag with the attribute role=\"image/…\") with an accessible name.",
+		"hash": "b937f62180832bd4f75a957fbe16eba1"
+	},
+	"images_name_165": {
+		"message": "List of rendered bitmap images (canvas tag) not having a role=\"img\" attribute.",
+		"hash": "4fb34a49bf7486b483e8beb9c718c4e0"
+	},
+	"images_name_166": {
+		"message": "List of bitmap images (canvas tag) with no accessible name",
+		"hash": "0ec2cd662ea09ab0ee8579a71f0e8a9f"
+	},
+	"images_name_168": {
+		"message": "List of bitmap images (canvas tag) with an accessible name",
+		"hash": "77898cfcb9c2ad9721aee0028d320c54"
+	},
+	"images_name_170": {
+		"message": "List of images (img tag) ignored by the assistive technologies",
+		"hash": "62c5c2db9e1656fb38421585157b51ac"
+	},
+	"images_name_171": {
+		"message": "List of decorative images (img tag) not ignored by assistive technologies",
+		"hash": "7e3f691d78b2dcb28436eb99ccce49ee"
+	},
+	"images_name_172": {
+		"message": "List of non clickable areas (area tag with no href attribute) ignored by the assistive technologies",
+		"hash": "76e999c55036c6f3ab1a8c6cdb669f78"
+	},
+	"images_name_173": {
+		"message": "List of non clickable decorative areas (area tag with no href attribute) not ignored by the assistive technologies",
+		"hash": "f2043d9a682e8159d2ab57da78742345"
+	},
+	"images_name_174": {
+		"message": "List of object images (objects tag with the attribute  type=\"image/…\") ignored by the assistive technologies",
+		"hash": "e7eba1e1772077f51f1943952afeedb1"
+	},
+	"images_name_175": {
+		"message": "List of decorative object images (objects tag with the attribute  type=\"image/…\") not ignored by the assistive technologies",
+		"hash": "7ff832635875a5e77914b33be974b071"
+	},
+	"images_name_176": {
+		"message": "List of vector images (svg tag) ignored vy assistive technologies",
+		"hash": "50e016a9939876faf0f8edfc3392471a"
+	},
+	"images_name_177": {
+		"message": "List of decorative vector images (svg tag) not ignored by assistive technologies",
+		"hash": "84f5aa2c24f3e836958c70058bb314bf"
+	},
+	"images_name_178": {
+		"message": "List of decorative bitmap images (canvas tag) not ignored by assistive technologies",
+		"hash": "263708b51b0b911cd292b28602010f92"
+	},
+	"images_name_179": {
+		"message": "List of bitmap images (canvas tag) ignored by assistive technologies",
+		"hash": "c77d93175bf8f070febba757a43955e6"
+	},
+	"images_name_180": {
+		"message": "List of embedded images (embed tag with the attribute role=\"image/…\") ignored by assistive technologies",
+		"hash": "a8926d8d9610660575465841fbb82a12"
+	},
+	"images_name_181": {
+		"message": "List of decorative embedded images (embed tag with the attribute role=\"image/…\") not ignored by assistive technologies",
+		"hash": "609f75ae9a9982d6b3ffdc107c55a6d7"
+	},
+	"images_name_182": {
+		"message": "Do those images (img tag or tags having the WAI-ARIA attribute role=\"img\") have a relevant accessible name ?",
+		"hash": "53bebb64db77c452ecc07049d54d865e"
+	},
+	"images_description_183": {
+		"message": "The relevance of the accessible name depends on the image context, information-carrying image or test-image/CAPTCHA",
+		"hash": "0c55ffec4c3e39b6c7bbf5cbb2297917"
+	},
+	"images_name_184": {
+		"message": "Those images (img tag or tags having the WAI-ARIA attribute role=\"img\") have a relevant accessible name.",
+		"hash": "4b9a9707fe2107809160c983e994d814"
+	},
+	"images_name_185": {
+		"message": "Do those responsive image areas (area tag) have a relevant accessible name ?",
+		"hash": "e5dd6967bbfc967101a32cac92aaf9b4"
+	},
+	"images_name_187": {
+		"message": "Do those image type buttons (input tag with the attribute type=\"image\") have a relevant accessible name ?",
+		"hash": "ace468bcd80ca832140021589ec3efc7"
+	},
+	"images_name_189": {
+		"message": "Those image type buttons (input tag with the attribute type=\"image\") have a non relevant accessible name.",
+		"hash": "0ee4197caf7b0a0c1a294880c9865f92"
+	},
+	"images_name_190": {
+		"message": "Do those object images (object tag with the attribute type=\"image/...\") have a relevant accessible name ?",
+		"hash": "e22b530686dbbd0e6971ada9c55feb94"
+	},
+	"images_name_192": {
+		"message": "Do those embedded images (embed tag with the attribute type=\"image/...\") have a relevant accessible name ?",
+		"hash": "1dcc751db8316e58836c44eaf85b72b8"
+	},
+	"images_name_194": {
+		"message": "Do those vector images (svg tag) have a relevant accessible name ?",
+		"hash": "c20a1b4f16cd0e091fe05e6fa0dc8cd5"
+	},
+	"images_name_196": {
+		"message": "Do those bitmap images (canvas tag) have a relevant accessible name ?",
+		"hash": "d757813ed0a29086b7500b003ea7fc35"
+	},
+	"images_name_198": {
+		"message": "List of bitmap images (canvas tag) carrying information, having an alternative content between its opening tag and closing tag correctly rendered by assistive technologies.",
+		"hash": "13da3be4e73eac53d99390e3b4da2880"
+	},
+	"images_name_199": {
+		"message": "List of bitmap images (canvas tag) carrying information, having an alternative content between its opening tag and closing tag not rendered by assistive technologies.",
+		"hash": "5d3565f261fd14e95936f476ca36902f"
+	},
+	"images_name_200": {
+		"message": "Images with a too long accessible name.",
+		"hash": "494c8283fc419c47aa295998b6a7373f"
+	},
+	"images_description_201": {
+		"message": "This test checks if the image accessible name is inferior to 80 caracters.",
+		"hash": "1366617352e899780b7d1a822a8bfddd"
+	},
+	"images_name_202": {
+		"message": "Is those images accessible name concise ?",
+		"hash": "d46d25afb1289b596f2fd4ccf62933f0"
+	},
+	"images_name_203": {
+		"message": "List of images.",
+		"hash": "1dfa466d83cff1c39b1a37f0a22c5b92"
+	},
+	"images_description_204": {
+		"message": "If those images are used as CAPTCHA, check that a non graphique alternative or another access solution to the functionnaly secured by the CACPTCHA does exist.",
+		"hash": "c4882a2825b66bc1ee3534bbbad0495b"
+	},
+	"images_name_205": {
+		"message": "List of buttons associated to an image.",
+		"hash": "b81353be256facf3770a83d884ac5df4"
+	},
+	"images_description_206": {
+		"message": "If those buttons are used as CAPTCHA, check that a non graphique alternative or another access solution to the functionnaly secured by the CACPTCHA does exist.",
+		"hash": "133e98a1f6adf425d010be768e807718"
+	},
+	"images_name_207": {
+		"message": "List of images (<img> tag) carrying information.",
+		"hash": "7732100aa3377d983b0649cbcd1aad38"
+	},
+	"images_description_208": {
+		"message": "Check if the images have a relevant and detailed description, if necessary.",
+		"hash": "e703fefa0a8ac5c1131bfc99b1e79eaa"
+	},
+	"images_name_209": {
+		"message": "List of images (<object> tag) carrying information.",
+		"hash": "fc90a99217e4599f7e40b6343a9589b2"
+	},
+	"images_name_211": {
+		"message": "List of images (<embed> tag) carrying information.",
+		"hash": "aec1882f55fbb7fe5469fb16324b3935"
+	},
+	"images_name_213": {
+		"message": "List of images (<input> tag) carrying information.",
+		"hash": "e88285e24fc79c17bb3948711cc8d261"
+	},
+	"images_name_215": {
+		"message": "List of images (<svg> tag) carrying information.",
+		"hash": "84cca88586145d1fffe707488687a01f"
+	},
+	"images_description_216": {
+		"message": "Check if thoses images have a relevant and detailed description correctly rendered by assistive technologies, if necessary.",
+		"hash": "4959b4a57703ed3c2d1ec163006e8bd6"
+	},
+	"images_name_217": {
+		"message": "List of images (<canvas> tag) carrying information.",
+		"hash": "216b27f9d4c303a29b47f67cd57a0cee"
+	},
+	"images_name_219": {
+		"message": "List of images using the aria-describedby attribute.",
+		"hash": "ac6d779fc4a78ab6c0149d16cae8e3a9"
+	},
+	"images_description_220": {
+		"message": "If thoses images need a detailed description, check the aria-describedby attribute associates this description.",
+		"hash": "34194e383245d4fb4c60eb54302d79f2"
+	},
+	"images_name_221": {
+		"message": "List of images (attribute role=\"img\") carrying information.",
+		"hash": "2488085fc12c09868ab2d2e511f7417b"
+	},
+	"images_description_222": {
+		"message": "Check if thoses images have a detailed description.",
+		"hash": "e264b57d3304cb002f416ac178c98122"
+	},
+	"images_name_223": {
+		"message": "List of images (<img> tag or having the attribute role=\"img\") carrying information.",
+		"hash": "68072e5615487afa342cc56b2a4683e0"
+	},
+	"images_description_224": {
+		"message": "If thoses images are text images without replacement mechanism, they mustbe replaced by text stylised with CSS properties if possible.",
+		"hash": "25766e79e54212a4f64b392202b4c380"
+	},
+	"images_name_235": {
+		"message": "List of image legends (<img> tag, <input> tag with type=\"image\" or tag with role=\"img\") incorrectly linked to the corresponding image.",
+		"hash": "925d3eed5b47889188137aa81ef859cd"
+	},
+	"images_name_236": {
+		"message": "List of image legends (<img> tag, <input> tag with type=\"image\" or tag with role=\"img\") correctly linked to the corresponding image.",
+		"hash": "8cc2747ecddca17a32cca49a4aecffa5"
+	},
+	"images_name_237": {
+		"message": "List of image legends  incorrectly linked to the corresponding image.",
+		"hash": "1c32af10335ab74077db4c9b2afa4375"
+	},
+	"images_name_238": {
+		"message": "List of image legends  correctly linked to the corresponding image.",
+		"hash": "6891c6e889b8b78deb02f1672b7d0717"
+	},
+	"images_name_239": {
+		"message": "List of embed image legends  (<embed> tag) incorrectly linked to the corresponding image.",
+		"hash": "2391e11cdd55161c89d7e48b575c2c4e"
+	},
+	"images_name_240": {
+		"message": "List of embed image legends  (<embed> tag) correctly linked to the corresponding image.",
+		"hash": "04d27c25c323db197ca6a1051dbd3534"
+	},
+	"images_name_241": {
+		"message": "List of vector image legends  (<svg> tag) incorrectly linked to the corresponding image.",
+		"hash": "50014083c419dc5d60870b1da8b1d358"
+	},
+	"images_name_242": {
+		"message": "List of vector image legends  (<svg> tag) correctly linked to the corresponding image.",
+		"hash": "422406ff7d358269fa5569aed8078564"
+	},
+	"images_name_243": {
+		"message": "List of bitmap image legends  (<canvas> tag) incorrectly linked to the corresponding image.",
+		"hash": "21631a142d22e9a02128c89d50ab950f"
+	},
+	"images_name_244": {
+		"message": "List of bitmap image legends  (<canvas> tag) correctly linked to the corresponding image.",
+		"hash": "b9873ac5bbcb1c8059918f29c2626516"
+	},
+	"links_name_245": {
+		"message": "List of text links without accessible name",
+		"hash": "5670f807685d92ab05d2c255c64e18e2"
+	},
+	"links_name_246": {
+		"message": "List of visible text links not rendered",
+		"hash": "40a4d28dbbf2f9d95f4db520451f21ed"
+	},
+	"links_name_247": {
+		"message": "List of non visible texts links not rendered",
+		"hash": "9c36b7f337104cb2a3125138c6458ea0"
+	},
+	"links_name_248": {
+		"message": "List of text links with accessible name",
+		"hash": "182705e138102bec301b28f1dc2010cd"
+	},
+	"links_description_249": {
+		"message": "Check the relevance of the links accessible names",
+		"hash": "55fe53937ffa94e0a2c204807fe1413d"
+	},
+	"links_name_250": {
+		"message": "List of text links with an irrelevant name",
+		"hash": "6ad11dfb6aa9c8af6f8775243a39aa38"
+	},
+	"links_description_251": {
+		"message": "Those links have a title attribute that do not include the 'accessible name\" from the link's content",
+		"hash": "9b962ef9cebf24e1c66a10699dd41a74"
+	},
+	"links_name_252": {
+		"message": "List of images links without accessible name",
+		"hash": "730951d6532576c768af4e2c806cf221"
+	},
+	"links_name_253": {
+		"message": "List of visible and non rendered images links",
+		"hash": "5000041cd0ba337ef44a4023ed8f0213"
+	},
+	"links_name_254": {
+		"message": "List of non visible and non rendered images links",
+		"hash": "4922f63365119a8be639dcb3cefe265b"
+	},
+	"links_name_255": {
+		"message": "List of images links with accessible name",
+		"hash": "7f7412add8a9f28f06e8e59043bda1e0"
+	},
+	"links_description_256": {
+		"message": "Check the relevance of the images accessible names",
+		"hash": "b65d89b35e81a86000f497890c769fbe"
+	},
+	"links_name_257": {
+		"message": "List of images links with an irrelevant name",
+		"hash": "d90604ed13a40b5b6d17f450163a0cfa"
+	},
+	"links_description_258": {
+		"message": "Those images links have a title attribute that do not include the 'accessible name\" from the link's content",
+		"hash": "188a142e7ee99cc0b50cfc651ee1f65a"
+	},
+	"links_name_259": {
+		"message": "List of composite links without accessible name",
+		"hash": "0b12cc183d5101ecd14f603c4c3f65df"
+	},
+	"links_name_260": {
+		"message": "List of visible and non rendered composite links",
+		"hash": "5b1f423b1867235a36284e1d2bd14645"
+	},
+	"links_name_261": {
+		"message": "List of non visible and non rendered composite links",
+		"hash": "f56b3eb10dbb78de0dc6547bafb8afcf"
+	},
+	"links_name_262": {
+		"message": "List of composite links with accessible name",
+		"hash": "98ed02968347895ee79f9b713672914d"
+	},
+	"links_description_263": {
+		"message": "Check the relevance of the composite accessible names",
+		"hash": "ade51a800e2985b747f8812d4678839b"
+	},
+	"links_name_264": {
+		"message": "List of composite links with an irrelevant name",
+		"hash": "2f59f72e02b3b0aaaaeadb98b8ca9246"
+	},
+	"links_description_265": {
+		"message": "Those composite links have a title attribute that do not include the 'accessible name\" from the link's content",
+		"hash": "2ece0cde81100a9fad8e0a4c0988f858"
+	},
+	"links_name_266": {
+		"message": "List of SVG links without accessible name",
+		"hash": "faf60168e8cd2922f5ebd1e50bf2a639"
+	},
+	"links_name_267": {
+		"message": "List of visible SVG links not rendered",
+		"hash": "2f1ea20a5d1ca72b8c29da9b37ae5b7d"
+	},
+	"links_name_268": {
+		"message": "List of non visible SVG links not rendered",
+		"hash": "4d34571efbba0981a875f01fecbe28df"
+	},
+	"links_name_269": {
+		"message": "List of SVG links with accessible name",
+		"hash": "edcaf875677010f8c2e6dab1492d42c7"
+	},
+	"links_name_271": {
+		"message": "List of links with a visible label not included in the accessible name.",
+		"hash": "d34cb09ae36e46df8a2ab6079e1ce767"
+	},
+	"links_name_272": {
+		"message": "List of links with a visible title included in the accessible name.",
+		"hash": "b16872566746a4874f36244cdf1f99b2"
+	},
+	"links_name_273": {
+		"message": "List of links with no title between <a> and </a>",
+		"hash": "c787a3e132eb9bfafd13a892c9bb98f3"
+	},
+	"links_name_274": {
+		"message": "List of links with a title between <a> and </a>",
+		"hash": "bb756c1469012fe4f6f51d8ee0b858f2"
+	},
+	"mandatory_name_275": {
+		"message": "The document type (doctype tag) is present on the page.",
+		"hash": "e2dc4aa293625848efce7b49b5a12d40"
+	},
+	"mandatory_passed_276": {
+		"message": "This page does have a doctype tag.",
+		"hash": "157f3ad4a4f9cfce4a2eb8527e8c8f85"
+	},
+	"mandatory_failed_277": {
+		"message": "This page does not have a doctype tag.",
+		"hash": "c13f57c05b0970b081a5a50b7b4d9ed5"
+	},
+	"mandatory_name_278": {
+		"message": "The document type (doctype tag) is valid.",
+		"hash": "5274cd9e03df187e219cbb1642e74023"
+	},
+	"mandatory_name_279": {
+		"message": "The document type is declared before the opening of the HTML tag.",
+		"hash": "16c2a6a6af05a2bf5d26cf243acab016"
+	},
+	"mandatory_name_280": {
+		"message": "Values of id attribute duplicated on the page",
+		"hash": "0168f0cc732225cece9c9e94d7f2639c"
+	},
+	"mandatory_name_281": {
+		"message": "Role attributes with an invalid value",
+		"hash": "a2ec4a408769a302aaefb4f8a8eb518c"
+	},
+	"mandatory_name_282": {
+		"message": "Role attributes with a valid value",
+		"hash": "2c4cbc81119394104111e8e17380b392"
+	},
+	"mandatory_name_283": {
+		"message": "Items having aria-* attributes not defined in WAI-ARIA",
+		"hash": "bed1dd7aef2abd4af46a50d269083ab9"
+	},
+	"mandatory_name_284": {
+		"message": "Items having only aria-* attributes defined in WAI-ARIA.",
+		"hash": "d2611158ba3c4b2ebdc0c6f927f60553"
+	},
+	"mandatory_name_285": {
+		"message": "ARIA properties with an invalid value.",
+		"hash": "15a5a3daa382c9015789b99c446d01c4"
+	},
+	"mandatory_name_286": {
+		"message": "ARIA properties not allowed on their element.",
+		"hash": "b9e25204f5273589e1943f8d8939d0f2"
+	},
+	"mandatory_name_287": {
+		"message": "HTML tags incorrect nesting ",
+		"hash": "44a36d9c4f34323de34bdb1996fc156d"
+	},
+	"mandatory_name_288": {
+		"message": "The page title must be declared in the header (header tag)",
+		"hash": "e0f3e6f89de8cd7d8d844fb0deb95351"
+	},
+	"mandatory_name_289": {
+		"message": "The web page must have only one page title (title tag).",
+		"hash": "7c4af14ae0c7c22b913a1a92f67c4711"
+	},
+	"mandatory_passed_290": {
+		"message": "The web page does not have more than one page title (title tag)",
+		"hash": "838a4e9a9dfdbd0339e315df0edd7f5a"
+	},
+	"mandatory_failed_291": {
+		"message": "The web page has several page titles (title tag).",
+		"hash": "d730220263479e3daca0cf4de427f00d"
+	},
+	"mandatory_name_292": {
+		"message": "The page title (title tag) must not be empty.",
+		"hash": "d92795a9ef4b4310c20fe30254c7534e"
+	},
+	"mandatory_name_293": {
+		"message": "The page language is specified.",
+		"hash": "5da644d444baec0ca22b215958bd163b"
+	},
+	"mandatory_passed_294": {
+		"message": "The page language is correctly specified.",
+		"hash": "0821325f5db85516c5bce3f28ec803c2"
+	},
+	"mandatory_failed_295": {
+		"message": "The page language is not specified.",
+		"hash": "8d1ec308a0c2307140811b67e3bc22eb"
+	},
+	"mandatory_name_296": {
+		"message": "HTML page with an empty lang attribute.",
+		"hash": "979b98f8e2f496b92eb0618d9ac76110"
+	},
+	"mandatory_name_297": {
+		"message": "HTML page with a non empty lang attribute.",
+		"hash": "335bdf95d60cbc23a725994887b01637"
+	},
+	"mandatory_name_298": {
+		"message": "HTML page with lang and xml:lang attributes whose values do not match.",
+		"hash": "3a13dd6d5d546f0dea754ce33ebd98fc"
+	},
+	"mandatory_name_299": {
+		"message": "HTML page with lang and xml:lang attributes whose values match.",
+		"hash": "537c52bf10d94113c96a275b9968eddc"
+	},
+	"mandatory_name_300": {
+		"message": "HTML page language is invalid.",
+		"hash": "36dada68f65fd68d1ef040ade4c1be56"
+	},
+	"mandatory_name_301": {
+		"message": "HTML page language is valid.",
+		"hash": "53e4441593f58c81fafd0d367c2a2067"
+	},
+	"mandatory_name_302": {
+		"message": "The web page has a page title (title tag).",
+		"hash": "4d5f672cf4d611e2cce8a7b81f0e5520"
+	},
+	"mandatory_passed_303": {
+		"message": "The page does have a page title.",
+		"hash": "f3a735b7759c46b81ffcb0c9dc0776bb"
+	},
+	"mandatory_failed_304": {
+		"message": "No page title was found.",
+		"hash": "eaab49d93596ea8ee78e1f964ed3e805"
+	},
+	"mandatory_name_305": {
+		"message": "Check the page title relevance (title tag)",
+		"hash": "3dca31813f1eaf5f1e5802b90eed3e1f"
+	},
+	"mandatory_name_306": {
+		"message": "The page title (title tag) is not relevant.",
+		"hash": "4c9a77bae1060875ee0af49da77df1d5"
+	},
+	"mandatory_name_307": {
+		"message": "For each text written in a differant language than the the default language, check that the language is correctly indicated.",
+		"hash": "cab0377618b739c99cf319e46416dd25"
+	},
+	"mandatory_name_308": {
+		"message": "Items with an empty lang attribute.",
+		"hash": "4f84e42de28a4f691d87e3f01e91d4e9"
+	},
+	"mandatory_name_309": {
+		"message": "Items with a non empty lang attribute.",
+		"hash": "d77316cb5c09e42e9aab963665850595"
+	},
+	"mandatory_name_310": {
+		"message": "Items with an invalid lang attribute.",
+		"hash": "2dfbc40cee7407060c47c6223422a96a"
+	},
+	"mandatory_name_311": {
+		"message": "Items with a valid lang attributes.",
+		"hash": "00ce0d11b264bb2e223f536c78e0d4e7"
+	},
+	"mandatory_name_312": {
+		"message": "Tags must not be use solely for presentation purpose.",
+		"hash": "5d8aec8965773e4e38da6e9ca6c5757c"
+	},
+	"mandatory_description_313": {
+		"message": "Do not use double br to create space between text items",
+		"hash": "efdd4c4dc87c8339e3428b38e6196744"
+	},
+	"mandatory_name_314": {
+		"message": "Each text with a different reading direction from the default reading direction must be contained in a tag with a dir attribute.",
+		"hash": "7fb958f9a3696c3583b5425873ad7709"
+	},
+	"mandatory_name_315": {
+		"message": "Invalid change of reading direction (dir attribute).",
+		"hash": "6b3abf78ec602735faa4c6bb9837e8bc"
+	},
+	"mandatory_description_316": {
+		"message": "Those attributes values are invalid, the axpected values are 'ltr' or 'rtl'",
+		"hash": "0ee076e86fa674827339ccbb04dbb84c"
+	},
+	"mandatory_name_317": {
+		"message": "Valid change of reading direction (dir attribute).",
+		"hash": "ded7e0ed31071d3b3af8efff88b991f8"
+	},
+	"mandatory_description_318": {
+		"message": "Check the relevance of the dir attribute value.",
+		"hash": "c510e9e26edfe9b4ec3744fc1ff3a4b7"
+	},
+	"media_name_319": {
+		"message": "List of audio-only time-based medias",
+		"hash": "f160ad7e3f3d60f4478d1a54540c6e50"
+	},
+	"media_description_320": {
+		"message": "Check if necessary the presence of a textual transcription and its relevance.",
+		"hash": "715c421dc02dc0cd28218776ec9fee7c"
+	},
+	"media_name_321": {
+		"message": "List of synchronyzed of video time-based medias.",
+		"hash": "079dee59e8e59f44135c8bd886e88efd"
+	},
+	"media_description_322": {
+		"message": "Check if necessary the presence of an audio-description, a textual transcription and subtitles and their relevance.",
+		"hash": "9d77536519eda406d0d22174357694e8"
+	},
+	"media_name_323": {
+		"message": "List of <track> tag with no kind=\"captions\" attribute",
+		"hash": "b4d2df4107c9a0101f3d553843793e30"
+	},
+	"media_description_324": {
+		"message": "Check if those tracks items are synchronyzed subtitles. If yes, they shoud have a [kind=\"captions\"] attribute.",
+		"hash": "51ecc2998f9db4e29710290cf8b3abdc"
+	},
+	"media_name_325": {
+		"message": "List of synchronyzed subtitles broadcast via a <track> tag with a kind=\"captions\" attribute",
+		"hash": "2cd561a797937c14267c49b3c147da05"
+	},
+	"media_name_326": {
+		"message": "List of synchronized time-based medias having subtitles via the track tag",
+		"hash": "8e60c5f6070c8537b98052cd8a0ee99d"
+	},
+	"media_description_327": {
+		"message": "Check the subtitles relevance",
+		"hash": "7344fdd7abc95b7600cbe09131a04e10"
+	},
+	"media_name_328": {
+		"message": "List of video time-based medias",
+		"hash": "04bf52feff4d16b8620cc00be614e023"
+	},
+	"media_description_329": {
+		"message": "Check if necessary the presence of an audio-description and its relevance",
+		"hash": "ca23a186362c5eee6b0ff21caee612c8"
+	},
+	"media_name_330": {
+		"message": "List of time-based medias",
+		"hash": "8a7e358b0e14dae3fdf35065f9b95407"
+	},
+	"media_description_331": {
+		"message": "Check the adjacent textual content clearly identifies the media.",
+		"hash": "ab314eb63da3c21b5a22cf4a30d892b9"
+	},
+	"media_name_332": {
+		"message": "The non time-based medias have, if necessary, an alternative.",
+		"hash": "464b2400543ca14086c0aa0046108358"
+	},
+	"media_description_333": {
+		"message": "Check that an adjacent link or button, clearly identified, gives access to an alternative.",
+		"hash": "5fb4b5645569938f55c0373e3de28f00"
+	},
+	"media_name_334": {
+		"message": "For non time-based medias associated to an alternative, this alternative must me accessible.",
+		"hash": "ad3e135ae30e5eded0f1c68b325eb444"
+	},
+	"media_description_335": {
+		"message": "Check the alternative accessibility of the non time-based media associated.",
+		"hash": "17266245e6a9795b38a1754fe4b153e1"
+	},
+	"media_name_336": {
+		"message": "For non time-based medias having an alternative, this alternative must be relevant.",
+		"hash": "60f6bf3aa5571b275adf0fb1e635cc52"
+	},
+	"media_description_337": {
+		"message": "Check the alternative gives access to similar content and functionnalities.",
+		"hash": "03fdb05563938156b0c9e2d7371246ba"
+	},
+	"media_name_338": {
+		"message": "List of sounds lasting more than 3 secondes automatically triggered and not controllable by the user.",
+		"hash": "b847301e675a367ba3c71648e8eefcc3"
+	},
+	"media_name_339": {
+		"message": "List of sounds automatically triggered controllable by the user or lasting 3 secondes max.",
+		"hash": "7b8e103bdce735bbf5877bac6f401e0e"
+	},
+	"media_name_340": {
+		"message": "List of time-based medias having functionnalities to control its viewing",
+		"hash": "e164ff4972a6833b2ac2d313a0f68903"
+	},
+	"media_description_342": {
+		"message": "Check if necessary the presence of the media viewing control fonctionnalities.",
+		"hash": "faee8bddca9d85c8aa7cd9698dd5b746"
+	},
+	"media_description_344": {
+		"message": "Check each functionality of those medias is controllable AND activatable with a keyboard and any pointing device.",
+		"hash": "113dd61fac1f795b23f7f0f7ede59612"
+	},
+	"media_name_345": {
+		"message": "For each non time-based media, each functionality must be accessible by keyboard and any pointing device.",
+		"hash": "ac0bc7a07b452ae628f0c8c26c7dae24"
+	},
+	"media_name_346": {
+		"message": "For each non time-based media, each functionality must be activatable by keyboard and any pointing device.",
+		"hash": "f14a501d04d6dc02469f64623a45352d"
+	},
+	"media_name_347": {
+		"message": "Each media must be compatible with assistive technologies.",
+		"hash": "12e7ead7737f1122b757f57d8b75efe0"
+	},
+	"media_description_348": {
+		"message": "Check the name, the role, the value, the parameters and the state changes of interface components are accessible to assistive technologies or that a compatible alternative gives access to similar functionnalities.",
+		"hash": "e2f3d2e909124387e12b3daa7f586472"
+	},
+	"media_name_349": {
+		"message": "For each media having a compatible alternative with assistive technologies, the alternative must be correctly implemented.",
+		"hash": "0c72d2acbfdd8145f295700433d1aa0e"
+	},
+	"media_description_350": {
+		"message": "Check the alternative of the link/button to access the alternative is adjacent to the media, or that a mechanism can replace the media with its alternative.",
+		"hash": "201c23971d2ee91809410f9fea0bd2fd"
+	},
+	"navigation_name_351": {
+		"message": "Each set of pages must at least have two different navigation systems.",
+		"hash": "50ea75d28dbe80f3e7697dd778c16729"
+	},
+	"navigation_name_352": {
+		"message": "In each set of pages, the menu and the navigation bars are always on the same place in the presentation AND are always in the same relative order in the source code.",
+		"hash": "5d44a10d773118762805fb8cf7880e0f"
+	},
+	"navigation_name_353": {
+		"message": "The page \"site map\" must be representative of the site general architecture.",
+		"hash": "a046899d857104c936743ad4919a6b56"
+	},
+	"navigation_name_354": {
+		"message": "The site map links must be functional.",
+		"hash": "2eb4079022f8d3997c2f74b30e4e0d42"
+	},
+	"navigation_name_355": {
+		"message": "The  site map links must point to the page indicated by the title.",
+		"hash": "99f7b81f18aea85060414bd47daa6167"
+	},
+	"navigation_name_356": {
+		"message": "In each set of page, the\"site map\" page  must be accessible via a similar functionality.",
+		"hash": "6609421ffb3b2e9e60603503ff383ee2"
+	},
+	"navigation_name_357": {
+		"message": "In each set of page, the  functionality to the \"site map\" page  must be located at the same place in the presentation.",
+		"hash": "29572300ea25a49304b8fa66bc09d304"
+	},
+	"navigation_name_358": {
+		"message": "In each set of page, the  functionality to the \"site map\" page  must always be in the same relative order in the source code.",
+		"hash": "51eee6067d876738eb9ad7fec61b30c7"
+	},
+	"navigation_name_359": {
+		"message": "In each set of page, the search engine must be accessible from a similar functionality.",
+		"hash": "04e788d978d9dae8c93a3c2ff630d138"
+	},
+	"navigation_name_360": {
+		"message": "In each set of page, the search engine must be at the same place in the presentation.",
+		"hash": "dea4c723a03aff6107f6acb11ed95c78"
+	},
+	"navigation_name_361": {
+		"message": "In each set of page, the search engine must be in the same relative order in the source code.",
+		"hash": "79e78e5a5c5294568bad62e367680e34"
+	},
+	"navigation_name_362": {
+		"message": "Content grouping areas available in several web pages (header, main navigation, main content, footer an search engine areas) should be reachable or avoidable.",
+		"hash": "a4c293e82ed9b2fcf6469abf50ef9c93"
+	},
+	"navigation_name_363": {
+		"message": "In each web page, a link must be used to reach or avoid the main content area.",
+		"hash": "4b8ee82d0c52dcfa890606fb0b501482"
+	},
+	"navigation_name_364": {
+		"message": "In each set of page, the avoid or quick access link to the main content area must be in the same place in the presentation and in the same relative order in the  soruce dode. It must also be visible or visible when focusing and functional.",
+		"hash": "b272df410c9bfed90dfce6a06725c2ea"
+	},
+	"navigation_name_365": {
+		"message": "List of tabbable non-visible items.",
+		"hash": "97c381c2ed5954d8c13f358a71a46b62"
+	},
+	"navigation_description_366": {
+		"message": "Check those items become visible when focused on.",
+		"hash": "d384507b6dc98fad82e04eb301fcf8fe"
+	},
+	"navigation_name_368": {
+		"message": "For each script updating or adding content, the tab order must remain coherent.",
+		"hash": "1b578bcca42efee33b78769108186800"
+	},
+	"navigation_name_369": {
+		"message": "It's possible to reach the next or previous focusable element with the tab key.",
+		"hash": "f3e679289f2cc445127cb6373e7d1f06"
+	},
+	"navigation_name_370": {
+		"message": "For each one letter keyboard shortcut (capital or lowercase letter, ponctuation, number or symbol), a mechanism allows to disable or configure the keyboard shortcut.",
+		"hash": "c6ce468937e628229a1171293481f07a"
+	},
+	"navigation_name_371": {
+		"message": "Additional content showing on hover, when focused or after activating a component must, if necessary, be reachable with a keyboard.",
+		"hash": "76d1e9024a86bb999060fc14a6c600b8"
+	},
+	"presentation_name_372": {
+		"message": "List fo tags used for information presentation present in the page's generated source code.",
+		"hash": "5111ba893895319d3cf4943f59e1ced4"
+	},
+	"presentation_name_373": {
+		"message": "List fo attributes used for information presentation present in the page's generated source code.",
+		"hash": "bea894de966c2ffa3c44714a24fc91bb"
+	},
+	"presentation_name_374": {
+		"message": "Spaces must no be used to separate letters of a word, simulate table or simulate text columns.",
+		"hash": "77eaa25c8460b8bc6b4b39a16a8b2e5a"
+	},
+	"presentation_name_375": {
+		"message": "The information must remain present when the stylesheets are deactivated.",
+		"hash": "eee6faa06342bc058fdb02929ad65d2a"
+	},
+	"presentation_name_376": {
+		"message": "The information must remain understandable when the stylesheets are deactivated.",
+		"hash": "97bc649276204a6ab93f6faadd0fed79"
+	},
+	"presentation_name_377": {
+		"message": "Font size can be increased up to 200% without losing information.",
+		"hash": "a765369c58e205527ae9cf22fb579c71"
+	},
+	"presentation_name_378": {
+		"message": "The viewport media does not prevent zoom.",
+		"hash": "73afedc4d050896dd262b37cf38f5b49"
+	},
+	"presentation_name_379": {
+		"message": "The viewport media prevents zoom.",
+		"hash": "d9a1b9c671cd3d4f7deaa550b010a4d3"
+	},
+	"presentation_name_380": {
+		"message": "Each CSS declaration of font colors (color) of an element that may contain text must be accompanied by a background-color (background, background-color) declaration, at least, inherited from a parent.",
+		"hash": "7d50c23ae221cff506f8f4e41691d14c"
+	},
+	"presentation_name_381": {
+		"message": "Each CSS declaration of background colors (background, background-color) of an element that may contain text must be accompanied by a font color (color) declaration, at least, inherited from a parent.",
+		"hash": "31e2412e634f18e39ca8028f0e83fe4c"
+	},
+	"presentation_name_382": {
+		"message": "Each image use to create a background colors (background, background-image) of an element that may contain text, via CSS, must be accompanied by a background color (background, background-color) declaration, at least, inherited from a parent.",
+		"hash": "a59de00ef929a5c59a4e63f64ad744b6"
+	},
+	"presentation_name_383": {
+		"message": "Each link only indicated by the color, and whose nature is not obvious, must be visible in relation to the surrounding text.",
+		"hash": "b765d92eb9f54d51c38f7559a1f305cf"
+	},
+	"presentation_name_384": {
+		"message": "For each element receiving focus, focusing must be visible.",
+		"hash": "48bcf6fb0a38761da9a1dc3088ff3b22"
+	},
+	"presentation_name_385": {
+		"message": "List of not rendered visible items.",
+		"hash": "281a6dc47449b9876396a4b494fa9be2"
+	},
+	"presentation_description_386": {
+		"message": "Check those items are intended to be ignored by assistive technologies.",
+		"hash": "c214031f17abf36a42345324ad7feeb8"
+	},
+	"presentation_name_387": {
+		"message": "List of non visible rendered items.",
+		"hash": "267a9504c212405e87fbe4b935a1ad82"
+	},
+	"presentation_description_388": {
+		"message": "Check those items are intended to be rendered by assistive technologies.",
+		"hash": "36e40cebcbfff59fb034f558c6831d5e"
+	},
+	"presentation_name_389": {
+		"message": "For each text or set of texts, information must not be given only by form, size or position. This rule must be respected and implemented in an appropriate way.",
+		"hash": "701314cec08adbfc9c06fa2eda74b459"
+	},
+	"presentation_name_390": {
+		"message": "For each image or set of images, information must not be given only by form, size or position. This rule must be respected and implemented in an appropriate way.",
+		"hash": "cbbf5d84e46888fa0fe05b604ea33a17"
+	},
+	"presentation_name_391": {
+		"message": "For each time-based media, information must not be given only by form, size or position. This rule must be respected and implemented in an appropriate way.",
+		"hash": "a42a8b9ab2f6a8dbfe750aa54a2f1db8"
+	},
+	"presentation_name_392": {
+		"message": "For each  non time-based media, information must not be given only by form, size or position. This rule must be respected and implemented in an appropriate way.",
+		"hash": "27a9e951ca6a020aff779bb9a94f885f"
+	},
+	"presentation_name_393": {
+		"message": "If the reading direction is horizontal, there must be no horizontal scrolling on a 320px width screen.",
+		"hash": "10a43a30b70c897c20c367f6d6272ed4"
+	},
+	"presentation_name_394": {
+		"message": "If the reading direction is vertical, there must be no vertical scrolling on a 256px height screen.",
+		"hash": "3a6fc6dbcca87aa9774fd99801dadc85"
+	},
+	"presentation_name_395": {
+		"message": "Space properties of text must allow a redefinition by the user without a loss of information or functionality.",
+		"hash": "3089984fb289409df61e516176c74f78"
+	},
+	"presentation_name_396": {
+		"message": "Each additional content showing on focus or hover an interface component must allow the user to mask it without moving the focus or the mouse pointer.",
+		"hash": "67adb8715f8227f6bcd7ea0ca164b6d8"
+	},
+	"presentation_name_397": {
+		"message": "Each additional content showing on hover an interface component must allow the user to hover it with the mouse pointer without disappearing.",
+		"hash": "4439972f938c4148ec8be901fb21b3ef"
+	},
+	"presentation_name_398": {
+		"message": "Each additional content showing on focus or hover an interface component must stay visible until it's valid or a user's action masks it.",
+		"hash": "201601594a2d745c2565b780e0e5fbad"
+	},
+	"presentation_name_399": {
+		"message": "Additional content showing on hover via CSS properties must become visible by a keyboard or a pointer device action.",
+		"hash": "744bcabcd8d5353efc51a4ff5ac90ab4"
+	},
+	"presentation_name_400": {
+		"message": "Additional content showing on focus via CSS properties must become visible by a keyboard or a pointer device action.",
+		"hash": "cd50eb3fa73acc66432219f14b370aae"
+	},
+	"scripts_name_401": {
+		"message": "Visible or rendered buttons without accessible name.",
+		"hash": "92fe7c144bcba9e48f2059496c819434"
+	},
+	"scripts_name_402": {
+		"message": "Visible or rendered buttons with accessible name.",
+		"hash": "4778ccd61208c802e30a2bdb49ddcef3"
+	},
+	"scripts_name_403": {
+		"message": "List of items that are not rendered but tabbable.",
+		"hash": "b5def68c0436829edcfc74bf36e519bb"
+	},
+	"scripts_name_404": {
+		"message": "Each script generating or controlling an interface component must have a relevant and accessible name.",
+		"hash": "f1385f2efec27f322dd7aedd3b802b10"
+	},
+	"scripts_name_405": {
+		"message": "Each script generating or controlling an interface component must have a relevant role.",
+		"hash": "592067f622286d9f2f949d4f2bea5ab6"
+	},
+	"scripts_name_406": {
+		"message": "List of buttons with a visible title not contained in the accessible name.",
+		"hash": "4e2b850c8a8449836a2d5d2fe3851181"
+	},
+	"scripts_name_407": {
+		"message": "List of buttons with a visible title correctly contained in the accessible name.",
+		"hash": "5e38585cc89dfdd6a2c0483a30d5f2b1"
+	},
+	"scripts_name_408": {
+		"message": "List of script alternatives in the <noscript> tags.",
+		"hash": "9e4a5c0b47738598129cfd353a48d6da"
+	},
+	"scripts_description_409": {
+		"message": "Check the alternative's relevance.",
+		"hash": "b04990fc8c90b0c9300d27069ec2eb9b"
+	},
+	"scripts_name_410": {
+		"message": "For each non textual item updated by a script (in the page or in a frame) and having an alternative, the alternative must be updated in an appropriate way.",
+		"hash": "fe9b451cfd3a54783447e48e0a9b0123"
+	},
+	"scripts_name_411": {
+		"message": "For each item having an event listener controlled by a script, the item must be controllable by keyboard and any pointer device.",
+		"hash": "8a6eaf902a8d3535fdf9ab41122d6b32"
+	},
+	"scripts_name_412": {
+		"message": "A script must no delete focus on the item being focused.",
+		"hash": "9bd7ae5627675d5fcde0bbf041923a83"
+	},
+	"scripts_name_413": {
+		"message": "For each script initiating an context change, the user must be aware of it or have control on it.",
+		"hash": "4b7e6a5158109e40b2de1b1b582b4f89"
+	},
+	"scripts_name_414": {
+		"message": "Each status message informing on the success, the result of a action or the state of an application must use the WAI ARIA role=\"status\" attribute.",
+		"hash": "9a6ca99a362d091ae93cbfb2068d334f"
+	},
+	"scripts_name_415": {
+		"message": "Each status message giving a suggestion orwarning about an error must use the WAI ARIA role=\"alert\" attribute.",
+		"hash": "df92b5d73d1794530788c599730e6af4"
+	},
+	"scripts_name_416": {
+		"message": "Each status message informing about a process evolution must use one of the following WAI ARIA attribute role=\"log\", role=\"progressbar\" or role=\"status\".",
+		"hash": "8f9fe2c7b363faafd87f642885afb9dd"
+	},
+	"structure_name_417": {
+		"message": "List of non relevant titles (<hx> tags or tag having the WAI-ARIA attribute role=\"heading\" associated to a WAI-ARIA attribute aria-level).",
+		"hash": "93a2c6b0f0143b40bb212e3d4dbdeb31"
+	},
+	"structure_name_418": {
+		"message": "Check the relevance of titles (<hx> tags or tag having the WAI-ARIA attribute role=\"heading\" associated to a WAI-ARIA attribute aria-level).",
+		"hash": "a7b76725298318803f6bb542f9403278"
+	},
+	"structure_name_419": {
+		"message": "List of items not structured as title but having a role or a class indicating a title.",
+		"hash": "cda0510ef17928255dea62b1bdb0457a"
+	},
+	"structure_description_420": {
+		"message": "Check if those items should be sctructured as title.",
+		"hash": "026d0e0c2820487e7411a4f9389ad077"
+	},
+	"structure_name_421": {
+		"message": "Check the following items are header areas.",
+		"hash": "2b8622ea79ca0fc1c1caed17c919c367"
+	},
+	"structure_name_422": {
+		"message": "Check the following items are footer areas.",
+		"hash": "dd62282519049664ec2b37e63f9239be"
+	},
+	"structure_name_423": {
+		"message": "Check the following items are navigation areas.",
+		"hash": "2181295fa69ca069874a5fbf02cc62fb"
+	},
+	"structure_name_424": {
+		"message": "Check the following item is the main content area.",
+		"hash": "9e448ac6ec423f6a8833bdbf416c7bad"
+	},
+	"structure_name_425": {
+		"message": "The document structure uses a visible and unique <main> tag",
+		"hash": "7495da604dc3f65141648727762316a5"
+	},
+	"structure_passed_426": {
+		"message": "The document structure do use a visible and unique <main> tag",
+		"hash": "5cd318f493c79fd6c68d0278df018b8e"
+	},
+	"structure_failed_427": {
+		"message": "The document structure do not use a visible and unique <main> tag or uses several <main> tags.",
+		"hash": "1da31130daad1595a7589fa9de9a6d5b"
+	},
+	"structure_name_428": {
+		"message": "Informations visually grouped as unordered list must be structured as such.",
+		"hash": "071bb11c39dc834cf267263ab00d8197"
+	},
+	"structure_name_429": {
+		"message": "Informations visually grouped as ordered list must be structured as such.",
+		"hash": "4b9878b15a023978c54e30ab3f0ee191"
+	},
+	"structure_name_430": {
+		"message": "Informations visually grouped as definition list must be structured as such.",
+		"hash": "019465f0a9915512dceaa6bd5d831ad5"
+	},
+	"structure_name_431": {
+		"message": "Each short quote must use a <q> tag.",
+		"hash": "1976d3882004e72823edb025d5230ac8"
+	},
+	"structure_name_432": {
+		"message": "Each quote block must use a <blockquote> tag.",
+		"hash": "4c29dd6750ee9cc9bd8c53169c23c742"
+	},
+	"tables_name_433": {
+		"message": "List of complex tables with no summary.",
+		"hash": "16ee9ec0e2bdb46a3f989dfdd356483a"
+	},
+	"tables_passed_434": {
+		"message": "No complex table with no summary was found on this page.",
+		"hash": "f5fb6f31e9b2b9dbad518744005488a2"
+	},
+	"tables_failed_435": {
+		"message": "Complex table with no summary was found on this page.",
+		"hash": "4f5305c3c6dce4b6572f5b3fc509dd09"
+	},
+	"tables_name_436": {
+		"message": "List of complex tables with a summary.",
+		"hash": "5c5ad4128c7c2d8a026585201addb9fd"
+	},
+	"tables_name_437": {
+		"message": "List of complex tables with a relevant summary.",
+		"hash": "98544757e574c5db3d1a4a3186e3cb1d"
+	},
+	"tables_description_438": {
+		"message": "Check the relevance of the complex table summary",
+		"hash": "e394885a55704b26c66a721af26c8ea8"
+	},
+	"tables_name_439": {
+		"message": "List of formatting tables with no presentation role",
+		"hash": "c3f6512b1fd05ffc39b7c9f062446fb3"
+	},
+	"tables_description_440": {
+		"message": "Check the linearized content remains understandablee",
+		"hash": "a63042396b961177f578d138997cd180"
+	},
+	"tables_name_441": {
+		"message": "List of formatting tables with a presentation role",
+		"hash": "354690ae21dac2b305f00064114fb8ef"
+	},
+	"tables_name_443": {
+		"message": "List of data tables with a title correctly associated to a table.",
+		"hash": "af1d8fe7196559af40de0f9b56f96159"
+	},
+	"tables_name_444": {
+		"message": "List of data tables with a title incorrectly associated to a table.",
+		"hash": "b562c9ba702232d099b1c315158de121"
+	},
+	"tables_name_445": {
+		"message": "List of data tables with a title",
+		"hash": "411cc7eb46d688bca2e465c3269e5b28"
+	},
+	"tables_description_446": {
+		"message": "Check the title's relevance",
+		"hash": "fe11355d042e33c083825195eb435ea5"
+	},
+	"tables_name_447": {
+		"message": "List of data tables with a non relevant title",
+		"hash": "5853c1e6c53358f291395a8094cc5406"
+	},
+	"tables_name_448": {
+		"message": "List of a complete column's header of a data table, correctly declared.",
+		"hash": "2d1c70b6f1e48f791f897eb1cafd7e51"
+	},
+	"tables_name_449": {
+		"message": "List of a complete column's header of a data table, incorrectly declared.",
+		"hash": "45eb08d9523006519bb1747451ab94e7"
+	},
+	"tables_name_450": {
+		"message": "List of a complete row's header of a data table, correctly declared.",
+		"hash": "edc734f9ae7d2da15dc483093b0ebe97"
+	},
+	"tables_name_451": {
+		"message": "List of a complete row's header of a data table, incorrectly declared.",
+		"hash": "459137ac066102861c538cc590574e23"
+	},
+	"tables_name_452": {
+		"message": "List of headers that do not apply to the entire row or colums that are poorly structured.",
+		"hash": "71b6e9985e4bbf54791f56825735ef06"
+	},
+	"tables_description_453": {
+		"message": "Those headers hould be structured using a <th> tag",
+		"hash": "4971190081634d30cc2ad02381921a4a"
+	},
+	"tables_name_454": {
+		"message": "List of headers that do not apply to the entire row or colums that are correctly structured.",
+		"hash": "05595ed332f3ee76e0e96ef95ba63d79"
+	},
+	"tables_name_455": {
+		"message": "List of data table's cells associated to several headers, poorly tagged.",
+		"hash": "0ab5ec08a24a2f947f114d438f688e61"
+	},
+	"tables_name_456": {
+		"message": "List of data table's cells associated to several headers, correctly tagged.",
+		"hash": "3a9047bd15d463990e5ca8aaa70a030a"
+	},
+	"tables_name_457": {
+		"message": "List of headers that do apply to the entire row or colums that are badly associated to cells.",
+		"hash": "99429cd8028475cff7fbb5f5e23ee635"
+	},
+	"tables_name_458": {
+		"message": "List of headers that do apply to the entire row or colums that are correctly associated to cells.",
+		"hash": "5d15064d2f9a6b9822115d40723cdfa9"
+	},
+	"tables_name_459": {
+		"message": "Table headers that associate the row's or column's cells with a valid scope attribute.",
+		"hash": "66e911482b7e1d3c3e9ea6e0582d7f4d"
+	},
+	"tables_name_460": {
+		"message": "Table headers that associate the row's or column's cells with an invalid scope attribute.",
+		"hash": "0ea454d13053726b87e321b1a731914d"
+	},
+	"tables_name_461": {
+		"message": "Table headers that associate the row's or column's cells with a scope attribute.",
+		"hash": "4fea2fd7826ac3f50ed74e4405bdd93e"
+	},
+	"tables_description_462": {
+		"message": "Check the scope attribute's relevance.",
+		"hash": "ecdee4d0dcdcaefa8507fb823caafb6c"
+	},
+	"tables_name_463": {
+		"message": "List of headers that do not apply to the entire row or colums that are correctly associated to cells.",
+		"hash": "2d99c715b8510a82684278f414034f6e"
+	},
+	"tables_name_464": {
+		"message": "List of headers that do not apply to the entire row or colums that are badly associated to cells.",
+		"hash": "70ad9fe914f1aef69272b68bc1cd58b2"
+	},
+	"tables_name_465": {
+		"message": "The header attribute specified on a cell is refering to headers of the same table item.",
+		"hash": "a52a213a376038f9f1bb14361ce0257e"
+	},
+	"tables_name_466": {
+		"message": "The header attribute specified on a cell is not refering to headers of the same table item.",
+		"hash": "54c8f4e01cc1fab1dc220c76f4d44586"
+	},
+	"tables_name_467": {
+		"message": "List of the ARIA headers that apply to an entire row or colum that are misfilled.",
+		"hash": "4f943706150904080a7d5010bd707e57"
+	},
+	"tables_name_468": {
+		"message": "List of the ARIA headers that apply to an entire row or colum that are correctly filled.",
+		"hash": "6424af1cde4712497ae663d340fdd479"
+	},
+	"tables_name_469": {
+		"message": "List of formatting tables using items specific to data tables.",
+		"hash": "28a7345044457caa64d39009419d3782"
+	},
+	"tables_name_470": {
+		"message": "List of formatting tables using no items specific to data tables.",
+		"hash": "8e988c67a8c21bc169db730003399f1b"
+	},
 	"__WET_LOCALE__": { "message": "en" }
 }
