@@ -5,7 +5,15 @@ const SRC_DIR = path.join(__dirname, 'src')
 const REFERENCES_DIR = path.join(SRC_DIR, 'references')
 var rgaa_dir = fs.readdirSync(path.join(REFERENCES_DIR, 'rgaa4'));
 
-var script = {tested: [], cantTell: [], untested: []};
+var script = {
+    tested: {
+        failed: [],
+        passed: [],
+        both: []
+    }, 
+    cantTell: [], 
+    untested: []
+};
 
 rgaa_dir.forEach(testFile => {
     if(testFile !='rgaa4-init.js') {
@@ -31,7 +39,9 @@ for(var theme in script) {
     }
 
     for(var i in result) {
-        if(result[i].match('failed') || result[i].match('passed') || result[i].match('analyzeElements') || result[i].match('expectedNbElements')) script.tested.push(i)
+        if(result[i].match('analyzeElements') || result[i].match('expectedNbElements')) script.tested.both.push(i)
+        else if(result[i].match('failed')) script.tested.failed.push(i)
+        else if(result[i].match('passed')) script.tested.passed.push(i)
         else if(result[i].match('cantTell')) script.cantTell.push(i)
         else script.untested.push(i)
     }
