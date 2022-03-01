@@ -9,14 +9,15 @@ var script = {
     tested: {
         failed: [],
         passed: [],
-        both: []
+        failedORpassed: [],
+        inapplicable: []
     }, 
     cantTell: [], 
     untested: []
 };
 
 rgaa_dir.forEach(testFile => {
-    if(testFile !='rgaa4-init.js') {
+    if(testFile != 'rgaa4-init.js') {
         script[testFile] = fs.readFileSync(path.join(REFERENCES_DIR, 'rgaa4', testFile)).toString();
     }
 });
@@ -34,14 +35,17 @@ for(var theme in script) {
     for(let i = 0; i < tests.length; i++) {
         tests[i].forEach(t => {
             if(!result[t]) result[t] = statuses[i]
-            else result[t] += "__"+statuses[i];
+            else result[t] = result[t]+"__"+statuses[i];
         });
     }
 
     for(var i in result) {
-        if(result[i].match('analyzeElements') || result[i].match('expectedNbElements')) script.tested.both.push(i)
-        else if(result[i].match('failed')) script.tested.failed.push(i)
-        else if(result[i].match('passed')) script.tested.passed.push(i)
+        if(result[i].match('analyzeElements') || result[i].match('expectedNbElements') || result[i].match('failed') || result[i].match('passed') || result[i].match('inapplicable')) {
+            if(result[i].match('analyzeElements') || result[i].match('expectedNbElements')) script.tested.failedORpassed.push(i)
+            if(result[i].match('failed')) script.tested.failed.push(i)
+            if(result[i].match('passed')) script.tested.passed.push(i)
+            if(result[i].match('inapplicable')) script.tested.inapplicable.push(i)
+        }
         else if(result[i].match('cantTell')) script.cantTell.push(i)
         else script.untested.push(i)
     }
@@ -49,13 +53,13 @@ for(var theme in script) {
     delete script[theme];
 }
 
-script["total"] = "Testés -> "+(script.tested.both.length+script.tested.failed.length+script.tested.passed.length)+" / Indéterminés -> "+script.cantTell.length+" / Non testées -> "+script.untested.length
 script["total"] = {
     "Testés": {
         "Invalidés": script.tested.failed.length,
         "Validés": script.tested.passed.length,
-        "Invalidés/Validés": script.tested.both.length,
-        "Total": (script.tested.both.length+script.tested.failed.length+script.tested.passed.length)
+        "Invalidés/Validés": script.tested.failedORpassed.length,
+        "Inapplicables": script.tested.inapplicable.length,
+        "Total des tests RGAA testés": Array.from(new Set(script.tested.failedORpassed.concat(script.tested.failed).concat(script.tested.passed).concat(script.tested.inapplicable))).length
     },
     "Indéterminés": script.cantTell.length,
     "Non testées": script.untested.length
