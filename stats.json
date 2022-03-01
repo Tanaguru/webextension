@@ -265,5 +265,14 @@
     "9.4.1",
     "9.4.2"
   ],
-  "total": "Testés -> undefined / Indéterminés -> 72 / Non testées -> 100"
+  "total": {
+    "Testés": {
+      "Invalidés": 74,
+      "Validés": 2,
+      "Invalidés/Validés": 6,
+      "Total": 82
+    },
+    "Indéterminés": 72,
+    "Non testées": 100
+  }
 }

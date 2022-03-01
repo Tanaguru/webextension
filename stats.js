@@ -49,7 +49,17 @@ for(var theme in script) {
     delete script[theme];
 }
 
-script["total"] = "Testés -> "+script.tested.length+" / Indéterminés -> "+script.cantTell.length+" / Non testées -> "+script.untested.length
+script["total"] = "Testés -> "+(script.tested.both.length+script.tested.failed.length+script.tested.passed.length)+" / Indéterminés -> "+script.cantTell.length+" / Non testées -> "+script.untested.length
+script["total"] = {
+    "Testés": {
+        "Invalidés": script.tested.failed.length,
+        "Validés": script.tested.passed.length,
+        "Invalidés/Validés": script.tested.both.length,
+        "Total": (script.tested.both.length+script.tested.failed.length+script.tested.passed.length)
+    },
+    "Indéterminés": script.cantTell.length,
+    "Non testées": script.untested.length
+}
 
 var stats = JSON.stringify(script, null, 2);
 
