@@ -33,7 +33,7 @@ var getAccessibleName = function () {
         nameFromContentSupported: '[role="button"], [role="cell"], [role="checkbox"], [role="columnheader"], [role="gridcell"], [role="heading"], [role="link"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"], [role="radio"], [role="row"], [role="rowgroup"], [role="rowheader"], [role="switch"], [role="tab"], [role="tooltip"], [role="treeitem"]'
     };
     var controls = {
-        nativetextboxes: 'input:not([type]), input[type="checkbox"], input[type="email"], input[type="password"], input[type="radio"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], output, textarea',
+        nativetextboxes: 'input:not([type]), input[type="checkbox"], input[type="email"], input[type="password"], input[type="radio"], input[type="date"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], output, textarea',
         customtextboxes: '[contenteditable="true"], [role="textbox"]',
         nativebuttons: 'button, input[type="button"], input[type="image"], input[type="reset"], input[type="submit"]',
         custombuttons: '[role="button"]',

@@ -101,7 +101,11 @@ tanaguruTestsList.push({
     analyzeElements: function(collection) {
         let collectionLength = collection.length;
         for (var i = 0; i < collectionLength; i++) {
-            var sibling = collection[i].nextSibling;
+            var sibling = null;
+            if(collection[i].nextSibling) {
+                sibling = collection[i].nextSibling.nodeType === 1 ? collection[i].nextSibling : collection[i].nextSibling.nextElementSibling;
+            }
+
 			if(sibling && sibling.tagName && sibling.tagName.toLowerCase() === 'html') {
                 collection[i].status = 'passed';
             } else {
