@@ -8,7 +8,9 @@
     "webextension-polyfill": "^0.7.0"
   },
   "scripts": {
-    "build": "node build"
+    "build": "node build",
+    "i18n": "node i18n",
+    "stats": "node stats"
   },
   "repository": {
     "type": "git",
@@ -22,6 +24,7 @@
   "homepage": "https://github.com/Tanaguru/webextension#readme",
   "dependencies": {
     "path": "^0.12.7",
+    "replace": "^1.2.1",
     "yargs": "^16.1.1",
     "zip-a-folder": "^1.0.1"
   }

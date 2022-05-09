@@ -212,10 +212,29 @@ function launchTests() {
         */
         var test = tanaguruTestsList[i];
 
+        if (test.hasOwnProperty('name') && test.name.startsWith("locale__")) {
+            test.name = chrome.i18n.getMessage(test.name.split("locale__")[1]);
+        }
+
+        if (test.hasOwnProperty('description') && test.description.startsWith("locale__")) {
+            test.description = chrome.i18n.getMessage(test.description.split("locale__")[1]);
+        }
+
+        if (test.hasOwnProperty('explanations')) {
+            if(test.explanations["passed"].startsWith("locale__")) {
+                test.explanations["passed"] = chrome.i18n.getMessage(test.explanations["passed"].split("locale__")[1]);
+            }
+
+            if(test.explanations["failed"].startsWith("locale__")) {
+                test.explanations["failed"] = chrome.i18n.getMessage(test.explanations["failed"].split("locale__")[1]);
+            }
+        }
+
         if (!test.hasOwnProperty('name')) {
             if (!test.hasOwnProperty('id')) continue;
             test.name = chrome.i18n.getMessage('test' + test.id + 'Name');
         }
+
         if (!test.hasOwnProperty('explanations') && test.hasOwnProperty('id')) {
             var explanations = [];
             for (var j = 0; j < statuses.length; j++) {

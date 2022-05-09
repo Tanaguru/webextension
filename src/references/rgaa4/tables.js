@@ -9,12 +9,12 @@
 // 5.1.1  Pour chaque tableau de données complexe un résumé est-il disponible ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux complexes sans résumé.',
+    name: 'locale__tables_name_433',
     query: 'table[data-tng-el-exposed="true"][data-tng-el-visible="true"]:not([role]), [role="table"][data-tng-el-exposed="true"][data-tng-el-visible="true"]',
     testStatus: "failed",
     explanations: {
-        'passed': 'aucun tableau de données complexe sans résumé n\'a été trouvé sur cette page.',
-        'failed': 'des tableaux de données complexes sans résumé ont été trouvé sur cette page.'
+        passed: 'locale__tables_passed_434',
+        failed: 'locale__tables_failed_435'
     },
     filter: function (item) {
         if(item.querySelectorAll('th').length > 1 || item.querySelectorAll('[role="columnheader"], [role="rowheader"]').length > 1) {
@@ -52,7 +52,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux complexes avec résumé.',
+    name: 'locale__tables_name_436',
     query: '[data-tng-tableCaptions]',
     testStatus: "passed",
     mark: {attrs: ['aria-describedby']},
@@ -63,9 +63,9 @@ tanaguruTestsList.push({
 // 5.2.1  Pour chaque tableau de données complexe ayant un résumé, celui-ci est-il pertinent ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux complexes avec un résumé pertinent.',
+    name: 'locale__tables_name_437',
     query: '[data-tng-tableCaptions]',
-    description:'Vérifiez la pertinence du résumé du tableau complexe',
+    description: 'locale__tables_description_438',
     testStatus: "cantTell",
     mark: {attrs: ['aria-describedby']},
     tags: ['a11y', 'tables'],
@@ -76,9 +76,9 @@ tanaguruTestsList.push({
 // 5.3.1 Chaque tableau de mise en forme vérifie-t-il ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux de mise en forme sans role présentation',
+    name: 'locale__tables_name_439',
     query: 'table',
-    description:'Vérifiez que le contenu linéarisé reste compréhensible',
+    description: 'locale__tables_description_440',
     testStatus: "failed",
     filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') == 'false' && item.getAttribute('data-tng-el-visible') == 'false') return;
@@ -97,9 +97,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux de mise en forme avec role présentation',
+    name: 'locale__tables_name_441',
     query: 'table[data-tng-prezTable][role="presentation"]',
-    description:'Vérifiez que le contenu linéarisé reste compréhensible',
+    description: 'locale__tables_description_440',
     testStatus: "cantTell",
     mark: {attrs: ['role']},
     tags: ['a11y', 'tables'],
@@ -109,7 +109,7 @@ tanaguruTestsList.push({
 // 5.4.1 Pour chaque tableau de données ayant un titre, le titre est-il correctement associé au tableau de données ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux de données avec un titre correctement associé au tableau.',
+    name: 'locale__tables_name_443',
     query: 'table:not([role], [data-tng-prezTable]), [role="table"]:not([data-tng-prezTable])',
     filter: function(item) {
         if(item.querySelector('caption') != null) {
@@ -150,7 +150,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux de données avec un titre mal associé au tableau.',
+    name: 'locale__tables_name_444',
     query: '[data-tng-dataTableSummary="false"]',
     testStatus: "failed",
     mark: {attrs: ['aria-labelledby']},
@@ -161,9 +161,9 @@ tanaguruTestsList.push({
 // 5.5.1 Pour chaque tableau de données ayant un titre, ce titre permet-il d'identifier le contenu du tableau de données de manière claire et concise ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux de données avec un titre',
+    name: 'locale__tables_name_445',
     query: '[data-tng-dataTableSummary="true"]',
-    description:'Vérifiez la pertinence du titre',
+    description: 'locale__tables_description_446',
     filter: function(item) {
         if(item.hasAccessibleName()) {
             item.setAttribute('data-tng-tableAccessiblename', 'true');
@@ -180,7 +180,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des tableaux de données avec un titre non pertinent',
+    name: 'locale__tables_name_447',
     query: '[data-tng-tableAccessiblename="false"][data-tng-el-exposed="true"], [data-tng-tableAccessiblename="false"][data-tng-el-visible="true"]',
     testStatus: "failed",
     mark: {attrs: ['title', 'aria-label', 'aria-labelledby']},
@@ -192,7 +192,7 @@ tanaguruTestsList.push({
 // 5.6.1 Pour chaque tableau de données, chaque en-tête de colonnes s'appliquant à la totalité de la colonne vérifie-t-il une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des en-têtes d\'une colonne complète d\'un tableau de données, correctement déclarés.',
+    name: 'locale__tables_name_448',
     query: 'table:not([role], [data-tng-prezTable]) *[scope="col"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[scope="colgroup"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[id][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) th[data-tng-el-exposed="true"]',
     filter: function (item) {
         var table = item.closest('table');
@@ -349,7 +349,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des en-têtes d\'une colonne complète d\'un tableau de données, mal déclarés.',
+    name: 'locale__tables_name_449',
     query: 'table *[data-tng-tableCol="bad"]',
     testStatus: "failed",
     mark: {attrs: ['scope']},
@@ -360,7 +360,7 @@ tanaguruTestsList.push({
 // 5.6.2 Pour chaque tableau de données, chaque en-tête de lignes s'appliquant à la totalité de la ligne vérifie-t-il une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des en-têtes d\'une ligne complète d\'un tableau de données, correctement déclarés.',
+    name: 'locale__tables_name_450',
     query: 'table:not([role], [data-tng-prezTable]) *[scope="row"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[scope="rowgroup"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[id][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) th[data-tng-el-exposed="true"]',
     filter: function (item) {
         var table = item.closest('table');
@@ -474,7 +474,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des en-têtes d\'une ligne complète d\'un tableau de données, mal déclarés.',
+    name: 'locale__tables_name_451',
     query: 'table *[data-tng-tableRow="bad"]',
     testStatus: "failed",
     mark: {attrs: ['scope']},
@@ -485,8 +485,8 @@ tanaguruTestsList.push({
 // 5.6.3 Pour chaque tableau de données, chaque en-tête ne s'appliquant pas à la totalité de la ligne ou de la colonne est-il structuré au moyen d'une balise <th> ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Liste des en-têtes ne s'appliquant pas à la totalité de la ligne ou de la colonne mal structurés.",
-    description: "Ces en-têtes devraient être structurés au moyen d'une balise th.",
+	name: 'locale__tables_name_452',
+    description: 'locale__tables_description_453',
     query: '*[data-tng-table="headerColPart"], *[data-tng-table="headerRowPart"]',
     testStatus: "failed",
     filter: function(item) {
@@ -498,7 +498,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Liste des en-têtes ne s'appliquant pas à la totalité de la ligne ou de la colonne correctement structurés.",
+	name: 'locale__tables_name_454',
     query: 'th[data-tng-table="headerColPart"], th[data-tng-table="headerRowPart"]',
     testStatus: "passed",
 	tags: ['a11y', 'tables'],
@@ -508,7 +508,7 @@ tanaguruTestsList.push({
 // 5.6.4 Pour chaque tableau de données, chaque cellule associée à plusieurs en-têtes est-elle structurée au moyen d’une balise <td> ou <th> ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Liste des cellules d'un tableau de données associées à plusieurs en-têtes, mal balisées.",
+	name: 'locale__tables_name_455',
 	query: 'table:not([role], [data-tng-prezTable]) *[headers][data-tng-el-exposed="true"], [role="table"]:not([data-tng-prezTable]) *[headers][data-tng-el-exposed="true"]',
     testStatus: "failed",
 	filter: function (item) {
@@ -539,7 +539,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Liste des cellules d'un tableau de données associées à plusieurs en-têtes, correctement balisées.",
+	name: 'locale__tables_name_456',
 	query: 'table *[data-tng-tableHeaders="true"]',
     testStatus: "passed",
     mark: {attrs: ['headers']},
@@ -551,7 +551,7 @@ tanaguruTestsList.push({
 // 5.7.1 Pour chaque contenu de balise <th> s'appliquant à la totalité de la ligne ou de la colonne, la balise <th> respecte-t-elle une de ces conditions (hors cas particuliers) ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Liste des en-têtes de tableau s'appliquant à toute une ligne ou colonne mal associés aux cellules.",
+	name: 'locale__tables_name_457',
 	query: 'th[data-tng-table="headerColFull"]:not([scope], [role="columnheader"]), th[data-tng-table="headerRowFull"]:not([scope], [role="rowheader"])',
     testStatus: "failed",
 	filter: function (item) {
@@ -575,7 +575,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Liste des en-têtes de tableau s'appliquant à toute une ligne ou colonne correctement associés aux cellules.",
+	name: 'locale__tables_name_458',
 	query: 'th[data-tng-table="headerColFull"][scope], th[data-tng-table="headerColFull"][role="columnheader"], th[data-tng-table="headerColFull"][data-tng-tableHeader-uniqueID="true"], th[data-tng-table="headerRowFull"][scope], th[data-tng-table="headerRowFull"][role="rowheader"], th[data-tng-table="headerRowFull"][data-tng-tableHeader-uniqueID="true"]',
     testStatus: "passed",
     mark: {attrs: ['scope', 'id', 'role']},
@@ -586,7 +586,7 @@ tanaguruTestsList.push({
 // 5.7.2 Pour chaque contenu de balise <th> s'appliquant à la totalité de la ligne ou de la colonne et possédant un attribut scope, la balise <th> vérifie-t-elle une de ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "En-têtes de tableau associant les cellules de sa ligne ou colonne avec un attribut scope valide.",
+	name: 'locale__tables_name_459',
 	query: 'th[scope]',
 	filter: function (item) {
 		var row = item.parentNode;
@@ -608,7 +608,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "En-têtes de tableau associant les cellules de sa ligne ou colonne avec un attribut scope invalide.",
+	name: 'locale__tables_name_460',
 	query: 'th[scope]:not([data-tng-scope="valid"])',
     testStatus: "failed",
 	filter: function (item) {
@@ -628,9 +628,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "En-têtes de tableau associant les cellules de sa ligne ou colonne avec un attribut scope.",
+	name: 'locale__tables_name_461',
 	query: 'th[scope]:not([data-tng-scope])',
-    description: "Vérifier la pertinence de l'attribut scope.",
+    description: 'locale__tables_description_462',
     testStatus: "cantTell",
     mark: {attrs: ['scope']},
 	tags: ['a11y', 'tables'],
@@ -640,7 +640,7 @@ tanaguruTestsList.push({
 // 5.7.3  Pour chaque contenu de balise <th> ne s'appliquant pas à la totalité de la ligne ou de la colonne, la balise <th> vérifie-t-elle ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Liste des en-têtes de tableau ne s'appliquant pas à toute une ligne ou colonne correctement associés aux cellules.",
+	name: 'locale__tables_name_463',
 	query: 'th[data-tng-table="headerColPart"][id]:not([scope="col"], [role="columnheader"]), th[data-tng-table="headerRowPart"][id]:not([scope="row"], [role="rowheader"])',
 	filter: function (item) {
         if(item.id.trim().length > 0) {
@@ -663,7 +663,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Liste des en-têtes de tableau ne s'appliquant pas à toute une ligne ou colonne mal associés aux cellules.",
+	name: 'locale__tables_name_464',
 	query: 'th[data-tng-table="headerColPart"]:not([data-tng-partHeader-uniqueID="true"]), th[data-tng-table="headerRowPart"]:not([data-tng-partHeader-uniqueID="true"])',
     testStatus: "failed",
     mark: {attrs: ['scope', 'id', 'role']},
@@ -674,7 +674,7 @@ tanaguruTestsList.push({
 // 5.7.4 Pour chaque contenu de balise <td> ou <th> associée à un ou plusieurs en-têtes possédant un attribut id, la balise vérifie-t-elle ces conditions ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "L'attribut Headers spécifié sur une cellule fait référence à des en-têtes du même élément de tableau.",
+	name: 'locale__tables_name_465',
 	query: 'table td[headers], table th[headers]',
 	filter: function (item) {
 		var headers = item.getAttribute('headers');
@@ -720,7 +720,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "L'attribut Headers spécifié sur une cellule ne fait pas référence à des en-têtes du même élément de tableau.",
+	name: 'locale__tables_name_466',
 	query: 'table [data-tng-headerInTable="false"][data-tng-el-exposed="true"], table [data-tng-headerInTable="false"][data-tng-el-visible="true"]',
     testStatus: "failed",
     mark: {attrs: ['headers']},
@@ -731,7 +731,7 @@ tanaguruTestsList.push({
 // 5.7.5 Pour chaque balise pourvue d'un attribut WAI-ARIA role="rowheader" ou role="columnheader" dont le contenu s'applique à la totalité de la ligne ou de la colonne, la balise vérifie-t-elle une de ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Liste des en-têtes ARIA s'appliquant à toute une ligne ou colonne mal renseignés.",
+	name: 'locale__tables_name_467',
 	query: '[role="rowheader"][data-tng-table="headerColFull"], [role="columnheader"][data-tng-table="headerRowFull"]',
     testStatus: "failed",
     mark: {attrs: ['role']},
@@ -741,7 +741,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Liste des en-têtes ARIA s'appliquant à toute une ligne ou colonne correctement renseignés.",
+	name: 'locale__tables_name_468',
 	query: '[role="columnheader"][data-tng-table="headerColFull"], [role="rowheader"][data-tng-table="headerRowFull"]',
     testStatus: "passed",
     mark: {attrs: ['role']},
@@ -753,7 +753,7 @@ tanaguruTestsList.push({
 // 5.8.1 Chaque tableau de mise en forme (balise <table>) vérifie-t-il ces conditions ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Liste des tableaux de mise en forme utilisant des éléments propre aux tableaux de données.",
+	name: 'locale__tables_name_469',
 	query: 'table[role="presentation"]',
     testStatus: "failed",
 	filter: function (item) {
@@ -775,7 +775,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Liste des tableaux de mise en forme n\'utilisant aucun élément propre aux tableaux de données.",
+	name: 'locale__tables_name_470',
 	query: 'table[role="presentation"][data-tng-prezTable-dataEl="false"]',
     testStatus: "passed",
 	tags: ['a11y', 'tables'],

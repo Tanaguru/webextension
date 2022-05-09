@@ -12,9 +12,9 @@
 // 4.2.1 Pour chaque média temporel pré-enregistré seulement audio, ayant une transcription textuelle, celle-ci est-elle pertinente (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des médias temporels seulement audios',
+    name: 'locale__media_name_319',
     query: 'audio, object[type^="audio/"], object[type="application/ogg"], embed[type^="audio/"]',
-    description:'Vérifiez si nécessaire la présence d\'une transcription textuelle et sa pertinence.',
+    description: 'locale__media_description_320',
     testStatus: "cantTell",
     tags: ['a11y', 'audio', 'media'],
     ressources: {'rgaa': ['4.1.1', '4.2.1']}
@@ -28,9 +28,9 @@ tanaguruTestsList.push({
 // 4.3.1 Chaque média temporel synchronisé pré-enregistré vérifie-t-il, si nécessaire, l'une de ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des médias temporels synchronisés ou vidéos',
+    name: 'locale__media_name_321',
     query: 'video, object[type^="video/"], embed[type^="video/"]',
-    description:'Vérifiez si nécessaire la présence d\'une audio-description, transcription textuelle et sous-titres ainsi que leur pertinence.',
+    description: 'locale__media_description_322',
     testStatus: "cantTell",
     tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.1.2', '4.1.3', '4.2.2', '4.2.3', '4.3.1']}
@@ -39,9 +39,9 @@ tanaguruTestsList.push({
 // 4.3.2 Pour chaque média temporel synchronisé pré-enregistré possédant des sous-titres synchronisés diffusés via une balise <track>, la balise <track> possède-t-elle un attribut kind="captions" ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des balises <track> sans attribut kind="captions"',
+    name: 'locale__media_name_323',
     query: 'video track:not([kind=captions])',
-    description:'Vérifiez si ces éléments track sont des sous-titres synchronisés, si oui, ils devraient posséder un attribut [kind="captions"].',
+    description: 'locale__media_description_324',
     testStatus: "cantTell",
     mark: {attrs: ['kind']},
     tags: ['a11y', 'videos', 'media'],
@@ -50,7 +50,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des sous-titres synchronisés diffusés via une balise <track> avec attribut kind="captions"',
+    name: 'locale__media_name_325',
     query: 'video track[kind="captions"]',
     testStatus: "passed",
     mark: {attrs: ['kind']},
@@ -61,9 +61,9 @@ tanaguruTestsList.push({
 // 4.4.1 Pour chaque média temporel synchronisé pré-enregistré ayant des sous-titres synchronisés, ces sous-titres sont-ils pertinents ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des médias temporels synchronisés possédant des sous-titres via la balise track',
+    name: 'locale__media_name_326',
     query: 'video track[kind="captions"]',
-    description:'Vérifiez la pertinence des sous-titres',
+    description: 'locale__media_description_327',
     testStatus: "cantTell",
     mark: {attrs: ['kind']},
     tags: ['a11y', 'videos', 'media'],
@@ -74,9 +74,9 @@ tanaguruTestsList.push({
 //* 4.6 Pour chaque média temporel pré-enregistré ayant une audiodescription synchronisée, celle-ci est-elle pertinente ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des médias temporels vidéo',
+    name: 'locale__media_name_328',
     query: 'video, object[type^="video/"], embed[type^="video/"]',
-    description:'Vérifiez si nécessaire la présence d\'une audiodescription synchronisée et sa pertinence',
+    description: 'locale__media_description_329',
     testStatus: "cantTell",
     tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.5.1', '4.5.2', '4.6.1', '4.6.2']}
@@ -85,9 +85,9 @@ tanaguruTestsList.push({
 //* 4.7 Chaque média temporel est-il clairement identifiable (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des médias temporels',
+    name: 'locale__media_name_330',
     query: 'video, audio, object[type^="video/"], object[type^="audio/"], object[type="application/ogg"], embed[type^="video/"], embed[type^="audio/"]',
-    description:'Vérifiez que le contenu textuel adjacent permet d\'identifier clairement le média.',
+    description: 'locale__media_description_331',
     testStatus: "cantTell",
     tags: ['a11y', 'videos', 'audio', 'media'],
     ressources: {'rgaa': ['4.7.1']}
@@ -97,8 +97,8 @@ tanaguruTestsList.push({
 // 4.8.1 Chaque média non temporel vérifie-t-il, si nécessaire, une de ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Les médias non temporels ont si nécessaire une alternative.',
-    description:'Vérifiez qu\'un lien ou bouton adjacent, clairement identifiable, permet d’accéder à une alternative.',
+    name: 'locale__media_name_332',
+    description: 'locale__media_description_333',
     status: 'untested',
     tags: ['a11y', 'media'],
     ressources: {'rgaa': ['4.8.1']}
@@ -107,8 +107,8 @@ tanaguruTestsList.push({
 // 4.8.2 Chaque média non temporel associé à une alternative vérifie-t-il une de ces conditions (hors cas particuliers) ? 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Pour les médias non temporels associés à une alternative, cette alternative doit être accessible.',
-    description:'Vérifiez l\'accessibilité de l\'alternative associée au média non temporel.',
+    name: 'locale__media_name_334',
+    description: 'locale__media_description_335',
     status: 'untested',
     tags: ['a11y', 'media'],
     ressources: {'rgaa': ['4.8.2']}
@@ -118,8 +118,8 @@ tanaguruTestsList.push({
 // 4.9.1 Pour chaque média non temporel ayant une alternative, cette alternative permet-elle d'accéder au même contenu et à des fonctionnalités similaires ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Pour les médias non temporels ayant une alternative, cette alternative doit être pertinente.',
-    description:'Vérifiez que l\'alternative permet d\'accéder au même contenu et à des fonctionnalités similaires.',
+    name: 'locale__media_name_336',
+    description: 'locale__media_description_337',
     status: 'untested',
     tags: ['a11y', 'media'],
     ressources: {'rgaa': ['4.9.1']}
@@ -129,7 +129,7 @@ tanaguruTestsList.push({
 // 4.10.1 Chaque séquence sonore déclenchée automatiquement via une balise <object>, <video>, <audio>, <embed>, <bgsound> ou un code JavaScript vérifie-t-elle une de ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Liste des sons durant plus de 3secondes déclenchés automatiquement et non contrôlables par l\'utilisateur.',
+	name: 'locale__media_name_338',
 	query: 'audio[autoplay]:not([muted]), video[autoplay]:not([muted])',
     testStatus: "failed",
     filter: function(item) {
@@ -152,7 +152,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Liste des sons déclenchés automatiquement qui sont contrôlables par l\'utilisateur ou durent maximum 3secondes.',
+	name: 'locale__media_name_339',
 	query: '[data-tng-mediaAuto]',
     testStatus: "passed",
 	tags: ['a11y', 'audio', 'videos', 'media'],
@@ -164,7 +164,7 @@ tanaguruTestsList.push({
 // 4.11.1 Chaque média temporel a-t-il, si nécessaire, les fonctionnalités de contrôle de sa consultation ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des médias temporels ayant les fonctionnalités de contrôle de sa consultation',
+    name: 'locale__media_name_340',
     query: 'video[controls], audio[controls]',
     testStatus: "passed",
     tags: ['a11y', 'videos', 'audio', 'media'],
@@ -173,9 +173,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des médias temporels',
+    name: 'locale__media_name_330',
     query: 'video:not([controls]), audio:not([controls]), object[type^="video/"], object[type^="audio/"], object[type="application/ogg"], embed[type^="video/"], embed[type^="audio/"]',
-    description:'Vérifiez si nécessaire la présence des fonctionnalités de contrôle de la consultation de ces médias.',
+    description: 'locale__media_description_342',
     testStatus: "cantTell",
     tags: ['a11y', 'videos', 'audio', 'media'],
     ressources: {'rgaa': ['4.11.1']}
@@ -184,9 +184,9 @@ tanaguruTestsList.push({
 // 4.11.2/4.11.3 Pour chaque média temporel, chaque fonctionnalité vérifie-t-elle une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des médias temporels',
+    name: 'locale__media_name_330',
     query: 'video, audio, object[type^="video/"], object[type^="audio/"], object[type="application/ogg"], embed[type^="video/"], embed[type^="audio/"]',
-    description:'Vérifiez que chaque fonctionnalité de ces médias est contrôlable ET activable par le clavier et tout dispositif de pointage.',
+    description: 'locale__media_description_344',
     testStatus: "cantTell",
     tags: ['a11y', 'videos', 'audio', 'media'],
     ressources: {'rgaa': ['4.11.2', '4.11.3']}
@@ -196,7 +196,7 @@ tanaguruTestsList.push({
 // 4.12.1 Pour chaque média non temporel, chaque fonctionnalité vérifie-t-elle une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Pour chaque média non-temporel, chaque fonctionnalité doit être accessible par le clavier et tout dispositif de pointage.',
+    name: 'locale__media_name_345',
     status: 'untested',
     tags: ['a11y', 'media', 'keyboard'],
     ressources: {'rgaa': ['4.12.1']}
@@ -205,7 +205,7 @@ tanaguruTestsList.push({
 // 4.12.2 Pour chaque média non temporel, chaque fonctionnalité vérifie-t-elle une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Pour chaque média non-temporel, chaque fonctionnalité doit être activable par le clavier et tout dispositif de pointage.',
+    name: 'locale__media_name_346',
     status: 'untested',
     tags: ['a11y', 'media', 'keyboard'],
     ressources: {'rgaa': ['4.12.2']}
@@ -215,8 +215,8 @@ tanaguruTestsList.push({
 // 4.13.1 Chaque média temporel et non temporel vérifie-t-il une de ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Chaque média doit être compatible avec les technologies d\'assistance.',
-    description: 'Vérifier que le nom, le rôle, la valeur, le paramétrage et les changements d\'états des composants d\'interfaces sont accessibles aux technologies ou qu\'une alternative compatible permette d\'accéder aux mêmes fonctionnalités.',
+    name: 'locale__media_name_347',
+    description: 'locale__media_description_348',
     status: 'untested',
     tags: ['a11y', 'media'],
     ressources: {'rgaa': ['4.13.1']}
@@ -225,8 +225,8 @@ tanaguruTestsList.push({
 // 4.13.2 Chaque média temporel et non temporel qui possède une alternative compatible avec les technologies d'assistance, vérifie-t-il une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Pour chaque média ayant une alternative compatible avec les technologies d\'assistance, l\'alternative doit être implémentée correctement.',
-    description: 'Vérifier que l\'alternative ou le lien/bouton permettant d\'y accéder soit adjacent au média, ou qu\'un mécanisme permette de remplacer le média par son alternative.',
+    name: 'locale__media_name_349',
+    description: 'locale__media_description_350',
     status: 'untested',
     tags: ['a11y', 'media'],
     ressources: {'rgaa': ['4.13.2']}

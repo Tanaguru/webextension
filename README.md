@@ -169,8 +169,8 @@ createTanaguruTest({
 	},
 	expectedNbElements: 0,
 	explanations: {
-		'passed': "Cette page ne contient pas d'éléments a avec attributs title vides.",
-		'failed': "Des éléments a avec attributs title vides sont présents dans la page."
+		passed: "Cette page ne contient pas d'éléments a avec attributs title vides.",
+		failed: "Des éléments a avec attributs title vides sont présents dans la page."
 	},
 	mark: { attrs: ['title'] },
 	tags: ['a11y', 'links'],

@@ -12,12 +12,12 @@
 // 8.1.1 Pour chaque page web, le type de document (balise doctype) est-il présent ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Le type de document (balise doctype) est présent sur la page.',
+	name: 'locale__mandatory_name_275',
     node: document.doctype,
     expectedNbElements: 1,
     explanations: {
-        'passed': "Cette page possède bien une balise doctype.",
-		'failed': "Cette page n'a pas de balise doctype."
+        passed: 'locale__mandatory_passed_276',
+		failed: 'locale__mandatory_failed_277'
     },
     tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.1.1']}
@@ -27,7 +27,7 @@ tanaguruTestsList.push({
 // https://www.w3.org/QA/2002/04/valid-dtd-list.html
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Le type de document (balise doctype) est valide.',
+	name: 'locale__mandatory_name_278',
     node: document.doctype,
     analyzeElements: function(collection) {
         let collectionLength = collection.length;
@@ -96,7 +96,7 @@ tanaguruTestsList.push({
 // 8.1.3 Pour chaque page web possédant une déclaration de type de document, celle-ci est-elle située avant la balise <html> dans le code source ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Le type de document est déclaré avant l\'ouverture de la balise html.',
+	name: 'locale__mandatory_name_279',
     node: document.doctype,
     analyzeElements: function(collection) {
         let collectionLength = collection.length;
@@ -117,7 +117,7 @@ tanaguruTestsList.push({
 // 8.2.1 Pour chaque déclaration de type de document, le code source généré de la page vérifie-t-il ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Valeurs d\'attribut id dupliqués dans la page',
+	name: 'locale__mandatory_name_280',
     code: 'duplicate_id',
     testStatus: "failed",
     mark: { attrs: ['id'] },
@@ -127,7 +127,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Attributs role avec une valeur invalide',
+	name: 'locale__mandatory_name_281',
 	query: '[role][data-tng-el-exposed="true"]',
 	testStatus: "failed",
 	filter: function (item) {
@@ -147,7 +147,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Attributs role avec une valeur valide',
+	name: 'locale__mandatory_name_282',
 	query: '[data-tng-validRole]',
 	testStatus: "passed",
 	tags: ['a11y', 'aria', 'code', 'mandatory'],
@@ -156,7 +156,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Elements possédants des attributs aria-* non définis dans WAI-ARIA.',
+	name: 'locale__mandatory_name_283',
 	query: '[data-tng-ariaAttribute][data-tng-el-exposed="true"]',
     testStatus: "failed",
 	filter: function (item) {
@@ -173,7 +173,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Elements possédants uniquement des attributs aria-* définis dans WAI-ARIA.',
+	name: 'locale__mandatory_name_284',
 	query: '[data-tng-validAria]',
 	testStatus: "passed",
 	tags: ['a11y', 'aria', 'code', 'mandatory'],
@@ -182,7 +182,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Propiétés ARIA avec une valeur invalide.',
+	name: 'locale__mandatory_name_285',
 	query: '[data-tng-validAria]',
 	testStatus: "failed",
 	filter: function (item) {
@@ -194,7 +194,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Propriétés ARIA non autorisées sur leur élément.',
+	name: 'locale__mandatory_name_286',
 	query: '[data-tng-validAria]',
 	testStatus: "failed",
 	filter: function (item) {
@@ -206,7 +206,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Imbrications de balises HTML non conformes.',
+	name: 'locale__mandatory_name_287',
 	query: 'form form, button a, a button, ul>a, ol>a, ul>h1, ul>h2, ul>h3, ul>h4, ul>h5, ul>h6, ol>h1, ol>h2, ol>h3, ol>h4, ol>h5, ol>h6, ul>p, ol>p, ul>span, ol>span, ul>div, ol>div, section main, header main, footer main',
 	testStatus: "failed",
 	tags: ['a11y', 'code', 'mandatory'],
@@ -215,7 +215,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Le titre de la page doit être déclaré dans l'en-tête (balise head).",
+	name: 'locale__mandatory_name_288',
 	query: 'body title',
 	testStatus: "failed",
 	filter: function (item) {
@@ -227,12 +227,12 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "La page web doit contenir un seul titre de page (balise title).",
+	name: 'locale__mandatory_name_289',
 	query: 'head title, body title',
 	expectedNbElements: {max: 1},
     explanations: {
-        passed: "La page web contient ne possède pas plus d'un titre de page (balise title).",
-        failed: "La page web contient plusieurs titres de page (balise title)."
+        passed: 'locale__mandatory_passed_290',
+        failed: 'locale__mandatory_failed_291'
     },
 	filter: function (item) {
 		if(!item.closest('svg')) return true;
@@ -243,7 +243,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Le titre de page (balise title) ne doit pas être vide.",
+	name: 'locale__mandatory_name_292',
 	query: 'head title, body title',
 	testStatus: "failed",
 	filter: function (item) {
@@ -256,12 +256,12 @@ tanaguruTestsList.push({
 //8.3.1 Pour chaque page web, l'indication de langue par défaut vérifie-t-elle une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'La langue de la page est spécifiée.',
+    name: 'locale__mandatory_name_293',
     query: 'html[lang], html[xml\\:lang], body[lang], body[xml\\:lang]',
     expectedNbElements: {min: 1},
     explanations: {
-        passed: "La langue de la page est bien spécifiée.",
-        failed: "La langue de la page n'est pas spécifiée."
+        passed: 'locale__mandatory_passed_294',
+        failed: 'locale__mandatory_failed_295'
     },
     filter: function(item) {
         if(item.hasAttribute('lang') || item.hasAttribute('xml:lang')) {
@@ -277,7 +277,7 @@ tanaguruTestsList.push({
 //8.4.1 Pour chaque page web ayant une langue par défaut, le code de langue est-il pertinent ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Page HTML avec un attribut lang vide.',
+	name: 'locale__mandatory_name_296',
 	query: '[data-tng-haslang]',
 	testStatus: "failed",
 	filter: function (item) {
@@ -307,7 +307,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Page HTML avec un attribut lang non vide.',
+	name: 'locale__mandatory_name_297',
 	query: '[data-tng-lang="lang"]:not([data-tng-emptylang="lang"], [data-tng-emptylang="both"]), [data-tng-lang="xml"]:not([data-tng-emptylang="xml"], [data-tng-emptylang="both"])',
     testStatus: "passed",
     mark: {attrs: ['lang', 'xml\\:lang']},
@@ -317,7 +317,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: "Page HTML avec des attributs lang et xml:lang dont les valeurs ne correspondent pas.",
+	name: 'locale__mandatory_name_298',
 	query: '[data-tng-lang="lang"][data-tng-lang="xml"]',
 	testStatus: "failed",
 	filter: function (item) {
@@ -340,7 +340,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Page HTML avec des attributs lang et xml:lang dont les valeurs correspondent."',
+	name: 'locale__mandatory_name_299',
 	query: '[data-tng-samelangs]',
 	testStatus: "passed",
     mark: {attrs: ['lang', 'xml\\:lang']},
@@ -350,7 +350,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'La langue de la page HTML est invalide.',
+	name: 'locale__mandatory_name_300',
 	query: '[data-tng-haslang]',
 	testStatus: "failed",
 	filter: function (item) {
@@ -377,7 +377,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'La langue de la page HTML est valide.',
+	name: 'locale__mandatory_name_301',
 	query: '[data-tng-validlang]',
     testStatus: "passed",
     mark: {attrs: ['lang', 'xml\\:lang']},
@@ -388,12 +388,12 @@ tanaguruTestsList.push({
 //8.5.1 Chaque page web a-t-elle un titre de page (balise title) ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'La page web a un titre de page (balise title).',
+    name: 'locale__mandatory_name_302',
     query: 'head title, body title',
     expectedNbElements: {min: 1},
     explanations: {
-        'passed': 'La page possède bien un titre de page.',
-        'failed': 'Aucun titre de page n\'a été trouvé.'
+        passed: 'locale__mandatory_passed_303',
+        failed: 'locale__mandatory_failed_304'
     },
     filter: function (item) {
         if(item.closest('svg')) return;
@@ -406,7 +406,7 @@ tanaguruTestsList.push({
 //8.6.1 Pour chaque page web ayant un titre de page (balise title), le contenu de cette balise est-il pertinent ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Vérifier la pertinence du titre de page (balise title).',
+    name: 'locale__mandatory_name_305',
     query: 'head title, body title',
     filter: function(item) {
         if(item.closest('svg')) return;
@@ -432,7 +432,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Le titre de la page (balise title) n\'est pas pertinent',
+    name: 'locale__mandatory_name_306',
     query: '[data-tng-pageTitle]',
     testStatus: "failed",
     tags: ['a11y','mandatory'],
@@ -442,7 +442,7 @@ tanaguruTestsList.push({
 //8.7.1 Dans chaque page web, chaque texte écrit dans une langue différente de la langue par défaut vérifie-t-il une de ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Vérifiez que pour chaque texte écrit dans une langue différente de la langue par défaut le langage est correctement indiqué.',
+    name: 'locale__mandatory_name_307',
     query: 'body [lang], body [xml\\:lang]',
     testStatus: "cantTell",
     mark: { attrs: ['lang', 'xml:lang']},
@@ -454,7 +454,7 @@ tanaguruTestsList.push({
 //8.8.1 Pour chaque page web, le code de langue de chaque changement de langue vérifie-t-il ces conditions ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Elements avec un attribut lang vide.',
+	name: 'locale__mandatory_name_308',
 	query: 'body [lang], body [xml\\:lang]',
 	testStatus: "failed",
 	filter: function (item) {
@@ -485,7 +485,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Elements avec un attribut lang non vide.',
+	name: 'locale__mandatory_name_309',
 	query: '[data-tng-el-notemptylang]',
     testStatus: "passed",
     mark: { attrs: ['lang', 'xml:lang']},
@@ -495,7 +495,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Elements avec un attribut lang invalide.',
+	name: 'locale__mandatory_name_310',
 	query: '[data-tng-el-notemptylang]',
 	testStatus: "failed",
 	filter: function (item) {
@@ -513,7 +513,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'Elements avec un attribut lang valide.',
+	name: 'locale__mandatory_name_311',
 	query: '[data-tng-el-validlang]',
     testStatus: "passed",
     mark: { attrs: ['lang', 'xml:lang']},
@@ -525,8 +525,8 @@ tanaguruTestsList.push({
 // 8.9.1 Dans chaque page web les balises (à l'exception de <div>, <span> et <table>) ne doivent pas être utilisées uniquement à des fins de présentation. Cette règle est-elle respectée ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Les balises ne doivent pas être utilisées uniquement à des fins de présentation.',
-    description: 'ne pas utiliser de double br pour créer des espaces entre les éléments textes',
+    name: 'locale__mandatory_name_312',
+    description: 'locale__mandatory_description_313',
     query: 'br + br',
     testStatus: "failed",
     filter: function (item) {
@@ -542,7 +542,7 @@ tanaguruTestsList.push({
 // 8.10.1 Dans chaque page web, chaque texte dont le sens de lecture est différent du sens de lecture par défaut est contenu dans une balise possédant un attribut dir ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: "Chaque texte dont le sens de lecture est différent du sens de lecture par défaut doit être contenu dans une balise possédant un attribut dir.",
+    name: 'locale__mandatory_name_314',
     status: 'untested',
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.10.1']}
@@ -551,9 +551,9 @@ tanaguruTestsList.push({
 // 8.10.2 : Dans chaque page web, chaque changement du sens de lecture (attribut dir) vérifie-t-il ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Changements du sens de lecture (attribut dir) non conforme.',
+    name: 'locale__mandatory_name_315',
     query: '[dir][data-tng-el-exposed="true"]',
-    description: "La  valeur de ces attributs n'est pas conforme, les valeurs attendues sont 'ltr' ou 'rtl'.",
+    description: 'locale__mandatory_description_316',
     testStatus: "failed",
     filter: function (item) {
         var dirAttr = item.getAttribute('dir');
@@ -571,8 +571,8 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Changements du sens de lecture (attribut dir) conforme.',
-    description: "Vérifier la pertinence de la valeur de l'attribut dir.",
+    name: 'locale__mandatory_name_317',
+    description: 'locale__mandatory_description_318',
     query: '[data-tng-dirValid]',
     testStatus: "cantTell",
     mark: { attrs: ['dir']},
