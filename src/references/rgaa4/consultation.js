@@ -1,6 +1,7 @@
 /**
  *? CONSULTATION
  ** tous les tests sont répertoriés
+ ** dependances gérées
  *TODO reconnaissance des contenus cryptique
  *TODO analyse des scripts
  *TODO contenus en mouvement ou clignotant ?
@@ -35,6 +36,7 @@ tanaguruTestsList.push({
 });
 
 // 13.1.2  Pour chaque page web, chaque procédé de redirection effectué via une balise <meta> est-il immédiat (hors cas particuliers) ?
+//! dependance 13.1.1
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__consultation_name_54',

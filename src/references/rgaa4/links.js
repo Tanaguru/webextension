@@ -1,6 +1,7 @@
 /**
  *? LIENS
  *
+ * * dependances gérées
  * data : data-tng-svgLink, data-tng-textlink, data-tng-textlink-accessiblename, data-tng-cplink, data-tng-imglink, data-tng-imglink-hasContent, data-tng-imglink-accessiblename, data-tng-cplink-hasContent, data-tng-cplink-accessiblename, data-tng-svglink-accessiblename, data-tng-link-names-match, data-tng-link-hasname
  */
 
@@ -11,6 +12,7 @@ tanaguruTestsList.push({
     name: 'locale__links_name_245',
     query: 'a[href], [role="link"]',
     testStatus: "failed",
+    depStatus: ["inapplicable", "cantTell", "passed"],
     filter: function (item) {
         if(item.closest('svg')) {
             item.setAttribute('data-tng-svgLink', 'true');
@@ -94,11 +96,13 @@ tanaguruTestsList.push({
 });
 
 // 6.1.2 Pour chaque lien image l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
+//! dependance 6.1.1
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__links_name_252',
     query: 'a[href]:not([data-tng-svgLink], [data-tng-textlink]), [role="link"]:not([data-tng-svgLink], [data-tng-textlink])',
     testStatus: "failed",
+    depStatus: ["inapplicable", "cantTell", "passed"],
     filter: function (item) {
         let linkTextContent = item.textContent.replace(/\s+/g, "");
         if(linkTextContent.length > 0) {
@@ -188,11 +192,13 @@ tanaguruTestsList.push({
 });
 
 // 6.1.3 Pour chaque lien composite l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
+//! dependance 6.1.2
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__links_name_259',
     query: '[data-tng-cplink]',
     testStatus: "failed",
+    depStatus: ["cantTell", "passed"],
     filter: function (item) {
         var images = item.querySelectorAll('img, [role="img"], svg, object[type^="image/"], canvas');
         var linkName = false;
@@ -275,11 +281,13 @@ tanaguruTestsList.push({
 });
 
 // 6.1.4 Pour chaque lien SVG l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
+//! dependance 6.1.1
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__links_name_266',
     query: '[data-tng-svgLink][data-tng-el-exposed="true"]',
     testStatus: "failed",
+    depStatus: ["cantTell"],
     filter: function (item) {
         if(!item.hasAccessibleName()) {
             return true;
@@ -321,11 +329,13 @@ tanaguruTestsList.push({
 });
 
 // 6.1.5 Pour chaque lien ayant un intitulé visible, le nom accessible du lien contient-il au moins l'intitulé visible (hors cas particuliers) ?
+//! dependance 6.1.*
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__links_name_271',
     query: '[data-tng-link-ANaria][data-tng-el-visible="true"]',
     testStatus: "failed",
+    depStatus: ["passed"],
     filter: function (item) {
         if(item.innerText.trim().length > 0 || item.hasAttribute('data-tng-imglink-accessiblename')) {
             var visibleName = '';
@@ -376,6 +386,7 @@ tanaguruTestsList.push({
     name: 'locale__links_name_273',
     query: 'a[href][data-tng-el-visible="true"]',
     testStatus: "failed",
+    depStatus: ["passed"],
     filter: function (item) {
         if(item.textContent.length > 0) {
             item.setAttribute('data-tng-link-hasname', 'true');

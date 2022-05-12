@@ -1,6 +1,7 @@
 /**
  *? MULTIMEDIA
  ** tous les tests sont répertoriés
+ ** dependances gérées
  *TODO voir si l'on peut identifier de façon assez précise les médias non temporels
  *
  * data: data-tng-mediaAuto
@@ -132,6 +133,7 @@ tanaguruTestsList.push({
 	name: 'locale__media_name_338',
 	query: 'audio[autoplay]:not([muted]), video[autoplay]:not([muted])',
     testStatus: "failed",
+    depStatus: ["passed"],
     filter: function(item) {
         if(item.duration <= 3 && !item.hasAttribute('loop')) {
             item.setAttribute('data-tng-mediaAuto', "true");

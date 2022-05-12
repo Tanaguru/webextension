@@ -1,6 +1,7 @@
 /**
  *? NAVIGATION
  ** tous les tests sont répertoriés
+ *! aucune dependance
  *TODO voir pour tester les liens d'évitement implémenté de façon "classique"
  *TODO ordre de tabulation - pièges au clavier - raccourcis clavier
  */

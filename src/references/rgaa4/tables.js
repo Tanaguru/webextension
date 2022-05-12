@@ -1,7 +1,7 @@
 /**
  *? TABLEAUX
  ** complet
- *
+ ** dependances gérées
  * data : data-tng-tableCaptions, data-tng-prezTable, data-tng-dataTableSummary, data-tng-tableAccessiblename, data-tng-table, data-tng-tableCol, data-tng-tableRow, data-tng-row, data-tng-tableHeaders, data-tng-tableHeader-uniqueID, data-tng-scope, data-tng-partHeader-uniqueID, data-tng-headerInTable, data-tng-prezTable-dataEl
  */
 
@@ -11,11 +11,12 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__tables_name_433',
     query: 'table[data-tng-el-exposed="true"][data-tng-el-visible="true"]:not([role]), [role="table"][data-tng-el-exposed="true"][data-tng-el-visible="true"]',
-    testStatus: "failed",
+    expectedNbElements: 0,
     explanations: {
         passed: 'locale__tables_passed_434',
         failed: 'locale__tables_failed_435'
     },
+    depStatus: ["cantTell"],
     filter: function (item) {
         if(item.querySelectorAll('th').length > 1 || item.querySelectorAll('[role="columnheader"], [role="rowheader"]').length > 1) {
             var isComplex = item.querySelectorAll('[colspan], [rowspan], [aria-colspan], [aria-rowspan]').length > 0;
@@ -61,6 +62,7 @@ tanaguruTestsList.push({
 });
 
 // 5.2.1  Pour chaque tableau de données complexe ayant un résumé, celui-ci est-il pertinent ?
+//! dependance 5.1.1
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__tables_name_437',
@@ -80,6 +82,7 @@ tanaguruTestsList.push({
     query: 'table',
     description: 'locale__tables_description_440',
     testStatus: "failed",
+    depStatus: ["cantTell", "passed"],
     filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') == 'false' && item.getAttribute('data-tng-el-visible') == 'false') return;
 
@@ -107,6 +110,7 @@ tanaguruTestsList.push({
 });
 
 // 5.4.1 Pour chaque tableau de données ayant un titre, le titre est-il correctement associé au tableau de données ?
+//! dependance 5.3.1
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__tables_name_443',
@@ -143,6 +147,7 @@ tanaguruTestsList.push({
         return;
     },
     testStatus: "passed",
+    depStatus: ["failed", "cantTell"],
     mark: {attrs: ['title', 'aria-label', 'aria-labelledby']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.4.1']}
@@ -159,6 +164,7 @@ tanaguruTestsList.push({
 });
 
 // 5.5.1 Pour chaque tableau de données ayant un titre, ce titre permet-il d'identifier le contenu du tableau de données de manière claire et concise ?
+//! dependance 5.4.1
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__tables_name_445',
@@ -173,6 +179,7 @@ tanaguruTestsList.push({
         item.setAttribute('data-tng-tableAccessiblename', 'false');
     },
     testStatus: "cantTell",
+    depStatus: ["failed"],
     mark: {attrs: ['title', 'aria-label', 'aria-labelledby']},
     tags: ['a11y', 'tables', 'accessiblename'],
     ressources: {'rgaa': ['5.5.1']}
@@ -190,6 +197,7 @@ tanaguruTestsList.push({
 
 //* 5.6 Pour chaque tableau de données, chaque en-tête de colonnes et chaque en-tête de lignes sont-ils correctement déclarés ?
 // 5.6.1 Pour chaque tableau de données, chaque en-tête de colonnes s'appliquant à la totalité de la colonne vérifie-t-il une de ces conditions ?
+//! dependance 5.3.1
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__tables_name_448',
@@ -342,6 +350,7 @@ tanaguruTestsList.push({
         else item.setAttribute('data-tng-table', 'headerColPart');
     },
     testStatus: "passed",
+    depStatus: ["failed"],
     mark: {attrs: ['scope']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.1']}
@@ -358,6 +367,7 @@ tanaguruTestsList.push({
 });
 
 // 5.6.2 Pour chaque tableau de données, chaque en-tête de lignes s'appliquant à la totalité de la ligne vérifie-t-il une de ces conditions ?
+//! dependance 5.3.1
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__tables_name_450',
@@ -467,6 +477,7 @@ tanaguruTestsList.push({
         else item.setAttribute('data-tng-table', 'headerRowPart');
     },
     testStatus: "passed",
+    depStatus: ["failed"],
     mark: {attrs: ['scope']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.2']}
@@ -483,6 +494,7 @@ tanaguruTestsList.push({
 });
 
 // 5.6.3 Pour chaque tableau de données, chaque en-tête ne s'appliquant pas à la totalité de la ligne ou de la colonne est-il structuré au moyen d'une balise <th> ?
+//! dependances 5.6.1 & 5.6.2
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'locale__tables_name_452',
@@ -506,11 +518,13 @@ tanaguruTestsList.push({
 });
 
 // 5.6.4 Pour chaque tableau de données, chaque cellule associée à plusieurs en-têtes est-elle structurée au moyen d’une balise <td> ou <th> ?
+//! dependance 5.3.1
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'locale__tables_name_455',
 	query: 'table:not([role], [data-tng-prezTable]) *[headers][data-tng-el-exposed="true"], [role="table"]:not([data-tng-prezTable]) *[headers][data-tng-el-exposed="true"]',
     testStatus: "failed",
+    depStatus: ["passed"],
 	filter: function (item) {
         var table = item.closest('table');
         var headers = item.getAttribute('headers').split(' ');
@@ -548,12 +562,14 @@ tanaguruTestsList.push({
 });
 
 //* 5.7 Pour chaque tableau de données, la technique appropriée permettant d'associer chaque cellule avec ses en-têtes est-elle utilisée (hors cas particuliers) ?
-// 5.7.1 Pour chaque contenu de balise <th> s'appliquant à la totalité de la ligne ou de la colonne, la balise <th> respecte-t-elle une de ces conditions (hors cas particuliers) ? 
+// 5.7.1 Pour chaque contenu de balise <th> s'appliquant à la totalité de la ligne ou de la colonne, la balise <th> respecte-t-elle une de ces conditions (hors cas particuliers) ?
+//! dependances 5.6.1 & 5.6.2
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'locale__tables_name_457',
 	query: 'th[data-tng-table="headerColFull"]:not([scope], [role="columnheader"]), th[data-tng-table="headerRowFull"]:not([scope], [role="rowheader"])',
     testStatus: "failed",
+    depStatus: ["passed"],
 	filter: function (item) {
         if(item.id.trim().length > 0) {
             let thID = item.id;
@@ -601,6 +617,7 @@ tanaguruTestsList.push({
         }
 	},
 	testStatus: "passed",
+    depStatus: ["failed", "cantTell"],
     mark: {attrs: ['scope']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.2']}
@@ -611,6 +628,7 @@ tanaguruTestsList.push({
 	name: 'locale__tables_name_460',
 	query: 'th[scope]:not([data-tng-scope="valid"])',
     testStatus: "failed",
+    depStatus: ["cantTell"],
 	filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') == 'false' && item.getAttribute('data-tng-el-visible') == 'false') return;
 
@@ -637,7 +655,8 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['5.7.2']}
 });
 
-// 5.7.3  Pour chaque contenu de balise <th> ne s'appliquant pas à la totalité de la ligne ou de la colonne, la balise <th> vérifie-t-elle ces conditions ? 
+// 5.7.3  Pour chaque contenu de balise <th> ne s'appliquant pas à la totalité de la ligne ou de la colonne, la balise <th> vérifie-t-elle ces conditions ?
+//! dependances 5.6.1 & 5.6.2
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'locale__tables_name_463',
@@ -656,6 +675,7 @@ tanaguruTestsList.push({
         return;
 	},
     testStatus: "passed",
+    depStatus: ["failed"],
     mark: {attrs: ['scope', 'id', 'role']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.3']}
@@ -713,6 +733,7 @@ tanaguruTestsList.push({
 		}
 	},
 	testStatus: "passed",
+    depStatus: ["failed"],
     mark: {attrs: ['headers']},
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.4']}
@@ -728,7 +749,8 @@ tanaguruTestsList.push({
     ressources: {'rgaa': ['5.7.4']}
 });
 
-// 5.7.5 Pour chaque balise pourvue d'un attribut WAI-ARIA role="rowheader" ou role="columnheader" dont le contenu s'applique à la totalité de la ligne ou de la colonne, la balise vérifie-t-elle une de ces conditions ? 
+// 5.7.5 Pour chaque balise pourvue d'un attribut WAI-ARIA role="rowheader" ou role="columnheader" dont le contenu s'applique à la totalité de la ligne ou de la colonne, la balise vérifie-t-elle une de ces conditions ?
+//! dependances 5.6.1 & 5.6.2
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'locale__tables_name_467',
@@ -756,6 +778,7 @@ tanaguruTestsList.push({
 	name: 'locale__tables_name_469',
 	query: 'table[role="presentation"]',
     testStatus: "failed",
+    depStatus: ["passed"],
 	filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') == 'false' && item.getAttribute('data-tng-el-visible') == 'false') return;
 

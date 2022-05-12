@@ -1,6 +1,7 @@
 /**
  *? IMAGES
  ** tous les tests sont répertoriés, mais les critères 1.2/1.4 et 1.5 sont améliorables
+ ** dependances gérées
  *TODO pas possible de tester si un élément a un aria-hidden="true" ET un nom accessible car hasAccessibleName() renvoie false quand isNotExposedDueTo.length === 0
  *! 1.4/1.5 comment identifier les images test / captcha ?
  *
@@ -15,6 +16,7 @@ tanaguruTestsList.push({
     query: 'img[data-tng-el-exposed="true"]:not([role]), [role="img"][data-tng-el-exposed="true"]',
     description: 'locale__images_description_137',
     testStatus: "failed",
+    depStatus: ["passed", "cantTell"],
     filter: function (item) {
         if(item.closest('a')) {
             item.setAttribute('data-tng-image-link', true);
@@ -64,6 +66,7 @@ tanaguruTestsList.push({
     query: 'area[data-tng-el-exposed="true"]:not([role])',
     description: 'locale__images_description_137',
     testStatus: "failed",
+    depStatus: ["passed", "cantTell"],
     filter: function(item) {
         if(!item.hasAttribute('href')) {
             if(item.hasAttribute('aria-hidden')) {
@@ -105,6 +108,7 @@ tanaguruTestsList.push({
     query: 'input[type="image"][data-tng-el-exposed="true"]:not([role])',
     description: 'locale__images_description_137',
     testStatus: "failed",
+    depStatus: ["passed", "cantTell"],
     filter: function (item) {
         if(item.accessibleName() == '') {
             return true;
@@ -135,6 +139,7 @@ tanaguruTestsList.push({
     name: 'locale__images_name_148',
     query: 'a[href] img[ismap][data-tng-el-exposed="true"]:not([role])',
     testStatus: "failed",
+    depStatus: ["passed", "cantTell"],
     filter: function (item) {
         let ismapLink = item.closest('a');
 
@@ -163,12 +168,13 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['1.1.4'] }
 });
 
-// 1.1.5 - Chaque image vectorielle (balise <svg>) porteuse d'information, vérifie-t-elle ces conditions ? // à tester
+// 1.1.5 - Chaque image vectorielle (balise <svg>) porteuse d'information, vérifie-t-elle ces conditions ? // à testers
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_150',
     query: 'svg[data-tng-el-exposed="true"]:not([role="presentation"], [data-tng-image-link])',
     testStatus: "failed",
+    depStatus: ["passed", "cantTell"],
     filter: function (item) {
         if(item.closest('a')) {
             item.setAttribute('data-tng-image-link', true);
@@ -189,6 +195,7 @@ tanaguruTestsList.push({
     name: 'locale__images_name_151',
     query: 'svg[role="img"][data-tng-el-exposed="true"]:not([data-tng-image-link])',
     testStatus: "failed",
+    depStatus: ["passed", "cantTell"],
     description: 'locale__images_description_137',
     filter: function (item) {
         if(item.accessibleName() == '') {
@@ -220,6 +227,7 @@ tanaguruTestsList.push({
     name: 'locale__images_name_155',
     query: 'object[type^="image/"][data-tng-el-exposed="true"]:not([data-tng-image-link])',
     testStatus: "failed",
+    depStatus: ["passed", "cantTell"],
     filter: function (item) {
         if(item.closest('a')) {
             item.setAttribute('data-tng-image-link', true);
@@ -241,6 +249,7 @@ tanaguruTestsList.push({
     query: 'object[role="img"][type^="image/"][data-tng-el-exposed="true"]:not([data-tng-image-link])',
     description: 'locale__images_description_137',
     testStatus: "failed",
+    depStatus: ["passed", "cantTell"],
     filter: function (item) {
         if(item.accessibleName() == '') {
             return true;
@@ -287,6 +296,7 @@ tanaguruTestsList.push({
     query: 'embed[type^="image/"][role="img"][data-tng-el-exposed="true"]',
     description: 'locale__images_description_137',
     testStatus: "failed",
+    depStatus: ["passed", "cantTell"],
     filter: function (item) {
         if(item.accessibleName() == '') {
             return true;
@@ -317,6 +327,7 @@ tanaguruTestsList.push({
     name: 'locale__images_name_165',
     query: 'canvas[data-tng-el-exposed="true"]:not([data-tng-image-link])',
     testStatus: "failed",
+    depStatus: ["passed", "cantTell"],
     filter: function (item) {
         if(item.closest('a')) {
             item.setAttribute('data-tng-image-link', true);
@@ -338,6 +349,7 @@ tanaguruTestsList.push({
     query: 'canvas[role="img"][data-tng-el-exposed="true"]:not([data-tng-image-link])',
     description: 'locale__images_description_137',
     testStatus: "failed",
+    depStatus: ["passed", "cantTell"],
     filter: function (item) {
         if(item.accessibleName() == '') {
             return true;
@@ -364,6 +376,7 @@ tanaguruTestsList.push({
 
 //* 1.2 Chaque image de décoration est-elle correctement ignorée par les technologies d'assistance ?
 // 1.2.1 Chaque image (balise <img>) de décoration, sans légende, vérifie-t-elle une de ces conditions ?
+//! dependance 1.1.1
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_170',
@@ -408,6 +421,7 @@ tanaguruTestsList.push({
         return;
     },
     testStatus: "passed",
+    depStatus: ["failed"],
     mark: { attrs: ['alt','aria-hidden','role']},
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.1'] }
@@ -424,6 +438,7 @@ tanaguruTestsList.push({
 });
 
 // 1.2.2 Chaque zone non cliquable (balise <area> sans attribut href) de décoration, vérifie-t-elle une de ces conditions ?
+//! dependance 1.1.2
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_172',
@@ -454,6 +469,7 @@ tanaguruTestsList.push({
         return;
     },
     testStatus: "passed",
+    depStatus: ["failed"],
     mark: { attrs: ['alt','aria-hidden','role']},
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.2'] }
@@ -470,6 +486,7 @@ tanaguruTestsList.push({
 });
 
 // 1.2.3 Chaque image objet (balise object avec l'attribut type="image/…") de décoration, sans légende, vérifie-t-elle ces conditions ? // pourquoi pas de gestion de role presentation dans le RGAA // à tester
+//! dependance 1.1.6
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_174',
@@ -506,6 +523,7 @@ tanaguruTestsList.push({
         return;
     },
     testStatus: "passed",
+    depStatus: ["failed"],
     mark: { attrs: ['aria-hidden']},
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.3'] }
@@ -521,6 +539,7 @@ tanaguruTestsList.push({
 });
 
 // 1.2.4 Chaque image vectorielle (balise svg) de décoration, sans légende, vérifie-t-elle ces conditions ? // à tester
+//! dependance 1.1.5
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_176',
@@ -561,6 +580,7 @@ tanaguruTestsList.push({
         return;
     },
     testStatus: "passed",
+    depStatus: ["failed"],
     mark: { attrs: ['aria-hidden']},
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.4'] }
@@ -577,6 +597,7 @@ tanaguruTestsList.push({
 });
 
 // 1.2.5  Chaque image bitmap (balise <canvas>) de décoration, sans légende, vérifie-t-elle ces conditions ? // à tester
+//! dependance 1.1.8
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_178',
@@ -611,6 +632,7 @@ tanaguruTestsList.push({
         return;        
     },
     testStatus: "passed",
+    depStatus: ["failed"],
     mark: { attrs: ['alt','aria-hidden','aria-labelledby','title']},
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.5'] }
@@ -626,6 +648,7 @@ tanaguruTestsList.push({
 });
 
 // 1.2.6 Chaque image embarquée (balise <embed> avec l'attribut type="image/…") de décoration, sans légende, vérifie-t-elle ces conditions ? // à tester
+//! dependance 1.1.7
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_180',
@@ -660,6 +683,7 @@ tanaguruTestsList.push({
         return;
     },
     testStatus: "passed",
+    depStatus: ["failed"],
     mark: { attrs: ['aria-hidden']},
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.2.6'] }
@@ -678,7 +702,8 @@ tanaguruTestsList.push({
 //* 1.3 Pour chaque image porteuse d'information ayant une alternative textuelle, cette alternative est-elle pertinente (hors cas particuliers) ?
 //* 1.4 Pour chaque image utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle, cette alternative permet-elle d'identifier la nature et la fonction de l'image ?
 // 1.3.1 Pour chaque image (balise <img> ou balise possédant l'attribut WAI-ARIA role="img") porteuse d'information, ayant une alternative textuelle, cette alternative est-elle pertinente (hors cas particuliers) ?
-// 1.4.1 Pour chaque image (balise <img>) utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle, cette alternative est-elle pertinente ? 
+// 1.4.1 Pour chaque image (balise <img>) utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle, cette alternative est-elle pertinente ?
+//! dependance 1.1.1
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_182',
@@ -705,7 +730,8 @@ tanaguruTestsList.push({
 });
 
 // 1.3.2 - Pour chaque zone (balise <area>) d'une image réactive porteuse d'information, ayant une alternative textuelle, cette alternative est-elle pertinente (hors cas particuliers) ?
-// 1.4.2 Pour chaque zone (balise <area>) d'une image réactive utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle, cette alternative est-elle pertinente ? 
+// 1.4.2 Pour chaque zone (balise <area>) d'une image réactive utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle, cette alternative est-elle pertinente ?
+//! dependance 1.1.2
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_185',
@@ -718,7 +744,8 @@ tanaguruTestsList.push({
 });
 
 // 1.3.3 Pour chaque bouton de type image (balise <input> avec l'attribut type="image"), ayant une alternative textuelle, cette alternative est-elle pertinente (hors cas particuliers) ?
-// 1.4.3 Pour chaque bouton de type image (balise <input> avec l'attribut type="image") utilisé comme CAPTCHA ou comme image-test, ayant une alternative textuelle, cette alternative est-elle pertinente ? 
+// 1.4.3 Pour chaque bouton de type image (balise <input> avec l'attribut type="image") utilisé comme CAPTCHA ou comme image-test, ayant une alternative textuelle, cette alternative est-elle pertinente ?
+//! dependance 1.1.3
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_187',
@@ -745,7 +772,8 @@ tanaguruTestsList.push({
 });
 
 // 1.3.4 Pour chaque image objet (balise <object> avec l'attribut type="image/…") porteuse d'information, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente (hors cas particuliers) ?
-// 1.4.4 Pour chaque image objet (balise <object> avec l'attribut type="image/…") utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente ? 
+// 1.4.4 Pour chaque image objet (balise <object> avec l'attribut type="image/…") utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente ?
+//! dependance 1.1.6
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_190',
@@ -759,6 +787,7 @@ tanaguruTestsList.push({
 
 // 1.3.5 Pour chaque image embarquée (balise <embed> avec l'attribut type="image/…") porteuse d'information, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente (hors cas particuliers) ?
 // 1.4.5 Pour chaque image embarquée (balise <embed> avec l'attribut type="image/…") utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente ?
+//! dependance 1.1.7
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_192',
@@ -771,7 +800,8 @@ tanaguruTestsList.push({
 });
 
 // 1.3.6 Pour chaque image vectorielle (balise <svg>) porteuse d'information, ayant une alternative textuelle, cette alternative est-elle pertinente (hors cas particuliers) ?
-// 1.4.6 Pour chaque image vectorielle (balise <svg>) utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle, cette alternative est-elle pertinente ? 
+// 1.4.6 Pour chaque image vectorielle (balise <svg>) utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle, cette alternative est-elle pertinente ?
+//! dependance 1.1.5
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_194',
@@ -784,7 +814,8 @@ tanaguruTestsList.push({
 });
 
 // 1.3.7 Pour chaque image bitmap (balise <canvas>) porteuse d'information, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente (hors cas particuliers) ? // traiter le cas particulier
-// 1.4.7 Pour chaque image bitmap (balise <canvas>) utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente ? 
+// 1.4.7 Pour chaque image bitmap (balise <canvas>) utilisée comme CAPTCHA ou comme image-test, ayant une alternative textuelle ou un contenu alternatif, cette alternative est-elle pertinente ?
+//! dependance 1.1.8
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_196',
@@ -823,6 +854,7 @@ tanaguruTestsList.push({
         }
     },
     testStatus: "cantTell",
+    depStatus: ["failed"],
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.3.8'] }
 });
@@ -837,6 +869,7 @@ tanaguruTestsList.push({
 });
 
 // 1.3.9 Pour chaque image porteuse d'information et ayant une alternative textuelle, l'alternative textuelle est-elle courte et concise (hors cas particuliers) ?
+//! dependances 1.1.*
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_200',
@@ -884,7 +917,8 @@ tanaguruTestsList.push({
 //* 1.6 Chaque image porteuse d'information a-t-elle, si nécessaire, une description détaillée ?
 //* 1.7 Pour chaque image porteuse d'information ayant une description détaillée, cette description est-elle pertinente ?
 // 1.6.1 Chaque image (balise <img>) porteuse d'information, qui nécessite une description détaillée, vérifie-t-elle une de ces conditions ?
-// 1.7.1 Chaque image (balise <img>) porteuse d'information, ayant une description détaillée, vérifie-t-elle ces conditions ? 
+// 1.7.1 Chaque image (balise <img>) porteuse d'information, ayant une description détaillée, vérifie-t-elle ces conditions ?
+//! dependance 1.1.1
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_207',
@@ -896,7 +930,8 @@ tanaguruTestsList.push({
 });
 
 // 1.6.2 Chaque image objet (balise <object> avec l'attribut type="image/…") porteuse d'information, qui nécessite une description détaillée, vérifie-t-elle une de ces conditions ?
-// 1.7.3 Chaque image objet (balise <object> avec l'attribut type="image/…") porteuse d'information, ayant une description détaillée, vérifie-t-elle ces conditions ? 
+// 1.7.3 Chaque image objet (balise <object> avec l'attribut type="image/…") porteuse d'information, ayant une description détaillée, vérifie-t-elle ces conditions ?
+//! dependance 1.1.6
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_209',
@@ -909,6 +944,7 @@ tanaguruTestsList.push({
 
 //1.6.3 Chaque image embarquée (balise <embed>) porteuse d'information, qui nécessite une description détaillée, vérifie-t-elle une de ces conditions ?
 // 1.7.4 Chaque image embarquée (balise <embed> avec l'attribut type="image/…") porteuse d'information, ayant une description détaillée, vérifie-t-elle ces conditions ? 
+//! dependance 1.1.7
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_211',
@@ -920,7 +956,8 @@ tanaguruTestsList.push({
 });
 
 //1.6.4 Chaque bouton de type image (balise <input> avec l'attribut type="image") porteur d'information, qui nécessite une description détaillée, vérifie-t-elle une de ces conditions ?
-// 1.7.2 Chaque bouton de type image (balise <input> avec l'attribut type="image") porteur d'information, ayant une description détaillée, vérifie-t-elle ces conditions ? 
+// 1.7.2 Chaque bouton de type image (balise <input> avec l'attribut type="image") porteur d'information, ayant une description détaillée, vérifie-t-elle ces conditions ?
+//! dependance 1.1.3
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_213',
@@ -933,7 +970,8 @@ tanaguruTestsList.push({
 
 // 1.6.5 Chaque image vectorielle (balise <svg>) porteuse d'information, qui nécessite une description détaillée, vérifie-t-elle une de ces conditions ?
 // 1.6.6 Pour chaque image vectorielle (balise <svg>) porteuse d'information, ayant une description détaillée, la référence éventuelle à la description détaillée dans l'attribut WAI-ARIA aria-label et la description détaillée associée par l'attribut WAI-ARIA aria-labelledby ou aria-describedby sont-elles correctement restituées par les technologies d'assistance ?
-// 1.7.5 Chaque image vectorielle (balise <svg>) porteuse d'information, ayant une description détaillée, vérifie-t-elle ces conditions ? 
+// 1.7.5 Chaque image vectorielle (balise <svg>) porteuse d'information, ayant une description détaillée, vérifie-t-elle ces conditions ?
+//! dependance 1.1.5
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_215',
@@ -946,7 +984,8 @@ tanaguruTestsList.push({
 
 // 1.6.7 Chaque image bitmap (balise <canvas>), porteuse d'information, qui nécessite une description détaillée, vérifie-t-elle une de ces conditions ? 
 // 1.6.8 Pour chaque image bitmap (balise <canvas>) porteuse d'information, qui implémente une référence à une description détaillée adjacente, cette référence est-elle correctement restituée par les technologies d'assistance ?
-// 1.7.6 Chaque image bitmap (balise <canvas>) porteuse d'information, ayant une description détaillée, vérifie-t-elle ces conditions ? 
+// 1.7.6 Chaque image bitmap (balise <canvas>) porteuse d'information, ayant une description détaillée, vérifie-t-elle ces conditions ?
+//! dependance 1.1.8
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_217',
@@ -958,6 +997,7 @@ tanaguruTestsList.push({
 });
 
 // 1.6.9 Pour chaque image (balise <img>, <input> avec l'attribut type="image", <area>, <object>, <embed>, <svg>, <canvas>, ou possédant un attribut WAI-ARIA role="img") porteuse d'information, qui est accompagnée d'une description détaillée et qui utilise un attribut WAI-ARIA aria-describedby, l'attribut WAI-ARIA aria-describedby associe-t-il la description détaillée ?
+//! dependances 1.1.*
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_219',
@@ -970,6 +1010,7 @@ tanaguruTestsList.push({
 });
 
 // 1.6.10 Chaque balise possédant un attribut WAI-ARIA role="img" porteuse d'information, qui nécessite une description détaillée, vérifie-t-elle une de ces conditions ?
+//! dependances 1.1.1 & 1.1.5
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_221',
@@ -982,6 +1023,7 @@ tanaguruTestsList.push({
 
 //* 1.8 Chaque image texte porteuse d'information, en l'absence d'un mécanisme de remplacement, doit si possible être remplacée par du texte stylé. Cette règle est-elle respectée (hors cas particuliers) ?
 // 1.8.1 Chaque image texte (balise <img> ou possédant un attribut WAI-ARIA role="img") porteuse d'information, en l'absence d'un mécanisme de remplacement, doit si possible être remplacée par du texte stylé. Cette règle est-elle respectée (hors cas particuliers) ?
+//! dependance 1.1.1
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_223',
@@ -993,6 +1035,7 @@ tanaguruTestsList.push({
 });
 
 // 1.8.2 Chaque bouton « image texte » (balise <input> avec l'attribut type="image") porteur d'information, en l'absence d'un mécanisme de remplacement, doit si possible être remplacé par du texte stylé. Cette règle est-elle respectée (hors cas particuliers) ?
+//! dependance 1.1.3
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_213',
@@ -1004,6 +1047,7 @@ tanaguruTestsList.push({
 });
 
 // 1.8.3 Chaque image texte objet (balise <object> avec l'attribut type="image/…") porteuse d'information, en l'absence d'un mécanisme de remplacement, doit si possible être remplacée par du texte stylé. Cette règle est-elle respectée (hors cas particuliers) ?
+//! dependance 1.1.6
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_209',
@@ -1015,6 +1059,7 @@ tanaguruTestsList.push({
 });
 
 // 1.8.4 Chaque image texte embarquée (balise <embed> avec l'attribut type="image/…") porteuse d'information, en l'absence d'un mécanisme de remplacement, doit si possible être remplacée par du texte stylé. Cette règle est-elle respectée (hors cas particuliers) ?
+//! dependance 1.1.7
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_211',
@@ -1026,6 +1071,7 @@ tanaguruTestsList.push({
 });
 
 // 1.8.5 Chaque image texte bitmap (balise <canvas>) porteuse d'information, en l'absence d'un mécanisme de remplacement, doit si possible être remplacée par du texte stylé. Cette règle est-elle respectée (hors cas particuliers) ?
+//! dependance 1.1.8
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_217',
@@ -1037,6 +1083,7 @@ tanaguruTestsList.push({
 });
 
 // 1.8.6 Chaque image texte SVG (balise <svg>) porteuse d'information et dont le texte n’est pas complètement structuré au moyen d’éléments <text>, en l’absence d’un mécanisme de remplacement, doit si possible être remplacée par du texte stylé. Cette règle est-elle respectée (hors cas particuliers) ?
+//! dependance 1.1.5
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_215',
@@ -1048,12 +1095,14 @@ tanaguruTestsList.push({
 });
 
 //* 1.9 Chaque légende d'image est-elle, si nécessaire, correctement reliée à l'image correspondante ?
-// 1.9.1 Chaque image pourvue d'une légende (balise <img>, <input> avec l'attribut type="image" ou balise possédant un attribut WAI-ARIA role="img" associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ? 
+// 1.9.1 Chaque image pourvue d'une légende (balise <img>, <input> avec l'attribut type="image" ou balise possédant un attribut WAI-ARIA role="img" associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ?
+//! dependance 1.1.1
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__images_name_235',
     query: 'figure [data-tng-img-roleImg], figure input[type="image"]',
     testStatus: "failed",
+    depStatus: ["passed"],
     filter: function (item) {
         var parentFigure = item.closest('figure');
         var figcaption = parentFigure.querySelector('figcaption');
@@ -1096,6 +1145,7 @@ tanaguruTestsList.push({
     name: 'locale__images_name_237',
     query: 'figure object[type^="image/"]',
     testStatus: "failed",
+    depStatus: ["passed"],
     filter: function (item) {
         var parentFigure = item.closest('figure');
         var figcaption = parentFigure.querySelector('figcaption');
@@ -1138,6 +1188,7 @@ tanaguruTestsList.push({
     name: 'locale__images_name_239',
     query: 'figure embed',
     testStatus: "failed",
+    depStatus: ["passed"],
     filter: function (item) {
         var parentFigure = item.closest('figure');
         var figcaption = parentFigure.querySelector('figcaption');
@@ -1180,6 +1231,7 @@ tanaguruTestsList.push({
     name: 'locale__images_name_241',
     query: 'figure svg',
     testStatus: "failed",
+    depStatus: ["passed"],
     filter: function (item) {
         var parentFigure = item.closest('figure');
         var figcaption = parentFigure.querySelector('figcaption');
@@ -1222,6 +1274,7 @@ tanaguruTestsList.push({
     name: 'locale__images_name_243',
     query: 'figure canvas',
     testStatus: "failed",
+    depStatus: ["passed"],
     filter: function (item) {
         var parentFigure = item.closest('figure');
         var figcaption = parentFigure.querySelector('figcaption');

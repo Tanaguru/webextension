@@ -1,6 +1,6 @@
 /**
  *? CADRES (terminé)
- *
+ ** dependances gérées
  * data : data-tng-frameAlt
  */
 
@@ -50,6 +50,7 @@ tanaguruTestsList.push({
         return true;
     },
     testStatus: "cantTell",
+    depStatus: ["failed"],
     mark: { attrs: ['title']},
     tags: ['a11y', 'frames'],
     ressources: {'rgaa': ['2.2.1']}

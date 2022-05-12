@@ -1,6 +1,7 @@
 /**
  *? FORMULAIRES
  ** Tous les tests sont répertoriés
+ *? dependances gérées mais attention à la reference data-tng-altLong
  *TODO voir si l'on peut approfondir les tests 11.10.2 et 11.10.4
  *TODO traiter la proximité d'une étiquette avec son champ ?? (11.1.3, 11.4)
  *
@@ -14,6 +15,7 @@ tanaguruTestsList.push({
     name: 'locale__forms_name_74',
     query: 'input[type="text"]:not([role]), input[type="password"]:not([role]), input[type="search"]:not([role]), input[type="email"]:not([role]), input[type="number"]:not([role]), input[type="tel"]:not([role]), input[type="url"]:not([role]), textarea:not([role]), input[type="checkbox"]:not([role]), input[type="radio"]:not([role]), input[type="date"]:not([role]), input[type="range"]:not([role]), input[type="color"]:not([role]), input[type="time"]:not([role]), input[type="month"]:not([role]), input[type="week"]:not([role]), input[type="datetime-local"]:not([role]), select:not([role]), datalist:not([role]), input[type="file"]:not([role]), progress:not([role]), meter:not([role]), input:not([type]):not([role]), [role="progressbar"], [role="slider"], [role="spinbutton"], [role="textbox"], [role="listbox"], [role="searchbox"], [role="combobox"], [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [contenteditable="true"]:not([role])',
     testStatus: "failed",
+    depStatus: ["passed", "cantTell"],
     filter: function (item) {
         item.setAttribute('data-tng-formField', 'true');
         if(item.getAttribute('data-tng-el-exposed') === 'true') {
@@ -44,6 +46,7 @@ tanaguruTestsList.push({
     name: 'locale__forms_name_76',
     query: 'label[for][data-tng-el-exposed="true"]',
     testStatus: "failed",
+    depStatus: ["passed"],
     filter: function (item) {
         if(item.getAttribute('for').trim().length > 0) {
             var startDigit = /^\d/;
@@ -89,6 +92,7 @@ tanaguruTestsList.push({
     name: 'locale__forms_name_78',
     query: '[data-tng-fieldsAN]',
     testStatus: "failed",
+    depStatus: ["cantTell", "passed"],
     filter: function (item) {
         if((item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible', 'false')) || item.disabled) return;
 
@@ -274,6 +278,7 @@ tanaguruTestsList.push({
 });
 
 // 11.2.2 : Chaque attribut title permet-il de connaître la fonction exacte du champ de formulaire auquel il est associé ?
+//! dependance 11.1.1
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__forms_name_86',
@@ -284,6 +289,7 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['11.2.2'] }
 });
 
+//! dependance 11.1.1
 // 11.2.3 : Chaque étiquette implémentée via l'attribut WAI-ARIA aria-label permet-elle de connaître la fonction exacte du champ de formulaire auquel elle est associée ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -295,6 +301,7 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['11.2.3'] }
 });
 
+//! dependance 11.1.1
 // 11.2.4 : Chaque passage de texte associé via l'attribut WAI-ARIA aria-labelledby permet-il de connaître la fonction exacte du champ de formulaire auquel il est associé ?
 tanaguruTestsList.push({
     lang: 'fr',
@@ -307,6 +314,7 @@ tanaguruTestsList.push({
 });
 
 // 11.2.5 Chaque champ de formulaire ayant un intitulé visible vérifie-t-il ces conditions (hors cas particuliers) ?
+//! dependance 11.1.3
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__forms_name_89',
@@ -321,6 +329,7 @@ tanaguruTestsList.push({
         }
     },
     testStatus: "passed",
+    depStatus: ["failed"],
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.2.5'] }
 });
@@ -403,6 +412,7 @@ tanaguruTestsList.push({
     name: 'locale__forms_name_97',
     query: 'fieldset[data-tng-el-exposed="true"], [role="group"][data-tng-el-exposed="true"]',
     testStatus: "failed",
+    depStatus: ["passed", "cantTell"],
     filter: function (item) {
         let cat = item.getImplicitAriaRoleCategory();
         if(cat && cat === 'forms') {
@@ -429,6 +439,7 @@ tanaguruTestsList.push({
 
 //* 11.7 Dans chaque formulaire, chaque légende associée à un regroupement de champs de même nature est-elle pertinente ?
 // 11.7.1 Chaque légende associée à un regroupement de champs de même nature est-elle pertinente ?
+//! dependance 11.6.1
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__forms_name_99',
@@ -475,6 +486,7 @@ tanaguruTestsList.push({
     name: 'locale__forms_name_103',
     query: 'select optgroup[label][data-tng-el-exposed="true"]',
     testStatus: "failed",
+    depStatus: ["cantTell"],
     filter: function (item) {
         if(item.getAttribute('label').trim().length > 0) {
             item.setAttribute('data-tng-optgroup-label', 'true');
@@ -526,6 +538,7 @@ tanaguruTestsList.push({
         }
     },
     testStatus: "cantTell",
+    depStatus: ["failed"],
     mark: {attrs: ['aria-labelledby', 'aria-label', 'alt', 'value', 'title']},
     tags: ['a11y', 'forms', 'buttons'],
     ressources: { 'rgaa': ['11.9.1'] }
@@ -541,12 +554,15 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['11.9.1'] }
 });
 
-// 11.9.2 Chaque bouton affichant un intitulé visible vérifie-t-il ces conditions (hors cas particuliers) ? 
+// 11.9.2 Chaque bouton affichant un intitulé visible vérifie-t-il ces conditions (hors cas particuliers) ?
+//! dependance 11.9.1
+//! reference a data-tng-altLong, vérifier si nécessaire, si oui cet attribut est défini dans le script image donc il faudrait également le definir dans ce script
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__forms_name_107',
     query: '[data-tng-formButton-ANaria]',
     testStatus: "failed",
+    depStatus: ["passed"],
     filter: function (item) {
         if(item.innerText.trim().length > 0 || (item.value && item.value.trim().length > 0) || item.querySelector('[data-tng-altLong]')) {
             var visibleName = '';
@@ -867,6 +883,7 @@ tanaguruTestsList.push({
     name: 'locale__forms_name_128',
     query: '[data-tng-autocomplete-group]',
     testStatus: "failed",
+    depStatus: ["cantTell"],
     filter: function(item) {
         if(item.tagName.toLowerCase() === 'textarea' || item.tagName.toLowerCase() === 'select') {
             item.setAttribute('data-tng-autocomplete', true);

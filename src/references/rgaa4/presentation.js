@@ -1,6 +1,7 @@
 /**
  *? PRESENTATION DE L'INFORMATION
  ** Tous les tests sont répertoriés
+ ** dependances gérées
  *TODO 10.4.1 récupérer la liste de noeuds texte -> font-size-200% -> check viewport position
  *TODO traiter le 10.5 dans la boucle qui passe chaque noeud texte dans le script de contrast, car il n'est pas possible de recupérer simplement les propriétés color et background appliquées directement sur les éléments
  *TODO 10.11.1 et 10.11.2 voir si on peut être + performant avec l'api windows
@@ -108,6 +109,7 @@ tanaguruTestsList.push({
 		}
 	},
 	testStatus: "passed",
+    depStatus: ["failed"],
     mark: {attrs: ['content']},
 	tags: ['a11y', 'presentation', 'meta'],
     ressources: { 'rgaa': ['10.4.2'] }

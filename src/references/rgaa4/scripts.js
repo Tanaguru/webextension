@@ -1,6 +1,7 @@
 /**
  *? SCRIPTS
  ** tous les tests sont répertoriés
+ *! dependances gérées mais attention à la référence à data-tng-altLong
  ** 7.1 & 7.2 implémentation partielle
  *TODO implémenter les modèles de conception dans le script content.js
  *
@@ -13,6 +14,7 @@ tanaguruTestsList.push({
 	name: 'locale__scripts_name_401',
 	query: 'button:not([role]), button[role="none"], [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role]), input[type="button"]:not([role])',
 	testStatus: "failed",
+    depStatus: ["passed"],
 	filter: function (item) {
         if(item.closest('form')) return;
         if((item.getAttribute('data-tng-el-visible') === 'true' || item.getAttribute('data-tng-el-exposed') === 'true') && !item.disabled) {
@@ -80,11 +82,14 @@ tanaguruTestsList.push({
 	ressources: {'rgaa': ['7.1.3']}
 });
 
+//! dependance 7.1.1
+//! reference a data-tng-altLong (defini dans le script image), vérifier si c'est nécessaire, si oui definir cet attribut dans ce script egalement.
 tanaguruTestsList.push({
     lang: 'fr',
     name: 'locale__scripts_name_406',
     query: '[data-tng-script-ANaria][data-tng-el-visible="true"]',
     testStatus: "failed",
+    depStatus: ["passed"],
     filter: function (item) {
         if(item.innerText.trim().length > 0 || (item.value && item.value.trim().length > 0) || item.querySelector('[data-tng-altLong]')) {
             var visibleName = '';

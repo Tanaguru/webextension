@@ -1,6 +1,7 @@
 /**
  *? COULEURS
  ** tous les tests sont répertoriés
+ *! dépendance contrast.js sur tous les tests
  *TODO prendre en compte les attributs tel quel "value" ou "placeholder" dans les tests du critère 3.2
  *TODO 3.3.1 répertorier les indications de couleur & les propriétés CSS déterminant une couleur
  *TODO identifier les mécanismes de contraste

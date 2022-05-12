@@ -1,6 +1,7 @@
 /**
  *? ELEMENTS OBLIGATOIRES
  ** tous les tests sont répertoriés
+ ** dependances géréss
  ** 8.3 si l'élément <html> n'a pas d'attribut lang, vérifier que la langue est renseignée pour chaque noeud texte et attribut dont le contenu est affiché ou lu par les lecteurs d'écran
  ** 8.9.1 voir si l'on peut étoffer
  *TODO 8.2 implémenter spec HTML dans le script content.js
@@ -134,6 +135,7 @@ tanaguruTestsList.push({
 	name: 'locale__mandatory_name_281',
 	query: '[role][data-tng-el-exposed="true"]',
 	testStatus: "failed",
+    depStatus: ["passed"],
 	filter: function (item) {
 		if (item.getAttribute('role').trim() == 0) {
             return false;
@@ -163,6 +165,7 @@ tanaguruTestsList.push({
 	name: 'locale__mandatory_name_283',
 	query: '[data-tng-ariaAttribute][data-tng-el-exposed="true"]',
     testStatus: "failed",
+    depStatus: ["passed"],
 	filter: function (item) {
         if(item.hasInvalidAriaAttributes()) {
             return true;
@@ -279,11 +282,13 @@ tanaguruTestsList.push({
 });
 
 //8.4.1 Pour chaque page web ayant une langue par défaut, le code de langue est-il pertinent ?
+//! dependance 8.3.1
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: 'locale__mandatory_name_296',
 	query: '[data-tng-haslang]',
 	testStatus: "failed",
+    depStatus: ["passed"],
 	filter: function (item) {
         if(item.hasAttribute('lang')) {
             item.setAttribute('data-tng-lang', 'lang');
@@ -324,6 +329,7 @@ tanaguruTestsList.push({
 	name: 'locale__mandatory_name_298',
 	query: '[data-tng-lang="lang"][data-tng-lang="xml"]',
 	testStatus: "failed",
+    depStatus: ["passed"],
 	filter: function (item) {
         var lang1 = item.getAttribute('lang');
         var lang2 = item.getAttribute('xml:lang');
@@ -357,6 +363,7 @@ tanaguruTestsList.push({
 	name: 'locale__mandatory_name_300',
 	query: '[data-tng-haslang]',
 	testStatus: "failed",
+    depStatus: ["passed"],
 	filter: function (item) {
         if(item.hasAttribute('lang') && item.hasAttribute('xml:lang')) {
             if(item.hasAttribute('data-tng-emptylang') && item.getAttribute('data-tng-emptylang') === 'both') {
@@ -430,6 +437,7 @@ tanaguruTestsList.push({
         return;
     },
     testStatus: "cantTell",
+    depStatus: ["failed"],
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.6.1']}
 });
@@ -461,6 +469,7 @@ tanaguruTestsList.push({
 	name: 'locale__mandatory_name_308',
 	query: 'body [lang], body [xml\\:lang]',
 	testStatus: "failed",
+    depStatus: ["passed"],
 	filter: function (item) {
         if(item.hasAttribute('lang') && !item.hasAttribute('xml:lang')) {
             if(item.getAttribute('lang').length === 0) {
@@ -502,6 +511,7 @@ tanaguruTestsList.push({
 	name: 'locale__mandatory_name_310',
 	query: '[data-tng-el-notemptylang]',
 	testStatus: "failed",
+    depStatus: ["passed"],
 	filter: function (item) {
         if(item.hasValidLanguageCode()) {
             item.setAttribute('data-tng-el-validlang', 'true');
@@ -559,6 +569,7 @@ tanaguruTestsList.push({
     query: '[dir][data-tng-el-exposed="true"]',
     description: 'locale__mandatory_description_316',
     testStatus: "failed",
+    depStatus: ["cantTell"],
     filter: function (item) {
         var dirAttr = item.getAttribute('dir');
 

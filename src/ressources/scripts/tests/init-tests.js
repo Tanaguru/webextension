@@ -135,7 +135,14 @@ function filterStatus() {
     if(!statusUser.match('inapplicable')) {
         function matchInapplicable(test) {
             if((test.status && test.status === 'inapplicable') || (test.testStatus && test.testStatus === 'inapplicable')) {
-                return false;
+                if(test.depStatus) {
+                    let dep = false;
+                    test.depStatus.forEach(e => {
+                        if(statusUser.match(e)) dep = true;
+                    });
+
+                    return dep;
+                } else return false;
             } else {
                 return true;
             }
@@ -147,7 +154,14 @@ function filterStatus() {
     if(!statusUser.match('cantTell')) {
         function matchCantTell(test) {
             if(test.testStatus && test.testStatus === 'cantTell') {
-                return false;
+                if(test.depStatus) {
+                    let dep = false;
+                    test.depStatus.forEach(e => {
+                        if(statusUser.match(e)) dep = true;
+                    });
+
+                    return dep;
+                } else return false;
             } else {
                 return true;
             }
@@ -159,7 +173,14 @@ function filterStatus() {
     if(!statusUser.match('failed')) {
         function matchFailed(test) {
             if(test.testStatus && test.testStatus === 'failed') {
-                return false;
+                if(test.depStatus) {
+                    let dep = false;
+                    test.depStatus.forEach(e => {
+                        if(statusUser.match(e)) dep = true;
+                    });
+
+                    return dep;
+                } else return false;
             } else {
                 return true;
             }
@@ -171,7 +192,14 @@ function filterStatus() {
     if(!statusUser.match('passed')) {
         function matchPassed(test) {
             if(test.testStatus && test.testStatus === 'passed') {
-                return false;
+                if(test.depStatus) {
+                    let dep = false;
+                    test.depStatus.forEach(e => {
+                        if(statusUser.match(e)) dep = true;
+                    });
+
+                    return dep;
+                } else return false;
             } else {
                 return true;
             }
@@ -183,6 +211,12 @@ function filterStatus() {
     if(!statusUser.match('passed') && !statusUser.match('failed')) {
         function matchPassedFailed(test) {
             if(test.expectedNbElements) {
+                if(test.depStatus) {
+                    test.depStatus.forEach(e => {
+                        if(statusUser.match(e)) return true;
+                    });
+                }
+
                 return false;
             } else {
                 return true;

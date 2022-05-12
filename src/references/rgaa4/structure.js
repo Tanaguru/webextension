@@ -1,10 +1,13 @@
 /**
  *? STRUCTURATION DE L'INFORMATION
  ** tous les tests sont répertoriés
- *
+ ** dependances gérées
  * data : data-tng-headingAN
  */
 //! 9.1.1 : voir content.js getHeadingsMap()
+/**
+ * todo re_instaurer le test 9.1.1 mais en suivant les BP
+ */
 
 
 // 9.1.2 : Dans chaque page web, le contenu de chaque titre (balise <hx> ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) est-il pertinent ?
@@ -13,6 +16,7 @@ tanaguruTestsList.push({
     name: 'locale__structure_name_417',
     query: 'h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"][aria-level]',
     testStatus: "failed",
+    depStatus: ["cantTell"],
     filter: function (item) {
         if(item.hasAccessibleName()) {
             item.setAttribute('data-tng-headingAN', 'true');
