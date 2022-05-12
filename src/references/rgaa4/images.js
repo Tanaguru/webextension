@@ -112,10 +112,13 @@ tanaguruTestsList.push({
     filter: function (item) {
         if(item.accessibleName() == '') {
             return true;
-        } else if(item.accessibleName().length > 80) {
-            item.setAttribute('data-tng-altLong','true');
         } else {
-            item.setAttribute('data-tng-altLong','false');
+            item.setAttribute('data-tng-informative-img', true);
+            if(item.accessibleName().length > 80) {
+                item.setAttribute('data-tng-altLong','true');
+            } else {
+                item.setAttribute('data-tng-altLong','false');
+            }
         }
     },
     tags: ['a11y', 'buttons', 'images', 'accessiblename'],
@@ -200,10 +203,13 @@ tanaguruTestsList.push({
     filter: function (item) {
         if(item.accessibleName() == '') {
             return true;
-        } else if(item.accessibleName().length > 80) {
-            item.setAttribute('data-tng-altLong','true');
         } else {
-            item.setAttribute('data-tng-altLong','false');
+            item.setAttribute('data-tng-informative-img', true);
+            if(item.accessibleName().length > 80) {
+                item.setAttribute('data-tng-altLong','true');
+            } else {
+                item.setAttribute('data-tng-altLong','false');
+            }
         }
     },
     tags: ['a11y', 'images', 'accessiblename'],
@@ -253,10 +259,13 @@ tanaguruTestsList.push({
     filter: function (item) {
         if(item.accessibleName() == '') {
             return true;
-        } else if(item.accessibleName().length > 80) {
-            item.setAttribute('data-tng-altLong','true');
         } else {
-            item.setAttribute('data-tng-altLong','false');
+            item.setAttribute('data-tng-informative-img', true);
+            if(item.accessibleName().length > 80) {
+                item.setAttribute('data-tng-altLong','true');
+            } else {
+                item.setAttribute('data-tng-altLong','false');
+            }
         }
     },
     tags: ['a11y', 'images', 'accessiblename'],
@@ -300,10 +309,13 @@ tanaguruTestsList.push({
     filter: function (item) {
         if(item.accessibleName() == '') {
             return true;
-        } else if(item.accessibleName().length > 80) {
-            item.setAttribute('data-tng-altLong','true');
         } else {
-            item.setAttribute('data-tng-altLong','false');
+            item.setAttribute('data-tng-informative-img', true);
+            if(item.accessibleName().length > 80) {
+                item.setAttribute('data-tng-altLong','true');
+            } else {
+                item.setAttribute('data-tng-altLong','false');
+            }
         }
     },
     tags: ['a11y', 'images', 'accessiblename'],
@@ -353,10 +365,13 @@ tanaguruTestsList.push({
     filter: function (item) {
         if(item.accessibleName() == '') {
             return true;
-        } else if(item.accessibleName().length > 80) {
-            item.setAttribute('data-tng-altLong','true');
         } else {
-            item.setAttribute('data-tng-altLong','false');
+            item.setAttribute('data-tng-informative-img', true);
+            if(item.accessibleName().length > 80) {
+                item.setAttribute('data-tng-altLong','true');
+            } else {
+                item.setAttribute('data-tng-altLong','false');
+            }
         }
     },
     tags: ['a11y', 'images', 'accessiblename'],
