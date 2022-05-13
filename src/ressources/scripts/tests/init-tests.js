@@ -1,5 +1,56 @@
 var statuses = ['failed', 'cantTell', 'passed'];
-var DOM_archi = {level1: []};
+var DOM_archi = {1: getElementProperties(document.documentElement, 1, null)};
+
+function getElementProperties(element, pos, bgColorParent) {
+    let focusable = (htmlData.elements.hasOwnProperty(element.tagName.toLowerCase()) && htmlData.elements[element.tagName.toLowerCase()].hasOwnProperty('category')) ? htmlData.elements[element.tagName.toLowerCase()].focusable : null;
+    let exposed = element.isNotExposedDueTo;
+    let properties = {
+        position: pos,
+        role: element.getComputedAriaRole(),
+        tag: element.tagName.toLowerCase(),
+        x: element.offsetLeft,
+        y: element.offsetTop,
+        width: element.offsetWidth,
+        height: element.offsetHeight,
+        bgImage: window.getComputedStyle(element).getPropertyValue('background-image'),
+        bgColor: window.getComputedStyle(element).getPropertyValue('background-color'),
+        color: window.getComputedStyle(element).getPropertyValue('color'),
+        text: false,
+        interactive: focusable === true || element.onClick === true,
+        tab: element.canBeReachedUsingKeyboardWith.length > 0,
+        visible: (exposed == 'css:display' || exposed == 'css:visibility') ? false : element.isVisible,
+        exposed: exposed.length === 0
+    };
+
+    //todo il faudra également vérifier que l'élément est bien à l'intérieur du parent visuellement pour que ceci soit toujours juste
+    if(properties.bgColor === "rgba(0, 0, 0, 0)") properties.bgColor = bgColorParent;
+
+    let child = element.childNodes;
+    let elementChild = [];
+
+    for(let i = 1; i <= child.length; i++) {
+        let DOMposition = pos+"."+i;
+        if(!properties.text && child[i-1].nodeType === 3 && child[i-1].textContent.trim().length > 0) {
+            properties.text = true;
+        }
+
+        else if(child[i-1].nodeType === 1) {
+            let tag = child[i-1].tagName.toLowerCase();
+            if(tag === "head" || tag === "script") continue;
+            elementChild[DOMposition] = getElementProperties(child[i-1], DOMposition, properties.bgColor);
+        }
+
+        else continue;
+    }
+
+    element.setAttribute('data-el-properties', JSON.stringify(properties));
+
+    properties["child"] = elementChild;
+
+    return properties;
+}
+
+console.log(DOM_archi);
 
 /**
  * ? Define for each node of the page, if it is exposed, visible and has a [aria-*] attribute
@@ -18,7 +69,7 @@ function addDataTng() {
             e.setAttribute('data-tng-el-exposed', false);
             e.setAttribute('data-tng-notExposed', elExposed.join());
     
-            if(elExposed == 'css:display' || 'css:visibility') {
+            if(elExposed == 'css:display' || elExposed == 'css:visibility') {
                 e.setAttribute('data-tng-el-visible', false);
             }
         } else {
