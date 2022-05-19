@@ -978,8 +978,9 @@ button.addEventListener('click', function () {
 						var headingsPanelContent = document.importNode(headingsTemplate.content, true);
 						headingsPanel.appendChild(headingsPanelContent);
 						headingsPanel.querySelector('h2').textContent = chrome.i18n.getMessage('msgHeadingsHierarchy');
-						var headingsPanelp = headingsPanel.querySelector('.headings-message');
-						headingsPanelp.textContent = chrome.i18n.getMessage('panelAllHeadingsDesc');
+						headingsPanel.querySelector('.headings-message').textContent = chrome.i18n.getMessage('panelAllHeadingsDesc');
+						headingsPanel.querySelector('.headings-legend').textContent = chrome.i18n.getMessage('contrastLegend1');
+						headingsPanel.querySelector('.headings-error-desc').textContent = chrome.i18n.getMessage('panelErrorHeading');
 
 						var container = headingsPanel.querySelector('.headings-container');
 
@@ -1002,6 +1003,8 @@ button.addEventListener('click', function () {
 								btn.click();
 							});
 						});
+
+						var herror = 0;
 
 						function arrayToList(ar, currentList) {
 							ar.forEach(heading => {
@@ -1029,9 +1032,15 @@ button.addEventListener('click', function () {
 									let headingItem = document.createElement('li');
 									let headingSpan = document.createElement('span');
 									headingSpan.textContent = heading.level+" - "+heading.an;
+									if(heading.error) {
+										headingSpan.className = "heading-error";
+										headingSpan.setAttribute('aria-describedby', 'heading_error');
+										herror++;
+									}
+									else headingSpan.className = "item-actions-highlight";
 
 									let buttonShowContainer = document.createElement('span');
-									buttonShowContainer.className = "item-actions-highlight"
+									buttonShowContainer.className = "item-actions-highlight";
 									let buttonShow = document.createElement('button');
 									buttonShow.className = "visible";
 									let buttonShowLabel = document.createElement('span');
@@ -1086,6 +1095,12 @@ button.addEventListener('click', function () {
 						}
 
 						response.headings.forEach(ar => arrayToList(ar, container));
+
+						if(herror > 0) {
+							let hstrong = document.createElement('strong');
+							hstrong.appendChild(document.createTextNode(herror));
+							headings.appendChild(hstrong);
+						}
 						rightcolumn.appendChild(headingsPanel);
 					}
 					/**

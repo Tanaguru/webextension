@@ -378,6 +378,9 @@
 		"message": "Select the title in the inspector tab",
 		"hash": "c2d386fffbf1a20daf16a9cd6b261e1d"
 	},
+	"panelErrorHeading": {
+		"message": "the level of this heading is not pertinent to the previous heading"
+	},
 	"panelTextualContents": {
 		"message": "Textual content",
 		"hash": "e40aa0ad9e360bc889060f8c264cea83"
@@ -1990,9 +1993,15 @@
 		"message": "List of items not structured as title but having a role or a class indicating a title.",
 		"hash": "cda0510ef17928255dea62b1bdb0457a"
 	},
+	"structure_name_420": {
+		"message": "List of headings whose level is not pertinent."
+	},
 	"structure_description_420": {
 		"message": "Check if those items should be sctructured as title.",
 		"hash": "026d0e0c2820487e7411a4f9389ad077"
+	},
+	"structure_description_421": {
+		"message": "As the pertinence of the hierarchy of headings is largely subject to the auditor's interpretation, we have chosen to follow the OPQUAST best practice."
 	},
 	"structure_name_421": {
 		"message": "Check the following items are header areas.",

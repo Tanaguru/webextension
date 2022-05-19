@@ -1148,6 +1148,17 @@ ul.headings-container .item-actions-highlight {
 	margin-left: 1rem;
 }
 
+ul.headings-container .heading-error,
+.headings-error-icon {
+	border: 2px solid red;
+}
+
+.headings-error-icon {
+	display: inline-block;
+	width: 2rem;
+	height: 1rem;
+}
+
 .headingDropdownButton {
 	width: 1.3rem;
 	padding: 0;

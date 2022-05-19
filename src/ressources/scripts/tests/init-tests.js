@@ -1,5 +1,6 @@
 var statuses = ['failed', 'cantTell', 'passed'];
-var DOM_archi = {1: getElementProperties(document.documentElement, 1, null)};
+var DOM_archi;
+var interactives = {};
 
 function getElementProperties(element, pos, bgColorParent) {
     let focusable = (htmlData.elements.hasOwnProperty(element.tagName.toLowerCase()) && htmlData.elements[element.tagName.toLowerCase()].hasOwnProperty('category')) ? htmlData.elements[element.tagName.toLowerCase()].focusable : null;
@@ -12,7 +13,7 @@ function getElementProperties(element, pos, bgColorParent) {
         y: element.offsetTop,
         width: element.offsetWidth,
         height: element.offsetHeight,
-        bgImage: window.getComputedStyle(element).getPropertyValue('background-image'),
+        bgImage: window.getComputedStyle(element).getPropertyValue('background-image') != "none",
         bgColor: window.getComputedStyle(element).getPropertyValue('background-color'),
         color: window.getComputedStyle(element).getPropertyValue('color'),
         text: false,
@@ -25,8 +26,11 @@ function getElementProperties(element, pos, bgColorParent) {
     //todo il faudra également vérifier que l'élément est bien à l'intérieur du parent visuellement pour que ceci soit toujours juste
     if(properties.bgColor === "rgba(0, 0, 0, 0)") properties.bgColor = bgColorParent;
 
+    if(properties.tab || properties.interactive) interactives[pos] = properties;
+
+    //todo traiter également les pseudos éléments ::before & ::after
     let child = element.childNodes;
-    let elementChild = [];
+    let elementChild = {};
 
     for(let i = 1; i <= child.length; i++) {
         let DOMposition = pos+"."+i;
@@ -43,14 +47,23 @@ function getElementProperties(element, pos, bgColorParent) {
         else continue;
     }
 
-    element.setAttribute('data-el-properties', JSON.stringify(properties));
+    if(Object.keys(elementChild).length > 0) properties.child = elementChild;
 
-    properties["child"] = elementChild;
+    element.setAttribute('data-tng-properties', pos);
+    element.setAttribute('data-tng-el-exposed', properties.exposed);
+    element.setAttribute('data-tng-el-visible', properties.visible);
+
+    if(!properties.exposed) element.setAttribute('data-tng-notExposed', exposed.join());
+
+    let attributesList = element.attributes;
+    for(let i = 0; i < attributesList.length; i++) {
+        if(attributesList[i].name.match(/^aria-.*$/)) {
+            element.setAttribute('data-tng-ariaAttribute', true);
+        }
+    }
 
     return properties;
 }
-
-console.log(DOM_archi);
 
 /**
  * ? Define for each node of the page, if it is exposed, visible and has a [aria-*] attribute
@@ -343,7 +356,15 @@ function launchTests() {
 }
 
 if(first === "yes") {
-    addDataTng();
+    if(document.querySelector('[sdata-tng-hindex]')) cleanSDATA();
+
+    localStorage.setItem("DOM", JSON.stringify({
+        properties: getElementProperties(document.documentElement, 1, null),
+        interactives: interactives
+    }));
+    DOM_archi = JSON.parse(localStorage.getItem("DOM"));
+    console.log(DOM_archi);
+
     getHeadingsMap();
 }
 var textNodeList = (cat !== 'colors') ? null : getTextNodeContrast();

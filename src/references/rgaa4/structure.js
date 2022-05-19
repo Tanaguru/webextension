@@ -5,9 +5,16 @@
  * data : data-tng-headingAN
  */
 //! 9.1.1 : voir content.js getHeadingsMap()
-/**
- * todo re_instaurer le test 9.1.1 mais en suivant les BP
- */
+// 9.1.1 : Dans chaque page web, l'information est-elle structurée par l'utilisation appropriée de titres ?
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: 'locale__structure_name_420',
+    description: 'locale__structure_description_421',
+    query: '[data-tng-herror]',
+    testStatus: "failed",
+    tags: ['a11y', 'headings', 'structure'],
+    ressources: { 'rgaa': ['9.1.2'] }
+});
 
 
 // 9.1.2 : Dans chaque page web, le contenu de chaque titre (balise <hx> ou balise possédant un attribut WAI-ARIA role="heading" associé à un attribut WAI-ARIA aria-level) est-il pertinent ?

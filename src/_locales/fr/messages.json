@@ -285,6 +285,9 @@
   "panelInspectHeading": {
     "message": "sélectionner le titre dans l'onglet inspecteur"
   },
+  "panelErrorHeading": {
+    "message": "le niveau de ce titre n'est pas pertinent avec celui du titre précédent"
+  },
   "panelTextualContents": {
     "message": "Contenu textuel"
   },
@@ -1494,8 +1497,14 @@
   "structure_name_419": {
     "message": "Liste d'éléments non structurés en titre mais ayant un role ou une classe indiquant un titre."
   },
+  "structure_name_420": {
+    "message": "Liste des titres dont le niveau n'est pas pertinent."
+  },
   "structure_description_420": {
     "message": "Vérifier si ces éléments devraient être structurés en titre."
+  },
+  "structure_description_421": {
+    "message": "La pertinence de la hierarchie des titres étant grandement sujette à l'interprétation de l'auditeur, nous avons fait le choix de suivre les bonnes pratiques OPQUAST."
   },
   "structure_name_421": {
     "message": "Vérifier que les éléments suivant sont des zones d'entêtes"

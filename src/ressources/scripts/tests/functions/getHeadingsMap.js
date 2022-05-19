@@ -15,15 +15,19 @@
     var lastLvl = [];
     var index = 1;
 
-    function getHeadingInfos(el, currentlevel) {
+    function getHeadingInfos(el, currentlevel, previousLevel) {
+        let error = index > 2 && currentlevel - previousLevel > 1 ? true : false;
+
         el.setAttribute('sdata-tng-hindex', index);
+        if(error) el.setAttribute('data-tng-herror', 'true');
         
         let result = {
             index: index,
             tag: el.tagName.toLowerCase(),
             level: currentlevel,
             an: el.innerText.trim(),
-            xpath: getXPath(el)
+            xpath: getXPath(el),
+            error: error
         };
         index++;
         return result;
@@ -32,9 +36,8 @@
     for(let i = 0; i < collection.length; i++) {
         let previousLevel = collection[i-1] ? (!collection[i-1].hasAttribute('role') ? collection[i-1].tagName.toLowerCase().split('h')[1] : collection[i-1].getAttribute('aria-level')) : null;
         let currentlevel = !collection[i].hasAttribute('role') ? collection[i].tagName.toLowerCase().split('h')[1] : collection[i].getAttribute('aria-level');
-        let nextLevel = collection[i+1] ? (!collection[i+1].hasAttribute('role') ? collection[i+1].tagName.toLowerCase().split('h')[1] : collection[i+1].getAttribute('aria-level')) : null;
 
-        let element = getHeadingInfos(collection[i], currentlevel);
+        let element = getHeadingInfos(collection[i], currentlevel, previousLevel);
 
         if(previousLevel) {
             if(previousLevel == currentlevel) {

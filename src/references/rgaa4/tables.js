@@ -139,12 +139,11 @@ tanaguruTestsList.push({
                 if(summary) {
                     item.setAttribute('data-tng-dataTableSummary', 'true');
                     return true;
+                } else {
+                    item.setAttribute('data-tng-dataTableSummary', 'false');
                 }
             }
         }
-
-        item.setAttribute('data-tng-dataTableSummary', 'false');
-        return;
     },
     testStatus: "passed",
     depStatus: ["failed", "cantTell"],
