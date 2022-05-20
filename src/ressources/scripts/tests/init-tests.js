@@ -1,9 +1,11 @@
 var statuses = ['failed', 'cantTell', 'passed'];
+var interactiveRoles = ["button", "checkbox", "combobox", "link", "listbox", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "searchbox", "slider", "spinbutton", "switch", "tab", "textbox"];
 var DOM_archi;
-var interactives = {};
+var interactiveIndex = 1;
+var interactives = [];
+var tablist = [];
 
 function getElementProperties(element, pos, bgColorParent) {
-    let focusable = (htmlData.elements.hasOwnProperty(element.tagName.toLowerCase()) && htmlData.elements[element.tagName.toLowerCase()].hasOwnProperty('category')) ? htmlData.elements[element.tagName.toLowerCase()].focusable : null;
     let exposed = element.isNotExposedDueTo;
     let properties = {
         position: pos,
@@ -17,16 +19,27 @@ function getElementProperties(element, pos, bgColorParent) {
         bgColor: window.getComputedStyle(element).getPropertyValue('background-color'),
         color: window.getComputedStyle(element).getPropertyValue('color'),
         text: false,
-        interactive: focusable === true || element.onClick === true,
-        tab: element.canBeReachedUsingKeyboardWith.length > 0,
+        content: element.textContent,
+        interactive: false,
+        tab: false,
         visible: (exposed == 'css:display' || exposed == 'css:visibility') ? false : element.isVisible,
         exposed: exposed.length === 0
     };
 
+    if(properties.exposed) {
+        properties.tab = element.canBeReachedUsingKeyboardWith.length > 0;
+
+        if(interactiveRoles.includes(properties.role)) {
+            properties.interactive = !element.hasAttribute('disabled') && !(element.hasAttribute('aria-disabled') && element.getAttribute('aria-disabled') === "true");
+        }
+    } else element.setAttribute('data-tng-notExposed', exposed.join());
+
     //todo il faudra également vérifier que l'élément est bien à l'intérieur du parent visuellement pour que ceci soit toujours juste
     if(properties.bgColor === "rgba(0, 0, 0, 0)") properties.bgColor = bgColorParent;
 
-    if(properties.tab || properties.interactive) interactives[pos] = properties;
+    if(properties.tab || properties.interactive) {
+        interactives.push({el: element, prop: properties});
+    }
 
     //todo traiter également les pseudos éléments ::before & ::after
     let child = element.childNodes;
@@ -53,7 +66,11 @@ function getElementProperties(element, pos, bgColorParent) {
     element.setAttribute('data-tng-el-exposed', properties.exposed);
     element.setAttribute('data-tng-el-visible', properties.visible);
 
-    if(!properties.exposed) element.setAttribute('data-tng-notExposed', exposed.join());
+    if(properties.tab) {
+        element.setAttribute('sdata-tng-interactive-pos', interactiveIndex);
+        tablist.push({tabindex: element.tabIndex, el: element});
+        interactiveIndex++;
+    }
 
     let attributesList = element.attributes;
     for(let i = 0; i < attributesList.length; i++) {
@@ -359,11 +376,18 @@ if(first === "yes") {
     if(document.querySelector('[sdata-tng-hindex]')) cleanSDATA();
 
     localStorage.setItem("DOM", JSON.stringify({
-        properties: getElementProperties(document.documentElement, 1, null),
-        interactives: interactives
+        properties: getElementProperties(document.documentElement, 1, null)
     }));
     DOM_archi = JSON.parse(localStorage.getItem("DOM"));
-    console.log(DOM_archi);
+    interactivesError = interactives.filter(e => (e.role && e.role != "application") && e.prop.tab != e.prop.interactive);
+
+    for(let i = 0; i < tablist.length; i++) {
+        let current = tablist[i];
+        let previous = tablist[i-1];
+        if(current.tabindex > 0 && current.tabindex - previous.tabindex > 1) current.el.setAttribute('data-tng-tab-error', true);
+    }
+
+    console.log(document.querySelectorAll('[data-tng-tab-error]'));
 
     getHeadingsMap();
 }
