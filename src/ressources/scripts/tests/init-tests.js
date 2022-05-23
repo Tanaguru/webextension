@@ -1,7 +1,7 @@
 var statuses = ['failed', 'cantTell', 'passed'];
 var interactiveRoles = ["button", "checkbox", "combobox", "link", "listbox", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "searchbox", "slider", "spinbutton", "switch", "tab", "textbox"];
 var DOM_archi;
-var interactiveIndex = 1;
+var interactiveIndex = 0;
 var interactives = [];
 var tablist = [];
 
@@ -381,11 +381,33 @@ if(first === "yes") {
     DOM_archi = JSON.parse(localStorage.getItem("DOM"));
     interactivesError = interactives.filter(e => (e.role && e.role != "application") && e.prop.tab != e.prop.interactive);
 
-    for(let i = 0; i < tablist.length; i++) {
-        let current = tablist[i];
-        let previous = tablist[i-1];
-        if(current.tabindex > 0 && current.tabindex - previous.tabindex > 1) current.el.setAttribute('data-tng-tab-error', true);
+    var domOrder = tablist.slice(0);
+    tablist.sort((a, b) => b.tabindex - a.tabindex);
+
+    function move(arr, from, to) {
+        var elem = arr.splice(from, 1)[0];
+        if (to < 0) to += 1;
+        arr.splice(to, 0, elem);
+        return arr;
     }
+
+    function orderPross(ar) {
+        var relaunch = false;
+        for(let i = 0; i < ar.length; i++) {
+            var pos = parseInt(ar[i].el.getAttribute('sdata-tng-interactive-pos'));
+
+            if(pos != i) {
+                ar[i].el.setAttribute('data-tng-tab-error', true);
+                ar = move(ar, i, pos);
+                relaunch = true;
+                break;
+            }
+        }
+
+        if(relaunch) orderPross(ar);
+    }
+
+    orderPross(tablist);
 
     console.log(document.querySelectorAll('[data-tng-tab-error]'));
 
