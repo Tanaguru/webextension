@@ -9,7 +9,7 @@
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__frames_name_131',
+    name: "locale__frames_name_131",
     query: 'iframe[data-tng-el-exposed="true"][title]:not([role="presentation"]), frame[data-tng-el-exposed="true"][title]:not([role="presentation"])',
     testStatus: "passed",
     mark: { attrs: ['title']},
@@ -19,7 +19,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__frames_name_132',
+    name: "locale__frames_name_132",
     query: 'iframe[data-tng-el-exposed="true"]:not([role="presentation"], [title]), frame[data-tng-el-exposed="true"]:not([role="presentation"], [title])',
     testStatus: "failed",
     tags: ['a11y', 'frames'],
@@ -28,7 +28,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__frames_name_133',
+    name: "locale__frames_name_133",
     query: 'iframe[data-tng-el-exposed="false"]:not([role="presentation"]), frame[data-tng-el-exposed="false"]:not([role="presentation"])',
     testStatus: "inapplicable",
     tags: ['a11y', 'frames'],
@@ -39,7 +39,7 @@ tanaguruTestsList.push({
 // 2.2.1 Pour chaque cadre (balise <iframe> ou <frame>) ayant un attribut title, le contenu de cet attribut est-il pertinent ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__frames_name_134',
+    name: "locale__frames_name_134",
     query: 'iframe[data-tng-el-exposed="true"][title]:not([role="presentation"]), frame[data-tng-el-exposed="true"][title]:not([role="presentation"])',
     filter: function (item) {
         if(item.getAttribute('title').trim().length === 0) {
@@ -58,7 +58,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__frames_name_135',
+    name: "locale__frames_name_135",
     query: '[data-tng-frameAlt]',
     testStatus: "failed",
     mark: { attrs: ['title']},

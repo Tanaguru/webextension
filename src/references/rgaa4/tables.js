@@ -9,7 +9,7 @@
 // 5.1.1  Pour chaque tableau de données complexe un résumé est-il disponible ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__tables_name_433',
+    name: "locale__tables_name_433",
     query: 'table[data-tng-el-exposed="true"][data-tng-el-visible="true"]:not([role]), [role="table"][data-tng-el-exposed="true"][data-tng-el-visible="true"]',
     expectedNbElements: 0,
     explanations: {
@@ -53,7 +53,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__tables_name_436',
+    name: "locale__tables_name_436",
     query: '[data-tng-tableCaptions]',
     testStatus: "passed",
     mark: {attrs: ['aria-describedby']},
@@ -65,9 +65,9 @@ tanaguruTestsList.push({
 //! dependance 5.1.1
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__tables_name_437',
+    name: "locale__tables_name_437",
     query: '[data-tng-tableCaptions]',
-    description: 'locale__tables_description_438',
+    description: "locale__tables_description_438",
     testStatus: "cantTell",
     mark: {attrs: ['aria-describedby']},
     tags: ['a11y', 'tables'],
@@ -78,9 +78,9 @@ tanaguruTestsList.push({
 // 5.3.1 Chaque tableau de mise en forme vérifie-t-il ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__tables_name_439',
+    name: "locale__tables_name_439",
     query: 'table',
-    description: 'locale__tables_description_440',
+    description: "locale__tables_description_440",
     testStatus: "failed",
     depStatus: ["cantTell", "passed"],
     filter: function (item) {
@@ -100,9 +100,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__tables_name_441',
+    name: "locale__tables_name_441",
     query: 'table[data-tng-prezTable][role="presentation"]',
-    description: 'locale__tables_description_440',
+    description: "locale__tables_description_440",
     testStatus: "cantTell",
     mark: {attrs: ['role']},
     tags: ['a11y', 'tables'],
@@ -113,7 +113,7 @@ tanaguruTestsList.push({
 //! dependance 5.3.1
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__tables_name_443',
+    name: "locale__tables_name_443",
     query: 'table:not([role], [data-tng-prezTable]), [role="table"]:not([data-tng-prezTable])',
     filter: function(item) {
         if(item.querySelector('caption') != null) {
@@ -154,7 +154,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__tables_name_444',
+    name: "locale__tables_name_444",
     query: '[data-tng-dataTableSummary="false"]',
     testStatus: "failed",
     mark: {attrs: ['aria-labelledby']},
@@ -166,9 +166,9 @@ tanaguruTestsList.push({
 //! dependance 5.4.1
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__tables_name_445',
+    name: "locale__tables_name_445",
     query: '[data-tng-dataTableSummary="true"]',
-    description: 'locale__tables_description_446',
+    description: "locale__tables_description_446",
     filter: function(item) {
         if(item.hasAccessibleName()) {
             item.setAttribute('data-tng-tableAccessiblename', 'true');
@@ -186,7 +186,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__tables_name_447',
+    name: "locale__tables_name_447",
     query: '[data-tng-tableAccessiblename="false"][data-tng-el-exposed="true"], [data-tng-tableAccessiblename="false"][data-tng-el-visible="true"]',
     testStatus: "failed",
     mark: {attrs: ['title', 'aria-label', 'aria-labelledby']},
@@ -199,7 +199,7 @@ tanaguruTestsList.push({
 //! dependance 5.3.1
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__tables_name_448',
+    name: "locale__tables_name_448",
     query: 'table:not([role], [data-tng-prezTable]) *[scope="col"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[scope="colgroup"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[id][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) th[data-tng-el-exposed="true"]',
     filter: function (item) {
         var table = item.closest('table');
@@ -357,7 +357,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__tables_name_449',
+    name: "locale__tables_name_449",
     query: 'table *[data-tng-tableCol="bad"]',
     testStatus: "failed",
     mark: {attrs: ['scope']},
@@ -369,7 +369,7 @@ tanaguruTestsList.push({
 //! dependance 5.3.1
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__tables_name_450',
+    name: "locale__tables_name_450",
     query: 'table:not([role], [data-tng-prezTable]) *[scope="row"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[scope="rowgroup"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[id][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) th[data-tng-el-exposed="true"]',
     filter: function (item) {
         var table = item.closest('table');
@@ -484,7 +484,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__tables_name_451',
+    name: "locale__tables_name_451",
     query: 'table *[data-tng-tableRow="bad"]',
     testStatus: "failed",
     mark: {attrs: ['scope']},
@@ -496,8 +496,8 @@ tanaguruTestsList.push({
 //! dependances 5.6.1 & 5.6.2
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_452',
-    description: 'locale__tables_description_453',
+	name: "locale__tables_name_452",
+    description: "locale__tables_description_453",
     query: '*[data-tng-table="headerColPart"], *[data-tng-table="headerRowPart"]',
     testStatus: "failed",
     filter: function(item) {
@@ -509,7 +509,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_454',
+	name: "locale__tables_name_454",
     query: 'th[data-tng-table="headerColPart"], th[data-tng-table="headerRowPart"]',
     testStatus: "passed",
 	tags: ['a11y', 'tables'],
@@ -520,7 +520,7 @@ tanaguruTestsList.push({
 //! dependance 5.3.1
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_455',
+	name: "locale__tables_name_455",
 	query: 'table:not([role], [data-tng-prezTable]) *[headers][data-tng-el-exposed="true"], [role="table"]:not([data-tng-prezTable]) *[headers][data-tng-el-exposed="true"]',
     testStatus: "failed",
     depStatus: ["passed"],
@@ -552,7 +552,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_456',
+	name: "locale__tables_name_456",
 	query: 'table *[data-tng-tableHeaders="true"]',
     testStatus: "passed",
     mark: {attrs: ['headers']},
@@ -565,7 +565,7 @@ tanaguruTestsList.push({
 //! dependances 5.6.1 & 5.6.2
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_457',
+	name: "locale__tables_name_457",
 	query: 'th[data-tng-table="headerColFull"]:not([scope], [role="columnheader"]), th[data-tng-table="headerRowFull"]:not([scope], [role="rowheader"])',
     testStatus: "failed",
     depStatus: ["passed"],
@@ -590,7 +590,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_458',
+	name: "locale__tables_name_458",
 	query: 'th[data-tng-table="headerColFull"][scope], th[data-tng-table="headerColFull"][role="columnheader"], th[data-tng-table="headerColFull"][data-tng-tableHeader-uniqueID="true"], th[data-tng-table="headerRowFull"][scope], th[data-tng-table="headerRowFull"][role="rowheader"], th[data-tng-table="headerRowFull"][data-tng-tableHeader-uniqueID="true"]',
     testStatus: "passed",
     mark: {attrs: ['scope', 'id', 'role']},
@@ -601,7 +601,7 @@ tanaguruTestsList.push({
 // 5.7.2 Pour chaque contenu de balise <th> s'appliquant à la totalité de la ligne ou de la colonne et possédant un attribut scope, la balise <th> vérifie-t-elle une de ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_459',
+	name: "locale__tables_name_459",
 	query: 'th[scope]',
 	filter: function (item) {
 		var row = item.parentNode;
@@ -624,7 +624,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_460',
+	name: "locale__tables_name_460",
 	query: 'th[scope]:not([data-tng-scope="valid"])',
     testStatus: "failed",
     depStatus: ["cantTell"],
@@ -645,9 +645,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_461',
+	name: "locale__tables_name_461",
 	query: 'th[scope]:not([data-tng-scope])',
-    description: 'locale__tables_description_462',
+    description: "locale__tables_description_462",
     testStatus: "cantTell",
     mark: {attrs: ['scope']},
 	tags: ['a11y', 'tables'],
@@ -658,7 +658,7 @@ tanaguruTestsList.push({
 //! dependances 5.6.1 & 5.6.2
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_463',
+	name: "locale__tables_name_463",
 	query: 'th[data-tng-table="headerColPart"][id]:not([scope="col"], [role="columnheader"]), th[data-tng-table="headerRowPart"][id]:not([scope="row"], [role="rowheader"])',
 	filter: function (item) {
         if(item.id.trim().length > 0) {
@@ -682,7 +682,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_464',
+	name: "locale__tables_name_464",
 	query: 'th[data-tng-table="headerColPart"]:not([data-tng-partHeader-uniqueID="true"]), th[data-tng-table="headerRowPart"]:not([data-tng-partHeader-uniqueID="true"])',
     testStatus: "failed",
     mark: {attrs: ['scope', 'id', 'role']},
@@ -693,7 +693,7 @@ tanaguruTestsList.push({
 // 5.7.4 Pour chaque contenu de balise <td> ou <th> associée à un ou plusieurs en-têtes possédant un attribut id, la balise vérifie-t-elle ces conditions ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_465',
+	name: "locale__tables_name_465",
 	query: 'table td[headers], table th[headers]',
 	filter: function (item) {
 		var headers = item.getAttribute('headers');
@@ -740,7 +740,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_466',
+	name: "locale__tables_name_466",
 	query: 'table [data-tng-headerInTable="false"][data-tng-el-exposed="true"], table [data-tng-headerInTable="false"][data-tng-el-visible="true"]',
     testStatus: "failed",
     mark: {attrs: ['headers']},
@@ -752,7 +752,7 @@ tanaguruTestsList.push({
 //! dependances 5.6.1 & 5.6.2
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_467',
+	name: "locale__tables_name_467",
 	query: '[role="rowheader"][data-tng-table="headerColFull"], [role="columnheader"][data-tng-table="headerRowFull"]',
     testStatus: "failed",
     mark: {attrs: ['role']},
@@ -762,7 +762,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_468',
+	name: "locale__tables_name_468",
 	query: '[role="columnheader"][data-tng-table="headerColFull"], [role="rowheader"][data-tng-table="headerRowFull"]',
     testStatus: "passed",
     mark: {attrs: ['role']},
@@ -774,7 +774,7 @@ tanaguruTestsList.push({
 // 5.8.1 Chaque tableau de mise en forme (balise <table>) vérifie-t-il ces conditions ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_469',
+	name: "locale__tables_name_469",
 	query: 'table[role="presentation"]',
     testStatus: "failed",
     depStatus: ["passed"],
@@ -797,7 +797,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__tables_name_470',
+	name: "locale__tables_name_470",
 	query: 'table[role="presentation"][data-tng-prezTable-dataEl="false"]',
     testStatus: "passed",
 	tags: ['a11y', 'tables'],

@@ -9,7 +9,7 @@
 // 6.1.1 Pour chaque lien texte l'intitulé de lien seul permet-il d'en comprendre la fonction et la destination ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_245',
+    name: "locale__links_name_245",
     query: 'a[href], [role="link"]',
     testStatus: "failed",
     depStatus: ["inapplicable", "cantTell", "passed"],
@@ -50,7 +50,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_246',
+    name: "locale__links_name_246",
     query: '[data-tng-textlink="true"][data-tng-el-exposed="false"][data-tng-el-visible="true"]',
     testStatus: "failed",
     mark: {attrs: ['role']},
@@ -60,7 +60,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_247',
+    name: "locale__links_name_247",
     query: '[data-tng-textlink="true"][data-tng-el-exposed="false"][data-tng-el-visible="false"]',
     testStatus: "inapplicable",
     mark: {attrs: ['role']},
@@ -70,9 +70,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_248',
+    name: "locale__links_name_248",
     query: '[data-tng-textlink-accessiblename]',
-    description: 'locale__links_description_249',
+    description: "locale__links_description_249",
     testStatus: "cantTell",
     mark: {attrs: ['role']},
     tags: ['a11y', 'links', 'accessiblename'],
@@ -81,10 +81,10 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_250',
+    name: "locale__links_name_250",
     query: '[data-tng-textlink-accessiblename][title]',
     testStatus: "failed",
-    description: 'locale__links_description_251',
+    description: "locale__links_description_251",
     filter: function(item) {
         let anMatch = isString1MatchString2(item.getAttribute('title'), item.accessibleName());
         if(anMatch === null) return;
@@ -99,7 +99,7 @@ tanaguruTestsList.push({
 //! dependance 6.1.1
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_252',
+    name: "locale__links_name_252",
     query: 'a[href]:not([data-tng-svgLink], [data-tng-textlink]), [role="link"]:not([data-tng-svgLink], [data-tng-textlink])',
     testStatus: "failed",
     depStatus: ["inapplicable", "cantTell", "passed"],
@@ -149,7 +149,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_253',
+    name: "locale__links_name_253",
     query: '[data-tng-imglink][data-tng-el-visible="true"][data-tng-el-exposed="false"]',
     testStatus: "failed",
     tags: ['a11y', 'links'],
@@ -158,7 +158,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_254',
+    name: "locale__links_name_254",
     query: '[data-tng-imglink][data-tng-el-visible="false"][data-tng-el-exposed="false"]',
     testStatus: "inapplicable",
     tags: ['a11y', 'links'],
@@ -167,9 +167,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_255',
+    name: "locale__links_name_255",
     query: '[data-tng-imglink-accessiblename]',
-    description: 'locale__links_description_256',
+    description: "locale__links_description_256",
     testStatus: "cantTell",
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.2']}
@@ -177,10 +177,10 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_257',
+    name: "locale__links_name_257",
     query: '[data-tng-imglink-accessiblename][title]',
     testStatus: "failed",
-    description: 'locale__links_description_258',
+    description: "locale__links_description_258",
     filter: function(item) {
         let anMatch = isString1MatchString2(item.getAttribute('title'), item.accessibleName());
         if(anMatch === null) return;
@@ -195,7 +195,7 @@ tanaguruTestsList.push({
 //! dependance 6.1.2
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_259',
+    name: "locale__links_name_259",
     query: '[data-tng-cplink]',
     testStatus: "failed",
     depStatus: ["cantTell", "passed"],
@@ -238,7 +238,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_260',
+    name: "locale__links_name_260",
     query: '[data-tng-cplink][data-tng-el-visible="true"][data-tng-el-exposed="false"]',
     testStatus: "failed",
     tags: ['a11y', 'links'],
@@ -247,7 +247,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_261',
+    name: "locale__links_name_261",
     query: '[data-tng-cplink][data-tng-el-visible="false"][data-tng-el-exposed="false"]',
     testStatus: "inapplicable",
     tags: ['a11y', 'links'],
@@ -256,9 +256,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_262',
+    name: "locale__links_name_262",
     query: '[data-tng-cplink-accessiblename]',
-    description: 'locale__links_description_263',
+    description: "locale__links_description_263",
     testStatus: "cantTell",
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.3']}
@@ -266,10 +266,10 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_264',
+    name: "locale__links_name_264",
     query: '[data-tng-cplink-accessiblename][title]',
     testStatus: "failed",
-    description: 'locale__links_description_265',
+    description: "locale__links_description_265",
     filter: function(item) {
         let anMatch = isString1MatchString2(item.getAttribute('title'), item.accessibleName());
         if(anMatch === null) return;
@@ -284,7 +284,7 @@ tanaguruTestsList.push({
 //! dependance 6.1.1
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_266',
+    name: "locale__links_name_266",
     query: '[data-tng-svgLink][data-tng-el-exposed="true"]',
     testStatus: "failed",
     depStatus: ["cantTell"],
@@ -302,7 +302,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_267',
+    name: "locale__links_name_267",
     query: '[data-tng-svgLink][data-tng-el-visible="true"][data-tng-el-exposed="false"]',
     testStatus: "failed",
     tags: ['a11y', 'links'],
@@ -311,7 +311,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_268',
+    name: "locale__links_name_268",
     query: '[data-tng-svgLink][data-tng-el-visible="false"][data-tng-el-exposed="false"]',
     testStatus: "inapplicable",
     tags: ['a11y', 'links'],
@@ -320,9 +320,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_269',
+    name: "locale__links_name_269",
     query: '[data-tng-svglink-accessiblename]',
-    description: 'locale__links_description_263',
+    description: "locale__links_description_263",
     testStatus: "cantTell",
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.4']}
@@ -332,7 +332,7 @@ tanaguruTestsList.push({
 //! dependance 6.1.*
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_271',
+    name: "locale__links_name_271",
     query: '[data-tng-link-ANaria][data-tng-el-visible="true"]',
     testStatus: "failed",
     depStatus: ["passed"],
@@ -372,7 +372,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_272',
+    name: "locale__links_name_272",
     query: '[data-tng-link-names-match]',
     testStatus: "passed",
     tags: ['a11y', 'links', 'accessiblename'],
@@ -383,7 +383,7 @@ tanaguruTestsList.push({
 // 6.2.1 Dans chaque page web, chaque lien a-t-il un intitulé entre <a> et </a> ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_273',
+    name: "locale__links_name_273",
     query: 'a[href][data-tng-el-visible="true"]',
     testStatus: "failed",
     depStatus: ["passed"],
@@ -406,7 +406,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__links_name_274',
+    name: "locale__links_name_274",
     query: '[data-tng-link-hasname]',
     testStatus: "passed",
     tags: ['a11y', 'links'],

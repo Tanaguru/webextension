@@ -11,7 +11,7 @@
 // 13.1.1 Pour chaque page web, chaque procédé de rafraîchissement (balise <object>, balise <embed>, balise <svg>, balise <canvas>, balise <meta>) vérifie-t-il une de ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__consultation_name_53',
+    name: "locale__consultation_name_53",
     query: 'meta[http-equiv="refresh"][content]',
     testStatus: "failed",
     filter: function (item) {
@@ -39,7 +39,7 @@ tanaguruTestsList.push({
 //! dependance 13.1.1
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__consultation_name_54',
+    name: "locale__consultation_name_54",
     query: '[data-tng-redirect]',
     testStatus: "failed",
     filter: function (item) {
@@ -55,7 +55,7 @@ tanaguruTestsList.push({
 // 13.1.3 Pour chaque page web, chaque procédé de redirection effectué via un script vérifie-t-il une de ces conditions (hors cas particuliers) ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_55',
+	name: "locale__consultation_name_55",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.1.3'] }
@@ -64,7 +64,7 @@ tanaguruTestsList.push({
 // 13.1.4 Pour chaque page web, chaque procédé limitant le temps d'une session vérifie-t-il une de ces conditions (hors cas particuliers) ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_56',
+	name: "locale__consultation_name_56",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.1.4'] }
@@ -74,7 +74,7 @@ tanaguruTestsList.push({
 // 13.2.1 Dans chaque page web, l'ouverture d'une nouvelle fenêtre ne doit pas être déclenchée sans action de l'utilisateur. Cette règle est-elle respectée ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_57',
+	name: "locale__consultation_name_57",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.2.1'] }
@@ -84,7 +84,7 @@ tanaguruTestsList.push({
 // 13.3.1 Dans chaque page web, chaque fonctionnalité de téléchargement d'un document bureautique vérifie-t-elle une de ces conditions ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_58',
+	name: "locale__consultation_name_58",
     query: '[href][download]',
     testStatus: "cantTell",
     tags: ['a11y', 'consultation'],
@@ -95,7 +95,7 @@ tanaguruTestsList.push({
 // 13.4.1 Chaque document bureautique ayant une version accessible vérifie-t-il une de ces conditions ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_59',
+	name: "locale__consultation_name_59",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.4.1'] }
@@ -105,7 +105,7 @@ tanaguruTestsList.push({
 // 13.5.1 Dans chaque page web, chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) vérifie-t-il une de ces conditions ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_60',
+	name: "locale__consultation_name_60",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.5.1'] }
@@ -115,7 +115,7 @@ tanaguruTestsList.push({
 // 13.6.1 Dans chaque page web, chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) vérifie-t-il une de ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_61',
+	name: "locale__consultation_name_61",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.6.1'] }
@@ -125,7 +125,7 @@ tanaguruTestsList.push({
 // 13.7.1 Dans chaque page web, chaque image ou élément multimédia (balise <video>, balise <img>, balise <svg>, balise <canvas>, balise <embed> ou balise <object>) qui provoque un changement brusque de luminosité ou un effet de flash vérifie-t-elle une de ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_62',
+	name: "locale__consultation_name_62",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.7.1'] }
@@ -134,7 +134,7 @@ tanaguruTestsList.push({
 // 13.7.2 Dans chaque page web, chaque script qui provoque un changement brusque de luminosité ou un effet de flash vérifie-t-il une de ces conditions ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_63',
+	name: "locale__consultation_name_63",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.7.2'] }
@@ -143,7 +143,7 @@ tanaguruTestsList.push({
 // 13.7.3 Dans chaque page web, chaque mise en forme CSS qui provoque un changement brusque de luminosité ou un effet de flash vérifie-t-elle une de ces conditions ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_64',
+	name: "locale__consultation_name_64",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.7.3'] }
@@ -153,7 +153,7 @@ tanaguruTestsList.push({
 // 13.8.1 Dans chaque page web, chaque contenu en mouvement, déclenché automatiquement, vérifie-t-il une de ces conditions ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_65',
+	name: "locale__consultation_name_65",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.8.1'] }
@@ -162,7 +162,7 @@ tanaguruTestsList.push({
 // 13.8.2 Dans chaque page web, chaque contenu clignotant, déclenché automatiquement, vérifie-t-il une de ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_66',
+	name: "locale__consultation_name_66",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.8.2'] }
@@ -172,7 +172,7 @@ tanaguruTestsList.push({
 // 13.9.1 Dans chaque page web, chaque contenu vérifie-t-il ces conditions (hors cas particuliers) ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_67',
+	name: "locale__consultation_name_67",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.9.1'] }
@@ -182,7 +182,7 @@ tanaguruTestsList.push({
 // 13.10.1 Dans chaque page web, chaque fonctionnalité utilisable ou disponible suite à un contact multipoint est-elle également utilisable ou disponible suite à un contact en un point unique de l’écran (hors cas particuliers) ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_68',
+	name: "locale__consultation_name_68",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.10.1'] }
@@ -191,7 +191,7 @@ tanaguruTestsList.push({
 // 13.10.2 Dans chaque page web, chaque fonctionnalité utilisable ou disponible suite à un geste basé sur le suivi d'une trajectoire sur l'écran est-elle également utilisable ou disponible suite à un contact en un point unique de l'écran (hors cas particuliers) ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_69',
+	name: "locale__consultation_name_69",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.10.2'] }
@@ -201,7 +201,7 @@ tanaguruTestsList.push({
 // 13.11.1 Dans chaque page web, les actions déclenchées au moyen d'un dispositif de pointage sur un point unique de l'écran vérifient-elles l'une de ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_70',
+	name: "locale__consultation_name_70",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.11.1'] }
@@ -211,7 +211,7 @@ tanaguruTestsList.push({
 // 13.12.1 Dans chaque page web, les fonctionnalités disponibles en bougeant l'appareil peuvent-elles être accomplies avec des composants d'interface utilisateur (hors cas particuliers) ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_71',
+	name: "locale__consultation_name_71",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.12.1'] }
@@ -220,7 +220,7 @@ tanaguruTestsList.push({
 // 13.12.2 Dans chaque page web, les fonctionnalités disponibles en faisant un geste en direction de l'appareil peuvent-elles être accomplies avec des composants d'interface utilisateur (hors cas particuliers) ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_72',
+	name: "locale__consultation_name_72",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.12.2'] }
@@ -229,7 +229,7 @@ tanaguruTestsList.push({
 // 13.12.3 L'utilisateur a-t-il la possibilité de désactiver la détection du mouvement pour éviter un déclenchement accidentel de la fonctionnalité (hors cas particuliers) ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__consultation_name_73',
+	name: "locale__consultation_name_73",
     status: 'untested',
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.12.3'] }

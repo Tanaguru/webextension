@@ -3,16 +3,24 @@ var interactiveRoles = ["button", "checkbox", "combobox", "link", "listbox", "me
 var DOM_archi;
 var interactiveIndex = 0;
 var interactives = [];
-var tablist = [];
 
-function getElementProperties(element, pos, bgColorParent) {
+function isInside(parent, children) {
+    let top = parent.top - children.top <= 0;
+    let left = parent.left - children.left <= 0;
+    let bottom = parent.bottom - children.bottom >= 0;
+    let right = parent.right - children.right >= 0;
+    
+    return top && left && bottom && right;
+}
+
+function getElementProperties(element, pos, bgColorParent, positionParent) {
+    if(element.localName === "head" || element.localName === "noscript" || element.localName === "noscript") return;
     let exposed = element.isNotExposedDueTo;
     let properties = {
-        position: pos,
+        index: pos,
         role: element.getComputedAriaRole(),
         tag: element.tagName.toLowerCase(),
-        x: element.offsetLeft,
-        y: element.offsetTop,
+        position: getPosition(element),
         width: element.offsetWidth,
         height: element.offsetHeight,
         bgImage: window.getComputedStyle(element).getPropertyValue('background-image') != "none",
@@ -34,8 +42,11 @@ function getElementProperties(element, pos, bgColorParent) {
         }
     } else element.setAttribute('data-tng-notExposed', exposed.join());
 
-    //todo il faudra également vérifier que l'élément est bien à l'intérieur du parent visuellement pour que ceci soit toujours juste
-    if(properties.bgColor === "rgba(0, 0, 0, 0)") properties.bgColor = bgColorParent;
+    if(properties.bgColor === "rgba(0, 0, 0, 0)") {
+        if(positionParent && isInside(positionParent, properties.position)) {
+            properties.bgColor = bgColorParent;
+        } else properties.bgColor = null;
+    }
 
     if(properties.tab || properties.interactive) {
         interactives.push({el: element, prop: properties});
@@ -67,8 +78,7 @@ function getElementProperties(element, pos, bgColorParent) {
     element.setAttribute('data-tng-el-visible', properties.visible);
 
     if(properties.tab) {
-        element.setAttribute('sdata-tng-interactive-pos', interactiveIndex);
-        tablist.push({tabindex: element.tabIndex, el: element});
+        element.setAttribute('data-tng-interactive-pos', interactiveIndex);
         interactiveIndex++;
     }
 
@@ -376,42 +386,55 @@ if(first === "yes") {
     if(document.querySelector('[sdata-tng-hindex]')) cleanSDATA();
 
     localStorage.setItem("DOM", JSON.stringify({
-        properties: getElementProperties(document.documentElement, 1, null)
+        properties: getElementProperties(document.documentElement, 1, null, null)
     }));
     DOM_archi = JSON.parse(localStorage.getItem("DOM"));
-    interactivesError = interactives.filter(e => (e.role && e.role != "application") && e.prop.tab != e.prop.interactive);
 
-    var domOrder = tablist.slice(0);
-    tablist.sort((a, b) => b.tabindex - a.tabindex);
+    interactivesError = interactives.filter(e => (e.prop.role && e.prop.role != "application") && e.prop.tab != e.prop.interactive);
+    interactivesError.forEach(e => e.el.setAttribute('data-tng-interactive-notab', 'true'));
 
-    function move(arr, from, to) {
+    var tablist = interactives.filter(e => e.prop.tab);
+    tablist.sort((a, b) => b.el.tabIndex - a.el.tabIndex);
+
+    var realTabOrder = tablist.slice(0);
+
+    /**
+     * ! hautement améliorable
+     */
+    for(let i = 0; i < realTabOrder.length; i++) {
+        let previous = i > 0 ? realTabOrder[i-1] : null;
+        let current = realTabOrder[i];
+
+        if(previous && previous.prop.position.left >= current.prop.position.left && previous.prop.position.top >= current.prop.position.top) {
+            current.el.setAttribute('data-tng-tab-visual-error', 'true');
+        }
+    }
+
+    orderPross(tablist);
+    getHeadingsMap();
+
+    function moveArrVal(arr, from, to) {
         var elem = arr.splice(from, 1)[0];
         if (to < 0) to += 1;
         arr.splice(to, 0, elem);
         return arr;
     }
 
-    function orderPross(ar) {
+    function orderPross(arr) {
         var relaunch = false;
-        for(let i = 0; i < ar.length; i++) {
-            var pos = parseInt(ar[i].el.getAttribute('sdata-tng-interactive-pos'));
+        for(let i = 0; i < arr.length; i++) {
+            var pos = parseInt(arr[i].el.getAttribute('data-tng-interactive-pos'));
 
             if(pos != i) {
-                ar[i].el.setAttribute('data-tng-tab-error', true);
-                ar = move(ar, i, pos);
+                arr[i].el.setAttribute('data-tng-tab-dom-error', 'true');
+                arr = moveArrVal(arr, i, pos);
                 relaunch = true;
                 break;
             }
         }
 
-        if(relaunch) orderPross(ar);
+        if(relaunch) orderPross(arr);
     }
-
-    orderPross(tablist);
-
-    console.log(document.querySelectorAll('[data-tng-tab-error]'));
-
-    getHeadingsMap();
 }
 var textNodeList = (cat !== 'colors') ? null : getTextNodeContrast();
 

@@ -18,6 +18,7 @@ rgaa_dir.forEach(test_file => {
 
         let theme = test_file.substring(0, test_file.length - 3);
         let script = fs.readFileSync(path.join(REFERENCES_DIR, 'rgaa4', test_file));
+        let ref = {};
 
         let matchedStrings = script.toString().match(rgx_test);
         matchedStrings = matchedStrings.filter(x => !x.match(/locale__/));
@@ -25,7 +26,12 @@ rgaa_dir.forEach(test_file => {
         
         matchedStrings.forEach(match => {
             match = match.split("___tng___");
-            strings.push({[theme+"_"+match[0]+"_"+strings.length]: match[1].replace("\'", "'")});
+
+            let locales = new RegExp("locale__"+theme+"_"+match[0], 'g');
+            if(match[0] in ref) ref[match[0]] = ref[match[0]] + 1;
+            else ref[match[0]] = script.toString().match(locales).length+1;
+            
+            strings.push({[theme+"_"+match[0]+"_"+ref[match[0]]]: match[1].replace("\'", "'")});
         });
     }
 });

@@ -1652,5 +1652,20 @@
   },
   "tables_name_470": {
     "message": "Liste des tableaux de mise en forme n'utilisant aucun élément propre aux tableaux de données."
+  },
+  "navigation_name_21": {
+    "message": "élements intéractifs ayant un attribut tabindex non pertinent"
+  },
+  "navigation_description_2": {
+    "message": "l'ordre de tabulation dans la page doit respecter l'ordre des éléments dans le DOM"
+  },
+  "navigation_name_22": {
+    "message": "Eléments intéractifs non atteignables en navigation clavier"
+  },
+  "navigation_name_23": {
+    "message": "éléments intéractifs prenant le focus à la suite d'un élément visuellement positionné après"
+  },
+  "navigation_description_3": {
+    "message": "L'ordre de tabulation doit être cohérent avec l'ordre dans lequel les éléments intéractifs sont affichés dans la page"
   }
 }

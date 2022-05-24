@@ -11,7 +11,7 @@
 // 7.1.1 Chaque script qui génère ou contrôle un composant d'interface respecte-t-il une de ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__scripts_name_401',
+	name: "locale__scripts_name_401",
 	query: 'button:not([role]), button[role="none"], [role="button"], input[type="reset"]:not([role]), input[type="submit"]:not([role]), input[type="button"]:not([role])',
 	testStatus: "failed",
     depStatus: ["passed"],
@@ -42,7 +42,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__scripts_name_402',
+	name: "locale__scripts_name_402",
 	query: '[data-tng-btn-accessiblename]',
 	testStatus: "passed",
 	tags: ['a11y', 'buttons', 'accessiblename', 'scripts'],
@@ -52,7 +52,7 @@ tanaguruTestsList.push({
 // 7.1.2 Chaque script qui génère ou contrôle un composant d'interface respecte-t-il une de ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__scripts_name_403',
+	name: "locale__scripts_name_403",
 	query: '[data-tng-el-exposed="false"]',
 	testStatus: "failed",
 	filter: function (item) {
@@ -68,7 +68,7 @@ tanaguruTestsList.push({
 // 7.1.3 Chaque script qui génère ou contrôle un composant d'interface vérifie-t-il ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__scripts_name_404',
+	name: "locale__scripts_name_404",
     status: 'untested',
 	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.1.3']}
@@ -76,7 +76,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__scripts_name_405',
+	name: "locale__scripts_name_405",
     status: 'untested',
 	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.1.3']}
@@ -86,7 +86,7 @@ tanaguruTestsList.push({
 //! reference a data-tng-altLong (defini dans le script image), vérifier si c'est nécessaire, si oui definir cet attribut dans ce script egalement.
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__scripts_name_406',
+    name: "locale__scripts_name_406",
     query: '[data-tng-script-ANaria][data-tng-el-visible="true"]',
     testStatus: "failed",
     depStatus: ["passed"],
@@ -129,7 +129,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__scripts_name_407',
+    name: "locale__scripts_name_407",
     query: '[data-tng-btn-nameMatch]',
     testStatus: "passed",
     tags: ['a11y', 'accessiblename', 'buttons', 'scripts'],
@@ -140,8 +140,8 @@ tanaguruTestsList.push({
 // 7.2.1 Pour chaque script ayant une alternative, cette alternative est-elle pertinente ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__scripts_name_408',
-    description: 'locale__scripts_description_409',
+	name: "locale__scripts_name_408",
+    description: "locale__scripts_description_409",
 	query: 'noscript',
     testStatus: "cantTell",
 	tags: ['a11y', 'scripts'],
@@ -151,7 +151,7 @@ tanaguruTestsList.push({
 // 7.2.2 Chaque élément non textuel mis à jour par un script (dans la page, ou dans un cadre) et ayant une alternative vérifie-t-il ces conditions ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__scripts_name_410',
+	name: "locale__scripts_name_410",
     status: 'untested',
 	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.2.2']}
@@ -161,7 +161,7 @@ tanaguruTestsList.push({
 // 7.3.1 Chaque élément possédant un gestionnaire d'événement contrôlé par un script vérifie-t-il une de ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__scripts_name_411',
+	name: "locale__scripts_name_411",
     status: 'untested',
 	tags: ['a11y', 'keyboard', 'scripts'],
 	ressources: {'rgaa': ['7.3.1']}
@@ -170,7 +170,7 @@ tanaguruTestsList.push({
 // 7.3.2 Un script ne doit pas supprimer le focus d'un élément qui le reçoit. Cette règle est-elle respectée (hors cas particuliers) ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__scripts_name_412',
+	name: "locale__scripts_name_412",
     status: 'untested',
 	tags: ['a11y', 'keyboard', 'scripts'],
 	ressources: {'rgaa': ['7.3.2']}
@@ -180,7 +180,7 @@ tanaguruTestsList.push({
 // 7.4.1 Chaque script qui initie un changement de contexte vérifie-t-il une de ces conditions ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__scripts_name_413',
+	name: "locale__scripts_name_413",
     status: 'untested',
 	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.4.1']}
@@ -190,7 +190,7 @@ tanaguruTestsList.push({
 // 7.5.1 Chaque message de statut qui informe de la réussite, du résultat d'une action ou bien de l'état d'une application utilise-t-il l'attribut WAI-ARIA role="status" ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__scripts_name_414',
+	name: "locale__scripts_name_414",
     status: 'untested',
 	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.5.1']}
@@ -199,7 +199,7 @@ tanaguruTestsList.push({
 // 7.5.2 Chaque message de statut qui présente une suggestion, ou avertit de l'existence d'une erreur utilise-t-il l'attribut WAI-ARIA role="alert" ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__scripts_name_415',
+	name: "locale__scripts_name_415",
     status: 'untested',
 	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.5.2']}
@@ -208,7 +208,7 @@ tanaguruTestsList.push({
 // 7.5.3 Chaque message de statut qui indique la progression d'un processus utilise-t-il l'un des attributs WAI-ARIA role="log", role="progressbar" ou role="status" ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__scripts_name_416',
+	name: "locale__scripts_name_416",
     status: 'untested',
 	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.5.3']}

@@ -10,7 +10,7 @@
 // 12.1.1 Chaque ensemble de pages vérifie-t-il une de ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_351',
+	name: "locale__navigation_name_351",
     status: 'untested',
     tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.1.1'] }
@@ -20,7 +20,7 @@ tanaguruTestsList.push({
 // 12.2.1 Dans chaque ensemble de pages, chaque page disposant d'un menu ou de barres de navigation vérifie-t-elle ces conditions (hors cas particuliers) ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_352',
+	name: "locale__navigation_name_352",
     status: 'untested',
     tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.2.1'] }
@@ -30,7 +30,7 @@ tanaguruTestsList.push({
 // 12.3.1 La page « plan du site » est-elle représentative de l'architecture générale du site ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_353',
+	name: "locale__navigation_name_353",
     status: 'untested',
     tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.3.1'] }
@@ -39,7 +39,7 @@ tanaguruTestsList.push({
 // 12.3.2 Les liens du plan du site sont-ils fonctionnels ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_354',
+	name: "locale__navigation_name_354",
     status: 'untested',
     tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.3.2'] }
@@ -48,7 +48,7 @@ tanaguruTestsList.push({
 // 12.3.3 Les liens du plan du site renvoient-ils bien vers les pages indiquées par l'intitulé ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_355',
+	name: "locale__navigation_name_355",
     status: 'untested',
     tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.3.3'] }
@@ -58,7 +58,7 @@ tanaguruTestsList.push({
 // 12.4.1 Dans chaque ensemble de pages, la page « plan du site » est-elle accessible à partir d'une fonctionnalité identique ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_356',
+	name: "locale__navigation_name_356",
     status: 'untested',
     tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.4.1'] }
@@ -67,7 +67,7 @@ tanaguruTestsList.push({
 // 12.4.2 Dans chaque ensemble de pages, la fonctionnalité vers la page « plan du site » est-elle située à la même place dans la présentation ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_357',
+	name: "locale__navigation_name_357",
     status: 'untested',
     tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.4.2'] }
@@ -76,7 +76,7 @@ tanaguruTestsList.push({
 // 12.4.3 Dans chaque ensemble de pages, la fonctionnalité vers la page « plan du site » se présente-t-elle toujours dans le même ordre relatif dans le code source ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_358',
+	name: "locale__navigation_name_358",
     status: 'untested',
     tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.4.3'] }
@@ -86,7 +86,7 @@ tanaguruTestsList.push({
 // 12.5.1 Dans chaque ensemble de pages, le moteur de recherche est-il accessible à partir d'une fonctionnalité identique ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_359',
+	name: "locale__navigation_name_359",
     status: 'untested',
     tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.5.1'] }
@@ -95,7 +95,7 @@ tanaguruTestsList.push({
 // 12.5.2 Dans chaque ensemble de pages, la fonctionnalité vers le moteur de recherche est-elle située à la même place dans la présentation ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_360',
+	name: "locale__navigation_name_360",
     status: 'untested',
     tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.5.2'] }
@@ -104,7 +104,7 @@ tanaguruTestsList.push({
 // 12.5.3 Dans chaque ensemble de pages, la fonctionnalité vers le moteur de recherche se présente-t-elle toujours dans le même ordre relatif dans le code source ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_361',
+	name: "locale__navigation_name_361",
     status: 'untested',
     tags: ['a11y', 'navigation'],
     ressources: { 'rgaa': ['12.5.3'] }
@@ -114,7 +114,7 @@ tanaguruTestsList.push({
 // 12.6.1 Dans chaque page web où elles sont présentes, la zone d'en-tête, de navigation principale, de contenu principal, de pied de page et de moteur de recherche respectent-elles au moins une de ces conditions : 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_362',
+	name: "locale__navigation_name_362",
     status: 'untested',
     tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.6.1'] }
@@ -124,7 +124,7 @@ tanaguruTestsList.push({
 // 12.7.1 Dans chaque page web, un lien permet-il d'éviter la zone de contenu principal ou d'y accéder (hors cas particuliers) ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_363',
+	name: "locale__navigation_name_363",
     status: 'untested',
     tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.7.1'] }
@@ -133,7 +133,7 @@ tanaguruTestsList.push({
 // 12.7.2 Dans chaque ensemble de pages, le lien d'évitement ou d'accès rapide à la zone de contenu principal vérifient-il ces conditions (hors cas particuliers) ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_364',
+	name: "locale__navigation_name_364",
     status: 'untested',
     tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.7.2'] }
@@ -143,9 +143,9 @@ tanaguruTestsList.push({
 // 12.8.1 Dans chaque page web, l'ordre de tabulation dans le contenu est-il cohérent ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_365',
+	name: "locale__navigation_name_365",
 	query: '[data-tng-el-visible="false"]:not([hidden], [data-tng-notExposed*="css:display"], [data-tng-notExposed*="css:visibility"])',
-	description: 'locale__navigation_description_366',
+	description: "locale__navigation_description_366",
 	filter: function (item) {
         if(item.disabled) return;
 
@@ -156,10 +156,39 @@ tanaguruTestsList.push({
     ressources: { 'rgaa': ['12.8.1'] }
 });
 
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "locale__navigation_name_21",
+	query: '[data-tng-tab-dom-error]',
+	description: "locale__navigation_description_2",
+    testStatus: "failed",
+    tags: ['a11y', 'keyboard', 'navigation'],
+    ressources: { 'rgaa': ['12.8.1'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "locale__navigation_name_22",
+	query: '[data-tng-interactive-notab]',
+    testStatus: "failed",
+    tags: ['a11y', 'keyboard', 'navigation'],
+    ressources: { 'rgaa': ['12.8.1'] }
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: 'locale__navigation_name_23',
+    description: 'locale__navigation_description_3',
+	query: '[data-tng-tab-visual-error]',
+    testStatus: "failed",
+    tags: ['a11y', 'keyboard', 'navigation'],
+    ressources: { 'rgaa': ['12.8.1'] }
+});
+
 //TODO peut-on simuler un focus client ?
 // tanaguruTestsList.push({
 // 	lang: 'fr',
-// 	name: 'locale__navigation_name_365',
+// 	name: "locale__navigation_name_365",
 // 	query: HTML.getFocusableElementsSelector(),
 // 	expectedNbElements: 0,
 // 	filter: function (item) {
@@ -183,7 +212,7 @@ tanaguruTestsList.push({
 // 12.8.2 Pour chaque script qui met à jour ou insère un contenu, l'ordre de tabulation reste-t-il cohérent ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_368',
+	name: "locale__navigation_name_368",
     status: 'untested',
     tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.8.2'] }
@@ -193,7 +222,7 @@ tanaguruTestsList.push({
 // 12.9.1 Dans chaque page web, chaque élément recevant le focus vérifie-t-il une de ces conditions ?
 tanaguruTestsList.push({
 	lang: 'en',
-	name: 'locale__navigation_name_369',
+	name: "locale__navigation_name_369",
 	query: '[onblur]',
     testStatus: "cantTell",
 	tags: ['a11y', 'keyboard', 'navigation'],
@@ -205,7 +234,7 @@ tanaguruTestsList.push({
 // 12.10.1 Dans chaque page web, chaque raccourci clavier n'utilisant qu'une seule touche (lettres minuscule ou majuscule, ponctuation, chiffre ou symbole) vérifie-t-il l'une de ces conditions ? 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_370',
+	name: "locale__navigation_name_370",
     status: 'untested',
     tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.10.1'] }
@@ -215,7 +244,7 @@ tanaguruTestsList.push({
 // 12.11.1 Dans chaque page web, les contenus additionnels apparaissant au survol, à la prise de focus ou à l'activation d'un composant d'interface sont-ils, si nécessaire, atteignables au clavier ?
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_371',
+	name: "locale__navigation_name_371",
     status: 'untested',
     tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.11.1'] }

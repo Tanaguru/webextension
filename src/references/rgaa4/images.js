@@ -12,9 +12,9 @@
 // 1.1.1 - Chaque image (balise <img> ou balise possédant l'attribut WAI-ARIA role="img") porteuse d'information a-t-elle une alternative textuelle ? // ne pas traiter les images liens
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_136',
+    name: "locale__images_name_136",
     query: 'img[data-tng-el-exposed="true"]:not([role]), [role="img"][data-tng-el-exposed="true"]',
-    description: 'locale__images_description_137',
+    description: "locale__images_description_137",
     testStatus: "failed",
     depStatus: ["passed", "cantTell"],
     filter: function (item) {
@@ -50,9 +50,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_138',
+    name: "locale__images_name_138",
     query: 'img[data-tng-altLong], [role="img"][data-tng-altLong]',
-    description: 'locale__images_description_139',
+    description: "locale__images_description_139",
     testStatus: "passed",
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -62,9 +62,9 @@ tanaguruTestsList.push({
 // 1.1.2 - Chaque zone d'une image réactive (balise <area>) porteuse d'information a-t-elle une alternative textuelle ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_140',
+    name: "locale__images_name_140",
     query: 'area[data-tng-el-exposed="true"]:not([role])',
-    description: 'locale__images_description_137',
+    description: "locale__images_description_137",
     testStatus: "failed",
     depStatus: ["passed", "cantTell"],
     filter: function(item) {
@@ -92,9 +92,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_142',
+    name: "locale__images_name_142",
     query: 'area[data-tng-altLong]',
-    description: 'locale__images_description_139',
+    description: "locale__images_description_139",
     testStatus: "passed",
     mark: { attrs: ['alt','aria-label']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -104,9 +104,9 @@ tanaguruTestsList.push({
 // 1.1.3 - Chaque bouton de type image (balise <input> avec l'attribut type="image") a-t-il une alternative textuelle ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_144',
+    name: "locale__images_name_144",
     query: 'input[type="image"][data-tng-el-exposed="true"]:not([role])',
-    description: 'locale__images_description_137',
+    description: "locale__images_description_137",
     testStatus: "failed",
     depStatus: ["passed", "cantTell"],
     filter: function (item) {
@@ -127,9 +127,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_146',
+    name: "locale__images_name_146",
     query: 'input[type="image"][data-tng-altLong]',
-    description: 'locale__images_description_139',
+    description: "locale__images_description_139",
     testStatus: "passed",
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'buttons', 'images', 'accessiblename'],
@@ -139,7 +139,7 @@ tanaguruTestsList.push({
 // 1.1.4 - Chaque zone cliquable d'une image réactive côté serveur est-elle doublée d'un lien dans la page ? // à tester
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_148',
+    name: "locale__images_name_148",
     query: 'a[href] img[ismap][data-tng-el-exposed="true"]:not([role])',
     testStatus: "failed",
     depStatus: ["passed", "cantTell"],
@@ -163,7 +163,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_149',
+    name: "locale__images_name_149",
     query: '[data-tng-ismap-linked]',
     testStatus: "passed",
     mark: { attrs: ['href']},
@@ -174,7 +174,7 @@ tanaguruTestsList.push({
 // 1.1.5 - Chaque image vectorielle (balise <svg>) porteuse d'information, vérifie-t-elle ces conditions ? // à testers
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_150',
+    name: "locale__images_name_150",
     query: 'svg[data-tng-el-exposed="true"]:not([role="presentation"], [data-tng-image-link])',
     testStatus: "failed",
     depStatus: ["passed", "cantTell"],
@@ -195,11 +195,11 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_151',
+    name: "locale__images_name_151",
     query: 'svg[role="img"][data-tng-el-exposed="true"]:not([data-tng-image-link])',
     testStatus: "failed",
     depStatus: ["passed", "cantTell"],
-    description: 'locale__images_description_137',
+    description: "locale__images_description_137",
     filter: function (item) {
         if(item.accessibleName() == '') {
             return true;
@@ -218,9 +218,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_153',
+    name: "locale__images_name_153",
     query: 'svg[role="img"][data-tng-altLong]',
-    description: 'locale__images_description_139',
+    description: "locale__images_description_139",
     testStatus: "passed",
     mark: { attrs: ['aria-hidden']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -230,7 +230,7 @@ tanaguruTestsList.push({
 // 1.1.6 - Chaque image objet (balise <object> avec l'attribut type="image/…") porteuse d'information, vérifie-t-elle une de ces conditions ? // semble KO sur l'accessible name //gère que le 1er cas dans le RGAA4
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_155',
+    name: "locale__images_name_155",
     query: 'object[type^="image/"][data-tng-el-exposed="true"]:not([data-tng-image-link])',
     testStatus: "failed",
     depStatus: ["passed", "cantTell"],
@@ -251,9 +251,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_156',
+    name: "locale__images_name_156",
     query: 'object[role="img"][type^="image/"][data-tng-el-exposed="true"]:not([data-tng-image-link])',
-    description: 'locale__images_description_137',
+    description: "locale__images_description_137",
     testStatus: "failed",
     depStatus: ["passed", "cantTell"],
     filter: function (item) {
@@ -274,9 +274,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_158',
+    name: "locale__images_name_158",
     query: 'object[type^="image/"][data-tng-altLong]',
-    description: 'locale__images_description_139',
+    description: "locale__images_description_139",
     testStatus: "passed",
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -286,7 +286,7 @@ tanaguruTestsList.push({
 // 1.1.7 - Chaque image embarquée (balise <embed> avec l'attribut type="image/…") porteuse d'information, vérifie-t-elle une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_160',
+    name: "locale__images_name_160",
     query: 'embed[type^="image/"][data-tng-el-exposed="true"]',
     testStatus: "failed",
     filter: function (item) {
@@ -301,9 +301,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_161',
+    name: "locale__images_name_161",
     query: 'embed[type^="image/"][role="img"][data-tng-el-exposed="true"]',
-    description: 'locale__images_description_137',
+    description: "locale__images_description_137",
     testStatus: "failed",
     depStatus: ["passed", "cantTell"],
     filter: function (item) {
@@ -324,9 +324,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_163',
+    name: "locale__images_name_163",
     query: 'embed[type^="image/"][data-tng-altLong]',
-    description: 'locale__images_description_139',
+    description: "locale__images_description_139",
     testStatus: "passed",
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -336,7 +336,7 @@ tanaguruTestsList.push({
 // 1.1.8 - Chaque image bitmap (balise <canvas>) porteuse d'information, vérifie-t-elle une de ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_165',
+    name: "locale__images_name_165",
     query: 'canvas[data-tng-el-exposed="true"]:not([data-tng-image-link])',
     testStatus: "failed",
     depStatus: ["passed", "cantTell"],
@@ -357,9 +357,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_166',
+    name: "locale__images_name_166",
     query: 'canvas[role="img"][data-tng-el-exposed="true"]:not([data-tng-image-link])',
-    description: 'locale__images_description_137',
+    description: "locale__images_description_137",
     testStatus: "failed",
     depStatus: ["passed", "cantTell"],
     filter: function (item) {
@@ -380,9 +380,9 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_168',
+    name: "locale__images_name_168",
     query: 'canvas[data-tng-altLong]',
-    description: 'locale__images_description_139',
+    description: "locale__images_description_139",
     testStatus: "passed",
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -394,7 +394,7 @@ tanaguruTestsList.push({
 //! dependance 1.1.1
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_170',
+    name: "locale__images_name_170",
     query: 'img:not([data-tng-informative-img], [data-tng-image-link])',
     filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible') === 'false') return;
@@ -444,7 +444,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_171',
+    name: "locale__images_name_171",
     query: 'img[data-tng-img-ignored="false"]',
     testStatus: "failed",
     mark: { attrs: ['alt','role', 'tabindex']},
@@ -456,7 +456,7 @@ tanaguruTestsList.push({
 //! dependance 1.1.2
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_172',
+    name: "locale__images_name_172",
     query: 'area:not([role], [data-tng-informative-img], [href]), area[role="presentation"]:not([href], [data-tng-informative-img])',
     filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') === 'false') return;
@@ -492,7 +492,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_173',
+    name: "locale__images_name_173",
     query: 'area[data-tng-img-ignored="false"]',
     testStatus: "failed",
     mark: { attrs: ['alt','tabindex','role']},
@@ -504,7 +504,7 @@ tanaguruTestsList.push({
 //! dependance 1.1.6
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_174',
+    name: "locale__images_name_174",
     query: 'object[type^="image/"]:not([role], [data-tng-informative-img], [data-tng-image-link]), object[type^="image/"][role="img"]:not([data-tng-image-link], [data-tng-informative-img])',
     filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible') === 'false') return;
@@ -546,7 +546,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_175',
+    name: "locale__images_name_175",
     query: 'object[type^="image/"][data-tng-img-ignored="false"]',
     testStatus: "failed",
     tags: ['a11y', 'images'],
@@ -557,7 +557,7 @@ tanaguruTestsList.push({
 //! dependance 1.1.5
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_176',
+    name: "locale__images_name_176",
     query: 'svg:not([data-tng-informative-img], [data-tng-image-link])',
     filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible') === 'false') return;
@@ -603,7 +603,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_177',
+    name: "locale__images_name_177",
     query: 'svg[data-tng-img-ignored="false"]',
     testStatus: "failed",
     mark: { attrs: ['title']},
@@ -615,7 +615,7 @@ tanaguruTestsList.push({
 //! dependance 1.1.8
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_178',
+    name: "locale__images_name_178",
     query: 'canvas:not([data-tng-informative-img], [data-tng-image-link])',
     filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible') === 'false') return;
@@ -655,7 +655,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_179',
+    name: "locale__images_name_179",
     query: 'canvas[data-tng-img-ignored="false"]',
     testStatus: "failed",
     tags: ['a11y', 'images'],
@@ -666,7 +666,7 @@ tanaguruTestsList.push({
 //! dependance 1.1.7
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_180',
+    name: "locale__images_name_180",
     query: 'embed[type^="image/"]:not([role], [data-tng-informative-img]), embed[type^="image/"][role="img"]:not([data-tng-informative-img])',
     filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible') === 'false') return;
@@ -706,7 +706,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_181',
+    name: "locale__images_name_181",
     query: 'embed[type^="image/"][data-tng-img-ignored="false"]',
     testStatus: "failed",
     mark: { attrs: ['aria-hidden']},
@@ -721,9 +721,9 @@ tanaguruTestsList.push({
 //! dependance 1.1.1
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_182',
+    name: "locale__images_name_182",
     query: '[data-tng-img-roleImg][data-tng-altLong]',
-    description: 'locale__images_description_183',
+    description: "locale__images_description_183",
     testStatus: "cantTell",
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
     tags: ['a11y', 'images', 'accessiblename'],
@@ -732,7 +732,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_184',
+    name: "locale__images_name_184",
     query: 'img[data-tng-altLong][src]',
     testStatus: "failed",
     filter: function (item) {
@@ -749,8 +749,8 @@ tanaguruTestsList.push({
 //! dependance 1.1.2
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_185',
-    description: 'locale__images_description_183',
+    name: "locale__images_name_185",
+    description: "locale__images_description_183",
     query: 'area[data-tng-altLong]',
     testStatus: "cantTell",
     mark: { attrs: ['alt','aria-label']},
@@ -763,8 +763,8 @@ tanaguruTestsList.push({
 //! dependance 1.1.3
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_187',
-    description: 'locale__images_description_183',
+    name: "locale__images_name_187",
+    description: "locale__images_description_183",
     query: 'input[type="image"][data-tng-altLong]',
     testStatus: "cantTell",
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
@@ -774,7 +774,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_189',
+    name: "locale__images_name_189",
     query: 'input[type="image"][data-tng-altLong][src]',
     testStatus: "failed",
     filter: function (item) {
@@ -791,8 +791,8 @@ tanaguruTestsList.push({
 //! dependance 1.1.6
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_190',
-    description: 'locale__images_description_183',
+    name: "locale__images_name_190",
+    description: "locale__images_description_183",
     query: 'object[data-tng-altLong]',
     testStatus: "cantTell",
     mark: { attrs: ['aria-label','aria-labelledby','title']},
@@ -805,8 +805,8 @@ tanaguruTestsList.push({
 //! dependance 1.1.7
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_192',
-    description: 'locale__images_description_183',
+    name: "locale__images_name_192",
+    description: "locale__images_description_183",
     query: 'embed[data-tng-altLong]',
     testStatus: "cantTell",
     mark: { attrs: ['aria-label','aria-labelledby','title']},
@@ -819,8 +819,8 @@ tanaguruTestsList.push({
 //! dependance 1.1.5
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_194',
-    description: 'locale__images_description_183',
+    name: "locale__images_name_194",
+    description: "locale__images_description_183",
     query: 'svg[data-tng-altLong]',
     testStatus: "cantTell",
     mark: { attrs: ['aria-label','aria-labelledby']},
@@ -833,8 +833,8 @@ tanaguruTestsList.push({
 //! dependance 1.1.8
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_196',
-    description: 'locale__images_description_183',
+    name: "locale__images_name_196",
+    description: "locale__images_description_183",
     query: 'canvas[data-tng-altLong]',
     testStatus: "cantTell",
     mark: { attrs: ['aria-label','aria-labelledby']},
@@ -845,7 +845,7 @@ tanaguruTestsList.push({
 // 1.3.8 Pour chaque image bitmap (balise <canvas>) porteuse d'information et ayant un contenu alternatif entre <canvas> et </canvas>, ce contenu alternatif est-il correctement restitué par les technologies d'assistance ? //traiter le cas particulier
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_198',
+    name: "locale__images_name_198",
     query: 'canvas[role="img"][data-tng-el-exposed="true"]',
     filter: function (item) {
         let texts = document.createTreeWalker(item, NodeFilter.SHOW_TEXT);
@@ -876,7 +876,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_199',
+    name: "locale__images_name_199",
     query: 'canvas[data-tng-altnotexposed]',
     testStatus: "failed",
     tags: ['a11y', 'images'],
@@ -887,8 +887,8 @@ tanaguruTestsList.push({
 //! dependances 1.1.*
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_200',
-    description: 'locale__images_description_201',
+    name: "locale__images_name_200",
+    description: "locale__images_description_201",
     query: '[data-tng-altLong="true"]',
     testStatus: "failed",
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
@@ -898,7 +898,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_202',
+    name: "locale__images_name_202",
     query: '[data-tng-altLong="false"]',
     testStatus: "cantTell",
     mark: { attrs: ['alt','aria-label','aria-labelledby','title']},
@@ -910,9 +910,9 @@ tanaguruTestsList.push({
 // 1.5.1 Chaque image (balises <img>, <area>, <object>, <embed>, <svg>, <canvas> ou possédant un attribut WAI-ARIA role="img") utilisée comme CAPTCHA vérifie-t-elle une de ces conditions ? 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_203',
+    name: "locale__images_name_203",
     query: 'img:not([data-tng-image-link]), area:not([data-tng-image-link]), object:not([data-tng-image-link]), embed:not([data-tng-image-link]), svg:not([data-tng-image-link]), canvas:not([data-tng-image-link]), [role="img"]:not([data-tng-image-link])',
-    description: 'locale__images_description_204',
+    description: "locale__images_description_204",
     testStatus: "cantTell",
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.5.1']}
@@ -921,9 +921,9 @@ tanaguruTestsList.push({
 // 1.5.2 Chaque bouton associé à une image (balise <input> avec l'attribut type="image") utilisée comme CAPTCHA vérifie-t-il une de ces conditions ? 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_205',
+    name: "locale__images_name_205",
     query: 'input[type="image"]',
-    description: 'locale__images_description_206',
+    description: "locale__images_description_206",
     testStatus: "cantTell",
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.5.2']}
@@ -936,9 +936,9 @@ tanaguruTestsList.push({
 //! dependance 1.1.1
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_207',
+    name: "locale__images_name_207",
     query: 'img[data-tng-informative-img]',
-    description: 'locale__images_description_208',
+    description: "locale__images_description_208",
     testStatus: "cantTell",
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.6.1', '1.7.1']}
@@ -949,9 +949,9 @@ tanaguruTestsList.push({
 //! dependance 1.1.6
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_209',
+    name: "locale__images_name_209",
     query: 'object[type^="image/"][data-tng-informative-img]',
-    description: 'locale__images_description_208',
+    description: "locale__images_description_208",
     testStatus: "cantTell",
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.6.2', '1.7.3']}
@@ -962,9 +962,9 @@ tanaguruTestsList.push({
 //! dependance 1.1.7
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_211',
+    name: "locale__images_name_211",
     query: 'embed[type^="image/"][data-tng-informative-img]',
-    description: 'locale__images_description_208',
+    description: "locale__images_description_208",
     testStatus: "cantTell",
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.6.3', '1.7.4']}
@@ -975,9 +975,9 @@ tanaguruTestsList.push({
 //! dependance 1.1.3
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_213',
+    name: "locale__images_name_213",
     query: 'input[type="image"][data-tng-informative-img]',
-    description: 'locale__images_description_208',
+    description: "locale__images_description_208",
     testStatus: "cantTell",
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.6.4', '1.7.2']}
@@ -989,9 +989,9 @@ tanaguruTestsList.push({
 //! dependance 1.1.5
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_215',
+    name: "locale__images_name_215",
     query: 'svg[data-tng-informative-img]',
-    description: 'locale__images_description_216',
+    description: "locale__images_description_216",
     testStatus: "cantTell",
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.6.5', '1.6.6', '1.7.5']}
@@ -1003,9 +1003,9 @@ tanaguruTestsList.push({
 //! dependance 1.1.8
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_217',
+    name: "locale__images_name_217",
     query: 'canvas[data-tng-informative-img]',
-    description: 'locale__images_description_216',
+    description: "locale__images_description_216",
     testStatus: "cantTell",
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.6.7', '1.6.8', '1.7.6']}
@@ -1015,9 +1015,9 @@ tanaguruTestsList.push({
 //! dependances 1.1.*
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_219',
+    name: "locale__images_name_219",
     query: '[data-tng-informative-img][aria-describedby]',
-    description: 'locale__images_description_220',
+    description: "locale__images_description_220",
     testStatus: "cantTell",
     mark: { attrs: ['aria-describedby']},
     tags: ['a11y', 'images'],
@@ -1028,9 +1028,9 @@ tanaguruTestsList.push({
 //! dependances 1.1.1 & 1.1.5
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_221',
+    name: "locale__images_name_221",
     query: '[role="img"][data-tng-informative-img]',
-    description: 'locale__images_description_222',
+    description: "locale__images_description_222",
     testStatus: "cantTell",
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.6.10']}
@@ -1041,9 +1041,9 @@ tanaguruTestsList.push({
 //! dependance 1.1.1
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_223',
+    name: "locale__images_name_223",
     query: '[data-tng-img-roleImg][data-tng-altLong]',
-    description: 'locale__images_description_224',
+    description: "locale__images_description_224",
     testStatus: "cantTell",
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.8.1']}
@@ -1053,9 +1053,9 @@ tanaguruTestsList.push({
 //! dependance 1.1.3
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_213',
+    name: "locale__images_name_213",
     query: 'input[data-tng-altLong]',
-    description: 'locale__images_description_224',
+    description: "locale__images_description_224",
     testStatus: "cantTell",
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.8.2']}
@@ -1065,9 +1065,9 @@ tanaguruTestsList.push({
 //! dependance 1.1.6
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_209',
+    name: "locale__images_name_209",
     query: 'object[data-tng-altLong]',
-    description: 'locale__images_description_224',
+    description: "locale__images_description_224",
     testStatus: "cantTell",
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.8.3']}
@@ -1077,9 +1077,9 @@ tanaguruTestsList.push({
 //! dependance 1.1.7
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_211',
+    name: "locale__images_name_211",
     query: 'embed[data-tng-altLong]',
-    description: 'locale__images_description_224',
+    description: "locale__images_description_224",
     testStatus: "cantTell",
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.8.4']}
@@ -1089,9 +1089,9 @@ tanaguruTestsList.push({
 //! dependance 1.1.8
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_217',
+    name: "locale__images_name_217",
     query: 'canvas[data-tng-altLong]',
-    description: 'locale__images_description_224',
+    description: "locale__images_description_224",
     testStatus: "cantTell",
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.8.5']}
@@ -1101,9 +1101,9 @@ tanaguruTestsList.push({
 //! dependance 1.1.5
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_215',
+    name: "locale__images_name_215",
     query: 'svg[data-tng-altLong]',
-    description: 'locale__images_description_224',
+    description: "locale__images_description_224",
     testStatus: "cantTell",
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.8.6']}
@@ -1114,7 +1114,7 @@ tanaguruTestsList.push({
 //! dependance 1.1.1
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_235',
+    name: "locale__images_name_235",
     query: 'figure [data-tng-img-roleImg], figure input[type="image"]',
     testStatus: "failed",
     depStatus: ["passed"],
@@ -1147,7 +1147,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_236',
+    name: "locale__images_name_236",
     query: 'figure [data-tng-img-roleImg][data-tng-accessibleCaption], figure input[type="image"][data-tng-accessibleCaption]',
     testStatus: "passed",
     tags: ['a11y', 'images', 'accessiblename'],
@@ -1157,7 +1157,7 @@ tanaguruTestsList.push({
 // 1.9.2 Chaque image objet pourvue d'une légende (balise object avec l'attribut type="image/…" associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ? xxx
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_237',
+    name: "locale__images_name_237",
     query: 'figure object[type^="image/"]',
     testStatus: "failed",
     depStatus: ["passed"],
@@ -1190,7 +1190,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_238',
+    name: "locale__images_name_238",
     query: 'figure object[type^="image/"][data-tng-accessibleCaption]',
     testStatus: "passed",
     tags: ['a11y', 'images', 'accessiblename'],
@@ -1200,7 +1200,7 @@ tanaguruTestsList.push({
 //1.9.3 Chaque image embarquée pourvue d'une légende (balise <embed> associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_239',
+    name: "locale__images_name_239",
     query: 'figure embed',
     testStatus: "failed",
     depStatus: ["passed"],
@@ -1233,7 +1233,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_240',
+    name: "locale__images_name_240",
     query: 'figure embed[data-tng-accessibleCaption]',
     testStatus: "passed",
     tags: ['a11y', 'images', 'accessiblename'],
@@ -1243,7 +1243,7 @@ tanaguruTestsList.push({
 //1.9.4 Chaque image vectorielle pourvue d'une légende (balise <svg> associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_241',
+    name: "locale__images_name_241",
     query: 'figure svg',
     testStatus: "failed",
     depStatus: ["passed"],
@@ -1276,7 +1276,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_242',
+    name: "locale__images_name_242",
     query: 'figure svg[data-tng-accessibleCaption]',
     testStatus: "passed",
     tags: ['a11y', 'images', 'accessiblename'],
@@ -1286,7 +1286,7 @@ tanaguruTestsList.push({
 // 1.9.5 Chaque image bitmap pourvue d'une légende (balise canvas associée à une légende adjacente), vérifie-t-elle, si nécessaire, ces conditions ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_243',
+    name: "locale__images_name_243",
     query: 'figure canvas',
     testStatus: "failed",
     depStatus: ["passed"],
@@ -1319,7 +1319,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'locale__images_name_244',
+    name: "locale__images_name_244",
     query: 'figure canvas[data-tng-accessibleCaption]',
     testStatus: "passed",
     tags: ['a11y', 'images', 'accessiblename'],
