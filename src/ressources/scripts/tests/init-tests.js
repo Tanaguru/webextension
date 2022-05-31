@@ -15,6 +15,7 @@ function isInside(parent, children) {
 
 function getElementProperties(element, pos, bgColorParent, positionParent) {
     if(element.localName === "head" || element.localName === "noscript" || element.localName === "noscript") return;
+    if(element.scrollTop > 0 || element.scrollLeft < 0) element.scrollTo(0,0);
     let exposed = element.isNotExposedDueTo;
     let properties = {
         index: pos,
@@ -319,6 +320,131 @@ function filterStatus() {
 }
 
 /**
+ * ? move array value
+ */
+function moveArrVal(arr, from, to) {
+    var elem = arr.splice(from, 1)[0];
+    if (to < 0) to += 1;
+    arr.splice(to, 0, elem);
+    return arr;
+}
+
+/**
+ * ? check if tab order = dom order
+ */
+function domTab(arr) {
+    var relaunch = false;
+    for(let i = 0; i < arr.length; i++) {
+        var pos = parseInt(arr[i].el.getAttribute('data-tng-interactive-pos'));
+
+        if(pos != i) {
+            arr[i].el.setAttribute('data-tng-tab-dom-error', 'true');
+            arr = moveArrVal(arr, i, pos);
+            relaunch = true;
+            break;
+        }
+    }
+
+    if(relaunch) domTab(arr);
+}
+
+/**
+ * ? check the pertinence of visual tab order
+ */
+function visualTab(arr) {
+    var segments = [];
+
+    for(let i = 0; i < arr.length; i++) {
+        if(i === 0) continue;
+
+        let previous = arr[i-1];
+        let current = arr[i];
+
+        segments.push({
+            a: {x: (previous.prop.position.left), y: (previous.prop.position.top+previous.prop.position.bottom)/2, el: previous.el},
+            b: {x: (current.prop.position.left), y: (current.prop.position.top+current.prop.position.bottom)/2, el: current.el}
+        });
+    }
+
+    for(let i = 0; i < segments.length; i++) {
+        if(i === 0) continue;
+
+        var intersection = false;
+        var previousSegments = segments.slice(0, i);
+
+        for(let x = 0; x < previousSegments.length; x++) {
+            if(getIntersectionPoint(previousSegments[x].a, previousSegments[x].b, segments[i].a, segments[i].b)) {
+                intersection = true;
+                // break;
+            }
+        }
+
+        if(intersection) segments[i].b.el.setAttribute('data-tng-tab-visual-error', 'true');
+    }
+}
+
+/**
+ * ? calculates the intersection point between 2 segments
+ */
+function getIntersectionPoint(a, b, c, d) {
+    var u = {x: b.x - a.x, y: b.y - a.y};
+    var v = {x: d.x - c.x, y: d.y - c.y};
+    var div = u.x * v.y - v.x * u.y;
+
+    if(div === 0) {
+        //* les droites sont colinéaires
+        if(a.x === b.x) {
+            //* ab est verticale
+            if(a.x === c.x) {
+                //* ab et cd sont confondues
+                let startAB = a.y < b.y ? a.y : b.y;
+                let endAB = a.y < b.y ? b.y : a.y;
+                let startCD = c.y < d.y ? c.y : d.y;
+                let endCD = c.y < d.y ? d.y : c.y;
+
+                //*? teste si [ab] et [cd] sont confondus
+                if(startAB < c.y && c.y < endAB) return true;
+                else if(startAB < d.y && d.y < endAB) return true;
+                else if(startCD < a.y && a.y < endCD) return true;
+                else if(startCD < b.y && b.y < endCD) return true;
+            }
+        } else {
+            var m_ab = (b.y - a.y) / (b.x - a.x);
+            var p_ab = m_ab === 0 ? a.y : a.y - m_ab * a.x;
+
+            var m_cd = (d.y - c.y) / (d.x - c.x);
+            var p_cd = m_cd === 0 ? c.y : c.y - m_cd * c.x;
+
+            if(p_ab === p_cd) {
+                //* ab et cd sont confondues
+                let startAB = a.x < b.x ? a.x : b.x;
+                let endAB = a.x < b.x ? b.x : a.x;
+                let startCD = c.x < d.x ? c.x : d.x;
+                let endCD = c.x < d.x ? d.x : c.x;
+
+                //*? teste si [ab] et [cd] sont confondus
+                if(startAB < c.x && c.x < endAB) return true;
+                else if(startAB < d.x && d.x < endAB) return true;
+                else if(startCD < a.x && a.x < endCD) return true;
+                else if(startCD < b.x && b.x < endCD) return true;
+            }
+        }
+    } else {
+        //* les droites sont sécantes
+        var param1 = ((u.x * a.y) - (u.x * c.y) - (u.y * a.x) + (u.y * c.x)) / div;
+        var param2 = ((v.x * a.y) - (v.x * c.y) - (v.y * a.x) + (v.y * c.x)) / div;
+    
+        if(param1 > 0 && param1 < 1 && param2 > 0 && param2 < 1) {
+            //* l'intersection est sur le segment
+            //? point d'intersection = {x: a.x + param1 * u.x, y: a.y + param1 * u.y}
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
  * ? launch tests
  */
 function launchTests() {
@@ -384,57 +510,40 @@ function launchTests() {
 
 if(first === "yes") {
     if(document.querySelector('[sdata-tng-hindex]')) cleanSDATA();
-
+    
     localStorage.setItem("DOM", JSON.stringify({
         properties: getElementProperties(document.documentElement, 1, null, null)
     }));
     DOM_archi = JSON.parse(localStorage.getItem("DOM"));
 
-    interactivesError = interactives.filter(e => (e.prop.role && e.prop.role != "application") && e.prop.tab != e.prop.interactive);
+    interactivesError = interactives.filter(e => (e.prop.role && e.prop.role != "application" && e.prop.role != "option") && !e.prop.tab && e.prop.interactive);
     interactivesError.forEach(e => e.el.setAttribute('data-tng-interactive-notab', 'true'));
 
-    var tablist = interactives.filter(e => e.prop.tab);
-    tablist.sort((a, b) => b.el.tabIndex - a.el.tabIndex);
+    // interactives.forEach(item => {
+    //     let prop = item.prop;
+    //     if(prop.bgColor) {
+    //         var i = prop.index;
+    //         var parent = getParent(DOM_archi.properties);
 
-    var realTabOrder = tablist.slice(0);
+    //         function getParent(obj) {
+    //             if(obj.index == i.slice(0, i.length - 2)) return obj;
+    //             else {
+    //                 for(let children in obj.child) {
+    //                     getParent(obj.child[children]);
+    //                 }
+    //             }
+    //         }
 
-    /**
-     * ! hautement améliorable
-     */
-    for(let i = 0; i < realTabOrder.length; i++) {
-        let previous = i > 0 ? realTabOrder[i-1] : null;
-        let current = realTabOrder[i];
+    //         console.log(parent);
+    //     }
+    // });
 
-        if(previous && previous.prop.position.left >= current.prop.position.left && previous.prop.position.top >= current.prop.position.top) {
-            current.el.setAttribute('data-tng-tab-visual-error', 'true');
-        }
-    }
-
-    orderPross(tablist);
+    var tablist = interactives.filter(e => e.prop.tab).sort((a, b) => b.el.tabIndex - a.el.tabIndex);
+    var realTabOrder = tablist.slice(0).filter(e => e.prop.visible);
+    
+    visualTab(realTabOrder);
+    domTab(tablist);
     getHeadingsMap();
-
-    function moveArrVal(arr, from, to) {
-        var elem = arr.splice(from, 1)[0];
-        if (to < 0) to += 1;
-        arr.splice(to, 0, elem);
-        return arr;
-    }
-
-    function orderPross(arr) {
-        var relaunch = false;
-        for(let i = 0; i < arr.length; i++) {
-            var pos = parseInt(arr[i].el.getAttribute('data-tng-interactive-pos'));
-
-            if(pos != i) {
-                arr[i].el.setAttribute('data-tng-tab-dom-error', 'true');
-                arr = moveArrVal(arr, i, pos);
-                relaunch = true;
-                break;
-            }
-        }
-
-        if(relaunch) orderPross(arr);
-    }
 }
 var textNodeList = (cat !== 'colors') ? null : getTextNodeContrast();
 

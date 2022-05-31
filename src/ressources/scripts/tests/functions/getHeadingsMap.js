@@ -48,10 +48,32 @@
                 lastPost = lastPost[lastPost.length-1];
             } else {
                 if(lastLvl.length > 1 && (previousLevel - currentlevel) < lastLvl.length) {
-                    for(let x = 0; x < previousLevel - currentlevel; x++) lastLvl.pop();
+                    for(let x = 0; x < previousLevel - currentlevel; x++) {
+                        lastLvl.pop();
+                    }
                     let key = "["+lastLvl.join('][')+"]";
                     lastPost = eval("structure"+key);
                     lastPost.push(element);
+                }
+                else if(lastLvl.length > 1 && currentlevel > 1) {
+                    var eureka = false;
+                    for(let x = 0; x < lastLvl.length; x++) {
+                        lastLvl.pop();
+                        let key = "["+lastLvl.join('][')+"]";
+                        lastPost = eval("structure"+key);
+
+                        if(parseInt(lastPost[0].level) === parseInt(currentlevel)) {
+                            lastPost.push(element);
+                            eureka = true;
+                            break;
+                        }
+                    }
+
+                    if(!eureka) {
+                        structure.push([element]);
+                        lastPost = structure[structure.length-1];
+                        lastLvl = [structure.length-1];
+                    }
                 }
                 else {
                     structure.push([element]);
