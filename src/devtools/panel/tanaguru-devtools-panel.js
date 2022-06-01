@@ -473,7 +473,6 @@ button.addEventListener('click', function () {
 						if(element.classList.contains('dropdownButton')) {
 							element.classList.add('dropdownButton--active');
 						}
-						
 					}
 					else {
 						document.getElementById(element.getAttribute('aria-controls')).setAttribute('hidden', 'hidden');
@@ -642,6 +641,22 @@ button.addEventListener('click', function () {
 					tanagurupopin.removeAttribute('hidden');
 					closebutton.focus();
 					break;
+				case 'taborder-action':
+					chrome.runtime.sendMessage({
+						tabId: chrome.devtools.inspectedWindow.tabId,
+						command: 'taborder'
+					}, (response) => {
+						if(response.response[0] === "off") {
+							element.textContent = chrome.i18n.getMessage('dashboard_ordertab_on');
+						} else if(response.response[0] === "on") {
+							element.textContent = chrome.i18n.getMessage('dashboard_ordertab_off');
+						} else {
+							let msg = document.createElement('p');
+							msg.textContent = "Les pages d'une hauteur supéréieur à 32767 pixels ne peuvent pas être traitées."
+							element.parentNode.appendChild(msg);
+							element.disabled = "true";
+						}
+					});
 			}
 		}
 	}
@@ -2068,6 +2083,7 @@ button.addEventListener('click', function () {
 						dashboardpanel.querySelector('#listenDOM').disabled = false;
 						dashboardpanel.querySelector('label[for="listenDOM"]').removeAttribute('style');
 						document.getElementById('reloadTests').removeAttribute('hidden');
+						document.getElementById('taborder').removeAttribute('hidden');
 						if(listenDomModif) {
 							chrome.runtime.sendMessage({
 								tabId: chrome.devtools.inspectedWindow.tabId,

@@ -72,6 +72,12 @@
   "dashboardListenDOMlegend": {
     "message": "Surveiller les modifications du DOM de la page analysée"
   },
+  "dashboard_ordertab_on": {
+    "message": "Afficher l'ordre de tabulation sur la page"
+  },
+  "dashboard_ordertab_off": {
+    "message": "Cacher l'ordre de tabulation sur la page"
+  },
   "word_no": {
     "message": "Non"
   },
