@@ -271,10 +271,11 @@ filterBloc.querySelectorAll("fieldset legend button").forEach(b => {
 var listenDomModif = false;
 var listenDOMBloc = document.createElement('label');
 listenDOMBloc.setAttribute('for', 'listenDOM');
+listenDOMBloc.className = "dashboard-switch";
 var listenDOMLabel = document.createElement('span');
 listenDOMLabel.classList.add('listenDOM-label');
+listenDOMLabel.classList.add('switch-label');
 listenDOMLabel.textContent = chrome.i18n.getMessage('dashboardListenDOMlegend');
-listenDOMBloc.appendChild(listenDOMLabel);
 
 var listenDOMSwitch = document.createElement('span');
 listenDOMSwitch.classList.add('switch');
@@ -300,6 +301,7 @@ listenDOMinput.addEventListener('change', function(e) {
 listenDOMSwitch.appendChild(listenDOMinput);
 listenDOMSwitch.appendChild(listenDOMSlider);
 listenDOMBloc.appendChild(listenDOMSwitch);
+listenDOMBloc.appendChild(listenDOMLabel);
 
 filterBloc.appendChild(listenDOMBloc);
 
@@ -641,22 +643,6 @@ button.addEventListener('click', function () {
 					tanagurupopin.removeAttribute('hidden');
 					closebutton.focus();
 					break;
-				case 'taborder-action':
-					chrome.runtime.sendMessage({
-						tabId: chrome.devtools.inspectedWindow.tabId,
-						command: 'taborder'
-					}, (response) => {
-						if(response.response[0] === "off") {
-							element.textContent = chrome.i18n.getMessage('dashboard_ordertab_on');
-						} else if(response.response[0] === "on") {
-							element.textContent = chrome.i18n.getMessage('dashboard_ordertab_off');
-						} else {
-							let msg = document.createElement('p');
-							msg.textContent = "Les pages d'une hauteur supéréieur à 32767 pixels ne peuvent pas être traitées."
-							element.parentNode.appendChild(msg);
-							element.disabled = "true";
-						}
-					});
 			}
 		}
 	}
@@ -2081,9 +2067,13 @@ button.addEventListener('click', function () {
 						}
 
 						dashboardpanel.querySelector('#listenDOM').disabled = false;
+						dashboardpanel.querySelector('#taborder').disabled = false;
+						dashboardpanel.querySelector('.taborder-label').textContent = chrome.i18n.getMessage('dashboard_ordertab_label');
+						dashboardpanel.querySelector('label[for="taborder"] .slider').textContent = chrome.i18n.getMessage('word_no');
 						dashboardpanel.querySelector('label[for="listenDOM"]').removeAttribute('style');
+						dashboardpanel.querySelector('label[for="taborder"]').removeAttribute('style');
 						document.getElementById('reloadTests').removeAttribute('hidden');
-						document.getElementById('taborder').removeAttribute('hidden');
+
 						if(listenDomModif) {
 							chrome.runtime.sendMessage({
 								tabId: chrome.devtools.inspectedWindow.tabId,
@@ -2132,13 +2122,18 @@ button.addEventListener('click', function () {
 		let hlElement = main.children[1].querySelector('.highlightON');
 		if(hlElement) hlElement.click();
 		if(listenDomModif) dashboardpanel.querySelector('#listenDOM').click();
+		if(dashboardpanel.querySelector('#taborder').checked) dashboardpanel.querySelector('#taborder').click();
 		ul.querySelectorAll('li:not([id="tab0"])').forEach(li => {li.remove()});
+		ul.querySelector('#tab0 strong').remove();
 		document.getElementById('headingsPanel').remove();
 		document.getElementById('tests').remove();
 		document.querySelector('.analyzeTimer').remove();
 		dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultLoad');
 		dashboardpanel.querySelector('#listenDOM').disabled = true;
+		dashboardpanel.querySelector('#taborder').disabled = true;
 		dashboardpanel.querySelector('label[for="listenDOM"]').style.display = "none";
+		dashboardpanel.querySelector('label[for="taborder"]').style.display = "none";
+		dashboardpanel.querySelector('#taborder-error').textContent = "";
 		document.getElementById('reloadTests').setAttribute('hidden', "true");
 		displayResults();
 	}
@@ -2454,7 +2449,13 @@ button.addEventListener('click', function () {
 
 		if(request.command == "pageChanged") {
 			if(dashboardpanel.querySelector('#listenDOM').checked) dashboardpanel.querySelector('#listenDOM').click();
+			if(dashboardpanel.querySelector('#taborder').checked) dashboardpanel.querySelector('#taborder').click();
 			dashboardpanel.querySelector('#listenDOM').disabled = true;
+			dashboardpanel.querySelector('#taborder').disabled = true;
+
+			let dashboardStrong = document.createElement('strong');
+			dashboardStrong.textContent = "1";
+			leftcolumn.querySelector('#tab0').appendChild(dashboardStrong);
 
 			let allButtonDomAction = document.querySelectorAll('button[data-action]');
 			allButtonDomAction.forEach(btn => {
@@ -2473,6 +2474,9 @@ button.addEventListener('click', function () {
 		}
 	}
 
+	/**
+	 ** Manage listen DOM switcher
+	 */
 	function listenDOMchange(e) {
 		if(e.target.disabled) return;
 		if(e.target.checked) {
@@ -2495,17 +2499,50 @@ button.addEventListener('click', function () {
 		}
 	}
 
+	/**
+	 ** Manage tab order switcher
+	 */
+	function toggleTabOrder(evt) {
+		let element = evt.currentTarget;
+		if(element.disabled) return;
+		else if(element.checked) {
+			chrome.runtime.sendMessage({
+				tabId: chrome.devtools.inspectedWindow.tabId,
+				command: 'taborder',
+				state: 'on'
+			}, (response) => {
+				if(response.response[0] === "on") {
+					document.querySelector('label[for="taborder"] .slider').textContent = chrome.i18n.getMessage('word_yes');
+				} else {
+					document.querySelector('#taborder-error').textContent = chrome.i18n.getMessage('dashboard_taborder_warning');
+					element.checked = false;
+					element.disabled = true;
+				}
+			});
+		} else {
+			chrome.runtime.sendMessage({
+				tabId: chrome.devtools.inspectedWindow.tabId,
+				command: 'taborder',
+				state: 'off'
+			});
+			document.querySelector('label[for="taborder"] .slider').textContent = chrome.i18n.getMessage('word_no');
+		}
+	}
+
 	var dashboardpanelbuttonreload = dashboardpanel.querySelector('#reloadTests');
 	var dashboardpanelbuttonrestart = dashboardpanel.querySelector('#restartTests');
 
 	dashboardpanelbuttonreload.addEventListener('click', restartAnalyze);
 	dashboardpanelbuttonrestart.addEventListener('click', () => {
 		if(dashboardpanel.querySelector('#listenDOM').checked) dashboardpanel.querySelector('#listenDOM').click();
+		if(dashboardpanel.querySelector('#taborder').checked) dashboardpanel.querySelector('#taborder').click();
 		let hlElement = main.children[1].querySelector('.highlightON');
 		if(hlElement) hlElement.click();
 		window.location.reload();
 	});
+	/**save */
 	dashboardpanel.querySelector('#listenDOM').addEventListener('change', listenDOMchange);
+	dashboardpanel.querySelector('#taborder').addEventListener('change', toggleTabOrder);
 	dashboardpanelbuttonreload.textContent = chrome.i18n.getMessage('dashboardButtonReload');
 	dashboardpanelbuttonrestart.textContent = chrome.i18n.getMessage('dashboardButtonRestart');
 

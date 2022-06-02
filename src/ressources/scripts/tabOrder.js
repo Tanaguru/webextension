@@ -1,13 +1,12 @@
 var tabResponse;
 var taborder = Object.values(JSON.parse(localStorage.getItem("TAB")));
 
-//hmax 32767px
-if(document.documentElement.scrollHeight > 32767) {
-    tabResponse = "error";
-}
-else if(document.getElementById('tngtaborder')) {
+//!hmax 32767px
+if(state === "off") {
     document.getElementById('tngtaborder').remove();
     tabResponse = "off";
+} else if(document.documentElement.scrollHeight > 32767) {
+    tabResponse = "error";
 } else {
     let canvas = document.createElement('canvas');
     canvas.id = 'tngtaborder';
@@ -20,11 +19,15 @@ else if(document.getElementById('tngtaborder')) {
     canvas.style.top = 0;
     canvas.style.left = 0;
     canvas.style.zIndex = 99999999;
+    canvas.style.pointerEvents = "none";
     canvas.style.backgroundColor = "rgba(255, 255, 255, 0.5)";
     
     let ctx = canvas.getContext('2d');
     ctx.lineWidth = 2;
     ctx.strokeStyle = '#000';
+    ctx.font = '18px Candara';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
 
     for(let i = 0; i < taborder.length; i++) {
         let e = taborder[i];
@@ -37,19 +40,20 @@ else if(document.getElementById('tngtaborder')) {
     for(let i = 0; i < taborder.length; i++) {
         let e = taborder[i];
         ctx.beginPath();
-        ctx.fillStyle = '#000';
-        ctx.arc(e.a.x, e.a.y, 15, 0, 2 * Math.PI);
+        ctx.fillStyle = e.a.error ? '#d90b0b' : '#000';
+        let size = 18+((i+1).toString().length > 3 ? (i+1).toString().length * 3 : 0);
+        ctx.arc(e.a.x, e.a.y, size, 0, 2 * Math.PI);
         ctx.fill();
 
         if(i === taborder.length-1) {
-            ctx.arc(e.b.x, e.b.y, 15, 0, 2 * Math.PI);
+            ctx.beginPath();
+            ctx.fillStyle = e.b.error ? '#d90b0b' :'#000';
+            let size = 18+((i+2).toString().length > 3 ? (i+1).toString().length * 3 : 0);
+            ctx.arc(e.b.x, e.b.y, size, 0, 2 * Math.PI);
             ctx.fill();
         }
 
         ctx.beginPath();
-        ctx.font = '15px serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
         ctx.fillStyle = '#fff';
         ctx.fillText(i+1, e.a.x, e.a.y);
 

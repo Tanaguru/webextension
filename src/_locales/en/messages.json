@@ -94,6 +94,12 @@
 		"message": "Monitor the DOM changes of the analyzed page",
 		"hash": "4696a9d621bba2552fa51e8914011108"
 	},
+	"dashboard_ordertab_label": {
+		"message": "Show the tab order on the page"
+	},
+	"dashboard_taborder_warning": {
+		"message": "The tab order cannot be displayed on pages higher than 32767 pixels."
+	},
 	"word_no": {
 		"message": "No",
 		"hash": "df7642678cd373ea77f9dee792d11ecb"

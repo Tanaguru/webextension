@@ -343,16 +343,21 @@
 			
 				<p class="dashboard-message"></p>
 
-				<div>
-					<button id="taborder" data-action="taborder-action" class="dashboard-reload-button" hidden>Afficher l'ordre de tabulation sur la page</button>
-				</div>
+				<label for="taborder" class="dashboard-switch" style="display: none;">
+					<span class="switch">
+						<input type="checkbox" id="taborder" data-action="taborder-action" aria-describedby="taborder-error">
+						<span class="slider"></span>
+					</span>
+					<span class="switch-label taborder-label"></span>
+				</label>
+				<p id="taborder-error"></p>
 	
-				<label for="listenDOM" style="display: none;">
-					<span class="listenDOM-label"></span>
+				<label for="listenDOM" class="dashboard-switch" style="display: none;">
 					<span class="switch">
 						<input type="checkbox" id="listenDOM">
 						<span class="slider"></span>
 					</span>
+					<span class="switch-label listenDOM-label"></span>
 				</label>
 			</div>
 

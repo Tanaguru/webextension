@@ -344,6 +344,7 @@ function domTab(arr) {
  */
 function visualTab(arr) {
     var segments = [];
+    var coords = [];
 
     for(let i = 0; i < arr.length; i++) {
         if(i === 0) continue;
@@ -354,6 +355,11 @@ function visualTab(arr) {
         segments.push({
             a: {x: (previous.prop.position.left), y: (previous.prop.position.top+previous.prop.position.bottom)/2, el: previous.el},
             b: {x: (current.prop.position.left), y: (current.prop.position.top+current.prop.position.bottom)/2, el: current.el}
+        });
+
+        coords.push({
+            a: {x: (previous.prop.position.left), y: (previous.prop.position.top+previous.prop.position.bottom)/2, error: false},
+            b: {x: (current.prop.position.left), y: (current.prop.position.top+current.prop.position.bottom)/2, error: false}
         });
     }
 
@@ -375,25 +381,36 @@ function visualTab(arr) {
                 let b2x = segments[i].b.x;
                 let b2y = segments[i].b.y;
 
-                if(a1x >= b1x && a1y >= b1y) previousSegments[x].a.el.setAttribute('data-tng-tab-visual-error', 'true');
-                else if(a2x >= b2x && a2y >= b2y) {
+                if(a1x >= b1x && a1y >= b1y) {
+                    previousSegments[x].a.el.setAttribute('data-tng-tab-visual-error', 'true');
+                    coords[x].a.error = true;
+                    if(x !== 0) coords[x-1].b.error = true;
+                } else if(a2x >= b2x && a2y >= b2y) {
                     segments[i].a.el.setAttribute('data-tng-tab-visual-error', 'true');
+                    coords[i].a.error = true;
+                    if(i !== 0) coords[i-1].b.error = true;
                     break;
                 } else if(b1x >= a2x && b1y >= a2y){
                     previousSegments[x].b.el.setAttribute('data-tng-tab-visual-error', 'true');
+                    coords[x].b.error = true;
+                    if(x !== coords.length-1) coords[x+1].a.error = true;
                     break;
                 } else if(previousSegments[x].b.el === segments[i].a.el) {
                     segments[i].a.el.setAttribute('data-tng-tab-visual-error', 'true');
+                    coords[i].a.error = true;
+                    if(i !== 0) coords[i-1].b.error = true;
                     break;
                 } else {
                     segments[i].b.el.setAttribute('data-tng-tab-visual-error', 'true');
+                    coords[i].b.error = true;
+                    if(i !== coords.length-1) coords[i+1].a.error = true;
                     break;
                 }
             }
         }
     }
 
-    return segments;
+    return coords;
 }
 
 /**
@@ -541,10 +558,10 @@ if(first === "yes") {
     interactivesError.forEach(e => e.el.setAttribute('data-tng-interactive-notab', 'true'));
 
     var tablist = interactives.filter(e => e.prop.tab).sort((a, b) => b.el.tabIndex - a.el.tabIndex);
-    var realTabOrder = tablist.slice(0).filter(e => e.prop.visible);
+    var realTabOrder = tablist.slice(0).filter(e => true);
 
     localStorage.setItem("TAB", JSON.stringify(Object.assign({}, visualTab(realTabOrder))));
-    // console.log(JSON.parse(localStorage.getItem("TAB")));
+
     domTab(tablist);
     getHeadingsMap();
 }
