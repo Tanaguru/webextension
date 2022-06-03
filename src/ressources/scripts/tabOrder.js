@@ -29,36 +29,78 @@ if(state === "off") {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
+    var invisible = false;
+    var lastCoord = null;
+
     for(let i = 0; i < taborder.length; i++) {
         let e = taborder[i];
-        ctx.beginPath();
-        ctx.moveTo(e.a.x, e.a.y)
-        ctx.lineTo(e.b.x, e.b.y);
-        ctx.stroke();
+
+        if(i === 0 && !e.a.visible && !e.b.visible) {
+            invisible = true;
+            lastCoord = e.a;
+        }
+        else if(invisible && !e.b.visible) continue;
+        else if(invisible && e.b.visible) {
+            ctx.beginPath();
+            ctx.moveTo(lastCoord.x, lastCoord.y);
+            ctx.lineTo(e.b.x, e.b.y);
+            ctx.stroke();
+
+            invisible = false;
+            lastCoord = null;
+        } 
+        else {
+            ctx.beginPath();
+            ctx.moveTo(e.a.x, e.a.y);
+            ctx.lineTo(e.b.x, e.b.y);
+            ctx.stroke();
+
+            if(!e.b.visible) {
+                invisible = true;
+                lastCoord = e.b;
+            }
+        }
     }
 
+    var invisible2 = false;
+
     for(let i = 0; i < taborder.length; i++) {
         let e = taborder[i];
-        ctx.beginPath();
-        ctx.fillStyle = e.a.error ? '#d90b0b' : '#000';
-        let size = 18+((i+1).toString().length > 3 ? (i+1).toString().length * 3 : 0);
-        ctx.arc(e.a.x, e.a.y, size, 0, 2 * Math.PI);
-        ctx.fill();
 
-        if(i === taborder.length-1) {
+        if(e.a.visible) {
             ctx.beginPath();
-            ctx.fillStyle = e.b.error ? '#d90b0b' :'#000';
-            let size = 18+((i+2).toString().length > 3 ? (i+1).toString().length * 3 : 0);
-            ctx.arc(e.b.x, e.b.y, size, 0, 2 * Math.PI);
+            ctx.fillStyle = e.a.error ? '#d90b0b' : '#000';
+            let size = 18+((i+1).toString().length > 3 ? (i+1).toString().length * 3 : 0);
+            ctx.arc(e.a.x+size, e.a.y, size, 0, 2 * Math.PI);
             ctx.fill();
+
+            ctx.fillStyle = '#fff';
+            ctx.fillText(i+1, e.a.x+size, e.a.y);
+
+            invisible2 = false;
+        } 
+        else if(!e.a.visible && !invisible2) {
+            ctx.beginPath();
+            ctx.fillStyle = '#055a7f';
+            let size = 18;
+            ctx.arc(e.a.x+size, e.a.y, size, 0, 2 * Math.PI);
+            ctx.fill();
+
+            ctx.fillStyle = '#fff';
+            ctx.fillText(i+1, e.a.x+size, e.a.y);
+
+            invisible2 = true;
         }
 
-        ctx.beginPath();
-        ctx.fillStyle = '#fff';
-        ctx.fillText(i+1, e.a.x, e.a.y);
+        if(i === taborder.length-1 && !(invisible2 && !e.b.visible)) {
+            ctx.beginPath();
+            ctx.fillStyle = e.b.visible ? (e.b.error ? '#d90b0b' : '#000') : '#055a7f';
+            let size = 18+((i+2).toString().length > 3 ? (i+1).toString().length * 3 : 0);
+            ctx.arc(e.b.x+size, e.b.y, size, 0, 2 * Math.PI);
+            ctx.fill();
 
-        if(i === taborder.length-1) {
-            ctx.fillText(i+2, e.b.x, e.b.y);
+            ctx.fillStyle = '#fff';
+            ctx.fillText(i+2, e.b.x+size, e.b.y);
         }
     }
 

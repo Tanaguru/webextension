@@ -358,8 +358,16 @@ function visualTab(arr) {
         });
 
         coords.push({
-            a: {x: (previous.prop.position.left), y: (previous.prop.position.top+previous.prop.position.bottom)/2, error: false},
-            b: {x: (current.prop.position.left), y: (current.prop.position.top+current.prop.position.bottom)/2, error: false}
+            a: {
+                x: (previous.prop.position.left >= 0 ? previous.prop.position.left : 0),
+                y: (previous.prop.position.top+previous.prop.position.bottom)/2 >= 0 ? (previous.prop.position.top+previous.prop.position.bottom)/2 : 18,
+                error: false, visible: previous.prop.visible
+            },
+            b: {
+                x: (current.prop.position.left >= 0 ? current.prop.position.left : 0),
+                y: (current.prop.position.top+current.prop.position.bottom)/2 >= 0 ? (current.prop.position.top+current.prop.position.bottom)/2 : 18,
+                error: false, visible: current.prop.visible
+            }
         });
     }
 
