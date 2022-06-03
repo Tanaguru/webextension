@@ -398,6 +398,11 @@ tanaguruTestsList.push({
             return;
         }
 
+        if(item.querySelector('img[data-tng-el-visible="true"], svg[data-tng-el-visible="true"]')) {
+            item.setAttribute('data-tng-link-hasname', 'true');
+            return;
+        }
+
         return true;
     },
     tags: ['a11y', 'links'],

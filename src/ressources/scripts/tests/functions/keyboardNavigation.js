@@ -12,6 +12,7 @@ var canBeReachedUsingKeyboardWith = function () {
                 case 'input':
                 case 'select':
                 case 'textarea':
+                case 'summary': 
                 case 'button':
                     if (!this.hasAttribute('disabled')) {
                         result.push('html:' + this.tagName.toLowerCase());
