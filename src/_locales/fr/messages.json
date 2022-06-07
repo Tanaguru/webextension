@@ -75,6 +75,12 @@
   "dashboard_ordertab_label": {
     "message": "Afficher l'ordre de tabulation sur la page"
   },
+  "dashboard_ordertab_legend_invisible": {
+    "message": "Elément hors écran"
+  },
+  "dashboard_ordertab_legend_error": {
+    "message": "Ordre de tabulation non pertinent"
+  },
   "dashboard_taborder_warning": {
     "message": "L'ordre de tabulation ne peut pas être affiché sur les pages d'une hauteur supérieur à 32767 pixels."
   },

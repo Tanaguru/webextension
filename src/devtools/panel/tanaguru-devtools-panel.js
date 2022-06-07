@@ -2069,9 +2069,13 @@ button.addEventListener('click', function () {
 						dashboardpanel.querySelector('#listenDOM').disabled = false;
 						dashboardpanel.querySelector('#taborder').disabled = false;
 						dashboardpanel.querySelector('.taborder-label').textContent = chrome.i18n.getMessage('dashboard_ordertab_label');
+						dashboardpanel.querySelector('.taborder-desc-legend').textContent = chrome.i18n.getMessage('contrastLegend1');
+						dashboardpanel.querySelector('.taborder-desc-error').lastElementChild.textContent = chrome.i18n.getMessage('dashboard_ordertab_legend_error');
+						dashboardpanel.querySelector('.taborder-desc-invisible').lastElementChild.textContent = chrome.i18n.getMessage('dashboard_ordertab_legend_invisible');
 						dashboardpanel.querySelector('label[for="taborder"] .slider').textContent = chrome.i18n.getMessage('word_no');
 						dashboardpanel.querySelector('label[for="listenDOM"]').removeAttribute('style');
 						dashboardpanel.querySelector('label[for="taborder"]').removeAttribute('style');
+						dashboardpanel.querySelector('#taborder-desc').removeAttribute('style');
 						document.getElementById('reloadTests').removeAttribute('hidden');
 
 						if(listenDomModif) {
@@ -2133,6 +2137,7 @@ button.addEventListener('click', function () {
 		dashboardpanel.querySelector('#taborder').disabled = true;
 		dashboardpanel.querySelector('label[for="listenDOM"]').style.display = "none";
 		dashboardpanel.querySelector('label[for="taborder"]').style.display = "none";
+		dashboardpanel.querySelector('#taborder-desc').style.display = "none";
 		dashboardpanel.querySelector('#taborder-error').textContent = "";
 		document.getElementById('reloadTests').setAttribute('hidden', "true");
 		displayResults();

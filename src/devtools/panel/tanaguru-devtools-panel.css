@@ -559,6 +559,23 @@ main:not(.launch-analysis) > div:first-child {
 	margin-left: 1rem;
 }
 
+.color-legend {
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	margin: 0 0.5rem 0 1rem;
+	border-radius: 50%;
+	vertical-align: text-bottom;
+}
+
+.color-legend-blue {
+	background-color: #055a7f;
+}
+
+.color-legend-red {
+	background-color: #d90b0b;
+}
+
 /*? Panel navigation */
 p.analyzeTimer {
 	font-size: 1rem;

@@ -97,6 +97,12 @@
 	"dashboard_ordertab_label": {
 		"message": "Show the tab order on the page"
 	},
+	"dashboard_ordertab_legend_invisible": {
+		"message": "Offscreen item"
+	},
+	"dashboard_ordertab_legend_error": {
+		"message": "Tab order not pertinent"
+	},
 	"dashboard_taborder_warning": {
 		"message": "The tab order cannot be displayed on pages higher than 32767 pixels."
 	},
@@ -2204,6 +2210,26 @@
 	"tables_name_470": {
 		"message": "List of formatting tables using no items specific to data tables.",
 		"hash": "8e988c67a8c21bc169db730003399f1b"
+	},
+	"navigation_name_21": {
+		"message": "Interactive elements with a non pertinent tabindex attribute",
+		"hash": "3bac6ca8d547baa2637a267b25e9fcbb"
+	},
+	"navigation_description_2": {
+		"message": "Tab order in page must respect DOM elements tab order\n",
+		"hash": "794de8336a666a765b6e7c1e8e2717c2"
+	},
+	"navigation_name_22": {
+		"message": "Interactive elements non reachable with keyboard navigation",
+		"hash": "c01731f3589ae78e80a40eaad08a3dab"
+	},
+	"navigation_name_23": {
+		"message": "Interactive elements taking focus following a visual element set after ",
+		"hash": "3b604467b59ace53d05578577f84884d"
+	},
+	"navigation_description_3": {
+		"message": "Tab order must be coherent with the interactive elements display order in the pagee",
+		"hash": "147434e301de35efd084f3ce88a344bf"
 	},
 	"__WET_LOCALE__": { "message": "en" }
 }

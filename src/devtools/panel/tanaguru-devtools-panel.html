@@ -343,14 +343,30 @@
 			
 				<p class="dashboard-message"></p>
 
+				<p id="taborder-error"></p>
 				<label for="taborder" class="dashboard-switch" style="display: none;">
 					<span class="switch">
-						<input type="checkbox" id="taborder" data-action="taborder-action" aria-describedby="taborder-error">
+						<input type="checkbox" id="taborder" data-action="taborder-action" aria-describedby="taborder-error taborder-desc">
+
 						<span class="slider"></span>
 					</span>
+
 					<span class="switch-label taborder-label"></span>
 				</label>
-				<p id="taborder-error"></p>
+
+				<p id="taborder-desc" style="display: none;">
+					<span class="taborder-desc-legend"></span>
+
+					<span class="taborder-desc-error">
+						<span class="color-legend color-legend-red"></span>
+						<span></span>
+					</span>
+
+					<span class="taborder-desc-invisible">
+						<span class="color-legend color-legend-blue"></span>
+						<span></span>
+					</span>
+				</p>
 	
 				<label for="listenDOM" class="dashboard-switch" style="display: none;">
 					<span class="switch">
