@@ -1,319 +1,1683 @@
 {
-	"extensionLang": {
-		"message": "fr",
-		"description": "Langue de l'extension."
-	},
-	"extensionName": {
-		"message": "Tanaguru webext",
-		"description": "Nom de l'extension."
-	},	
-	"extensionDescription": {
-		"message": "Outil d'évaluation de pages Web.",
-		"description": "Description de l'extension."
-	},
-	"extensionHomepageUrl": {
-		"message": "http://www.tanaguru.com/fr/",
-		"description": "URL de la version française du site web consacré à l'extension."
-	},
-	"extensionHowTo": {
-		"message": "Pour démarrer les tests, rendez-vous dans les outils de développement, activez l'onglet <strong><span>manifest.name</span></strong> puis lancez l'analyse de cette page.",
-		"description": "Instructions pour utiliser l'extension."
-	},
-	"extensionWebsite": {
-		"message": "Pour en savoir plus, visitez le site <span data-role=\"link\" data-text=\"Tanaguru.com\" data-newwindow=\"true\">manifest.homepage_url</span>.",
-		"description": "Plus d'informations sur le site web consacré à l'extension."
-	},
-	"extensionNewWindow": {
-		"message": "(nouvelle fenêtre)",
-		"description": "Mention pour les éléments s'ouvrant dans une nouvelle fenêtre."
-	},
-	"homeTitle": {"message": "Personnalisez votre analyse"},
-	"msgNavHeading": { "message": "Résultats de l'analyse" },
-	"msgDashboard": { "message": "Tableau de bord" },
-	"DOMdashboardMessage": { "message": "Des modifications ont été observées dans le DOM." },
-	"DOMdashboardButton": { "message": "Voir la liste des modifications" },
-	"msgDashboardResultFailed": { "message": "Des erreurs ont été détectées dans cette page." }, 
-	"msgDashboardResultPassed": { "message": "Aucune erreur n'a été détectée dans cette page." }, 
-	"msgDashboardResultNone": { "message": "Aucun résultat ne correspond à votre demande pour cette page." },
-	"msgDashboardResultLoad": { "message": "Analyse en cours..." },
-	"msgDashboardWarning": { "message": "Attention, la page de l'onglet actif a été modifiée ou rafraîchie, les résultats d'analyse actuels ne correspondent plus au contenu de l'onglet actif." },
-	"dashboardButtonReload": { "message": "Relancer l'analyse" },
-	"dashboardButtonRestart": { "message": "Quitter et démarrer une nouvelle analyse" },
-	"dashboardListenDOMlegend": { "message": "Surveiller les modifications du DOM de la page analysée" },
-	"dashboardListenOFF": { "message": "Non" },
-	"dashboardListenON": { "message": "Oui" },
-	"msgHeadingsHierarchy": { "message": "Hierarchie des titres" },
-	"msgCollapseBtn": { "message": "Tout plier" },
-	"msgExpandBtn": { "message": "Tout déplier" },
-	"earlFailed": { "message": "Invalidé" },
-	"earlPassed": { "message": "Validé" },
-	"earlCantTell": { "message": "Indéterminé" },
-	"earlInapplicable": { "message": "Non applicable" },
-	"earlUntested": { "message": "Non testé" },
-	"uiTagButton": { "message": "Tous les tests avec l'étiquette \"{tagName}\"." },
-	"contrastHeading": { "message": "Contrastes" },
-	"contrastDescription1": { "message": "Le texte inférieur à 24px, et le texte inférieur à 18.5px avec un effet de graisse d'au moins 700 : rapport de contraste minimum 4.5:1" },
-	"contrastDescription2": { "message": "Le texte supérieur à 24px, et le texte supérieur à 18.5px avec un effet de graisse d'au moins 700 : rapport de contraste minimum 3:1" },
-	"contrastLegend1": { "message": "Légende : " },
-	"contrastLegend2": { "message": "image" },
-	"contrastLegend3": { "message": "non trouvé" },
-	"contrastWarning": { "message": "Une analyse manuelle reste requise pour confirmer ou infirmer les statuts annoncés (les cas de superposition ne sont par exemple pas pris en compte)." }, 
-	"contrastThNumber": { "message": "N°" }, 
-	"contrastThStatus": { "message": "Statut" }, 
-	"contrastThText": { "message": "Texte" }, 
-	"contrastThSize": { "message": "Taille du texte" }, 
-	"contrastThBackgroundColor": { "message": "Couleur de fond" }, 
-	"contrastThColor": { "message": "Couleur du texte" }, 
-	"contrastThRatio": { "message": "Rapport de contraste" },
-	"contrastFinder": { "message": "Trouver un contraste valide avec Contrast-Finder" },
-	"DOMpanelMessage": { "message": "Les modifications suivantes ont été observées." },
-	"DOMpanelNoChange": { "message": "Aucune modification n'a été observée." },
-	"DOMchanges": { "message": "Modifications du DOM" },
-	"allTags": { "message": "Tous les tests" },
-	"tagA11y": { "message": "Accessibilité" },
-	"tagAccessiblename": { "message": "Noms accessibles"},
-	"tagAct": { "message": "ACT" }, 
-	"tagAria": {"message" : "Aria"},
-	"tagAudio": { "message": "Audio" },
-	"tagButtons": { "message": "Boutons" },
-	"tagCIE" : { "message": "Charte internet de l'État" },
-	"tagCode": { "message": "Code (règles d'écriture)" },
-	"tagColors": { "message": "Couleurs" },
-	"tagConsultation": { "message": "Consultation" },
-	"tagContrast": { "message": "Contrastes" }, 
-	"tagDeprecated": { "message" : "Obsolètes" },
-	"tagEcoconception": { "message": "Éco-conception" },
-	"tagForms": { "message": "Formulaires" },
-	"tagFrames": { "message": "Cadres" },
-	"tagHeadings": { "message": "Titres de contenus" },
-	"tagI18n": { "message": "Internationalisation" },
-	"tagImages": { "message": "Images" },
-	"tagKeyboard": { "message": "Navigation clavier" },
-	"tagLabels": { "message": "Étiquettes" },
-	"tagLanguages": { "message": "Langues" },
-	"tagLinks": { "message": "Liens" },
-	"tagMandatory": { "message": "Éléments obligatoires" },
-	"tagMedia": { "message": "Multimédia" },
-	"tagMeta": { "message": "Métadonnées" },
-	"tagMobile": { "message": "Mobile" },
-	"tagNavigation": { "message": "Navigation" },
-	"tagOthers": { "message": "Divers" },
-	"tagPageTitle": { "message": "Titre de la page" }, 
-	"tagPerformance": { "message": "Performance" },
-	"tagPidila": { "message": "Pidila" },
-	"tagPresentation": { "message": "Présentation de l'information" },
-	"tagQ5y": { "message": "Qualité web" },
-	"tagQualite": { "message": "Qualité" },
-	"tagScripts": { "message": "Scripts" },
-	"tagSEO": { "message": "SEO" },
-	"tagStructure": { "message": "Structuration de l'information" },
-	"tagSvg": { "message": "SVG" },
-	"tagTables": { "message": "Tableaux" },
-	"tagVideos": { "message": "Vidéos" },
-	"tagWcag": { "message": "WCAG" },
-	"testFramesTest1Name": { "message": "Présence d'un titre pour chaque cadre en ligne." },
-	"testFramesTest1ExplanationsPassed": { "message": "Tous les cadres en ligne de cette page ont un titre." },
-	"testFramesTest1ExplanationsFailed": { "message": "Des éléments iframe sans attribut title sont présents dans cette page." },
-	"testFramesTest2Name": { "message": "Présence d'un titre pour chaque cadre." },
-	"testFramesTest2ExplanationsPassed": { "message": "Tous les cadres de cette page ont un titre." },
-	"testFramesTest2ExplanationsFailed": { "message": "Des éléments frame sans attribut title sont présents dans cette page." },
-	"testFramesTest3Name": { "message": "Pertinence du titre pour chaque cadre." },
-	"testFramesTest3ExplanationsCantTell": { "message": "Vérifiez que les titres des cadres en présence sont pertinents." },
-	"testFramesTest4Name": { "message": "Pertinence du titre pour chaque cadre en ligne." },
-	"testFramesTest4ExplanationsCantTell": { "message": "Vérifiez que les titres des cadres en ligne en présence sont pertinents." },
-	"testFramesTest5Name": { "message": "Non pertinence du titre pour chaque cadre en ligne." },
-	"testFramesTest5ExplanationsFailed": { "message": "Des éléments iframe avec attribut title non pertinent sont présents dans cette page." },
-	"testFramesTest6Name": { "message": "Non pertinence du titre pour chaque cadre." },
-	"testFramesTest6ExplanationsFailed": { "message": "Des éléments frame avec attribut title non pertinent sont présents dans cette page." },
-	"testFramesTest7Name": { "message": "Cadre (balise iframe) sans nom accessible." },
-	"testFramesTest7ExplanationsPassed": { "message": "Cette page ne contient pas d'éléments frame ou iframe sans nom accessible." },
-	"testFramesTest7ExplanationsFailed": { "message": "Des éléments frame ou iframe sans nom accessible sont présents dans la page." },
-	"testFramesTest8Name": { "message": "Cadre non restituées (balise iframe) sans nom accessible." },
-	"testFramesTest8ExplanationsCantTell": { "message": "Cette page contient des éléments frame ou iframe non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur." },
-	"testHeadingsTest1Name": { "message": "Présence d'au moins un titre de niveau 1." },
-	"testHeadingsTest1ExplanationsPassed": { "message": "Un titre de niveau 1 (élément h1) est présent dans la page." },
-	"testHeadingsTest1ExplanationsFailed": { "message": "Cette page ne contient pas de titre de niveau 1 (élément h1)." },
-	"testHeadingsTest2Name": { "message": "Présence de titre de niveau." },
-	"testHeadingsTest2ExplanationsPassed": { "message": "La page contient au moins un titre de niveau." },
-	"testHeadingsTest2ExplanationsFailed": { "message": "Cette page ne contient pas de titre de niveau)." },
-	"testHeadingsTest3Name": { "message": "Absence de sauts dans la hiérarchie des titres." },
-	"testHeadingsTest3ExplanationsPassed": { "message": "La hiérarchie des titres est pertinente." },
-	"testHeadingsTest3ExplanationsFailed": { "message": "Des sauts dans la hiérarchie des titres sont présents." },
-	"testHeadingsTest4Name": { "message": "Pertinence des titres de contenus." },
-	"testHeadingsTest4ExplanationsCantTell": { "message": "Vérifiez que les titres de contenus en présence sont pertinents." },
-	"testImagesTest1Name": { "message": "Images (balise area) sans attribut alt." },
-	"testImagesTest1ExplanationsPassed": { "message": "Cette page ne contient pas d'éléments area sans attribut alt." },
-	"testImagesTest1ExplanationsFailed": { "message": "Des éléments area sans attribut alt sont présents dans la page." },
-	"testImagesTest2Name": { "message": "Images (balise img) sans nom accessible." },
-	"testImagesTest2ExplanationsPassed": { "message": "Cette page ne contient pas d'éléments img sans nom accessible." },
-	"testImagesTest2ExplanationsFailed": { "message": "Des éléments img sans nom accessible sont présents dans la page." },
-	"testImagesTest3Name": { "message": "Images (role img) sans nom accessible." },
-	"testImagesTest3ExplanationsPassed": { "message": "Cette page ne contient pas d'éléments avec un role img sans nom accessible." },
-	"testImagesTest3ExplanationsFailed": { "message": "Des éléments img sans nom accessible sont présents dans la page." },
-	"testImagesTest4Name": { "message": "Images (balise img ou rôle img) non restituées sans nom accessible." },
-	"testImagesTest4ExplanationsCantTell": { "message": "Cette page contient des éléments img non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur." },
-	"testImagesTest5Name": { "message": "Zone d'une image réactive (balise area) sans nom accessible." },
-	"testImagesTest5ExplanationsPassed": { "message": "Cette page ne contient pas d'éléments area sans nom accessible." },
-	"testImagesTest5ExplanationsFailed": { "message": "Des éléments area sans nom accessible sont présents dans la page." },
-	"testImagesTest6Name": { "message": "Zone d'une image réactive (balise area) non restituée sans nom accessible." },
-	"testImagesTest6ExplanationsCantTell": { "message": "Cette page contient des éléments area non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur." },
-	"testImagesTest7Name": { "message": "Images (balise area) avec une alternative vide et un attribut title, aria-label, aria-describedby ou aria-labelledby." },
-	"testImagesTest7ExplanationsFailed": { "message": "Des éléments area avec un attribut alt vide et un attribut title, aria-label, aria-describedby ou aria-labelledby sont présents dans la page." },
-	"testImagesTest8Name": { "message": "Images (balise area) sans attribut href avec un attribut alt rempli." },
-	"testImagesTest8ExplanationsPassed": { "message": "Cette page ne contient pas d'éléments area de décoration (sans attribut href) avec attribut alt renseigné." },
-	"testImagesTest8ExplanationsFailed": { "message": "Des éléments area de décoration (sans attribut href) avec attribut alt renseigné sont présents dans la page." },
-	"testImagesTest9Name": { "message": "Images informatives (balise area) avec attribut alt vide." },
-	"testImagesTest9ExplanationsPassed": { "message": "Cette page ne contient pas d'éléments cliquables area avec un attribut alt vide." },
-	"testImagesTest9ExplanationsFailed": { "message": "Des éléments cliquables area avec un alt vide sont présents dans la page." },
-	"testImagesTest10Name": { "message": "Images cliquables (balise area) avec un attribut title, aria-label ou aria-labelledby différent de l'attribut alt." },
-	"testImagesTest10ExplanationsPassed": { "message": "Cette page ne contient pas d'images cliquables (area) dont l'attribut aria-label ou aria-labelledby sont différents de l'attribut alt." },
-	"testImagesTest10ExplanationsFailed": { "message": "Des éléments cliquables (area) ont un attribut title, aria-label ou aria-labelledby différents de l'attribut alt." },
-	"testImagesTest11Name": { "message": "Images (balise img) sans attribut alt." },
-	"testImagesTest11ExplanationsPassed": { "message": "Cette page ne contient pas d'éléments img sans attribut alt." },
-	"testImagesTest11ExplanationsFailed": { "message": "Des éléments img sans attribut alt sont présents dans la page." },
-	"testImagesTest12Name": { "message": "Images (balise img) avec une alternative vide et un attribut title, aria-label, aria-describedby ou aria-labelledby." },
-	"testImagesTest12ExplanationsFailed": { "message": "Des éléments img avec un attribut alt vide et un attribut title, aria-label, aria-describedby ou aria-labelledby sont présents dans la page." },
-	"testImagesTest13Name": { "message": "Images (balise img) avec une alternative vide." },
-	"testImagesTest13ExplanationsCantTell": { "message": "Vérifier que ces images sont bien des images de décoration." },
-	"testImagesTest14Name": { "message": "Images (balise img) avec attribut alt renseigné." },
-	"testImagesTest14ExplanationsCantTell": { "message": "Vérifier que ces images sont bien des images informatives." },
-	"testImagesTest15Name": { "message": "Images (balise img) avec un attribut title, aria-label ou aria-labelledby différent de l'attribut alt." },
-	"testImagesTest15ExplanationsPassed": { "message": "Cette page ne contient pas d'images dont l'attribut aria-label ou aria-labelledby est différent de l'attribut alt." },
-	"testImagesTest15ExplanationsFailed": { "message": "Des éléments img ont un attribut title, aria-label ou aria-labelledby différent de l'attribut alt." },
-	"testLinksTest1Name": { "message": "Liens sans attribut title." },
-	"testLinksTest2Name": { "message": "Liens avec attribut title renseigné." },
-	"testLinksTest3Name": { "message": "Liens avec attribut title vide." },
-	"testLinksTest3ExplanationsPassed": { "message": "Cette page ne contient pas d'éléments a avec attribut title vide." },
-	"testLinksTest3ExplanationsFailed": { "message": "Des éléments a avec attribut title vide sont présents dans la page." },
-	"testLinksTest4Name": { "message": "Liens images sans intitulé." },
-	"testLinksTest4ExplanationsPassed": { "message": "Cette page ne contient pas de liens images sans intitulé." },
-	"testLinksTest4ExplanationsFailed": { "message": "Des liens images sans intitulé sont présents dans la page." },
-	"testButtonsTest1Name": { "message": "Boutons." },
-	"testButtonsTest2Name": { "message": "Boutons images avec attribut alt." },
-	"testButtonsTest3Name": { "message": "Boutons Images sans attribut alt." },
-	"testButtonsTest3ExplanationsPassed": { "message": "Cette page ne contient pas d'éléments input type='image' sans attribut alt." },
-	"testButtonsTest3ExplanationsFailed": { "message": "Des éléments input type='image' sans attribut alt sont présents dans la page." },
-	"testButtonsTest4Name": { "message": "Boutons Images avec un attribut alt vide." },
-	"testButtonsTest4ExplanationsPassed": { "message": "Cette page ne contient pas d'éléments input type='image' sans attribut alt." },
-	"testButtonsTest4ExplanationsFailed": { "message": "Des éléments input type='image' sans attribut alt sont présents dans la page." },
-	"testButtonsTest5Name": { "message": "Boutons Images avec un attribut title, aria-label ou aria-labelledby différent de l'attribut alt." },
-	"testButtonsTest5ExplanationsPassed": { "message": "Cette page ne contient pas de boutons images dont l'attribut title, aria-label ou aria-labelledby est différent de l'attribut alt." },
-	"testButtonsTest5ExplanationsFailed": { "message": "Des éléments boutons images ont un attribut title, aria-label ou aria-labelledby différent de l'attribut alt." },
-	"testFormsTest1Name": { "message": "Absence d'étiquette pour les éléments de formulaire natifs." },
-	"testFormsTest1ExplanationsPassed": { "message": "Cette page ne contient pas d'éléments de formulaire natifs sans étiquette." },
-	"testFormsTest1ExplanationsFailed": { "message": "Des éléments de formulaire natifs n'ont pas d'étiquette." },
-	"testFormsTest2Name": { "message": "Absence d'étiquette pour les éléments de formulaire aria." },
-	"testFormsTest2ExplanationsPassed": { "message": "Cette page ne contient pas d'éléments de formulaire implémentés via Aria sans etiquette." },
-	"testFormsTest2ExplanationsFailed": { "message": "Des éléments champs de formulaire implémentés via aria n'ont pas d'étiquette." },
-	"testFormsTest3Name": { "message": "Éléments de formulaire (balise input) sans nom accessible." },
-	"testFormsTest3ExplanationsPassed": { "message": "Cette page ne contient pas d'élément input sans nom accessible." },
-	"testFormsTest3ExplanationsFailed": { "message": "Des éléments input sans nom accessible sont présents dans la page." },
-	"testFormsTest4Name": { "message": "Éléments de formulaire non restitué (balise input) sans nom accessible." },
-	"testFormsTest4ExplanationsCantTell": { "message": "Cette page contient des éléments input non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur." },
-	"testFormsTest5Name": { "message": "Éléments de formulaire (balise select) sans nom accessible." },
-	"testFormsTest5ExplanationsPassed": { "message": "Cette page ne contient pas d'éléments select sans nom accessible." },
-	"testFormsTest5ExplanationsFailed": { "message": "Des éléments select sans nom accessible sont présents dans la page." },
-	"testFormsTest6Name": { "message": "Éléments de formulaire non restitué (balise select) sans nom accessible." },
-	"testFormsTest6ExplanationsCantTell": { "message": "Cette page contient des éléments input non restitués sans nom accessible, vérifiez qu'ils ne doivent pas être restitués à l'utilisateur." },
-	"testScriptsTest1Name": { "message": "Les composants d’interface implémentés via un rôle ARIA sont accessibles au clavier." },
-	"testScriptsTest1ExplanationsPassed": { "message": "Cette page ne contient pas d'éléments impléments via Aria non accessibles au clavier." },
-	"testScriptsTest1ExplanationsFailed": { "message": "Des composants d’interface implémentés via un rôle ARIA sont accessibles au clavier (via l'attribut tabindex)." },
-	"testMandatoryElementsTest1Name": { "message": "Les balises obsolètes." },
-	"testMandatoryElementsTest1ExplanationsPassed": { "message": "Cette page ne contient pas d'éléments obsolètes." },
-	"testMandatoryElementsTest1ExplanationsFailed": { "message": "Des balises obsolètes sont présentes dans la page." },
-	"testMandatoryElementsTest2Name": { "message": "Les attributs obsolètes." },
-	"testMandatoryElementsTest2ExplanationsPassed": { "message": "Cette page ne contient pas d'attributs obsolètes." },
-	"testMandatoryElementsTest2ExplanationsFailed": { "message": "Des attributs obsolètes sont présents dans la page." },
-	"testMandatoryElementsTest3Name": { "message": "Présence du titre de la page." },
-	"testMandatoryElementsTest3ExplanationsPassed": { "message": "La page a un titre de page." },
-	"testMandatoryElementsTest3ExplanationsFailed": { "message": "Aucun titre (balise title dans la balise head) dans la page." },
-	"testMandatoryElementsTest4Name": { "message": "Pertinence du titre de la page." },
-	"testMandatoryElementsTest4ExplanationsFailed": { "message": "Le titre de la page est vide." },
-	"testMandatoryElementsTest5Name": { "message": "Présence de la langue par défaut." },
-	"testMandatoryElementsTest5ExplanationsPassed": { "message": "La langue par défaut est présente dans la page." },
-	"testMandatoryElementsTest5ExplanationsFailed": { "message": "Aucune langue par défaut n'est définie dans la page." },
-	"testMandatoryElementsTest6Name": { "message": "Pertinence de la langue par défaut." },
-	"testMandatoryElementsTest6ExplanationsFailed": { "message": "la langue par défaut est vide." },
-	"testMandatoryElementsTest7Name": { "message": "Ne pas associer de label à un champ de formulaire de type hidden." },
-	"testMandatoryElementsTest7ExplanationsFailed": { "message": "Des éléments champs de formulaire de type hidden sont associées à une balise label." },
-	"testMandatoryElementsTest8Name": { "message": "Information via l'attribut aria-labelledby." },
-	"testMandatoryElementsTest8ExplanationsFailed": { "message": "Des attributs aria-labelledby ne correspondent à aucun élément de la page." },
-	"testMandatoryElementsTest9Name": { "message": "Pertinence des indications sur le sens de lecture." },
-	"testMandatoryElementsTest9ExplanationsCantTell": { "message": "Vérifier la pertinence des attributs indiquant le sens de lecture." },
-	"testMandatoryElementsTest10Name": { "message": "Conformité des indications sur le sens de lecture." },
-	"testMandatoryElementsTest10ExplanationsPassed": { "message": "Les valeurs des attributs 'dir' sont conformes ('rtl' ou 'ltr')." },
-	"testMandatoryElementsTest10ExplanationsFailed": { "message": "Les valeurs des attributs 'dir' ne sont pas conformes." },
-	"testStructureTest1Name": { "message": "Structure du document : Pertinence de balises structurantes." },
-	"testStructureTest1ExplanationsCantTell": { "message": "Vérifier la pertinence de ces balises. La balise <header> correspond-elle à la zone d'en-tête de la page ? La et les balise(s) <nav> correspondent-elles aux zones de navigation ? La balise <footer> correspond-elle à la zone de pied de page de la page ? La balise <main> correspond-elle à la zone de contenu principal de la page ?" },
-	"testStructureTest2Name": { "message": "Structure du document : Unicité de la zone de contenu principal." },
-	"testStructureTest2ExplanationsPassed": { "message": "La zone de contenu principal est unique." },
-	"testStructureTest2ExplanationsFailed": { "message": "Il existe plusieurs zones identifiées comme zones de contenu principal sur cette page." },
-	"testStructureTest3Name": { "message": "Pertinence de l'usage des balises de citation." },
-	"testStructureTest3ExplanationsCantTell": { "message": "Vérifier que les balises 'q' sont utilisées pour des citations courtes et que les balises 'blockquote' sont utilisées pour des blocs de citation." },
-	"testPresentationTest1Name": { "message": "Les balises de présentation de l'information." },
-	"testPresentationTest1ExplanationsPassed": { "message": "Cette page ne contient aucune balise de présentation de l'information dans son code source." },
-	"testPresentationTest1ExplanationsFailed": { "message": "Des balises de présentation de l'information sont présentes sur cette page." },
-	"testPresentationTest2Name": { "message": "Les attributs de présentation de l'information." },
-	"testPresentationTest2ExplanationsPassed": { "message": "Cette page ne contient aucun attribut de présentation de l'information dans son code source." },
-	"testPresentationTest2ExplanationsFailed": { "message": "Des attributs de présentation de l'information sont présents sur cette page." },
-	"testPresentationTest3Name": { "message": "La propriété outline des liens n'est pas supprimé." },
-	"testPresentationTest3ExplanationsPassed": { "message": "La propriété outline n'est pas supprimée pour les liens." },
-	"testPresentationTest3ExplanationsFailed": { "message": "Cette page contient des liens dont la propriété outline a été supprimée." },
-	"testPresentationTest4Name": { "message": "La propriété outline-style des liens n'est pas supprimé." },
-	"testPresentationTest4ExplanationsPassed": { "message": "La propriété outline-style n'est pas supprimée pour les liens." },
-	"testPresentationTest4ExplanationsFailed": { "message": "Cette page contient des liens dont la propriété outline-style a été supprimée." },
-	"testPresentationTest5Name": { "message": "La propriété outline-width des liens n'est pas supprimé." },
-	"testPresentationTest5ExplanationsPassed": { "message": "La propriété outline-width n'est pas supprimée pour les liens." },
-	"testPresentationTest5ExplanationsFailed": { "message": "Cette page contient des liens dont la propriété outline-width a été supprimée." },
-	"testConsultationTest1Name": { "message": "Présence d'un procédé de rafraichissement via une balise méta." },
-	"testConsultationTest1ExplanationsPassed": { "message": "La propriété outline-width n'est pas supprimée pour les liens." },
-	"testConsultationTest1ExplanationsFailed": { "message": "Cette page contient des liens dont la propriété outline-width a été supprimée." },
-	"testSEOTest1Name": { "message": "Présence d'une metadonnée de description." },
-	"testSEOTest1ExplanationsPassed": { "message": "Cette page contient une balise de métadonnée de description." },
-	"testSEOTest1ExplanationsFailed": { "message": "Aucune balise de métadonnée de description n'est renseignée, ou plus d'une balise de métadonnée de description est présente sur la page." },
-	"testSEOTest2Name": { "message": "La métadonnée de description contient moins de 250 caractères." },
-	"testSEOTest2ExplanationsPassed": { "message": "La valeur de la métadonnée de description contient moins de 250 caractères." },
-	"testSEOTest2ExplanationsFailed": { "message": "La valeur de la métadonnée de description contient plus de 250 caractères." },
-	"testSEOTest3Name": { "message": "Les styles CSS sont externalisés." },
-	"testSEOTest3ExplanationsPassed": { "message": "Tous les éléments de styles CSS sont externalisés." },
-	"testSEOTest3ExplanationsFailed": { "message": "Au moins une balise de style ou un attribut de style non vide est présent dans la page." },
-	"testSEOTest4Name": { "message": "Le titre contient moins de 80 caractères." },
-	"testSEOTest4ExplanationsPassed": { "message": "Le titre de la page contient moins de 80 caractères." },
-	"testSEOTest4ExplanationsFailed": { "message": "Le titre de la page contient plus de 80 caractères." },
-	"testOpquastTest1Name": { "message": "Le site n'emploie pas la technique des jeux de cadres." },
-	"testOpquastTest1ExplanationsPassed": { "message": "Les balises frameset, frame et noframes ne sont pas utilisées dans cette page." },
-	"testOpquastTest1ExplanationsFailed": { "message": "Des éléments framest, frame ou noframes sont présents dans cette page." },
-	"testOpquastTest2Name": { "message": "La balise meta viewport ne contient pas la propriété minimum-scale." },
-	"testOpquastTest2ExplanationsPassed": { "message": "La balise meta viewport ne contient pas la propriété minimum-scale." },
-	"testOpquastTest2ExplanationsFailed": { "message": "La balise meta viewport contient la propriété minimum-scale." },
-	"testOpquastTest3Name": { "message": "La balise meta viewport ne contient pas la propriété maximum-scale." },
-	"testOpquastTest3ExplanationsPassed": { "message": "La balise meta viewport ne contient pas la propriété maximum-scale." },
-	"testOpquastTest3ExplanationsFailed": { "message": "La balise meta viewport contient la propriété maximum-scale." },
-	"testOpquastTest4Name": { "message": "La balise meta viewport ne contient pas la propriété user-scalable." },
-	"testOpquastTest4ExplanationsPassed": { "message": "La balise meta viewport ne contient pas la propriété user-scalable." },
-	"testOpquastTest4ExplanationsFailed": { "message": "La balise meta viewport contient la propriété user-scalable." },
-	"testPidilaTest1Name": { "message": "Présence d'une page mentions légales dans le pied de page." },
-	"testPidilaTest1ExplanationsPassed": { "message": "Il existe un lien vers la page mentions légales dans cette page." },
-	"testPidilaTest1ExplanationsFailed": { "message": "Le lien vers la page mentions légales est absent dans cette page." },
-	"testPidilaTest2Name": { "message": "Présence d'une page accessibilité dans le pied de page." },
-	"testPidilaTest2ExplanationsPassed": { "message": "Il existe un lien vers la page accessibilité dans cette page." },
-	"testPidilaTest2ExplanationsFailed": { "message": "Le lien accessibilité est absent dans cette page." },
-	"testPidilaTest3Name": { "message": "Présence d'une page contact dans le pied de page." },
-	"testPidilaTest3ExplanationsPassed": { "message": "Il existe un lien vers la page contact dans cette page." },
-	"testPidilaTest3ExplanationsFailed": { "message": "Le lien contact est absent dans cette page." },  
-	"testPidilaTest4Name": { "message": "Présence d'une page plan du site dans le pied de page." },
-	"testPidilaTest4ExplanationsPassed": { "message": "Il existe un lien vers la page plan du site dans cette page." },
-	"testPidilaTest4ExplanationsFailed": { "message": "Le lien plan du site est absent dans cette page." },
-	"testPidilaTest5Name": { "message": "Présence d'un lien vers legifrance.gouv.fr dans le pied de page." },
-	"testPidilaTest5ExplanationsPassed": { "message": "Il existe un lien vers la page legifrance.gouv.fr dans cette page." },
-	"testPidilaTest5ExplanationsFailed": { "message": "Le lien legifrance.gouv.fr est absent dans cette page." },
-	"testPidilaTest6Name": { "message": "Présence d'un lien vers service-public.fr dans le pied de page." },
-	"testPidilaTest6ExplanationsPassed": { "message": "Il existe un lien vers la page service-public.fr dans cette page." },
-	"testPidilaTest6ExplanationsFailed": { "message": "Le lien service-public.fr est absent dans cette page." },
-	"testPidilaTest7Name": { "message": "Présence d'un lien vers gouvernement.fr dans le pied de page." },
-	"testPidilaTest7ExplanationsPassed": { "message": "Il existe un lien vers la page gouvernement.fr dans cette page." },
-	"testPidilaTest7ExplanationsFailed": { "message": "Le lien gouvernement.fr est absent dans cette page." },
-	"testPidilaTest8Name": { "message": "Présence d'un lien vers france.fr dans le pied de page." },
-	"testPidilaTest8ExplanationsPassed": { "message": "Il existe un lien vers la page france.fr dans cette page." },
-	"testPidilaTest8ExplanationsFailed": { "message": "Le lien france.fr est absent dans cette page." }
+  "extensionLang": {
+    "message": "fr",
+    "description": "Langue de l'extension."
+  },
+  "extensionName": {
+    "message": "Tanaguru webext",
+    "description": "Nom de l'extension."
+  },
+  "extensionDescription": {
+    "message": "Outil d'évaluation de pages Web.",
+    "description": "Description de l'extension."
+  },
+  "extensionHomepageUrl": {
+    "message": "http://www.tanaguru.com/fr/",
+    "description": "URL de la version française du site web consacré à l'extension."
+  },
+  "extensionHowTo": {
+    "message": "Pour démarrer les tests, rendez-vous dans les outils de développement, activez l'onglet <strong><span>manifest.name</span></strong> puis lancez l'analyse de cette page.",
+    "description": "Instructions pour utiliser l'extension."
+  },
+  "extensionWebsite": {
+    "message": "Pour en savoir plus, visitez le site <span data-role=\"link\" data-text=\"Tanaguru.com\" data-newwindow=\"true\">manifest.homepage_url</span>.",
+    "description": "Plus d'informations sur le site web consacré à l'extension."
+  },
+  "extensionNewWindow": {
+    "message": "(nouvelle fenêtre)",
+    "description": "Mention pour les éléments s'ouvrant dans une nouvelle fenêtre."
+  },
+  "homeTitle": {
+    "message": "Personnalisez votre analyse"
+  },
+  "homeLaunchAnalyze": {
+    "message": "Analyser cette page"
+  },
+  "msgNavHeading": {
+    "message": "Résultats de l'analyse"
+  },
+  "msgDashboard": {
+    "message": "Tableau de bord"
+  },
+  "msgDashboardAnalyzeTimer": {
+    "message": "Analyse réalisée en"
+  },
+  "DOMdashboardMessage": {
+    "message": "Des modifications ont été observées dans le DOM."
+  },
+  "DOMdashboardButton": {
+    "message": "Voir la liste des modifications"
+  },
+  "msgDashboardResultFailed": {
+    "message": "Des erreurs ont été détectées dans cette page."
+  },
+  "msgDashboardResultPassed": {
+    "message": "Aucune erreur n'a été détectée dans cette page."
+  },
+  "msgDashboardResultNone": {
+    "message": "Aucun résultat ne correspond à votre demande pour cette page."
+  },
+  "msgDashboardResultLoad": {
+    "message": "Analyse en cours..."
+  },
+  "msgDashboardWarning": {
+    "message": "Attention, la page de l'onglet actif a été modifiée ou rafraîchie, les résultats d'analyse actuels ne correspondent plus au contenu de l'onglet actif."
+  },
+  "dashboardButtonReload": {
+    "message": "Relancer l'analyse"
+  },
+  "dashboardButtonRestart": {
+    "message": "Quitter et démarrer une nouvelle analyse"
+  },
+  "dashboardListenDOMlegend": {
+    "message": "Surveiller les modifications du DOM de la page analysée"
+  },
+  "dashboard_ordertab_label": {
+    "message": "Afficher l'ordre de tabulation sur la page"
+  },
+  "dashboard_ordertab_legend_invisible": {
+    "message": "Elément hors écran"
+  },
+  "dashboard_ordertab_legend_error": {
+    "message": "Ordre de tabulation non pertinent"
+  },
+  "dashboard_taborder_warning": {
+    "message": "L'ordre de tabulation ne peut pas être affiché sur les pages d'une hauteur supérieur à 32767 pixels."
+  },
+  "word_no": {
+    "message": "Non"
+  },
+  "word_yes": {
+    "message": "Oui"
+  },
+  "word_all": {
+    "message": "Tous"
+  },
+  "word_inspect": {
+    "message": "Inspecter"
+  },
+  "word_before": {
+    "message": "Avant"
+  },
+  "word_after": {
+    "message": "Après"
+  },
+  "word_selector": {
+    "message": "Sélecteur"
+  },
+  "word_label": {
+    "message": "Étiquette"
+  },
+  "word_label_plural": {
+    "message": "Étiquettes"
+  },
+  "word_second": {
+    "message": "seconde"
+  },
+  "msgHeadingsHierarchy": {
+    "message": "Hierarchie des titres"
+  },
+  "msgCollapseBtn": {
+    "message": "Tout plier"
+  },
+  "msgExpandBtn": {
+    "message": "Tout déplier"
+  },
+  "earlFailed": {
+    "message": "Invalidé"
+  },
+  "earlPassed": {
+    "message": "Validé"
+  },
+  "earlCantTell": {
+    "message": "Indéterminé"
+  },
+  "earlInapplicable": {
+    "message": "Non applicable"
+  },
+  "earlUntested": {
+    "message": "Non testé"
+  },
+  "uiTagButton": {
+    "message": "Tous les tests avec l'étiquette \"{tagName}\"."
+  },
+  "contrastHeading": {
+    "message": "Contrastes"
+  },
+  "contrastDescription1": {
+    "message": "Le texte inférieur à 24px, et le texte inférieur à 18.5px avec un effet de graisse d'au moins 700 : rapport de contraste minimum 4.5:1"
+  },
+  "contrastDescription2": {
+    "message": "Le texte supérieur à 24px, et le texte supérieur à 18.5px avec un effet de graisse d'au moins 700 : rapport de contraste minimum 3:1"
+  },
+  "contrastLegend1": {
+    "message": "Légende : "
+  },
+  "contrastLegend2": {
+    "message": "image"
+  },
+  "contrastLegend3": {
+    "message": "non trouvé"
+  },
+  "contrastWarning": {
+    "message": "Une analyse manuelle reste requise pour confirmer ou infirmer les statuts annoncés (les cas de superposition ne sont par exemple pas pris en compte)."
+  },
+  "contrastThNumber": {
+    "message": "N°"
+  },
+  "contrastThStatus": {
+    "message": "Statut"
+  },
+  "contrastThText": {
+    "message": "Texte"
+  },
+  "contrastThSize": {
+    "message": "Taille du texte"
+  },
+  "contrastThBackgroundColor": {
+    "message": "Couleur de fond"
+  },
+  "contrastThColor": {
+    "message": "Couleur du texte"
+  },
+  "contrastThRatio": {
+    "message": "Rapport de contraste"
+  },
+  "contrastFinder": {
+    "message": "Trouver un contraste valide avec Contrast-Finder"
+  },
+  "DOMpanelMessage": {
+    "message": "Les modifications suivantes ont été observées."
+  },
+  "DOMpanelNoChange": {
+    "message": "Aucune modification n'a été observée."
+  },
+  "DOMchanges": {
+    "message": "Modifications du DOM"
+  },
+  "allTags": {
+    "message": "Tous les tests"
+  },
+  "tagA11y": {
+    "message": "Accessibilité"
+  },
+  "tagAccessibleName": {
+    "message": "Noms accessibles"
+  },
+  "tagAct": {
+    "message": "ACT"
+  },
+  "tagAria": {
+    "message": "Aria"
+  },
+  "tagAudio": {
+    "message": "Audio"
+  },
+  "tagButtons": {
+    "message": "Boutons"
+  },
+  "tagCode": {
+    "message": "Code (règles d'écriture)"
+  },
+  "tagColors": {
+    "message": "Couleurs"
+  },
+  "tagConsultation": {
+    "message": "Consultation"
+  },
+  "tagContrast": {
+    "message": "Contrastes"
+  },
+  "tagForms": {
+    "message": "Formulaires"
+  },
+  "tagFrames": {
+    "message": "Cadres"
+  },
+  "tagHeadings": {
+    "message": "Titres de contenus"
+  },
+  "tagImages": {
+    "message": "Images"
+  },
+  "tagKeyboard": {
+    "message": "Navigation clavier"
+  },
+  "tagLanguages": {
+    "message": "Langues"
+  },
+  "tagLinks": {
+    "message": "Liens"
+  },
+  "tagMandatory": {
+    "message": "Éléments obligatoires"
+  },
+  "tagMedia": {
+    "message": "Multimédia"
+  },
+  "tagMeta": {
+    "message": "Métadonnées"
+  },
+  "tagNavigation": {
+    "message": "Navigation"
+  },
+  "tagPageTitle": {
+    "message": "Titre de la page"
+  },
+  "tagPresentation": {
+    "message": "Présentation de l'information"
+  },
+  "tagRgaa": {
+    "message": "RGAA"
+  },
+  "tagScripts": {
+    "message": "Scripts"
+  },
+  "tagStructure": {
+    "message": "Structuration de l'information"
+  },
+  "tagSvg": {
+    "message": "SVG"
+  },
+  "tagTables": {
+    "message": "Tableaux"
+  },
+  "tagVideos": {
+    "message": "Vidéos"
+  },
+  "tagWcag": {
+    "message": "WCAG"
+  },
+  "panelAllHeadingsDesc": {
+    "message": "Hiérarchie des titres de la page, représentée sous forme de listes."
+  },
+  "panelHighlightHeading": {
+    "message": "mettre le titre en évidence sur la page"
+  },
+  "panelInspectHeading": {
+    "message": "sélectionner le titre dans l'onglet inspecteur"
+  },
+  "panelErrorHeading": {
+    "message": "le niveau de ce titre n'est pas pertinent avec celui du titre précédent"
+  },
+  "panelTextualContents": {
+    "message": "Contenu textuel"
+  },
+  "panelShowAnDetails": {
+    "message": "Afficher le détail du calcul"
+  },
+  "panelHideAnDetails": {
+    "message": "Cacher le détail du calcul"
+  },
+  "panelActionHighlight": {
+    "message": "Mettre en évidence sur la page"
+  },
+  "panelActionInspect": {
+    "message": "Révéler dans l'inspecteur"
+  },
+  "panelHiddenElement": {
+    "message": "Cet élément n'est pas visible à l'écran"
+  },
+  "panelAboutElement": {
+    "message": "A propos de cet élément"
+  },
+  "panelUpdatedElement": {
+    "message": "élément modifié"
+  },
+  "panelUpdatedElementPlural": {
+    "message": "éléments modifiés"
+  },
+  "optionBackresults": {
+    "message": "Retour aux résultats"
+  },
+  "optionSavePseudoClasses": {
+    "message": "Conserver les pseudo-classes :first-of-type et :nth-of-type dans le sélecteur CSS."
+  },
+  "optionCopyCssSelector": {
+    "message": "Copier dans le presse-papier le sélecteur CSS"
+  },
+  "optionCopyLocalisation": {
+    "message": "Copier dans le presse-papier le chemin de localisation (XPath)"
+  },
+  "optionCopyBtn": {
+    "message": "Copier dans le presse-papier"
+  },
+  "optionLocalisation": {
+    "message": "Chemin de localisation"
+  },
+  "optionAttLocalisation": {
+    "message": "Conserver les attributs class et id dans le chemin de localisation (XPath)."
+  },
+  "optionExportTestData": {
+    "message": "Exporter les données du test"
+  },
+  "optionExportFileName": {
+    "message": "Nom du fichier d'export"
+  },
+  "optionNoExportData": {
+    "message": "Données à ne pas exporter"
+  },
+  "optionExportData": {
+    "message": "Données à exporter"
+  },
+  "optionExportDesc": {
+    "message": "Pour exporter, sélectionnez une ou plusieurs données puis ci-après cette liste, activez le bouton: Inclure ces données dans l'export."
+  },
+  "optionNoExportDesc": {
+    "message": "Pour ne pas exporter, sélectionnez une ou plusieurs données puis ci-avant cette liste, activez le bouton 'Exclure ces données de l'export'. Pour réorganiser, l'ordre des données à exporter, sélectionnez une donnée et ci-après cette liste, activez l'un des boutons 'Déplacer la donnée à exporter sélectionnée vers le haut' ou 'Déplacer la donnée à exporter sélectionnée vers le bas'."
+  },
+  "optionExportMoveup": {
+    "message": "Déplacer la donnée à exporter sélectionnée vers le haut"
+  },
+  "optionExportMovedown": {
+    "message": "Déplacer la donnée à exporter sélectionnée vers le bas"
+  },
+  "optionExportCsv": {
+    "message": "Exporter les données au format CSV"
+  },
+  "msgKeyboardyes": {
+    "message": "Les éléments atteignables au clavier uniquement"
+  },
+  "msgKeyboardno": {
+    "message": "Les éléments non atteignables au clavier uniquement"
+  },
+  "msgReaderyes": {
+    "message": "Les éléments restitués uniquement"
+  },
+  "msgReaderno": {
+    "message": "Les éléments non restitutés uniquement"
+  },
+  "msgVisible": {
+    "message": "Les éléments visibles uniquement"
+  },
+  "msgHidden": {
+    "message": "Les élements non visibles uniquement"
+  },
+  "colors_name_0": {
+    "message": "Liste des noeuds texte mis en couleur."
+  },
+  "colors_description_1": {
+    "message": "Vérifier si la mise en couleur est porteuse d'information, que l'information ne soit pas donnée uniquement par la couleur."
+  },
+  "colors_name_2": {
+    "message": "Liste des noeuds texte contenant un mot correspondant à une couleur."
+  },
+  "colors_description_3": {
+    "message": "Vérifier que pour chaque indication de couleur donnée par un texte, l'information n'est pas donnée uniquement par la couleur."
+  },
+  "colors_name_4": {
+    "message": "Pour chaque image véhiculant une information, l'information ne doit pas être donnée uniquement par la couleur."
+  },
+  "colors_name_5": {
+    "message": "Pour chaque propriété CSS déterminant une couleur et véhiculant une information, l'information ne doit pas être donnée uniquement par la couleur."
+  },
+  "colors_name_6": {
+    "message": "Pour chaque média temporel véhiculant une information, l'information ne doit pas être donnée uniquement par la couleur."
+  },
+  "colors_name_7": {
+    "message": "Pour chaque média non temporel véhiculant une information, l'information ne doit pas être donnée uniquement par la couleur."
+  },
+  "colors_name_8": {
+    "message": "Textes visibles sans effet de graisse et d'une taille restituée inférieure à 24px ayant un contraste inférieur à 4.5:1"
+  },
+  "colors_description_9": {
+    "message": "Vérifiez si nécessaire la présence d'un mécanisme permettant d'afficher un rapport de contraste conforme"
+  },
+  "colors_name_10": {
+    "message": "Textes visibles sans effet de graisse et d'une taille restituée inférieure à 24px ayant un contraste suffisant de 4.5:1"
+  },
+  "colors_name_11": {
+    "message": "Vérifier que ces éléments texte sans effet de graisse et d'une taille restituée inférieure à 24px respectent un contraste d'au moins 4.5:1"
+  },
+  "colors_name_13": {
+    "message": "Textes non visibles ou désactivés sans effet de graisse et d'une taille restituée inférieure à 24px ayant un contraste inférieur à 4.5:1"
+  },
+  "colors_description_14": {
+    "message": "Si ces éléments texte peuvent être rendus visibles, ils devraient respecter un contraste de 4.5:1 minimum."
+  },
+  "colors_name_15": {
+    "message": "Textes non visibles ou désactivés sans effet de graisse et d'une taille restituée inférieure à 24px"
+  },
+  "colors_description_16": {
+    "message": "Si ces éléments texte peuvent être rendus visibles, vérifier qu'ils respectent un contraste de 4.5:1 minimum."
+  },
+  "colors_name_17": {
+    "message": "Textes non visibles ou désactivés sans effet de graisse et d'une taille restituée inférieure à 24px ayant un contraste suffisant de 4.5:1"
+  },
+  "colors_name_18": {
+    "message": "Textes visibles en gras d'une taille restituée inférieure à 18.5px ayant un contraste inférieur à 4.5:1"
+  },
+  "colors_name_20": {
+    "message": "Textes visibles en gras d'une taille restituée inférieure à 18.5px ayant un contraste suffisant de 4.5:1"
+  },
+  "colors_name_21": {
+    "message": "Vérifier que ces éléments texte en gras d'une taille restituée inférieure à 18.5px respectent un contraste d'au moins 4.5:1"
+  },
+  "colors_name_23": {
+    "message": "Textes non visibles ou désactivés en gras d'une taille restituée inférieure à 18.5px ayant un contraste inférieur à 4.5:1"
+  },
+  "colors_name_25": {
+    "message": "Textes non visibles ou désactivés en gras d'une taille restituée inférieure à 18.5px"
+  },
+  "colors_name_27": {
+    "message": "Textes non visibles ou désactivés en gras d'une taille restituée inférieure à 18.5px ayant un contraste suffisant de 4.5:1"
+  },
+  "colors_name_28": {
+    "message": "Textes visibles sans effet de graisse et d'une taille restituée supérieure ou égale à 24px ayant un contraste inférieur à 3:1"
+  },
+  "colors_name_30": {
+    "message": "Textes visibles sans effet de graisse et d'une taille restituée supérieure ou égale à 24px ayant un contraste suffisant de 3:1"
+  },
+  "colors_name_31": {
+    "message": "Vérifier que ces éléments texte sans effet de graisse et d'une taille restituée supérieure ou égale à 24px respectent un contraste d'au moins 3:1"
+  },
+  "colors_name_33": {
+    "message": "Textes non visibles ou désactivés sans effet de graisse et d'une taille restituée supérieure ou égale à 24px ayant un contraste inférieur à 3:1"
+  },
+  "colors_description_34": {
+    "message": "Si ces éléments texte peuvent être rendus visibles, ils devraient respecter un contraste de 3:1 minimum."
+  },
+  "colors_name_35": {
+    "message": "Textes non visibles ou désactivés sans effet de graisse et d'une taille restituée supérieure ou égale à 24px"
+  },
+  "colors_description_36": {
+    "message": "Si ces éléments texte peuvent être rendus visibles, vérifier qu'ils respectent un contraste de 3:1 minimum."
+  },
+  "colors_name_37": {
+    "message": "Textes non visibles ou désactivés sans effet de graisse et d'une taille restituée supérieure ou égale à 24px ayant un contraste suffisant de 3:1"
+  },
+  "colors_name_38": {
+    "message": "Textes visibles en gras d'une taille restituée supérieure ou égale à 18.5px ayant un contraste inférieur à 3:1"
+  },
+  "colors_name_40": {
+    "message": "Textes visibles en gras d'une taille restituée supérieure ou égale à 18.5px ayant un contraste suffisant de 3:1"
+  },
+  "colors_name_41": {
+    "message": "Vérifier que ces éléments texte en gras d'une taille restituée supérieure ou égale à 18.5px respectent un contraste d'au moins 3:1"
+  },
+  "colors_name_43": {
+    "message": "Textes non visibles ou désactivés en gras d'une taille restituée supérieure ou égale à 18.5px ayant un contraste inférieur à 3:1"
+  },
+  "colors_name_45": {
+    "message": "Textes non visibles ou désactivés en gras d'une taille restituée supérieure ou égale à 18.5px"
+  },
+  "colors_name_47": {
+    "message": "Textes non visibles ou désactivés en gras d'une taille restituée supérieure ou égale à 18.5px ayant un contraste suffisant de 3:1"
+  },
+  "colors_name_48": {
+    "message": "Une mécanisme permet d'afficher un rapport de contraste conforme entre le texte et sa couleur d'arrière plan."
+  },
+  "colors_name_49": {
+    "message": "Le rapport de contraste entre les couleurs d'un composant d'interface dans ses différents états et la couleur d'arrière-plan contiguë est de 3:1 au moins."
+  },
+  "colors_name_50": {
+    "message": "Le rapport de contraste des différentes couleurs composant un élément graphique, lorsqu'elles sont nécessaires à sa compréhension, et la couleur d'arrière-plan contiguë est de 3:1 au moins."
+  },
+  "colors_name_51": {
+    "message": "Le rapport de contraste des différentes couleurs contiguës entre elles d'un élément graphique, lorsqu'elles sont nécessaires à sa compréhension,  est de 3:1 au moins."
+  },
+  "colors_name_52": {
+    "message": "Une mécanisme permet d'afficher un rapport de contraste conforme pour les composants d'interface et les éléments graphiques porteurs d'informations."
+  },
+  "consultation_name_53": {
+    "message": "Liste des balises meta avec un procédé de rafraîchissement inférieur à 20heures."
+  },
+  "consultation_name_54": {
+    "message": "Liste des balises meta avec un procédé de redirection non immédiat."
+  },
+  "consultation_name_55": {
+    "message": "Chaque procédé de redirection effectué via un script doit être contrôlable par l'utilisateur ou avoir une limite de temps d'au moins 20heures."
+  },
+  "consultation_name_56": {
+    "message": "Chaque procédé limitant le temps d'une session doit être contrôlable par l'utilisateur ou avoir une limite de temps d'au moins 20heures."
+  },
+  "consultation_name_57": {
+    "message": "Dans chaque page web, l'ouverture d'une nouvelle fenêtre ne doit pas être déclenchée sans action de l'utilisateur."
+  },
+  "consultation_name_58": {
+    "message": "Pour chaque fonctionnalité de téléchargement d'un document bureautique, le document doit être accessible ou posséder une alternative accessible."
+  },
+  "consultation_name_59": {
+    "message": "Pour chaque document bureautique ayant une version accessible, la version accessible doit offrir la même information."
+  },
+  "consultation_name_60": {
+    "message": "Chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) doit avoir une alternative."
+  },
+  "consultation_name_61": {
+    "message": "Chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) doit avoir une alternative pertinente."
+  },
+  "consultation_name_62": {
+    "message": "Pour chaque image ou élément multimédia qui provoque un changement brusque de luminosité ou un effet de flash, l'effet doit avoir une fréquence inférieur à 3secondes ou une surface totale inférieure à 21825pixels."
+  },
+  "consultation_name_63": {
+    "message": "Pour chaque script qui provoque un changement brusque de luminosité ou un effet de flash, l'effet doit avoir une fréquence inférieur à 3secondes ou une surface totale inférieure à 21825pixels."
+  },
+  "consultation_name_64": {
+    "message": "Pour chaque mise en forme CSS qui provoque un changement brusque de luminosité ou un effet de flash, l'effet doit avoir une fréquence inférieur à 3secondes ou une surface totale inférieure à 21825pixels."
+  },
+  "consultation_name_65": {
+    "message": "Chaque contenu en mouvement déclenché automatiquement doit durer moins de 6 secondes ou être contrôlable par l'utilisateur."
+  },
+  "consultation_name_66": {
+    "message": "Chaque contenu clignotant déclenché automatiquement doit durer moins de 6 secondes ou être contrôlable par l'utilisateur."
+  },
+  "consultation_name_67": {
+    "message": "Le contenu proposé doit être consultable et identique quelle que soit l'orientation de l'écran (portrait ou paysage)."
+  },
+  "consultation_name_68": {
+    "message": "Chaque fonctionnalité utilisable ou disponible suite à un contact multipoint doit également être utilisable ou disponible suite à un contact en un point unique de l’écran."
+  },
+  "consultation_name_69": {
+    "message": "Chaque fonctionnalité utilisable ou disponible suite à un geste basé sur le suivi d'une trajectoire sur l'écran doit également être utilisable ou disponible suite à un contact en un point unique de l’écran."
+  },
+  "consultation_name_70": {
+    "message": "Les actions déclenchées au moyen d'un dispositif de pointage sur un point unique de l'écran doivent pouvoir faire l'objet d'une annulation."
+  },
+  "consultation_name_71": {
+    "message": "Les fonctionnalités disponibles en bougeant l'appareil doivent pouvoir être accomplies avec des composants d'interface utilisateur."
+  },
+  "consultation_name_72": {
+    "message": "Les fonctionnalités disponibles en faisant un geste en direction de l'appareil doivent pouvoir être accomplies avec des composants d'interface utilisateur."
+  },
+  "consultation_name_73": {
+    "message": "L'utilisateur doit avoir la possibilité de désactiver la détection du mouvement pour éviter un déclenchement accidentel de la fonctionnalité."
+  },
+  "forms_name_74": {
+    "message": "Liste des champs de formulaires sans nom accessible"
+  },
+  "forms_name_75": {
+    "message": "Liste des champs de formulaires avec un nom accessible"
+  },
+  "forms_name_76": {
+    "message": "Liste des intitulés de champs de formulaire non reliés à leur champ."
+  },
+  "forms_name_77": {
+    "message": "Liste des intitulés de champs de formulaire reliés à leur champ."
+  },
+  "forms_name_78": {
+    "message": "Liste des champs de formulaires avec une étiquette non visible, ne possédant ni attribut title ni passage de texte visible identifié par un id."
+  },
+  "forms_name_79": {
+    "message": "Liste des champs de formulaires avec une étiquette non visible, possédant un attribut title."
+  },
+  "forms_description_80": {
+    "message": "Vérifier la pertinence de l'attribut title."
+  },
+  "forms_name_81": {
+    "message": "Liste des champs de formulaires avec une étiquette non visible, possédant un passage de texte visible identifié par un id."
+  },
+  "forms_description_82": {
+    "message": "Vérifier la pertinence du passage de texte ainsi que sa proximité avec le champ associé."
+  },
+  "forms_name_83": {
+    "message": "Liste des champs de formulaires avec une étiquette non visible, possédant un passage de texte visible au focus identifié par un id."
+  },
+  "forms_name_85": {
+    "message": "Vérifiez si la balise label permet de connaître la fonction exacte du champ de formulaire auquel elle est associée."
+  },
+  "forms_name_86": {
+    "message": "Vérifiez si l'attribut title permet de connaître la fonction exacte du champ de formulaire auquel il est associé."
+  },
+  "forms_name_87": {
+    "message": "Vérifiez si l'attribut WAI-ARIA aria-label permet de connaître la fonction exacte du champ de formulaire auquel il est associé."
+  },
+  "forms_name_88": {
+    "message": "Vérifiez si le passage de texte associé via l'attribut WAI-ARIA aria-labelledby permet de connaître la fonction exacte du champ de formulaire auquel il est associé."
+  },
+  "forms_name_89": {
+    "message": "Liste des champs de formulaire dont le nom accessible contient l'intitulé visible."
+  },
+  "forms_name_90": {
+    "message": "Liste des champs de formulaire dont le nom accessible ne reprend pas l'intitulé visible."
+  },
+  "forms_name_91": {
+    "message": "Chaque bouton adjacent au champ de formulaire qui fournit une étiquette visible doit permettre de connaître la fonction exacte du champs de formulaire auquel il est associé."
+  },
+  "forms_name_92": {
+    "message": "Chaque étiquette associée à un champ de formulaire ayant la même fonction et répétée plusieurs fois dans une même page doit être cohérente."
+  },
+  "forms_name_93": {
+    "message": "Chaque étiquette associée à un champ de formulaire ayant la même fonction et répétée dans un ensemble de pages doit être cohérente."
+  },
+  "forms_name_94": {
+    "message": "Chaque étiquette de champ et son champ associé doivent être accolés de façon pertinente."
+  },
+  "forms_name_95": {
+    "message": "Vérifier que l'utilisation des balises fieldset et les attributs role group sont bien nécessaire"
+  },
+  "forms_name_96": {
+    "message": "Les champs de même nature doivent si nécessaire être correctement regroupés."
+  },
+  "forms_name_97": {
+    "message": "Liste des regroupement de champs sans légende."
+  },
+  "forms_name_98": {
+    "message": "Liste des regroupement de champs avec légende."
+  },
+  "forms_name_99": {
+    "message": "Vérifiez si les légendes associées aux regroupements de champs de formulaires sont pertinentes."
+  },
+  "forms_name_100": {
+    "message": "Pour chaque balise <select>, les items de même nature d'une liste de choix doivent, si nécessaire, être regroupés avec une balise <optgroup>."
+  },
+  "forms_name_101": {
+    "message": "Liste des éléments optgroup sans attribut label."
+  },
+  "forms_name_102": {
+    "message": "Liste des éléments optgroup avec attribut label."
+  },
+  "forms_name_103": {
+    "message": "Element <optgroup> avec un attribut label non pertinent."
+  },
+  "forms_name_104": {
+    "message": "Vérifiez la pertinence de l'attribut label sur l'élément optgroup."
+  },
+  "forms_name_105": {
+    "message": "Vérifiez la pertinence des intitulés de ces boutons."
+  },
+  "forms_name_106": {
+    "message": "Liste des boutons de formulaire sans intitulé."
+  },
+  "forms_name_107": {
+    "message": "Liste des boutons de formulaire ayant un intitulé visible non repris dans le nom accessible."
+  },
+  "forms_name_108": {
+    "message": "Liste des boutons de formulaire ayant un intitulé visible bien repris dans le nom accessible."
+  },
+  "forms_name_109": {
+    "message": "Les indications du caractère obligatoire de la saisie des champs doivent être correctement implémentées."
+  },
+  "forms_name_110": {
+    "message": "Les champs obligatoires ayant l'attribut aria-required ou required doivent être doublés d'une indication de champs obligatoire visible."
+  },
+  "forms_description_111": {
+    "message": "Vérifier qu'une indication de champ obligatoire est visible ET située dans l'étiquette ou le passage de texte associé au champ préalablement à la validation du formulaire."
+  },
+  "forms_name_112": {
+    "message": "Les messages d'erreur indiquant l'absence de saisie d'un champ obligatoire doivent être correctement implémentées."
+  },
+  "forms_name_113": {
+    "message": "Les champs obligatoires ayant l'attribut aria-invalid doivent être associés à un message d'erreur visible."
+  },
+  "forms_description_114": {
+    "message": "Pour chaque champ obligatoire, vérifier que le message d’erreur indiquant le caractère invalide est visible ET situé dans l'étiquette ou le passage de texte associé au champ."
+  },
+  "forms_name_115": {
+    "message": "Les instructions et indications du type de données et/ou de format obligatoires doivent être correctement implémentées."
+  },
+  "forms_name_116": {
+    "message": "Les messages d'erreurs fournissant une instruction ou une indication du type de données et/ou de format obligatoires doivent être correctement implémentées."
+  },
+  "forms_name_117": {
+    "message": "Les champs ayant l'attribut aria-invalid dont la saisie requiert un type de données et/ou de format obligatoire doivent être doublés d'une indication visible."
+  },
+  "forms_description_118": {
+    "message": "Pour chaque champ dont la saisie requiert un type de données et/ou de format obligatoire, vérifier qu'une instruction ou une indication du type de données et/ou de format obligatoire est visible ET située dans la balise <label> ou le passage de texte associée au champ."
+  },
+  "forms_name_119": {
+    "message": "Pour chaque erreur de saisie, les types et les formats de données doivent si nécessaire être suggérés."
+  },
+  "forms_name_120": {
+    "message": "Pour chaque erreur de saisie, des exemples de valeurs attendues doivent si nécessaire être suggérés."
+  },
+  "forms_name_121": {
+    "message": "Pour chaque formulaire qui modifie ou supprime des données, ou qui transmet des réponses à un test ou un examen, ou dont la validation a des conséquences financières ou juridiques, l'utilisateur doit pouvoir valider le formulaire en connaissance de cause."
+  },
+  "forms_description_122": {
+    "message": "Pour chaque formulaire qui modifie ou supprime des données, ou qui transmet des réponses à un test ou un examen, ou dont la validation a des conséquences financières ou juridiques, vérifier que l'utilisateur peut modifier ses saisies après la validation formulaire (ou avant la validation lors d'un formulaire en plusieurs étapes) ou que le formulaire possède un mécanisme de confirmation explicite."
+  },
+  "forms_name_123": {
+    "message": "Pour chaque formulaire dont la validation modifie ou supprime des données à caractère financier, juridique ou personnel, l'utilisateur doit pouvoir valider le formulaire en connaissance de cause."
+  },
+  "forms_description_124": {
+    "message": "Pour chaque formulaire dont la validation modifie ou supprime des données à caractère financier, juridique ou personnel, vérifier que le formulaire possède un mécanisme permettant de récupérer les données supprimées ou modifiées ou un mécanisme de confirmation explicite."
+  },
+  "forms_name_125": {
+    "message": "Vérifier que chaque champ de formulaire dont l'objet se rapporte à une information concernant l'utilisateur, possède un attribut autocomplete."
+  },
+  "forms_name_126": {
+    "message": "Champs de formulaire possèdant un attribut autocomplete invalide."
+  },
+  "forms_description_127": {
+    "message": "Les valeurs de l'attribut doivent être référencées dans la spécification HTML5, les tokens 'cible'(home, work...) doivent être utilisés avec un token faisant parti de la catégorie 'contact', les valeurs doivent être renseignées dans un ordre valide. (1.groupe, 2.mode, 3.cible, 4.token principal. Exemple: autocomplete='section-parent shipping home email')."
+  },
+  "forms_name_128": {
+    "message": "Champs de formulaire possèdant un attribut autocomplete valide mais non autorisé sur le type de champ."
+  },
+  "forms_name_129": {
+    "message": "Champs de formulaire possèdant un attribut autocomplete valide."
+  },
+  "forms_description_130": {
+    "message": "Vérifier que l'attribut autocomplete est pertinent au regard du type d'information attendue."
+  },
+  "frames_name_131": {
+    "message": "Liste des cadres avec un attribut title"
+  },
+  "frames_name_132": {
+    "message": "Liste des cadres sans attribut title"
+  },
+  "frames_name_133": {
+    "message": "Liste des cadres non exposés aux technologies d'assistance."
+  },
+  "frames_name_134": {
+    "message": "Vérifier la pertinence des titres des cadres suivants"
+  },
+  "frames_name_135": {
+    "message": "Les cadres suivants ont un titre non pertinent"
+  },
+  "images_name_136": {
+    "message": "liste des images (balise img ou balise possédant l'attribut WAI-ARIA role=\"img\") sans nom accessible"
+  },
+  "images_description_137": {
+    "message": "ce test vérifie si les images restituées par les technologies d'assistances n'ont pas de nom accessible"
+  },
+  "images_name_138": {
+    "message": "Liste des images (balise img ou balise possédant l'attribut WAI-ARIA role=\"img\") avec un nom accessible"
+  },
+  "images_description_139": {
+    "message": "ce test vérifie si les images restituées par les technologies d'assistances ont un nom accessible"
+  },
+  "images_name_140": {
+    "message": "Liste d'images réactives (balise area) sans nom accessible."
+  },
+  "images_name_142": {
+    "message": "Liste d'images réactives (balise area) avec un nom accessible."
+  },
+  "images_name_144": {
+    "message": "Liste de boutons de type image (balise input avec l'attribut type=\"image\") sans nom accessible."
+  },
+  "images_name_146": {
+    "message": "Liste de boutons de type image (balise input avec l'attribut type=\"image\") avec un nom accessible."
+  },
+  "images_name_148": {
+    "message": "Liste de zones cliquables d'une image réactive côté serveur qui ne sont pas doublée d'un lien dans la page."
+  },
+  "images_name_149": {
+    "message": "Liste de zones cliquables d'une image réactive côté serveur doublée d'un lien dans la page."
+  },
+  "images_name_150": {
+    "message": "Liste d'images vectorielles (balise svg) restituées ne possédant pas d'attribut role=\"img\"."
+  },
+  "images_name_151": {
+    "message": "Liste d'images vectorielles (balise svg) sans nom accessible"
+  },
+  "images_name_153": {
+    "message": "Liste d'images vectorielles (balise svg) avec un nom accessible"
+  },
+  "images_name_155": {
+    "message": "Liste d'images objet (balise object avec l'attribut type=\"image/…\") restituées ne possédant pas d'attribut role=\"img\"."
+  },
+  "images_name_156": {
+    "message": "Liste d'images objet (balise object avec l'attribut type=\"image/…\") sans nom accessible"
+  },
+  "images_name_158": {
+    "message": "Liste d'images objet (balise object avec l'attribut type=\"image/…\") avec un nom accessible"
+  },
+  "images_name_160": {
+    "message": "Liste d'images embarquées (balise embed avec l'attribut type=\"image/…\") restituées ne possédant pas d'attribut role=\"img\"."
+  },
+  "images_name_161": {
+    "message": "Liste d'images embarquées (balise embed avec l'attribut type=\"image/…\") sans nom accessible"
+  },
+  "images_name_163": {
+    "message": "Liste d'images embarquées (balise embed avec l'attribut type=\"image/…\") avec un nom accessible"
+  },
+  "images_name_165": {
+    "message": "Liste d'images bitmap (balise canvas) restituées ne possédant pas d'attribut role=\"img\"."
+  },
+  "images_name_166": {
+    "message": "Liste d'images bitmap (balise canvas) sans nom accessible"
+  },
+  "images_name_168": {
+    "message": "Liste d'images bitmap (balise canvas) avec un nom accessible"
+  },
+  "images_name_170": {
+    "message": "Liste d'images (balise img) ignorées par les technologies d'assistance"
+  },
+  "images_name_171": {
+    "message": "Liste d'images (balise img) de décoration non ignorées par les technologies d'assistance"
+  },
+  "images_name_172": {
+    "message": "Liste de zones non cliquables (balise area sans attribut href) ignorées par les technologies d'assistance"
+  },
+  "images_name_173": {
+    "message": "Liste de zones non cliquable (balise area sans attribut href) de décoration non ignorées par les technologies d'assistance"
+  },
+  "images_name_174": {
+    "message": "Liste d'images objets (balise object avec l'attribut type=\"image/…\") ignorées par les technologies d'assistance"
+  },
+  "images_name_175": {
+    "message": "Liste d'images objet (balise object avec l'attribut type=\"image/…\") de décoration non ignorées par les technologies d'assistance"
+  },
+  "images_name_176": {
+    "message": "Liste d'image vectorielle (balise svg) ignorées par les technologies d'assistance"
+  },
+  "images_name_177": {
+    "message": "Liste d'image vectorielle (balise svg) de décoration non ignorées par les technologies d'assistance"
+  },
+  "images_name_178": {
+    "message": "Liste d'images bitmap (balise canvas) ignorées par les technologies d'assistance"
+  },
+  "images_name_179": {
+    "message": "Liste d'images bitmap (balise canvas) de décoration non ignorées par les technologies d'assistance"
+  },
+  "images_name_180": {
+    "message": "Liste d'images embarquées (balise embed avec l'attribut type=\"image/…\") ignorées par les technologies d'assistance"
+  },
+  "images_name_181": {
+    "message": "Liste d'images embarquées (balise embed avec l'attribut type=\"image/…\") de décoration non ignorées par les technologies d'assistance"
+  },
+  "images_name_182": {
+    "message": "Ces images (balise img ou balises possédant l'attribut WAI-ARIA role=\"img\") ont-elles un nom accessible pertinent ?"
+  },
+  "images_description_183": {
+    "message": "La pertinence du nom accessible dépend du contexte de l'image, image porteuse d'information ou image-test/CAPTCHA."
+  },
+  "images_name_184": {
+    "message": "Ces images (balise img ou balises possédant l'attribut WAI-ARIA role=\"img\") ont un nom accessible non pertinent."
+  },
+  "images_name_185": {
+    "message": "Ces zones (balise area) d'une image réactive ont-elles un nom accessible pertinent ?"
+  },
+  "images_name_187": {
+    "message": "Ces boutons de type image (balise input avec l'attribut type=\"image\") ont-elles un nom accessible pertinent ?"
+  },
+  "images_name_189": {
+    "message": "Ces boutons de type image (balise input avec l'attribut type=\"image\") ont un nom accessible non pertinent."
+  },
+  "images_name_190": {
+    "message": "Ces images objet (balise object avec l'attribut type=\"image/…\") ont-elles un nom accessible pertinent ?"
+  },
+  "images_name_192": {
+    "message": "Ces images embarquées (balise embed avec l'attribut type=\"image/…\") ont-elles un nom accessible pertinent ?"
+  },
+  "images_name_194": {
+    "message": "Ces images images vectorielles (balise svg) ont-elles un nom accessible pertinent ?"
+  },
+  "images_name_196": {
+    "message": " Ces images bitmap (balise canvas) ont-elles un nom accessible pertinent ?"
+  },
+  "images_name_198": {
+    "message": "Liste des images bitmap (balise canvas) porteuse d'information, ayant un contenu alternatif entre sa balise ouvrante et sa balise fermante correctement restitué par les technologies d'assistance"
+  },
+  "images_name_199": {
+    "message": "Liste des images bitmap (balise canvas) porteuse d'information, ayant un contenu alternatif entre sa balise ouvrante et sa balise fermante non restitué par les technologies d'assistance"
+  },
+  "images_name_200": {
+    "message": "Images avec un nom accessible trop long"
+  },
+  "images_description_201": {
+    "message": "Ce test vérifie si le nom accessible des images est inférieur à 80 caractère."
+  },
+  "images_name_202": {
+    "message": " Le nom accessible de ces images est-il concis ?"
+  },
+  "images_name_203": {
+    "message": "Liste des images."
+  },
+  "images_description_204": {
+    "message": "Si ces images sont utilisées comme CAPTCHA, vérifier qu'il existe une alternative non graphique ou une autre solution d'accès à la fonctionnalité qui est sécurisée par le CAPTCHA"
+  },
+  "images_name_205": {
+    "message": "Liste des bouton associé à une image."
+  },
+  "images_description_206": {
+    "message": "Si ces bouton sont utilisés comme CAPTCHA, vérifier qu'il existe une alternative non graphique ou une autre solution d'accès à la fonctionnalité qui est sécurisée par le CAPTCHA"
+  },
+  "images_name_207": {
+    "message": "Liste des images (balise <img>) porteuses d'information."
+  },
+  "images_description_208": {
+    "message": "Vérifier si ces images ont si nécessaire une description détaillée et pertinente."
+  },
+  "images_name_209": {
+    "message": "Liste des images (balise <object>) porteuses d'information."
+  },
+  "images_name_211": {
+    "message": "Liste des images (balise <embed>) porteuses d'information."
+  },
+  "images_name_213": {
+    "message": "Liste des images (balise <input>) porteuses d'information."
+  },
+  "images_name_215": {
+    "message": "Liste des images (balise <svg>) porteuses d'information."
+  },
+  "images_description_216": {
+    "message": "Vérifier si ces images ont si nécessaire une description détaillée, pertinente et correctement restituée par les technologies d'assistance."
+  },
+  "images_name_217": {
+    "message": "Liste des images (balise <canvas>) porteuses d'information."
+  },
+  "images_name_219": {
+    "message": "Liste des images qui utilisent l'attribut aria-describedby."
+  },
+  "images_description_220": {
+    "message": "Si ces images nécessitent une description détaillée, vérifier que l'attribut aria-describedby associe cette description."
+  },
+  "images_name_221": {
+    "message": "Liste des images (attribut role=\"img\") porteuses d'information."
+  },
+  "images_description_222": {
+    "message": "Vérifier si ces images ont si nécessaire une description détaillée."
+  },
+  "images_name_223": {
+    "message": "Liste des images (balise <img> ou possédant un attribut role=\"img\") porteuses d'information."
+  },
+  "images_description_224": {
+    "message": "Si ces images sont des images texte sans mécanisme de remplacement, elles doivent si possible être remplacées par du texte stylé en CSS."
+  },
+  "images_name_235": {
+    "message": "Liste des légendes d'image (balise img, balise input type=\"image\" ou balise role=\"img\") mal reliées à l'image correspondante"
+  },
+  "images_name_236": {
+    "message": "Liste des légendes d'image (balise img, balise input type=\"image\" ou balise role=\"img\") correctement reliées à l'image correspondante"
+  },
+  "images_name_237": {
+    "message": "Liste des légendes d'image objet mal reliées à l'image correspondante"
+  },
+  "images_name_238": {
+    "message": "Liste des légendes d'image objet correctement reliées à l'image correspondante"
+  },
+  "images_name_239": {
+    "message": "Liste des légendes d'image embarquées (balise embed) mal reliées à l'image correspondante"
+  },
+  "images_name_240": {
+    "message": "Liste des légendes d'image embarquées (balise embed) correctement reliées à l'image correspondante"
+  },
+  "images_name_241": {
+    "message": "Liste des légendes d'image vectorielles (balise svg) mal reliées à l'image correspondante"
+  },
+  "images_name_242": {
+    "message": "Liste des légendes d'image vectorielles (balise svg) correctement reliées à l'image correspondante"
+  },
+  "images_name_243": {
+    "message": "Liste des légendes d'image bitmap (balise canvas) mal reliées à l'image correspondante"
+  },
+  "images_name_244": {
+    "message": "Liste des légendes d'image bitmap (balise canvas) correctement reliées à l'image correspondante"
+  },
+  "links_name_245": {
+    "message": "Liste des liens texte sans nom accessible"
+  },
+  "links_name_246": {
+    "message": "Liste des liens texte visibles non restitués"
+  },
+  "links_name_247": {
+    "message": "Liste des liens texte non visibles non restitués"
+  },
+  "links_name_248": {
+    "message": "Liste des liens texte avec un nom accessible"
+  },
+  "links_description_249": {
+    "message": "Vérifiez la pertinence des noms accessibles des liens"
+  },
+  "links_name_250": {
+    "message": "Liste des liens texte avec un nom non pertinent"
+  },
+  "links_description_251": {
+    "message": "Ces liens possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien"
+  },
+  "links_name_252": {
+    "message": "Liste des liens images sans nom accessible"
+  },
+  "links_name_253": {
+    "message": "Liste des liens images visibles non restitués"
+  },
+  "links_name_254": {
+    "message": "Liste des liens images non visibles non restitués"
+  },
+  "links_name_255": {
+    "message": "Liste des liens images avec un nom accessible"
+  },
+  "links_description_256": {
+    "message": "Vérifiez la pertinence des noms accessibles des images"
+  },
+  "links_name_257": {
+    "message": "Liste des liens images avec un nom non pertinent"
+  },
+  "links_description_258": {
+    "message": "Ces liens images possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien"
+  },
+  "links_name_259": {
+    "message": "Liste des liens composites sans nom accessible"
+  },
+  "links_name_260": {
+    "message": "Liste des liens composites visibles non restitués"
+  },
+  "links_name_261": {
+    "message": "Liste des liens composites non visibles non restitués"
+  },
+  "links_name_262": {
+    "message": "Liste des liens composites avec un nom accessible"
+  },
+  "links_description_263": {
+    "message": "Vérifiez la pertinence des noms accessibles."
+  },
+  "links_name_264": {
+    "message": "Liste des liens composites avec un nom non pertinent"
+  },
+  "links_description_265": {
+    "message": "Ces liens composites possèdent un attribut title dont la valeur ne reprend pas le « nom accessible » issu du contenu du lien"
+  },
+  "links_name_266": {
+    "message": "Liste des liens SVG sans nom accessible"
+  },
+  "links_name_267": {
+    "message": "Liste des liens SVG visibles non restitués"
+  },
+  "links_name_268": {
+    "message": "Liste des liens SVG non visibles non restitués"
+  },
+  "links_name_269": {
+    "message": "Liste des liens SVG avec un nom accessible"
+  },
+  "links_name_271": {
+    "message": "Liste des liens ayant un intitulé visible non repris dans le nom accessible."
+  },
+  "links_name_272": {
+    "message": "Liste des liens ayant un intitulé visible bien repris dans le nom accessible."
+  },
+  "links_name_273": {
+    "message": "Liste des liens sans intitulé entre <a> et </a>."
+  },
+  "links_name_274": {
+    "message": "Liste des liens avec un intitulé entre <a> et </a>."
+  },
+  "mandatory_name_275": {
+    "message": "Le type de document (balise doctype) est présent sur la page."
+  },
+  "mandatory_passed_276": {
+    "message": "Cette page possède bien une balise doctype."
+  },
+  "mandatory_failed_277": {
+    "message": "Cette page n'a pas de balise doctype."
+  },
+  "mandatory_name_278": {
+    "message": "Le type de document (balise doctype) est valide."
+  },
+  "mandatory_name_279": {
+    "message": "Le type de document est déclaré avant l'ouverture de la balise html."
+  },
+  "mandatory_name_280": {
+    "message": "Valeurs d'attribut id dupliqués dans la page"
+  },
+  "mandatory_name_281": {
+    "message": "Attributs role avec une valeur invalide"
+  },
+  "mandatory_name_282": {
+    "message": "Attributs role avec une valeur valide"
+  },
+  "mandatory_name_283": {
+    "message": "Elements possédants des attributs aria-* non définis dans WAI-ARIA."
+  },
+  "mandatory_name_284": {
+    "message": "Elements possédants uniquement des attributs aria-* définis dans WAI-ARIA."
+  },
+  "mandatory_name_285": {
+    "message": "Propiétés ARIA avec une valeur invalide."
+  },
+  "mandatory_name_286": {
+    "message": "Propriétés ARIA non autorisées sur leur élément."
+  },
+  "mandatory_name_287": {
+    "message": "Imbrications de balises HTML non conformes."
+  },
+  "mandatory_name_288": {
+    "message": "Le titre de la page doit être déclaré dans l'en-tête (balise head)."
+  },
+  "mandatory_name_289": {
+    "message": "La page web doit contenir un seul titre de page (balise title)."
+  },
+  "mandatory_passed_290": {
+    "message": "La page web contient ne possède pas plus d'un titre de page (balise title)."
+  },
+  "mandatory_failed_291": {
+    "message": "La page web contient plusieurs titres de page (balise title)."
+  },
+  "mandatory_name_292": {
+    "message": "Le titre de page (balise title) ne doit pas être vide."
+  },
+  "mandatory_name_293": {
+    "message": "La langue de la page est spécifiée."
+  },
+  "mandatory_passed_294": {
+    "message": "La langue de la page est bien spécifiée."
+  },
+  "mandatory_failed_295": {
+    "message": "La langue de la page n'est pas spécifiée."
+  },
+  "mandatory_name_296": {
+    "message": "Page HTML avec un attribut lang vide."
+  },
+  "mandatory_name_297": {
+    "message": "Page HTML avec un attribut lang non vide."
+  },
+  "mandatory_name_298": {
+    "message": "Page HTML avec des attributs lang et xml:lang dont les valeurs ne correspondent pas."
+  },
+  "mandatory_name_299": {
+    "message": "Page HTML avec des attributs lang et xml:lang dont les valeurs correspondent.\""
+  },
+  "mandatory_name_300": {
+    "message": "La langue de la page HTML est invalide."
+  },
+  "mandatory_name_301": {
+    "message": "La langue de la page HTML est valide."
+  },
+  "mandatory_name_302": {
+    "message": "La page web a un titre de page (balise title)."
+  },
+  "mandatory_passed_303": {
+    "message": "La page possède bien un titre de page."
+  },
+  "mandatory_failed_304": {
+    "message": "Aucun titre de page n'a été trouvé."
+  },
+  "mandatory_name_305": {
+    "message": "Vérifier la pertinence du titre de page (balise title)."
+  },
+  "mandatory_name_306": {
+    "message": "Le titre de la page (balise title) n'est pas pertinent"
+  },
+  "mandatory_name_307": {
+    "message": "Vérifiez que pour chaque texte écrit dans une langue différente de la langue par défaut le langage est correctement indiqué."
+  },
+  "mandatory_name_308": {
+    "message": "Elements avec un attribut lang vide."
+  },
+  "mandatory_name_309": {
+    "message": "Elements avec un attribut lang non vide."
+  },
+  "mandatory_name_310": {
+    "message": "Elements avec un attribut lang invalide."
+  },
+  "mandatory_name_311": {
+    "message": "Elements avec un attribut lang valide."
+  },
+  "mandatory_name_312": {
+    "message": "Les balises ne doivent pas être utilisées uniquement à des fins de présentation."
+  },
+  "mandatory_description_313": {
+    "message": "ne pas utiliser de double br pour créer des espaces entre les éléments textes"
+  },
+  "mandatory_name_314": {
+    "message": "Chaque texte dont le sens de lecture est différent du sens de lecture par défaut doit être contenu dans une balise possédant un attribut dir."
+  },
+  "mandatory_name_315": {
+    "message": "Changements du sens de lecture (attribut dir) non conforme."
+  },
+  "mandatory_description_316": {
+    "message": "La  valeur de ces attributs n'est pas conforme, les valeurs attendues sont 'ltr' ou 'rtl'."
+  },
+  "mandatory_name_317": {
+    "message": "Changements du sens de lecture (attribut dir) conforme."
+  },
+  "mandatory_description_318": {
+    "message": "Vérifier la pertinence de la valeur de l'attribut dir."
+  },
+  "media_name_319": {
+    "message": "Liste des médias temporels seulement audios"
+  },
+  "media_description_320": {
+    "message": "Vérifiez si nécessaire la présence d'une transcription textuelle et sa pertinence."
+  },
+  "media_name_321": {
+    "message": "Liste des médias temporels synchronisés ou vidéos"
+  },
+  "media_description_322": {
+    "message": "Vérifiez si nécessaire la présence d'une audio-description, transcription textuelle et sous-titres ainsi que leur pertinence."
+  },
+  "media_name_323": {
+    "message": "Liste des balises <track> sans attribut kind=\"captions\""
+  },
+  "media_description_324": {
+    "message": "Vérifiez si ces éléments track sont des sous-titres synchronisés, si oui, ils devraient posséder un attribut [kind=\"captions\"]."
+  },
+  "media_name_325": {
+    "message": "Liste des sous-titres synchronisés diffusés via une balise <track> avec attribut kind=\"captions\""
+  },
+  "media_name_326": {
+    "message": "Liste des médias temporels synchronisés possédant des sous-titres via la balise track"
+  },
+  "media_description_327": {
+    "message": "Vérifiez la pertinence des sous-titres"
+  },
+  "media_name_328": {
+    "message": "Liste des médias temporels vidéo"
+  },
+  "media_description_329": {
+    "message": "Vérifiez si nécessaire la présence d'une audiodescription synchronisée et sa pertinence"
+  },
+  "media_name_330": {
+    "message": "Liste des médias temporels"
+  },
+  "media_description_331": {
+    "message": "Vérifiez que le contenu textuel adjacent permet d'identifier clairement le média."
+  },
+  "media_name_332": {
+    "message": "Les médias non temporels ont si nécessaire une alternative."
+  },
+  "media_description_333": {
+    "message": "Vérifiez qu'un lien ou bouton adjacent, clairement identifiable, permet d’accéder à une alternative."
+  },
+  "media_name_334": {
+    "message": "Pour les médias non temporels associés à une alternative, cette alternative doit être accessible."
+  },
+  "media_description_335": {
+    "message": "Vérifiez l'accessibilité de l'alternative associée au média non temporel."
+  },
+  "media_name_336": {
+    "message": "Pour les médias non temporels ayant une alternative, cette alternative doit être pertinente."
+  },
+  "media_description_337": {
+    "message": "Vérifiez que l'alternative permet d'accéder au même contenu et à des fonctionnalités similaires."
+  },
+  "media_name_338": {
+    "message": "Liste des sons durant plus de 3secondes déclenchés automatiquement et non contrôlables par l'utilisateur."
+  },
+  "media_name_339": {
+    "message": "Liste des sons déclenchés automatiquement qui sont contrôlables par l'utilisateur ou durent maximum 3secondes."
+  },
+  "media_name_340": {
+    "message": "Liste des médias temporels ayant les fonctionnalités de contrôle de sa consultation"
+  },
+  "media_description_342": {
+    "message": "Vérifiez si nécessaire la présence des fonctionnalités de contrôle de la consultation de ces médias."
+  },
+  "media_description_344": {
+    "message": "Vérifiez que chaque fonctionnalité de ces médias est contrôlable ET activable par le clavier et tout dispositif de pointage."
+  },
+  "media_name_345": {
+    "message": "Pour chaque média non-temporel, chaque fonctionnalité doit être accessible par le clavier et tout dispositif de pointage."
+  },
+  "media_name_346": {
+    "message": "Pour chaque média non-temporel, chaque fonctionnalité doit être activable par le clavier et tout dispositif de pointage."
+  },
+  "media_name_347": {
+    "message": "Chaque média doit être compatible avec les technologies d'assistance."
+  },
+  "media_description_348": {
+    "message": "Vérifier que le nom, le rôle, la valeur, le paramétrage et les changements d'états des composants d'interfaces sont accessibles aux technologies ou qu'une alternative compatible permette d'accéder aux mêmes fonctionnalités."
+  },
+  "media_name_349": {
+    "message": "Pour chaque média ayant une alternative compatible avec les technologies d'assistance, l'alternative doit être implémentée correctement."
+  },
+  "media_description_350": {
+    "message": "Vérifier que l'alternative ou le lien/bouton permettant d'y accéder soit adjacent au média, ou qu'un mécanisme permette de remplacer le média par son alternative."
+  },
+  "navigation_name_351": {
+    "message": "Chaque ensemble de pages doit disposer d'au moins deux systèmes de navigation différents."
+  },
+  "navigation_name_352": {
+    "message": "Dans chaque ensemble de pages le menu et les barres de navigation sont toujours à la même place dans la présentation ET se présentent toujours dans le même ordre relatif dans le code source."
+  },
+  "navigation_name_353": {
+    "message": "La page « plan du site » doit être représentative de l'architecture générale du site."
+  },
+  "navigation_name_354": {
+    "message": "Les liens du plan du site doivent être fonctionnels."
+  },
+  "navigation_name_355": {
+    "message": "Les liens du plan du site doivent pointer vers les pages indiquées par l'intitulé."
+  },
+  "navigation_name_356": {
+    "message": "Dans chaque ensemble de pages, la page « plan du site » doit être accessible à partir d'une fonctionnalité identique."
+  },
+  "navigation_name_357": {
+    "message": "Dans chaque ensemble de pages, la fonctionnalité vers la page « plan du site » doit être située à la même place dans la présentation."
+  },
+  "navigation_name_358": {
+    "message": "Dans chaque ensemble de pages, la fonctionnalité vers la page « plan du site » doit toujours se présenter dans le même ordre relatif dans le code source."
+  },
+  "navigation_name_359": {
+    "message": "Dans chaque ensemble de pages, le moteur de recherche doit être accessible à partir d'une fonctionnalité identique."
+  },
+  "navigation_name_360": {
+    "message": "Dans chaque ensemble de pages, la fonctionnalité vers le moteur de recherche doit être située à la même place dans la présentation."
+  },
+  "navigation_name_361": {
+    "message": "Dans chaque ensemble de pages, la fonctionnalité vers le moteur de recherche doit toujours se présenter dans le même ordre relatif dans le code source."
+  },
+  "navigation_name_362": {
+    "message": "Les zones de regroupement de contenus présentes dans plusieurs pages web (zones d'en-tête, de navigation principale, de contenu principal, de pied de page et de moteur de recherche) doivent pouvoir être atteintes ou évitées."
+  },
+  "navigation_name_363": {
+    "message": "Dans chaque page web, un lien doit permettre d'éviter la zone de contenu principal ou d'y accéder."
+  },
+  "navigation_name_364": {
+    "message": "Dans chaque ensemble de pages, le lien d'évitement ou d'accès rapide à la zone de contenu principal doit être situé à la même place dans la présentation  et se présente toujours dans le même ordre relatif dans le code source. Il doit également être visible ou visible à la prise de focus et fonctionnel."
+  },
+  "navigation_name_365": {
+    "message": "Liste des éléments non visibles mais tabulables."
+  },
+  "navigation_description_366": {
+    "message": "Vérifier que ces éléments deviennent visibles au focus."
+  },
+  "navigation_name_368": {
+    "message": "Pour chaque script qui met à jour ou insère un contenu, l'ordre de tabulation doit rester cohérent."
+  },
+  "navigation_name_369": {
+    "message": "Il est possible d'atteindre l'élément suivant ou précédent pouvant recevoir le focus avec la touche de tabulation."
+  },
+  "navigation_name_370": {
+    "message": "Pour chaque raccourci clavier n'utilisant qu'une seule touche (lettres minuscule ou majuscule, ponctuation, chiffre ou symbole) un mécanisme permet de désactiver ou configurer le raccourci clavier."
+  },
+  "navigation_name_371": {
+    "message": "Les contenus additionnels apparaissant au survol, à la prise de focus ou à l'activation d'un composant d'interface doivent, si nécessaire, être atteignables au clavier."
+  },
+  "presentation_name_372": {
+    "message": "Liste des balises servant à la présentation de l'information présentes dans le code source généré de la page."
+  },
+  "presentation_name_373": {
+    "message": "Liste des attributs servant à la présentation de l'information présents dans le code source généré de la page."
+  },
+  "presentation_name_374": {
+    "message": "Les espaces ne doivent pas être utiliser pour séparer les lettres d'un mot, simuler des tableaux ou simuler des colonnes de texte."
+  },
+  "presentation_name_375": {
+    "message": "L'information doit rester présente lorsque les feuilles de style sont désactivées."
+  },
+  "presentation_name_376": {
+    "message": "L'information doit rester compréhensible lorsque les feuilles de style sont désactivées."
+  },
+  "presentation_name_377": {
+    "message": "La taille des caractères doit pouvoir être augmentée jusque 200% sans perdre d'information."
+  },
+  "presentation_name_378": {
+    "message": "La meta viewport n\"empêche pas le zoom."
+  },
+  "presentation_name_379": {
+    "message": "La meta viewport empêche le zoom."
+  },
+  "presentation_name_380": {
+    "message": "Chaque déclaration CSS de couleurs de police (color), d'un élément susceptible de contenir du texte, doit être accompagnée d'une déclaration de couleur de fond (background, background-color), au moins, héritée d'un parent."
+  },
+  "presentation_name_381": {
+    "message": "Chaque déclaration de couleur de fond (background, background-color), d'un élément susceptible de contenir du texte, doit être accompagnée d'une déclaration de couleur de police (color) au moins, héritée d'un parent."
+  },
+  "presentation_name_382": {
+    "message": "Chaque utilisation d'une image pour créer une couleur de fond d'un élément susceptible de contenir du texte, via CSS (background, background-image), doit être accompagnée d'une déclaration de couleur de fond (background, background-color), au moins, héritée d'un parent."
+  },
+  "presentation_name_383": {
+    "message": "Chaque lien texte signalé uniquement par la couleur, et dont la nature n'est pas évidente, doit être visible par rapport au texte environnant."
+  },
+  "presentation_name_384": {
+    "message": "Pour chaque élément recevant le focus, la prise de focus doit être visible."
+  },
+  "presentation_name_385": {
+    "message": "Liste des éléments non restitués mais visibles."
+  },
+  "presentation_description_386": {
+    "message": "Vérifier que ces éléments on bien vocation à être ignorés par les technologies d'assistance."
+  },
+  "presentation_name_387": {
+    "message": "Liste des éléments restitués non visibles."
+  },
+  "presentation_description_388": {
+    "message": "Vérifier que ces éléments on bien vocation à être restitués par les technologies d'assistance."
+  },
+  "presentation_name_389": {
+    "message": "Pour chaque texte ou ensemble de textes, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle doit être respectée et implémentée de façon pertinente."
+  },
+  "presentation_name_390": {
+    "message": "Pour chaque image ou ensemble d'images, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle doit être respectée et implémentée de façon pertinente."
+  },
+  "presentation_name_391": {
+    "message": "Pour chaque média temporel, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle doit être respectée et implémentée de façon pertinente."
+  },
+  "presentation_name_392": {
+    "message": "Pour chaque média non temporel, l'information ne doit pas être donnée uniquement par la forme, taille ou position. Cette règle doit être respectée et implémentée de façon pertinente."
+  },
+  "presentation_name_393": {
+    "message": "Si le sens de lecture du contenu est horizontal, il ne doit y avoir aucun défilement horizontal sur les écrans de 320px de large."
+  },
+  "presentation_name_394": {
+    "message": "Si le sens de lecture du contenu est vertical, il ne doit y avoir aucun défilement vertical sur les écrans de 256px de haut."
+  },
+  "presentation_name_395": {
+    "message": "Les propriétés d'espacement du texte doivent pouvoir être redéfinies par l'utilisateur sans perte de contenu ou de fonctionnalité."
+  },
+  "presentation_name_396": {
+    "message": "Chaque contenu additionnel devenant visible à la prise de focus ou au survol d'un composant d'interface doit pouvoir être masqué par une action utilisateur sans déplacer le focus ou le pointeur de la souris."
+  },
+  "presentation_name_397": {
+    "message": "Chaque contenu additionnel qui apparaît au survol d'un composant d'interface doit pouvoir être survolé par le pointeur de la souris sans disparaître."
+  },
+  "presentation_name_398": {
+    "message": "Chaque contenu additionnel qui apparaît à la prise de focus ou au survol d'un composant d'interface reste visible jusqu'à ce qu'il soit valide ou qu'une action de l'utilisateur le cache."
+  },
+  "presentation_name_399": {
+    "message": "Les contenus additionnels apparaissant au survol d'un composant d'interface via les styles CSS doivent pouvoir être rendus visibles au clavier et par tout dispositif de pointage."
+  },
+  "presentation_name_400": {
+    "message": "Les contenus additionnels apparaissant au focus d'un composant d'interface via les styles CSS doivent pouvoir être rendus visibles au clavier et par tout dispositif de pointage."
+  },
+  "scripts_name_401": {
+    "message": "Boutons visibles ou restitués sans nom accessible."
+  },
+  "scripts_name_402": {
+    "message": "Boutons visibles ou restitués avec un nom accessible."
+  },
+  "scripts_name_403": {
+    "message": "Liste des éléments non restitués mais tabulables."
+  },
+  "scripts_name_404": {
+    "message": "Chaque script qui génère ou contrôle un composant d'interface doit avoir un nom pertinent et accessible."
+  },
+  "scripts_name_405": {
+    "message": "Chaque script qui génère ou contrôle un composant d'interface doit avoir un rôle pertinent."
+  },
+  "scripts_name_406": {
+    "message": "Liste des boutons ayant un intitulé visible non repris dans le nom accessible."
+  },
+  "scripts_name_407": {
+    "message": "Liste des boutons ayant un intitulé visible bien repris dans le nom accessible."
+  },
+  "scripts_name_408": {
+    "message": "Liste des alternatives de script dans des balises <noscript>."
+  },
+  "scripts_description_409": {
+    "message": "Vérifier la pertinence de l'alternative."
+  },
+  "scripts_name_410": {
+    "message": "Pour chaque élément non textuel mis à jour par un script (dans la page, ou dans un cadre) et ayant une alternative, l'aternative doit être mise à jour de façon pertinente."
+  },
+  "scripts_name_411": {
+    "message": "Pour chaque élément possédant un gestionnaire d'événement contrôlé par un script, l'élément doit être contrôlable par le clavier et tout dispositif de pointage."
+  },
+  "scripts_name_412": {
+    "message": "Un script ne doit pas supprimer le focus d'un élément qui le reçoit."
+  },
+  "scripts_name_413": {
+    "message": "Pour chaque script qui initie un changement de contexte, l'utilisateur doit être averti ou en avoir le contrôle."
+  },
+  "scripts_name_414": {
+    "message": "Chaque message de statut qui informe de la réussite, du résultat d'une action ou bien de l'état d'une application doit utiliser l'attribut WAI-ARIA role=\"status\"."
+  },
+  "scripts_name_415": {
+    "message": "Chaque message de statut qui présente une suggestion, ou avertit de l'existence d'une erreur doit utiliser l'attribut WAI-ARIA role=\"alert\"."
+  },
+  "scripts_name_416": {
+    "message": "Chaque message de statut qui indique la progression d'un processus doit utiliser l'un des attributs WAI-ARIA role=\"log\", role=\"progressbar\" ou role=\"status\"."
+  },
+  "structure_name_417": {
+    "message": "Liste des titres (balise <hx> ou balise possédant un attribut WAI-ARIA role=\"heading\" associé à un attribut WAI-ARIA aria-level) non pertinent"
+  },
+  "structure_name_418": {
+    "message": "Vérifier la pertinence des titres (balise <hx> ou balise possédant un attribut WAI-ARIA role=\"heading\" associé à un attribut WAI-ARIA aria-level)"
+  },
+  "structure_name_419": {
+    "message": "Liste d'éléments non structurés en titre mais ayant un role ou une classe indiquant un titre."
+  },
+  "structure_name_420": {
+    "message": "Liste des titres dont le niveau n'est pas pertinent."
+  },
+  "structure_description_420": {
+    "message": "Vérifier si ces éléments devraient être structurés en titre."
+  },
+  "structure_description_421": {
+    "message": "La pertinence de la hierarchie des titres étant grandement sujette à l'interprétation de l'auditeur, nous avons fait le choix de suivre les bonnes pratiques OPQUAST."
+  },
+  "structure_name_421": {
+    "message": "Vérifier que les éléments suivant sont des zones d'entêtes"
+  },
+  "structure_name_422": {
+    "message": "Vérifier que les éléments suivant sont des zones de pied de page"
+  },
+  "structure_name_423": {
+    "message": "Vérifier que les éléments suivant sont des zones navigation"
+  },
+  "structure_name_424": {
+    "message": "Vérifier que l'éléments suivant est la zone de contenu principale"
+  },
+  "structure_name_425": {
+    "message": "La structure du document utilise une balise main visible et unique"
+  },
+  "structure_passed_426": {
+    "message": "La structure du document utilise bien une balise main visible et unique."
+  },
+  "structure_failed_427": {
+    "message": "La structure du document n'utilise pas de balise main visible et ou en utilise plusieurs."
+  },
+  "structure_name_428": {
+    "message": "Les informations regroupées visuellement sous forme de liste non ordonnée doivent être structurées comme telle."
+  },
+  "structure_name_429": {
+    "message": "Les informations regroupées visuellement sous forme de liste ordonnée doivent être structurées comme telle."
+  },
+  "structure_name_430": {
+    "message": "Les informations regroupées visuellement sous forme de liste de description doivent être structurées comme telle."
+  },
+  "structure_name_431": {
+    "message": "Chaque citation courte doit utiliser une balise <q>"
+  },
+  "structure_name_432": {
+    "message": "Chaque bloc de citation doit utiliser une balise <blockquote>"
+  },
+  "tables_name_433": {
+    "message": "Liste des tableaux complexes sans résumé."
+  },
+  "tables_passed_434": {
+    "message": "aucun tableau de données complexe sans résumé n'a été trouvé sur cette page."
+  },
+  "tables_failed_435": {
+    "message": "des tableaux de données complexes sans résumé ont été trouvé sur cette page."
+  },
+  "tables_name_436": {
+    "message": "Liste des tableaux complexes avec résumé."
+  },
+  "tables_name_437": {
+    "message": "Liste des tableaux complexes avec un résumé pertinent."
+  },
+  "tables_description_438": {
+    "message": "Vérifiez la pertinence du résumé du tableau complexe"
+  },
+  "tables_name_439": {
+    "message": "Liste des tableaux de mise en forme sans role présentation"
+  },
+  "tables_description_440": {
+    "message": "Vérifiez que le contenu linéarisé reste compréhensible"
+  },
+  "tables_name_441": {
+    "message": "Liste des tableaux de mise en forme avec role présentation"
+  },
+  "tables_name_443": {
+    "message": "Liste des tableaux de données avec un titre correctement associé au tableau."
+  },
+  "tables_name_444": {
+    "message": "Liste des tableaux de données avec un titre mal associé au tableau."
+  },
+  "tables_name_445": {
+    "message": "Liste des tableaux de données avec un titre"
+  },
+  "tables_description_446": {
+    "message": "Vérifiez la pertinence du titre"
+  },
+  "tables_name_447": {
+    "message": "Liste des tableaux de données avec un titre non pertinent"
+  },
+  "tables_name_448": {
+    "message": "Liste des en-têtes d'une colonne complète d'un tableau de données, correctement déclarés."
+  },
+  "tables_name_449": {
+    "message": "Liste des en-têtes d'une colonne complète d'un tableau de données, mal déclarés."
+  },
+  "tables_name_450": {
+    "message": "Liste des en-têtes d'une ligne complète d'un tableau de données, correctement déclarés."
+  },
+  "tables_name_451": {
+    "message": "Liste des en-têtes d'une ligne complète d'un tableau de données, mal déclarés."
+  },
+  "tables_name_452": {
+    "message": "Liste des en-têtes ne s'appliquant pas à la totalité de la ligne ou de la colonne mal structurés."
+  },
+  "tables_description_453": {
+    "message": "Ces en-têtes devraient être structurés au moyen d'une balise th."
+  },
+  "tables_name_454": {
+    "message": "Liste des en-têtes ne s'appliquant pas à la totalité de la ligne ou de la colonne correctement structurés."
+  },
+  "tables_name_455": {
+    "message": "Liste des cellules d'un tableau de données associées à plusieurs en-têtes, mal balisées."
+  },
+  "tables_name_456": {
+    "message": "Liste des cellules d'un tableau de données associées à plusieurs en-têtes, correctement balisées."
+  },
+  "tables_name_457": {
+    "message": "Liste des en-têtes de tableau s'appliquant à toute une ligne ou colonne mal associés aux cellules."
+  },
+  "tables_name_458": {
+    "message": "Liste des en-têtes de tableau s'appliquant à toute une ligne ou colonne correctement associés aux cellules."
+  },
+  "tables_name_459": {
+    "message": "En-têtes de tableau associant les cellules de sa ligne ou colonne avec un attribut scope valide."
+  },
+  "tables_name_460": {
+    "message": "En-têtes de tableau associant les cellules de sa ligne ou colonne avec un attribut scope invalide."
+  },
+  "tables_name_461": {
+    "message": "En-têtes de tableau associant les cellules de sa ligne ou colonne avec un attribut scope."
+  },
+  "tables_description_462": {
+    "message": "Vérifier la pertinence de l'attribut scope."
+  },
+  "tables_name_463": {
+    "message": "Liste des en-têtes de tableau ne s'appliquant pas à toute une ligne ou colonne correctement associés aux cellules."
+  },
+  "tables_name_464": {
+    "message": "Liste des en-têtes de tableau ne s'appliquant pas à toute une ligne ou colonne mal associés aux cellules."
+  },
+  "tables_name_465": {
+    "message": "L'attribut Headers spécifié sur une cellule fait référence à des en-têtes du même élément de tableau."
+  },
+  "tables_name_466": {
+    "message": "L'attribut Headers spécifié sur une cellule ne fait pas référence à des en-têtes du même élément de tableau."
+  },
+  "tables_name_467": {
+    "message": "Liste des en-têtes ARIA s'appliquant à toute une ligne ou colonne mal renseignés."
+  },
+  "tables_name_468": {
+    "message": "Liste des en-têtes ARIA s'appliquant à toute une ligne ou colonne correctement renseignés."
+  },
+  "tables_name_469": {
+    "message": "Liste des tableaux de mise en forme utilisant des éléments propre aux tableaux de données."
+  },
+  "tables_name_470": {
+    "message": "Liste des tableaux de mise en forme n'utilisant aucun élément propre aux tableaux de données."
+  },
+  "navigation_name_21": {
+    "message": "élements intéractifs ayant un attribut tabindex non pertinent"
+  },
+  "navigation_description_2": {
+    "message": "l'ordre de tabulation dans la page doit respecter l'ordre des éléments dans le DOM"
+  },
+  "navigation_name_22": {
+    "message": "Eléments intéractifs non atteignables en navigation clavier"
+  },
+  "navigation_name_23": {
+    "message": "éléments intéractifs prenant le focus à la suite d'un élément visuellement positionné après"
+  },
+  "navigation_description_3": {
+    "message": "L'ordre de tabulation doit être cohérent avec l'ordre dans lequel les éléments intéractifs sont affichés dans la page"
+  }
 }

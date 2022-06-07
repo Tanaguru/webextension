@@ -110,6 +110,15 @@ function handleMessage(request, sender, sendResponse) {
 			});
 		});
 	}
+	else if (request.command == 'taborder') {
+		chrome.tabs.executeScript(request.tabId, {
+		    code: 'var state = "' + request.state + '";',
+		}, function() {
+			chrome.tabs.executeScript(request.tabId, {file: '/ressources/scripts/tabOrder.js'}, (tabResponse)=> {
+				sendResponse({ command: 'executeTabOrder', response: tabResponse });
+			});
+		});
+	}
 	else if (request.command == 'obsDOM') {
 		chrome.tabs.executeScript(request.tabId, {
 		    code: 'var obs = "' + request.obs + '"; var requestTabId = "' + request.tabId + '";',

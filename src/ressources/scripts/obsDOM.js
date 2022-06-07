@@ -108,36 +108,40 @@ function callback(mutationsList) {
                 } else {
                     if(mutation.addedNodes.length > 0) {
                         mutation.addedNodes.forEach(el => {
-                            let afterData = el.nodeType == 1 ? el.outerHTML : '#text '+el.data;
-                            let mutationDetails = {
-                                el: extractOnlyNode(currentEl),
-                                type: 1,
-                                desc: "Un noeud enfant a été ajouté.",
-                                before: '',
-                                after: afterData
+                            if(mutation.el.id !== "tngtaborder") {
+                                let afterData = el.nodeType == 1 ? el.outerHTML : '#text '+el.data;
+                                let mutationDetails = {
+                                    el: extractOnlyNode(currentEl),
+                                    type: 1,
+                                    desc: "Un noeud enfant a été ajouté.",
+                                    before: '',
+                                    after: afterData
+                                }
+                                newMutations.push(mutationDetails);
                             }
-                            newMutations.push(mutationDetails);
                         });
                     }
         
                     else if(mutation.removedNodes.length > 0) {
                         mutation.removedNodes.forEach(el => {
-                            let beforeData = el.nodeType == 1 ? el.outerHTML : '#text '+el.data;
-                            let mutationDetails = {
-                                el: extractOnlyNode(currentEl),
-                                type: 2,
-                                desc: "Un noeud enfant a été supprimé.",
-                                before: beforeData,
-                                after: ''
+                            if(mutation.el.id !== "tngtaborder") {
+                                let beforeData = el.nodeType == 1 ? el.outerHTML : '#text '+el.data;
+                                let mutationDetails = {
+                                    el: extractOnlyNode(currentEl),
+                                    type: 2,
+                                    desc: "Un noeud enfant a été supprimé.",
+                                    before: beforeData,
+                                    after: ''
+                                }
+                                newMutations.push(mutationDetails);
                             }
-                            newMutations.push(mutationDetails);
                         });
                     }
                 }
             }
         }
         else if(mutation.type == 'attributes') {
-            if(mutation.attributeName.startsWith('data-tng-')) continue;
+            if(mutation.attributeName.startsWith('data-tng-') || mutation.attributeName.startsWith('sdata-tng-')) continue;
             
             let currentNode = mutation.target;
             if(mutation.oldValue == currentNode.getAttribute(mutation.attributeName)) continue;

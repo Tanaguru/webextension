@@ -42,3 +42,8 @@
 - update interface integration and some tests
 - fixes aria pattern and accessibleName bugs
 
+## 5.0.0
+- new feature : display tab order on the analysed webpage
+- updates : interface integration, navigation/headings/links tests, internationalization
+- fixes : some tests (table title, figure legend, date field), canBeReachingUsingKeyboard function, accessibleName function
+

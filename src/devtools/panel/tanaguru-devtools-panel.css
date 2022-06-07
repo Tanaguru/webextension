@@ -93,10 +93,15 @@ button:hover:not([disabled]) {
 	outline-offset: 0.5rem;
 }
 
-.switch input:focus+.slider,
-.switch .slider:hover {
+.switch input:focus:not([disabled])+.slider,
+.switch input:not([disabled])+.slider:hover {
 	outline: 2px solid #000;
 	outline-offset: 0.5rem;
+}
+
+.switch input[disabled]+.slider {
+	pointer-events: none;
+	opacity: 0.5;
 }
 
 .beforetable {
@@ -423,9 +428,9 @@ fieldset.radioGroup legend {
 	padding: 1rem;
 }
 
-/** listen DOM switch */
-label[for="listenDOM"] {
-	display: flex;
+/** Dashboard switch */
+.dashboard-switch {
+	display: inline-flex;
 	align-items: center;
 	padding: 0.9rem;
 }
@@ -438,8 +443,8 @@ label[for="listenDOM"] {
 	height: 2.8rem;
 }
 
-.listenDOM-label {
-	margin-right: 1rem;
+.switch-label {
+	margin-left: 1rem;
 }
   
 .switch input {
@@ -552,6 +557,23 @@ main:not(.launch-analysis) > div:first-child {
 
 #DOMdashboardMessage button {
 	margin-left: 1rem;
+}
+
+.color-legend {
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	margin: 0 0.5rem 0 1rem;
+	border-radius: 50%;
+	vertical-align: text-bottom;
+}
+
+.color-legend-blue {
+	background-color: #055a7f;
+}
+
+.color-legend-red {
+	background-color: #d90b0b;
 }
 
 /*? Panel navigation */
@@ -1146,6 +1168,17 @@ ul.headings-container li {
 
 ul.headings-container .item-actions-highlight {
 	margin-left: 1rem;
+}
+
+ul.headings-container .heading-error,
+.headings-error-icon {
+	border: 2px solid red;
+}
+
+.headings-error-icon {
+	display: inline-block;
+	width: 2rem;
+	height: 1rem;
 }
 
 .headingDropdownButton {

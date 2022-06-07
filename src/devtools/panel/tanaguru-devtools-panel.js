@@ -271,10 +271,11 @@ filterBloc.querySelectorAll("fieldset legend button").forEach(b => {
 var listenDomModif = false;
 var listenDOMBloc = document.createElement('label');
 listenDOMBloc.setAttribute('for', 'listenDOM');
+listenDOMBloc.className = "dashboard-switch";
 var listenDOMLabel = document.createElement('span');
 listenDOMLabel.classList.add('listenDOM-label');
+listenDOMLabel.classList.add('switch-label');
 listenDOMLabel.textContent = chrome.i18n.getMessage('dashboardListenDOMlegend');
-listenDOMBloc.appendChild(listenDOMLabel);
 
 var listenDOMSwitch = document.createElement('span');
 listenDOMSwitch.classList.add('switch');
@@ -284,15 +285,15 @@ listenDOMinput.id = "listenDOM";
 
 var listenDOMSlider = document.createElement('span');
 listenDOMSlider.classList.add('slider');
-listenDOMSlider.textContent = chrome.i18n.getMessage('dashboardListenOFF');
+listenDOMSlider.textContent = chrome.i18n.getMessage('word_no');
 
 listenDOMinput.addEventListener('change', function(e) {	
 	if(e.target.checked) {
-		listenDOMSlider.textContent = chrome.i18n.getMessage('dashboardListenON');
+		listenDOMSlider.textContent = chrome.i18n.getMessage('word_yes');
 		listenDomModif = true;
 	}
 	else {
-		listenDOMSlider.textContent = chrome.i18n.getMessage('dashboardListenOFF');
+		listenDOMSlider.textContent = chrome.i18n.getMessage('word_no');
 		listenDomModif = false;
 	}
 });
@@ -300,6 +301,7 @@ listenDOMinput.addEventListener('change', function(e) {
 listenDOMSwitch.appendChild(listenDOMinput);
 listenDOMSwitch.appendChild(listenDOMSlider);
 listenDOMBloc.appendChild(listenDOMSwitch);
+listenDOMBloc.appendChild(listenDOMLabel);
 
 filterBloc.appendChild(listenDOMBloc);
 
@@ -308,7 +310,7 @@ filterBloc.appendChild(listenDOMBloc);
 var button = document.createElement('button');
 button.setAttribute('type', 'button');
 button.classList.add("launchAnalysisButton");
-button.appendChild(document.createTextNode("Analyser cette page"));
+button.appendChild(document.createTextNode(chrome.i18n.getMessage('homeLaunchAnalyze')));
 var p = document.createElement('p');
 p.appendChild(button);
 rightcolumn.appendChild(p);
@@ -473,7 +475,6 @@ button.addEventListener('click', function () {
 						if(element.classList.contains('dropdownButton')) {
 							element.classList.add('dropdownButton--active');
 						}
-						
 					}
 					else {
 						document.getElementById(element.getAttribute('aria-controls')).setAttribute('hidden', 'hidden');
@@ -550,10 +551,10 @@ button.addEventListener('click', function () {
 					var header = document.createElement('div');
 					header.setAttribute('class', 'popin-header');
 					var h1 = document.createElement('h1');
-					h1.appendChild(document.createTextNode('A propos de cet élément'));
+					h1.appendChild(document.createTextNode(chrome.i18n.getMessage('panelAboutElement')));
 					var closebutton = document.createElement('button');
 					closebutton.setAttribute('type', 'button');
-					closebutton.appendChild(document.createTextNode('Retour aux résultats'));
+					closebutton.appendChild(document.createTextNode(chrome.i18n.getMessage('optionBackresults')));
 					closebutton.addEventListener('click', function(event) {
 						var tanagurupopin = this.parentNode.parentNode.parentNode;
 						tanagurupopin.setAttribute('hidden', 'hidden');
@@ -574,7 +575,7 @@ button.addEventListener('click', function () {
 					img.setAttribute('alt', '');
 					img.setAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAd9JREFUSA3tVD1LW2EUfs57kyoVcXAoSHWpQz5m8QdUBUFK5wp2qCB0MGkjfkQHp4sOVm8GO7SgUPwFomBD/QUdTRTRRcGhFNFB80Xu8cQ0eLgmt0unkru8zznnec7Xe+8Fms9/vwH624Th2dUBMqaPytjKLMfOavzojNPDFkYZ/PPQjqdrfu9pvA5tR5POG2NZaeliHuT26ljZ4jARLRgy38PJtTEd09i3ABO9FvIvlBHJLH3Y18IjO76Xz5VCzLgwoFc6prFvAWI8lQRXejVafPopcU7E1wC1ar/GvgVAHKySFxvxCDLmA0+nruLAYxcQmrM7LbSNiLhf9v8DWHTr8cQnA/IBMQ1G55y3pWJp53hl6rfm1u3MmDYHhjaZuB0uf9ECL3bBX+95wg+0BFe98boFcswJ18V72e0tDMa9Im3LW/QOjBsZZqJQLCZ0rIJ9v4PIfCot4p6sfRlusCaKJlNZSX6esWND3uQVu+4ENaLcYL6KG9+BXDBLn8Waxnv6FhBpXop0vPi40u0VVuze6dRzZuqQCf408pjlXwC8DaJnLa2BTCTpvNTy0Gxq6EkQh/KSdjFoV8c09i0g/5hvKPOwJPnMhdKJFlrMRzLdeiWetSc3dKyJmxv4txu4A7som3rR28JBAAAAAElFTkSuQmCC');
 					h2.appendChild(img);
-					h2.appendChild(document.createTextNode(' Sélecteur CSS'));
+					h2.appendChild(document.createTextNode(' '+chrome.i18n.getMessage('word_selector')+' CSS'));
 					cssselector.appendChild(h2);
 					var p = document.createElement('p');
 					p.appendChild(document.createTextNode(cssify(element.getAttribute('data-xpath'))));
@@ -590,15 +591,15 @@ button.addEventListener('click', function () {
 					keepcsssimplep.appendChild(document.createTextNode(' '));
 					var label = document.createElement('label');
 					label.setAttribute('for', checkbox.getAttribute('id'));
-					label.appendChild(document.createTextNode('Conserver les pseudo-classes :first-of-type et :nth-of-type dans le sélecteur CSS.'));
+					label.appendChild(document.createTextNode(chrome.i18n.getMessage('optionSavePseudoClasses')));
 					keepcsssimplep.appendChild(label);
 					cssactions.appendChild(keepcsssimplep);
 					var copyp = document.createElement('p');
 					var copybutton = document.createElement('button');
 					copybutton.setAttribute('data-action', 'copy-action');
 					copybutton.setAttribute('type', 'button');
-					copybutton.setAttribute('aria-label', 'Copier dans le presse-papier le sélecteur CSS');
-					copybutton.appendChild(document.createTextNode('Copier dans le presse-papier'));
+					copybutton.setAttribute('aria-label', chrome.i18n.getMessage('optionCopyCssSelector'));
+					copybutton.appendChild(document.createTextNode(chrome.i18n.getMessage('optionCopyBtn')));
 					copyp.appendChild(copybutton);
 					cssactions.appendChild(copyp);
 					cssselector.appendChild(cssactions);
@@ -609,7 +610,7 @@ button.addEventListener('click', function () {
 					img.setAttribute('alt', '');
 					img.setAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAapJREFUSA3tUj0sQ1EUPue+UgxVJrpoYigaEhsJohNjZ5PJ+uL/b2kkfuKnxGCwMjTpJhYLEtHB0IH2dRCRLkIkqoj4eb3HuWkqTwepxCDSL7nnnb/7nfu+ewGKKCrw5xXAXzoheidWfSREFyJcyTc4SCzp54r7VwZ4ptZabCCizKYpUgJ6YBM05vSZggc0Tq+3IVEvIJZIkFEtdb8X3wg8NQ4v16G9pA8R5xT5F5AcKmhAw+RquxDaPjeXWQjOgOiOED2cv2H/mBDaEbD1s4do1qYCd3+grNzl7BQEbhJwTy/mSWJlJJmrCRTdeeSq1MzrlijTa0TSp3AYMF0DgYqq6so2QlGHJJPxhcF99I4u1lCpPcyTO9QuBdbwDgm2+EQODnysrYMHpPjK6rMdWUtEMSOSalXk1rzVtzG5biVXRY6r2ej82wa/ivmMNA+19OMVOZ1+rvm5VisBkxIzwe/IFZcNMhjL3r0K84CwE5/VNy3ZbfbVKhjCuDgKEYB6Ac95uy5N0wzl5X4csrRZNI0HvSi0HhDQIwnC4v11N740dp2rF79FBf6xAh+YyZKoiNAU8AAAAABJRU5ErkJggg==');
 					h2.appendChild(img);
-					h2.appendChild(document.createTextNode(' Chemin de localisation (XPath)'));
+					h2.appendChild(document.createTextNode(' '+chrome.i18n.getMessage('optionLocalisation')+' (XPath)'));
 					xpath.appendChild(h2);
 					var p = document.createElement('p');
 					p.appendChild(document.createTextNode(element.getAttribute('data-xpath')));
@@ -625,15 +626,15 @@ button.addEventListener('click', function () {
 					keepxpathsimplep.appendChild(document.createTextNode(' '));
 					var label = document.createElement('label');
 					label.setAttribute('for', checkbox.getAttribute('id'));
-					label.appendChild(document.createTextNode('Conserver les attributs class et id dans le chemin de localisation (XPath).'));
+					label.appendChild(document.createTextNode(chrome.i18n.getMessage('optionAttLocalisation')));
 					keepxpathsimplep.appendChild(label);
 					xpathactions.appendChild(keepxpathsimplep);
 					var copyp = document.createElement('p');
 					var copybutton = document.createElement('button');
 					copybutton.setAttribute('data-action', 'copy-action');
 					copybutton.setAttribute('type', 'button');
-					copybutton.setAttribute('aria-label', 'Copier dans le presse-papier le chemin de localisation (XPath)');
-					copybutton.appendChild(document.createTextNode('Copier dans le presse-papier'));
+					copybutton.setAttribute('aria-label', chrome.i18n.getMessage('optionCopyLocalisation'));
+					copybutton.appendChild(document.createTextNode(chrome.i18n.getMessage('optionCopyBtn')));
 					copyp.appendChild(copybutton);
 					xpathactions.appendChild(copyp);
 					xpath.appendChild(xpathactions);
@@ -857,7 +858,7 @@ button.addEventListener('click', function () {
 							subTabAll.setAttribute('aria-selected', 'true');
 							subTabAll.setAttribute('tabindex', '0');
 							subTabAll.setAttribute('aria-controls', 'earlAll');
-							subTabAll.textContent = "Tous";
+							subTabAll.textContent = chrome.i18n.getMessage('word_all');
 							subTabsList.appendChild(subTabAll);
 
 
@@ -978,8 +979,9 @@ button.addEventListener('click', function () {
 						var headingsPanelContent = document.importNode(headingsTemplate.content, true);
 						headingsPanel.appendChild(headingsPanelContent);
 						headingsPanel.querySelector('h2').textContent = chrome.i18n.getMessage('msgHeadingsHierarchy');
-						var headingsPanelp = headingsPanel.querySelector('.headings-message');
-						headingsPanelp.textContent = "Hiérarchie des titres de la page, représentée sous forme de listes.";
+						headingsPanel.querySelector('.headings-message').textContent = chrome.i18n.getMessage('panelAllHeadingsDesc');
+						headingsPanel.querySelector('.headings-legend').textContent = chrome.i18n.getMessage('contrastLegend1');
+						headingsPanel.querySelector('.headings-error-desc').textContent = chrome.i18n.getMessage('panelErrorHeading');
 
 						var container = headingsPanel.querySelector('.headings-container');
 
@@ -1002,6 +1004,8 @@ button.addEventListener('click', function () {
 								btn.click();
 							});
 						});
+
+						var herror = 0;
 
 						function arrayToList(ar, currentList) {
 							ar.forEach(heading => {
@@ -1029,14 +1033,20 @@ button.addEventListener('click', function () {
 									let headingItem = document.createElement('li');
 									let headingSpan = document.createElement('span');
 									headingSpan.textContent = heading.level+" - "+heading.an;
+									if(heading.error) {
+										headingSpan.className = "heading-error";
+										headingSpan.setAttribute('aria-describedby', 'heading_error');
+										herror++;
+									}
+									else headingSpan.className = "item-actions-highlight";
 
 									let buttonShowContainer = document.createElement('span');
-									buttonShowContainer.className = "item-actions-highlight"
+									buttonShowContainer.className = "item-actions-highlight";
 									let buttonShow = document.createElement('button');
 									buttonShow.className = "visible";
 									let buttonShowLabel = document.createElement('span');
 									buttonShowLabel.className = "visually-hidden";
-									buttonShowLabel.textContent = "mettre le titre en évidence sur la page";
+									buttonShowLabel.textContent = chrome.i18n.getMessage('panelHighlightHeading');
 
 									buttonShow.addEventListener('click', function(evt) {
 										let element = evt.target.closest('button');
@@ -1069,7 +1079,7 @@ button.addEventListener('click', function () {
 									buttonInspect.className = "visible";
 									let buttonInspectLabel = document.createElement('span');
 									buttonInspectLabel.className = "visually-hidden";
-									buttonInspectLabel.textContent = "sélectionner le titre dans l'onglet inspecteur";
+									buttonInspectLabel.textContent = chrome.i18n.getMessage('panelInspectHeading');
 
 									buttonInspect.addEventListener('click', function() {
 										chrome.devtools.inspectedWindow.eval(`inspect(document.querySelector('[sdata-tng-hindex="${heading.index}"]'))`);
@@ -1086,6 +1096,12 @@ button.addEventListener('click', function () {
 						}
 
 						response.headings.forEach(ar => arrayToList(ar, container));
+
+						if(herror > 0) {
+							let hstrong = document.createElement('strong');
+							hstrong.appendChild(document.createTextNode(herror));
+							headings.appendChild(hstrong);
+						}
 						rightcolumn.appendChild(headingsPanel);
 					}
 					/**
@@ -1181,7 +1197,7 @@ button.addEventListener('click', function () {
 							}, false);
 			
 							var tabpanelsectionp = document.createElement('p');
-							tabpanelsectionp.appendChild(document.createTextNode('Étiquettes : '));
+							tabpanelsectionp.appendChild(document.createTextNode(chrome.i18n.getMessage('word_label_plural')+' : '));
 							
 			
 							if (test.tags.length == 1) {
@@ -1366,7 +1382,7 @@ button.addEventListener('click', function () {
 									} else {
 										newRow.querySelector('.item-cf .item-cf-content').setAttribute('aria-describedby', 'contrast-bgNull');
 										newRow.querySelector('.item-cf .item-cf-content').classList.add('contrast-bgNull');
-										newRow.querySelector('.item-cf').setAttribute('title', 'non trouvé');
+										newRow.querySelector('.item-cf').setAttribute('title', chrome.i18n.getMessage('contrastLegend3'));
 									}
 									newRow.querySelector('.item-cf .visually-hidden').textContent = itemCF;
 									newRow.querySelector('.item-ratio').textContent = itemRatio;
@@ -1419,7 +1435,7 @@ button.addEventListener('click', function () {
 
 															if(!(subPart != 'alt' && partName.length === 0)) {
 																let subli = document.createElement('li');
-																subli.textContent = subPart === "textual-contents" ? "Contenu textuel" : subPart;
+																subli.textContent = subPart === "textual-contents" ? chrome.i18n.getMessage('panelTextualContents') : subPart;
 	
 																if(typeof n[subPart] === "string") {
 																	let subStrong = document.createElement('strong');
@@ -1462,24 +1478,24 @@ button.addEventListener('click', function () {
 													partName = partName.replace(/\s{2,}/g, " ");
 													if(part != 'alt' && partName.length === 0) continue;
 													let li = document.createElement('li');
-													li.textContent = part === "textual-contents" ? "Contenu textuel" : part;
+													li.textContent = part === "textual-contents" ? chrome.i18n.getMessage('panelTextualContents') : part;
 													addLIcontent(li, n[part]);
 													anList.appendChild(li);
 												};
 											});
 											newRow.querySelector('.item-accessiblename .an-button').setAttribute('aria-expanded', 'false');
 											newRow.querySelector('.item-accessiblename .an-button').setAttribute('aria-controls', anList.id);
-											newRow.querySelector('.item-accessiblename .an-button').textContent = "Afficher le détail du calcul";
+											newRow.querySelector('.item-accessiblename .an-button').textContent = chrome.i18n.getMessage('panelShowAnDetails');
 											newRow.querySelector('.item-accessiblename .an-button').addEventListener('click', (e) => {
 												var isOpen = e.target.getAttribute('aria-expanded') === "true";
 												if(isOpen) {
 													e.target.setAttribute('aria-expanded', 'false');
 													document.getElementById(e.target.getAttribute('aria-controls')).style.display = "none";
-													e.target.textContent = "Afficher le détail du calcul";
+													e.target.textContent = chrome.i18n.getMessage('panelShowAnDetails');
 												} else {
 													e.target.setAttribute('aria-expanded', 'true');
 													document.getElementById(e.target.getAttribute('aria-controls')).style.display = "block";
-													e.target.textContent = "Cacher le détail du calcul";
+													e.target.textContent = chrome.i18n.getMessage('panelHideAnDetails');
 												}
 											});
 										} else {
@@ -1493,47 +1509,47 @@ button.addEventListener('click', function () {
 		
 								if(itemKeyboard.length > 0) {
 									countkeyboardyes += 1;
-									newRow.querySelector('.item-keyboard .keyboardyes').setAttribute('title', 'Oui ('+ itemKeyboard + ')');
-									newRow.querySelector('.item-keyboard .visually-hidden').textContent = 'Oui ('+ itemKeyboard + ')';
+									newRow.querySelector('.item-keyboard .keyboardyes').setAttribute('title', chrome.i18n.getMessage('word_yes')+' ('+ itemKeyboard + ')');
+									newRow.querySelector('.item-keyboard .visually-hidden').textContent = chrome.i18n.getMessage('word_yes')+' ('+ itemKeyboard + ')';
 								} else {
 									countkeyboardno += 1;
-									newRow.querySelector('.item-keyboard .keyboardyes').setAttribute('title', 'Non');
+									newRow.querySelector('.item-keyboard .keyboardyes').setAttribute('title', chrome.i18n.getMessage('word_no'));
 									newRow.querySelector('.item-keyboard .keyboardyes').className = 'keyboardno';
-									newRow.querySelector('.item-keyboard .visually-hidden').textContent = 'Non';
+									newRow.querySelector('.item-keyboard .visually-hidden').textContent = chrome.i18n.getMessage('word_no');
 								}
 		
 								if(itemReader.length === 0) {
 									countreaderyes += 1;
-									newRow.querySelector('.item-reader .readeryes').setAttribute('title', 'oui');
-									newRow.querySelector('.item-reader .visually-hidden').textContent = 'Oui';
+									newRow.querySelector('.item-reader .readeryes').setAttribute('title', chrome.i18n.getMessage('word_yes'));
+									newRow.querySelector('.item-reader .visually-hidden').textContent = chrome.i18n.getMessage('word_yes');
 								} else {
 									countreaderno += 1;
-									newRow.querySelector('.item-reader .readeryes').setAttribute('title', 'Non (' + itemReader + ')');
+									newRow.querySelector('.item-reader .readeryes').setAttribute('title', chrome.i18n.getMessage('word_no')+' (' + itemReader + ')');
 									newRow.querySelector('.item-reader .readeryes').className = 'readerno';
-									newRow.querySelector('.item-reader .visually-hidden').textContent = 'Non (' + itemReader + ')';
+									newRow.querySelector('.item-reader .visually-hidden').textContent = chrome.i18n.getMessage('word_no')+' (' + itemReader + ')';
 								}
 		
 								if(test.data[h].isVisible) {
 									countvisible += 1;
 		
-									newRow.querySelector('.item-actions .item-actions-highlight button').setAttribute('title', 'Mettre en évidence sur la page (' + test.name + ', item ' + (h + 1) + ')');
-									newRow.querySelector('.item-actions .item-actions-highlight .visually-hidden').textContent = 'Mettre en évidence sur la page (' + test.name + ', item ' + (h + 1) + ')';
+									newRow.querySelector('.item-actions .item-actions-highlight button').setAttribute('title', chrome.i18n.getMessage('panelActionHighlight')+' (' + test.name + ', item ' + (h + 1) + ')');
+									newRow.querySelector('.item-actions .item-actions-highlight .visually-hidden').textContent = chrome.i18n.getMessage('panelActionHighlight')+' (' + test.name + ', item ' + (h + 1) + ')';
 								} else {
 									countinvisible += 1;
 		
 									newRow.querySelector('.item-actions .item-actions-highlight button').className = 'hidden';
 									newRow.querySelector('.item-actions .item-actions-highlight button').disabled = true;
-									newRow.querySelector('.item-actions .item-actions-highlight button').setAttribute('title', "Cet élément n'est pas visible à l'écran.");
-									newRow.querySelector('.item-actions .item-actions-highlight .visually-hidden').textContent = "Cet élément n'est pas visible à l'écran.";
+									newRow.querySelector('.item-actions .item-actions-highlight button').setAttribute('title', chrome.i18n.getMessage('panelHiddenElement'));
+									newRow.querySelector('.item-actions .item-actions-highlight .visually-hidden').textContent = chrome.i18n.getMessage('panelHiddenElement');
 								}
 		
-								newRow.querySelector('.item-actions .item-actions-inspect button').setAttribute('title', 'Révéler dans l\'inspecteur (' + test.name + ', item ' + (h + 1) + ')');
+								newRow.querySelector('.item-actions .item-actions-inspect button').setAttribute('title', chrome.i18n.getMessage('panelActionInspect')+' (' + test.name + ', item ' + (h + 1) + ')');
 								newRow.querySelector('.item-actions .item-actions-inspect button').className = "visible";
-								newRow.querySelector('.item-actions .item-actions-inspect .visually-hidden').textContent = 'Révéler dans l\'inspecteur (' + test.name + ', item ' + (h + 1) + ')';
+								newRow.querySelector('.item-actions .item-actions-inspect .visually-hidden').textContent = chrome.i18n.getMessage('panelActionInspect')+' (' + test.name + ', item ' + (h + 1) + ')';
 		
-								newRow.querySelector('.item-actions .item-actions-about button').setAttribute('title', 'A propos de cet élément (' + test.name + ', item ' + (h + 1) + ')');
+								newRow.querySelector('.item-actions .item-actions-about button').setAttribute('title', chrome.i18n.getMessage('panelAboutElement')+' (' + test.name + ', item ' + (h + 1) + ')');
 								newRow.querySelector('.item-actions .item-actions-about button').setAttribute('data-xpath', itemXPath);
-								newRow.querySelector('.item-actions .item-actions-about .visually-hidden').textContent = 'A propos de cet élément (' + test.name + ', item ' + (h + 1) + ')';
+								newRow.querySelector('.item-actions .item-actions-about .visually-hidden').textContent = chrome.i18n.getMessage('panelAboutElement')+' (' + test.name + ', item ' + (h + 1) + ')';
 								
 								table.appendChild(newRow);
 							}
@@ -1632,8 +1648,8 @@ button.addEventListener('click', function () {
 									options.push({
 										name: 'Clavier',
 										options: [
-											{ name: 'Les éléments atteignables au clavier uniquement (' + countkeyboardyes + ')', value: 'keyboardyes' },
-											{ name: 'Les éléments non atteignables au clavier uniquement (' + countkeyboardno + ')', value: 'keyboardno' }
+											{ name: chrome.i18n.getMessage('msgKeyboardyes')+' (' + countkeyboardyes + ')', value: 'keyboardyes' },
+											{ name: chrome.i18n.getMessage('msgKeyboardno')+' (' + countkeyboardno + ')', value: 'keyboardno' }
 										]
 									});
 								}
@@ -1641,8 +1657,8 @@ button.addEventListener('click', function () {
 									options.push({
 										name: 'Restitution',
 										options: [
-											{ name: 'Les éléments restitués uniquement (' + countreaderyes + ')', value: 'readeryes' },
-											{ name: 'Les éléments non restitutés uniquement (' + countreaderno + ')', value: 'readerno' }
+											{ name: chrome.i18n.getMessage('msgReaderyes')+' (' + countreaderyes + ')', value: 'readeryes' },
+											{ name: chrome.i18n.getMessage('msgReaderno')+' (' + countreaderno + ')', value: 'readerno' }
 										]
 									});
 								}
@@ -1650,8 +1666,8 @@ button.addEventListener('click', function () {
 									options.push({
 										name: 'Visibilité',
 										options: [
-											{ name: 'Les éléments visibles uniquement (' + countvisible + ')', value: 'visible' },
-											{ name: 'Les élements non visibles uniquement (' + countinvisible + ')', value: 'hidden' }
+											{ name: chrome.i18n.getMessage('msgVisible')+' (' + countvisible + ')', value: 'visible' },
+											{ name: chrome.i18n.getMessage('msgHidden')+' (' + countinvisible + ')', value: 'hidden' }
 										]
 									});
 								}
@@ -1684,7 +1700,7 @@ button.addEventListener('click', function () {
 							var exportbutton = document.createElement('button');
 							exportbutton.style.color = '#d90b0b'; /* background-color: #d90b0b; background: linear-gradient(top, #ef362c, #d90b0b); */
 							exportbutton.setAttribute('type', 'button');
-							exportbutton.setAttribute('title', 'Exporter les données du test - ' + test.name.charAt(0).toUpperCase() + test.name.slice(1));
+							exportbutton.setAttribute('title', chrome.i18n.getMessage('optionExportTestData')+' - ' + test.name.charAt(0).toUpperCase() + test.name.slice(1));
 							exportbutton.setAttribute('aria-label', exportbutton.getAttribute('title'));
 							exportbutton.appendChild(document.createTextNode('\u2b07')); // Exporter les données de ce test
 							exportbutton.addEventListener('click', function(event) {
@@ -1707,7 +1723,7 @@ button.addEventListener('click', function () {
 								h1.appendChild(document.createTextNode(this.getAttribute('aria-label')));
 								var closebutton = document.createElement('button');
 								closebutton.setAttribute('type', 'button');
-								closebutton.appendChild(document.createTextNode('Retour au résultat du test'));
+								closebutton.appendChild(document.createTextNode(chrome.i18n.getMessage('optionBackresults')));
 								closebutton.addEventListener('click', function(event) {
 									var tanagurupopin = this.parentNode.parentNode.parentNode;
 									tanagurupopin.setAttribute('hidden', 'hidden');
@@ -1726,7 +1742,7 @@ button.addEventListener('click', function () {
 								var fileh2 = document.createElement('h2');
 								var filelabel = document.createElement('label');
 								filelabel.setAttribute('for', 'export-filename');
-								filelabel.appendChild(document.createTextNode("Nom du fichier d'export"));
+								filelabel.appendChild(document.createTextNode(chrome.i18n.getMessage('optionExportFileName')));
 								fileh2.appendChild(filelabel);
 								file.appendChild(fileh2);
 								var filep = document.createElement('p');
@@ -1745,7 +1761,7 @@ button.addEventListener('click', function () {
 								var toignoreh2 = document.createElement('h2');
 								var toignorelabel = document.createElement('label');
 								toignorelabel.setAttribute('for', 'toignore');
-								toignorelabel.appendChild(document.createTextNode('Données à ne pas exporter'));
+								toignorelabel.appendChild(document.createTextNode(chrome.i18n.getMessage('optionNoExportData')));
 								toignoreh2.appendChild(toignorelabel);
 								toignorediv.appendChild(toignoreh2);
 								var toignorep = document.createElement('p');
@@ -1774,7 +1790,7 @@ button.addEventListener('click', function () {
 								var toignoredesc = document.createElement('small');
 								toignoredesc.setAttribute('hidden', 'hidden');
 								toignoredesc.setAttribute('id', toignoreselect.getAttribute('aria-describedby'));
-								toignoredesc.appendChild(document.createTextNode('Pour exporter, sélectionnez une ou plusieurs données puis ci-après cette liste, activez le bouton "Inclure ces données dans l\'export".'));
+								toignoredesc.appendChild(document.createTextNode(chrome.i18n.getMessage('optionNoExportData')));
 								toignorep.appendChild(toignoredesc);
 								toignorediv.appendChild(toignorep);
 								exportitems.appendChild(toignorediv);
@@ -1841,7 +1857,7 @@ button.addEventListener('click', function () {
 								var toexporth2 = document.createElement('h2');
 								var toexportlabel = document.createElement('label');
 								toexportlabel.setAttribute('for', 'toexport');
-								toexportlabel.appendChild(document.createTextNode('Données à exporter'));
+								toexportlabel.appendChild(document.createTextNode(chrome.i18n.getMessage('optionExportData')));
 								toexporth2.appendChild(toexportlabel);
 								toexportdiv.appendChild(toexporth2);
 								var toexportp = document.createElement('p');
@@ -1885,14 +1901,14 @@ button.addEventListener('click', function () {
 								var toexportdesc = document.createElement('small');
 								toexportdesc.setAttribute('hidden', 'hidden');
 								toexportdesc.setAttribute('id', toexportselect.getAttribute('aria-describedby'));
-								toexportdesc.appendChild(document.createTextNode('Pour ne pas exporter, sélectionnez une ou plusieurs données puis ci-avant cette liste, activez le bouton "Exclure ces données de l\'export". Pour réorganiser, l\'ordre des données à exporter, sélectionnez une donnée et ci-après cette liste, activez l\'un des boutons "Déplacer la donnée à exporter sélectionnée vers le haut" ou "Déplacer la donnée à exporter sélectionnée vers le bas".'));
+								toexportdesc.appendChild(document.createTextNode(chrome.i18n.getMessage('optionNoExportDesc')));
 								toexportp.appendChild(toexportdesc);
 								toexportdiv.appendChild(toexportp);
 								exportitems.appendChild(toexportdiv);
 								var exportorder = document.createElement('ul');
 								var exportorderbuttons = [
 									{
-										id: 'moveup', accessiblename: "Déplacer la donnée à exporter sélectionnée vers le haut", name: '\u2B06', exec: function(event) {
+										id: 'moveup', accessiblename: chrome.i18n.getMessage('optionExportMoveup'), name: '\u2B06', exec: function(event) {
 											var toexport = document.getElementById('toexport');
 											var insertbefore = toexport.selectedIndex - 1;
 											toexport.insertBefore(toexport.options[toexport.selectedIndex], toexport.options[insertbefore]);
@@ -1903,7 +1919,7 @@ button.addEventListener('click', function () {
 										}
 									},
 									{
-										id: 'movedown', accessiblename: "Déplacer la donnée à exporter sélectionnée vers le bas", name: '\u2B07', exec: function(event) {
+										id: 'movedown', accessiblename: chrome.i18n.getMessage('optionExportMovedown'), name: '\u2B07', exec: function(event) {
 											var toexport = document.getElementById('toexport');
 											var insertafter = toexport.selectedIndex + 1;
 											toexport.insertBefore(toexport.options[insertafter], toexport.options[toexport.selectedIndex]);
@@ -1962,7 +1978,7 @@ button.addEventListener('click', function () {
 										data: { url: window.URL.createObjectURL(csvFile), filename: document.getElementById('export-filename').value }
 									});
 								}, false);
-								exportbutton.appendChild(document.createTextNode("Exporter les données au format CSV"));
+								exportbutton.appendChild(document.createTextNode(chrome.i18n.getMessage('optionExportCsv')));
 								ebpp.appendChild(exportbutton);
 								exportbuttonparent.appendChild(ebpp);
 								tanagurupopin.appendChild(exportbuttonparent);
@@ -2040,7 +2056,7 @@ button.addEventListener('click', function () {
 						var tte = new Date().getTime();
 						var teststimer = (tte - startTimer) / 1000;
 						var ptimersmall = document.createElement('small');
-						ptimersmall.appendChild(document.createTextNode('Analyse réalisée en ' + teststimer + ' seconde' + (teststimer > 1 ? 's' : '') + '.'));
+						ptimersmall.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardAnalyzeTimer')+' ' + teststimer + ' '+chrome.i18n.getMessage('word_second') + (teststimer > 1 ? 's' : '') + '.'));
 						ptimer.appendChild(ptimersmall);
 						nav.firstChild.insertAdjacentElement('afterend', ptimer);
 						ul.querySelectorAll('li[hidden]').forEach(li => li.remove());
@@ -2051,8 +2067,17 @@ button.addEventListener('click', function () {
 						}
 
 						dashboardpanel.querySelector('#listenDOM').disabled = false;
+						dashboardpanel.querySelector('#taborder').disabled = false;
+						dashboardpanel.querySelector('.taborder-label').textContent = chrome.i18n.getMessage('dashboard_ordertab_label');
+						dashboardpanel.querySelector('.taborder-desc-legend').textContent = chrome.i18n.getMessage('contrastLegend1');
+						dashboardpanel.querySelector('.taborder-desc-error').lastElementChild.textContent = chrome.i18n.getMessage('dashboard_ordertab_legend_error');
+						dashboardpanel.querySelector('.taborder-desc-invisible').lastElementChild.textContent = chrome.i18n.getMessage('dashboard_ordertab_legend_invisible');
+						dashboardpanel.querySelector('label[for="taborder"] .slider').textContent = chrome.i18n.getMessage('word_no');
 						dashboardpanel.querySelector('label[for="listenDOM"]').removeAttribute('style');
+						dashboardpanel.querySelector('label[for="taborder"]').removeAttribute('style');
+						dashboardpanel.querySelector('#taborder-desc').removeAttribute('style');
 						document.getElementById('reloadTests').removeAttribute('hidden');
+
 						if(listenDomModif) {
 							chrome.runtime.sendMessage({
 								tabId: chrome.devtools.inspectedWindow.tabId,
@@ -2062,7 +2087,7 @@ button.addEventListener('click', function () {
 								addObsInterface();
 								if(!dashboardpanel.querySelector('#listenDOM').checked) {
 									dashboardpanel.querySelector('#listenDOM').checked = true;
-									dashboardpanel.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenON');
+									dashboardpanel.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('word_yes');
 								}
 							});
 						}
@@ -2080,7 +2105,7 @@ button.addEventListener('click', function () {
 			var tte = new Date().getTime();
 			var teststimer = (tte - startTimer) / 1000;
 			var ptimersmall = document.createElement('small');
-			ptimersmall.appendChild(document.createTextNode('Analyse réalisée en ' + teststimer + ' seconde' + (teststimer > 1 ? 's' : '') + '.'));
+			ptimersmall.appendChild(document.createTextNode(chrome.i18n.getMessage('msgDashboardAnalyzeTimer')+' ' + teststimer + ' '+chrome.i18n.getMessage('word_second') + (teststimer > 1 ? 's' : '') + '.'));
 			ptimer.appendChild(ptimersmall);
 			nav.firstChild.insertAdjacentElement('afterend', ptimer);
 			ul.querySelectorAll('li[hidden]').forEach(li => li.remove());
@@ -2101,13 +2126,19 @@ button.addEventListener('click', function () {
 		let hlElement = main.children[1].querySelector('.highlightON');
 		if(hlElement) hlElement.click();
 		if(listenDomModif) dashboardpanel.querySelector('#listenDOM').click();
+		if(dashboardpanel.querySelector('#taborder').checked) dashboardpanel.querySelector('#taborder').click();
 		ul.querySelectorAll('li:not([id="tab0"])').forEach(li => {li.remove()});
+		if(ul.querySelector('#tab0 strong')) ul.querySelector('#tab0 strong').remove();
 		document.getElementById('headingsPanel').remove();
 		document.getElementById('tests').remove();
 		document.querySelector('.analyzeTimer').remove();
 		dashboardpanelp.textContent = chrome.i18n.getMessage('msgDashboardResultLoad');
 		dashboardpanel.querySelector('#listenDOM').disabled = true;
+		dashboardpanel.querySelector('#taborder').disabled = true;
 		dashboardpanel.querySelector('label[for="listenDOM"]').style.display = "none";
+		dashboardpanel.querySelector('label[for="taborder"]').style.display = "none";
+		dashboardpanel.querySelector('#taborder-desc').style.display = "none";
+		dashboardpanel.querySelector('#taborder-error').textContent = "";
 		document.getElementById('reloadTests').setAttribute('hidden', "true");
 		displayResults();
 	}
@@ -2189,7 +2220,7 @@ button.addEventListener('click', function () {
 					newBtn.appendChild(strong);
 
 					let span = document.createElement('span');
-					span.textContent = migSize > 1 ? "éléments modifiés" : "élément modifié";
+					span.textContent = migSize > 1 ? chrome.i18n.getMessage('panelUpdatedElementPlural') : chrome.i18n.getMessage('panelUpdatedElement');
 					newBtn.appendChild(span);
 
 					newBtn.setAttribute('aria-expanded', 'false');
@@ -2280,13 +2311,13 @@ button.addEventListener('click', function () {
 	
 						let inspectParagraph = document.createElement('p');
 						inspectParagraph.className = "item-actions-inspect";
-						inspectParagraph.textContent = "Sélectionner l'élément dans l'inspecteur de code : ";
+						inspectParagraph.textContent = chrome.i18n.getMessage('panelActionInspect')+" : ";
 
 						let inspectObj = document.createElement('button');
 						inspectObj.className = "visible obsDOM";
 						let inspectLabel = document.createElement('span');
 						inspectLabel.className = "visually-hidden";
-						inspectLabel.textContent = "inspecter";
+						inspectLabel.textContent = chrome.i18n.getMessage('word_inspect');
 						inspectObj.appendChild(inspectLabel);
 						const currentSelector = '[data-tng-dom="'+domNb+'"]';
 
@@ -2304,8 +2335,8 @@ button.addEventListener('click', function () {
 						li.textContent = obj.desc;
 	
 						if(obj.type > 3) {
-							let before = obj.before ? " - Avant : "+obj.before : null;
-							let after = obj.after ? " - Après : "+obj.after : null;
+							let before = obj.before ? " - "+chrome.i18n.getMessage('word_before')+" : "+obj.before : null;
+							let after = obj.after ? " - "+chrome.i18n.getMessage('word_after')+" : "+obj.after : null;
 
 							if(before) {
 								li.appendChild(document.createElement('br'));
@@ -2347,7 +2378,7 @@ button.addEventListener('click', function () {
 							else {
 								//* Before element
 								let beforeParagraph = document.createElement('p');
-								beforeParagraph.textContent = "Avant:";
+								beforeParagraph.textContent = chrome.i18n.getMessage('word_before')+":";
 								li.appendChild(beforeParagraph);
 
 								let beforeContainer = document.createElement('div');
@@ -2360,7 +2391,7 @@ button.addEventListener('click', function () {
 
 								//* After element
 								let afterParagraph = document.createElement('p');
-								afterParagraph.textContent = "Après:";
+								afterParagraph.textContent = chrome.i18n.getMessage('word_before')+":";
 								li.appendChild(afterParagraph);
 
 								let afterContainer = document.createElement('div');
@@ -2388,7 +2419,7 @@ button.addEventListener('click', function () {
 				let counterList = document.querySelector('button[aria-controls="'+midID+'"] strong');
 				let elCount = domChangeList.querySelectorAll(':scope>li').length;
 				counterList.textContent = elCount;
-				document.querySelector('button[aria-controls="'+midID+'"] strong+span').textContent = elCount > 1 ? "éléments modifiés" : "élément modifié";
+				document.querySelector('button[aria-controls="'+midID+'"] strong+span').textContent = elCount > 1 ? chrome.i18n.getMessage('panelUpdatedElementPlural') : chrome.i18n.getMessage('panelUpdatedElement');
 				
 				document.querySelector("#tabpanel1 .DOMobserver-message").textContent = chrome.i18n.getMessage('DOMpanelMessage');
 
@@ -2423,7 +2454,15 @@ button.addEventListener('click', function () {
 
 		if(request.command == "pageChanged") {
 			if(dashboardpanel.querySelector('#listenDOM').checked) dashboardpanel.querySelector('#listenDOM').click();
+			if(dashboardpanel.querySelector('#taborder').checked) dashboardpanel.querySelector('#taborder').click();
 			dashboardpanel.querySelector('#listenDOM').disabled = true;
+			dashboardpanel.querySelector('#taborder').disabled = true;
+
+			if(! ul.querySelector('#tab0 strong')) {
+				let dashboardStrong = document.createElement('strong');
+				dashboardStrong.textContent = "1";
+				ul.querySelector('#tab0').appendChild(dashboardStrong);
+			}
 
 			let allButtonDomAction = document.querySelectorAll('button[data-action]');
 			allButtonDomAction.forEach(btn => {
@@ -2442,10 +2481,13 @@ button.addEventListener('click', function () {
 		}
 	}
 
+	/**
+	 ** Manage listen DOM switcher
+	 */
 	function listenDOMchange(e) {
 		if(e.target.disabled) return;
 		if(e.target.checked) {
-			document.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenON');
+			document.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('word_yes');
 
 			chrome.runtime.sendMessage({
 				tabId: chrome.devtools.inspectedWindow.tabId,
@@ -2454,7 +2496,7 @@ button.addEventListener('click', function () {
 			}, addObsInterface);
 		}
 		else {
-			document.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenOFF');
+			document.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('word_no');
 			
 			chrome.runtime.sendMessage({
 				tabId: chrome.devtools.inspectedWindow.tabId,
@@ -2464,26 +2506,59 @@ button.addEventListener('click', function () {
 		}
 	}
 
+	/**
+	 ** Manage tab order switcher
+	 */
+	function toggleTabOrder(evt) {
+		let element = evt.currentTarget;
+		if(element.disabled) return;
+		else if(element.checked) {
+			chrome.runtime.sendMessage({
+				tabId: chrome.devtools.inspectedWindow.tabId,
+				command: 'taborder',
+				state: 'on'
+			}, (response) => {
+				if(response.response[0] === "on") {
+					document.querySelector('label[for="taborder"] .slider').textContent = chrome.i18n.getMessage('word_yes');
+				} else {
+					document.querySelector('#taborder-error').textContent = chrome.i18n.getMessage('dashboard_taborder_warning');
+					element.checked = false;
+					element.disabled = true;
+				}
+			});
+		} else {
+			chrome.runtime.sendMessage({
+				tabId: chrome.devtools.inspectedWindow.tabId,
+				command: 'taborder',
+				state: 'off'
+			});
+			document.querySelector('label[for="taborder"] .slider').textContent = chrome.i18n.getMessage('word_no');
+		}
+	}
+
 	var dashboardpanelbuttonreload = dashboardpanel.querySelector('#reloadTests');
 	var dashboardpanelbuttonrestart = dashboardpanel.querySelector('#restartTests');
 
 	dashboardpanelbuttonreload.addEventListener('click', restartAnalyze);
 	dashboardpanelbuttonrestart.addEventListener('click', () => {
 		if(dashboardpanel.querySelector('#listenDOM').checked) dashboardpanel.querySelector('#listenDOM').click();
+		if(dashboardpanel.querySelector('#taborder').checked) dashboardpanel.querySelector('#taborder').click();
 		let hlElement = main.children[1].querySelector('.highlightON');
 		if(hlElement) hlElement.click();
 		window.location.reload();
 	});
+	/**save */
 	dashboardpanel.querySelector('#listenDOM').addEventListener('change', listenDOMchange);
+	dashboardpanel.querySelector('#taborder').addEventListener('change', toggleTabOrder);
 	dashboardpanelbuttonreload.textContent = chrome.i18n.getMessage('dashboardButtonReload');
 	dashboardpanelbuttonrestart.textContent = chrome.i18n.getMessage('dashboardButtonRestart');
 
 	dashboardpanel.querySelector('.listenDOM-label').textContent = chrome.i18n.getMessage('dashboardListenDOMlegend');
 	if(listenDomModif) {
 		dashboardpanel.querySelector('#listenDOM').checked = true;
-		dashboardpanel.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenON');
+		dashboardpanel.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('word_yes');
 	} else {
-		dashboardpanel.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('dashboardListenOFF');
+		dashboardpanel.querySelector('label[for="listenDOM"] .slider').textContent = chrome.i18n.getMessage('word_no');
 	}
 
 	dashboardpanel.querySelector('#listenDOM').disabled = true;

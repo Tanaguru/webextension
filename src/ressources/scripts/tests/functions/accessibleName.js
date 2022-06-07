@@ -33,7 +33,7 @@ var getAccessibleName = function () {
         nameFromContentSupported: '[role="button"], [role="cell"], [role="checkbox"], [role="columnheader"], [role="gridcell"], [role="heading"], [role="link"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"], [role="radio"], [role="row"], [role="rowgroup"], [role="rowheader"], [role="switch"], [role="tab"], [role="tooltip"], [role="treeitem"]'
     };
     var controls = {
-        nativetextboxes: 'input:not([type]), input[type="checkbox"], input[type="email"], input[type="password"], input[type="radio"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], output, textarea',
+        nativetextboxes: 'input:not([type]), input[type="checkbox"], input[type="email"], input[type="password"], input[type="radio"], input[type="date"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], output, textarea',
         customtextboxes: '[contenteditable="true"], [role="textbox"]',
         nativebuttons: 'button, input[type="button"], input[type="image"], input[type="reset"], input[type="submit"]',
         custombuttons: '[role="button"]',
@@ -82,7 +82,7 @@ var getAccessibleName = function () {
                         nodes[i].setAttribute('data-tng-labelbytraversal', 'true');
                         let an = nodes[i].fullAccessibleName;
                         result.push({"aria-labelledby": an});
-                        totalAccumulatedText += (totalAccumulatedText != '' && an[0] != '' ? ' ' : '') + an[0];
+                        totalAccumulatedText = totalAccumulatedText.trim().length === 0 || /[,.\s]/.test(an[0].split('')[0]) ? totalAccumulatedText.trim()+an[0] : totalAccumulatedText.trim()+' '+an[0];
                     }
                 }
             }
@@ -309,7 +309,7 @@ var getAccessibleName = function () {
                                 if (nodes[i].nodeType === 3) {
                                     // 2-G : The current node is a Text node, return its textual contents.
                                     result.push({"textual-contents": nodes[i].textContent});
-                                    totalAccumulatedText += (totalAccumulatedText.length === 0) ? nodes[i].textContent : (' ' + nodes[i].textContent);
+                                    totalAccumulatedText = (totalAccumulatedText.trim().length === 0 || /[,.\s]/.test(nodes[i].textContent.split('')[0])) ? totalAccumulatedText.trim()+nodes[i].textContent : (totalAccumulatedText.trim()+' ' + nodes[i].textContent);
                                 }
                                 else if (nodes[i].nodeType === 1 && nodes[i].getAttribute('data-tng-el-exposed') === "true") {
                                     // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
@@ -338,17 +338,16 @@ var getAccessibleName = function () {
                                         {[tagName2h]: tagName2hAN},
                                         {"cssaftercontent": cssaftercontent}
                                     );
-                                    
-                                    totalAccumulatedText += (totalAccumulatedText.length === 0) ? (cssbeforecontent + tagName2hAN[0] + cssaftercontent) : (' '+cssbeforecontent + tagName2hAN[0] + cssaftercontent);
+                                    totalAccumulatedText = (totalAccumulatedText.trim().length === 0 || /[,.\s]/.test(cssbeforecontent.split('')[0]) || (cssbeforecontent.length === 0 && /[,.\s]/.test(tagName2hAN[0].split('')[0]))) ? (totalAccumulatedText.trim()+cssbeforecontent + tagName2hAN[0] + cssaftercontent) : (totalAccumulatedText.trim()+' '+cssbeforecontent + tagName2hAN[0] + cssaftercontent);
                                 }
                             }
                         }
                         else {
                             result.push({"value": this.value});
-                            totalAccumulatedText += totalAccumulatedText.length === 0 ? this.value : ' '+this.value;
+                            totalAccumulatedText = totalAccumulatedText.trim().length === 0 || /[,.\s]/.test(this.value.split('')[0]) ? totalAccumulatedText.trim()+this.value : totalAccumulatedText.trim()+' '+this.value;
                         }
                         result.push({"parentcssaftercontent": parentcssaftercontent});
-                        totalAccumulatedText += totalAccumulatedText.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
+                        totalAccumulatedText = totalAccumulatedText.trim().length === 0 || /[,.\s]/.test(parentcssaftercontent.split('')[0]) ? totalAccumulatedText.trim()+parentcssaftercontent : totalAccumulatedText.trim()+' '+parentcssaftercontent;
 
                         if (totalAccumulatedText.trim() == '' && this.hasAttribute('title')) {
                             /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
@@ -363,7 +362,7 @@ var getAccessibleName = function () {
                         if (!labels[i].matches('[role="none"], [role="presentation"]')) {
                             let an = labels[i].fullAccessibleName;
                             result.push({"label": an});
-                            totalAccumulatedText += totalAccumulatedText.length === 0 ? an[0] : ' '+an[0];
+                            totalAccumulatedText = totalAccumulatedText.trim().length === 0 || /[,.\s]/.test(an[0].split('')[0]) ? totalAccumulatedText.trim()+an[0] : totalAccumulatedText.trim()+' '+an[0];
                         }
                     }
 
@@ -424,7 +423,7 @@ var getAccessibleName = function () {
                         if (nodes[i].nodeType == Node.TEXT_NODE) {
                             // 2-G : The current node is a Text node, return its textual contents.
                             result.push({"textual-contents": nodes[i].textContent});
-                            totalAccumulatedText += totalAccumulatedText.length === 0 ? nodes[i].textContent : ' '+ nodes[i].textContent;
+                            totalAccumulatedText = (totalAccumulatedText.trim().length === 0 || /[,.\s]/.test(nodes[i].textContent.split('')[0])) ? totalAccumulatedText.trim()+nodes[i].textContent : totalAccumulatedText.trim()+' '+ nodes[i].textContent;
                         }
                         else if (nodes[i].nodeType == Node.ELEMENT_NODE && nodes[i].getAttribute('data-tng-el-exposed') === "true") {
                             // 2-H : The current node is a descendant of an element whose Accessible Name is being computed, and contains descendants, proceed to 2F.i.
@@ -459,12 +458,12 @@ var getAccessibleName = function () {
                                 {[tagName2h2]: tagName2h2AN},
                                 {"cssaftercontent": cssaftercontent}
                             );
-                            
-                            totalAccumulatedText += (totalAccumulatedText.length === 0) ? (cssbeforecontent + tagName2h2AN[0] + cssaftercontent) : (' '+cssbeforecontent + tagName2h2AN[0] + cssaftercontent);
+
+                            totalAccumulatedText = (totalAccumulatedText.trim().length === 0 || /[,.\s]/.test(cssbeforecontent.split('')[0]) || (cssbeforecontent.length === 0 && /[,.\s]/.test(tagName2h2AN[0].split('')[0]))) ? (totalAccumulatedText.trim()+cssbeforecontent + tagName2h2AN[0] + cssaftercontent) : (totalAccumulatedText.trim()+' '+cssbeforecontent + tagName2h2AN[0] + cssaftercontent);
                         }
                     }
                     result.push({"parentcssaftercontent": parentcssaftercontent});
-                    totalAccumulatedText += totalAccumulatedText.length === 0 ? parentcssaftercontent : ' '+parentcssaftercontent;
+                    totalAccumulatedText = totalAccumulatedText.trim().length === 0 || /[,.\s]/.test(parentcssaftercontent.split('')[0]) ? totalAccumulatedText.trim()+parentcssaftercontent : totalAccumulatedText.trim()+' '+parentcssaftercontent;
 
                     if (totalAccumulatedText.trim() == '' && this.matches('a[href][title]')) {
                         /* 2-I : Otherwise, if the current node has a Tooltip attribute, return its value. */
@@ -480,8 +479,7 @@ var getAccessibleName = function () {
     // 2-A (condition success) : The current node is hidden and is not directly referenced by aria-labelledby.
     // 2-B, 2-C, 2-D, 2-E, 2-F, 2-G, 2-H and 2-I : Otherwise...
     
-    totalAccumulatedText.trim();
-    result.unshift(totalAccumulatedText);
+    result.unshift(totalAccumulatedText.trim());
     if(!directlyReferenced) this.setAttribute('data-tng-anobject', JSON.stringify(result));
     return result;
 };

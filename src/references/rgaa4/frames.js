@@ -1,6 +1,6 @@
 /**
  *? CADRES (terminé)
- *
+ ** dependances gérées
  * data : data-tng-frameAlt
  */
 
@@ -9,7 +9,7 @@
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des cadres avec un attribut title',
+    name: "locale__frames_name_131",
     query: 'iframe[data-tng-el-exposed="true"][title]:not([role="presentation"]), frame[data-tng-el-exposed="true"][title]:not([role="presentation"])',
     testStatus: "passed",
     mark: { attrs: ['title']},
@@ -19,7 +19,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Liste des cadres sans attribut title',
+    name: "locale__frames_name_132",
     query: 'iframe[data-tng-el-exposed="true"]:not([role="presentation"], [title]), frame[data-tng-el-exposed="true"]:not([role="presentation"], [title])',
     testStatus: "failed",
     tags: ['a11y', 'frames'],
@@ -28,7 +28,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: "Liste des cadres non exposés aux technologies d'assistance.",
+    name: "locale__frames_name_133",
     query: 'iframe[data-tng-el-exposed="false"]:not([role="presentation"]), frame[data-tng-el-exposed="false"]:not([role="presentation"])',
     testStatus: "inapplicable",
     tags: ['a11y', 'frames'],
@@ -39,7 +39,7 @@ tanaguruTestsList.push({
 // 2.2.1 Pour chaque cadre (balise <iframe> ou <frame>) ayant un attribut title, le contenu de cet attribut est-il pertinent ?
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Vérifier la pertinence des titres des cadres suivants',
+    name: "locale__frames_name_134",
     query: 'iframe[data-tng-el-exposed="true"][title]:not([role="presentation"]), frame[data-tng-el-exposed="true"][title]:not([role="presentation"])',
     filter: function (item) {
         if(item.getAttribute('title').trim().length === 0) {
@@ -50,6 +50,7 @@ tanaguruTestsList.push({
         return true;
     },
     testStatus: "cantTell",
+    depStatus: ["failed"],
     mark: { attrs: ['title']},
     tags: ['a11y', 'frames'],
     ressources: {'rgaa': ['2.2.1']}
@@ -57,7 +58,7 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
     lang: 'fr',
-    name: 'Les cadres suivants ont un titre non pertinent',
+    name: "locale__frames_name_135",
     query: '[data-tng-frameAlt]',
     testStatus: "failed",
     mark: { attrs: ['title']},

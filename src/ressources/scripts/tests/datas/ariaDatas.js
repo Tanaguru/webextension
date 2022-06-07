@@ -1525,12 +1525,12 @@ var ARIA = {
                 return undefined;
             }
         },
-            this.setUsedInRoles = function () {
-                if (this.usedInRoles == null) {
-                    var statePropertyData = ariaData.properties[this.stateProperty] || ariaData.states[this.stateProperty];
-                    this.usedInRoles = statePropertyData.usedInRoles;
-                }
-            };
+        this.setUsedInRoles = function () {
+            if (this.usedInRoles == null) {
+                var statePropertyData = ariaData.properties[this.stateProperty] || ariaData.states[this.stateProperty];
+                this.usedInRoles = statePropertyData.usedInRoles;
+            }
+        };
         this.canBeUsedInRole = function (role) {
             if (this.isValid()) {
                 this.setUsedInRoles();

@@ -431,10 +431,10 @@ function getPosition(element) {
 	scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
 	return {
-		top: rect.top + scrollTop,
-		left: rect.left + scrollLeft,
-		bottom: rect.top + scrollTop + rect.height,
-		right: rect.left + scrollLeft + rect.width
+		top: Math.round(rect.top + scrollTop),
+		left: Math.round(rect.left + scrollLeft),
+		bottom: Math.round(rect.top + scrollTop + rect.height),
+		right: Math.round(rect.left + scrollLeft + rect.width)
 	};
 }
 

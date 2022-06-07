@@ -169,8 +169,8 @@ createTanaguruTest({
 	},
 	expectedNbElements: 0,
 	explanations: {
-		'passed': "This page does not contain link elements with empty "title" attribute.",
-		'failed': "Links with an empty "title" attribute are present in the page."
+		passed: "This page does not contain link elements with empty "title" attribute.",
+		failed: "Links with an empty "title" attribute are present in the page."
 	},
 	mark: { attrs: ['title'] },
 	tags: ['a11y', 'links'],
