@@ -2124,7 +2124,7 @@ button.addEventListener('click', function () {
 		if(listenDomModif) dashboardpanel.querySelector('#listenDOM').click();
 		if(dashboardpanel.querySelector('#taborder').checked) dashboardpanel.querySelector('#taborder').click();
 		ul.querySelectorAll('li:not([id="tab0"])').forEach(li => {li.remove()});
-		ul.querySelector('#tab0 strong').remove();
+		if(ul.querySelector('#tab0 strong')) ul.querySelector('#tab0 strong').remove();
 		document.getElementById('headingsPanel').remove();
 		document.getElementById('tests').remove();
 		document.querySelector('.analyzeTimer').remove();
@@ -2453,9 +2453,11 @@ button.addEventListener('click', function () {
 			dashboardpanel.querySelector('#listenDOM').disabled = true;
 			dashboardpanel.querySelector('#taborder').disabled = true;
 
-			let dashboardStrong = document.createElement('strong');
-			dashboardStrong.textContent = "1";
-			leftcolumn.querySelector('#tab0').appendChild(dashboardStrong);
+			if(! ul.querySelector('#tab0 strong')) {
+				let dashboardStrong = document.createElement('strong');
+				dashboardStrong.textContent = "1";
+				ul.querySelector('#tab0').appendChild(dashboardStrong);
+			}
 
 			let allButtonDomAction = document.querySelectorAll('button[data-action]');
 			allButtonDomAction.forEach(btn => {
