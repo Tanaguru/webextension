@@ -42,12 +42,13 @@ var sending = sendMessage({
 	tabId: chrome.devtools.inspectedWindow.tabId
 });
 sending.then(response => {
-	if(response.response[2].url) {
+	console.log(response.response);
+	if(response.response.url) {
 		chrome.devtools.panels.create(
 			manifest.short_name,
 			'/ressources/images/icons/tanaguru-32-dark.png',
 			'/devtools/panel/tanaguru-devtools-panel.html',
-			newPanel => initTab(newPanel, response.response[0].tabId)
+			newPanel => initTab(newPanel, response.response.tabId)
 		);
 	}
 });

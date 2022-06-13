@@ -142,14 +142,19 @@ function handleMessage(request, sender, sendResponse) {
 		});
 	}
 	else if (request.command == 'tabInfos') {
-		var tabInfo = [{tabId: request.tabId}];
+		var tabInfo = {
+			tabId: request.tabId,
+			lang: null,
+			url: null
+		};
 
-		chrome.tabs.detectLanguage(request.tabId, (lg) => {
-			tabInfo.push({lang: lg});
-			chrome.tabs.get(request.tabId, tab => {
-				tabInfo.push({url: tab.url});
-				sendResponse({ command: 'executeTabInfos', response: tabInfo });
-			});
+		chrome.tabs.detectLanguage(tabInfo.tabId, (lg) => {
+			tabInfo.lang = lg;
+		});
+
+		chrome.tabs.get(tabInfo.tabId, tab => {
+			tabInfo.url = tab.url;
+			sendResponse({ command: 'executeTabInfos', response: tabInfo });
 		});
 
 		// zoom 200%
