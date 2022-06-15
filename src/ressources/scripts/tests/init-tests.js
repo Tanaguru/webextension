@@ -1,6 +1,6 @@
 var statuses = ['failed', 'cantTell', 'passed'];
 var interactiveRoles = ["button", "checkbox", "combobox", "link", "listbox", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "searchbox", "slider", "spinbutton", "switch", "tab", "textbox"];
-var DOM_archi;
+// var DOM_archi;
 var interactiveIndex = 0;
 var interactives = [];
 window.scrollTo(0,0);
@@ -559,8 +559,8 @@ function launchTests() {
 if(first === "yes") {
     if(document.querySelector('[sdata-tng-hindex]')) cleanSDATA();
 
-    localStorage.setItem("DOM", JSON.stringify(getElementProperties(document.documentElement, 1, null, null)));
-    DOM_archi = JSON.parse(localStorage.getItem("DOM"));
+    // localStorage.setItem("DOM", JSON.stringify(getElementProperties(document.documentElement, 1, null, null)));
+    // DOM_archi = JSON.parse(localStorage.getItem("DOM"));
 
     interactivesError = interactives.filter(e => (e.prop.role && e.prop.role != "application" && e.prop.role != "option") && !e.prop.tab && e.prop.interactive);
     interactivesError.forEach(e => e.el.setAttribute('data-tng-interactive-notab', 'true'));

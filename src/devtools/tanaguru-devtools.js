@@ -42,7 +42,6 @@ var sending = sendMessage({
 	tabId: chrome.devtools.inspectedWindow.tabId
 });
 sending.then(response => {
-	console.log(response.response);
 	if(response.response.url) {
 		chrome.devtools.panels.create(
 			manifest.short_name,
