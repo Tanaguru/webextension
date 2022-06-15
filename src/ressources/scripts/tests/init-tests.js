@@ -562,6 +562,8 @@ if(first === "yes") {
     // localStorage.setItem("DOM", JSON.stringify(getElementProperties(document.documentElement, 1, null, null)));
     // DOM_archi = JSON.parse(localStorage.getItem("DOM"));
 
+    getElementProperties(document.documentElement, 1, null, null);
+
     interactivesError = interactives.filter(e => (e.prop.role && e.prop.role != "application" && e.prop.role != "option") && !e.prop.tab && e.prop.interactive);
     interactivesError.forEach(e => e.el.setAttribute('data-tng-interactive-notab', 'true'));
 
