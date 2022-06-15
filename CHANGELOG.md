@@ -47,3 +47,6 @@
 - updates : interface integration, navigation/headings/links tests, internationalization
 - fixes : some tests (table title, figure legend, date field), canBeReachingUsingKeyboard function, accessibleName function
 
+## 5.0.1
+- fix : tab signature
+
