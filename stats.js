@@ -25,12 +25,15 @@ rgaa_dir.forEach(testFile => {
 var rgxStatus = /(?!tanaguruTestsList\.push\()((?:testStatus|status)(?:\s?:\s?)(?:['"].+['"]))|(?:(?:expectedNbElements\s?:\s?{?\D*\d}?)|(?:analyzeElements\s?:\s?function))/g;
 var rgxTest = /(?!tanaguruTestsList\.push\()(?:ressources\s?:\s?{\s*['"]rgaa['"]\s?:\s?\[)([^\]]+)/g;
 
+var totalTest = 0;
+
 for(var theme in script) {
     if(theme.match(/(tested)|(cantTell)|(untested)/)) continue;
     var datas = script[theme].replace(/\/\/.*/g, "");
     var result = {};
     var statuses = datas.match(rgxStatus);
     var tests = datas.match(rgxTest).map(source => source.match(/(\d+\.\d+\.\d+)+/g));
+    totalTest += tests.length;
 
     for(let i = 0; i < tests.length; i++) {
         tests[i].forEach(t => {
@@ -62,7 +65,8 @@ script["total"] = {
         "Total des tests RGAA testés": Array.from(new Set(script.tested.failedORpassed.concat(script.tested.failed).concat(script.tested.passed).concat(script.tested.inapplicable))).length
     },
     "Indéterminés": script.cantTell.length,
-    "Non testées": script.untested.length
+    "Non testées": script.untested.length,
+    "Nombre total de tests": totalTest
 }
 
 var stats = JSON.stringify(script, null, 2);

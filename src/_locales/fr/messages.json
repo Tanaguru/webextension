@@ -1679,5 +1679,8 @@
   },
   "navigation_description_3": {
     "message": "L'ordre de tabulation doit être cohérent avec l'ordre dans lequel les éléments intéractifs sont affichés dans la page"
+  },
+  "mandatory_name_34": {
+    "message": "La température doit être inférieure à 25°"
   }
 }

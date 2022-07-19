@@ -598,7 +598,7 @@ tanaguruTestsList.push({
 // 8.11.1 Critère test
 tanaguruTestsList.push({
     lang: 'fr',
-    name: "La température doit être inférieure à 25°",
+    name: 'locale__mandatory_name_34',
     status: 'untested',
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.11.1']}

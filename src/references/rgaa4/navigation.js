@@ -177,8 +177,8 @@ tanaguruTestsList.push({
 
 tanaguruTestsList.push({
 	lang: 'fr',
-	name: 'locale__navigation_name_23',
-    description: 'locale__navigation_description_3',
+	name: "locale__navigation_name_23",
+    description: "locale__navigation_description_3",
 	query: '[data-tng-tab-visual-error]',
     testStatus: "failed",
     tags: ['a11y', 'keyboard', 'navigation'],
