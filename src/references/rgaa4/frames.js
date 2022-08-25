@@ -20,7 +20,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__frames_name_132",
-    query: 'iframe[data-tng-el-exposed="true"]:not([role="presentation"], [title]), frame[data-tng-el-exposed="true"]:not([role="presentation"], [title])',
+    query: 'iframe[data-tng-el-exposed="true"]:not([role="presentation"]):not([title]), frame[data-tng-el-exposed="true"]:not([role="presentation"]):not([title])',
     testStatus: "failed",
     tags: ['a11y', 'frames'],
     ressources: {'rgaa': ['2.1.1']}

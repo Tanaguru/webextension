@@ -144,7 +144,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "locale__navigation_name_365",
-	query: '[data-tng-el-visible="false"]:not([hidden], [data-tng-notExposed*="css:display"], [data-tng-notExposed*="css:visibility"])',
+	query: '[data-tng-el-visible="false"]:not([hidden]):not([data-tng-notExposed*="css:display"]):not([data-tng-notExposed*="css:visibility"])',
 	description: "locale__navigation_description_366",
 	filter: function (item) {
         if(item.disabled) return;

@@ -3,10 +3,10 @@ function getDuplicateID() {
     var ids = [];
     var query = null;
     nodelist.forEach(node => {
-        if (node.id.trim().length > 0) {
-            if(ids[node.id] && ids[node.id] < 2) {
+        if (node.getAttribute('id').trim().length > 0) {
+            if(ids[node.getAttribute('id')] && ids[node.getAttribute('id')] < 2) {
                 var startDigit = /^\d/;
-                var id = node.id;
+                var id = node.getAttribute('id');
 
                 if(id.match(startDigit)) {
                     id = '\\3'+id.substring(0, 1)+' '+id.substring(1, id.length).replace(/[!"#$%&'()*+,-./:;<=>?@[\]^`{|}~]/g, "\\$&");
@@ -18,11 +18,11 @@ function getDuplicateID() {
                 query += '[id='+id+'],'
             }
 
-            if (!ids[node.id]) {
-                ids[node.id] = 0;
+            if (!ids[node.getAttribute('id')]) {
+                ids[node.getAttribute('id')] = 0;
             }
 
-            ids[node.id]++;
+            ids[node.getAttribute('id')]++;
         }
     });
 

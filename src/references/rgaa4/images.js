@@ -175,7 +175,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__images_name_150",
-    query: 'svg[data-tng-el-exposed="true"]:not([role="presentation"], [data-tng-image-link])',
+    query: 'svg[data-tng-el-exposed="true"]:not([role="presentation"]):not([data-tng-image-link])',
     testStatus: "failed",
     depStatus: ["passed", "cantTell"],
     filter: function (item) {
@@ -395,7 +395,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__images_name_170",
-    query: 'img:not([data-tng-informative-img], [data-tng-image-link])',
+    query: 'img:not([data-tng-informative-img]):not([data-tng-image-link])',
     filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible') === 'false') return;
         var parent = item.parentNode;
@@ -457,7 +457,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__images_name_172",
-    query: 'area:not([role], [data-tng-informative-img], [href]), area[role="presentation"]:not([href], [data-tng-informative-img])',
+    query: 'area:not([role]):not([data-tng-informative-img]):not([href]), area[role="presentation"]:not([href]):not([data-tng-informative-img])',
     filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') === 'false') return;
 
@@ -505,7 +505,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__images_name_174",
-    query: 'object[type^="image/"]:not([role], [data-tng-informative-img], [data-tng-image-link]), object[type^="image/"][role="img"]:not([data-tng-image-link], [data-tng-informative-img])',
+    query: 'object[type^="image/"]:not([role]):not([data-tng-informative-img]):not([data-tng-image-link]), object[type^="image/"][role="img"]:not([data-tng-image-link]):not([data-tng-informative-img])',
     filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible') === 'false') return;
         var parent = item.parentNode;
@@ -558,7 +558,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__images_name_176",
-    query: 'svg:not([data-tng-informative-img], [data-tng-image-link])',
+    query: 'svg:not([data-tng-informative-img]):not([data-tng-image-link])',
     filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible') === 'false') return;
         var parent = item.parentNode;
@@ -616,7 +616,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__images_name_178",
-    query: 'canvas:not([data-tng-informative-img], [data-tng-image-link])',
+    query: 'canvas:not([data-tng-informative-img]):not([data-tng-image-link])',
     filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible') === 'false') return;
         var parent = item.parentNode;
@@ -667,7 +667,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__images_name_180",
-    query: 'embed[type^="image/"]:not([role], [data-tng-informative-img]), embed[type^="image/"][role="img"]:not([data-tng-informative-img])',
+    query: 'embed[type^="image/"]:not([role]):not([data-tng-informative-img]), embed[type^="image/"][role="img"]:not([data-tng-informative-img])',
     filter: function (item) {
         if(item.getAttribute('data-tng-el-exposed') === 'false' && item.getAttribute('data-tng-el-visible') === 'false') return;
         var parent = item.parentNode;

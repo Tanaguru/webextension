@@ -317,7 +317,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "locale__mandatory_name_297",
-	query: '[data-tng-lang="lang"]:not([data-tng-emptylang="lang"], [data-tng-emptylang="both"]), [data-tng-lang="xml"]:not([data-tng-emptylang="xml"], [data-tng-emptylang="both"])',
+	query: '[data-tng-lang="lang"]:not([data-tng-emptylang="lang"]):not([data-tng-emptylang="both"]), [data-tng-lang="xml"]:not([data-tng-emptylang="xml"]):not([data-tng-emptylang="both"])',
     testStatus: "passed",
     mark: {attrs: ['lang', 'xml\\:lang']},
 	tags: ['a11y', 'languages', 'mandatory'],

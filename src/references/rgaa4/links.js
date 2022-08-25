@@ -100,7 +100,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__links_name_252",
-    query: 'a[href]:not([data-tng-svgLink], [data-tng-textlink]), [role="link"]:not([data-tng-svgLink], [data-tng-textlink])',
+    query: 'a[href]:not([data-tng-svgLink]):not([data-tng-textlink]), [role="link"]:not([data-tng-svgLink]):not([data-tng-textlink])',
     testStatus: "failed",
     depStatus: ["inapplicable", "cantTell", "passed"],
     filter: function (item) {

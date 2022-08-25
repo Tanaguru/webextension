@@ -114,7 +114,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__tables_name_443",
-    query: 'table:not([role], [data-tng-prezTable]), [role="table"]:not([data-tng-prezTable])',
+    query: 'table:not([role]):not([data-tng-prezTable]), [role="table"]:not([data-tng-prezTable])',
     filter: function(item) {
         if(item.querySelector('caption') != null) {
             item.setAttribute('data-tng-dataTableSummary', 'true');
@@ -200,7 +200,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__tables_name_448",
-    query: 'table:not([role], [data-tng-prezTable]) *[scope="col"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[scope="colgroup"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[id][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) th[data-tng-el-exposed="true"]',
+    query: 'table:not([role]):not([data-tng-prezTable]) *[scope="col"][data-tng-el-exposed="true"], table:not([role]):not([data-tng-prezTable]) *[scope="colgroup"][data-tng-el-exposed="true"], table:not([role]):not([data-tng-prezTable]) *[id][data-tng-el-exposed="true"], table:not([role]):not([data-tng-prezTable]) th[data-tng-el-exposed="true"]',
     filter: function (item) {
         var table = item.closest('table');
         var parentRow = item.closest('tr');
@@ -370,7 +370,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__tables_name_450",
-    query: 'table:not([role], [data-tng-prezTable]) *[scope="row"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[scope="rowgroup"][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) *[id][data-tng-el-exposed="true"], table:not([role], [data-tng-prezTable]) th[data-tng-el-exposed="true"]',
+    query: 'table:not([role]):not([data-tng-prezTable]) *[scope="row"][data-tng-el-exposed="true"], table:not([role]):not([data-tng-prezTable]) *[scope="rowgroup"][data-tng-el-exposed="true"], table:not([role]):not([data-tng-prezTable]) *[id][data-tng-el-exposed="true"], table:not([role]):not([data-tng-prezTable]) th[data-tng-el-exposed="true"]',
     filter: function (item) {
         var table = item.closest('table');
         var parentRow = item.closest('tr');
@@ -521,7 +521,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "locale__tables_name_455",
-	query: 'table:not([role], [data-tng-prezTable]) *[headers][data-tng-el-exposed="true"], [role="table"]:not([data-tng-prezTable]) *[headers][data-tng-el-exposed="true"]',
+	query: 'table:not([role]):not([data-tng-prezTable]) *[headers][data-tng-el-exposed="true"], [role="table"]:not([data-tng-prezTable]) *[headers][data-tng-el-exposed="true"]',
     testStatus: "failed",
     depStatus: ["passed"],
 	filter: function (item) {
@@ -566,7 +566,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "locale__tables_name_457",
-	query: 'th[data-tng-table="headerColFull"]:not([scope], [role="columnheader"]), th[data-tng-table="headerRowFull"]:not([scope], [role="rowheader"])',
+	query: 'th[data-tng-table="headerColFull"]:not([scope]):not([role="columnheader"]), th[data-tng-table="headerRowFull"]:not([scope]):not([role="rowheader"])',
     testStatus: "failed",
     depStatus: ["passed"],
 	filter: function (item) {
@@ -659,7 +659,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
 	lang: 'fr',
 	name: "locale__tables_name_463",
-	query: 'th[data-tng-table="headerColPart"][id]:not([scope="col"], [role="columnheader"]), th[data-tng-table="headerRowPart"][id]:not([scope="row"], [role="rowheader"])',
+	query: 'th[data-tng-table="headerColPart"][id]:not([scope="col"]):not([role="columnheader"]), th[data-tng-table="headerRowPart"][id]:not([scope="row"]):not([role="rowheader"])',
 	filter: function (item) {
         if(item.id.trim().length > 0) {
             let thID = item.id;
