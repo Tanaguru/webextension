@@ -50,3 +50,5 @@
 ## 5.0.1
 - fix : tab signature
 
+## 5.0.2
+- fix : compatibility with old browsers
