@@ -15,7 +15,7 @@ function getXPath(element) {
         }
     }
 
-    return (element.parentNode.nodeType == 1 ? getXPath(element.parentNode) : '') + '/' + element.tagName.toLowerCase() + '[' + (position ? position : '1') + ']' + (element.hasAttribute('id') && !element.getAttribute('id').includes('/') ? '[@id="' + element.getAttribute('id') + '"]' : '') + (element.hasAttribute('class') && !element.getAttribute('class').includes('/') ? '[@class="' + element.getAttribute('class') + '"]' : '');
+    return (element.parentNode.nodeType == 1 ? getXPath(element.parentNode) : '') + '/' + element.tagName.toLowerCase() + '[' + (position ? position : '1') + ']' + (element.hasAttribute('id') && !element.getAttribute('id').match(/[\/\[\]]/g) ? '[@id="' + element.getAttribute('id') + '"]' : '') + (element.hasAttribute('class') && !element.getAttribute('class').match(/[\/\[\]]/g) ? '[@class="' + element.getAttribute('class') + '"]' : '');
 }
 
 function initTanaguru() {

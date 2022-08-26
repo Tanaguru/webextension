@@ -10,7 +10,8 @@
   "scripts": {
     "build": "node build",
     "i18n": "node i18n",
-    "stats": "node stats"
+    "stats": "node stats",
+    "engine": "node engine"
   },
   "repository": {
     "type": "git",
