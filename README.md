@@ -146,7 +146,8 @@ createTanaguruTest({
 	lang: 'fr',
 	name: "Liens s'ouvrant dans des nouvelles fenêtres.",
 	query: 'a[href][target="_blank"]:not([role])',
-	testStatus: "cantTell",
+	testStatus: 'cantTell',
+    warning: false,
 	mark: function() {
         return {
             attrs: [{

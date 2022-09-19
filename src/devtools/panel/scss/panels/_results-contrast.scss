@@ -1,0 +1,39 @@
+/*? contrast panel */
+.contrast-legend .contrast-bgImage,
+.contrast-legend .contrast-bgNull {
+	display: inline-block;
+	width: 1.8rem;
+	height: 1.8rem;
+	margin: 0 0.9rem 0 1.8em;
+	vertical-align: middle;
+}
+
+.contrast-bgImage {
+	background: center / contain no-repeat url("./images/bg-img.png");
+	display: block;
+	margin: auto;
+	border: solid 1px #000;
+	width: 1.8rem;
+	height: 1.8rem;
+}
+
+.contrast-bgNull {
+	position: relative;
+	display: block;
+	margin: auto;
+	border: solid 1px #000;
+	color: red;
+	width: 1.8rem;
+	height: 1.8rem;
+}
+
+.contrast-bgNull::after {
+	content: 'X';
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	text-align: center;
+	font-weight: bold;
+}

@@ -151,7 +151,8 @@ tanaguruTestsList.push({
 
 		return item.canBeReachedUsingKeyboardWith.length > 0;
 	},
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.8.1'] }
 });
@@ -161,7 +162,8 @@ tanaguruTestsList.push({
 	name: "locale__navigation_name_21",
 	query: '[data-tng-tab-dom-error]',
 	description: "locale__navigation_description_2",
-    testStatus: "failed",
+    testStatus: "cantTell",
+    warning: true,
     tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.8.1'] }
 });
@@ -180,7 +182,8 @@ tanaguruTestsList.push({
 	name: 'locale__navigation_name_23',
     description: 'locale__navigation_description_3',
 	query: '[data-tng-tab-visual-error]',
-    testStatus: "failed",
+    testStatus: "cantTell",
+    warning: true,
     tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.8.1'] }
 });
@@ -224,7 +227,8 @@ tanaguruTestsList.push({
 	lang: 'en',
 	name: "locale__navigation_name_369",
 	query: '[onblur]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: true,
 	tags: ['a11y', 'keyboard', 'navigation'],
     ressources: { 'rgaa': ['12.9.1'] },
 	comments: "peut détecter l'attribut onblur (peut-être aussi l'événement) mais ce n'est pas vraiment une preuve que c'est un piège à clavier"

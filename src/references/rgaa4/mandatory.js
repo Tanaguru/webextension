@@ -580,7 +580,8 @@ tanaguruTestsList.push({
         item.setAttribute('data-tng-pageTitle', 'false');
         return;
     },
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     depStatus: ["failed"],
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.6.1']}
@@ -600,7 +601,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__mandatory_name_307",
     query: 'body [lang], body [xml\\:lang]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -824,7 +826,8 @@ tanaguruTestsList.push({
     name: "locale__mandatory_name_317",
     description: "locale__mandatory_description_318",
     query: '[data-tng-dirValid]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{

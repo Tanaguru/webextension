@@ -1,0 +1,75 @@
+/** home - filters bloc */
+.launch-analysis-filters {
+	background-color: #FFFFFF;
+	width: 80%;
+	max-width: 100rem;
+	margin: auto;
+}
+
+.launch-analysis-filters fieldset {
+	margin-top: 1.8rem;
+	border: 0;
+	padding: 0;
+}
+
+.launch-analysis-filters fieldset legend {
+	width: 100%;
+}
+
+.launch-analysis-filters fieldset label {
+	display: inline-block;
+	margin-right: 1.8rem;
+}
+
+.filterDropdownButton {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	padding: 1rem;
+	border: 1px solid #2F788F;
+	border-radius: 1rem;
+	background-color: #fff;
+	text-align: left;
+	transition: backgroundColor 1s;
+}
+
+.disclosureIcon {
+	width: 1.3rem;
+	min-width: 1.3rem;
+	margin-left: 1rem;
+	transition: transform 0.3s;
+}
+
+.filterDropdownButton:focus,
+.filterDropdownButton:hover,
+.filterDropdownButton--active {
+	background-color: #E9F5FB;
+}
+
+.dropdownButton--active img {
+	transform: rotate(0.25turn);
+}
+
+.filterContainer {
+	display: none;
+}
+
+fieldset.radioGroup {
+	width: 100%;
+	max-width: 100rem;
+	border: 1px solid #2F788F;
+	border-radius: 1rem;
+	margin: 1rem auto;
+	background-color: #fff;
+}
+
+.dashboard fieldset.radioGroup {
+	width: auto;
+}
+
+fieldset.radioGroup legend {
+	background-color: #fff;
+	border-radius: 1rem;
+	padding: 1rem;
+}

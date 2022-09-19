@@ -1060,7 +1060,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_182",
     query: '[data-tng-img-roleImg][data-tng-altLong]',
     description: "locale__images_description_183",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -1147,7 +1148,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_185",
     description: "locale__images_description_183",
     query: 'area[data-tng-altLong]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -1177,7 +1179,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_187",
     description: "locale__images_description_183",
     query: 'input[type="image"][data-tng-altLong]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -1269,7 +1272,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_190",
     description: "locale__images_description_183",
     query: 'object[data-tng-altLong]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [
@@ -1311,7 +1315,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_192",
     description: "locale__images_description_183",
     query: 'embed[data-tng-altLong]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -1352,7 +1357,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_194",
     description: "locale__images_description_183",
     query: 'svg[data-tng-altLong]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -1388,7 +1394,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_196",
     description: "locale__images_description_183",
     query: 'canvas[data-tng-altLong]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -1442,7 +1449,8 @@ tanaguruTestsList.push({
             else item.setAttribute('data-tng-altnotexposed', 'true');
         }
     },
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     depStatus: ["failed"],
     tags: ['a11y', 'images'],
     ressources: { 'rgaa': ['1.3.8'] }
@@ -1506,7 +1514,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__images_name_202",
     query: '[data-tng-altLong="false"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -1551,7 +1560,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_203",
     query: 'img:not([data-tng-image-link]), area:not([data-tng-image-link]), object:not([data-tng-image-link]), embed:not([data-tng-image-link]), svg:not([data-tng-image-link]), canvas:not([data-tng-image-link]), [role="img"]:not([data-tng-image-link])',
     description: "locale__images_description_204",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.5.1']}
 });
@@ -1562,7 +1572,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_205",
     query: 'input[type="image"]',
     description: "locale__images_description_206",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.5.2']}
 });
@@ -1577,7 +1588,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_207",
     query: 'img[data-tng-informative-img]',
     description: "locale__images_description_208",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.6.1', '1.7.1']}
 });
@@ -1590,7 +1602,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_209",
     query: 'object[type^="image/"][data-tng-informative-img]',
     description: "locale__images_description_208",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.6.2', '1.7.3']}
 });
@@ -1603,7 +1616,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_211",
     query: 'embed[type^="image/"][data-tng-informative-img]',
     description: "locale__images_description_208",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.6.3', '1.7.4']}
 });
@@ -1616,7 +1630,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_213",
     query: 'input[type="image"][data-tng-informative-img]',
     description: "locale__images_description_208",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.6.4', '1.7.2']}
 });
@@ -1630,7 +1645,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_215",
     query: 'svg[data-tng-informative-img]',
     description: "locale__images_description_216",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.6.5', '1.6.6', '1.7.5']}
 });
@@ -1644,7 +1660,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_217",
     query: 'canvas[data-tng-informative-img]',
     description: "locale__images_description_216",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.6.7', '1.6.8', '1.7.6']}
 });
@@ -1656,7 +1673,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_219",
     query: '[data-tng-informative-img][aria-describedby]',
     description: "locale__images_description_220",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -1686,7 +1704,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_221",
     query: '[role="img"][data-tng-informative-img]',
     description: "locale__images_description_222",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.6.10']}
 });
@@ -1699,7 +1718,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_223",
     query: '[data-tng-img-roleImg][data-tng-altLong]',
     description: "locale__images_description_224",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.8.1']}
 });
@@ -1711,7 +1731,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_213",
     query: 'input[data-tng-altLong]',
     description: "locale__images_description_224",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.8.2']}
 });
@@ -1723,7 +1744,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_209",
     query: 'object[data-tng-altLong]',
     description: "locale__images_description_224",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.8.3']}
 });
@@ -1735,7 +1757,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_211",
     query: 'embed[data-tng-altLong]',
     description: "locale__images_description_224",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.8.4']}
 });
@@ -1747,7 +1770,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_217",
     query: 'canvas[data-tng-altLong]',
     description: "locale__images_description_224",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.8.5']}
 });
@@ -1759,7 +1783,8 @@ tanaguruTestsList.push({
     name: "locale__images_name_215",
     query: 'svg[data-tng-altLong]',
     description: "locale__images_description_224",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'images'],
     ressources: {'rgaa': ['1.8.6']}
 });

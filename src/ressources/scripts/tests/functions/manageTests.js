@@ -411,6 +411,10 @@ function createTanaguruTest(test) {
                 result.ressources = test.ressources;
             }
 
+            if(test.hasOwnProperty('warning')) {
+                result.warning = test.warning;
+            }
+
             if(counter) {
                 result.counter = counter;
             }

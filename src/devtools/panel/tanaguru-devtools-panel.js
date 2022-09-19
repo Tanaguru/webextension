@@ -1182,6 +1182,26 @@ button.addEventListener('click', function () {
 						let dataLength = test.data.length;
 						if (!((test.type == 'failed' && dataLength == 0) || test.type == 'untested')) {
 							var strong = document.createElement('strong');
+
+							// display the warning icon
+							if(test.warning && dataLength > 0) {
+								var warnContainer = document.createElement('span');
+								warnContainer.classList.add('test-warning');
+
+								var warnAlt = document.createElement('span');
+								warnAlt.classList.add('visually-hidden');
+								warnAlt.textContent = chrome.i18n.getMessage('word_warning');
+								
+								var warnIco = document.createElement('span');
+								warnIco.classList.add('test-warning-icon');
+								warnIco.setAttribute('aria-hidden', 'true');
+								warnIco.textContent = "!";
+
+								warnContainer.appendChild(warnAlt);
+								warnContainer.appendChild(warnIco);
+								strong.appendChild(warnContainer);
+							}
+
 							var strongcount = test.hasOwnProperty('failedincollection') ? test.failedincollection : dataLength;
 							strong.appendChild(document.createTextNode(strongcount + (test.hasOwnProperty('counter') ? ' / ' +  test.counter : '')));
 							tabpanelsectionbutton.appendChild(strong);

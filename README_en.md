@@ -146,7 +146,8 @@ createTanaguruTest({
 	lang: 'en',
 	name: "Links opening in new windows.",
 	query: 'a[href][target="_blank"]:not([role])',
-	testStatus: "cantTell",
+	testStatus: 'cantTell',
+    warning: false,
 	mark: { attrs: ['target'] },
 	tags: ['a11y', 'links'],
 	ressources: { 'wcag': ['2.4.4'] }

@@ -336,7 +336,8 @@ tanaguruTestsList.push({
 	name: "locale__presentation_name_385",
 	query: '[data-tng-el-exposed="false"][data-tng-el-visible="true"]',
 	description: "locale__presentation_description_386",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'keyboard', 'presentation'],
     ressources: { 'rgaa': ['10.8.1'] }
 });
@@ -359,7 +360,8 @@ tanaguruTestsList.push({
         });
         return anwithoutchild.length > 0;
     },
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'keyboard', 'presentation'],
     ressources: { 'rgaa': ['10.8.1'] }
 });

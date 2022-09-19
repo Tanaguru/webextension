@@ -1,0 +1,54 @@
+.beforetable {
+	overflow: hidden;
+}
+
+.beforetable div {
+	float: left;
+	margin: 0;
+}
+
+.beforetable div + div {
+	float: right;
+	margin: 0;
+}
+
+.filter {
+	margin: 0;
+}
+
+.filter .ucfirst {
+	text-transform: capitalize; display: inline-block;
+}
+
+/*? test tags (in .beforetable) */
+.tags {
+	margin: 0 !important;
+	padding: 0.45rem !important;
+}
+
+.tags p, .tags ul, .tags li {
+	display: inline-block;
+	margin: 0;
+}
+
+.tags ul {
+	list-style-type: none;
+	padding: 0 0 0 0.45rem;
+}
+
+/*? filter & export buttons (in .beforetable) */
+.tableactions {
+	padding: 0.45rem;
+}
+
+.tableactions > * {
+	display: inline-block;
+	margin: 0;
+	padding-left: 0.45rem;
+}
+
+.tableactions p + p {
+	margin-left: 1.35rem;
+	padding-left: 0.45rem;
+	border-left: dotted 1px #111;
+}

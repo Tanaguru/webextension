@@ -245,7 +245,8 @@ tanaguruTestsList.push({
     name: "locale__forms_name_79",
     description: "locale__forms_description_80",
     query: '[data-tng-has-label="title"]:not([data-tng-visible-label])',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -267,7 +268,8 @@ tanaguruTestsList.push({
     name: "locale__forms_name_81",
     description: "locale__forms_description_82",
     query: '[data-tng-has-label="describedby"]:not([data-tng-visible-label])',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [],
@@ -317,7 +319,8 @@ tanaguruTestsList.push({
             }
         }
     },
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [],
@@ -342,7 +345,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__forms_name_86",
     query: '[data-tng-formField][title][data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -365,7 +369,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__forms_name_87",
     query: '[data-tng-formField][aria-label][data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -388,7 +393,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__forms_name_88",
     query: '[data-tng-formField][aria-labelledby][data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [],
@@ -486,7 +492,8 @@ tanaguruTestsList.push({
         let cat = item.getImplicitAriaRoleCategory();
         if(cat) return cat === 'forms';
     },
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.5.1'] }
 });
@@ -538,7 +545,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__forms_name_99",
     query: '[data-tng-fieldsgroup-legend]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -637,7 +645,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__forms_name_104",
     query: '[data-tng-optgroup-label]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -681,7 +690,8 @@ tanaguruTestsList.push({
             }
         }
     },
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     depStatus: ["failed"],
     mark: function() {
         return {
@@ -833,7 +843,8 @@ tanaguruTestsList.push({
     name: "locale__forms_name_110",
     description: "locale__forms_description_111",
     query: '[aria-required="true"][data-tng-el-exposed="true"], [required][data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.10.2']}
 });
@@ -853,7 +864,8 @@ tanaguruTestsList.push({
     name: "locale__forms_name_113",
     description: "locale__forms_description_114",
     query: '[aria-invalid="true"][data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.10.4']}
 });
@@ -882,7 +894,8 @@ tanaguruTestsList.push({
     name: "locale__forms_name_117",
     description: "locale__forms_description_118",
     query: '[aria-invalid="true"][data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.10.7']}
 });
@@ -913,7 +926,8 @@ tanaguruTestsList.push({
     name: "locale__forms_name_121",
     description: "locale__forms_description_122",
     query: 'form[data-tng-el-exposed="true"], [role="form"][data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.12.1']}
 });
@@ -924,7 +938,8 @@ tanaguruTestsList.push({
     name: "locale__forms_name_123",
     description: "locale__forms_description_124",
     query: 'form[data-tng-el-exposed="true"], [role="form"][data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.12.2']}
 });
@@ -935,7 +950,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__forms_name_125",
     query: 'input[type="text"][data-tng-el-exposed="true"], input[type="password"][data-tng-el-exposed="true"], input[type="email"][data-tng-el-exposed="true"], input[type="tel"][data-tng-el-exposed="true"], input[type="url"][data-tng-el-exposed="true"], textarea[data-tng-el-exposed="true"], input[type="date"][data-tng-el-exposed="true"], select[data-tng-el-exposed="true"], input[data-tng-el-exposed="true"]:not([type])',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -1169,7 +1185,8 @@ tanaguruTestsList.push({
     name: "locale__forms_name_129",
     query: '[data-tng-autocomplete]',
     description: "locale__forms_description_130",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{

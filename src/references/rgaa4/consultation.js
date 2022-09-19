@@ -118,7 +118,8 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "locale__consultation_name_58",
     query: '[href][download]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.3.1'] }
 });

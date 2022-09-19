@@ -80,7 +80,8 @@ tanaguruTestsList.push({
     name: "locale__tables_name_437",
     query: '[data-tng-tableCaptions]',
     description: "locale__tables_description_438",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [],
@@ -128,7 +129,8 @@ tanaguruTestsList.push({
     name: "locale__tables_name_441",
     query: 'table[data-tng-prezTable][role="presentation"]',
     description: "locale__tables_description_440",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -251,7 +253,8 @@ tanaguruTestsList.push({
 
         item.setAttribute('data-tng-tableAccessiblename', 'false');
     },
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     depStatus: ["failed"],
     mark: function() {
         return {
@@ -906,7 +909,8 @@ tanaguruTestsList.push({
 	name: "locale__tables_name_461",
 	query: 'th[scope]:not([data-tng-scope])',
     description: "locale__tables_description_462",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{

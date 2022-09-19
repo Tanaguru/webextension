@@ -70,7 +70,8 @@ tanaguruTestsList.push({
     name: "locale__links_name_248",
     query: '[data-tng-textlink-accessiblename]',
     description: "locale__links_description_249",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     mark: function() {
         return {
             attrs: [{
@@ -205,7 +206,8 @@ tanaguruTestsList.push({
     name: "locale__links_name_255",
     query: '[data-tng-imglink-accessiblename]',
     description: "locale__links_description_256",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.2']}
 });
@@ -305,7 +307,8 @@ tanaguruTestsList.push({
     name: "locale__links_name_262",
     query: '[data-tng-cplink-accessiblename]',
     description: "locale__links_description_263",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.3']}
 });
@@ -380,7 +383,8 @@ tanaguruTestsList.push({
     name: "locale__links_name_269",
     query: '[data-tng-svglink-accessiblename]',
     description: "locale__links_description_263",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.4']}
 });

@@ -60,7 +60,8 @@ tanaguruTestsList.push({
 
         return true;
     },
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     depStatus: ["failed"],
     mark: function() {
         return {
