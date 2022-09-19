@@ -44,7 +44,18 @@ tanaguruTestsList.push({
     query: 'video track:not([kind=captions])',
     description: "locale__media_description_324",
     testStatus: "cantTell",
-    mark: {attrs: ['kind']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "kind",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.3.2']}
 });
@@ -54,7 +65,18 @@ tanaguruTestsList.push({
     name: "locale__media_name_325",
     query: 'video track[kind="captions"]',
     testStatus: "passed",
-    mark: {attrs: ['kind']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "kind",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.3.2']}
 });
@@ -66,7 +88,18 @@ tanaguruTestsList.push({
     query: 'video track[kind="captions"]',
     description: "locale__media_description_327",
     testStatus: "cantTell",
-    mark: {attrs: ['kind']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "kind",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.4.1']}
 });

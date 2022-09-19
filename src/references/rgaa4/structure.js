@@ -57,7 +57,6 @@ tanaguruTestsList.push({
         return true;
     },
     testStatus: 'cantTell',
-    mark: { attrs: ['role', 'class']},
     tags: ['a11y', 'headings', 'structure'],
     ressources: { 'rgaa': ['9.1.3'] }
 });

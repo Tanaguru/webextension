@@ -12,7 +12,18 @@ tanaguruTestsList.push({
     name: "locale__frames_name_131",
     query: 'iframe[data-tng-el-exposed="true"][title]:not([role="presentation"]), frame[data-tng-el-exposed="true"][title]:not([role="presentation"])',
     testStatus: "passed",
-    mark: { attrs: ['title']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "title",
+                value: "",
+                valueState: "any" //startBy || endBy, || contains || egal || notEmpty || any
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'frames'],
     ressources: {'rgaa': ['2.1.1']}
 });
@@ -51,7 +62,18 @@ tanaguruTestsList.push({
     },
     testStatus: "cantTell",
     depStatus: ["failed"],
-    mark: { attrs: ['title']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "title",
+                value: "",
+                valueState: "notEmpty" //startBy || endBy, || contains || egal || notEmpty || any
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'frames'],
     ressources: {'rgaa': ['2.2.1']}
 });
@@ -61,7 +83,18 @@ tanaguruTestsList.push({
     name: "locale__frames_name_135",
     query: '[data-tng-frameAlt]',
     testStatus: "failed",
-    mark: { attrs: ['title']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "title",
+                value: "",
+                valueState: "any" //startBy || endBy, || contains || egal || notEmpty || any
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'frames'],
     ressources: {'rgaa': ['2.2.1']}
 });

@@ -147,7 +147,39 @@ createTanaguruTest({
 	name: "Liens s'ouvrant dans des nouvelles fenêtres.",
 	query: 'a[href][target="_blank"]:not([role])',
 	testStatus: "cantTell",
-	mark: { attrs: ['target'] },
+	mark: function() {
+        return {
+            attrs: [{
+                name: "aria-label", // nom de l'attribut (1 seul objet par attribut)
+                value: "", //valeur a chercher
+                valueState: "any" //startBy || endBy, || contains || egal || notEmpty || any
+            },
+            {
+                name: "alt",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "aria-labelledby",
+                value: "",
+                valueState: "notEmpty"
+            },
+            {
+                name: "title",
+                value: "",
+                valueState: "any"
+            }],
+            related: { //élément en lien avec notre élément courant
+                title: "Passage de texte associé au champ.", //commentaire affiché au dessus de l'élément
+                element: "#!!!aria-labelledby!!!", //sélecteur css (avec si nécessaire l'attribut de l'élément courant sur lequel récupérer la valeur) permettant de retrouver l'élément en lien
+                attrs: [],
+                tag: false,
+                content: true
+            },
+            tag: false, //surligner la balise
+            content: false //surligner le contenu
+        }
+    },
 	tags: ['a11y', 'links'],
 	ressources: { 'rgaa': ['13.2.1'] }
 });

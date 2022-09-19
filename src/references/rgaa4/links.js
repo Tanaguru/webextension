@@ -43,7 +43,6 @@ tanaguruTestsList.push({
             }
         }
     },
-    mark: {attrs: ['role']},
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.1']}
 });
@@ -53,7 +52,6 @@ tanaguruTestsList.push({
     name: "locale__links_name_246",
     query: '[data-tng-textlink="true"][data-tng-el-exposed="false"][data-tng-el-visible="true"]',
     testStatus: "failed",
-    mark: {attrs: ['role']},
     tags: ['a11y', 'links'],
     ressources: {'rgaa': ['6.1.1']}
 });
@@ -63,7 +61,6 @@ tanaguruTestsList.push({
     name: "locale__links_name_247",
     query: '[data-tng-textlink="true"][data-tng-el-exposed="false"][data-tng-el-visible="false"]',
     testStatus: "inapplicable",
-    mark: {attrs: ['role']},
     tags: ['a11y', 'links'],
     ressources: {'rgaa': ['6.1.1']}
 });
@@ -74,7 +71,34 @@ tanaguruTestsList.push({
     query: '[data-tng-textlink-accessiblename]',
     description: "locale__links_description_249",
     testStatus: "cantTell",
-    mark: {attrs: ['role']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "title",
+                value: "",
+                valueState: "notEmpty"
+            },
+            {
+                name: "aria-label",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "aria-labelledby",
+                value: "",
+                valueState: "notEmpty"
+            }],
+            related: {
+                title: "Passage de texte référencé par l'attribut aria-labelledby.",
+                element: "#!!!aria-labelledby!!!",
+                attrs: [],
+                tag: false,
+                content: true
+            },
+            tag: false,
+            content: true
+        }
+    },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.1']}
 });
@@ -90,7 +114,18 @@ tanaguruTestsList.push({
         if(anMatch === null) return;
         return !anMatch;
     },
-    mark: {attrs: ['title']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "title",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: true
+        }
+    },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.1']}
 });
@@ -186,7 +221,18 @@ tanaguruTestsList.push({
         if(anMatch === null) return;
         return !anMatch;
     },
-    mark: {attrs: ['title']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "title",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.2']}
 });
@@ -275,7 +321,18 @@ tanaguruTestsList.push({
         if(anMatch === null) return;
         return !anMatch;
     },
-    mark: {attrs: ['title']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "title",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: true
+        }
+    },
     tags: ['a11y', 'links', 'accessiblename'],
     ressources: {'rgaa': ['6.1.3']}
 });

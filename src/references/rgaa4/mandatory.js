@@ -125,7 +125,39 @@ tanaguruTestsList.push({
 	name: "locale__mandatory_name_280",
     code: 'duplicate_id',
     testStatus: "failed",
-    mark: { attrs: ['id'] },
+    mark: function() {
+        return {
+            attrs: [{
+                name: "id",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
+    tags: ['a11y', 'code', 'mandatory'],
+	ressources: {'rgaa': ['8.2.1']}
+});
+
+tanaguruTestsList.push({
+	lang: 'fr',
+	name: "La valeur de l'attribut id ne contient pas d'espace.",
+    query: '[data-tng-invalid-id]',
+    testStatus: "failed",
+    mark: function() {
+        return {
+            attrs: [{
+                name: "id",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'code', 'mandatory'],
 	ressources: {'rgaa': ['8.2.1']}
 });
@@ -276,7 +308,23 @@ tanaguruTestsList.push({
             return true;
         }
     },
-    mark: {attrs: ['lang', 'xml\\:lang']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "lang",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: 'xml\\:lang',
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.3.1']}
 });
@@ -309,7 +357,23 @@ tanaguruTestsList.push({
         }
         return item.hasAttribute('data-tng-emptylang');
 	},
-    mark: {attrs: ['lang', 'xml\\:lang']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "lang",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: 'xml\\:lang',
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.4.1']}
 });
@@ -319,7 +383,23 @@ tanaguruTestsList.push({
 	name: "locale__mandatory_name_297",
 	query: '[data-tng-lang="lang"]:not([data-tng-emptylang="lang"], [data-tng-emptylang="both"]), [data-tng-lang="xml"]:not([data-tng-emptylang="xml"], [data-tng-emptylang="both"])',
     testStatus: "passed",
-    mark: {attrs: ['lang', 'xml\\:lang']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "lang",
+                value: "",
+                valueState: "notEmpty"
+            },
+            {
+                name: 'xml\\:lang',
+                value: "",
+                valueState: "notEmpty"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.4.1']}
 });
@@ -343,7 +423,23 @@ tanaguruTestsList.push({
             return true;
         }
 	},
-    mark: {attrs: ['lang', 'xml\\:lang']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "lang",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: 'xml\\:lang',
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.4.1']}
 });
@@ -353,7 +449,23 @@ tanaguruTestsList.push({
 	name: "locale__mandatory_name_299",
 	query: '[data-tng-samelangs]',
 	testStatus: "passed",
-    mark: {attrs: ['lang', 'xml\\:lang']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "lang",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: 'xml\\:lang',
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.4.1']}
 });
@@ -381,7 +493,23 @@ tanaguruTestsList.push({
         }
 		return true;
 	},
-    mark: {attrs: ['lang', 'xml\\:lang']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "lang",
+                value: "",
+                valueState: "notEmpty"
+            },
+            {
+                name: 'xml\\:lang',
+                value: "",
+                valueState: "notEmpty"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.4.1']}
 });
@@ -391,7 +519,23 @@ tanaguruTestsList.push({
 	name: "locale__mandatory_name_301",
 	query: '[data-tng-validlang]',
     testStatus: "passed",
-    mark: {attrs: ['lang', 'xml\\:lang']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "lang",
+                value: "",
+                valueState: "notEmpty"
+            },
+            {
+                name: 'xml\\:lang',
+                value: "",
+                valueState: "notEmpty"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'languages', 'mandatory'],
     ressources: {'rgaa': ['8.4.1']}
 });
@@ -457,7 +601,23 @@ tanaguruTestsList.push({
     name: "locale__mandatory_name_307",
     query: 'body [lang], body [xml\\:lang]',
     testStatus: "cantTell",
-    mark: { attrs: ['lang', 'xml:lang']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "lang",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: 'xml\\:lang',
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'mandatory'],
     ressources: {'rgaa': ['8.7.1']}
 });
@@ -491,7 +651,23 @@ tanaguruTestsList.push({
         item.setAttribute('data-tng-el-notemptylang', 'true');
         return;
 	},
-    mark: { attrs: ['lang', 'xml:lang']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "lang",
+                value: "",
+                valueState: "egal"
+            },
+            {
+                name: 'xml\\:lang',
+                value: "",
+                valueState: "egal"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'languages', 'mandatory'],
 	ressources: { 'rgaa': ['8.8.1'] }
 });
@@ -501,7 +677,23 @@ tanaguruTestsList.push({
 	name: "locale__mandatory_name_309",
 	query: '[data-tng-el-notemptylang]',
     testStatus: "passed",
-    mark: { attrs: ['lang', 'xml:lang']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "lang",
+                value: "",
+                valueState: "notEmpty"
+            },
+            {
+                name: 'xml\\:lang',
+                value: "",
+                valueState: "notEmpty"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'languages', 'mandatory'],
 	ressources: { 'rgaa': ['8.8.1'] }
 });
@@ -520,7 +712,23 @@ tanaguruTestsList.push({
 
 		return true;
 	},
-    mark: { attrs: ['lang', 'xml:lang']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "lang",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: 'xml\\:lang',
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'languages', 'mandatory'],
 	ressources: { 'rgaa': ['8.8.1'] }
 });
@@ -530,7 +738,23 @@ tanaguruTestsList.push({
 	name: "locale__mandatory_name_311",
 	query: '[data-tng-el-validlang]',
     testStatus: "passed",
-    mark: { attrs: ['lang', 'xml:lang']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "lang",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: 'xml\\:lang',
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'languages', 'mandatory'],
 	ressources: { 'rgaa': ['8.8.1'] }
 });
@@ -579,7 +803,18 @@ tanaguruTestsList.push({
         }
         else return true;
     },
-    mark: { attrs: ['dir']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "dir",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.10.2']}
 });
@@ -590,7 +825,18 @@ tanaguruTestsList.push({
     description: "locale__mandatory_description_318",
     query: '[data-tng-dirValid]',
     testStatus: "cantTell",
-    mark: { attrs: ['dir']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "dir",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y','mandatory'],
     ressources: {'rgaa': ['8.10.2']}
 });

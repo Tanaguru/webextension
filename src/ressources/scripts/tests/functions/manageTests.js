@@ -15,7 +15,7 @@ function getXPath(element) {
         }
     }
 
-    return (element.parentNode.nodeType == 1 ? getXPath(element.parentNode) : '') + '/' + element.tagName.toLowerCase() + '[' + (position ? position : '1') + ']' + (element.hasAttribute('id') && !element.id.includes('/') ? '[@id="' + element.getAttribute('id') + '"]' : '') + (element.hasAttribute('class') && !element.getAttribute('class').includes('/') ? '[@class="' + element.getAttribute('class') + '"]' : '');
+    return (element.parentNode.nodeType == 1 ? getXPath(element.parentNode) : '') + '/' + element.tagName.toLowerCase() + '[' + (position ? position : '1') + ']' + (element.hasAttribute('id') && !element.id.includes('/') && !element.id.match(/\s/) ? '[@id="' + element.getAttribute('id') + '"]' : '') + (element.hasAttribute('class') && !element.getAttribute('class').includes('/') ? '[@class="' + element.getAttribute('class') + '"]' : '');
 }
 
 function initTanaguru() {
@@ -71,7 +71,25 @@ function removeDataTNG(element) {
     });
 }
 
-function manageOutput(element, an) {
+function getFakeElement(clone) {
+    removeDataTNG(clone);
+
+    let fakeChildren = clone.querySelectorAll('*');
+    for(let i = 0; i < fakeChildren.length; i++) {
+        removeDataTNG(fakeChildren[i]);
+    }
+
+    var e = document.createElement(clone.tagName.toLowerCase());
+    if (e && e.outerHTML.indexOf("/") != -1) {
+        if (clone.innerHTML.length > 300) {
+            clone.innerHTML =  '[...]';
+        }
+    }
+
+    return clone;
+}
+
+function manageOutput(element, an, related) {
     var status = element.status ? element.status : 'cantTell';
     element.status = undefined;
     an = an ? element.fullAccessibleName : null;
@@ -89,22 +107,52 @@ function manageOutput(element, an) {
         var isNotExposedDueTo = element.hasAttribute('data-tng-notExposed') ? element.getAttribute('data-tng-notExposed') : '';
 
         var fakeelement = element.cloneNode(true);
-        removeDataTNG(fakeelement);
-        
-        let fakeChildren = fakeelement.querySelectorAll('*');
-        for(let i = 0; i < fakeChildren.length; i++) {
-            removeDataTNG(fakeChildren[i]);
-        }
+        fakeelement = getFakeElement(fakeelement);
 
-        var e = document.createElement(fakeelement.tagName.toLowerCase());
-        if (e && e.outerHTML.indexOf("/") != -1) {
-            if (fakeelement.innerHTML.length > 300) {
-                fakeelement.innerHTML =  '[...]';
+        var fakerelated = null;
+
+        if(related) {
+            var att_rgx = /(!!!)(?<att>.*)(!!!)/;
+            var relatedHasVariable =  false;
+            var relatedElement = null;
+
+            if(related.match(att_rgx)) {
+                relatedHasVariable = true;
+                var att = related.match(att_rgx).groups.att;
+                if(att && element.hasAttribute(att)) {
+                    var selector = related.replace(att_rgx, element.getAttribute(att));
+                    try {
+                        relatedElement = document.querySelector(selector);
+                    } catch(error) {
+                        console.log(error);
+                    }
+                }
+                
+            } else {
+                try {
+                    relatedElement = document.querySelector(related);
+                } catch(error) {
+                    console.log(error);
+                }
+            }
+
+            if(relatedElement) {
+                fakerelated = relatedElement.cloneNode(true);
+                fakerelated = getFakeElement(fakerelated);
             }
         }
     }
 
-    return { status: status, outer: e ? fakeelement.outerHTML : fakeelement, anDetails: an, xpath: e ? getXPath(element) : null, canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith, isVisible: isVisible, isNotExposedDueTo: isNotExposedDueTo};
+    return { 
+        status: status,
+        outer: element.nodeType !== 10 ? fakeelement.outerHTML : fakeelement,
+        outerRelated: element.nodeType !== 10 && fakerelated ? fakerelated.outerHTML : null,
+        anDetails: an,
+        xpath: element.nodeType !== 10 ? getXPath(element) : null,
+        canBeReachedUsingKeyboardWith: canBeReachedUsingKeyboardWith,
+        isVisible: isVisible,
+        isNotExposedDueTo: isNotExposedDueTo
+    };
 }
 
 function createTanaguruTag(tag, status) {
@@ -174,6 +222,7 @@ function createTanaguruTest(test) {
             var elements = document.querySelectorAll(test.query);
         }
 
+        // Traitement du test et ses résultats
         if (elements) {
             // Statut du test par défaut.
             var status = 'inapplicable';
@@ -186,9 +235,7 @@ function createTanaguruTest(test) {
                     createTanaguruTag(test.tags[i], status);
                 }
             }
-            else {
-                createTanaguruTag('others', status);
-            }
+            else createTanaguruTag('others', status);
 
             // Gestion du compteur d'éléments testés (avant filtre).
             var counter = null;
@@ -302,8 +349,19 @@ function createTanaguruTest(test) {
             // Chargement du résultat.
             var outputelements = [];
             if(!test.hasOwnProperty('contrast')) {
-                if(!an) outputelements = elements.map(e => manageOutput(e, false));
-                else outputelements = elements.map(e => manageOutput(e, true));
+                let related = null;
+                if (test.hasOwnProperty('mark') && test.mark.constructor == Function) {
+                    let mark = test.mark();
+                    if(mark.hasOwnProperty('related') && mark.related.hasOwnProperty('element')) {
+                        related = mark.related.element;
+                    }
+                }
+
+                if(!an) {
+                    outputelements = elements.map(e => manageOutput(e, false, related));
+                } else {
+                    outputelements = elements.map(e => manageOutput(e, true, related));
+                }
             }
             
             if(test.hasOwnProperty('contrast')) {
@@ -326,38 +384,44 @@ function createTanaguruTest(test) {
                 data: outputelements,
                 tags: []
             };
-            if (test.hasOwnProperty('id')) {
+
+            if(test.hasOwnProperty('id')) {
                 result.id = test.id;
             }
-            if (test.hasOwnProperty('lang')) {
+
+            if(test.hasOwnProperty('lang')) {
                 result.lang = test.lang;
             }
-            if (test.hasOwnProperty('description')) {
+
+            if(test.hasOwnProperty('description')) {
                 result.description = test.description;
             }
-            if (test.hasOwnProperty('explanations') && test.explanations.hasOwnProperty(status)) {
+
+            if(test.hasOwnProperty('explanations') && test.explanations.hasOwnProperty(status)) {
                 result.explanation = test.explanations[status];
             }
-            if (test.hasOwnProperty('mark')) {
-                result.mark = test.mark;
+
+            if(test.hasOwnProperty('mark') && test.mark.constructor == Function) {
+                result.mark = test.mark();
             }
+
             result.tags = test.hasOwnProperty('tags') ? test.tags : ['others'];
-            
-            if (test.hasOwnProperty('ressources')) {
+
+            if(test.hasOwnProperty('ressources')) {
                 result.ressources = test.ressources;
             }
-            if (counter) {
+
+            if(counter) {
                 result.counter = counter;
             }
-            if (failedincollection) {
+
+            if(failedincollection) {
                 result.failedincollection = failedincollection;
             }
             
             addResultSet("Nouvelle syntaxe d'écriture des tests", result);
-            // Intégrer chaque résultat dans window.tanaguru.tests.
         }
-        else {
-            // Erreur : valeur de la propriété query.
-        }
+
+        else console.log("Requête invalide, vérifier le sélecteur CSS: "+test.query);
     }
 }

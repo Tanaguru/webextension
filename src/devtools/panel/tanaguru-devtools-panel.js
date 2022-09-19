@@ -127,7 +127,7 @@ function translateRGBToHex(rgb) {
  * @param {HTMLElement} codeContainer <code> to contain formatted code
  * @param {?Array} [codehighlight] Array of attributes to highlight
  */
-function formattingCode(itemCode, codeContainer, codehighlight = null) {
+function formattingCode(itemCode, codeContainer, codehighlight = null, relatedCode = null) {
 	var itemCodeCapture = [];
 	var regitemCode = new RegExp(/(?<open><[^\s\/]+\s*(?:[^\s"=]+="[^"]*"\s*)*>)|(?<close><\/[^\s>]+>)|(?<text>.)/g);
 
@@ -153,7 +153,11 @@ function formattingCode(itemCode, codeContainer, codehighlight = null) {
 
 			lineContainer.appendChild(document.createTextNode("<"));
 
-			let openSpan = document.createElement('span');
+			let openSpan;
+			if (codehighlight && codehighlight.hasOwnProperty('tag') && codehighlight.tag) {
+				openSpan = document.createElement('mark');
+			} else openSpan = document.createElement('span');
+			
 			openSpan.classList.add('code-tag');
 			openSpan.appendChild(document.createTextNode(icc.open.match(/[^<\/\s>]+/)));
 			lineContainer.appendChild(openSpan);
@@ -162,8 +166,22 @@ function formattingCode(itemCode, codeContainer, codehighlight = null) {
 			if(itemAtt) {
 				itemAtt.forEach(att => {
 					let attName = att.match(/[^="<>\s]+/);
+					let attValue= att.match(/(?<=")[^"]*(?=")/)[0];
+					let hasHighlightAttrs = codehighlight && codehighlight.hasOwnProperty('attrs') && codehighlight.attrs.length > 0;
+					let attObject = hasHighlightAttrs ? codehighlight.attrs.filter(hlAtt => hlAtt.name === attName[0]) : null;
+					attObject = attObject && attObject.length > 0 ? attObject[0] : null;
+					let isHL = false;
 
-					if (codehighlight && codehighlight.hasOwnProperty('attrs') && codehighlight.attrs.includes(attName[0])) {
+					if(attObject) {
+						if(attObject.valueState === "any") isHL = true;
+						else if(attObject.valueState === "notEmpty") isHL = attValue.length > 0;
+						else if(attObject.valueState === "egal") isHL = attValue === attObject.value;
+						else if(attObject.valueState === "contains") isHL = attValue.includes(attObject.value);
+						else if(attObject.valueState === "startBy") isHL = attValue.startsWith(attObject.value);
+						else if(attObject.valueState === "endBy") isHL = attValue.endsWith(attObject.value);
+					}
+
+					if(isHL) {
 						let hlMark = document.createElement('mark');
 						hlMark.appendChild(document.createTextNode(' '+att));
 						lineContainer.appendChild(hlMark);
@@ -190,7 +208,11 @@ function formattingCode(itemCode, codeContainer, codehighlight = null) {
 			lineContainer.classList.add("code-close");
 			lineContainer.appendChild(document.createTextNode("</"));
 
-			let closeSpan = document.createElement('span');
+			let closeSpan;
+			if (codehighlight && codehighlight.hasOwnProperty('tag') && codehighlight.tag) {
+				closeSpan = document.createElement('mark');
+			} else closeSpan = document.createElement('span');
+
 			closeSpan.classList.add('code-tag');
 			closeSpan.appendChild(document.createTextNode(icc.close.match(/[^<\/>]+/)));
 			lineContainer.appendChild(closeSpan);
@@ -198,12 +220,27 @@ function formattingCode(itemCode, codeContainer, codehighlight = null) {
 			lineContainer.appendChild(document.createTextNode(">"));
 			codeContainer.appendChild(lineContainer);
 		} else {
-			let lineContainer = document.createElement('span');
+			let lineContainer;
+			if (codehighlight && codehighlight.hasOwnProperty('content') && codehighlight.content) {
+				lineContainer = document.createElement('mark');
+			} else lineContainer = document.createElement('span');
+
 			lineContainer.classList.add("code-textContent");
 			lineContainer.appendChild(document.createTextNode(icc.text));
 			codeContainer.appendChild(lineContainer);
 		}
 	});
+
+	if(relatedCode && codehighlight.hasOwnProperty('related') && codehighlight.related.hasOwnProperty('title')) {
+		let commentElement = document.createElement('span');
+		let comment = "<!-- "+codehighlight.related.title+" -->";
+		commentElement.classList.add('code-comment');
+
+		commentElement.appendChild(document.createTextNode(comment));
+		codeContainer.appendChild(commentElement);
+
+		formattingCode(relatedCode, codeContainer, codehighlight.related);
+	}
 }
 
 //? use in ../tanaguru-devtools.js
@@ -1140,7 +1177,7 @@ button.addEventListener('click', function () {
 						status.setAttribute('class', 'status');
 						status.appendChild(document.createTextNode(chrome.i18n.getMessage('earl' + test.type.charAt(0).toUpperCase() + test.type.slice(1))));
 						tabpanelsectionbutton.appendChild(status);
-		
+						
 						// display the number of elements on test button
 						let dataLength = test.data.length;
 						if (!((test.type == 'failed' && dataLength == 0) || test.type == 'untested')) {
@@ -1391,9 +1428,9 @@ button.addEventListener('click', function () {
 									let template = document.querySelector('#item-row');
 									var newRow = document.importNode(template.content, true);
 									newRow.querySelector('.item-number').textContent = itemNumber;
-									newRow.querySelector('.item-status').textContent = itemStatus;
+									newRow.querySelector('.item-status').textContent = chrome.i18n.getMessage("earl"+itemStatus);
 
-									formattingCode(test.data[h].outer, newRow.querySelector('.item-code code'), codehighlight);
+									formattingCode(test.data[h].outer, newRow.querySelector('.item-code code'), codehighlight, test.data[h].outerRelated);
 
 									/**
 									 * ? Display the detail of accessible name
