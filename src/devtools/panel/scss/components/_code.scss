@@ -71,3 +71,19 @@ td.item-code--small {
 .code-attName {
 	color: rgb(248, 177, 83);
 }
+
+.test-title.failed + div mark {
+	background-color: #A42E28;
+}
+
+.test-title.passed + div mark {
+	background-color: #358700;
+}
+
+.test-title.cantTell + div mark {
+	background-color: #2a609e;
+}
+
+.test-title + div mark {
+	color: #fff;
+}

@@ -1159,66 +1159,35 @@ button.addEventListener('click', function () {
 						testelement.setAttribute('class', 'testparent ' + test.tags.join(' '));
 		
 						// create test button
-						var tabpanelsection = document.createElement('h3');
-						tabpanelsection.setAttribute('class', test.type);
-						var tabpanelsectionbutton = document.createElement('button');
-						tabpanelsectionbutton.setAttribute('type', 'button');
-						tabpanelsectionbutton.setAttribute('data-action', 'showhide-action');
-						tabpanelsectionbutton.setAttribute('aria-expanded', 'false');
-						
-						// IN PROGRESS - test référence
-						var testref = document.createElement('em');
-						testref.style.display = 'none';
-						testref.appendChild(document.createTextNode(category+'-'+testsCount));
-						tabpanelsectionbutton.appendChild(testref);
+						var testButtonTemplate = document.querySelector('#test-button');
+						var testButtonFragment = document.importNode(testButtonTemplate.content, true);
+						var tabpanelsection = testButtonFragment.querySelector('.test-title');
+						tabpanelsection.classList.add(test.type);
 						
 						// display test status on the button
-						var status = document.createElement('span');
-						status.setAttribute('class', 'status');
-						status.appendChild(document.createTextNode(chrome.i18n.getMessage('earl' + test.type.charAt(0).toUpperCase() + test.type.slice(1))));
-						tabpanelsectionbutton.appendChild(status);
+						tabpanelsection.querySelector('.test-button-status').textContent = chrome.i18n.getMessage('earl' + test.type.charAt(0).toUpperCase() + test.type.slice(1));
 						
 						// display the number of elements on test button
 						let dataLength = test.data.length;
 						if (!((test.type == 'failed' && dataLength == 0) || test.type == 'untested')) {
-							var strong = document.createElement('strong');
+							let count = tabpanelsection.querySelector('.test-button-count');
+							let strongcount = test.hasOwnProperty('failedincollection') ? test.failedincollection : dataLength;
+							count.appendChild(document.createTextNode(strongcount + (test.hasOwnProperty('counter') ? ' / ' +  test.counter : '')));
+						}
 
-							// display the warning icon
-							if(test.warning && dataLength > 0) {
-								var warnContainer = document.createElement('span');
-								warnContainer.classList.add('test-warning');
-
-								var warnAlt = document.createElement('span');
-								warnAlt.classList.add('visually-hidden');
-								warnAlt.textContent = chrome.i18n.getMessage('word_warning');
-								
-								var warnIco = document.createElement('span');
-								warnIco.classList.add('test-warning-icon');
-								warnIco.setAttribute('aria-hidden', 'true');
-								warnIco.textContent = "!";
-
-								warnContainer.appendChild(warnAlt);
-								warnContainer.appendChild(warnIco);
-								strong.appendChild(warnContainer);
-							}
-
-							var strongcount = test.hasOwnProperty('failedincollection') ? test.failedincollection : dataLength;
-							strong.appendChild(document.createTextNode(strongcount + (test.hasOwnProperty('counter') ? ' / ' +  test.counter : '')));
-							tabpanelsectionbutton.appendChild(strong);
-							tabpanelsectionbutton.appendChild(document.createTextNode(' '));
+						if(!test.warning || dataLength === 0) {
+							tabpanelsection.querySelector('.test-button-warning').remove();
 						}
 		
 						// display the test name on the button
-						var span = document.createElement('span');
-						span.textContent = test.name.charAt(0).toUpperCase() + test.name.slice(1);
-						tabpanelsectionbutton.appendChild(span);
-						tabpanelsection.appendChild(tabpanelsectionbutton);
+						tabpanelsection.querySelector('.test-button-name').textContent = test.name.charAt(0).toUpperCase() + test.name.slice(1);
 		
 						// create results container
 						var tabpanelsectiondiv = document.createElement('div');
 						tabpanelsectiondiv.setAttribute('id', 'testsection' + t);
-						tabpanelsectionbutton.setAttribute('aria-controls', tabpanelsectiondiv.getAttribute('id'));
 						tabpanelsectiondiv.setAttribute('hidden', 'hidden');
+
+						tabpanelsection.querySelector('.test-button').setAttribute('aria-controls', tabpanelsectiondiv.getAttribute('id'));
 						testelement.appendChild(tabpanelsection);
 		
 						// test description
@@ -1621,7 +1590,7 @@ button.addEventListener('click', function () {
 								selectparent.setAttribute('class', 'filter');
 								var selectlabel = document.createElement('label');
 								selectlabel.setAttribute('for', 'select' + t);
-								var selectlabeltext = tabpanelsection.firstChild.lastChild.textContent;
+								var selectlabeltext = tabpanelsection.querySelector('.test-button-name').textContent;
 								var selectlabelspanl = document.createElement('span');
 								selectlabelspanl.appendChild(document.createTextNode('Pour la partie "' + selectlabeltext.charAt(0).toUpperCase() + selectlabeltext.slice(1) + '", '));
 								selectlabelspanl.setAttribute('class', 'visually-hidden');
