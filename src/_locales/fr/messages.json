@@ -1519,16 +1519,16 @@
     "message": "La pertinence de la hierarchie des titres étant grandement sujette à l'interprétation de l'auditeur, nous avons fait le choix de suivre les bonnes pratiques OPQUAST."
   },
   "structure_name_421": {
-    "message": "Vérifier que les éléments suivant sont des zones d'entêtes"
+    "message": "Vérifier que les éléments suivants sont des zones d'entêtes"
   },
   "structure_name_422": {
-    "message": "Vérifier que les éléments suivant sont des zones de pied de page"
+    "message": "Vérifier que les éléments suivants sont des zones de pied de page"
   },
   "structure_name_423": {
-    "message": "Vérifier que les éléments suivant sont des zones navigation"
+    "message": "Vérifier que les éléments suivants sont des zones navigation"
   },
   "structure_name_424": {
-    "message": "Vérifier que l'éléments suivant est la zone de contenu principale"
+    "message": "Vérifier que l'élément suivant représente la zone de contenu principale"
   },
   "structure_name_425": {
     "message": "La structure du document utilise une balise main visible et unique"
@@ -1537,7 +1537,7 @@
     "message": "La structure du document utilise bien une balise main visible et unique."
   },
   "structure_failed_427": {
-    "message": "La structure du document n'utilise pas de balise main visible et ou en utilise plusieurs."
+    "message": "La structure du document n'utilise pas de balise main visible ou en utilise plusieurs."
   },
   "structure_name_428": {
     "message": "Les informations regroupées visuellement sous forme de liste non ordonnée doivent être structurées comme telle."
