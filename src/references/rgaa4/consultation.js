@@ -30,7 +30,23 @@ tanaguruTestsList.push({
             }
         }
     },
-    mark: {attrs: ['http-equiv', 'content']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "http-equiv",
+                value: "refresh",
+                valueState: "egal" //startBy || endBy, || contains || egal || notEmpty || any
+            },
+            {
+                name: "content",
+                value: "",
+                valueState: "notEmpty" //startBy || endBy, || contains || egal || notEmpty || any
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'meta', 'consultation'],
     ressources: { 'rgaa': ['13.1.1']}
 });
@@ -47,7 +63,23 @@ tanaguruTestsList.push({
         let time = content.match(/^\d+/);
         if(time) return time[0] > 0;
     },
-    mark: {attrs: ['http-equiv', 'content']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "http-equiv",
+                value: "refresh",
+                valueState: "egal" //startBy || endBy, || contains || egal || notEmpty || any
+            },
+            {
+                name: "content",
+                value: "",
+                valueState: "notEmpty" //startBy || endBy, || contains || egal || notEmpty || any
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'meta', 'consultation'],
     ressources: { 'rgaa': ['13.1.2']}
 });
@@ -86,7 +118,8 @@ tanaguruTestsList.push({
 	lang: 'fr',
 	name: "locale__consultation_name_58",
     query: '[href][download]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'consultation'],
     ressources: { 'rgaa': ['13.3.1'] }
 });

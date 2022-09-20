@@ -1,0 +1,129 @@
+/*? START Popin */
+#tanaguru-popin {
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background-color: #fff;
+	overflow-y: auto;
+}
+
+main.tanaguru-popin-show > div {
+	visibility: hidden;
+}
+
+#tanaguru-popin .popin-header {
+	/* background-color: purple; */
+	border-bottom: solid 1px #e5e5e5;
+	margin-bottom: 1.8rem;
+	position: relative;
+}
+
+#tanaguru-popin .popin-header > * {
+	margin: 0;
+}
+	
+#tanaguru-popin .popin-header h1::after {
+	background-color: #2b7b92;
+	bottom: -1px;
+	content: '';
+	height: 4px;
+	left: 0;
+	position: absolute;
+	right: 0;
+}
+
+#tanaguru-popin .popin-header h1 {
+	display: inline-block;
+	position: relative;
+	padding: 0.4rem 0 0.9rem 0;
+	margin: unset;
+}
+	
+#tanaguru-popin .popin-header button {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAMCAYAAAHHW6c1AAAAAXNSR0IArs4c6QAAAPBJREFUGBljYMAO0tLSPoFlgIz/cCUNDQ1sTOnp6RlAkX8w6d2MMHmgWl0g+xIQS7EA1TI9e/bsLyMjY8XMmTPBiuAqQTqA5pyWlJS0BLFRAFwV0LyHQO1fwLJAzh8gng3mAPX2AjkQNwBFwFqAgh7////fDuQLwM3IysqS+Pv3bz1cAKwfSkAlNwO5Z4BOyUVRlJGR4Q40bhUQ8wEV7AHikFmzZn1kBPns+fPn3UCJIqDgf6ATK4E+7ASy4QBuEii0gAqnAGWYgXiOlJRUJtCAPyCVcEUgDggAvQQKwC1ALAc09RpQowtIHCsARQZMAgBZ0lsUwd0q2wAAAABJRU5ErkJggg==);
+	background-position: left center;
+	background-repeat: no-repeat;
+	border: none;
+	background-color: transparent;
+	display: inline-block;
+	color: #666;
+	margin-top: 0.35rem;
+	padding: 0.45rem 1.8rem 0.45rem 2.5rem;
+}
+	
+#tanaguru-popin h2 {
+	color: #4c4c4c;
+	font-size: 1.5rem;
+	margin: 0;
+}
+
+#tanaguru-popin h2 img {
+	display: inline-block;
+	margin-right: 0.45rem;
+	vertical-align: bottom;
+}
+
+#tanaguru-popin h2 + p {
+	background-color: #F3F9FB;
+	border-left: solid 4px #2b7b92;
+	box-shadow: 0 0 4px #AFDDEB inset;
+	font-size: 1.35rem;
+	line-height: 1.5;
+	padding: 1.35rem;
+}
+
+#tanaguru-popin h2 + p.input {
+	background-color: transparent;
+	border-left: none;
+	box-shadow: none;
+	font-size: 1.35rem;
+	line-height: 1.5;
+	padding: 0;
+}
+
+#tanaguru-popin h2 + p.input input {
+	background-color: #F3F9FB;
+	border: none;
+	border-left: solid 4px #2b7b92;
+	box-shadow: 0 0 4px #AFDDEB inset;
+	box-sizing: border-box;
+	display: block;
+	font-size: 1.8rem;
+	padding: 1.35rem;
+	width: 100%;
+}
+
+#tanaguru-popin h2 ~ div {
+	overflow: hidden;
+	padding: 0 0 1.8rem 0;
+	font-size: 1.5rem;
+}
+
+#tanaguru-popin h2 ~ div p {
+	margin: 0;
+}
+
+#tanaguru-popin h2 ~ div p:first-child {
+	float: left;
+}
+
+#tanaguru-popin h2 ~ div p:last-child {
+	float: right;
+}
+
+#tanaguru-popin > div {
+	background-color: #fff;
+	padding-left: 2.25rem;
+	padding-right: 2.25rem;
+}
+
+#tanaguru-popin div:not(.popin-header) button {
+	background-color: #2b7b92;
+	color: #fff;
+	border: none;
+	font-size: 1.8rem;
+	padding: 0.9rem 1.35rem;
+}
+/*? END Popin */

@@ -1,0 +1,23 @@
+@font-face {
+    font-family: Montserrat;
+    src: url(../../ressources/fonts/montserrat-regular-webfont.eot);
+    src: url(../../ressources/fonts/montserrat-regular-webfont.eot?#iefix) format("embedded-opentype"), url(../../ressources/fonts/montserrat-regular-webfont.woff) format("woff"), url(../../ressources/fonts/montserrat-regular-webfont.ttf) format("truetype"), url(../../ressources/fonts/montserrat-regular-webfont.svg#montserratregular) format("svg");
+    font-weight: 400;
+    font-style: normal
+}
+
+@font-face {
+    font-family: Montserrat;
+    src: url(../../ressources/fonts/montserrat-bold-webfont.eot);
+    src: url(../../ressources/fonts/montserrat-bold-webfont.eot?#iefix) format("embedded-opentype"), url(../../ressources/fonts/montserrat-bold-webfont.woff) format("woff"), url(../../ressources/fonts/montserrat-bold-webfont.ttf) format("truetype"), url(../../ressources/fonts/montserrat-bold-webfont.svg#montserratregular) format("svg");
+    font-weight: 700;
+    font-style: normal
+}
+
+@font-face {
+    font-family: FontAwesome;
+    src: url(../../ressources/fonts/fontawesome-webfont.eot?v=4.7.0);
+    src: url(../../ressources/fonts/fontawesome-webfont.eot?#iefix&v=4.7.0) format("embedded-opentype"), url(../../ressources/fonts/fontawesome-webfont.woff2?v=4.7.0) format("woff2"), url(../../ressources/fonts/fontawesome-webfont.woff?v=4.7.0) format("woff"), url(../../ressources/fonts/fontawesome-webfont.ttf?v=4.7.0) format("truetype"), url(../../ressources/fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular) format("svg");
+    font-weight: 400;
+    font-style: normal
+}

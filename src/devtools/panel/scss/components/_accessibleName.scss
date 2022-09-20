@@ -1,0 +1,31 @@
+/** accessiblename cell */
+td.item-accessiblename {
+	width: 25%;
+	min-width: 18rem;
+	text-align: left;
+	color: #333;
+}
+
+p.an-full {
+	margin-top: 0;
+}
+
+p.an-full span {
+	text-decoration: underline;
+}
+
+ul.an-list {
+	list-style: disc inside;
+	display: none;
+	color: #555;
+}
+
+ul.an-list li {
+	font-weight: normal;
+	display: list-item;
+}
+
+.an-list ul {
+	list-style: circle inside;
+	padding-left: 1.8rem;
+}

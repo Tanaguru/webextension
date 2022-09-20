@@ -52,3 +52,7 @@
 
 ## 5.0.2
 - fix : compatibility with old browsers
+## 5.1.0
+- updates : test object(the mark property is now a function that allows to be more precise, a test can now be marked with the warning property), 
+- fixes : getVisibility/getXPath/getDuplicateID (these functions sometimes caused errors that blocked the analysis of some pages or gave erroneous results)
+

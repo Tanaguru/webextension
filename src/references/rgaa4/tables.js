@@ -46,7 +46,6 @@ tanaguruTestsList.push({
             }
         }
     },
-    mark: {attrs: ['aria-describedby']},
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.1.1']}
 });
@@ -56,7 +55,20 @@ tanaguruTestsList.push({
     name: "locale__tables_name_436",
     query: '[data-tng-tableCaptions]',
     testStatus: "passed",
-    mark: {attrs: ['aria-describedby']},
+    mark: function() {
+        return {
+            attrs: [],
+            related: {
+                title: "Description référencée par l'attribut aria-describedby.",
+                element: "#!!!aria-describedby!!!",
+                attrs: [],
+                tag: false,
+                content: true
+            },
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.1.1']}
 });
@@ -68,8 +80,22 @@ tanaguruTestsList.push({
     name: "locale__tables_name_437",
     query: '[data-tng-tableCaptions]',
     description: "locale__tables_description_438",
-    testStatus: "cantTell",
-    mark: {attrs: ['aria-describedby']},
+    testStatus: 'cantTell',
+    warning: false,
+    mark: function() {
+        return {
+            attrs: [],
+            related: {
+                title: "Description référencée par l'attribut aria-describedby.",
+                element: "#!!!aria-describedby!!!",
+                attrs: [],
+                tag: false,
+                content: true
+            },
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.2.1']}
 });
@@ -103,8 +129,20 @@ tanaguruTestsList.push({
     name: "locale__tables_name_441",
     query: 'table[data-tng-prezTable][role="presentation"]',
     description: "locale__tables_description_440",
-    testStatus: "cantTell",
-    mark: {attrs: ['role']},
+    testStatus: 'cantTell',
+    warning: false,
+    mark: function() {
+        return {
+            attrs: [{
+                name: "role",
+                value: "presentation",
+                valueState: "egal"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.3.1']}
 });
@@ -147,7 +185,34 @@ tanaguruTestsList.push({
     },
     testStatus: "passed",
     depStatus: ["failed", "cantTell"],
-    mark: {attrs: ['title', 'aria-label', 'aria-labelledby']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "aria-label",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "aria-labelledby",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "title",
+                value: "",
+                valueState: "any"
+            }],
+            related: {
+                title: "Passage de texte associé à la table.",
+                element: "#!!!aria-labelledby!!!",
+                attrs: [],
+                tag: false,
+                content: true
+            },
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.4.1']}
 });
@@ -157,7 +222,18 @@ tanaguruTestsList.push({
     name: "locale__tables_name_444",
     query: '[data-tng-dataTableSummary="false"]',
     testStatus: "failed",
-    mark: {attrs: ['aria-labelledby']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "aria-labelledby",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.4.1']}
 });
@@ -177,9 +253,37 @@ tanaguruTestsList.push({
 
         item.setAttribute('data-tng-tableAccessiblename', 'false');
     },
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     depStatus: ["failed"],
-    mark: {attrs: ['title', 'aria-label', 'aria-labelledby']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "aria-label",
+                value: "",
+                valueState: "notEmpty"
+            },
+            {
+                name: "aria-labelledby",
+                value: "",
+                valueState: "notEmpty"
+            },
+            {
+                name: "title",
+                value: "",
+                valueState: "notEmpty"
+            }],
+            related: {
+                title: "Passage de texte associé à la table.",
+                element: "#!!!aria-labelledby!!!",
+                attrs: [],
+                tag: false,
+                content: true
+            },
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'tables', 'accessiblename'],
     ressources: {'rgaa': ['5.5.1']}
 });
@@ -189,7 +293,34 @@ tanaguruTestsList.push({
     name: "locale__tables_name_447",
     query: '[data-tng-tableAccessiblename="false"][data-tng-el-exposed="true"], [data-tng-tableAccessiblename="false"][data-tng-el-visible="true"]',
     testStatus: "failed",
-    mark: {attrs: ['title', 'aria-label', 'aria-labelledby']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "aria-label",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "aria-labelledby",
+                value: "",
+                valueState: "notEmpty"
+            },
+            {
+                name: "title",
+                value: "",
+                valueState: "any"
+            }],
+            related: {
+                title: "Passage de texte associé à la table.",
+                element: "#!!!aria-labelledby!!!",
+                attrs: [],
+                tag: false,
+                content: true
+            },
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.5.1']}
 });
@@ -350,7 +481,18 @@ tanaguruTestsList.push({
     },
     testStatus: "passed",
     depStatus: ["failed"],
-    mark: {attrs: ['scope']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "scope",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.1']}
 });
@@ -360,7 +502,18 @@ tanaguruTestsList.push({
     name: "locale__tables_name_449",
     query: 'table *[data-tng-tableCol="bad"]',
     testStatus: "failed",
-    mark: {attrs: ['scope']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "scope",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.1']}
 });
@@ -477,7 +630,18 @@ tanaguruTestsList.push({
     },
     testStatus: "passed",
     depStatus: ["failed"],
-    mark: {attrs: ['scope']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "scope",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.2']}
 });
@@ -487,7 +651,18 @@ tanaguruTestsList.push({
     name: "locale__tables_name_451",
     query: 'table *[data-tng-tableRow="bad"]',
     testStatus: "failed",
-    mark: {attrs: ['scope']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "scope",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.2']}
 });
@@ -545,7 +720,18 @@ tanaguruTestsList.push({
             item.setAttribute('data-tng-tableHeaders', 'true');
         }
 	},
-    mark: {attrs: ['headers']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "headers",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.4']}
 });
@@ -555,7 +741,18 @@ tanaguruTestsList.push({
 	name: "locale__tables_name_456",
 	query: 'table *[data-tng-tableHeaders="true"]',
     testStatus: "passed",
-    mark: {attrs: ['headers']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "headers",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.6.4']}
 });
@@ -583,7 +780,28 @@ tanaguruTestsList.push({
 
         return true;
 	},
-    mark: {attrs: ['scope', 'id', 'role']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "scope",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "id",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "role",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.1']}
 });
@@ -593,7 +811,28 @@ tanaguruTestsList.push({
 	name: "locale__tables_name_458",
 	query: 'th[data-tng-table="headerColFull"][scope], th[data-tng-table="headerColFull"][role="columnheader"], th[data-tng-table="headerColFull"][data-tng-tableHeader-uniqueID="true"], th[data-tng-table="headerRowFull"][scope], th[data-tng-table="headerRowFull"][role="rowheader"], th[data-tng-table="headerRowFull"][data-tng-tableHeader-uniqueID="true"]',
     testStatus: "passed",
-    mark: {attrs: ['scope', 'id', 'role']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "scope",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "id",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "role",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.1']}
 });
@@ -617,7 +856,18 @@ tanaguruTestsList.push({
 	},
 	testStatus: "passed",
     depStatus: ["failed", "cantTell"],
-    mark: {attrs: ['scope']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "scope",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.2']}
 });
@@ -638,7 +888,18 @@ tanaguruTestsList.push({
             return true;
         }
 	},
-    mark: {attrs: ['scope']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "scope",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.2']}
 });
@@ -648,8 +909,20 @@ tanaguruTestsList.push({
 	name: "locale__tables_name_461",
 	query: 'th[scope]:not([data-tng-scope])',
     description: "locale__tables_description_462",
-    testStatus: "cantTell",
-    mark: {attrs: ['scope']},
+    testStatus: 'cantTell',
+    warning: false,
+    mark: function() {
+        return {
+            attrs: [{
+                name: "scope",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.2']}
 });
@@ -675,7 +948,28 @@ tanaguruTestsList.push({
 	},
     testStatus: "passed",
     depStatus: ["failed"],
-    mark: {attrs: ['scope', 'id', 'role']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "scope",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "id",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "role",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.3']}
 });
@@ -685,7 +979,28 @@ tanaguruTestsList.push({
 	name: "locale__tables_name_464",
 	query: 'th[data-tng-table="headerColPart"]:not([data-tng-partHeader-uniqueID="true"]), th[data-tng-table="headerRowPart"]:not([data-tng-partHeader-uniqueID="true"])',
     testStatus: "failed",
-    mark: {attrs: ['scope', 'id', 'role']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "scope",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "id",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "role",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.3']}
 });
@@ -733,7 +1048,18 @@ tanaguruTestsList.push({
 	},
 	testStatus: "passed",
     depStatus: ["failed"],
-    mark: {attrs: ['headers']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "headers",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.4']}
 });
@@ -743,7 +1069,18 @@ tanaguruTestsList.push({
 	name: "locale__tables_name_466",
 	query: 'table [data-tng-headerInTable="false"][data-tng-el-exposed="true"], table [data-tng-headerInTable="false"][data-tng-el-visible="true"]',
     testStatus: "failed",
-    mark: {attrs: ['headers']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "headers",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.4']}
 });
@@ -755,7 +1092,18 @@ tanaguruTestsList.push({
 	name: "locale__tables_name_467",
 	query: '[role="rowheader"][data-tng-table="headerColFull"], [role="columnheader"][data-tng-table="headerRowFull"]',
     testStatus: "failed",
-    mark: {attrs: ['role']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "role",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.5']}
 });
@@ -765,7 +1113,18 @@ tanaguruTestsList.push({
 	name: "locale__tables_name_468",
 	query: '[role="columnheader"][data-tng-table="headerColFull"], [role="rowheader"][data-tng-table="headerRowFull"]',
     testStatus: "passed",
-    mark: {attrs: ['role']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "role",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'tables'],
     ressources: {'rgaa': ['5.7.5']}
 });

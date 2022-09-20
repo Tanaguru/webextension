@@ -1,0 +1,89 @@
+/** item cell (code) && domChangeList (code) */
+td.item-code {
+	min-width: 30rem;
+	text-align: left;
+}
+
+td.item-code--small {
+	width: 45%;
+}
+
+.item-code .code {
+	display: inline-block;
+	margin: 0;
+	background-color: #303138;
+}
+
+.item-code .code code {
+	display: flex;
+	flex-direction: column;
+	padding: 1.8rem;
+	color: #e5e5e5;
+	word-break: break-word;
+}
+
+.domChangeList .code code {
+	padding: 0.5rem;
+	text-align: left;
+}
+
+.domChangeList .code {
+	border-radius: 1rem;
+}
+
+.domChangeList li {
+	position: relative;
+	margin: 1rem 0;
+	max-width: 80rem;
+}
+
+.domChangeList li div {
+	padding-left: 3rem;
+}
+
+.domChangeList li .domDropdownButton {
+	margin-left: 3rem;
+	border: 0;
+}
+
+.domDisclosureIcon {
+	position: absolute;
+	left: 1rem;
+	top: 1rem;
+	margin-right: 1rem;
+	width: 1.3rem;
+	transition: transform 0.3s;
+}
+
+.code-textContent {
+	text-indent: 3.6rem;
+}
+
+.code-tag {
+	font-weight: 700;
+	color: #87C9D6;
+}
+
+.code-attValue {
+	color: rgb(156, 243, 116);
+}
+
+.code-attName {
+	color: rgb(248, 177, 83);
+}
+
+.test-title.failed + div mark {
+	background-color: #A42E28;
+}
+
+.test-title.passed + div mark {
+	background-color: #358700;
+}
+
+.test-title.cantTell + div mark {
+	background-color: #2a609e;
+}
+
+.test-title + div mark {
+	color: #fff;
+}

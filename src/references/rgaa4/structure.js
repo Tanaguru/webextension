@@ -40,7 +40,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__structure_name_418",
     query: '[data-tng-headingAN="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'headings', 'accessiblename', 'structure'],
     ressources: { 'rgaa': ['9.1.2'] }
 });
@@ -57,7 +58,7 @@ tanaguruTestsList.push({
         return true;
     },
     testStatus: 'cantTell',
-    mark: { attrs: ['role', 'class']},
+    warning: false,
     tags: ['a11y', 'headings', 'structure'],
     ressources: { 'rgaa': ['9.1.3'] }
 });
@@ -67,7 +68,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__structure_name_421",
     query: 'header[data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'structure'],
     ressources: { 'rgaa': ['9.2.1'] }
 });
@@ -76,7 +78,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__structure_name_422",
     query: 'footer[data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'structure'],
     ressources: { 'rgaa': ['9.2.1'] }
 });
@@ -85,7 +88,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__structure_name_423",
     query: 'nav[data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'structure'],
     ressources: { 'rgaa': ['9.2.1'] }
 });
@@ -94,7 +98,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__structure_name_424",
     query: 'main[data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'structure'],
     ressources: { 'rgaa': ['9.2.1'] }
 });

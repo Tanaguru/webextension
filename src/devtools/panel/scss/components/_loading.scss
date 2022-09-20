@@ -1,0 +1,26 @@
+/*? Loading template */
+.loading {
+	box-sizing: border-box;
+	font-size: 1.6rem;
+	padding: 13.5rem 0;
+	text-align: center;
+	width: 100%;
+	margin: 0;
+}
+
+.loading img[tabindex="-1"] {
+	outline: none;
+}
+
+/** left panel(tabs) */
+.cat-loading .loading {
+	float: right;
+	margin-right: 0.9rem;
+	position: unset;
+	max-width: 2rem;
+	padding: unset;
+}
+
+.cat-loading .loading img {
+	max-width: 100%;
+}
