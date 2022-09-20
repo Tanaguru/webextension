@@ -2019,7 +2019,13 @@ button.addEventListener('click', function () {
 						}
 		
 						testelement.appendChild(tabpanelsectiondiv);
-						alltagspanel.querySelector('#earl' + test.type.charAt(0).toUpperCase() + test.type.slice(1)).appendChild(testelement);
+						let parentTestElement = alltagspanel.querySelector('#earl' + test.type.charAt(0).toUpperCase() + test.type.slice(1));
+						if(test.warning) {
+							parentTestElement.insertBefore(testelement, parentTestElement.firstChild);
+						} else {
+							parentTestElement.appendChild(testelement);
+						}
+						
 						t++;
 					});
 		
