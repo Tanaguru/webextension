@@ -10,8 +10,8 @@ Web accessibility evaluation tool (and more).
 
 * Author : Tanaguru
 * Project : Tanaguru Webextension (Firefox and Chrome)
-* Date the document was written : 26/02/2018
-* Document update date : 03/12/2021
+* Date the document was written : 2018/02/26
+* Document update date : 2022/09/21
 
 ## Summary
 - [Install the webextension on your browser](#install-the-webextension-on-your-browser)
@@ -100,9 +100,9 @@ Each result has three buttons :
 
 ## Write a test
 
-*Update of the syntax for writing a test (03/12/2021).*
+*Update of the syntax for writing a test (2022/09/21).*
 
-The writing of a RGAA test is done from the Javascript file **« /src/references/rgaa4.js »**.
+The writing of a RGAA test is done from the Javascript file **« /src/references/rgaa4/{thématique}.js »**.
 
 The writing of a WCAG test is done from the Javascript file **« /src/references/wcag.js »**.
 
@@ -112,7 +112,9 @@ The function `createTanaguruTest` allows you to create a new test.
 
 This function takes as parameter a JSON object allowing to define the different characteristics of the test.
 
-```
+A test may have only one of the properties ("status" OR "testStatus" OR "expectedNbElements).
+
+```js
 createTanaguruTest({});
 ```
 #### Test characteristics
@@ -127,12 +129,14 @@ createTanaguruTest({});
 | code | Get the list of nodes with a duplicate ID | String ("id"). |
 | node | Get a node not accessible via the query property. | Node (ex: document.doctype). |
 | testStatus | Define the status of the sample items | String (passed/failed/cantTell/inapplicable) |
+| depStatus | Indicates if other tests with a different status depend on this test. Only the other statuses that will depend on this test are filled in. | Array of String. |
 | filter | Filter function to restrict the sample | Function. |
 | analyzeElements | Function to process the whole sample (executed after the filter function) | Function. |
-| expectedNbElements | Number of expected elements in the sample (exact or between two limits) allowing to validate or invalidate the test | Integer ou Object (with properties min (Integer), max (Integer) or both). |
+| expectedNbElements | Number of expected elements in the sample (exact or between two limits) allowing to validate or invalidate the test | Integer or Object (with properties min (Integer), max (Integer) or both). |
 | explanations | Explanations associated with the test statuses. | Object (with properties passed (String) and failed (String)). |
-| mark | Application of attribute highlights in code passages in the results interface | Object (with property attrs (Array)). |
-| tags | Labels associated with the fields. Note: these are not label headings but label identifiers (i18n) | Array de String. |
+| mark | Apply attribute, tag or text content highlighting to code passages in the results interface. | Function. |
+| warning | Highlights a test with the status "indeterminate" in the results interface. | Boolean. |
+| tags | Labels associated with the fields. Note: these are not label headings but label identifiers (i18n) | Array of String. |
 | ressources | Resources associated with the tests | Object (each property identifying a resource and valued by an Array of String). |
 
 ### Test examples
@@ -141,26 +145,91 @@ createTanaguruTest({});
 
 For example, if you want to list all links with a `target=“_blank“` attribute :
 
-````
+```js
 createTanaguruTest({
 	lang: 'en',
 	name: "Links opening in new windows.",
 	query: 'a[href][target="_blank"]:not([role])',
 	testStatus: 'cantTell',
-    warning: false,
-	mark: { attrs: ['target'] },
+    warning: true,
+	mark: function() {
+        return {
+            attrs: [{
+                name: "target", // attribute name (only 1 object per attribute)
+                value: "_blank", // value to search
+                valueState: "egal" //startBy || endBy, || contains || egal || notEmpty || any
+            }],
+            related: {},
+            tag: false, // highlight tag
+            content: false // highlight content
+        }
+    },
 	tags: ['a11y', 'links'],
 	ressources: { 'wcag': ['2.4.4'] }
 });
-````
+```
 
-Note : The property ``testStatus: "cantTell"`` will result in the test being marked as to be tested.
+Note : The property `testStatus: "cantTell"` will result in the test being marked as to be tested.
 
-#### Links with empty ``title`` attribute
+#### Grouping of fields with/without caption.
 
-For example, if you want to check that the ``title`` attributes on links are filled in :
+```js
+tanaguruTestsList.push({
+    lang: 'en',
+    name: "List of field groupings without caption.",
+    query: 'fieldset[data-tng-el-exposed="true"], [role="group"][data-tng-el-exposed="true"]',
+    testStatus: "failed",
+    depStatus: ["passed"],
+    filter: function (item) {
+        let cat = item.getImplicitAriaRoleCategory();
+        if(cat && cat === 'forms') {
+            if(item.hasAccessibleName()) {
+                item.setAttribute('data-tng-fieldsgroup-legend', 'true');
+                return;
+            } else {
+                return true;
+            }
+        }
+    },
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'wcag': ['11.6.1'] }
+});
+```
+Note: The `depStatus: ["passed"]` property declares that other tests with the status "passed" depend on it (such as the test below), so if we run a test displaying only "passed" statuses our "failed" test above will also be run.
+```js
+tanaguruTestsList.push({
+    lang: 'en',
+    name: "List of field groupings with caption.",
+    query: '[data-tng-fieldsgroup-legend]',
+    testStatus: "passed",
+    mark: function() {
+        return {
+            attrs: [{
+                name: "aria-label",
+                value: "",
+                valueState: "notEmpty"
+            }],
+            related: { // element related to our current element
+                title: "The text passage associated with the fields grouping.", //comment displayed above the element
+                element: "#!!!aria-labelledby!!!", // CSS selector (with if necessary the attribute of the current element on which to retrieve the value) allowing to find the related element
+                attrs: [],
+                tag: false,
+                content: true
+            },
+            tag: false,
+            content: false
+        }
+    },
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'wcag': ['1.1.1'] }
+});
+```
 
-````
+#### Links with empty `title` attribute
+
+For example, if you want to check that the `title` attributes on links are filled in :
+
+```js
 createTanaguruTest({
 	lang: 'en',
 	name: 'Links with empty title attribute.',
@@ -173,11 +242,22 @@ createTanaguruTest({
 		passed: "This page does not contain link elements with empty "title" attribute.",
 		failed: "Links with an empty "title" attribute are present in the page."
 	},
-	mark: { attrs: ['title'] },
+	mark: function() {
+        return {
+            attrs: [{
+                name: "title",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'links'],
 	ressources: { 'wcag': ['1.1.1', '2.4.4'] }
 });
-````
+```
 
 ---
 

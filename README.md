@@ -98,7 +98,7 @@ Chaque résultat est accompagné de trois boutons :
 
 ## Écrire un test
 
-*Mise à jour de la syntaxe d'écriture d'un test (03/12/2021).*
+*Mise à jour de la syntaxe d'écriture d'un test (21/09/2022).*
 
 L’écriture d’un test RGAA s’effectue depuis le fichier Javascript **« /src/references/rgaa4/{thématique}.js »**.
 
@@ -112,7 +112,7 @@ Cette fonction prend en paramètre un objet JSON permettant de définir les diff
 
 Un test ne peut avoir que l'une des propriétés ("status" OU "testStatus" OU "expectedNbElements).
 
-```
+```js
 createTanaguruTest({});
 ```
 #### Caractéristiques du test
@@ -127,11 +127,13 @@ createTanaguruTest({});
 | code | Récupérer la liste des noeuds avec un ID dupliqué | String ("id"). |
 | node | Récupérer un noeud non accessible via la propriété query | Node (ex: document.doctype). |
 | testStatus | Définir le statut des éléments de l'échantillon | String (passed/failed/cantTell/inapplicable) |
+| depStatus | Renseigne si d'autres tests avec un statut différent dépendent de ce test. On ne renseigne que la liste des autres statuts qui vont dépendre de ce test. | Array de String. |
 | filter | Fonction de filtrage permettant de restreindre l'échantillon. | Function. |
 | analyzeElements | Fonction permettant de traiter l'ensemble de l'échantillon (exécuté après la fonction de filtre) | Function. |
 | expectedNbElements | Nombre d'éléments attendus dans l'échantillon (précis ou compris entre deux bornes) permettant de valider ou d'invalider le test. | Integer ou Object (avec propriétés min (Integer), max (Integer) ou les deux). |
 | explanations | Explications associées aux statuts du test. | Object (avec propriétés passed (String) et failed (String)). |
-| mark | Application de mises en surbrillance d'attributs dans les passages de code dans l'interface des résultats. | Object (avec propriété attrs (Array)). |
+| mark | Application de mises en surbrillance d'attributs, de balises ou de contenu texte dans les passages de code dans l'interface des résultats. | Function. |
+| warning | Met un test avec le statut "indéterminé" en évidence dans l'interface des résultats. | Function. |
 | tags | Étiquettes associées aux champs. Note : il ne s'agit pas des intitulés d'étiquettes mais d'identifiants d'étiquettes (i18n). | Array de String. |
 | ressources | Ressources associées aux tests. | Object (chaque propriété identifiant une ressource et valorisée par un Array de String). |
 
@@ -141,42 +143,21 @@ createTanaguruTest({});
 
 Par exemple, si vous souhaitez lister tous les liens possédant un attribut `target=“_blank“` :
 
-````
+```js
 createTanaguruTest({
 	lang: 'fr',
 	name: "Liens s'ouvrant dans des nouvelles fenêtres.",
 	query: 'a[href][target="_blank"]:not([role])',
 	testStatus: 'cantTell',
-    warning: false,
+    warning: true,
 	mark: function() {
         return {
             attrs: [{
-                name: "aria-label", // nom de l'attribut (1 seul objet par attribut)
-                value: "", //valeur a chercher
-                valueState: "any" //startBy || endBy, || contains || egal || notEmpty || any
-            },
-            {
-                name: "alt",
-                value: "",
-                valueState: "any"
-            },
-            {
-                name: "aria-labelledby",
-                value: "",
-                valueState: "notEmpty"
-            },
-            {
-                name: "title",
-                value: "",
-                valueState: "any"
+                name: "target", // nom de l'attribut (1 seul objet par attribut)
+                value: "_blank", //valeur a chercher
+                valueState: "egal" //startBy || endBy, || contains || egal || notEmpty || any
             }],
-            related: { //élément en lien avec notre élément courant
-                title: "Passage de texte associé au champ.", //commentaire affiché au dessus de l'élément
-                element: "#!!!aria-labelledby!!!", //sélecteur css (avec si nécessaire l'attribut de l'élément courant sur lequel récupérer la valeur) permettant de retrouver l'élément en lien
-                attrs: [],
-                tag: false,
-                content: true
-            },
+            related: {},
             tag: false, //surligner la balise
             content: false //surligner le contenu
         }
@@ -184,15 +165,69 @@ createTanaguruTest({
 	tags: ['a11y', 'links'],
 	ressources: { 'rgaa': ['13.2.1'] }
 });
-````
+```
 
-Note : La propriété ``testStatus: "cantTell"`` fait que le test sera indiqué comme à expertiser.
+Note : La propriété `testStatus: "cantTell"` fait que le test sera indiqué comme à expertiser.
+
+#### Regroupements de champs avec/sans légende
+
+```js
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Liste des regroupement de champs sans légende.",
+    query: 'fieldset[data-tng-el-exposed="true"], [role="group"][data-tng-el-exposed="true"]',
+    testStatus: "failed",
+    depStatus: ["passed"],
+    filter: function (item) {
+        let cat = item.getImplicitAriaRoleCategory();
+        if(cat && cat === 'forms') {
+            if(item.hasAccessibleName()) {
+                item.setAttribute('data-tng-fieldsgroup-legend', 'true');
+                return;
+            } else {
+                return true;
+            }
+        }
+    },
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.6.1'] }
+});
+```
+Note: La propriété `depStatus: ["passed"]` déclare que d'autres tests ayant le statut "passed" dépendent de lui (comme le test ci-dessous), ainsi si on lance une analyse en affichant que les statuts "validé" notre test "failed" ci-dessus sera également effectué.
+```js
+tanaguruTestsList.push({
+    lang: 'fr',
+    name: "Liste des regroupement de champs avec légende.",
+    query: '[data-tng-fieldsgroup-legend]',
+    testStatus: "passed",
+    mark: function() {
+        return {
+            attrs: [{
+                name: "aria-label",
+                value: "",
+                valueState: "notEmpty"
+            }],
+            related: { //élément en lien avec notre élément courant
+                title: "Passage de texte associé au regroupement de champs.", //commentaire affiché au dessus de l'élément
+                element: "#!!!aria-labelledby!!!", //sélecteur css (avec si nécessaire l'attribut de l'élément courant sur lequel récupérer la valeur) permettant de retrouver l'élément en lien
+                attrs: [],
+                tag: false,
+                content: true
+            },
+            tag: false,
+            content: false
+        }
+    },
+    tags: ['a11y', 'forms', 'accessiblename'],
+    ressources: { 'rgaa': ['11.6.1'] }
+});
+```
 
 #### Liens avec attributs ``title`` vides
 
 Par exemple, si vous souhaitez vérifier que les attributs ``title`` sur les liens sont bien renseignés :
 
-````
+```js
 createTanaguruTest({
 	lang: 'fr',
 	name: 'Liens avec attributs title vides.',
@@ -205,11 +240,22 @@ createTanaguruTest({
 		passed: "Cette page ne contient pas d'éléments a avec attributs title vides.",
 		failed: "Des éléments a avec attributs title vides sont présents dans la page."
 	},
-	mark: { attrs: ['title'] },
+	mark: function() {
+        return {
+            attrs: [{
+                name: "title",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'links'],
 	ressources: { 'rgaa': ['6.2.1', '6.2.2', '6.2.3'] }
 });
-````
+```
 
 ---
 
