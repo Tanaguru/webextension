@@ -11,7 +11,7 @@ Outil d'évaluation de l'accessibilité Web (et plus).
 * Auteur : Tanaguru
 * Projet : Tanaguru Webextension (Firefox et Chrome)
 * Date de rédaction du document : 26/02/2018
-* Date de mise à jour du document : 03/12/2021
+* Date de mise à jour du document : 21/09/2022
 
 ## Sommaire
 - [Installer la webextension sur votre navigateur](#installer-la-webextension-sur-votre-navigateur)
@@ -133,7 +133,7 @@ createTanaguruTest({});
 | expectedNbElements | Nombre d'éléments attendus dans l'échantillon (précis ou compris entre deux bornes) permettant de valider ou d'invalider le test. | Integer ou Object (avec propriétés min (Integer), max (Integer) ou les deux). |
 | explanations | Explications associées aux statuts du test. | Object (avec propriétés passed (String) et failed (String)). |
 | mark | Application de mises en surbrillance d'attributs, de balises ou de contenu texte dans les passages de code dans l'interface des résultats. | Function. |
-| warning | Met un test avec le statut "indéterminé" en évidence dans l'interface des résultats. | Function. |
+| warning | Met un test avec le statut "indéterminé" en évidence dans l'interface des résultats. | Boolean. |
 | tags | Étiquettes associées aux champs. Note : il ne s'agit pas des intitulés d'étiquettes mais d'identifiants d'étiquettes (i18n). | Array de String. |
 | ressources | Ressources associées aux tests. | Object (chaque propriété identifiant une ressource et valorisée par un Array de String). |
 
@@ -209,7 +209,7 @@ tanaguruTestsList.push({
             }],
             related: { //élément en lien avec notre élément courant
                 title: "Passage de texte associé au regroupement de champs.", //commentaire affiché au dessus de l'élément
-                element: "#!!!aria-labelledby!!!", //sélecteur css (avec si nécessaire l'attribut de l'élément courant sur lequel récupérer la valeur) permettant de retrouver l'élément en lien
+                element: "#!!!aria-labelledby!!!", //sélecteur CSS (avec si nécessaire l'attribut de l'élément courant sur lequel récupérer la valeur) permettant de retrouver l'élément en lien
                 attrs: [],
                 tag: false,
                 content: true
@@ -223,9 +223,9 @@ tanaguruTestsList.push({
 });
 ```
 
-#### Liens avec attributs ``title`` vides
+#### Liens avec attributs `title` vides
 
-Par exemple, si vous souhaitez vérifier que les attributs ``title`` sur les liens sont bien renseignés :
+Par exemple, si vous souhaitez vérifier que les attributs `title` sur les liens sont bien renseignés :
 
 ```js
 createTanaguruTest({
