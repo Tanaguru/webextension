@@ -8,6 +8,7 @@
 	<template id="loading">
 		<p class="loading"><img src="images/loader.png" alt="Analyse en cours" tabindex="-1" /></p>
 	</template>
+
 	<template id="rgaaFilter">
 		<fieldset id="rgaaFieldset" data-filter="catFilter">
 			<legend>
@@ -255,10 +256,13 @@
 				<strong>
 					<span class="test-button-warning">
 						<span class="visually-hidden"></span>
-						<span class="warning-icon">!</span>
+						<span class="warning-icon" aria-hidden="true">!</span>
 					</span>
 
-					<span class="test-button-count"></span>
+					<span class="test-button-count">
+						<span></span>
+						<span class="visually-hidden"></span>
+					</span>
 				</strong>
 
 				<span class="test-button-name"></span>
@@ -320,15 +324,14 @@
 			<td class="testsection-td-colored item-size" style="text-align: center; width: auto;"></td>
 			<td class="testsection-td-colored item-weight" style="text-align: center; width: auto;"></td>
 			<td class="item-ct" style="width: auto;">
-				<span class="item-ct-content"
-					style="display: block; margin: auto; border: 1px solid #000; height: 18px; width: 18px; background-color: #000;">
+				<span class="item-ct-content" style="display: block; margin: auto; border: 1px solid #000; height: 18px; width: 18px; background-color: #000;">
 					<span class="visually-hidden"></span>
 				</span>
 			</td>
 			<td class="item-cf" style="width: auto;">
-				<span class="item-cf-content"
-					style="display: block; margin: auto; border: 1px solid #000; height: 18px; width: 18px; background-color: #fff;">
+				<span class="item-cf-content" style="display: block; margin: auto; border: 1px solid #000; height: 18px; width: 18px; background-color: #fff;">
 					<span class="visually-hidden"></span>
+					<span class="item-cf-icon" aria-hidden="true"></span>
 				</span>
 			</td>
 			<td class="item-ratio" style="text-align: center;"></td>

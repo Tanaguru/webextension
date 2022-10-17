@@ -27,13 +27,9 @@
 	height: 1.8rem;
 }
 
-.contrast-bgNull::after {
-	content: 'X';
-	position: absolute;
-	left: 0;
-	top: 0;
-	right: 0;
-	bottom: 0;
+.item-cf-icon {
 	text-align: center;
 	font-weight: bold;
+	font-size: 1.5rem;
+	line-height: 1;
 }

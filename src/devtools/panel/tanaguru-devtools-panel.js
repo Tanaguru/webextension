@@ -711,14 +711,37 @@ button.addEventListener('click', function () {
 		alltagspanel.setAttribute('aria-hidden', 'true');
 		tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
 
+		/**
+		 * ? add panel title
+		 */
 		var alltagspanelheading = document.createElement('h2');
 		alltagspanelheading.appendChild(document.createTextNode(tab.textContent));
 		alltagspanel.appendChild(alltagspanelheading);
 
 		/**
+		 * ? add panel legend
+		 */
+		var legendBlock = document.createElement('div');
+		legendBlock.classList.add('results-legend');
+
+		var legend_p = document.createElement('p');
+		legend_p.appendChild(document.createTextNode(chrome.i18n.getMessage('resultsLegend')));
+
+		var iconWarning = document.createElement('span');
+		iconWarning.classList.add('warning-icon');
+		iconWarning.textContent = "!";
+
+		var labelWarning = document.createElement('span');
+		labelWarning.textContent = chrome.i18n.getMessage('warningLabel');
+
+		legend_p.appendChild(iconWarning);
+		legend_p.appendChild(labelWarning);
+		legendBlock.appendChild(legend_p);
+		alltagspanel.appendChild(legendBlock);
+
+		/**
 		 * ? create tests container by status
 		 */
-		// IN PROGRESS
 		var statuses = ['failed', 'cantTell', 'passed', 'inapplicable', 'untested'];
 
 		var statuseslist = document.createElement('ul');
@@ -792,47 +815,80 @@ button.addEventListener('click', function () {
 					var currenttabpanelheading = newcurrenttabpanel.querySelector('h2');
 					currenttabpanelheading.replaceChild(document.createTextNode(newcurrenttabpanelheadingtext), currenttabpanelheading.firstChild);
 
+					var panelCategory = element.getAttribute('id');
+
 					// contrast panel description
-					if(element.getAttribute('id') === 'colors' && !document.querySelector('.contrast-panel-desc')) {
-						var contrastPanelDesc = document.createElement('div');
-						contrastPanelDesc.classList.add('contrast-panel-desc');
+					if(panelCategory === 'colors' || panelCategory === 'alltests') {
+						if(panelCategory === 'alltests' && document.querySelector('.contrast-panel-desc')) {
+							newcurrenttabpanel.removeChild(document.querySelector('.contrast-panel-desc'));
+						} else if(panelCategory === 'colors' && document.querySelector('.alltests-panel-desc')) {
+							newcurrenttabpanel.removeChild(document.querySelector('.alltests-panel-desc'));
+						}
 
-						var contrastDescription1 = document.createElement('p');
-						contrastDescription1.textContent = chrome.i18n.getMessage('contrastDescription1');
-						contrastPanelDesc.appendChild(contrastDescription1);
+						if(!document.querySelector('.contrast-panel-desc') && !document.querySelector('.alltests-panel-desc')) {
+							document.querySelector('.results-legend').setAttribute("hidden", "hidden");
 
-						var contrastDescription2 = document.createElement('p');
-						contrastDescription2.textContent = chrome.i18n.getMessage('contrastDescription2');
-						contrastPanelDesc.appendChild(contrastDescription2);
+							if(panelCategory === 'colors') {
+								var panelDesc = document.createElement('div');
+								panelDesc.classList.add('contrast-panel-desc');
 
-						var contrastLegend = document.createElement('p');
-						contrastLegend.classList.add('contrast-legend');
-						contrastLegend.textContent = chrome.i18n.getMessage('contrastLegend1');
-
-						var contrastBgImage1 = document.createElement('span');
-						contrastBgImage1.classList.add('contrast-bgImage');
-						contrastLegend.appendChild(contrastBgImage1);
-
-						var contrastBgImage2 = document.createElement('span');
-						contrastBgImage2.setAttribute('id','contrast-bgImage');
-						contrastBgImage2.textContent = chrome.i18n.getMessage('contrastLegend2');
-						contrastLegend.appendChild(contrastBgImage2);
-
-						var contrastBgNull1 = document.createElement('span');
-						contrastBgNull1.classList.add('contrast-bgNull');
-						contrastLegend.appendChild(contrastBgNull1);
-
-						var contrastBgNull2 = document.createElement('span');
-						contrastBgNull2.setAttribute('id','contrast-bgNull');
-						contrastBgNull2.textContent = chrome.i18n.getMessage('contrastLegend3');
-						contrastLegend.appendChild(contrastBgNull2);
-
-						contrastPanelDesc.appendChild(contrastLegend);
-						newcurrenttabpanel.insertBefore(contrastPanelDesc, currenttabpanelheading.nextSibling);
-					} else if(element.getAttribute('id') !== 'colors') {
+								var contrastDescription1 = document.createElement('p');
+								contrastDescription1.textContent = chrome.i18n.getMessage('contrastDescription1');
+								panelDesc.appendChild(contrastDescription1);
+		
+								var contrastDescription2 = document.createElement('p');
+								contrastDescription2.textContent = chrome.i18n.getMessage('contrastDescription2');
+								panelDesc.appendChild(contrastDescription2);
+							} else {
+								var panelDesc = document.createElement('div');
+								panelDesc.classList.add('alltests-panel-desc');
+							}
+	
+							var contrastLegend = document.createElement('p');
+							contrastLegend.classList.add('contrast-legend');
+							contrastLegend.textContent = chrome.i18n.getMessage('resultsLegend');
+	
+							var contrastBgImage1 = document.createElement('span');
+							contrastBgImage1.classList.add('contrast-bgImage');
+							contrastLegend.appendChild(contrastBgImage1);
+	
+							var contrastBgImage2 = document.createElement('span');
+							contrastBgImage2.setAttribute('id','contrast-bgImage');
+							contrastBgImage2.textContent = chrome.i18n.getMessage('contrastLegend1');
+							contrastLegend.appendChild(contrastBgImage2);
+	
+							var contrastBgNull1 = document.createElement('span');
+							contrastBgNull1.classList.add('contrast-bgNull');
+							contrastBgNull1.classList.add('item-cf-icon');
+							contrastBgNull1.setAttribute("aria-hidden", "true");
+							contrastBgNull1.textContent = "x";
+							contrastLegend.appendChild(contrastBgNull1);
+	
+							var contrastBgNull2 = document.createElement('span');
+							contrastBgNull2.setAttribute('id','contrast-bgNull');
+							contrastBgNull2.textContent = chrome.i18n.getMessage('contrastLegend2');
+							contrastLegend.appendChild(contrastBgNull2);
+	
+							let iconWarning = document.createElement('span');
+							iconWarning.classList.add('warning-icon');
+							iconWarning.textContent = "!";
+							contrastLegend.appendChild(iconWarning);
+	
+							let labelWarning = document.createElement('span');
+							labelWarning.textContent = chrome.i18n.getMessage('warningLabel');
+							contrastLegend.appendChild(labelWarning);
+	
+							panelDesc.appendChild(contrastLegend);
+							newcurrenttabpanel.insertBefore(panelDesc, currenttabpanelheading.nextSibling);
+						}
+					} else {
 						if(document.querySelector('.contrast-panel-desc')) {
 							newcurrenttabpanel.removeChild(document.querySelector('.contrast-panel-desc'));
+						} else if(document.querySelector('.alltests-panel-desc')) {
+							newcurrenttabpanel.removeChild(document.querySelector('.alltests-panel-desc'));
 						}
+
+						document.querySelector('.results-legend').removeAttribute("hidden");
 					}
 
 					newcurrenttabpanel.parentNode.scrollTop = 0;
@@ -953,6 +1009,7 @@ button.addEventListener('click', function () {
 				newcurrenttabpanel.setAttribute('aria-hidden', 'false');
 			}
 		}
+
 		ul.addEventListener('click', function(event) {
 			var element = event.target;
 			filterDisplayedTests(element);
@@ -1017,7 +1074,7 @@ button.addEventListener('click', function () {
 						headingsPanel.appendChild(headingsPanelContent);
 						headingsPanel.querySelector('h2').textContent = chrome.i18n.getMessage('msgHeadingsHierarchy');
 						headingsPanel.querySelector('.headings-message').textContent = chrome.i18n.getMessage('panelAllHeadingsDesc');
-						headingsPanel.querySelector('.headings-legend').textContent = chrome.i18n.getMessage('contrastLegend1');
+						headingsPanel.querySelector('.headings-legend').textContent = chrome.i18n.getMessage('resultsLegend');
 						headingsPanel.querySelector('.headings-error-desc').textContent = chrome.i18n.getMessage('panelErrorHeading');
 
 						var container = headingsPanel.querySelector('.headings-container');
@@ -1172,11 +1229,14 @@ button.addEventListener('click', function () {
 						if (!((test.type == 'failed' && dataLength == 0) || test.type == 'untested')) {
 							let count = tabpanelsection.querySelector('.test-button-count');
 							let strongcount = test.hasOwnProperty('failedincollection') ? test.failedincollection : dataLength;
-							count.appendChild(document.createTextNode(strongcount + (test.hasOwnProperty('counter') ? ' / ' +  test.counter : '')));
+							count.firstElementChild.textContent = strongcount + (test.hasOwnProperty('counter') ? ' / ' +  test.counter : '');
+							count.lastElementChild.textContent = strongcount > 1 ? chrome.i18n.getMessage('word_results') : chrome.i18n.getMessage('word_result');
 						}
 
 						if(!test.warning || dataLength === 0) {
 							tabpanelsection.querySelector('.test-button-warning').remove();
+						} else {
+							tabpanelsection.querySelector('.test-button-warning .visually-hidden').textContent = chrome.i18n.getMessage('warningLabel');
 						}
 		
 						// display the test name on the button
@@ -1408,9 +1468,10 @@ button.addEventListener('click', function () {
 									} else {
 										newRow.querySelector('.item-cf .item-cf-content').setAttribute('aria-describedby', 'contrast-bgNull');
 										newRow.querySelector('.item-cf .item-cf-content').classList.add('contrast-bgNull');
-										newRow.querySelector('.item-cf').setAttribute('title', chrome.i18n.getMessage('contrastLegend3'));
+										newRow.querySelector('.item-cf').setAttribute('title', chrome.i18n.getMessage('contrastLegend2'));
+										newRow.querySelector('.item-cf .item-cf-icon').textContent = "x";
 									}
-									newRow.querySelector('.item-cf .visually-hidden').textContent = itemCF;
+									newRow.querySelector('.item-cf .visually-hidden').textContent = itemCF ? itemCF : chrome.i18n.getMessage('contrastLegend2');
 									newRow.querySelector('.item-ratio').textContent = itemRatio;
 								} else {
 									var itemStatus = test.data[h].status;
@@ -2101,7 +2162,7 @@ button.addEventListener('click', function () {
 						dashboardpanel.querySelector('#listenDOM').disabled = false;
 						dashboardpanel.querySelector('#taborder').disabled = false;
 						dashboardpanel.querySelector('.taborder-label').textContent = chrome.i18n.getMessage('dashboard_ordertab_label');
-						dashboardpanel.querySelector('.taborder-desc-legend').textContent = chrome.i18n.getMessage('contrastLegend1');
+						dashboardpanel.querySelector('.taborder-desc-legend').textContent = chrome.i18n.getMessage('resultsLegend');
 						dashboardpanel.querySelector('.taborder-desc-error').lastElementChild.textContent = chrome.i18n.getMessage('dashboard_ordertab_legend_error');
 						dashboardpanel.querySelector('.taborder-desc-invisible').lastElementChild.textContent = chrome.i18n.getMessage('dashboard_ordertab_legend_invisible');
 						dashboardpanel.querySelector('label[for="taborder"] .slider').textContent = chrome.i18n.getMessage('word_no');

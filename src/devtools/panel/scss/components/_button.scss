@@ -18,6 +18,24 @@ button {
 	padding: 0.4rem 1rem;
 }
 
+.warning-icon {
+	border-radius: 1rem;
+	background-color: #D68101;
+	color: #fff;
+	display: inline-block;
+	padding: 0.5rem 1rem;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.results-legend,
+.contrast-legend {
+	.warning-icon {
+		margin-left: 2rem;
+		margin-right: 1rem;
+	}
+}
+
 /** tests button */
 .test-title {
 	.test-button {
@@ -89,13 +107,7 @@ button {
 			text-align: right;
 
 			.warning-icon {
-				border-radius: 1rem;
-				background-color: #D68101;
-				color: #fff;
-				display: inline-block;
 				padding: 0.5rem 1rem;
-				font-weight: 700;
-				line-height: 1;
 			}
 		}
 
