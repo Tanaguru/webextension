@@ -4,7 +4,7 @@
  */
  function getHeadingsMap() {
     initTanaguru();
-    var collection = document.body.querySelectorAll('h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"][aria-level]');
+    var collection = document.querySelectorAll('h1[data-tng-el-exposed="true"]:not([role]), h2[data-tng-el-exposed="true"]:not([role]), h3[data-tng-el-exposed="true"]:not([role]), h4[data-tng-el-exposed="true"]:not([role]), h5[data-tng-el-exposed="true"]:not([role]), h6[data-tng-el-exposed="true"]:not([role]), [role="heading"][data-tng-el-exposed="true"][aria-level]');
     collection = Array.from(collection).sort((a,b) => {
         return a.getAttribute('data-tng-pos') - b.getAttribute('data-tng-pos');
     });

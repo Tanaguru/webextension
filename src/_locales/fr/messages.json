@@ -87,6 +87,12 @@
   "word_no": {
     "message": "Non"
   },
+  "word_result": {
+    "message": "résultat"
+  },
+  "word_results": {
+    "message": "résultats"
+  },
   "word_yes": {
     "message": "Oui"
   },
@@ -141,6 +147,9 @@
   "uiTagButton": {
     "message": "Tous les tests avec l'étiquette \"{tagName}\"."
   },
+  "warningLabel": {
+    "message": "Les résultats de ce test nécessitent une attention particulière."
+  },
   "contrastHeading": {
     "message": "Contrastes"
   },
@@ -150,13 +159,13 @@
   "contrastDescription2": {
     "message": "Le texte supérieur à 24px, et le texte supérieur à 18.5px avec un effet de graisse d'au moins 700 : rapport de contraste minimum 3:1"
   },
-  "contrastLegend1": {
+  "resultsLegend": {
     "message": "Légende : "
   },
-  "contrastLegend2": {
+  "contrastLegend1": {
     "message": "image"
   },
-  "contrastLegend3": {
+  "contrastLegend2": {
     "message": "non trouvé"
   },
   "contrastWarning": {
@@ -1519,16 +1528,16 @@
     "message": "La pertinence de la hierarchie des titres étant grandement sujette à l'interprétation de l'auditeur, nous avons fait le choix de suivre les bonnes pratiques OPQUAST."
   },
   "structure_name_421": {
-    "message": "Vérifier que les éléments suivant sont des zones d'entêtes"
+    "message": "Vérifier que les éléments suivants sont des zones d'entêtes"
   },
   "structure_name_422": {
-    "message": "Vérifier que les éléments suivant sont des zones de pied de page"
+    "message": "Vérifier que les éléments suivants sont des zones de pied de page"
   },
   "structure_name_423": {
-    "message": "Vérifier que les éléments suivant sont des zones navigation"
+    "message": "Vérifier que les éléments suivants sont des zones navigation"
   },
   "structure_name_424": {
-    "message": "Vérifier que l'éléments suivant est la zone de contenu principale"
+    "message": "Vérifier que l'élément suivant représente la zone de contenu principale"
   },
   "structure_name_425": {
     "message": "La structure du document utilise une balise main visible et unique"
@@ -1537,7 +1546,7 @@
     "message": "La structure du document utilise bien une balise main visible et unique."
   },
   "structure_failed_427": {
-    "message": "La structure du document n'utilise pas de balise main visible et ou en utilise plusieurs."
+    "message": "La structure du document n'utilise pas de balise main visible ou en utilise plusieurs."
   },
   "structure_name_428": {
     "message": "Les informations regroupées visuellement sous forme de liste non ordonnée doivent être structurées comme telle."

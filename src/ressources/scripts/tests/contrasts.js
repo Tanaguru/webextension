@@ -302,7 +302,7 @@ function getOpacity(element) {
 /**
  ** Get element's visibility
  * @param {node} element 
- * @returns 
+ * @returns
  */
  function getVisibility(element) {
 	var opacity = element.hasAttribute('data-tng-opacity') ? element.getAttribute('data-tng-opacity') : getOpacity(element);
@@ -347,22 +347,30 @@ function getOpacity(element) {
 
 	var regexClipP = /.{6,7}\(0px|.{6,7}\(.+[, ]0px/g; // circle(0) || ellipse(0)
 	var regexClip = /rect\([01]px,[01]px,[01]px,[01]px\)/; // rect(0) // rect(1)
+
+	/**
+	 ** checks if the element is hidden with :
+	 * width: < 2 && overflow: hidden
+	 * height: < 2 && overflow: hidden
+	 */
+	if((element.offsetWidth <= 1 && window.getComputedStyle(element, null).getPropertyValue('overflow').trim() === 'hidden')
+	|| (element.offsetHeight <= 1 && window.getComputedStyle(element, null).getPropertyValue('overflow').trim() === 'hidden')) {
+		element.setAttribute('data-tng-el-visible', 'false');
+		return false;
+	}
 	
 	/**
 	 ** checks if the element is hidden with :
+	 * display: none
+	 * opacity: 0
 	 * clip-path: circle(0) || ellipse(0)
 	 * clip: (rect(0,0,0,0) || rect(1px,1px,1px,1px)) && position: absolute
-	 * width: < 2 && overflow: hidden
-	 * height: < 2 && overflow: hidden
 	 */
 	while(element && element.tagName != 'HTML') {
 		var opacityZero = window.getComputedStyle(element, null).getPropertyValue('opacity').trim() == 0;
 
 		if(
-			window.getComputedStyle(element, null).getPropertyValue('display').trim() === 'none'
-			|| opacityZero
-			|| (element.offsetWidth <= 1 && window.getComputedStyle(element, null).getPropertyValue('overflow').trim() === 'hidden')
-			|| (element.offsetHeight <= 1 && window.getComputedStyle(element, null).getPropertyValue('overflow').trim() === 'hidden')
+			window.getComputedStyle(element, null).getPropertyValue('display').trim() === 'none' || opacityZero
 			|| window.getComputedStyle(element, null).getPropertyValue('clip-path').match(regexClipP)
 			|| (window.getComputedStyle(element, null).getPropertyValue('clip').replace(/ /g, '').match(regexClip) && window.getComputedStyle(element, null).getPropertyValue('position').trim() === 'absolute')
 		) {

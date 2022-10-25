@@ -330,7 +330,7 @@ function domTab(arr) {
 
         if(pos != i) {
             arr[i].el.setAttribute('data-tng-tab-dom-error', 'true');
-            arr = moveArrVal(arr, i, pos);
+            arr = arr.splice(pos, 0, arr.splice(i, 1)[0]);
             relaunch = true;
             break;
         }
@@ -480,16 +480,6 @@ function getIntersectionPoint(a, b, c, d) {
     }
 
     return false;
-}
-
-/**
- * ? move array value
- */
- function moveArrVal(arr, from, to) {
-    var elem = arr.splice(from, 1)[0];
-    if (to < 0) to += 1;
-    arr.splice(to, 0, elem);
-    return arr;
 }
 
 /**

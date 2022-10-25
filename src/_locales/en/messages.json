@@ -182,6 +182,9 @@
 		"message": "All tests with the \"{tagName}\" tag.",
 		"hash": "4d9c3722ad8e5b07e66f98ac781d59fc"
 	},
+	"warningLabel": {
+		"message": "The results of this test require special attention."
+	  },
 	"contrastHeading": {
 		"message": "Contrastes",
 		"hash": "6ad475dd47a4cff41779f799ece9fc0f"
@@ -194,15 +197,15 @@
 		"message": "Text larger than 24px, and text larger than 18.5px with a bold effect of at least 700: minimum contrast ratio 3:1",
 		"hash": "fb41075b1e16a32e124cccc561a50b92"
 	},
-	"contrastLegend1": {
+	"resultsLegend": {
 		"message": "Legend: ",
 		"hash": "32d189d5ba72daba3c37967952e402c8"
 	},
-	"contrastLegend2": {
+	"contrastLegend1": {
 		"message": "image",
 		"hash": "a28d2f0a18381cf7b4a4b1a523070bcb"
 	},
-	"contrastLegend3": {
+	"contrastLegend2": {
 		"message": "not found",
 		"hash": "c6d1fcd4b6b5177ed05747213a1b8416"
 	},

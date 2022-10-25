@@ -71,7 +71,18 @@ tanaguruTestsList.push({
             }
         }
     },
-    mark: {attrs: ['for']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "for",
+                value: "",
+                valueState: "notEmpty" //startBy || endBy, || contains || egal || notEmpty || any
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.1.2'] }
 });
@@ -81,7 +92,18 @@ tanaguruTestsList.push({
     name: "locale__forms_name_77",
     query: 'label[data-tng-label-related="true"]',
     testStatus: "passed",
-    mark: {attrs: ['for']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "for",
+                value: "",
+                valueState: "notEmpty" //startBy || endBy, || contains || egal || notEmpty || any
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.1.2'] }
 });
@@ -223,8 +245,20 @@ tanaguruTestsList.push({
     name: "locale__forms_name_79",
     description: "locale__forms_description_80",
     query: '[data-tng-has-label="title"]:not([data-tng-visible-label])',
-    testStatus: "cantTell",
-    mark: {attrs: ['title']},
+    testStatus: 'cantTell',
+    warning: false,
+    mark: function() {
+        return {
+            attrs: [{
+                name: "title",
+                value: "",
+                valueState: "notEmpty" //startBy || endBy, || contains || egal || notEmpty || any
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.1.3'] }
 });
@@ -234,8 +268,22 @@ tanaguruTestsList.push({
     name: "locale__forms_name_81",
     description: "locale__forms_description_82",
     query: '[data-tng-has-label="describedby"]:not([data-tng-visible-label])',
-    testStatus: "cantTell",
-    mark: {attrs: ['aria-describedby']},
+    testStatus: 'cantTell',
+    warning: false,
+    mark: function() {
+        return {
+            attrs: [],
+            related: {
+                title: "Passage de texte référencé par [aria-describedby].", // desc displayed above the element
+                element: "#!!!aria-describedby!!!", //css selector
+                attrs: [],
+                tag: false,
+                content: true
+            },
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.1.3'] }
 });
@@ -271,8 +319,22 @@ tanaguruTestsList.push({
             }
         }
     },
-    testStatus: "cantTell",
-    mark: {attrs: ['for']},
+    testStatus: 'cantTell',
+    warning: false,
+    mark: function() {
+        return {
+            attrs: [],
+            related: {
+                title: "Champ associé au <label>.",
+                element: "#!!!for!!!",
+                attrs: [],
+                tag: false,
+                content: false
+            },
+            tag: false,
+            content: true
+        }
+    },
     tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.2.1'] }
 });
@@ -283,8 +345,20 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__forms_name_86",
     query: '[data-tng-formField][title][data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
-    mark: {attrs: ['title']},
+    testStatus: 'cantTell',
+    warning: false,
+    mark: function() {
+        return {
+            attrs: [{
+                name: "title",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.2.2'] }
 });
@@ -295,8 +369,20 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__forms_name_87",
     query: '[data-tng-formField][aria-label][data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
-    mark: {attrs: ['aria-label']},
+    testStatus: 'cantTell',
+    warning: false,
+    mark: function() {
+        return {
+            attrs: [{
+                name: "aria-label",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.2.3'] }
 });
@@ -307,8 +393,22 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__forms_name_88",
     query: '[data-tng-formField][aria-labelledby][data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
-    mark: {attrs: ['aria-labelledby']},
+    testStatus: 'cantTell',
+    warning: false,
+    mark: function() {
+        return {
+            attrs: [],
+            related: {
+                title: "Passage de texte associé au champ.",
+                element: "#!!!aria-labelledby!!!",
+                attrs: [],
+                tag: false,
+                content: true
+            },
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.2.4'] }
 });
@@ -392,7 +492,8 @@ tanaguruTestsList.push({
         let cat = item.getImplicitAriaRoleCategory();
         if(cat) return cat === 'forms';
     },
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.5.1'] }
 });
@@ -444,8 +545,26 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__forms_name_99",
     query: '[data-tng-fieldsgroup-legend]',
-    testStatus: "cantTell",
-    mark: {attrs: ['aria-label', 'aria-labelledby']},
+    testStatus: 'cantTell',
+    warning: false,
+    mark: function() {
+        return {
+            attrs: [{
+                name: "aria-label",
+                value: "",
+                valueState: "notEmpty"
+            }],
+            related: {
+                title: "Passage de texte associé au champ.",
+                element: "#!!!aria-labelledby!!!",
+                attrs: [],
+                tag: false,
+                content: true
+            },
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms', 'accessiblename'],
     ressources: { 'rgaa': ['11.7.1'] }
 });
@@ -475,7 +594,18 @@ tanaguruTestsList.push({
     name: "locale__forms_name_102",
     query: 'select optgroup[label][data-tng-el-exposed="true"]',
     testStatus: "passed",
-    mark: {attrs: ['label']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "label",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.8.2'] }
 });
@@ -495,7 +625,18 @@ tanaguruTestsList.push({
             return true;
         }
     },
-    mark: {attrs: ['label']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "label",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.8.3'] }
 });
@@ -504,8 +645,20 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__forms_name_104",
     query: '[data-tng-optgroup-label]',
-    testStatus: "cantTell",
-    mark: {attrs: ['label']},
+    testStatus: 'cantTell',
+    warning: false,
+    mark: function() {
+        return {
+            attrs: [{
+                name: "label",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms'],
     ressources: { 'rgaa': ['11.8.3'] }
 });
@@ -537,9 +690,42 @@ tanaguruTestsList.push({
             }
         }
     },
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     depStatus: ["failed"],
-    mark: {attrs: ['aria-labelledby', 'aria-label', 'alt', 'value', 'title']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "aria-label",
+                value: "",
+                valueState: "notEmpty"
+            },
+            {
+                name: "alt",
+                value: "",
+                valueState: "notEmpty"
+            },
+            {
+                name: "value",
+                value: "",
+                valueState: "notEmpty"
+            },
+            {
+                name: "title",
+                value: "",
+                valueState: "notEmpty"
+            }],
+            related: {
+                title: "Passage de texte associé au champ.",
+                element: "#!!!aria-labelledby!!!",
+                attrs: [],
+                tag: false,
+                content: true
+            },
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms', 'buttons'],
     ressources: { 'rgaa': ['11.9.1'] }
 });
@@ -549,7 +735,39 @@ tanaguruTestsList.push({
     name: "locale__forms_name_106",
     query: '[data-tng-formButton-an="false"]',
     testStatus: "failed",
-    mark: {attrs: ['aria-labelledby', 'aria-label', 'alt', 'value', 'title']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "aria-label",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "alt",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "value",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "title",
+                value: "",
+                valueState: "any"
+            }],
+            related: {
+                title: "Passage de texte associé au champ.",
+                element: "#!!!aria-labelledby!!!",
+                attrs: [],
+                tag: false,
+                content: true
+            },
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms', 'buttons'],
     ressources: { 'rgaa': ['11.9.1'] }
 });
@@ -625,7 +843,8 @@ tanaguruTestsList.push({
     name: "locale__forms_name_110",
     description: "locale__forms_description_111",
     query: '[aria-required="true"][data-tng-el-exposed="true"], [required][data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.10.2']}
 });
@@ -645,7 +864,8 @@ tanaguruTestsList.push({
     name: "locale__forms_name_113",
     description: "locale__forms_description_114",
     query: '[aria-invalid="true"][data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.10.4']}
 });
@@ -674,7 +894,8 @@ tanaguruTestsList.push({
     name: "locale__forms_name_117",
     description: "locale__forms_description_118",
     query: '[aria-invalid="true"][data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.10.7']}
 });
@@ -705,7 +926,8 @@ tanaguruTestsList.push({
     name: "locale__forms_name_121",
     description: "locale__forms_description_122",
     query: 'form[data-tng-el-exposed="true"], [role="form"][data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.12.1']}
 });
@@ -716,7 +938,8 @@ tanaguruTestsList.push({
     name: "locale__forms_name_123",
     description: "locale__forms_description_124",
     query: 'form[data-tng-el-exposed="true"], [role="form"][data-tng-el-exposed="true"]',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.12.2']}
 });
@@ -727,8 +950,20 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__forms_name_125",
     query: 'input[type="text"][data-tng-el-exposed="true"], input[type="password"][data-tng-el-exposed="true"], input[type="email"][data-tng-el-exposed="true"], input[type="tel"][data-tng-el-exposed="true"], input[type="url"][data-tng-el-exposed="true"], textarea[data-tng-el-exposed="true"], input[type="date"][data-tng-el-exposed="true"], select[data-tng-el-exposed="true"], input[data-tng-el-exposed="true"]:not([type])',
-    testStatus: "cantTell",
-    mark: {attrs: ['autocomplete']},
+    testStatus: 'cantTell',
+    warning: false,
+    mark: function() {
+        return {
+            attrs: [{
+                name: "autocomplete",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.13.1']}
 });
@@ -873,7 +1108,18 @@ tanaguruTestsList.push({
             });
         }
     },
-    mark: {attrs: ['autocomplete']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "autocomplete",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.13.1']}
 });
@@ -913,7 +1159,23 @@ tanaguruTestsList.push({
 
         return true;
     },
-    mark: {attrs: ['autocomplete', 'type']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "autocomplete",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "type",
+                value: "",
+                valueState: "notEmpty"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.13.1']}
 });
@@ -923,8 +1185,20 @@ tanaguruTestsList.push({
     name: "locale__forms_name_129",
     query: '[data-tng-autocomplete]',
     description: "locale__forms_description_130",
-    testStatus: "cantTell",
-    mark: {attrs: ['autocomplete']},
+    testStatus: 'cantTell',
+    warning: false,
+    mark: function() {
+        return {
+            attrs: [{
+                name: "autocomplete",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'forms'],
     ressources: {'rgaa': ['11.13.1']}
 });

@@ -1,0 +1,82 @@
+ul.headings-container ul,
+ul.headings-container li {
+	position: relative;
+}
+
+ul.headings-container .item-actions-highlight {
+	margin-left: 1rem;
+}
+
+ul.headings-container .heading-error,
+.headings-error-icon {
+	border: 2px solid red;
+}
+
+.headings-error-icon {
+	display: inline-block;
+	width: 2rem;
+	height: 1rem;
+}
+
+.headingDropdownButton {
+	width: 1.3rem;
+	padding: 0;
+	margin-right: 1rem;
+	border: 0;
+	background-color: transparent;
+}
+
+.headingDisclosureIcon {
+	width: 1.3rem;
+}
+
+#headingsPanel ul>li:last-of-type>ul::after {
+	position: absolute;
+	top: -2rem;
+	bottom: 0;
+	left: -5.2rem;
+	width: 6px;
+	content: "";
+	background-color: #fff;
+}
+
+ul.headings-container ul::before {
+	position: absolute;
+	content: "";
+	top: -1rem;
+	left: -1rem;
+	bottom: 2rem;
+	border-left: 2px solid grey;
+}
+
+ul.headings-container ul li::before {
+	position: absolute;
+	content: "\27F6";
+	left: -5.1rem;
+	top: 0;
+	font-size: 2.7rem;
+	color: grey;
+}
+
+ul.headings-container li>span {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.5rem;
+	border-radius: 5px;
+}
+
+ul.headings-container .blue-item-list {
+	color: #11355e;
+}
+
+ul.headings-container ul:not(.blue-item-list) {
+	color: #000;
+}
+
+.headings-container .visible {
+	display: flex;
+	align-items: center;
+	border: 0;
+	background-color: white;
+	background-position: center center;
+}

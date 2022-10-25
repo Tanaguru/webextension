@@ -143,7 +143,8 @@ tanaguruTestsList.push({
 	name: "locale__scripts_name_408",
     description: "locale__scripts_description_409",
 	query: 'noscript',
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
 	tags: ['a11y', 'scripts'],
 	ressources: {'rgaa': ['7.2.1']}
 });

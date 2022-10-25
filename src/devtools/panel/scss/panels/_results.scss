@@ -1,0 +1,23 @@
+main:not(.launch-analysis) > div:first-child + div {
+	margin: 0;
+	min-width: 85rem;
+}
+
+[role="tabpanel"][aria-hidden="true"] {
+	display: none;
+}
+
+[role="tabpanel"] > p,
+.dashboard > p {
+	padding-left: 0.9rem;
+	padding-right: 0.9rem;
+}
+
+[role="tabpanel"] > div {
+	margin-left: 1.2rem;
+	margin-right: 1.2rem;
+}
+
+[role="tabpanel"] div {
+	margin-bottom: 2.25rem;
+}

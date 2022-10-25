@@ -17,6 +17,14 @@ tanaguruTestsList.push({
     name: "locale__presentation_name_372",
     query: 'basefont[data-tng-el-exposed="true"], blink[data-tng-el-exposed="true"], center[data-tng-el-exposed="true"], font[data-tng-el-exposed="true"], marquee[data-tng-el-exposed="true"], s[data-tng-el-exposed="true"], strike[data-tng-el-exposed="true"], tt[data-tng-el-exposed="true"], big[data-tng-el-exposed="true"]',
     testStatus: "failed",
+    mark: function() {
+        return {
+            attrs: [],
+            related: {},
+            tag: true,
+            content: false
+        }
+    },
     tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.1.1'] }
 });
@@ -25,7 +33,7 @@ tanaguruTestsList.push({
 tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__presentation_name_373",
-    query: '[align][data-tng-el-exposed="true"], [alink][data-tng-el-exposed="true"], [background][data-tng-el-exposed="true"], [bgcolor][data-tng-el-exposed="true"], [border][data-tng-el-exposed="true"], [cellpadding][data-tng-el-exposed="true"], [cellspacing][data-tng-el-exposed="true"], [char][data-tng-el-exposed="true"], [charoff][data-tng-el-exposed="true"], [clear][data-tng-el-exposed="true"], [compact][data-tng-el-exposed="true"], [color][data-tng-el-exposed="true"], [frameborder][data-tng-el-exposed="true"], [hspace][data-tng-el-exposed="true"], [link][data-tng-el-exposed="true"], [marginheight][data-tng-el-exposed="true"], [marginwidth][data-tng-el-exposed="true"], [text][data-tng-el-exposed="true"], [valign][data-tng-el-exposed="true"], [vlink][data-tng-el-exposed="true"], [vspace][data-tng-el-exposed="true"], [data-tng-el-exposed="true"][size]:not([type="text"], [type="password"]), [data-tng-el-exposed="true"]:not(img, object, embed, canvas, svg)[width], [data-tng-el-exposed="true"]:not(img, object, embed, canvas, svg)[height]',
+    query: '[align][data-tng-el-exposed="true"], [alink][data-tng-el-exposed="true"], [background][data-tng-el-exposed="true"], [bgcolor][data-tng-el-exposed="true"], [border][data-tng-el-exposed="true"], [cellpadding][data-tng-el-exposed="true"], [cellspacing][data-tng-el-exposed="true"], [char][data-tng-el-exposed="true"], [charoff][data-tng-el-exposed="true"], [clear][data-tng-el-exposed="true"], [compact][data-tng-el-exposed="true"], [color][data-tng-el-exposed="true"], [frameborder][data-tng-el-exposed="true"], [hspace][data-tng-el-exposed="true"], [link][data-tng-el-exposed="true"], [marginheight][data-tng-el-exposed="true"], [marginwidth][data-tng-el-exposed="true"], [text][data-tng-el-exposed="true"], [valign][data-tng-el-exposed="true"], [vlink][data-tng-el-exposed="true"], [vspace][data-tng-el-exposed="true"], [data-tng-el-exposed="true"][size]:not([type="text"]):not([type="password"]), [data-tng-el-exposed="true"]:not(img):not(object):not(embed):not(canvas):not(svg)[width], [data-tng-el-exposed="true"]:not(img):not(object):not(embed):not(canvas):not(svg)[height]',
     filter: function(item) {
         if(item.tagName.toLowerCase() === 'input' && item.type) {
             if(item.type.toLowerCase() === 'text' || item.type.toLowerCase() === 'password') {
@@ -36,7 +44,133 @@ tanaguruTestsList.push({
         return true;
     },
     testStatus: "failed",
-    mark: { attrs: ['align','alink','background','bgcolor','border','cellpadding','cellspacing','char','charoff','clear','compact', 'color', 'frameborder', 'hspace', 'link', 'marginheight', 'marginwidth', 'text', 'valign', 'vlink', 'vspace', 'size', 'width', 'height']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "align",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "alink",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "background",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "bgcolor",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "border",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "cellpadding",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "cellspacing",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "char",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "charoff",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "clear",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "compact",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "color",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "frameborder",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "hspace",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "link",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "marginheight",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "marginwidth",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "text",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "valign",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "vlink",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "vspace",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "size",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "width",
+                value: "",
+                valueState: "any"
+            },
+            {
+                name: "height",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'presentation'],
     ressources: { 'rgaa': ['10.1.2'] }
 });
@@ -110,7 +244,18 @@ tanaguruTestsList.push({
 	},
 	testStatus: "passed",
     depStatus: ["failed"],
-    mark: {attrs: ['content']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "content",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'presentation', 'meta'],
     ressources: { 'rgaa': ['10.4.2'] }
 });
@@ -120,7 +265,18 @@ tanaguruTestsList.push({
 	name: "locale__presentation_name_379",
 	query: 'meta[data-tng-scalable]',
     testStatus: "failed",
-    mark: {attrs: ['content']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "content",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
 	tags: ['a11y', 'presentation', 'meta'],
     ressources: { 'rgaa': ['10.4.2'] }
 });
@@ -180,7 +336,8 @@ tanaguruTestsList.push({
 	name: "locale__presentation_name_385",
 	query: '[data-tng-el-exposed="false"][data-tng-el-visible="true"]',
 	description: "locale__presentation_description_386",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'keyboard', 'presentation'],
     ressources: { 'rgaa': ['10.8.1'] }
 });
@@ -203,7 +360,8 @@ tanaguruTestsList.push({
         });
         return anwithoutchild.length > 0;
     },
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'keyboard', 'presentation'],
     ressources: { 'rgaa': ['10.8.1'] }
 });

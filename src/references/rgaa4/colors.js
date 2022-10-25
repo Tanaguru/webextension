@@ -16,6 +16,7 @@ tanaguruTestsList.push({
     description: "locale__colors_description_1",
     query: '[data-tng-colorization][data-tng-el-visible="true"]',
     testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'colors'],
     ressources: {'rgaa': ['3.1.1']}
 });
@@ -27,6 +28,7 @@ tanaguruTestsList.push({
     description: "locale__colors_description_3",
     query: '[data-tng-colorindication][data-tng-el-visible="true"], [data-tng-colorindication][data-tng-el-exposed="true"]',
     testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'colors'],
     ressources: {'rgaa': ['3.1.2']}
 });
@@ -93,7 +95,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__colors_name_11",
     description: "locale__colors_description_9",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.1']}
 });
@@ -152,7 +155,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__colors_name_21",
     description: "locale__colors_description_9",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.2']}
 });
@@ -211,7 +215,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__colors_name_31",
     description: "locale__colors_description_9",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.3']}
 });
@@ -270,7 +275,8 @@ tanaguruTestsList.push({
     lang: 'fr',
     name: "locale__colors_name_41",
     description: "locale__colors_description_9",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'contrast', 'colors'],
     ressources: {'rgaa': ['3.2.4']}
 });

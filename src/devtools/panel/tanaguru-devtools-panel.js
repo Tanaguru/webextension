@@ -127,7 +127,7 @@ function translateRGBToHex(rgb) {
  * @param {HTMLElement} codeContainer <code> to contain formatted code
  * @param {?Array} [codehighlight] Array of attributes to highlight
  */
-function formattingCode(itemCode, codeContainer, codehighlight = null) {
+function formattingCode(itemCode, codeContainer, codehighlight = null, relatedCode = null) {
 	var itemCodeCapture = [];
 	var regitemCode = new RegExp(/(?<open><[^\s\/]+\s*(?:[^\s"=]+="[^"]*"\s*)*>)|(?<close><\/[^\s>]+>)|(?<text>.)/g);
 
@@ -153,7 +153,11 @@ function formattingCode(itemCode, codeContainer, codehighlight = null) {
 
 			lineContainer.appendChild(document.createTextNode("<"));
 
-			let openSpan = document.createElement('span');
+			let openSpan;
+			if (codehighlight && codehighlight.hasOwnProperty('tag') && codehighlight.tag) {
+				openSpan = document.createElement('mark');
+			} else openSpan = document.createElement('span');
+			
 			openSpan.classList.add('code-tag');
 			openSpan.appendChild(document.createTextNode(icc.open.match(/[^<\/\s>]+/)));
 			lineContainer.appendChild(openSpan);
@@ -162,8 +166,22 @@ function formattingCode(itemCode, codeContainer, codehighlight = null) {
 			if(itemAtt) {
 				itemAtt.forEach(att => {
 					let attName = att.match(/[^="<>\s]+/);
+					let attValue= att.match(/(?<=")[^"]*(?=")/)[0];
+					let hasHighlightAttrs = codehighlight && codehighlight.hasOwnProperty('attrs') && codehighlight.attrs.length > 0;
+					let attObject = hasHighlightAttrs ? codehighlight.attrs.filter(hlAtt => hlAtt.name === attName[0]) : null;
+					attObject = attObject && attObject.length > 0 ? attObject[0] : null;
+					let isHL = false;
 
-					if (codehighlight && codehighlight.hasOwnProperty('attrs') && codehighlight.attrs.includes(attName[0])) {
+					if(attObject) {
+						if(attObject.valueState === "any") isHL = true;
+						else if(attObject.valueState === "notEmpty") isHL = attValue.length > 0;
+						else if(attObject.valueState === "egal") isHL = attValue === attObject.value;
+						else if(attObject.valueState === "contains") isHL = attValue.includes(attObject.value);
+						else if(attObject.valueState === "startBy") isHL = attValue.startsWith(attObject.value);
+						else if(attObject.valueState === "endBy") isHL = attValue.endsWith(attObject.value);
+					}
+
+					if(isHL) {
 						let hlMark = document.createElement('mark');
 						hlMark.appendChild(document.createTextNode(' '+att));
 						lineContainer.appendChild(hlMark);
@@ -190,7 +208,11 @@ function formattingCode(itemCode, codeContainer, codehighlight = null) {
 			lineContainer.classList.add("code-close");
 			lineContainer.appendChild(document.createTextNode("</"));
 
-			let closeSpan = document.createElement('span');
+			let closeSpan;
+			if (codehighlight && codehighlight.hasOwnProperty('tag') && codehighlight.tag) {
+				closeSpan = document.createElement('mark');
+			} else closeSpan = document.createElement('span');
+
 			closeSpan.classList.add('code-tag');
 			closeSpan.appendChild(document.createTextNode(icc.close.match(/[^<\/>]+/)));
 			lineContainer.appendChild(closeSpan);
@@ -198,12 +220,27 @@ function formattingCode(itemCode, codeContainer, codehighlight = null) {
 			lineContainer.appendChild(document.createTextNode(">"));
 			codeContainer.appendChild(lineContainer);
 		} else {
-			let lineContainer = document.createElement('span');
+			let lineContainer;
+			if (codehighlight && codehighlight.hasOwnProperty('content') && codehighlight.content) {
+				lineContainer = document.createElement('mark');
+			} else lineContainer = document.createElement('span');
+
 			lineContainer.classList.add("code-textContent");
 			lineContainer.appendChild(document.createTextNode(icc.text));
 			codeContainer.appendChild(lineContainer);
 		}
 	});
+
+	if(relatedCode && codehighlight.hasOwnProperty('related') && codehighlight.related.hasOwnProperty('title')) {
+		let commentElement = document.createElement('span');
+		let comment = "<!-- "+codehighlight.related.title+" -->";
+		commentElement.classList.add('code-comment');
+
+		commentElement.appendChild(document.createTextNode(comment));
+		codeContainer.appendChild(commentElement);
+
+		formattingCode(relatedCode, codeContainer, codehighlight.related);
+	}
 }
 
 //? use in ../tanaguru-devtools.js
@@ -674,14 +711,37 @@ button.addEventListener('click', function () {
 		alltagspanel.setAttribute('aria-hidden', 'true');
 		tab.setAttribute('aria-controls', alltagspanel.getAttribute('id'));
 
+		/**
+		 * ? add panel title
+		 */
 		var alltagspanelheading = document.createElement('h2');
 		alltagspanelheading.appendChild(document.createTextNode(tab.textContent));
 		alltagspanel.appendChild(alltagspanelheading);
 
 		/**
+		 * ? add panel legend
+		 */
+		var legendBlock = document.createElement('div');
+		legendBlock.classList.add('results-legend');
+
+		var legend_p = document.createElement('p');
+		legend_p.appendChild(document.createTextNode(chrome.i18n.getMessage('resultsLegend')));
+
+		var iconWarning = document.createElement('span');
+		iconWarning.classList.add('warning-icon');
+		iconWarning.textContent = "!";
+
+		var labelWarning = document.createElement('span');
+		labelWarning.textContent = chrome.i18n.getMessage('warningLabel');
+
+		legend_p.appendChild(iconWarning);
+		legend_p.appendChild(labelWarning);
+		legendBlock.appendChild(legend_p);
+		alltagspanel.appendChild(legendBlock);
+
+		/**
 		 * ? create tests container by status
 		 */
-		// IN PROGRESS
 		var statuses = ['failed', 'cantTell', 'passed', 'inapplicable', 'untested'];
 
 		var statuseslist = document.createElement('ul');
@@ -755,47 +815,80 @@ button.addEventListener('click', function () {
 					var currenttabpanelheading = newcurrenttabpanel.querySelector('h2');
 					currenttabpanelheading.replaceChild(document.createTextNode(newcurrenttabpanelheadingtext), currenttabpanelheading.firstChild);
 
+					var panelCategory = element.getAttribute('id');
+
 					// contrast panel description
-					if(element.getAttribute('id') === 'colors' && !document.querySelector('.contrast-panel-desc')) {
-						var contrastPanelDesc = document.createElement('div');
-						contrastPanelDesc.classList.add('contrast-panel-desc');
+					if(panelCategory === 'colors' || panelCategory === 'alltests') {
+						if(panelCategory === 'alltests' && document.querySelector('.contrast-panel-desc')) {
+							newcurrenttabpanel.removeChild(document.querySelector('.contrast-panel-desc'));
+						} else if(panelCategory === 'colors' && document.querySelector('.alltests-panel-desc')) {
+							newcurrenttabpanel.removeChild(document.querySelector('.alltests-panel-desc'));
+						}
 
-						var contrastDescription1 = document.createElement('p');
-						contrastDescription1.textContent = chrome.i18n.getMessage('contrastDescription1');
-						contrastPanelDesc.appendChild(contrastDescription1);
+						if(!document.querySelector('.contrast-panel-desc') && !document.querySelector('.alltests-panel-desc')) {
+							document.querySelector('.results-legend').setAttribute("hidden", "hidden");
 
-						var contrastDescription2 = document.createElement('p');
-						contrastDescription2.textContent = chrome.i18n.getMessage('contrastDescription2');
-						contrastPanelDesc.appendChild(contrastDescription2);
+							if(panelCategory === 'colors') {
+								var panelDesc = document.createElement('div');
+								panelDesc.classList.add('contrast-panel-desc');
 
-						var contrastLegend = document.createElement('p');
-						contrastLegend.classList.add('contrast-legend');
-						contrastLegend.textContent = chrome.i18n.getMessage('contrastLegend1');
-
-						var contrastBgImage1 = document.createElement('span');
-						contrastBgImage1.classList.add('contrast-bgImage');
-						contrastLegend.appendChild(contrastBgImage1);
-
-						var contrastBgImage2 = document.createElement('span');
-						contrastBgImage2.setAttribute('id','contrast-bgImage');
-						contrastBgImage2.textContent = chrome.i18n.getMessage('contrastLegend2');
-						contrastLegend.appendChild(contrastBgImage2);
-
-						var contrastBgNull1 = document.createElement('span');
-						contrastBgNull1.classList.add('contrast-bgNull');
-						contrastLegend.appendChild(contrastBgNull1);
-
-						var contrastBgNull2 = document.createElement('span');
-						contrastBgNull2.setAttribute('id','contrast-bgNull');
-						contrastBgNull2.textContent = chrome.i18n.getMessage('contrastLegend3');
-						contrastLegend.appendChild(contrastBgNull2);
-
-						contrastPanelDesc.appendChild(contrastLegend);
-						newcurrenttabpanel.insertBefore(contrastPanelDesc, currenttabpanelheading.nextSibling);
-					} else if(element.getAttribute('id') !== 'colors') {
+								var contrastDescription1 = document.createElement('p');
+								contrastDescription1.textContent = chrome.i18n.getMessage('contrastDescription1');
+								panelDesc.appendChild(contrastDescription1);
+		
+								var contrastDescription2 = document.createElement('p');
+								contrastDescription2.textContent = chrome.i18n.getMessage('contrastDescription2');
+								panelDesc.appendChild(contrastDescription2);
+							} else {
+								var panelDesc = document.createElement('div');
+								panelDesc.classList.add('alltests-panel-desc');
+							}
+	
+							var contrastLegend = document.createElement('p');
+							contrastLegend.classList.add('contrast-legend');
+							contrastLegend.textContent = chrome.i18n.getMessage('resultsLegend');
+	
+							var contrastBgImage1 = document.createElement('span');
+							contrastBgImage1.classList.add('contrast-bgImage');
+							contrastLegend.appendChild(contrastBgImage1);
+	
+							var contrastBgImage2 = document.createElement('span');
+							contrastBgImage2.setAttribute('id','contrast-bgImage');
+							contrastBgImage2.textContent = chrome.i18n.getMessage('contrastLegend1');
+							contrastLegend.appendChild(contrastBgImage2);
+	
+							var contrastBgNull1 = document.createElement('span');
+							contrastBgNull1.classList.add('contrast-bgNull');
+							contrastBgNull1.classList.add('item-cf-icon');
+							contrastBgNull1.setAttribute("aria-hidden", "true");
+							contrastBgNull1.textContent = "x";
+							contrastLegend.appendChild(contrastBgNull1);
+	
+							var contrastBgNull2 = document.createElement('span');
+							contrastBgNull2.setAttribute('id','contrast-bgNull');
+							contrastBgNull2.textContent = chrome.i18n.getMessage('contrastLegend2');
+							contrastLegend.appendChild(contrastBgNull2);
+	
+							let iconWarning = document.createElement('span');
+							iconWarning.classList.add('warning-icon');
+							iconWarning.textContent = "!";
+							contrastLegend.appendChild(iconWarning);
+	
+							let labelWarning = document.createElement('span');
+							labelWarning.textContent = chrome.i18n.getMessage('warningLabel');
+							contrastLegend.appendChild(labelWarning);
+	
+							panelDesc.appendChild(contrastLegend);
+							newcurrenttabpanel.insertBefore(panelDesc, currenttabpanelheading.nextSibling);
+						}
+					} else {
 						if(document.querySelector('.contrast-panel-desc')) {
 							newcurrenttabpanel.removeChild(document.querySelector('.contrast-panel-desc'));
+						} else if(document.querySelector('.alltests-panel-desc')) {
+							newcurrenttabpanel.removeChild(document.querySelector('.alltests-panel-desc'));
 						}
+
+						document.querySelector('.results-legend').removeAttribute("hidden");
 					}
 
 					newcurrenttabpanel.parentNode.scrollTop = 0;
@@ -916,6 +1009,7 @@ button.addEventListener('click', function () {
 				newcurrenttabpanel.setAttribute('aria-hidden', 'false');
 			}
 		}
+
 		ul.addEventListener('click', function(event) {
 			var element = event.target;
 			filterDisplayedTests(element);
@@ -980,7 +1074,7 @@ button.addEventListener('click', function () {
 						headingsPanel.appendChild(headingsPanelContent);
 						headingsPanel.querySelector('h2').textContent = chrome.i18n.getMessage('msgHeadingsHierarchy');
 						headingsPanel.querySelector('.headings-message').textContent = chrome.i18n.getMessage('panelAllHeadingsDesc');
-						headingsPanel.querySelector('.headings-legend').textContent = chrome.i18n.getMessage('contrastLegend1');
+						headingsPanel.querySelector('.headings-legend').textContent = chrome.i18n.getMessage('resultsLegend');
 						headingsPanel.querySelector('.headings-error-desc').textContent = chrome.i18n.getMessage('panelErrorHeading');
 
 						var container = headingsPanel.querySelector('.headings-container');
@@ -1122,46 +1216,38 @@ button.addEventListener('click', function () {
 						testelement.setAttribute('class', 'testparent ' + test.tags.join(' '));
 		
 						// create test button
-						var tabpanelsection = document.createElement('h3');
-						tabpanelsection.setAttribute('class', test.type);
-						var tabpanelsectionbutton = document.createElement('button');
-						tabpanelsectionbutton.setAttribute('type', 'button');
-						tabpanelsectionbutton.setAttribute('data-action', 'showhide-action');
-						tabpanelsectionbutton.setAttribute('aria-expanded', 'false');
-						
-						// IN PROGRESS - test référence
-						var testref = document.createElement('em');
-						testref.style.display = 'none';
-						testref.appendChild(document.createTextNode(category+'-'+testsCount));
-						tabpanelsectionbutton.appendChild(testref);
+						var testButtonTemplate = document.querySelector('#test-button');
+						var testButtonFragment = document.importNode(testButtonTemplate.content, true);
+						var tabpanelsection = testButtonFragment.querySelector('.test-title');
+						tabpanelsection.classList.add(test.type);
 						
 						// display test status on the button
-						var status = document.createElement('span');
-						status.setAttribute('class', 'status');
-						status.appendChild(document.createTextNode(chrome.i18n.getMessage('earl' + test.type.charAt(0).toUpperCase() + test.type.slice(1))));
-						tabpanelsectionbutton.appendChild(status);
-		
+						tabpanelsection.querySelector('.test-button-status').textContent = chrome.i18n.getMessage('earl' + test.type.charAt(0).toUpperCase() + test.type.slice(1));
+						
 						// display the number of elements on test button
 						let dataLength = test.data.length;
 						if (!((test.type == 'failed' && dataLength == 0) || test.type == 'untested')) {
-							var strong = document.createElement('strong');
-							var strongcount = test.hasOwnProperty('failedincollection') ? test.failedincollection : dataLength;
-							strong.appendChild(document.createTextNode(strongcount + (test.hasOwnProperty('counter') ? ' / ' +  test.counter : '')));
-							tabpanelsectionbutton.appendChild(strong);
-							tabpanelsectionbutton.appendChild(document.createTextNode(' '));
+							let count = tabpanelsection.querySelector('.test-button-count');
+							let strongcount = test.hasOwnProperty('failedincollection') ? test.failedincollection : dataLength;
+							count.firstElementChild.textContent = strongcount + (test.hasOwnProperty('counter') ? ' / ' +  test.counter : '');
+							count.lastElementChild.textContent = strongcount > 1 ? chrome.i18n.getMessage('word_results') : chrome.i18n.getMessage('word_result');
+						}
+
+						if(!test.warning || dataLength === 0) {
+							tabpanelsection.querySelector('.test-button-warning').remove();
+						} else {
+							tabpanelsection.querySelector('.test-button-warning .visually-hidden').textContent = chrome.i18n.getMessage('warningLabel');
 						}
 		
 						// display the test name on the button
-						var span = document.createElement('span');
-						span.textContent = test.name.charAt(0).toUpperCase() + test.name.slice(1);
-						tabpanelsectionbutton.appendChild(span);
-						tabpanelsection.appendChild(tabpanelsectionbutton);
+						tabpanelsection.querySelector('.test-button-name').textContent = test.name.charAt(0).toUpperCase() + test.name.slice(1);
 		
 						// create results container
 						var tabpanelsectiondiv = document.createElement('div');
 						tabpanelsectiondiv.setAttribute('id', 'testsection' + t);
-						tabpanelsectionbutton.setAttribute('aria-controls', tabpanelsectiondiv.getAttribute('id'));
 						tabpanelsectiondiv.setAttribute('hidden', 'hidden');
+
+						tabpanelsection.querySelector('.test-button').setAttribute('aria-controls', tabpanelsectiondiv.getAttribute('id'));
 						testelement.appendChild(tabpanelsection);
 		
 						// test description
@@ -1382,18 +1468,19 @@ button.addEventListener('click', function () {
 									} else {
 										newRow.querySelector('.item-cf .item-cf-content').setAttribute('aria-describedby', 'contrast-bgNull');
 										newRow.querySelector('.item-cf .item-cf-content').classList.add('contrast-bgNull');
-										newRow.querySelector('.item-cf').setAttribute('title', chrome.i18n.getMessage('contrastLegend3'));
+										newRow.querySelector('.item-cf').setAttribute('title', chrome.i18n.getMessage('contrastLegend2'));
+										newRow.querySelector('.item-cf .item-cf-icon').textContent = "x";
 									}
-									newRow.querySelector('.item-cf .visually-hidden').textContent = itemCF;
+									newRow.querySelector('.item-cf .visually-hidden').textContent = itemCF ? itemCF : chrome.i18n.getMessage('contrastLegend2');
 									newRow.querySelector('.item-ratio').textContent = itemRatio;
 								} else {
 									var itemStatus = test.data[h].status;
 									let template = document.querySelector('#item-row');
 									var newRow = document.importNode(template.content, true);
 									newRow.querySelector('.item-number').textContent = itemNumber;
-									newRow.querySelector('.item-status').textContent = itemStatus;
+									newRow.querySelector('.item-status').textContent = chrome.i18n.getMessage("earl"+itemStatus);
 
-									formattingCode(test.data[h].outer, newRow.querySelector('.item-code code'), codehighlight);
+									formattingCode(test.data[h].outer, newRow.querySelector('.item-code code'), codehighlight, test.data[h].outerRelated);
 
 									/**
 									 * ? Display the detail of accessible name
@@ -1564,7 +1651,7 @@ button.addEventListener('click', function () {
 								selectparent.setAttribute('class', 'filter');
 								var selectlabel = document.createElement('label');
 								selectlabel.setAttribute('for', 'select' + t);
-								var selectlabeltext = tabpanelsection.firstChild.lastChild.textContent;
+								var selectlabeltext = tabpanelsection.querySelector('.test-button-name').textContent;
 								var selectlabelspanl = document.createElement('span');
 								selectlabelspanl.appendChild(document.createTextNode('Pour la partie "' + selectlabeltext.charAt(0).toUpperCase() + selectlabeltext.slice(1) + '", '));
 								selectlabelspanl.setAttribute('class', 'visually-hidden');
@@ -1993,7 +2080,13 @@ button.addEventListener('click', function () {
 						}
 		
 						testelement.appendChild(tabpanelsectiondiv);
-						alltagspanel.querySelector('#earl' + test.type.charAt(0).toUpperCase() + test.type.slice(1)).appendChild(testelement);
+						let parentTestElement = alltagspanel.querySelector('#earl' + test.type.charAt(0).toUpperCase() + test.type.slice(1));
+						if(test.warning) {
+							parentTestElement.insertBefore(testelement, parentTestElement.firstChild);
+						} else {
+							parentTestElement.appendChild(testelement);
+						}
+						
 						t++;
 					});
 		
@@ -2069,7 +2162,7 @@ button.addEventListener('click', function () {
 						dashboardpanel.querySelector('#listenDOM').disabled = false;
 						dashboardpanel.querySelector('#taborder').disabled = false;
 						dashboardpanel.querySelector('.taborder-label').textContent = chrome.i18n.getMessage('dashboard_ordertab_label');
-						dashboardpanel.querySelector('.taborder-desc-legend').textContent = chrome.i18n.getMessage('contrastLegend1');
+						dashboardpanel.querySelector('.taborder-desc-legend').textContent = chrome.i18n.getMessage('resultsLegend');
 						dashboardpanel.querySelector('.taborder-desc-error').lastElementChild.textContent = chrome.i18n.getMessage('dashboard_ordertab_legend_error');
 						dashboardpanel.querySelector('.taborder-desc-invisible').lastElementChild.textContent = chrome.i18n.getMessage('dashboard_ordertab_legend_invisible');
 						dashboardpanel.querySelector('label[for="taborder"] .slider').textContent = chrome.i18n.getMessage('word_no');

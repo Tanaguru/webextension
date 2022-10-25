@@ -16,7 +16,8 @@ tanaguruTestsList.push({
     name: "locale__media_name_319",
     query: 'audio, object[type^="audio/"], object[type="application/ogg"], embed[type^="audio/"]',
     description: "locale__media_description_320",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'audio', 'media'],
     ressources: {'rgaa': ['4.1.1', '4.2.1']}
 });
@@ -32,7 +33,8 @@ tanaguruTestsList.push({
     name: "locale__media_name_321",
     query: 'video, object[type^="video/"], embed[type^="video/"]',
     description: "locale__media_description_322",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.1.2', '4.1.3', '4.2.2', '4.2.3', '4.3.1']}
 });
@@ -43,8 +45,20 @@ tanaguruTestsList.push({
     name: "locale__media_name_323",
     query: 'video track:not([kind=captions])',
     description: "locale__media_description_324",
-    testStatus: "cantTell",
-    mark: {attrs: ['kind']},
+    testStatus: 'cantTell',
+    warning: false,
+    mark: function() {
+        return {
+            attrs: [{
+                name: "kind",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.3.2']}
 });
@@ -54,7 +68,18 @@ tanaguruTestsList.push({
     name: "locale__media_name_325",
     query: 'video track[kind="captions"]',
     testStatus: "passed",
-    mark: {attrs: ['kind']},
+    mark: function() {
+        return {
+            attrs: [{
+                name: "kind",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.3.2']}
 });
@@ -65,8 +90,20 @@ tanaguruTestsList.push({
     name: "locale__media_name_326",
     query: 'video track[kind="captions"]',
     description: "locale__media_description_327",
-    testStatus: "cantTell",
-    mark: {attrs: ['kind']},
+    testStatus: 'cantTell',
+    warning: false,
+    mark: function() {
+        return {
+            attrs: [{
+                name: "kind",
+                value: "",
+                valueState: "any"
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
     tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.4.1']}
 });
@@ -78,7 +115,8 @@ tanaguruTestsList.push({
     name: "locale__media_name_328",
     query: 'video, object[type^="video/"], embed[type^="video/"]',
     description: "locale__media_description_329",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'videos', 'media'],
     ressources: {'rgaa': ['4.5.1', '4.5.2', '4.6.1', '4.6.2']}
 });
@@ -89,7 +127,8 @@ tanaguruTestsList.push({
     name: "locale__media_name_330",
     query: 'video, audio, object[type^="video/"], object[type^="audio/"], object[type="application/ogg"], embed[type^="video/"], embed[type^="audio/"]',
     description: "locale__media_description_331",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'videos', 'audio', 'media'],
     ressources: {'rgaa': ['4.7.1']}
 });
@@ -178,7 +217,8 @@ tanaguruTestsList.push({
     name: "locale__media_name_330",
     query: 'video:not([controls]), audio:not([controls]), object[type^="video/"], object[type^="audio/"], object[type="application/ogg"], embed[type^="video/"], embed[type^="audio/"]',
     description: "locale__media_description_342",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'videos', 'audio', 'media'],
     ressources: {'rgaa': ['4.11.1']}
 });
@@ -189,7 +229,8 @@ tanaguruTestsList.push({
     name: "locale__media_name_330",
     query: 'video, audio, object[type^="video/"], object[type^="audio/"], object[type="application/ogg"], embed[type^="video/"], embed[type^="audio/"]',
     description: "locale__media_description_344",
-    testStatus: "cantTell",
+    testStatus: 'cantTell',
+    warning: false,
     tags: ['a11y', 'videos', 'audio', 'media'],
     ressources: {'rgaa': ['4.11.2', '4.11.3']}
 });
