@@ -198,7 +198,7 @@ var htmlData = {
     }
 };
 
-var HTML = {
+var focusableSelector = {
     getFocusableElementsSelector: function () {
         var elements = [];
         let htmlDataElLength = htmlData.elements.length;

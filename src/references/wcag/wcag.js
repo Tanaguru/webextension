@@ -761,7 +761,7 @@ tanaguruTestsList.push({
 	filter: function (item) {
 		var exposedState = item.isNotExposedDueTo;
 		if (exposedState.indexOf('css:display') == -1 && exposedState.indexOf('css:visibility') == -1) {
-			var focusables = item.querySelectorAll(HTML.getFocusableElementsSelector());
+			var focusables = item.querySelectorAll(focusableSelector.getFocusableElementsSelector());
 			if (focusables.length == 0) {
 				focusables = [];
 				var elementsWithTabindex = item.querySelectorAll('[tabindex]');

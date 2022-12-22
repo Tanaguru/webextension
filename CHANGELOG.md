@@ -57,3 +57,5 @@
 - fixes : getVisibility/getXPath/getDuplicateID (these functions sometimes caused errors that blocked the analysis of some pages or gave erroneous results)
 - new feature : warning tag can be added on cantTell tests
 
+## 5.1.1
+- fixes : wcag tests

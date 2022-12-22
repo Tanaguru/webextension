@@ -414,7 +414,7 @@ button.addEventListener('click', function () {
 	});
 
 	function sortCatByProcessTime() {
-		var catOrder = ["navigation", "presentation", "media", "consultation", "scripts", "structure", "frames", "tables", "forms", "mandatory", "links", "images", "colors"];
+		var catOrder = ["navigation", "presentation", "media", "consultation", "scripts", "structure", "frames", "tables", "forms", "mandatory", "links", "images", "colors", "accessiblename", "aria", "audio", "buttons", "code", "languages", "meta", "keyboard", "contrast", "svg", "table", "pageTitle", "headings", "videos"];
 		catOrder = catOrder.filter((e) => {return filters.categories.includes(e)})
 		filters.categories = catOrder;
 	}
@@ -1069,7 +1069,7 @@ button.addEventListener('click', function () {
 						headings.setAttribute('aria-controls', headingsPanel.getAttribute('id'));
 						ul.insertBefore(headings, ul.querySelector('#alltests'));
 
-						var headingsTemplate = document.querySelector('#headings');
+						var headingsTemplate = document.querySelector('#headingsTab');
 						var headingsPanelContent = document.importNode(headingsTemplate.content, true);
 						headingsPanel.appendChild(headingsPanelContent);
 						headingsPanel.querySelector('h2').textContent = chrome.i18n.getMessage('msgHeadingsHierarchy');

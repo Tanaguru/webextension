@@ -17,7 +17,7 @@ var getComputedAriaRole = function () {
                 }
                 if (computedRole) {
                     if (computedRole == 'presentation' || computedRole == 'none') {
-                        if (this.matches(HTML.getFocusableElementsSelector())) {
+                        if (this.matches(focusableSelector.getFocusableElementsSelector())) {
                             return this.getImplicitAriaRole();
                         }
                     }
@@ -31,7 +31,7 @@ var getComputedAriaRole = function () {
                 role = new ARIA.Role(role);
                 if (role.isValid()) {
                     if (role.role == 'presentation' || role.role == 'none') {
-                        if (this.matches(HTML.getFocusableElementsSelector())) {
+                        if (this.matches(focusableSelector.getFocusableElementsSelector())) {
                             return this.getImplicitAriaRole();
                         }
                     }
