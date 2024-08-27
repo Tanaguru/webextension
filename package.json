@@ -6,11 +6,11 @@
   "devDependencies": {
     "fs-extra": "^9.0.1",
     "webextension-polyfill": "^0.7.0",
-    "node-sass": "^7.0.1"
+    "sass": "^1.66.1"
   },
   "scripts": {
-    "watchPanel": "node-sass --watch src/devtools/panel/scss/styles.scss src/devtools/panel/tanaguru-devtools-style.css",
-    "buildPanel": "node-sass --output-style compressed src/devtools/panel/scss/styles.scss src/devtools/panel/tanaguru-devtools-style.min.css",
+    "watchPanel": "sass --watch src/devtools/panel/scss/styles.scss src/devtools/panel/tanaguru-devtools-style.css",
+    "buildPanel": "sass --style=compressed src/devtools/panel/scss/styles.scss src/devtools/panel/tanaguru-devtools-style.min.css",
     "build": "npm run buildPanel && node build",
     "i18n": "node i18n",
     "stats": "node stats",
