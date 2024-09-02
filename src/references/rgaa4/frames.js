@@ -142,14 +142,7 @@ tanaguruTestsList.push({
     query: 'iframe[data-tng-el-exposed="true"]:not([role="presentation"])[title], frame[data-tng-el-exposed="true"]:not([role="presentation"])[title]',
     filter: function (item) {
         const titleUrl = item.getAttribute('title').trim();
-    
-        // Expression régulière pour vérifier si titleUrl est une suite de chiffres
-        const isDigitsOnly = /^\d+$/.test(titleUrl);
-    
-        if (isDigitsOnly) {
-            return true;
-        }
-        return false;
+        return ! isNaN(titleUrl);
     },
     testStatus: "presumedNonCompliant",
     mark: function () {
