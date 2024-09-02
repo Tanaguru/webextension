@@ -14,11 +14,21 @@ Outil d'évaluation de l'accessibilité Web (et plus).
 * Date de mise à jour du document : 03/12/2021
 
 ## Sommaire
-- [Installer la webextension sur votre navigateur](#installer-la-webextension-sur-votre-navigateur)
-- [Installer la webextension en local](#installer-la-webextension-en-local)
-- [Utiliser la webextension](#utiliser-la-webextension)
-- [Ecrire un test](#écrire-un-test)
-- [Mettre à jour le numéro de version](#mettre-à-jour-le-numéro-de-version)
+- [Tanaguru Webextension](#tanaguru-webextension)
+	- [A propos](#a-propos)
+	- [Sommaire](#sommaire)
+	- [Installer la webextension sur votre navigateur](#installer-la-webextension-sur-votre-navigateur)
+	- [Installer la webextension en local](#installer-la-webextension-en-local)
+	- [Utiliser la webextension](#utiliser-la-webextension)
+	- [Écrire un test](#écrire-un-test)
+		- [Fonction `createTanaguruTest`](#fonction-createtanagurutest)
+			- [Caractéristiques du test](#caractéristiques-du-test)
+		- [Exemples de test](#exemples-de-test)
+			- [Liens s'ouvrant dans des nouvelles fenêtres](#liens-souvrant-dans-des-nouvelles-fenêtres)
+			- [Liens avec attributs ``title`` vides](#liens-avec-attributs-title-vides)
+	- [Mettre à jour le numéro de version](#mettre-à-jour-le-numéro-de-version)
+		- [VERSION.txt](#versiontxt)
+		- [CHANGELOG.md](#changelogmd)
 
 ## Installer la webextension sur votre navigateur
 La webextension est disponible sur les stores de Mozilla Firefox et Google Chrome.
@@ -27,15 +37,16 @@ La webextension est disponible sur les stores de Mozilla Firefox et Google Chrom
 
 ## Installer la webextension en local
 1. **Télécharger ou cloner le projet** ici : [répertoire du projet](https://github.com/Tanaguru/webextension)
-2. Pour installer la webextension, vous aurez besoin de **télécharger et installer Node.js**. [Page de téléchargement de Node.js](https://nodejs.org/fr/download/)
-3. **Installer les dépendances du projet et effectuer le "build"** : 
+2. ⚠️ Ce projet nécessite Node.js version 16 ou inférieure. Veuillez vérifier votre version de Node.js avant de continuer. 
+3. Si vous avez une version supérieure, vous pouvez utiliser `nvm` (Node Version Manager) pour installer et gérer différentes versions de Node.js.
+4. **Installer les dépendances du projet et effectuer le "build"** : 
    - accéder au dossier racine du projet avec un terminal (powershell, git bash...) ou ouvrez le projet avec votre éditeur de code et lancez le terminal.
    - envoyez ces 2 commandes dans le terminal :
   ```bash
   npm install
   npm run-script build
   ```
-4. **Installation sur Firefox**
+1. **Installation sur Firefox**
 
 Pour installer la webextension, **dans la barre d’adresse** de Firefox 57 ou supérieur, saisissez **« about:debugging »**. La page « Modules » s’affiche :
 
