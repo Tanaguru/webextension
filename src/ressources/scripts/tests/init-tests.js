@@ -1,4 +1,4 @@
-var statuses = ['failed', 'cantTell', 'passed'];
+var statuses = ['failed', 'cantTell', 'passed', 'presumedNonCompliant'];
 var interactiveRoles = ["button", "checkbox", "combobox", "link", "listbox", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "searchbox", "slider", "spinbutton", "switch", "tab", "textbox"];
 // var DOM_archi;
 var interactiveIndex = 0;
@@ -317,6 +317,25 @@ function filterStatus() {
         }
         
         tanaguruTestsList = tanaguruTestsList.filter(matchPassedFailed);
+    }
+
+    if(!statusUser.match('presumedNonCompliant')) {
+        function matchPresumedNonCompliant(test) {
+            if(test.testStatus && test.testStatus === 'presumedNonCompliant') {
+                if(test.depStatus) {
+                    let dep = false;
+                    test.depStatus.forEach(e => {
+                        if(statusUser.match(e)) dep = true;
+                    });
+
+                    return dep;
+                } else return false;
+            } else {
+                return true;
+            }
+        }
+        
+        tanaguruTestsList = tanaguruTestsList.filter(matchPresumedNonCompliant);
     }
 }
 

@@ -141,6 +141,9 @@
   "earlInapplicable": {
     "message": "Non applicable"
   },
+  "earlPresumedNonCompliant": {
+    "message": "Présumé non-conforme"
+  },
   "earlUntested": {
     "message": "Non testé"
   },
@@ -773,6 +776,9 @@
   },
   "frames_name_135": {
     "message": "Les cadres suivants ont un titre non pertinent"
+  },
+  "frames_name_471": {
+    "message": "Le cadre possède un attribut title identique à celui du src."
   },
   "images_name_136": {
     "message": "liste des images (balise img ou balise possédant l'attribut WAI-ARIA role=\"img\") sans nom accessible"

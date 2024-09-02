@@ -5,8 +5,8 @@
   "main": "index.js",
   "devDependencies": {
     "fs-extra": "^9.0.1",
-    "webextension-polyfill": "^0.7.0",
-    "node-sass": "^7.0.1"
+    "node-sass": "^9.0.0",
+    "webextension-polyfill": "^0.7.0"
   },
   "scripts": {
     "watchPanel": "node-sass --watch src/devtools/panel/scss/styles.scss src/devtools/panel/tanaguru-devtools-style.css",
