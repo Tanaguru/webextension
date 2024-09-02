@@ -780,6 +780,9 @@
   "frames_name_471": {
     "message": "Le cadre possède un attribut title identique à celui du src."
   },
+  "frames_name_472": {
+    "message": "Le titre est potentiellement non pertinent car il se compose uniquement d'une suite de chiffres."
+  },
   "images_name_136": {
     "message": "liste des images (balise img ou balise possédant l'attribut WAI-ARIA role=\"img\") sans nom accessible"
   },

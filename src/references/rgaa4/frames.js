@@ -102,7 +102,7 @@ tanaguruTestsList.push({
 
 // ADD Test
 tanaguruTestsList.push({
-    testId: "T471",
+    testId: "R472",
     lang: 'fr',
     name: "locale__frames_name_471",
     query: 'iframe[data-tng-el-exposed="true"]:not([role="presentation"])[title], frame[data-tng-el-exposed="true"]:not([role="presentation"])[title]',
@@ -114,6 +114,41 @@ tanaguruTestsList.push({
             return true;
         }
 
+        return false;
+    },
+    testStatus: "presumedNonCompliant",
+    mark: function () {
+        return {
+            attrs: [{
+                name: "title",
+                value: "",
+                valueState: "any" //startBy || endBy, || contains || egal || notEmpty || any
+            }],
+            related: {},
+            tag: false,
+            content: false
+        }
+    },
+    tags: ['a11y', 'frames'],
+    ressources: { 'rgaa': ['2.2.1'] }
+});
+
+// ADD R472 - Suite de chiffres dans le title
+
+tanaguruTestsList.push({
+    testId: "R472",
+    lang: 'fr',
+    name: "locale__frames_name_472",
+    query: 'iframe[data-tng-el-exposed="true"]:not([role="presentation"])[title], frame[data-tng-el-exposed="true"]:not([role="presentation"])[title]',
+    filter: function (item) {
+        const titleUrl = item.getAttribute('title').trim();
+    
+        // Expression régulière pour vérifier si titleUrl est une suite de chiffres
+        const isDigitsOnly = /^\d+$/.test(titleUrl);
+    
+        if (isDigitsOnly) {
+            return true;
+        }
         return false;
     },
     testStatus: "presumedNonCompliant",
