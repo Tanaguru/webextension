@@ -783,6 +783,9 @@
   "frames_name_472": {
     "message": "Le titre est potentiellement non pertinent car il se compose uniquement d'une suite de chiffres."
   },
+  "frames_name_473": {
+    "message": "Plusieurs cadres au sein du même document portent le même nom accessible (attribué par l'attribut title), mais ne contiennent pas les mêmes ressources."
+  },
   "images_name_136": {
     "message": "liste des images (balise img ou balise possédant l'attribut WAI-ARIA role=\"img\") sans nom accessible"
   },
