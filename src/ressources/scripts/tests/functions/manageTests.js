@@ -280,7 +280,7 @@ function createTanaguruTest(test) {
             }
             else {
                 if(test.hasOwnProperty('testStatus') && typeof test.testStatus === 'string') {
-                    let statusList = ['passed', 'cantTell', 'inapplicable', 'failed', 'presumedNonCompliant'];
+                    let statusList = ['passed', 'cantTell', 'inapplicable', 'failed', 'presumedNonCompliant', 'presumedCompliant'];
                     if(statusList.includes(test.testStatus)) {
                         status = test.testStatus;
                         elements.map(e => e.status = status);
@@ -293,9 +293,10 @@ function createTanaguruTest(test) {
             }
 
             var statuspriority = {
-                failed: 5,
-                presumedNonCompliant: 4,
-                passed: 3,
+                failed: 6,
+                presumedNonCompliant: 5,
+                passed: 4,
+                presumedCompliant: 3,
                 cantTell: 2,
                 inapplicable: 1,
                 untested: 0

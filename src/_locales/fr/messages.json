@@ -144,6 +144,9 @@
   "earlPresumedNonCompliant": {
     "message": "Présumé non-conforme"
   },
+  "earlPresumedCompliant": {
+    "message": "Présumé conforme"
+  },
   "earlUntested": {
     "message": "Non testé"
   },
