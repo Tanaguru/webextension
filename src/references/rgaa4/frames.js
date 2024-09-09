@@ -180,29 +180,83 @@ tanaguruTestsList.push({
   name: "locale__frames_name_473",
   query:
     'iframe[data-tng-el-exposed="true"]:not([role="presentation"])[title], frame[data-tng-el-exposed="true"]:not([role="presentation"])[title]',
-    filter: function (item) {
-        // Construction du sélecteur pour trouver les iframes avec le même title et src
-        let selector = item.tagName.toLowerCase() + 
-                   "[title=\"" + item.getAttribute("title") + "\"]" + 
-                   ":not([src=\"" + item.getAttribute("src") + "\"])";
+  filter: function (item) {
+    // Construction du sélecteur pour trouver les iframes avec le même title et src différent. 
+    let selector =
+      item.tagName.toLowerCase() +
+      '[title="' +
+      item.getAttribute("title") +
+      '"]' +
+      ':not([src="' +
+      item.getAttribute("src") +
+      '"])';
 
-        return document.querySelectorAll(selector).length > 0;
-    },    
+    return document.querySelectorAll(selector).length < 0;
+  },
   testStatus: "presumedNonCompliant",
   mark: function () {
     return {
-        attrs: [
-            {
-                name: "title",
-                value: "",
-                valueState: "any",
-            },
-        ],
-        related: {},
-        tag: false,
-        content: false,
+      attrs: [
+        {
+          name: "title",
+          value: "",
+          valueState: "any",
+        },
+      ],
+      related: {},
+      tag: false,
+      content: false,
     };
+  },
+  tags: ["a11y", "frames"],
+  ressources: { rgaa: ["2.2.1"] },
+});
+
+tanaguruTestsList.push({
+  testId: "R474",
+  lang: "fr",
+  name: "locale__frames_name_474",
+  query: 'iframe[data-tng-el-exposed="true"]:not([role="presentation"])[title], frame[data-tng-el-exposed="true"]:not([role="presentation"])[title]',
+  filter: function (item) {
+    // Vérifier si l'iframe a bien les attributs title et src
+    let title = item.getAttribute("title");
+    let src = item.getAttribute("src");
+
+    // Si title ou src est manquant, on retourne false
+    if (!title || !src) return false;
+
+    // Construction du sélecteur CSS pour chercher les iframes avec le même title et src
+    let selector =
+      item.tagName.toLowerCase() +
+      '[title="' + title + '"]' +
+      '[src="' + src + '"]';
+
+    // Sélectionner tous les iframes avec le même title et src
+    let matchingIframes = document.querySelectorAll(selector);
+
+    // Retourner true si on trouve plus d'un iframe (ce qui signifie qu'il y a des duplicatas)
+    return matchingIframes.length > 1;
 },
+  testStatus: "presumedCompliant",
+  mark: function () {
+    return {
+      attrs: [
+        {
+          name: "title",
+          value: "",
+          valueState: "any",
+        },
+        {
+          name: "src",
+          value: "",
+          valueState: "any",
+        },
+      ],
+      related: {},
+      tag: false,
+      content: false,
+    };
+  },
   tags: ["a11y", "frames"],
   ressources: { rgaa: ["2.2.1"] },
 });

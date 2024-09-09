@@ -742,7 +742,7 @@ button.addEventListener('click', function () {
 		/**
 		 * ? create tests container by status
 		 */
-		var statuses = ['failed', 'cantTell', 'passed', 'inapplicable', 'untested', 'presumedNonCompliant'];
+		var statuses = ['failed', 'cantTell', 'passed', 'inapplicable', 'untested', 'presumedNonCompliant', 'presumedCompliant'];
 
 		var statuseslist = document.createElement('ul');
 		statuseslist.setAttribute('style', 'margin: 1em; padding: 0; list-style-type: none; font-size: 0.8em');

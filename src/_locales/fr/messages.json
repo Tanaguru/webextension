@@ -789,6 +789,9 @@
   "frames_name_473": {
     "message": "Plusieurs cadres au sein du même document portent le même nom accessible (attribué par l'attribut title), mais ne contiennent pas les mêmes ressources."
   },
+  "frames_name_474": {
+    "message": "Plusieurs cadres au sein du même document portent le même nom accessible (attribué par l'attribut title), et contiennent les mêmes ressources."
+  },
   "images_name_136": {
     "message": "liste des images (balise img ou balise possédant l'attribut WAI-ARIA role=\"img\") sans nom accessible"
   },
