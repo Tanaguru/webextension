@@ -84,6 +84,14 @@ td.item-code--small {
 	background-color: #2a609e;
 }
 
+.test-title.presumedNonCompliant + div mark {
+	background-color: #840000;
+}
+
+.test-title.presumedCompliant + div mark {
+	background-color: #1F8927;
+}
+
 .test-title + div mark {
 	color: #fff;
 }

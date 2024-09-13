@@ -179,6 +179,44 @@ button {
 			}
 		}
 	}
+
+	&.presumedCompliant {
+		.test-button {
+		  &::before,
+		  &-status,
+		  &-count {
+			color: #1F8927;
+		  }
+	  
+		  &-status {
+			background-color: rgba(17, 73, 22, 0.1);
+		  }
+	  
+		  &[aria-expanded="true"]::before {
+			background-color: #1F8927;
+			color: #fff;
+		  }
+		}
+	  }
+
+	&.presumedNonCompliant {
+		.test-button {
+			&::before,
+			&-status,
+			&-count {
+			color: #840000;
+			}
+		
+			&-status {
+			background-color: rgba(132, 0, 0, 0.1);
+			}
+		
+			&[aria-expanded="true"]::before {
+			background-color: #840000;
+			color: #fff;
+			}
+		}
+	}
 }
 
 /** actions button */

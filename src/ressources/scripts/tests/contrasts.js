@@ -521,7 +521,7 @@ function getResults(element, opacity) {
 						var R = parseInt(colorValues[0].trim());
 						var G = parseInt(colorValues[1].trim());
 						var B = parseInt(colorValues[2].trim());
-						textColor = 'rgba('+R+','+G+','+B+','+1+')';
+						textColor = 'a('+R+','+G+','+B+','+1+')';
 						colors = getRGBA(textColor, bgColors, opacity);
 					} else {
 						colors = getRGB(textColor);

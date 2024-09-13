@@ -191,7 +191,7 @@ tanaguruTestsList.push({
       item.getAttribute("src") +
       '"])';
 
-    return document.querySelectorAll(selector).length < 0;
+    return document.querySelectorAll(selector).length > 0;
   },
   testStatus: "presumedNonCompliant",
   mark: function () {
