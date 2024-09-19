@@ -111,7 +111,6 @@ tanaguruTestsList.push({
 });
 
 tanaguruTestsList.push({
-  testId: "R471",
   lang: "fr",
   name: "locale__frames_name_471",
   query:
@@ -146,7 +145,6 @@ tanaguruTestsList.push({
 });
 
 tanaguruTestsList.push({
-  testId: "R472",
   lang: "fr",
   name: "locale__frames_name_472",
   query:
@@ -175,13 +173,12 @@ tanaguruTestsList.push({
 });
 
 tanaguruTestsList.push({
-  testId: "R473",
   lang: "fr",
   name: "locale__frames_name_473",
   query:
     'iframe[data-tng-el-exposed="true"]:not([role="presentation"])[title], frame[data-tng-el-exposed="true"]:not([role="presentation"])[title]',
   filter: function (item) {
-    // Construction du sélecteur pour trouver les iframes avec le même title et src différent. 
+    // Construction du sélecteur pour trouver les iframes avec le même title et src différent.
     let selector =
       item.tagName.toLowerCase() +
       '[title="' +
@@ -213,10 +210,10 @@ tanaguruTestsList.push({
 });
 
 tanaguruTestsList.push({
-  testId: "R474",
   lang: "fr",
   name: "locale__frames_name_474",
-  query: 'iframe[data-tng-el-exposed="true"]:not([role="presentation"])[title], frame[data-tng-el-exposed="true"]:not([role="presentation"])[title]',
+  query:
+    'iframe[data-tng-el-exposed="true"]:not([role="presentation"])[title], frame[data-tng-el-exposed="true"]:not([role="presentation"])[title]',
   filter: function (item) {
     // Vérifier si l'iframe a bien les attributs title et src
     let title = item.getAttribute("title");
@@ -228,15 +225,19 @@ tanaguruTestsList.push({
     // Construction du sélecteur CSS pour chercher les iframes avec le même title et src
     let selector =
       item.tagName.toLowerCase() +
-      '[title="' + title + '"]' +
-      '[src="' + src + '"]';
+      '[title="' +
+      title +
+      '"]' +
+      '[src="' +
+      src +
+      '"]';
 
     // Sélectionner tous les iframes avec le même title et src
     let matchingIframes = document.querySelectorAll(selector);
 
     // Retourner true si on trouve plus d'un iframe (ce qui signifie qu'il y a des duplicatas)
     return matchingIframes.length > 1;
-},
+  },
   testStatus: "presumedCompliant",
   mark: function () {
     return {
