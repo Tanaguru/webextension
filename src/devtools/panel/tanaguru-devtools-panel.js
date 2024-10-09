@@ -1059,11 +1059,11 @@ button.addEventListener('click', function () {
 								if (Array.isArray(test.data)) {
 									testsCount += test.data.length;
 								} else {
-									console.error(error);
+									console.error("Il n'existe pas de tableau data à parcourir dans ce lot de test.");
 								}
 							});							
 						} else {
-							console.error(error);
+							console.error("La structure de la réponse reçue ne permet pas de traiter le comptage de tests.");
 						}
 
 					// We check if 'result' and 'headings' are defined inside our 'response' object and if 'headings' is an array
@@ -2112,15 +2112,14 @@ button.addEventListener('click', function () {
 						t++;
 					});
 				} else {
-					console.error(error);
+					console.error("Erreur lors de l'envoi de la réponse.");
 				}
 				let currentTag = null;
 				// We check if 'result' and 'tags' are defined inside our 'response' object and if 'tags' is an array
 				if (response && response.result && Array.isArray(response.result.tags)) {
 					currentTag = response.result.tags.filter(tag => tag.id === category)[0];
 				} else {
-					console.error("Aucun tag trouvé avec l'id correspondant : ", category)
-					console.error(error);
+					console.error("Aucun tag trouvé avec l'id correspondant : ", category);
 				}
 
 					let currentTab = document.getElementById(category);
