@@ -1,10 +1,14 @@
 var tabResponse;
-var taborder = Object.values(JSON.parse(localStorage.getItem("TAB")));
+chrome.storage.local.get(["TAB"]).then((result) => {
+var taborder = Object.values(JSON.parse(result.TAB));
+var tngTabOrderElement = document.getElementById('tngtaborder');
 
 //!hmax 32767px
-if(state === "off") {
-    document.getElementById('tngtaborder').remove();
-    tabResponse = "off";
+if(window.state === "off") {
+    if (tngTabOrderElement) {
+        tngTabOrderElement.remove();
+        tabResponse = "off";
+    }
 } else if(document.documentElement.scrollHeight > 32767) {
     tabResponse = "error";
 } else {
@@ -106,5 +110,9 @@ if(state === "off") {
 
     tabResponse = "on";
 }
+})
+.catch((error) => {
+    console.error("Erreur lors de la récupération des données depuis le stockage local : ", error);
+});
 
 tabResponse;

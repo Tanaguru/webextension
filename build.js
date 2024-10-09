@@ -24,7 +24,7 @@ function clean(){
 function buildManifest(manifest, version, reference){
     console.log('Build manifest')
     manifest.version = version
-    manifest.short_name = "Tanaguru webext " + reference.toUpperCase()
+    manifest.short_name = manifest.short_name + " " + reference.toUpperCase()
     return JSON.stringify(manifest)
 }
 

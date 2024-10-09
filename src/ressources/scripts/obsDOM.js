@@ -108,7 +108,7 @@ function callback(mutationsList) {
                 } else {
                     if(mutation.addedNodes.length > 0) {
                         mutation.addedNodes.forEach(el => {
-                            if(mutation.el.id !== "tngtaborder") {
+                            if(mutation.el && mutation.el.id && mutation.el.id !== "tngtaborder") {
                                 let afterData = el.nodeType == 1 ? el.outerHTML : '#text '+el.data;
                                 let mutationDetails = {
                                     el: extractOnlyNode(currentEl),
@@ -124,7 +124,7 @@ function callback(mutationsList) {
         
                     else if(mutation.removedNodes.length > 0) {
                         mutation.removedNodes.forEach(el => {
-                            if(mutation.el.id !== "tngtaborder") {
+                            if(mutation.el && mutation.el.id && mutation.el.id !== "tngtaborder") {
                                 let beforeData = el.nodeType == 1 ? el.outerHTML : '#text '+el.data;
                                 let mutationDetails = {
                                     el: extractOnlyNode(currentEl),
@@ -201,7 +201,7 @@ function callback(mutationsList) {
 
 if(typeof observer == 'undefined') var observer = new MutationObserver(callback);
 
-if(obs === 'ON') {
+if(window.obs === 'ON') {
     observer.observe(document.body, { attributeOldValue: true, childList: true, subtree: true, characterDataOldValue: true });
 } else {
     observer.disconnect();
