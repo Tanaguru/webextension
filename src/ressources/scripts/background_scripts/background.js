@@ -30,19 +30,29 @@ function handleActivated(activeInfo) {
 	});
 	
 	var manifest = chrome.runtime.getManifest();
-	chrome.browserAction.setBadgeText({ text: '' });
-	chrome.browserAction.setTitle({ title: manifest.browser_action.default_title });
+	chrome.action.setBadgeText({ text: '' });
+	chrome.action.setTitle({ title: manifest.action.default_title });
 }
 chrome.tabs.onActivated.addListener(handleActivated);
 
 /* Fired when a tab is updated. */
 function handleUpdated(tabId, changeInfo, tabInfo) {
 	if(changeInfo.hasOwnProperty('url')) {
-		chrome.tabs.executeScript(tabId, {
-		    code: 'var obs = "OFF";'
-		}, function() {
-			chrome.tabs.executeScript(tabId, { file: '/ressources/scripts/obsDOM.js' });
-		});
+		chrome.scripting.executeScript({
+			target: { tabId: tabId },
+			func: () => {
+				window.obs = "OFF";
+			}
+		  })
+		  .then(() => {
+			return chrome.scripting.executeScript({
+			  target: { tabId: tabId },
+			  files: ['/ressources/scripts/obsDOM.js']
+			});
+		  })
+		  .catch((error) => {
+			console.error("Erreur lors de l'injection du script obsDOM : ", error);
+		  });
 
 		notifyDevtools({
 			command: 'pageChanged',
@@ -70,12 +80,27 @@ function handleMessage(request, sender, sendResponse) {
 		);
 	}
 	else if (request.command === 'executeTests') {
-		chrome.tabs.executeScript(request.tabId, {
-		    code: 'var cat = "' + request.cat + '"; var statusUser = "' + request.statusUser + '"; var first = "' + request.first + '"; var last = "' + request.last + '";'
-		}, function() {
-			chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/tests/tests.js' }, function (result) {
-				sendResponse({ command: 'executeTestsResults', response: result });
+		chrome.scripting.executeScript({
+			target: { tabId: request.tabId },
+			func: (cat, statusUser, first, last) => {
+				window.cat = cat;
+				window.statusUser = statusUser;
+				window.first = first;
+				window.last = last;
+			},
+			args: [request.cat, request.statusUser, request.first, request.last]
+		})
+		.then(() => {
+			return chrome.scripting.executeScript({
+				target: { tabId: request.tabId },
+				files: ['/ressources/scripts/tests/tests.js']
 			});
+		})
+		.then((result) => {
+			sendResponse({ command: 'executeTestsResults', response: result });
+		})
+		.catch((error) => {
+			console.error("Erreur lors de l'injection du script de tests : ", error);
 		});
 	}
 	else if (request.command == 'downloadTestCsvFile') {
@@ -86,47 +111,88 @@ function handleMessage(request, sender, sendResponse) {
 		});
 	}
 	else if (request.command === 'notify') {
-		chrome.browserAction.enable();
+		chrome.action.enable();
 		var manifest = chrome.runtime.getManifest();
 		if (request.count > 0) {
 			var counttext = request.count > 99 ? '+99' : request.count.toString();
-			chrome.browserAction.setBadgeText({ text: counttext });
-			chrome.browserAction.setTitle({ title: manifest.browser_action.default_title + ' (' + request.count + ' erreurs)' });
+			chrome.action.setBadgeText({ text: counttext });
+			chrome.action.setTitle({ title: manifest.action.default_title + ' (' + request.count + ' erreurs)' });
 		}
 		else {
-			chrome.browserAction.setBadgeText({ text: '' });
-			chrome.browserAction.setTitle({ title: manifest.browser_action.default_title });
+			chrome.action.setBadgeText({ text: '' });
+			chrome.action.setTitle({ title: manifest.action.default_title });
 		}
 	}
 	else if (request.command == 'highlight') {
-		chrome.tabs.insertCSS(request.tabId, {
-			file: '/ressources/styles/highlight.css'
+		chrome.scripting.insertCSS({
+			files: ['/ressources/styles/highlight.css'],
+			target: { tabId: request.tabId }
 		});
-		chrome.tabs.executeScript(request.tabId, {
-		    code: 'var element = "' + request.element + '";'
-		}, function() {
-		    chrome.tabs.executeScript(request.tabId, {file: '/ressources/scripts/highlight.js'}, (hlResponse)=> {
-				sendResponse({ command: 'executeHighlight', response: hlResponse });
+		chrome.scripting.executeScript({
+			target: { tabId: request.tabId },
+			func: (element) => {
+				window.element = element;
+			},
+			args: [request.element]
+		})
+		.then(() => {
+			return chrome.scripting.executeScript({
+				target: { tabId: request.tabId },
+				files: ['/ressources/scripts/highlight.js']
 			});
+		})
+		.then((hlResponse) => {
+			sendResponse({ command: 'executeHighlight', response: hlResponse });
+		})
+		.catch((error) => {
+			console.error("Erreur lors de l'injection des scripts Highlight :", error);
 		});
 	}
 	else if (request.command == 'taborder') {
-		chrome.tabs.executeScript(request.tabId, {
-		    code: 'var state = "' + request.state + '";',
-		}, function() {
-			chrome.tabs.executeScript(request.tabId, {file: '/ressources/scripts/tabOrder.js'}, (tabResponse)=> {
-				sendResponse({ command: 'executeTabOrder', response: tabResponse });
+		chrome.scripting.executeScript({
+			target: { tabId: request.tabId },
+			func: (state) => {
+				window.state = state;
+			},
+			args: [request.state]
+		})
+		.then(() => {
+			return chrome.scripting.executeScript({
+				target: { tabId: request.tabId },
+				files: ['/ressources/scripts/tabOrder.js']
 			});
-		});
+		})
+		.then((results) => {
+			const tabResponse = results && results[0] && results[0].result ? results[0].result : null;
+			sendResponse({ command: 'executeTabOrder', response: tabResponse, state: request.state });
+		})
+		.catch((error) => {
+			console.error("Erreur lors de l'injection des scripts de tabOrder :", error);
+		});		
 	}
 	else if (request.command == 'obsDOM') {
-		chrome.tabs.executeScript(request.tabId, {
-		    code: 'var obs = "' + request.obs + '"; var requestTabId = "' + request.tabId + '";',
-		}, function() {
-			chrome.tabs.executeScript(request.tabId, { file: '/ressources/scripts/obsDOM.js' }, function (result) {
-				sendResponse({ command: 'executeDOMobserver', response: result });
+		chrome.scripting.executeScript({
+			target: { tabId: request.tabId },
+			func: (obs, requestTabId) => {
+				window.obs = obs;
+				window.requestTabId = requestTabId;
+			},
+			args: [request.obs, request.tabId]
+		})
+		.then(() => {
+			return chrome.scripting.executeScript({
+				target: { tabId: request.tabId },
+				files: ['/ressources/scripts/obsDOM.js']
 			});
+		})
+		.then((results) => {
+			const result = results && results[0] && results[0].result ? results[0].result : null;
+			sendResponse({ command: 'executeDOMobserver', response: result, obs: request.obs });
+		})
+		.catch((error) => {
+			console.error("Erreur lors de l'injection des scripts d\'observation du DOM : ", error);
 		});
+		return true; 
 	}
 	else if (request.command == 'newMigration') {
 		notifyDevtools({

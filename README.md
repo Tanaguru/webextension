@@ -27,7 +27,7 @@ La webextension est disponible sur les stores de Mozilla Firefox et Google Chrom
 
 ## Installer la webextension en local
 1. **Télécharger ou cloner le projet** ici : [répertoire du projet](https://github.com/Tanaguru/webextension)
-2. Pour installer la webextension, vous aurez besoin de **télécharger et installer Node.js**. [Page de téléchargement de Node.js](https://nodejs.org/fr/download/)
+2. Pour installer la webextension, vous aurez besoin de **télécharger et installer Node.js** en version 16. [Page de téléchargement de Node.js](https://nodejs.org/fr/download/)
 3. **Installer les dépendances du projet et effectuer le "build"** : 
    - accéder au dossier racine du projet avec un terminal (powershell, git bash...) ou ouvrez le projet avec votre éditeur de code et lancez le terminal.
    - envoyez ces 2 commandes dans le terminal :
