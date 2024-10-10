@@ -541,12 +541,25 @@ button.addEventListener('click', function () {
 					});
 					
 					break;
+
 				case 'inspect-action':
-					var cellParent = element.closest('.item-actions');
-					var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
-					var css = cssify(getxpathbutton.getAttribute('data-xpath'));
-					chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('" + css + "'))");
-					break;
+				var cellParent = element.closest('.item-actions');
+				var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
+				var css = cssify(getxpathbutton.getAttribute('data-xpath'));
+
+				chrome.devtools.inspectedWindow.eval(
+					`document.querySelector('${css}').scrollIntoView()`,
+					{ useContentScriptContext: true },
+					function(result, isException) {
+						if (isException) {
+							console.error("Erreur lors de l'inspection de l'élément :", isException);
+						} else {
+							console.log("Élément inspecté avec succès.");
+						}
+					}
+				);
+				break;
+
 				case 'about-action':
 					element.setAttribute('data-popinopener', 'true');
 					var id = 'tanaguru-popin';
@@ -1196,9 +1209,19 @@ button.addEventListener('click', function () {
 									buttonInspectLabel.textContent = chrome.i18n.getMessage('panelInspectHeading');
 
 									buttonInspect.addEventListener('click', function() {
-										chrome.devtools.inspectedWindow.eval(`inspect(document.querySelector('[sdata-tng-hindex="${heading.index}"]'))`);
+										chrome.devtools.inspectedWindow.eval(
+											`document.querySelector('[sdata-tng-hindex="${heading.index}"]').scrollIntoView()`,
+											{ useContentScriptContext: true },
+											function(result, isException) {
+												if (isException) {
+													console.error("Erreur lors de l'inspection de l'élément :", isException);
+												} else {
+													console.log("Élément inspecté avec succès.");
+												}
+											}
+										);
 									}, true);
-
+									
 									buttonInspect.appendChild(buttonInspectLabel);
 									buttonInspectContainer.appendChild(buttonInspect);
 									headingSpan.appendChild(buttonInspectContainer);
@@ -2115,14 +2138,15 @@ button.addEventListener('click', function () {
 					console.error("Erreur lors de l'envoi de la réponse.");
 				}
 				let currentTag = null;
+				let currentTab = null;
 				// We check if 'result' and 'tags' are defined inside our 'response' object and if 'tags' is an array
 				if (response && response.result && Array.isArray(response.result.tags)) {
 					currentTag = response.result.tags.filter(tag => tag.id === category)[0];
+					currentTab = document.getElementById(category);
 				} else {
 					console.error("Aucun tag trouvé avec l'id correspondant : ", category);
 				}
 
-					let currentTab = document.getElementById(category);
 				if (response && response.result && Array.isArray(response.result.tests)) {
 					if(response.result.tests.length === 0) {
 						currentTab.remove();
@@ -2454,8 +2478,19 @@ button.addEventListener('click', function () {
 						inspectObj.appendChild(inspectLabel);
 						const currentSelector = '[data-tng-dom="'+domNb+'"]';
 
+						// The selector is now passed as an arg to work with MV3
 						inspectObj.addEventListener('click', function() {
-							chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('"+currentSelector+"'))");
+							chrome.devtools.inspectedWindow.eval(
+								`inspect(document.querySelector("${currentSelector}"))`,
+								{ useContentScriptContext: true },
+								function(result, isException) {
+									if (isException) {
+										console.error("Erreur lors de l'inspection de l'élément :", isException);
+									} else {
+										console.log("Inspection réussie pour l'élément :", result);
+									}
+								}
+							);
 						}, true);
 						inspectParagraph.appendChild(inspectObj);
 						newElContainer.appendChild(inspectParagraph);
