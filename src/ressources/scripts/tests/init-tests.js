@@ -4,6 +4,7 @@ var interactiveRoles = ["button", "checkbox", "combobox", "link", "listbox", "me
 var interactiveIndex = 0;
 var interactives = [];
 window.scrollTo(0,0);
+var userStatusArray = Object.values(window.statusUser);
 
 function isInside(parent, children) {
     let top = parent.top - children.top <= 0;
@@ -190,9 +191,9 @@ function filterCat() {
     /**
      * ? Filters tests according current category request , before launching tests
      */
-    if(cat.length > 0) {
+    if(window.cat.length > 0) {
         function matchFilters(test) {
-            return test.tags && test.tags.includes(cat);
+            return test.tags && test.tags.includes(window.cat);
         }
         
         tanaguruTestsList = tanaguruTestsList.filter(matchFilters);
@@ -200,7 +201,7 @@ function filterCat() {
 }
 
 function filterStatus() {
-    if(statusUser.length === 0) {
+    if(userStatusArray.length === 0) {
         tanaguruTestsList = [];
         return;
     }
@@ -213,7 +214,7 @@ function filterStatus() {
         });
     }
 
-    if(!statusUser.match('untested')) {
+    if(!userStatusArray.includes('untested')) {
         function matchUntested(test) {
             if(test.status && test.status === 'untested') {
                 return false;
@@ -225,13 +226,13 @@ function filterStatus() {
         tanaguruTestsList = tanaguruTestsList.filter(matchUntested);
     }
 
-    if(!statusUser.match('inapplicable')) {
+    if(!userStatusArray.includes('inapplicable')) {
         function matchInapplicable(test) {
             if((test.status && test.status === 'inapplicable') || (test.testStatus && test.testStatus === 'inapplicable')) {
                 if(test.depStatus) {
                     let dep = false;
                     test.depStatus.forEach(e => {
-                        if(statusUser.match(e)) dep = true;
+                        if(userStatusArray.includes(e)) dep = true;
                     });
 
                     return dep;
@@ -244,13 +245,13 @@ function filterStatus() {
         tanaguruTestsList = tanaguruTestsList.filter(matchInapplicable);
     }
 
-    if(!statusUser.match('cantTell')) {
+    if(!userStatusArray.includes('cantTell')) {
         function matchCantTell(test) {
             if(test.testStatus && test.testStatus === 'cantTell') {
                 if(test.depStatus) {
                     let dep = false;
                     test.depStatus.forEach(e => {
-                        if(statusUser.match(e)) dep = true;
+                        if(userStatusArray.includes(e)) dep = true;
                     });
 
                     return dep;
@@ -263,13 +264,13 @@ function filterStatus() {
         tanaguruTestsList = tanaguruTestsList.filter(matchCantTell);
     }
 
-    if(!statusUser.match('failed')) {
+    if(!userStatusArray.includes('failed')) {
         function matchFailed(test) {
             if(test.testStatus && test.testStatus === 'failed') {
                 if(test.depStatus) {
                     let dep = false;
                     test.depStatus.forEach(e => {
-                        if(statusUser.match(e)) dep = true;
+                        if(userStatusArray.includes(e)) dep = true;
                     });
 
                     return dep;
@@ -282,13 +283,13 @@ function filterStatus() {
         tanaguruTestsList = tanaguruTestsList.filter(matchFailed);
     }
 
-    if(!statusUser.match('passed')) {
+    if(!userStatusArray.includes('passed')) {
         function matchPassed(test) {
             if(test.testStatus && test.testStatus === 'passed') {
                 if(test.depStatus) {
                     let dep = false;
                     test.depStatus.forEach(e => {
-                        if(statusUser.match(e)) dep = true;
+                        if(userStatusArray.includes(e)) dep = true;
                     });
 
                     return dep;
@@ -301,12 +302,12 @@ function filterStatus() {
         tanaguruTestsList = tanaguruTestsList.filter(matchPassed);
     }
 
-    if(!statusUser.match('passed') && !statusUser.match('failed')) {
+    if(!userStatusArray.includes('passed') && !userStatusArray.includes('failed')) {
         function matchPassedFailed(test) {
             if(test.expectedNbElements) {
                 if(test.depStatus) {
                     test.depStatus.forEach(e => {
-                        if(statusUser.match(e)) return true;
+                        if(userStatusArray.includes(e)) return true;
                     });
                 }
 
@@ -546,7 +547,7 @@ function launchTests() {
     }
 }
 
-if(first === "yes") {
+if(window.first === "yes") {
     if(document.querySelector('[sdata-tng-hindex]')) cleanSDATA();
 
     // localStorage.setItem("DOM", JSON.stringify(getElementProperties(document.documentElement, 1, null, null)));
@@ -560,13 +561,12 @@ if(first === "yes") {
     var tablist = interactives.filter(e => e.prop.tab).sort((a, b) => b.el.tabIndex - a.el.tabIndex);
     var realTabOrder = tablist.slice(0).filter(e => true);
 
-    localStorage.setItem("TAB", JSON.stringify(Object.assign({}, visualTab(realTabOrder))));
-
+    chrome.storage.local.set({ "TAB": JSON.stringify(Object.assign({}, visualTab(realTabOrder))) });
     domTab(tablist);
     getHeadingsMap();
 }
 
-var textNodeList = (cat !== 'colors') ? null : getTextNodeContrast();
+var textNodeList = (window.cat !== 'colors') ? null : getTextNodeContrast();
 
 filterCat();
 filterStatus();

@@ -1,5 +1,5 @@
 {
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"name": "__MSG_extensionName__",
 	"short_name": "Tanaguru webext",
 	"version": "2.0",
@@ -12,10 +12,12 @@
 		"96": "ressources/images/icons/tanaguru-96.png"
 	},
 	"permissions": [
-	    "<all_urls>", "downloads", "notifications"
+	    "downloads", "notifications", "scripting", "activeTab", "storage"
 	],
-	"browser_action": {
-		"browser_style": false,
+	"host_permissions": [
+		"<all_urls>"
+		],
+	"action": {
 		"default_icon": {
 			"32": "ressources/images/icons/tanaguru-32-dark.png"
 		},
@@ -28,6 +30,8 @@
 		}]
 	},
 	"background": {
+		"preferred_environment": ["script", "service_worker"],
+		"service_worker": "ressources/scripts/background_scripts/background.js",
 		"scripts": [
             "ressources/scripts/background_scripts/background.js"
         ]

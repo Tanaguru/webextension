@@ -491,7 +491,43 @@ button.addEventListener('click', function () {
 			newcurrenttab.focus();
 		}
 	}
-
+	/**
+	 * 
+	 * ? Allow to execute script on tab depending on whether browser you are on
+	 * there's a difference now between chrome and firefox due to mv3 specifications
+	 */
+	function executeScriptOnTab(tabId, func, args, cssSelector = null) {
+		if (chrome.scripting) {
+			chrome.scripting.executeScript({
+				target: { tabId: tabId },
+				func: func,
+				args: args
+			}, (result) => {
+				if (chrome.runtime.lastError) {
+					console.error("Erreur lors de l'injection du script sur Chrome :", chrome.runtime.lastError);
+				} else {
+					// We call inspect() because it's only supported on Chrome anyway
+					if (cssSelector && typeof chrome.devtools !== 'undefined') {
+						chrome.devtools.inspectedWindow.eval(`inspect(document.querySelector('${cssSelector}'))`);
+					}
+				}
+			});
+		} else if (typeof browser !== 'undefined' && typeof browser.scripting !== 'undefined') {
+			// If Scripting API is supported
+			browser.scripting.executeScript({
+				target: { tabId: tabId },
+				func: func,
+				args: args
+			}).then((result) => {
+				console.log("Script injecté avec succès sur Firefox.");
+			}).catch((error) => {
+				console.error("Erreur lors de l'injection du script sur Firefox :", error);
+			});
+		} else {
+			console.error("Aucune API d'exécution de script n'est disponible.");
+		}
+	}
+	
 	/**
 	 ** Manage action buttons in right column
 	 * showhide-action
@@ -541,12 +577,28 @@ button.addEventListener('click', function () {
 					});
 					
 					break;
+
 				case 'inspect-action':
 					var cellParent = element.closest('.item-actions');
 					var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
 					var css = cssify(getxpathbutton.getAttribute('data-xpath'));
-					chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('" + css + "'))");
-					break;
+					
+					// We use our function executeScriptOnTab to inject the logic inside our inspected page (eval isn't supported anymore in MV3)
+					executeScriptOnTab(
+						chrome.devtools.inspectedWindow.tabId, 
+						(css) => {
+							let el = document.querySelector(css);
+							if (el) {
+								el.scrollIntoView();
+							} else {
+								console.error(`Élément non trouvé pour le sélecteur : ${css}`);
+							}
+						}, 
+						[css],  // Injected arg (css selector)
+						css
+					);
+					break;											
+
 				case 'about-action':
 					element.setAttribute('data-popinopener', 'true');
 					var id = 'tanaguru-popin';
@@ -1047,12 +1099,32 @@ button.addEventListener('click', function () {
 			});
 
 			var sending = sendMessage(msgRequest);
-			sending.then(
+			sending
+			.then(
 				function (response) {
 					let category = filters.categories[catCount];
-					response = response.response[0];
-					testsCount += response.tests.length;
-					if(response.headings.length > 0) {
+						response = response.response[0];
+						// Check if 'response', 'result' and 'tests' exist, aren't null, and if 'tests' is an array
+						if (response && response.result && Array.isArray(response.result.tests)) {
+							// If it's return true, we iterate to check how many tests we have
+							response.result.tests.forEach(test => {
+								if (Array.isArray(test.data)) {
+									testsCount += test.data.length;
+								} else {
+									console.error("Il n'existe pas de tableau data à parcourir dans ce lot de test.");
+								}
+							});							
+						} else {
+							console.error("La structure de la réponse reçue ne permet pas de traiter le comptage de tests.");
+						}
+
+					// We check if 'result' and 'headings' are defined inside our 'response' object and if 'headings' is an array
+					if(response 
+						&& response.result 
+						&& response.result.headings 
+						&& Array.isArray(response.result.headings)
+						&& response.result.headings.length > 0) 
+					{
 						var headings = document.createElement('li');
 						headings.setAttribute('id', 'headingsHierarchy');
 						headings.setAttribute('role', 'tab');
@@ -1174,11 +1246,24 @@ button.addEventListener('click', function () {
 									let buttonInspectLabel = document.createElement('span');
 									buttonInspectLabel.className = "visually-hidden";
 									buttonInspectLabel.textContent = chrome.i18n.getMessage('panelInspectHeading');
-
+									
 									buttonInspect.addEventListener('click', function() {
-										chrome.devtools.inspectedWindow.eval(`inspect(document.querySelector('[sdata-tng-hindex="${heading.index}"]'))`);
-									}, true);
-
+										// We use our function executeScriptOnTab to inject the logic inside our inspected page (eval isn't supported anymore in MV3)
+										executeScriptOnTab(
+											chrome.devtools.inspectedWindow.tabId, 
+											(index) => {
+												let el = document.querySelector(`[sdata-tng-hindex="${index}"]`);
+												if (el) {
+													el.scrollIntoView();
+												} else {
+													console.error(`Élément non trouvé pour l'index : ${index}`);
+												}
+											},
+											[heading.index],
+											`[sdata-tng-hindex="${heading.index}"]`
+										);
+									});																
+																										
 									buttonInspect.appendChild(buttonInspectLabel);
 									buttonInspectContainer.appendChild(buttonInspect);
 									headingSpan.appendChild(buttonInspectContainer);
@@ -1188,8 +1273,9 @@ button.addEventListener('click', function () {
 								}
 							});
 						}
-
-						response.headings.forEach(ar => arrayToList(ar, container));
+						if(response && response.result && response.result.headings && Array.isArray(response.result.headings)) {
+							response.result.headings.forEach(ar => arrayToList(ar, container));
+						}
 
 						if(herror > 0) {
 							let hstrong = document.createElement('strong');
@@ -1201,7 +1287,8 @@ button.addEventListener('click', function () {
 					/**
 					 * ? display tests results
 					 */
-					response.tests.forEach(test => {
+					if (response && response.result && Array.isArray(response.result.tests)) {
+					response.result.tests.forEach(test => {
 						// UI. Dashboard.
 						// manage message on dashboard panel
 						if (!updatedashboardp && test.type == 'failed') {
@@ -2089,10 +2176,21 @@ button.addEventListener('click', function () {
 						
 						t++;
 					});
-		
-					let currentTag = response.tags.filter(tag => tag.id === category)[0];
-					let currentTab = document.getElementById(category);
-					if(response.tests.length === 0) {
+				} else {
+					console.error("Erreur lors de l'envoi de la réponse.");
+				}
+				let currentTag = null;
+				let currentTab = null;
+				// We check if 'result' and 'tags' are defined inside our 'response' object and if 'tags' is an array
+				if (response && response.result && Array.isArray(response.result.tags)) {
+					currentTag = response.result.tags.filter(tag => tag.id === category)[0];
+					currentTab = document.getElementById(category);
+				} else {
+					console.error("Aucun tag trouvé avec l'id correspondant : ", category);
+				}
+
+				if (response && response.result && Array.isArray(response.result.tests)) {
+					if(response.result.tests.length === 0) {
 						currentTab.remove();
 					} else {
 						document.getElementById(currentTag.status+'cat-separator').insertAdjacentElement('afterend', document.getElementById(currentTab.id));
@@ -2127,7 +2225,10 @@ button.addEventListener('click', function () {
 						}
 					}
 				}
-			).then(
+				}	
+					
+			)
+			.then(
 				() => {
 					let testPanel = document.getElementById('tests');
 					let cTab = ul.querySelector('li#'+testPanel.getAttribute('aria-labelledby'));
@@ -2278,7 +2379,12 @@ button.addEventListener('click', function () {
 		if(document.getElementById("DOMobserver").getAttribute('aria-selected') === "true") document.getElementById("tab0").click();
 		if(document.getElementById("DOMobserver")) document.getElementById("DOMobserver").remove();
 		document.getElementById("tabpanel1").remove();
-		document.getElementById("DOMdashboardMessage").remove();
+		let domMessageEvent = document.getElementById("DOMdashboardMessage");
+		if (domMessageEvent) {
+			domMessageEvent.remove();
+		} else {
+			console.log("L'élément avec l'id DOMdashboardMessage n'existe pas dans le DOM");
+		}
 		obsInterface = false;
 		obsCount = 0;
 		domChangeTime = null;
@@ -2305,7 +2411,7 @@ button.addEventListener('click', function () {
 					btnStatus.className = "status";
 					let hour = now.getHours() < 10 ? '0'+now.getHours() : now.getHours();
 					let minutes = now.getMinutes() < 10 ? '0'+now.getMinutes() : now.getMinutes();
-					btnStatus.textContent = hour+"H"+minutes;
+					btnStatus.textContent = "Modifications du DOM relevées à "+hour+"H"+minutes+", ";
 					newBtn.appendChild(btnStatus);
 
 					let strong = document.createElement('strong');
@@ -2415,8 +2521,20 @@ button.addEventListener('click', function () {
 						const currentSelector = '[data-tng-dom="'+domNb+'"]';
 
 						inspectObj.addEventListener('click', function() {
-							chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('"+currentSelector+"'))");
-						}, true);
+							executeScriptOnTab(
+								chrome.devtools.inspectedWindow.tabId, 
+								(selector) => {
+									let el = document.querySelector(selector);
+									if (el) {
+										el.scrollIntoView();
+									} else {
+										console.error(`Élément non trouvé pour le sélecteur : ${selector}`);
+									}
+								},
+								[currentSelector],  // Selector to scrollIntoView inside the page
+								currentSelector
+							);
+						});
 						inspectParagraph.appendChild(inspectObj);
 						newElContainer.appendChild(inspectParagraph);
 
@@ -2512,7 +2630,7 @@ button.addEventListener('click', function () {
 				let counterList = document.querySelector('button[aria-controls="'+midID+'"] strong');
 				let elCount = domChangeList.querySelectorAll(':scope>li').length;
 				counterList.textContent = elCount;
-				document.querySelector('button[aria-controls="'+midID+'"] strong+span').textContent = elCount > 1 ? chrome.i18n.getMessage('panelUpdatedElementPlural') : chrome.i18n.getMessage('panelUpdatedElement');
+				document.querySelector('button[aria-controls="'+midID+'"] strong+span').textContent = elCount > 1 ? " " + chrome.i18n.getMessage('panelUpdatedElementPlural') : " " + chrome.i18n.getMessage('panelUpdatedElement');
 				
 				document.querySelector("#tabpanel1 .DOMobserver-message").textContent = chrome.i18n.getMessage('DOMpanelMessage');
 
@@ -2611,7 +2729,7 @@ button.addEventListener('click', function () {
 				command: 'taborder',
 				state: 'on'
 			}, (response) => {
-				if(response.response[0] === "on") {
+				if(response.response === "on") {
 					document.querySelector('label[for="taborder"] .slider').textContent = chrome.i18n.getMessage('word_yes');
 				} else {
 					document.querySelector('#taborder-error').textContent = chrome.i18n.getMessage('dashboard_taborder_warning');
@@ -2628,7 +2746,7 @@ button.addEventListener('click', function () {
 			document.querySelector('label[for="taborder"] .slider').textContent = chrome.i18n.getMessage('word_no');
 		}
 	}
-
+	
 	var dashboardpanelbuttonreload = dashboardpanel.querySelector('#reloadTests');
 	var dashboardpanelbuttonrestart = dashboardpanel.querySelector('#restartTests');
 

@@ -33,6 +33,11 @@
         return result;
     }
 
+    function getNestedStructure(structure, lastLvl) {
+        // We access to the nested object with a reducer to skip eval() because of forbidden use in MV3
+        return lastLvl.reduce((acc, lvl) => acc && acc[lvl], structure);
+    }
+
     for(let i = 0; i < collection.length; i++) {
         let previousLevel = collection[i-1] ? (!collection[i-1].hasAttribute('role') ? collection[i-1].tagName.toLowerCase().split('h')[1] : collection[i-1].getAttribute('aria-level')) : null;
         let currentlevel = !collection[i].hasAttribute('role') ? collection[i].tagName.toLowerCase().split('h')[1] : collection[i].getAttribute('aria-level');
@@ -51,16 +56,18 @@
                     for(let x = 0; x < previousLevel - currentlevel; x++) {
                         lastLvl.pop();
                     }
-                    let key = "["+lastLvl.join('][')+"]";
-                    lastPost = eval("structure"+key);
+                    // let key = "["+lastLvl.join('][')+"]";
+                    // lastPost = eval("structure"+key);
+                    lastPost = getNestedStructure(structure, lastLvl);
                     lastPost.push(element);
                 }
                 else if(lastLvl.length > 1 && currentlevel > 1) {
                     var eureka = false;
                     for(let x = 0; x < lastLvl.length; x++) {
                         lastLvl.pop();
-                        let key = "["+lastLvl.join('][')+"]";
-                        lastPost = eval("structure"+key);
+                        // let key = "["+lastLvl.join('][')+"]";
+                        // lastPost = eval("structure"+key);
+                        lastPost = getNestedStructure(structure, lastLvl);
 
                         if(parseInt(lastPost[0].level) === parseInt(currentlevel)) {
                             lastPost.push(element);
