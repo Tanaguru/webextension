@@ -578,26 +578,26 @@ button.addEventListener('click', function () {
 					
 					break;
 
-					case 'inspect-action':
-						var cellParent = element.closest('.item-actions');
-						var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
-						var css = cssify(getxpathbutton.getAttribute('data-xpath'));
-						
-						// We use our function executeScriptOnTab to inject the logic inside our inspected page (eval isn't supported anymore in MV3)
-						executeScriptOnTab(
-							chrome.devtools.inspectedWindow.tabId, 
-							(css) => {
-								let el = document.querySelector(css);
-								if (el) {
-									el.scrollIntoView();
-								} else {
-									console.error(`Élément non trouvé pour le sélecteur : ${css}`);
-								}
-							}, 
-							[css],  // Injected arg (css selector)
-							css
-						);
-						break;											
+				case 'inspect-action':
+					var cellParent = element.closest('.item-actions');
+					var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
+					var css = cssify(getxpathbutton.getAttribute('data-xpath'));
+					
+					// We use our function executeScriptOnTab to inject the logic inside our inspected page (eval isn't supported anymore in MV3)
+					executeScriptOnTab(
+						chrome.devtools.inspectedWindow.tabId, 
+						(css) => {
+							let el = document.querySelector(css);
+							if (el) {
+								el.scrollIntoView();
+							} else {
+								console.error(`Élément non trouvé pour le sélecteur : ${css}`);
+							}
+						}, 
+						[css],  // Injected arg (css selector)
+						css
+					);
+					break;											
 
 				case 'about-action':
 					element.setAttribute('data-popinopener', 'true');
@@ -2531,8 +2531,8 @@ button.addEventListener('click', function () {
 										console.error(`Élément non trouvé pour le sélecteur : ${selector}`);
 									}
 								},
-								[currentSelector],  // Sélecteur pour scrollIntoView dans la page
-								currentSelector  // Sélecteur pour inspect() sous Chrome
+								[currentSelector],  // Selector to scrollIntoView inside the page
+								currentSelector
 							);
 						});
 						inspectParagraph.appendChild(inspectObj);
