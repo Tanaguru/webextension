@@ -491,7 +491,43 @@ button.addEventListener('click', function () {
 			newcurrenttab.focus();
 		}
 	}
-
+	/**
+	 * 
+	 * ? Allow to execute script on tab depending on whether browser you are on
+	 * there's a difference now between chrome and firefox due to mv3 specifications
+	 */
+	function executeScriptOnTab(tabId, func, args, cssSelector = null) {
+		if (chrome.scripting) {
+			chrome.scripting.executeScript({
+				target: { tabId: tabId },
+				func: func,
+				args: args
+			}, (result) => {
+				if (chrome.runtime.lastError) {
+					console.error("Erreur lors de l'injection du script sur Chrome :", chrome.runtime.lastError);
+				} else {
+					// We call inspect() because it's only supported on Chrome anyway
+					if (cssSelector && typeof chrome.devtools !== 'undefined') {
+						chrome.devtools.inspectedWindow.eval(`inspect(document.querySelector('${cssSelector}'))`);
+					}
+				}
+			});
+		} else if (typeof browser !== 'undefined' && typeof browser.scripting !== 'undefined') {
+			// If Scripting API is supported
+			browser.scripting.executeScript({
+				target: { tabId: tabId },
+				func: func,
+				args: args
+			}).then((result) => {
+				console.log("Script injecté avec succès sur Firefox.");
+			}).catch((error) => {
+				console.error("Erreur lors de l'injection du script sur Firefox :", error);
+			});
+		} else {
+			console.error("Aucune API d'exécution de script n'est disponible.");
+		}
+	}
+	
 	/**
 	 ** Manage action buttons in right column
 	 * showhide-action
@@ -542,23 +578,26 @@ button.addEventListener('click', function () {
 					
 					break;
 
-				case 'inspect-action':
-				var cellParent = element.closest('.item-actions');
-				var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
-				var css = cssify(getxpathbutton.getAttribute('data-xpath'));
-
-				chrome.devtools.inspectedWindow.eval(
-					`document.querySelector('${css}').scrollIntoView()`,
-					{ useContentScriptContext: true },
-					function(result, isException) {
-						if (isException) {
-							console.error("Erreur lors de l'inspection de l'élément :", isException);
-						} else {
-							console.log("Élément inspecté avec succès.");
-						}
-					}
-				);
-				break;
+					case 'inspect-action':
+						var cellParent = element.closest('.item-actions');
+						var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
+						var css = cssify(getxpathbutton.getAttribute('data-xpath'));
+						
+						// We use our function executeScriptOnTab to inject the logic inside our inspected page (eval isn't supported anymore in MV3)
+						executeScriptOnTab(
+							chrome.devtools.inspectedWindow.tabId, 
+							(css) => {
+								let el = document.querySelector(css);
+								if (el) {
+									el.scrollIntoView();
+								} else {
+									console.error(`Élément non trouvé pour le sélecteur : ${css}`);
+								}
+							}, 
+							[css],  // Injected arg (css selector)
+							css
+						);
+						break;											
 
 				case 'about-action':
 					element.setAttribute('data-popinopener', 'true');
@@ -1207,21 +1246,24 @@ button.addEventListener('click', function () {
 									let buttonInspectLabel = document.createElement('span');
 									buttonInspectLabel.className = "visually-hidden";
 									buttonInspectLabel.textContent = chrome.i18n.getMessage('panelInspectHeading');
-
-									buttonInspect.addEventListener('click', function() {
-										chrome.devtools.inspectedWindow.eval(
-											`document.querySelector('[sdata-tng-hindex="${heading.index}"]').scrollIntoView()`,
-											{ useContentScriptContext: true },
-											function(result, isException) {
-												if (isException) {
-													console.error("Erreur lors de l'inspection de l'élément :", isException);
-												} else {
-													console.log("Élément inspecté avec succès.");
-												}
-											}
-										);
-									}, true);
 									
+									buttonInspect.addEventListener('click', function() {
+										// We use our function executeScriptOnTab to inject the logic inside our inspected page (eval isn't supported anymore in MV3)
+										executeScriptOnTab(
+											chrome.devtools.inspectedWindow.tabId, 
+											(index) => {
+												let el = document.querySelector(`[sdata-tng-hindex="${index}"]`);
+												if (el) {
+													el.scrollIntoView();
+												} else {
+													console.error(`Élément non trouvé pour l'index : ${index}`);
+												}
+											},
+											[heading.index],
+											`[sdata-tng-hindex="${heading.index}"]`
+										);
+									});																
+																										
 									buttonInspect.appendChild(buttonInspectLabel);
 									buttonInspectContainer.appendChild(buttonInspect);
 									headingSpan.appendChild(buttonInspectContainer);
@@ -2478,20 +2520,21 @@ button.addEventListener('click', function () {
 						inspectObj.appendChild(inspectLabel);
 						const currentSelector = '[data-tng-dom="'+domNb+'"]';
 
-						// The selector is now passed as an arg to work with MV3
 						inspectObj.addEventListener('click', function() {
-							chrome.devtools.inspectedWindow.eval(
-								`inspect(document.querySelector("${currentSelector}"))`,
-								{ useContentScriptContext: true },
-								function(result, isException) {
-									if (isException) {
-										console.error("Erreur lors de l'inspection de l'élément :", isException);
+							executeScriptOnTab(
+								chrome.devtools.inspectedWindow.tabId, 
+								(selector) => {
+									let el = document.querySelector(selector);
+									if (el) {
+										el.scrollIntoView();
 									} else {
-										console.log("Inspection réussie pour l'élément :", result);
+										console.error(`Élément non trouvé pour le sélecteur : ${selector}`);
 									}
-								}
+								},
+								[currentSelector],  // Sélecteur pour scrollIntoView dans la page
+								currentSelector  // Sélecteur pour inspect() sous Chrome
 							);
-						}, true);
+						});
 						inspectParagraph.appendChild(inspectObj);
 						newElContainer.appendChild(inspectParagraph);
 
@@ -2686,7 +2729,7 @@ button.addEventListener('click', function () {
 				command: 'taborder',
 				state: 'on'
 			}, (response) => {
-				if(response && response.state === "on") {
+				if(response.response === "on") {
 					document.querySelector('label[for="taborder"] .slider').textContent = chrome.i18n.getMessage('word_yes');
 				} else {
 					document.querySelector('#taborder-error').textContent = chrome.i18n.getMessage('dashboard_taborder_warning');
@@ -2699,16 +2742,11 @@ button.addEventListener('click', function () {
 				tabId: chrome.devtools.inspectedWindow.tabId,
 				command: 'taborder',
 				state: 'off'
-			}, (response) => {
-				if (response && response.state === "off") {
-					document.querySelector('label[for="taborder"] .slider').textContent = chrome.i18n.getMessage('word_no');
-				} else {
-					console.error("Le state n'est pas correctement retourné lorsque le toggle du tabOrder est en off : ", error);
-				}
 			});
+			document.querySelector('label[for="taborder"] .slider').textContent = chrome.i18n.getMessage('word_no');
 		}
 	}
-
+	
 	var dashboardpanelbuttonreload = dashboardpanel.querySelector('#reloadTests');
 	var dashboardpanelbuttonrestart = dashboardpanel.querySelector('#restartTests');
 

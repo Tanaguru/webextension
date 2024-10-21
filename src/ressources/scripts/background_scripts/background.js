@@ -148,7 +148,7 @@ function handleMessage(request, sender, sendResponse) {
 			console.error("Erreur lors de l'injection des scripts Highlight :", error);
 		});
 	}
-	else if (request.command == 'taborder') {
+	else if (request.command === 'taborder') {
 		chrome.scripting.executeScript({
 			target: { tabId: request.tabId },
 			func: (state) => {
@@ -162,13 +162,12 @@ function handleMessage(request, sender, sendResponse) {
 				files: ['/ressources/scripts/tabOrder.js']
 			});
 		})
-		.then((results) => {
-			const tabResponse = results && results[0] && results[0].result ? results[0].result : null;
-			sendResponse({ command: 'executeTabOrder', response: tabResponse, state: request.state });
+		.then((tabResponse) => {
+			sendResponse({ command: 'executeTabOrder', response: tabResponse[0].result });
 		})
 		.catch((error) => {
 			console.error("Erreur lors de l'injection des scripts de tabOrder :", error);
-		});		
+		});
 	}
 	else if (request.command == 'obsDOM') {
 		chrome.scripting.executeScript({
