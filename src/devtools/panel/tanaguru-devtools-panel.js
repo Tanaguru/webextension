@@ -491,42 +491,6 @@ button.addEventListener('click', function () {
 			newcurrenttab.focus();
 		}
 	}
-	/**
-	 * 
-	 * ? Allow to execute script on tab depending on whether browser you are on
-	 * there's a difference now between chrome and firefox due to mv3 specifications
-	 */
-	function executeScriptOnTab(tabId, func, args, cssSelector = null) {
-		if (chrome.scripting) {
-			chrome.scripting.executeScript({
-				target: { tabId: tabId },
-				func: func,
-				args: args
-			}, (result) => {
-				if (chrome.runtime.lastError) {
-					console.error("Erreur lors de l'injection du script sur Chrome :", chrome.runtime.lastError);
-				} else {
-					// We call inspect() because it's only supported on Chrome anyway
-					if (cssSelector && typeof chrome.devtools !== 'undefined') {
-						chrome.devtools.inspectedWindow.eval(`inspect(document.querySelector('${cssSelector}'))`);
-					}
-				}
-			});
-		} else if (typeof browser !== 'undefined' && typeof browser.scripting !== 'undefined') {
-			// If Scripting API is supported
-			browser.scripting.executeScript({
-				target: { tabId: tabId },
-				func: func,
-				args: args
-			}).then((result) => {
-				console.log("Script injecté avec succès sur Firefox.");
-			}).catch((error) => {
-				console.error("Erreur lors de l'injection du script sur Firefox :", error);
-			});
-		} else {
-			console.error("Aucune API d'exécution de script n'est disponible.");
-		}
-	}
 	
 	/**
 	 ** Manage action buttons in right column
@@ -582,21 +546,7 @@ button.addEventListener('click', function () {
 					var cellParent = element.closest('.item-actions');
 					var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
 					var css = cssify(getxpathbutton.getAttribute('data-xpath'));
-					
-					// We use our function executeScriptOnTab to inject the logic inside our inspected page (eval isn't supported anymore in MV3)
-					executeScriptOnTab(
-						chrome.devtools.inspectedWindow.tabId, 
-						(css) => {
-							let el = document.querySelector(css);
-							if (el) {
-								el.scrollIntoView();
-							} else {
-								console.error(`Élément non trouvé pour le sélecteur : ${css}`);
-							}
-						}, 
-						[css],  // Injected arg (css selector)
-						css
-					);
+					chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('" + css + "'))");					
 					break;											
 
 				case 'about-action':
@@ -1248,20 +1198,7 @@ button.addEventListener('click', function () {
 									buttonInspectLabel.textContent = chrome.i18n.getMessage('panelInspectHeading');
 									
 									buttonInspect.addEventListener('click', function() {
-										// We use our function executeScriptOnTab to inject the logic inside our inspected page (eval isn't supported anymore in MV3)
-										executeScriptOnTab(
-											chrome.devtools.inspectedWindow.tabId, 
-											(index) => {
-												let el = document.querySelector(`[sdata-tng-hindex="${index}"]`);
-												if (el) {
-													el.scrollIntoView();
-												} else {
-													console.error(`Élément non trouvé pour l'index : ${index}`);
-												}
-											},
-											[heading.index],
-											`[sdata-tng-hindex="${heading.index}"]`
-										);
+										chrome.devtools.inspectedWindow.eval(`inspect(document.querySelector('[sdata-tng-hindex="${heading.index}"]'))`);
 									});																
 																										
 									buttonInspect.appendChild(buttonInspectLabel);
@@ -2521,19 +2458,7 @@ button.addEventListener('click', function () {
 						const currentSelector = '[data-tng-dom="'+domNb+'"]';
 
 						inspectObj.addEventListener('click', function() {
-							executeScriptOnTab(
-								chrome.devtools.inspectedWindow.tabId, 
-								(selector) => {
-									let el = document.querySelector(selector);
-									if (el) {
-										el.scrollIntoView();
-									} else {
-										console.error(`Élément non trouvé pour le sélecteur : ${selector}`);
-									}
-								},
-								[currentSelector],  // Selector to scrollIntoView inside the page
-								currentSelector
-							);
+							chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('"+currentSelector+"'))");
 						});
 						inspectParagraph.appendChild(inspectObj);
 						newElContainer.appendChild(inspectParagraph);
