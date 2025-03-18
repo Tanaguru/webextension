@@ -1528,7 +1528,7 @@ var ARIA = {
         this.setUsedInRoles = function () {
             if (this.usedInRoles == null) {
                 var statePropertyData = ariaData.properties[this.stateProperty] || ariaData.states[this.stateProperty];
-                this.usedInRoles = statePropertyData.usedInRoles;
+                this.usedInRoles = statePropertyData.usedInRoles.concat(statePropertyData.inheritsIntoRoles);
             }
         };
         this.canBeUsedInRole = function (role) {
