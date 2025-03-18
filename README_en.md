@@ -14,11 +14,22 @@ Web accessibility evaluation tool (and more).
 * Document update date : 2024/10/21
 
 ## Summary
-- [Install the webextension on your browser](#install-the-webextension-on-your-browser)
-- [Install the webextension locally](#install-the-webextension-locally)
-- [Use the webextension](#use-the-webextension)
-- [Write a test](#write-a-test)
-- [Update the version number](#update-the-version-number)
+- [Tanaguru Webextension](#tanaguru-webextension)
+  - [About](#about)
+  - [Summary](#summary)
+  - [Install the webextension on your browser](#install-the-webextension-on-your-browser)
+  - [Install the webextension locally](#install-the-webextension-locally)
+  - [Use the webextension](#use-the-webextension)
+  - [Write a test](#write-a-test)
+    - [Function `createTanaguruTest`](#function-createtanagurutest)
+      - [Test characteristics](#test-characteristics)
+    - [Test examples](#test-examples)
+      - [Links opening in new windows](#links-opening-in-new-windows)
+      - [Grouping of fields with/without caption.](#grouping-of-fields-withwithout-caption)
+      - [Links with empty `title` attribute](#links-with-empty-title-attribute)
+  - [Update the version number](#update-the-version-number)
+    - [VERSION.txt](#versiontxt)
+    - [CHANGELOG.md](#changelogmd)
 
 ## Install the webextension on your browser
 The webextension is available on the Mozilla Firefox and Google Chrome stores.
@@ -29,7 +40,7 @@ The webextension is available on the Mozilla Firefox and Google Chrome stores.
 
 **<u>Disclaimer</u> (October 21th 2024) :**
 
-The Tanaguru Webextension have been upgraded to Manifest V3. However few features aren't fully supported yet on Mozilla Firefox (**highlight** and **code inspection**).
+The Tanaguru Webextension have been upgraded to Manifest V3. However few features aren't fully supported yet on Mozilla Firefox (**code inspection**).
 
 The current source code is fully compatible locally for Chrome <u>but it's not yet the case for Mozilla Firefox</u>.
 

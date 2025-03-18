@@ -14,11 +14,22 @@ Outil d'évaluation de l'accessibilité Web (et plus).
 * Date de mise à jour du document : 21/10/2024
 
 ## Sommaire
-- [Installer la webextension sur votre navigateur](#installer-la-webextension-sur-votre-navigateur)
-- [Installer la webextension en local](#installer-la-webextension-en-local)
-- [Utiliser la webextension](#utiliser-la-webextension)
-- [Ecrire un test](#écrire-un-test)
-- [Mettre à jour le numéro de version](#mettre-à-jour-le-numéro-de-version)
+- [Tanaguru Webextension](#tanaguru-webextension)
+  - [A propos](#a-propos)
+  - [Sommaire](#sommaire)
+  - [Installer la webextension sur votre navigateur](#installer-la-webextension-sur-votre-navigateur)
+  - [Installer la webextension en local](#installer-la-webextension-en-local)
+  - [Utiliser la webextension](#utiliser-la-webextension)
+  - [Écrire un test](#écrire-un-test)
+    - [Fonction `createTanaguruTest`](#fonction-createtanagurutest)
+      - [Caractéristiques du test](#caractéristiques-du-test)
+    - [Exemples de test](#exemples-de-test)
+      - [Liens s'ouvrant dans des nouvelles fenêtres](#liens-souvrant-dans-des-nouvelles-fenêtres)
+      - [Regroupements de champs avec/sans légende](#regroupements-de-champs-avecsans-légende)
+      - [Liens avec attributs `title` vides](#liens-avec-attributs-title-vides)
+  - [Mettre à jour le numéro de version](#mettre-à-jour-le-numéro-de-version)
+    - [VERSION.txt](#versiontxt)
+    - [CHANGELOG.md](#changelogmd)
 
 ## Installer la webextension sur votre navigateur
 La webextension est disponible sur les stores de Mozilla Firefox et Google Chrome.
@@ -29,7 +40,7 @@ La webextension est disponible sur les stores de Mozilla Firefox et Google Chrom
 
 **<u>Information importante</u> (21 octobre 2024) :**
 
-Suite à la mise à jour vers la version 3 du Manifest de la webextension Tanaguru, certaines fonctionnalités ne sont pas encore totalement supportées sur Mozilla Firefox (la **mise en évidence** et **l'inspection du code**).
+Suite à la mise à jour vers la version 3 du Manifest de la webextension Tanaguru, certaines fonctionnalités ne sont pas encore totalement supportées sur Mozilla Firefox (**l'inspection du code**).
 
 Le code source mis à jour vers la version 3 du Manifest est donc compatible en local pour Chrome. <u>Il ne l'est cependant pas encore totalement pour Mozilla Firefox</u>. Ce sera le cas ultérieurement.
 

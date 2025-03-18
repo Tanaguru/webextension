@@ -1,4 +1,6 @@
 var hlResponse;
+var element = window.element;
+
 if(!element) {
 	let previousHighlight = document.querySelector('[data-tng-highlight]');
 	if(previousHighlight) previousHighlight.removeAttribute('data-tng-highlight');
