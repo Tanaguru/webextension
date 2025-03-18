@@ -59,3 +59,10 @@
 
 ## 5.1.1
 - fixes : wcag tests
+
+## 6.0.0
+- update manifest to v3
+- fixes:
+  - export feature
+  - canBeUsedInRole method
+  - size attribute detection on 10.1.2 test
