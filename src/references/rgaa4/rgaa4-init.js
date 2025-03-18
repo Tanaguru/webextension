@@ -1,3 +1,3 @@
 // TODO: début RGAA.
 var tanaguruTestsList = [];
-var webextVersion = "5.1.1";
+var webextVersion = "6.0.0";
