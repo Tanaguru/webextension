@@ -11,7 +11,7 @@ Web accessibility evaluation tool (and more).
 * Author : Tanaguru
 * Project : Tanaguru Webextension (Firefox and Chrome)
 * Date the document was written : 2018/02/26
-* Document update date : 2024/10/21
+* Document update date : 2025/03/18
 
 ## Summary
 - [Tanaguru Webextension](#tanaguru-webextension)
@@ -38,12 +38,6 @@ The webextension is available on the Mozilla Firefox and Google Chrome stores.
 
 ## Install the webextension locally
 
-**<u>Disclaimer</u> (October 21th 2024) :**
-
-The Tanaguru Webextension have been upgraded to Manifest V3. However few features aren't fully supported yet on Mozilla Firefox (**code inspection**).
-
-The current source code is fully compatible locally for Chrome <u>but it's not yet the case for Mozilla Firefox</u>.
-
 1. **Download or clone the project** here : [project directory](https://github.com/Tanaguru/webextension)
 2. To install the webextension, you will need to **download and install Node.js** in version 16. [Download page of Node.js](https://nodejs.org/en/download/)
 3. **Install the project dependencies and do the "build"** : 
@@ -53,7 +47,6 @@ The current source code is fully compatible locally for Chrome <u>but it's not y
   npm install
   npm run-script build
   ```
-
 4. **Installation on Firefox**
 
 To install the webextension, **in the address bar** of Firefox 57 or highter, type **« about:debugging »**. The « Extensions » page displays :

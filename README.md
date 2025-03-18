@@ -11,7 +11,7 @@ Outil d'évaluation de l'accessibilité Web (et plus).
 * Auteur : Tanaguru
 * Projet : Tanaguru Webextension (Firefox et Chrome)
 * Date de rédaction du document : 26/02/2018
-* Date de mise à jour du document : 21/10/2024
+* Date de mise à jour du document : 18/02/2025
 
 ## Sommaire
 - [Tanaguru Webextension](#tanaguru-webextension)
@@ -37,12 +37,6 @@ La webextension est disponible sur les stores de Mozilla Firefox et Google Chrom
 - [webextension Tanaguru pour Chrome](https://chrome.google.com/webstore/detail/tanaguru-webext/hhopdkekcmkdfpdjbpajmmfbheglcaac)
 
 ## Installer la webextension en local
-
-**<u>Information importante</u> (21 octobre 2024) :**
-
-Suite à la mise à jour vers la version 3 du Manifest de la webextension Tanaguru, certaines fonctionnalités ne sont pas encore totalement supportées sur Mozilla Firefox (**l'inspection du code**).
-
-Le code source mis à jour vers la version 3 du Manifest est donc compatible en local pour Chrome. <u>Il ne l'est cependant pas encore totalement pour Mozilla Firefox</u>. Ce sera le cas ultérieurement.
 
 1. **Télécharger ou cloner le projet** ici : [répertoire du projet](https://github.com/Tanaguru/webextension)
 2. Pour installer la webextension, vous aurez besoin de **télécharger et installer Node.js** en version 16. [Page de téléchargement de Node.js](https://nodejs.org/fr/download/)
