@@ -30,7 +30,7 @@
 		}]
 	},
 	"background": {
-		"preferred_environment": ["script", "service_worker"],
+		"preferred_environment": ["service_worker"],
 		"service_worker": "ressources/scripts/background_scripts/background.js",
 		"scripts": [
             "ressources/scripts/background_scripts/background.js"
