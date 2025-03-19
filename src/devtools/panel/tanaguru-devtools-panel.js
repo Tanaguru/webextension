@@ -522,23 +522,7 @@ button.addEventListener('click', function () {
 				case 'highlight-action':
 					var cellParent = element.closest('.item-actions');
 					var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
-					chrome.runtime.sendMessage({
-						tabId: chrome.devtools.inspectedWindow.tabId,
-						command: 'highlight',
-						element: cssify(getxpathbutton.getAttribute('data-xpath'))
-					}, (response) => {
-						if(response.response[0] === "off") {
-							element.classList.remove('highlightON');
-							element.setAttribute('aria-selected', "true");
-						} else {
-							let previousHighlight = main.children[1].querySelector('.highlightON');
-							if(previousHighlight) {
-								previousHighlight.classList.remove('highlightON');
-								previousHighlight.removeAttribute('aria-selected');
-							}
-							element.classList.add('highlightON');
-						}
-					});
+					highlightElement(getxpathbutton.getAttribute('data-xpath'), element);
 					
 					break;
 
@@ -1166,23 +1150,7 @@ button.addEventListener('click', function () {
 
 									buttonShow.addEventListener('click', function(evt) {
 										let element = evt.target.closest('button');
-										chrome.runtime.sendMessage({
-											tabId: chrome.devtools.inspectedWindow.tabId,
-											command: 'highlight',
-											element: cssify(heading.xpath)
-										}, (response) => {
-											if(response.response[0] === "off") {
-												element.classList.remove('highlightON');
-												element.setAttribute('aria-selected', "true");
-											} else {
-												let previousHighlight = main.children[1].querySelector('.highlightON');
-												if(previousHighlight) {
-													previousHighlight.classList.remove('highlightON');
-													previousHighlight.removeAttribute('aria-selected');
-												}
-												element.classList.add('highlightON');
-											}
-										});
+										highlightElement(heading.xpath, element);
 									}, true);
 
 									buttonShow.appendChild(buttonShowLabel);
@@ -2255,8 +2223,7 @@ button.addEventListener('click', function () {
 	displayResults();
 
 	function restartAnalyze() {
-		let hlElement = main.children[1].querySelector('.highlightON');
-		if(hlElement) hlElement.click();
+		resetHighlight();
 		if(listenDomModif) dashboardpanel.querySelector('#listenDOM').click();
 		if(dashboardpanel.querySelector('#taborder').checked) dashboardpanel.querySelector('#taborder').click();
 		ul.querySelectorAll('li:not([id="tab0"])').forEach(li => {li.remove()});
@@ -2314,15 +2281,18 @@ button.addEventListener('click', function () {
 	}
 
 	function delObsInterface() {
-		if(document.getElementById("DOMobserver").getAttribute('aria-selected') === "true") document.getElementById("tab0").click();
-		if(document.getElementById("DOMobserver")) document.getElementById("DOMobserver").remove();
-		document.getElementById("tabpanel1").remove();
+		let DOMobserver = document.getElementById("DOMobserver");
+		let tabpanel = document.getElementById("tabpanel1");
 		let domMessageEvent = document.getElementById("DOMdashboardMessage");
-		if (domMessageEvent) {
-			domMessageEvent.remove();
-		} else {
-			console.log("L'élément avec l'id DOMdashboardMessage n'existe pas dans le DOM");
+
+		if(DOMobserver) {
+			if(DOMobserver.getAttribute('aria-selected') === "true") document.getElementById("tab0").click();
+			DOMobserver.remove();
 		}
+
+		if(tabpanel) tabpanel.remove();		
+		if(domMessageEvent) domMessageEvent.remove();
+
 		obsInterface = false;
 		obsCount = 0;
 		domChangeTime = null;
@@ -2613,8 +2583,51 @@ button.addEventListener('click', function () {
 		}
 
 		if(request.command == 'resetHighlight') {
-			let hlElement = main.children[1].querySelector('.highlightON');
-			if(hlElement) hlElement.click();
+			resetHighlight();
+		}
+	}
+
+	/**
+	 * ? enable/disable highlight on target element
+	 * 
+	 * @function highlightElement
+	 * @param  string xpath   target xpath
+	 * @param  node element target element
+	 * @return void
+	 */
+	function highlightElement(xpath, element) {
+		chrome.runtime.sendMessage({
+			tabId: chrome.devtools.inspectedWindow.tabId,
+			command: 'highlight',
+			element: cssify(xpath)
+		}, (response) => {
+			if(response.response[0].result === "off") {
+				element.classList.remove('highlightON');
+				element.setAttribute('aria-selected', "true");
+			} else {
+				let previousHighlight = main.children[1].querySelector('.highlightON');
+				if(previousHighlight) {
+					previousHighlight.classList.remove('highlightON');
+					previousHighlight.removeAttribute('aria-selected');
+				}
+				element.classList.add('highlightON');
+			}
+		});
+	}
+
+	/**
+	 * ? if highlight feature is enabled, disable it
+	 */
+	function resetHighlight() {
+		let hlElement = main.children[1].querySelector('.highlightON');
+		if(hlElement) {
+			chrome.runtime.sendMessage({
+				tabId: chrome.devtools.inspectedWindow.tabId,
+				command: 'highlight',
+				element: hlElement
+			}, (response) => {
+				hlElement.classList.remove('highlightON');
+			});
 		}
 	}
 
@@ -2680,8 +2693,7 @@ button.addEventListener('click', function () {
 	dashboardpanelbuttonrestart.addEventListener('click', () => {
 		if(dashboardpanel.querySelector('#listenDOM').checked) dashboardpanel.querySelector('#listenDOM').click();
 		if(dashboardpanel.querySelector('#taborder').checked) dashboardpanel.querySelector('#taborder').click();
-		let hlElement = main.children[1].querySelector('.highlightON');
-		if(hlElement) hlElement.click();
+		resetHighlight();
 		window.location.reload();
 	});
 	/**save */
