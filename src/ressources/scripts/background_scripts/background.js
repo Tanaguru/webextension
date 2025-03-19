@@ -43,16 +43,16 @@ function handleUpdated(tabId, changeInfo, tabInfo) {
 			func: () => {
 				window.obs = "OFF";
 			}
-		  })
-		  .then(() => {
+		})
+		.then(() => {
 			return chrome.scripting.executeScript({
 			  target: { tabId: tabId },
 			  files: ['/ressources/scripts/obsDOM.js']
 			});
-		  })
-		  .catch((error) => {
-			console.error("Erreur lors de l'injection du script obsDOM : ", error);
-		  });
+		})
+		.catch((error) => {
+			console.log("Missing permissions");
+		});
 
 		notifyDevtools({
 			command: 'pageChanged',
@@ -77,7 +77,13 @@ function handleMessage(request, sender, sendResponse) {
 				title: request.what,
 				message: 'La copie dans le presse-papier a bien été réalisée.'
 			}
-		);
+		)
+		.then(() => {
+			sendResponse({ command: 'copyClipboard' });
+		})
+		.catch((error) => {
+			console.error("copyClipboard", error);
+		});
 	}
 	else if (request.command === 'executeTests') {
 		chrome.scripting.executeScript({
@@ -108,6 +114,12 @@ function handleMessage(request, sender, sendResponse) {
 			url: request.data.url,
 			filename: request.data.filename,
 			saveAs: true
+		})
+		.then(() => {
+			sendResponse({ command: 'downloadTestCsvFile' });
+		})
+		.catch((error) => {
+			console.error("downloadTestCsvFile", error);
 		});
 	}
 	else if (request.command === 'notify') {
@@ -190,15 +202,16 @@ function handleMessage(request, sender, sendResponse) {
 		})
 		.catch((error) => {
 			console.error("Erreur lors de l'injection des scripts d\'observation du DOM : ", error);
-		});
-		return true; 
+		}); 
 	}
 	else if (request.command == 'newMigration') {
 		notifyDevtools({
 			command: 'DOMedit',
 			tabId: request.tabId,
 			migList: request.migList
-		});
+		})
+		
+		sendResponse({ command: 'newMigration' });
 	}
 	else if (request.command == 'resetPanel') {
 		notifyDevtools({

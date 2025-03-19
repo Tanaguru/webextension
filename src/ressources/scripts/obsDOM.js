@@ -194,7 +194,7 @@ function callback(mutationsList) {
 
     chrome.runtime.sendMessage({
         command: 'newMigration',
-        tabId: requestTabId,
+        tabId: window.requestTabId,
         migList: JSON.stringify(elementsList)
     });
 };

@@ -16,8 +16,8 @@ function initTab(newPanel, tabId) {
 	}
 	newPanel.onShown.addListener(tmp);
 
-	function sendStoreMsg(msg) {
-		if (_window && tabId == msg['tabId']) {
+	function sendStoreMsg(msg) {	
+		if (_window && ("function" === typeof _window.obsMessage) && tabId == msg['tabId']) {
 			_window.obsMessage(msg);
 		} else if(msg['command'] == 'DOMedit') {
 			if(!data[tabId]) data[tabId] = [];

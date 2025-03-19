@@ -16,7 +16,7 @@
 	],
 	"host_permissions": [
 		"<all_urls>"
-		],
+	],
 	"action": {
 		"default_icon": {
 			"32": "ressources/images/icons/tanaguru-32-dark.png"
