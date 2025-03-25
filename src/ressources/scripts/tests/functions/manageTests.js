@@ -34,9 +34,9 @@ function addResultSet(name, data) {
 
 function filterTestsByStatus(statuses) {
     if(window.tanaguru && window.tanaguru.tests) {
-        if(statuses.length > 0) {
+        if(Array.isArray(statuses) && statuses.length > 0) {
             function matchFilters(test) {
-                return statuses.match(test.type);
+                return statuses.includes(test.type);
             }
             window.tanaguru.tests = window.tanaguru.tests.filter(matchFilters);
         } else {

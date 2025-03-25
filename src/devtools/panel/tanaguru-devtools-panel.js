@@ -414,7 +414,7 @@ button.addEventListener('click', function () {
 	});
 
 	function sortCatByProcessTime() {
-		var catOrder = ["navigation", "presentation", "media", "consultation", "scripts", "structure", "frames", "tables", "forms", "mandatory", "links", "images", "colors"];
+		var catOrder = ["navigation", "presentation", "media", "consultation", "scripts", "structure", "frames", "tables", "forms", "mandatory", "links", "images", "colors", "accessiblename", "aria", "audio", "buttons", "code", "languages", "meta", "keyboard", "contrast", "svg", "table", "pageTitle", "headings", "videos"];
 		catOrder = catOrder.filter((e) => {return filters.categories.includes(e)})
 		filters.categories = catOrder;
 	}
@@ -491,7 +491,7 @@ button.addEventListener('click', function () {
 			newcurrenttab.focus();
 		}
 	}
-
+	
 	/**
 	 ** Manage action buttons in right column
 	 * showhide-action
@@ -522,31 +522,17 @@ button.addEventListener('click', function () {
 				case 'highlight-action':
 					var cellParent = element.closest('.item-actions');
 					var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
-					chrome.runtime.sendMessage({
-						tabId: chrome.devtools.inspectedWindow.tabId,
-						command: 'highlight',
-						element: cssify(getxpathbutton.getAttribute('data-xpath'))
-					}, (response) => {
-						if(response.response[0] === "off") {
-							element.classList.remove('highlightON');
-							element.setAttribute('aria-selected', "true");
-						} else {
-							let previousHighlight = main.children[1].querySelector('.highlightON');
-							if(previousHighlight) {
-								previousHighlight.classList.remove('highlightON');
-								previousHighlight.removeAttribute('aria-selected');
-							}
-							element.classList.add('highlightON');
-						}
-					});
+					highlightElement(getxpathbutton.getAttribute('data-xpath'), element);
 					
 					break;
+
 				case 'inspect-action':
 					var cellParent = element.closest('.item-actions');
 					var getxpathbutton = cellParent.querySelector('.item-actions-about button[data-xpath]');
 					var css = cssify(getxpathbutton.getAttribute('data-xpath'));
-					chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('" + css + "'))");
-					break;
+					chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('" + css + "'))");					
+					break;											
+
 				case 'about-action':
 					element.setAttribute('data-popinopener', 'true');
 					var id = 'tanaguru-popin';
@@ -1047,12 +1033,32 @@ button.addEventListener('click', function () {
 			});
 
 			var sending = sendMessage(msgRequest);
-			sending.then(
+			sending
+			.then(
 				function (response) {
 					let category = filters.categories[catCount];
-					response = response.response[0];
-					testsCount += response.tests.length;
-					if(response.headings.length > 0) {
+						response = response.response[0];
+						// Check if 'response', 'result' and 'tests' exist, aren't null, and if 'tests' is an array
+						if (response && response.result && Array.isArray(response.result.tests)) {
+							// If it's return true, we iterate to check how many tests we have
+							response.result.tests.forEach(test => {
+								if (Array.isArray(test.data)) {
+									testsCount += test.data.length;
+								} else {
+									console.error("Il n'existe pas de tableau data à parcourir dans ce lot de test.");
+								}
+							});							
+						} else {
+							console.error("La structure de la réponse reçue ne permet pas de traiter le comptage de tests.");
+						}
+
+					// We check if 'result' and 'headings' are defined inside our 'response' object and if 'headings' is an array
+					if(response 
+						&& response.result 
+						&& response.result.headings 
+						&& Array.isArray(response.result.headings)
+						&& response.result.headings.length > 0) 
+					{
 						var headings = document.createElement('li');
 						headings.setAttribute('id', 'headingsHierarchy');
 						headings.setAttribute('role', 'tab');
@@ -1069,7 +1075,7 @@ button.addEventListener('click', function () {
 						headings.setAttribute('aria-controls', headingsPanel.getAttribute('id'));
 						ul.insertBefore(headings, ul.querySelector('#alltests'));
 
-						var headingsTemplate = document.querySelector('#headings');
+						var headingsTemplate = document.querySelector('#headingsTab');
 						var headingsPanelContent = document.importNode(headingsTemplate.content, true);
 						headingsPanel.appendChild(headingsPanelContent);
 						headingsPanel.querySelector('h2').textContent = chrome.i18n.getMessage('msgHeadingsHierarchy');
@@ -1144,23 +1150,7 @@ button.addEventListener('click', function () {
 
 									buttonShow.addEventListener('click', function(evt) {
 										let element = evt.target.closest('button');
-										chrome.runtime.sendMessage({
-											tabId: chrome.devtools.inspectedWindow.tabId,
-											command: 'highlight',
-											element: cssify(heading.xpath)
-										}, (response) => {
-											if(response.response[0] === "off") {
-												element.classList.remove('highlightON');
-												element.setAttribute('aria-selected', "true");
-											} else {
-												let previousHighlight = main.children[1].querySelector('.highlightON');
-												if(previousHighlight) {
-													previousHighlight.classList.remove('highlightON');
-													previousHighlight.removeAttribute('aria-selected');
-												}
-												element.classList.add('highlightON');
-											}
-										});
+										highlightElement(heading.xpath, element);
 									}, true);
 
 									buttonShow.appendChild(buttonShowLabel);
@@ -1174,11 +1164,11 @@ button.addEventListener('click', function () {
 									let buttonInspectLabel = document.createElement('span');
 									buttonInspectLabel.className = "visually-hidden";
 									buttonInspectLabel.textContent = chrome.i18n.getMessage('panelInspectHeading');
-
+									
 									buttonInspect.addEventListener('click', function() {
 										chrome.devtools.inspectedWindow.eval(`inspect(document.querySelector('[sdata-tng-hindex="${heading.index}"]'))`);
-									}, true);
-
+									});																
+																										
 									buttonInspect.appendChild(buttonInspectLabel);
 									buttonInspectContainer.appendChild(buttonInspect);
 									headingSpan.appendChild(buttonInspectContainer);
@@ -1188,8 +1178,9 @@ button.addEventListener('click', function () {
 								}
 							});
 						}
-
-						response.headings.forEach(ar => arrayToList(ar, container));
+						if(response && response.result && response.result.headings && Array.isArray(response.result.headings)) {
+							response.result.headings.forEach(ar => arrayToList(ar, container));
+						}
 
 						if(herror > 0) {
 							let hstrong = document.createElement('strong');
@@ -1201,7 +1192,8 @@ button.addEventListener('click', function () {
 					/**
 					 * ? display tests results
 					 */
-					response.tests.forEach(test => {
+					if (response && response.result && Array.isArray(response.result.tests)) {
+					response.result.tests.forEach(test => {
 						// UI. Dashboard.
 						// manage message on dashboard panel
 						if (!updatedashboardp && test.type == 'failed') {
@@ -1343,26 +1335,26 @@ button.addEventListener('click', function () {
 							// table headings
 							if(!test.tags.includes('contrast')) {
 								var tableheadings = [
-									{ name: 'N°', abbr: 'Numéro' },
+									{ name: 'N°', abbr: 'Numéro', export: 'required' },
 									{ name: 'Statut', export: 'required' },
 									{ name: 'Item', export: 'required' },
-									{ name: 'Nom accessible calculé' },
-									{ name: 'Atteignable au clavier ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAASCAYAAABB7B6eAAAABGdBTUEAALGPC/xhBQAAAjBJREFUOBGt1M1LVUEYgPF7ND/KLG4qRVibIgJvoIsgcOGuEFdRRC10I5LQP6ArbRUu3dqudkG4cCEGlktNSElF6YPioqGVRmEp+XF6njoH5F69XawXfsw0vTPzzsy5JhL/IcIwrEAvgszlCjIH9vnvc8xLBkEQ7nP+3tOoOokBXN4t68Bug38bYzErdsFq1KGf6p/QZkXWnWVlZAyweDNDLRjCezxn8TTtvweLpzCEZL6r/b4iJlQw4Wgek26TM2JuHpt85WTLAYn1TOjGBxhuuhG127QqisaO0K7j544xv0RtRmO2xkl0u8EEnXtwURPncBHT8GRVGMclvIHvdgajMO8TlpGCeecRF9WZYIM0WrEJ49GfJhymXYj6D6N2klZGPGaOuUY817VcM+11+OP4iDsoxAtMYgwn4FGfYRaeyrBaP8uX8GoXMYynGMEWlhB6JUYxatCANnhN7TiEVXTADRsj9h3z/8pg7gxa4RoXcBChJ/C+fLxbqMQP+FDXYQElaIIL3IDhia+hFD74VTh2E4fxBd7Cto+cpmPVa7Diz1iH3/oKrPA4XuMUjHmcxRK+4xjMtWqLdC37fZ7A+zqNTpjsL9QNH6AWHtdTmht/gnHfE07BaltwH1dgUX6ZWyb6jXuXb+HO83iFBZTDa8gVzjPXOc59B6t3zSKvqIeOCw3CsEofPf5d+GXlCm/AE1qo72HRRiO+uYGPeBc+molGiPgPof1csTMv7nt1j9H1C4W7DIhH/jVRAAAAAElFTkSuQmCC' },
-									{ name: 'Restitué ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAABGdBTUEAALGPC/xhBQAAAlBJREFUOBGV00tIVUEcx/F7xAfaQ0vCUtQitCgQqoWohI9N0MNFYVKgEiRo9JAgIqhFunAjggs3UYvoIqK0cGFqFPlEoVwYoeIjDHqYgWiu6/r9HWbiei5XOgOfO/+Z+c+cO3PmOAEfJRQKHSW9BJWYRh+GHMfZoPZXWGw/gviJD+hGP75gAdW+VmTCIcyiF3nhk2nvwA2soil8LGpMooPXCNok4rN4hHqkq5+6ABu4bPMiagb3ItZMKCROQiZGoC2/go7hG86ZvNvEc0iMWNAkPGew0Q4Sx2MMnUg1OdrFLeicM6Cj+IoyO09bSIGS4lAKJdvtlRP/QNq/CSagTw+7Yx40QHw/hp8EaKt/cRc1XJF31Iu4CJUcJGOQ3AvqCCvzxFmmvUadHMNPHV6w0G/qFlyDyhsUu1Eg0EFdhDa0sHCS+qk1/xQ+qk05gO8aOIxlHEQePiMWVRh1U80P7WLo3PTiEtGOaeyG7rKO7ISe9MfMcahDnlh9erDOuYGwC63Q2Q4hH5fMLh8Qz2BKExrwkobiOoyb+DGx3nY2JjCD88jCEvQvE0zudeJ1nFRbC2kbelm7sAidsfpHUY8jeAi9KPUP46mJte0nWIH3BbrJexi4Bz3gNJSYqcm20K6EznQn9uE9BnHM5kStSQqi2ZtA3xXUQldRn28P3CPw5ka0SUyDviJ9KbpKWwp9WnwJKVsG/qfBpAp88ubS9xZ62/4LE/VPdfeu2tnEZ7CKXNvnu9aC+IU+6AwV39xuIfdyb5egMRY5TlWLeDzjsk9SRy2bAMhld532BdwAAAAASUVORK5CYII=' },
+									{ name: 'Nom accessible calculé', export: 'required' },
+									{ name: 'Atteignable au clavier ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAASCAYAAABB7B6eAAAABGdBTUEAALGPC/xhBQAAAjBJREFUOBGt1M1LVUEYgPF7ND/KLG4qRVibIgJvoIsgcOGuEFdRRC10I5LQP6ArbRUu3dqudkG4cCEGlktNSElF6YPioqGVRmEp+XF6njoH5F69XawXfsw0vTPzzsy5JhL/IcIwrEAvgszlCjIH9vnvc8xLBkEQ7nP+3tOoOokBXN4t68Bug38bYzErdsFq1KGf6p/QZkXWnWVlZAyweDNDLRjCezxn8TTtvweLpzCEZL6r/b4iJlQw4Wgek26TM2JuHpt85WTLAYn1TOjGBxhuuhG127QqisaO0K7j544xv0RtRmO2xkl0u8EEnXtwURPncBHT8GRVGMclvIHvdgajMO8TlpGCeecRF9WZYIM0WrEJ49GfJhymXYj6D6N2klZGPGaOuUY817VcM+11+OP4iDsoxAtMYgwn4FGfYRaeyrBaP8uX8GoXMYynGMEWlhB6JUYxatCANnhN7TiEVXTADRsj9h3z/8pg7gxa4RoXcBChJ/C+fLxbqMQP+FDXYQElaIIL3IDhia+hFD74VTh2E4fxBd7Cto+cpmPVa7Diz1iH3/oKrPA4XuMUjHmcxRK+4xjMtWqLdC37fZ7A+zqNTpjsL9QNH6AWHtdTmht/gnHfE07BaltwH1dgUX6ZWyb6jXuXb+HO83iFBZTDa8gVzjPXOc59B6t3zSKvqIeOCw3CsEofPf5d+GXlCm/AE1qo72HRRiO+uYGPeBc+molGiPgPof1csTMv7nt1j9H1C4W7DIhH/jVRAAAAAElFTkSuQmCC', export: 'required' },
+									{ name: 'Restitué ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAABGdBTUEAALGPC/xhBQAAAlBJREFUOBGV00tIVUEcx/F7xAfaQ0vCUtQitCgQqoWohI9N0MNFYVKgEiRo9JAgIqhFunAjggs3UYvoIqK0cGFqFPlEoVwYoeIjDHqYgWiu6/r9HWbiei5XOgOfO/+Z+c+cO3PmOAEfJRQKHSW9BJWYRh+GHMfZoPZXWGw/gviJD+hGP75gAdW+VmTCIcyiF3nhk2nvwA2soil8LGpMooPXCNok4rN4hHqkq5+6ABu4bPMiagb3ItZMKCROQiZGoC2/go7hG86ZvNvEc0iMWNAkPGew0Q4Sx2MMnUg1OdrFLeicM6Cj+IoyO09bSIGS4lAKJdvtlRP/QNq/CSagTw+7Yx40QHw/hp8EaKt/cRc1XJF31Iu4CJUcJGOQ3AvqCCvzxFmmvUadHMNPHV6w0G/qFlyDyhsUu1Eg0EFdhDa0sHCS+qk1/xQ+qk05gO8aOIxlHEQePiMWVRh1U80P7WLo3PTiEtGOaeyG7rKO7ISe9MfMcahDnlh9erDOuYGwC63Q2Q4hH5fMLh8Qz2BKExrwkobiOoyb+DGx3nY2JjCD88jCEvQvE0zudeJ1nFRbC2kbelm7sAidsfpHUY8jeAi9KPUP46mJte0nWIH3BbrJexi4Bz3gNJSYqcm20K6EznQn9uE9BnHM5kStSQqi2ZtA3xXUQldRn28P3CPw5ka0SUyDviJ9KbpKWwp9WnwJKVsG/qfBpAp88ubS9xZ62/4LE/VPdfeu2tnEZ7CKXNvnu9aC+IU+6AwV39xuIfdyb5egMRY5TlWLeDzjsk9SRy2bAMhld532BdwAAAAASUVORK5CYII=', export: 'required' },
 									{ name: 'Actions', export: 'no' }
 								];
 							} else {
 								var tableheadings = [
-									{ name: 'N°', abbr: 'Numéro' },
+									{ name: 'N°', abbr: 'Numéro', export: 'required' },
 									{ name: 'Balise', export: 'required' },
 									{ name: 'Passage de texte', export: 'required' },
 									{ name: 'Taille', export: 'required' },
 									{ name: 'Graisse', export: 'required' },
-									{ name: 'CT', abbr: 'Couleur de texte' },
-									{ name: 'CF', abbr: 'Couleur de fond' },
+									{ name: 'CT', abbr: 'Couleur de texte', export: 'required' },
+									{ name: 'CF', abbr: 'Couleur de fond', export: 'required' },
 									{ name: 'Ratio estimé', export: 'required' },
-									{ name: 'Atteignable au clavier ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAASCAYAAABB7B6eAAAABGdBTUEAALGPC/xhBQAAAjBJREFUOBGt1M1LVUEYgPF7ND/KLG4qRVibIgJvoIsgcOGuEFdRRC10I5LQP6ArbRUu3dqudkG4cCEGlktNSElF6YPioqGVRmEp+XF6njoH5F69XawXfsw0vTPzzsy5JhL/IcIwrEAvgszlCjIH9vnvc8xLBkEQ7nP+3tOoOokBXN4t68Bug38bYzErdsFq1KGf6p/QZkXWnWVlZAyweDNDLRjCezxn8TTtvweLpzCEZL6r/b4iJlQw4Wgek26TM2JuHpt85WTLAYn1TOjGBxhuuhG127QqisaO0K7j544xv0RtRmO2xkl0u8EEnXtwURPncBHT8GRVGMclvIHvdgajMO8TlpGCeecRF9WZYIM0WrEJ49GfJhymXYj6D6N2klZGPGaOuUY817VcM+11+OP4iDsoxAtMYgwn4FGfYRaeyrBaP8uX8GoXMYynGMEWlhB6JUYxatCANnhN7TiEVXTADRsj9h3z/8pg7gxa4RoXcBChJ/C+fLxbqMQP+FDXYQElaIIL3IDhia+hFD74VTh2E4fxBd7Cto+cpmPVa7Diz1iH3/oKrPA4XuMUjHmcxRK+4xjMtWqLdC37fZ7A+zqNTpjsL9QNH6AWHtdTmht/gnHfE07BaltwH1dgUX6ZWyb6jXuXb+HO83iFBZTDa8gVzjPXOc59B6t3zSKvqIeOCw3CsEofPf5d+GXlCm/AE1qo72HRRiO+uYGPeBc+molGiPgPof1csTMv7nt1j9H1C4W7DIhH/jVRAAAAAElFTkSuQmCC' },
-									{ name: 'Restitué ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAABGdBTUEAALGPC/xhBQAAAlBJREFUOBGV00tIVUEcx/F7xAfaQ0vCUtQitCgQqoWohI9N0MNFYVKgEiRo9JAgIqhFunAjggs3UYvoIqK0cGFqFPlEoVwYoeIjDHqYgWiu6/r9HWbiei5XOgOfO/+Z+c+cO3PmOAEfJRQKHSW9BJWYRh+GHMfZoPZXWGw/gviJD+hGP75gAdW+VmTCIcyiF3nhk2nvwA2soil8LGpMooPXCNok4rN4hHqkq5+6ABu4bPMiagb3ItZMKCROQiZGoC2/go7hG86ZvNvEc0iMWNAkPGew0Q4Sx2MMnUg1OdrFLeicM6Cj+IoyO09bSIGS4lAKJdvtlRP/QNq/CSagTw+7Yx40QHw/hp8EaKt/cRc1XJF31Iu4CJUcJGOQ3AvqCCvzxFmmvUadHMNPHV6w0G/qFlyDyhsUu1Eg0EFdhDa0sHCS+qk1/xQ+qk05gO8aOIxlHEQePiMWVRh1U80P7WLo3PTiEtGOaeyG7rKO7ISe9MfMcahDnlh9erDOuYGwC63Q2Q4hH5fMLh8Qz2BKExrwkobiOoyb+DGx3nY2JjCD88jCEvQvE0zudeJ1nFRbC2kbelm7sAidsfpHUY8jeAi9KPUP46mJte0nWIH3BbrJexi4Bz3gNJSYqcm20K6EznQn9uE9BnHM5kStSQqi2ZtA3xXUQldRn28P3CPw5ka0SUyDviJ9KbpKWwp9WnwJKVsG/qfBpAp88ubS9xZ62/4LE/VPdfeu2tnEZ7CKXNvnu9aC+IU+6AwV39xuIfdyb5egMRY5TlWLeDzjsk9SRy2bAMhld532BdwAAAAASUVORK5CYII=' },
+									{ name: 'Atteignable au clavier ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAASCAYAAABB7B6eAAAABGdBTUEAALGPC/xhBQAAAjBJREFUOBGt1M1LVUEYgPF7ND/KLG4qRVibIgJvoIsgcOGuEFdRRC10I5LQP6ArbRUu3dqudkG4cCEGlktNSElF6YPioqGVRmEp+XF6njoH5F69XawXfsw0vTPzzsy5JhL/IcIwrEAvgszlCjIH9vnvc8xLBkEQ7nP+3tOoOokBXN4t68Bug38bYzErdsFq1KGf6p/QZkXWnWVlZAyweDNDLRjCezxn8TTtvweLpzCEZL6r/b4iJlQw4Wgek26TM2JuHpt85WTLAYn1TOjGBxhuuhG127QqisaO0K7j544xv0RtRmO2xkl0u8EEnXtwURPncBHT8GRVGMclvIHvdgajMO8TlpGCeecRF9WZYIM0WrEJ49GfJhymXYj6D6N2klZGPGaOuUY817VcM+11+OP4iDsoxAtMYgwn4FGfYRaeyrBaP8uX8GoXMYynGMEWlhB6JUYxatCANnhN7TiEVXTADRsj9h3z/8pg7gxa4RoXcBChJ/C+fLxbqMQP+FDXYQElaIIL3IDhia+hFD74VTh2E4fxBd7Cto+cpmPVa7Diz1iH3/oKrPA4XuMUjHmcxRK+4xjMtWqLdC37fZ7A+zqNTpjsL9QNH6AWHtdTmht/gnHfE07BaltwH1dgUX6ZWyb6jXuXb+HO83iFBZTDa8gVzjPXOc59B6t3zSKvqIeOCw3CsEofPf5d+GXlCm/AE1qo72HRRiO+uYGPeBc+molGiPgPof1csTMv7nt1j9H1C4W7DIhH/jVRAAAAAElFTkSuQmCC', export: 'required' },
+									{ name: 'Restitué ?', img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAABGdBTUEAALGPC/xhBQAAAlBJREFUOBGV00tIVUEcx/F7xAfaQ0vCUtQitCgQqoWohI9N0MNFYVKgEiRo9JAgIqhFunAjggs3UYvoIqK0cGFqFPlEoVwYoeIjDHqYgWiu6/r9HWbiei5XOgOfO/+Z+c+cO3PmOAEfJRQKHSW9BJWYRh+GHMfZoPZXWGw/gviJD+hGP75gAdW+VmTCIcyiF3nhk2nvwA2soil8LGpMooPXCNok4rN4hHqkq5+6ABu4bPMiagb3ItZMKCROQiZGoC2/go7hG86ZvNvEc0iMWNAkPGew0Q4Sx2MMnUg1OdrFLeicM6Cj+IoyO09bSIGS4lAKJdvtlRP/QNq/CSagTw+7Yx40QHw/hp8EaKt/cRc1XJF31Iu4CJUcJGOQ3AvqCCvzxFmmvUadHMNPHV6w0G/qFlyDyhsUu1Eg0EFdhDa0sHCS+qk1/xQ+qk05gO8aOIxlHEQePiMWVRh1U80P7WLo3PTiEtGOaeyG7rKO7ISe9MfMcahDnlh9erDOuYGwC63Q2Q4hH5fMLh8Qz2BKExrwkobiOoyb+DGx3nY2JjCD88jCEvQvE0zudeJ1nFRbC2kbelm7sAidsfpHUY8jeAi9KPUP46mJte0nWIH3BbrJexi4Bz3gNJSYqcm20K6EznQn9uE9BnHM5kStSQqi2ZtA3xXUQldRn28P3CPw5ka0SUyDviJ9KbpKWwp9WnwJKVsG/qfBpAp88ubS9xZ62/4LE/VPdfeu2tnEZ7CKXNvnu9aC+IU+6AwV39xuIfdyb5egMRY5TlWLeDzjsk9SRy2bAMhld532BdwAAAAASUVORK5CYII=', export: 'required' },
 									{ name: 'Actions', export: 'no' }
 								];
 							}
@@ -1837,7 +1829,7 @@ button.addEventListener('click', function () {
 								var fileinput = document.createElement('input');
 								fileinput.setAttribute('type', 'text');
 								fileinput.setAttribute('id', filelabel.getAttribute('for'));
-								fileinput.setAttribute('value', 'tanaextension_export_' + this.closest('.testparent').querySelector('h3 em').firstChild.nodeValue + '.csv');
+								fileinput.setAttribute('value', 'tng_webext_export_' + this.closest('.testparent').querySelector('h3 .test-button').getAttribute("aria-controls") + '.csv');
 								filep.appendChild(fileinput);
 								file.appendChild(filep);
 								tanagurupopin.appendChild(file);
@@ -2046,19 +2038,20 @@ button.addEventListener('click', function () {
 										}
 									}
 									datatext.push(datatextitem.join(';'));
+
 									for (var i = 0; i < data.length; i++) {
 										var datatextitem = [];
 										for (var j = 0; j < toexport.options.length; j++) {
 											if (toexport.options[j].hasAttribute('value')) {
-												var texttoexport = data[i].querySelector(toexport.options[j].value);
-												var texttoexportimg = texttoexport.querySelector('img');
-												texttoexport = texttoexportimg ? texttoexportimg.getAttribute('alt') : texttoexport.textContent;
+												var celltoexport = data[i].querySelector(toexport.options[j].value);
+												var texttoexport = celltoexport.hasAttribute("title") ? celltoexport.getAttribute("title") : celltoexport.textContent;
 												datatextitem.push('"' + texttoexport.replace(/"/g, '""') + '"');
 											}
 										}
 										datatext.push(datatextitem.join(';'));
 									}
-									var csvFile = new Blob([datatext.join('\n')], { type: 'text/csv' });
+									var csv_text = "\uFEFF"+datatext.join('\n');
+									var csvFile = new Blob([csv_text], { type: 'text/csv; charset=utf-8' });
 									chrome.runtime.sendMessage({
 										tabId: chrome.devtools.inspectedWindow.tabId,
 										command: 'downloadTestCsvFile',
@@ -2089,10 +2082,21 @@ button.addEventListener('click', function () {
 						
 						t++;
 					});
-		
-					let currentTag = response.tags.filter(tag => tag.id === category)[0];
-					let currentTab = document.getElementById(category);
-					if(response.tests.length === 0) {
+				} else {
+					console.error("Erreur lors de l'envoi de la réponse.");
+				}
+				let currentTag = null;
+				let currentTab = null;
+				// We check if 'result' and 'tags' are defined inside our 'response' object and if 'tags' is an array
+				if (response && response.result && Array.isArray(response.result.tags)) {
+					currentTag = response.result.tags.filter(tag => tag.id === category)[0];
+					currentTab = document.getElementById(category);
+				} else {
+					console.error("Aucun tag trouvé avec l'id correspondant : ", category);
+				}
+
+				if (response && response.result && Array.isArray(response.result.tests)) {
+					if(response.result.tests.length === 0) {
 						currentTab.remove();
 					} else {
 						document.getElementById(currentTag.status+'cat-separator').insertAdjacentElement('afterend', document.getElementById(currentTab.id));
@@ -2127,7 +2131,10 @@ button.addEventListener('click', function () {
 						}
 					}
 				}
-			).then(
+				}	
+					
+			)
+			.then(
 				() => {
 					let testPanel = document.getElementById('tests');
 					let cTab = ul.querySelector('li#'+testPanel.getAttribute('aria-labelledby'));
@@ -2216,8 +2223,7 @@ button.addEventListener('click', function () {
 	displayResults();
 
 	function restartAnalyze() {
-		let hlElement = main.children[1].querySelector('.highlightON');
-		if(hlElement) hlElement.click();
+		resetHighlight();
 		if(listenDomModif) dashboardpanel.querySelector('#listenDOM').click();
 		if(dashboardpanel.querySelector('#taborder').checked) dashboardpanel.querySelector('#taborder').click();
 		ul.querySelectorAll('li:not([id="tab0"])').forEach(li => {li.remove()});
@@ -2275,10 +2281,18 @@ button.addEventListener('click', function () {
 	}
 
 	function delObsInterface() {
-		if(document.getElementById("DOMobserver").getAttribute('aria-selected') === "true") document.getElementById("tab0").click();
-		if(document.getElementById("DOMobserver")) document.getElementById("DOMobserver").remove();
-		document.getElementById("tabpanel1").remove();
-		document.getElementById("DOMdashboardMessage").remove();
+		let DOMobserver = document.getElementById("DOMobserver");
+		let tabpanel = document.getElementById("tabpanel1");
+		let domMessageEvent = document.getElementById("DOMdashboardMessage");
+
+		if(DOMobserver) {
+			if(DOMobserver.getAttribute('aria-selected') === "true") document.getElementById("tab0").click();
+			DOMobserver.remove();
+		}
+
+		if(tabpanel) tabpanel.remove();		
+		if(domMessageEvent) domMessageEvent.remove();
+
 		obsInterface = false;
 		obsCount = 0;
 		domChangeTime = null;
@@ -2305,7 +2319,7 @@ button.addEventListener('click', function () {
 					btnStatus.className = "status";
 					let hour = now.getHours() < 10 ? '0'+now.getHours() : now.getHours();
 					let minutes = now.getMinutes() < 10 ? '0'+now.getMinutes() : now.getMinutes();
-					btnStatus.textContent = hour+"H"+minutes;
+					btnStatus.textContent = "Modifications du DOM relevées à "+hour+"H"+minutes+", ";
 					newBtn.appendChild(btnStatus);
 
 					let strong = document.createElement('strong');
@@ -2416,7 +2430,7 @@ button.addEventListener('click', function () {
 
 						inspectObj.addEventListener('click', function() {
 							chrome.devtools.inspectedWindow.eval("inspect(document.querySelector('"+currentSelector+"'))");
-						}, true);
+						});
 						inspectParagraph.appendChild(inspectObj);
 						newElContainer.appendChild(inspectParagraph);
 
@@ -2512,7 +2526,7 @@ button.addEventListener('click', function () {
 				let counterList = document.querySelector('button[aria-controls="'+midID+'"] strong');
 				let elCount = domChangeList.querySelectorAll(':scope>li').length;
 				counterList.textContent = elCount;
-				document.querySelector('button[aria-controls="'+midID+'"] strong+span').textContent = elCount > 1 ? chrome.i18n.getMessage('panelUpdatedElementPlural') : chrome.i18n.getMessage('panelUpdatedElement');
+				document.querySelector('button[aria-controls="'+midID+'"] strong+span').textContent = elCount > 1 ? " " + chrome.i18n.getMessage('panelUpdatedElementPlural') : " " + chrome.i18n.getMessage('panelUpdatedElement');
 				
 				document.querySelector("#tabpanel1 .DOMobserver-message").textContent = chrome.i18n.getMessage('DOMpanelMessage');
 
@@ -2569,8 +2583,51 @@ button.addEventListener('click', function () {
 		}
 
 		if(request.command == 'resetHighlight') {
-			let hlElement = main.children[1].querySelector('.highlightON');
-			if(hlElement) hlElement.click();
+			resetHighlight();
+		}
+	}
+
+	/**
+	 * ? enable/disable highlight on target element
+	 * 
+	 * @function highlightElement
+	 * @param  string xpath   target xpath
+	 * @param  node element target element
+	 * @return void
+	 */
+	function highlightElement(xpath, element) {
+		chrome.runtime.sendMessage({
+			tabId: chrome.devtools.inspectedWindow.tabId,
+			command: 'highlight',
+			element: cssify(xpath)
+		}, (response) => {
+			if(response.response[0].result === "off") {
+				element.classList.remove('highlightON');
+				element.setAttribute('aria-selected', "true");
+			} else {
+				let previousHighlight = main.children[1].querySelector('.highlightON');
+				if(previousHighlight) {
+					previousHighlight.classList.remove('highlightON');
+					previousHighlight.removeAttribute('aria-selected');
+				}
+				element.classList.add('highlightON');
+			}
+		});
+	}
+
+	/**
+	 * ? if highlight feature is enabled, disable it
+	 */
+	function resetHighlight() {
+		let hlElement = main.children[1].querySelector('.highlightON');
+		if(hlElement) {
+			chrome.runtime.sendMessage({
+				tabId: chrome.devtools.inspectedWindow.tabId,
+				command: 'highlight',
+				element: hlElement
+			}, (response) => {
+				hlElement.classList.remove('highlightON');
+			});
 		}
 	}
 
@@ -2611,7 +2668,7 @@ button.addEventListener('click', function () {
 				command: 'taborder',
 				state: 'on'
 			}, (response) => {
-				if(response.response[0] === "on") {
+				if(response.response === "on") {
 					document.querySelector('label[for="taborder"] .slider').textContent = chrome.i18n.getMessage('word_yes');
 				} else {
 					document.querySelector('#taborder-error').textContent = chrome.i18n.getMessage('dashboard_taborder_warning');
@@ -2628,7 +2685,7 @@ button.addEventListener('click', function () {
 			document.querySelector('label[for="taborder"] .slider').textContent = chrome.i18n.getMessage('word_no');
 		}
 	}
-
+	
 	var dashboardpanelbuttonreload = dashboardpanel.querySelector('#reloadTests');
 	var dashboardpanelbuttonrestart = dashboardpanel.querySelector('#restartTests');
 
@@ -2636,8 +2693,7 @@ button.addEventListener('click', function () {
 	dashboardpanelbuttonrestart.addEventListener('click', () => {
 		if(dashboardpanel.querySelector('#listenDOM').checked) dashboardpanel.querySelector('#listenDOM').click();
 		if(dashboardpanel.querySelector('#taborder').checked) dashboardpanel.querySelector('#taborder').click();
-		let hlElement = main.children[1].querySelector('.highlightON');
-		if(hlElement) hlElement.click();
+		resetHighlight();
 		window.location.reload();
 	});
 	/**save */

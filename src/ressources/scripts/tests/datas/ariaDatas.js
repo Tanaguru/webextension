@@ -1528,7 +1528,12 @@ var ARIA = {
         this.setUsedInRoles = function () {
             if (this.usedInRoles == null) {
                 var statePropertyData = ariaData.properties[this.stateProperty] || ariaData.states[this.stateProperty];
-                this.usedInRoles = statePropertyData.usedInRoles;
+
+                if("undefined" === typeof statePropertyData.inheritsIntoRoles) {
+                    this.usedInRoles = statePropertyData.usedInRoles;
+                } else {
+                    this.usedInRoles = statePropertyData.usedInRoles.concat(statePropertyData.inheritsIntoRoles);
+                }
             }
         };
         this.canBeUsedInRole = function (role) {

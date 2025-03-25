@@ -11,14 +11,25 @@ Web accessibility evaluation tool (and more).
 * Author : Tanaguru
 * Project : Tanaguru Webextension (Firefox and Chrome)
 * Date the document was written : 2018/02/26
-* Document update date : 2022/09/21
+* Document update date : 2025/03/18
 
 ## Summary
-- [Install the webextension on your browser](#install-the-webextension-on-your-browser)
-- [Install the webextension locally](#install-the-webextension-locally)
-- [Use the webextension](#use-the-webextension)
-- [Write a test](#write-a-test)
-- [Update the version number](#update-the-version-number)
+- [Tanaguru Webextension](#tanaguru-webextension)
+  - [About](#about)
+  - [Summary](#summary)
+  - [Install the webextension on your browser](#install-the-webextension-on-your-browser)
+  - [Install the webextension locally](#install-the-webextension-locally)
+  - [Use the webextension](#use-the-webextension)
+  - [Write a test](#write-a-test)
+    - [Function `createTanaguruTest`](#function-createtanagurutest)
+      - [Test characteristics](#test-characteristics)
+    - [Test examples](#test-examples)
+      - [Links opening in new windows](#links-opening-in-new-windows)
+      - [Grouping of fields with/without caption.](#grouping-of-fields-withwithout-caption)
+      - [Links with empty `title` attribute](#links-with-empty-title-attribute)
+  - [Update the version number](#update-the-version-number)
+    - [VERSION.txt](#versiontxt)
+    - [CHANGELOG.md](#changelogmd)
 
 ## Install the webextension on your browser
 The webextension is available on the Mozilla Firefox and Google Chrome stores.
@@ -26,8 +37,9 @@ The webextension is available on the Mozilla Firefox and Google Chrome stores.
 - [Tanaguru webextension for Chrome](https://chrome.google.com/webstore/detail/tanaguru-webext/hhopdkekcmkdfpdjbpajmmfbheglcaac)
 
 ## Install the webextension locally
+
 1. **Download or clone the project** here : [project directory](https://github.com/Tanaguru/webextension)
-2. To install the webextension, you will need to **download and install Node.js**. [Download page of Node.js](https://nodejs.org/en/download/)
+2. To install the webextension, you will need to **download and install Node.js** in version 16. [Download page of Node.js](https://nodejs.org/en/download/)
 3. **Install the project dependencies and do the "build"** : 
    - access the root folder of the project with a terminal (powershell, git bash...) or open the project with your code editor and lauch the terminal.
    - send this 2 commands in the terminal :
@@ -35,7 +47,6 @@ The webextension is available on the Mozilla Firefox and Google Chrome stores.
   npm install
   npm run-script build
   ```
-
 4. **Installation on Firefox**
 
 To install the webextension, **in the address bar** of Firefox 57 or highter, type **« about:debugging »**. The « Extensions » page displays :
